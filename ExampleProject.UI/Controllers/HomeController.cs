@@ -16,7 +16,7 @@ namespace ExampleProject.UI.Controllers
         private ServerConfig _config = new ServerConfig();
         public override string DefaultDomain => "MainApp";
         public override string[] Domains => new string[] { "MainApp" };
-        public override IServerConfig ServerConfig => _config;
+        public override ServerConfigBase ServerConfig => _config;
 
         public override string GetDefaultTitle(string loc)
         {

@@ -1,10 +1,4 @@
 {
-  "dependencies": {
-    "angular-tree-component": "^8.0.0",
-    "angular2-datetimepicker": "^1.1.1",
-    "primeicons": "^1.0.0-beta.10",
-    "primeng": "6.1.3"
-  },
   "devDependencies": {
     "@agm/core": "1.0.0-beta.2",
     "@angular/animations": "5.2.5",
@@ -73,7 +67,11 @@
     "webpack-dev-middleware": "^1.8.4",
     "webpack-hot-middleware": "2.24.3",
     "webpack-merge": "4.1.0",
-    "zone.js": "0.8.12"
+    "zone.js": "0.8.12",
+    "codeShell": "git+https://github.com/asbarkouky85/codeShell.git",
+    "codeShell-dates": "git+https://github.com/asbarkouky85/codeShell-dates.git",
+    "codeShell-localization": "git+https://github.com/asbarkouky85/codeShell-localization.git",
+    "codeShell-recursion": "git+https://github.com/asbarkouky85/codeShell-recursion.git"
   },
   "name": "fms",
   "private": true,

@@ -18,6 +18,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Core\CodeShell\core\baseComponents\ve-F29.tmp" />
+    <None Remove="Core\CodeShell\core\index.d.ts" />
+    <None Remove="Core\CodeShell\core\localization\translationService.ts" />
+    <None Remove="Core\CodeShell\dates\codeShellDatesModule.ts" />
+    <None Remove="Core\CodeShell\dates\directives.ts" />
+    <None Remove="Core\CodeShell\dates\validators.ts" />
+    <None Remove="Core\CodeShell\localization\codeShellLocalizationModule.ts" />
+    <None Remove="Core\CodeShell\localization\ngxTransationService.ts" />
+    <None Remove="Core\CodeShell\recursion\baseComponents.ts" />
+    <None Remove="Core\CodeShell\recursion\codeShellRecursionModule.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\css\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\css\plugins\fonts\primeicons.svg" />
   </ItemGroup>
@@ -28,6 +41,18 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Core\CodeShell\core\index.d.ts" />
+    <TypeScriptCompile Include="Core\CodeShell\core\localization\translationService.ts" />
+    <TypeScriptCompile Include="Core\CodeShell\dates\codeShellDatesModule.ts" />
+    <TypeScriptCompile Include="Core\CodeShell\dates\directives.ts" />
+    <TypeScriptCompile Include="Core\CodeShell\dates\validators.ts" />
+    <TypeScriptCompile Include="Core\CodeShell\localization\codeShellLocalizationModule.ts" />
+    <TypeScriptCompile Include="Core\CodeShell\localization\ngxTransationService.ts" />
+    <TypeScriptCompile Include="Core\CodeShell\recursion\baseComponents.ts" />
+    <TypeScriptCompile Include="Core\CodeShell\recursion\codeShellRecursionModule.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

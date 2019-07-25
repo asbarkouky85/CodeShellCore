@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExampleProject.UI.Models
 {
-    public class ServerConfig : IServerConfig
+    public class ServerConfig : ServerConfigBase
     {
         public string BaseURL { get; set; }
         public string Domain { get; set; }
