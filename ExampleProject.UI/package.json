@@ -68,12 +68,15 @@
     "webpack-hot-middleware": "2.24.3",
     "webpack-merge": "4.1.0",
     "zone.js": "0.8.12",
-    "codeShell": "git+https://github.com/asbarkouky85/codeShell.git",
-    "codeShell-dates": "git+https://github.com/asbarkouky85/codeShell-dates.git",
-    "codeShell-localization": "git+https://github.com/asbarkouky85/codeShell-localization.git",
-    "codeShell-recursion": "git+https://github.com/asbarkouky85/codeShell-recursion.git"
+    "codeshell-dates": "git+https://github.com/asbarkouky85/codeshell-dates.git",
+    "codeshell-localization": "git+https://github.com/asbarkouky85/codeshell-localization.git",
+    "codeshell-recursion": "git+https://github.com/asbarkouky85/codeshell-recursion.git"
   },
   "name": "fms",
   "private": true,
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "dependencies": {
+    "codeshell": "git+https://github.com/asbarkouky85/codeshell.git",
+    "codeshell-dates": "git+https://github.com/asbarkouky85/codeshell-dates.git"
+  }
 }

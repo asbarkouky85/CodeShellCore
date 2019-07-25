@@ -1,0 +1,43 @@
+﻿<section>
+    <div>
+        <div class="title-header text-center">
+            <h1>{{'Words.Log__' | translate}} <span>{{'Words.In__' | translate}}</span></h1>
+        </div>
+        <div class="border"></div>
+
+
+        <form novalidate (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-md-12 ">
+
+                    <div class="form-group">
+                        <label for="email">
+                            إسم المستخدم
+                        </label>
+                        <input type="text" placeholder="إسم المستخدم" name="userName" [(ngModel)]="loginData.userName" class="form-control" id="email" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">
+                            كلمة المرور
+                        </label>
+                        <input type="password" placeholder="كلمة المرور" name="Password" [(ngModel)]="loginData.password" class="form-control" id="name" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class=" buttonGra buttonGraOrange btn-block">
+                            تسجيل الدخول
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <!--<div class=" reg text-center">
+                            <a href="register.html" class=" buttonGra buttonGraOrange"> تسجيل عضو جديد </a>
+                            <a href="reset.html" class=" buttonGra buttonGraPerp">نسيت كلمه المرور؟</a>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
