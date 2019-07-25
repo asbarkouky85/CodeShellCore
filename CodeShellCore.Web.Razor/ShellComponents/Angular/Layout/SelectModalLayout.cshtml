@@ -1,0 +1,53 @@
+﻿@using CodeShellCore.Web.Razor.Models;
+@{
+    ModalModel MModal = Html.ModalModel();
+}
+<p-dialog [(visible)]="Show"[contentStyle]="{'max-height':'400px'}" [width]="ModalWidth" [modal]="@MModal.IsModalValue">
+
+    <p-header>
+        @if (!IsSectionDefined("header"))
+        {
+            @Html.GetPageTitle()
+        }
+        else
+        {
+            @RenderSection("header")
+        }
+    </p-header>
+
+    @if (MModal.UseSearch)
+    {
+
+        <div class="col-md-12 search-group">
+
+            <input type="text"
+                   [(ngModel)]="Source.Opts.SearchTerm"
+                   (keydown.enter)="Source.LoadData()"
+                   class="form-control"
+                   placeholder="@Html.Word("Search")">
+
+            <i class="fa fa-search" (click)="Source.LoadData()"></i>
+        </div>
+
+
+    }
+
+    @RenderBody()
+
+    @if (IsSectionDefined("buttons"))
+    {
+        @RenderSection("buttons")
+    }
+    else
+    {
+        <div class="col-md-12">
+            <div class="row form-group">
+                <div class="text-center">
+                    @Html.Button("Cancel", "Cancel()", null, BtnClass.Default, "fa fa-window-close")
+                    @Html.Button("OK", "Ok()", null, BtnClass.Warning, "fa fa-check")
+                </div>
+            </div>
+        </div>
+    }
+
+</p-dialog>

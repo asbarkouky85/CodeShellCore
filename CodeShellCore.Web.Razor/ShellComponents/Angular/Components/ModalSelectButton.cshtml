@@ -1,0 +1,19 @@
+﻿@model LinkModel
+<div class="row form-group locationHeader"
+     @if (Model.GroupName != null) { @Html.Raw($"id=\"{Model.GroupName}\" bs-group #{Model.GroupName}=\"bsFormGroup\"") }
+     @Html.Raw(Model.Attributes)>
+    <label class="col-sm-3 control-label">@Model.Text</label>
+    <div class="col-sm-9">
+        <label class="form-control input-control" @if (Model.Function != null) { @Html.Raw("(click) = \"" + Html.Raw(Model.Function) + "\"") ; }>
+            @if (Model.Content != null)
+            {@Html.Raw("{{" + Model.Content + "}}")}
+        </label>
+        @if (Model.GroupName != null)
+        {
+            <label class="form-control" *ngIf="!@(Model.GroupName+".Write")">
+                @if (Model.Content != null)
+                {@Html.Raw("{{" + Model.Content + "}}")}
+            </label>
+        }
+    </div>
+</div>

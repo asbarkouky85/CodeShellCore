@@ -1,0 +1,9 @@
+<DataSet Name="%Name%">
+	<Query>
+		<DataSourceName>%DataSourceName%</DataSourceName>
+		<CommandText>/* Local Query */</CommandText>
+	</Query>
+	<Fields>
+		%Fields%
+	</Fields>
+</DataSet>

@@ -1,0 +1,39 @@
+﻿.pull-last {
+    float:right;
+}
+
+.pull-first {
+    float:left;
+}
+
+.wrapper-side, .wrapper-content, .nav-wrapper.expanded, .content-wrapper.compressed, .content-wrapper.expanded {
+    transition: all 1s ease-in-out,opacity 1s ease-in-out;
+}
+
+.wrapper-content {
+    width: calc(100% - 300px);
+    margin-right: 300px;
+}
+
+    .wrapper-content.expanded {
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+
+
+.wrapper-side {
+    width: 296px;
+    z-index: 100;
+    position: fixed;
+    height: calc(100%);
+    min-height: calc(100%);
+    background-color: #808080;
+}
+
+    .wrapper-side.compressed {
+        width: 0px;
+        opacity: 0;
+        visibility: hidden;
+    }

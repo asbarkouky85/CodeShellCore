@@ -1,0 +1,16 @@
+﻿import { DataHttpService } from "./HttpService";
+
+export class DefaultHttpService extends DataHttpService {
+    protected BaseUrl: string;
+
+    constructor() {
+        
+        super();
+        this.BaseUrl = "";
+    }
+
+    public SetBase(base: string)
+    {
+        this.BaseUrl = base;
+    }
+}

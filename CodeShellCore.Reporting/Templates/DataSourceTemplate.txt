@@ -1,0 +1,7 @@
+﻿<DataSource Name="%Name%">
+    <ConnectionProperties>
+		<DataProvider>System.Data.DataSet</DataProvider>
+		<ConnectString>/* Local Connection */</ConnectString>
+    </ConnectionProperties>
+    <rd:DataSourceID>7c181f69-2fa1-4195-8673-4bbf91f5bbcf</rd:DataSourceID>
+</DataSource>

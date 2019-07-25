@@ -1,0 +1,32 @@
+﻿@if (IsSectionDefined("header"))
+{
+    @RenderSection("header", false)
+}
+else
+{
+    @Html.PageHeader()
+}
+<div [ngClass]="IsEmbedded?'panel panel-default embedded':'wrapper wrapper-content animated fadeInRight m-t-lgg home'">
+
+    <div [ngClass]="IsEmbedded?'panel-body':'orderMain table-container'">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
+                <div class="buttonGra-group pull-last">
+                    @foreach (var s in CodeShellCore.Shell.SupportedLanguages)
+                    {
+                        <button class="buttonGra buttonGra-sm" [ngClass]="CurrentLang=='@s'?'buttonGraAmethyst':'buttonGraWhite'" (click)="CurrentLang='@s'">
+                            @Html.Word(s)
+                        </button>
+                    }
+                </div>
+            </div>
+
+        </div>
+        @RenderBody()
+
+        @RenderSection("lists", false)
+        <div class="row submit-buttons pull-last">
+            @RenderSection("buttons", false)
+        </div>
+    </div>
+</div>

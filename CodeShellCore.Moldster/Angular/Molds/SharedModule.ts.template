@@ -1,0 +1,24 @@
+﻿import { NgModule } from "@angular/core";
+import { CodeShellModule } from "CodeShell/CodeShellModule";
+import { Registry } from "CodeShell/Utilities/Registry";
+import { ServerConfig } from "%BaseName%/ServerConfig";
+import { TranslateService } from "@ngx-translate/core";
+%ComponentImports%
+
+@NgModule({
+    declarations: [%Components%],
+    exports: [%Components%],
+    imports: [
+        CodeShellModule,
+    ],
+	entryComponents:[%Components%]
+})
+export class %Name%Module {
+
+    constructor(trans: TranslateService) {
+        trans.setDefaultLang(ServerConfig.Instance.Locale);
+        trans.use(ServerConfig.Instance.Locale);
+    }
+}
+
+%Registrations%

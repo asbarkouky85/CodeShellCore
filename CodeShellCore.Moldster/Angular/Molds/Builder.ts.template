@@ -1,0 +1,54 @@
+﻿import { ModuleBuilder } from "FMS/ModuleBuilder";
+import { RouterModule } from "@angular/router";
+import { ResourceActions } from "CodeShell/Security/Models";
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { Translator } from "CodeShell/Localization/Translator";
+import { LocaleLoader } from "CodeShell/Localization/LocaleLoader";
+import { AuthFilter } from "CodeShell/Security/AuthFilter";
+import { Login } from "FMS/Main/Login";
+import { Reset } from "FMS/Main/Reset";
+import { Registry } from "CodeShell/Utilities/Registry";
+%ComponentImports%
+
+export class %TenantCode%Builder extends ModuleBuilder{
+
+	public static GetEntryComponents(){
+		let lst: any[] = super.GetEntryComponents();
+        lst.push([
+			%ModalList%
+		]);
+        return lst;
+	}
+
+    public static GetDeclarations(): any[] {
+		let d: { [id: string]: LocaleLoader } = {
+            ["ar"]: new ar_Loader, ["en"]: new en_Loader,
+        };
+        Translator.SetLoaders(d);
+
+        let lst: any[] = super.GetDeclarations();
+        lst.push([
+			Login,
+			Reset,
+			%ComponentList%
+		]);
+        return lst;
+    }
+
+    public static RegisterModules(): any[] {
+        let s: any[] = super.RegisterModules();
+        s.push(
+            TranslateModule.forRoot({ loader: { provide: TranslateLoader, useValue: Translator.GetTranslator() } }),
+			RouterModule.forRoot([
+			{ path: 'Login', component: Login, data: { action: 'anonymous' } },
+            { path: '', redirectTo: '/', pathMatch: 'full' },
+            %Routes%
+            { path: '**', redirectTo: '/' }
+
+        ]));
+
+        return s;
+    }
+}
+
+%Registration%

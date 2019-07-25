@@ -1,0 +1,202 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleProject.UI", "ExampleProject.UI\ExampleProject.UI.csproj", "{6B6FFB7C-E9F3-499F-9971-49D4FA3A29B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore", "CodeShellCore\CodeShellCore.csproj", "{9F817294-9367-4BFB-B332-867DDCA44DC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Caching", "CodeShellCore.Caching\CodeShellCore.Caching.csproj", "{266E5AF0-6B4C-4D15-A76D-319D7840EC25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.MQ", "CodeShellCore.MQ\CodeShellCore.MQ.csproj", "{619BA014-8AF0-49E0-8327-7993BD938C9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Reporting", "CodeShellCore.Reporting\CodeShellCore.Reporting.csproj", "{4F0ED347-696E-47C0-8DFC-C72B62D1AC81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Web", "CodeShellCore.Web\CodeShellCore.Web.csproj", "{2FF59323-6B00-44D7-9254-1DDB965DA88A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Web.Razor", "CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj", "{8C9E6419-E68E-4EA4-BC64-3291EDA354AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Framework", "01 Framework", "{DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Web", "02 Web", "{D65A29A7-E35D-480D-ADD0-7840048635E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Moldster", "CodeShellCore.Moldster\CodeShellCore.Moldster.csproj", "{E27B3E09-92B9-41F4-B402-C7D229F16E4E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleProject.Config.Api", "ExampleProject.Config.Api\ExampleProject.Config.Api.csproj", "{38BE6E8A-D8C8-49BD-941C-F8E31AA58C90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleProject.Commander", "ExampleProject.Commander\ExampleProject.Commander.csproj", "{31FE60EC-5E7C-44FF-B53D-CB888448DB86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Example", "04 Example", "{3477FF24-4F33-4EB2-8B09-6AEC871B6752}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleProject", "ExampleProject\ExampleProject.csproj", "{42EDA704-B35C-4640-AF61-46111C6AAD98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Authorization", "03 Authorization", "{D064279A-FF5C-450D-B4CE-D96EC6906A53}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga", "Asga\Asga.csproj", "{5800310C-9A93-4793-9E80-85D19988C20E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Common", "Asga.Common\Asga.Common.csproj", "{8C2AE25B-87A6-471D-B13B-FB86A505310C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth", "Asga.Auth\Asga.Auth.csproj", "{29F610F6-1C6B-4488-9593-128EEC750B0F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.UnitTest", "CodeShellCore.UnitTest\CodeShellCore.UnitTest.csproj", "{86F918EA-5AE4-4EFE-A220-70B6F4B03967}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Batch", "00 Batch", "{3E14368F-52B7-4829-9CA8-DBB03348AA00}"
+	ProjectSection(SolutionItems) = preProject
+		Batch\api.bat = Batch\api.bat
+		Batch\commander.bat = Batch\commander.bat
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B6FFB7C-E9F3-499F-9971-49D4FA3A29B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B6FFB7C-E9F3-499F-9971-49D4FA3A29B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B6FFB7C-E9F3-499F-9971-49D4FA3A29B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B6FFB7C-E9F3-499F-9971-49D4FA3A29B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F817294-9367-4BFB-B332-867DDCA44DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F817294-9367-4BFB-B332-867DDCA44DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F817294-9367-4BFB-B332-867DDCA44DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F817294-9367-4BFB-B332-867DDCA44DC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266E5AF0-6B4C-4D15-A76D-319D7840EC25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266E5AF0-6B4C-4D15-A76D-319D7840EC25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266E5AF0-6B4C-4D15-A76D-319D7840EC25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266E5AF0-6B4C-4D15-A76D-319D7840EC25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{619BA014-8AF0-49E0-8327-7993BD938C9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{619BA014-8AF0-49E0-8327-7993BD938C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{619BA014-8AF0-49E0-8327-7993BD938C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{619BA014-8AF0-49E0-8327-7993BD938C9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0ED347-696E-47C0-8DFC-C72B62D1AC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0ED347-696E-47C0-8DFC-C72B62D1AC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0ED347-696E-47C0-8DFC-C72B62D1AC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0ED347-696E-47C0-8DFC-C72B62D1AC81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FF59323-6B00-44D7-9254-1DDB965DA88A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FF59323-6B00-44D7-9254-1DDB965DA88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FF59323-6B00-44D7-9254-1DDB965DA88A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FF59323-6B00-44D7-9254-1DDB965DA88A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C9E6419-E68E-4EA4-BC64-3291EDA354AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C9E6419-E68E-4EA4-BC64-3291EDA354AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C9E6419-E68E-4EA4-BC64-3291EDA354AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C9E6419-E68E-4EA4-BC64-3291EDA354AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E27B3E09-92B9-41F4-B402-C7D229F16E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E27B3E09-92B9-41F4-B402-C7D229F16E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E27B3E09-92B9-41F4-B402-C7D229F16E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E27B3E09-92B9-41F4-B402-C7D229F16E4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38BE6E8A-D8C8-49BD-941C-F8E31AA58C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38BE6E8A-D8C8-49BD-941C-F8E31AA58C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38BE6E8A-D8C8-49BD-941C-F8E31AA58C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38BE6E8A-D8C8-49BD-941C-F8E31AA58C90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31FE60EC-5E7C-44FF-B53D-CB888448DB86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31FE60EC-5E7C-44FF-B53D-CB888448DB86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31FE60EC-5E7C-44FF-B53D-CB888448DB86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31FE60EC-5E7C-44FF-B53D-CB888448DB86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42EDA704-B35C-4640-AF61-46111C6AAD98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42EDA704-B35C-4640-AF61-46111C6AAD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42EDA704-B35C-4640-AF61-46111C6AAD98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42EDA704-B35C-4640-AF61-46111C6AAD98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5800310C-9A93-4793-9E80-85D19988C20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5800310C-9A93-4793-9E80-85D19988C20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5800310C-9A93-4793-9E80-85D19988C20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5800310C-9A93-4793-9E80-85D19988C20E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C2AE25B-87A6-471D-B13B-FB86A505310C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C2AE25B-87A6-471D-B13B-FB86A505310C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C2AE25B-87A6-471D-B13B-FB86A505310C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C2AE25B-87A6-471D-B13B-FB86A505310C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29F610F6-1C6B-4488-9593-128EEC750B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F610F6-1C6B-4488-9593-128EEC750B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F610F6-1C6B-4488-9593-128EEC750B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F610F6-1C6B-4488-9593-128EEC750B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86F918EA-5AE4-4EFE-A220-70B6F4B03967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86F918EA-5AE4-4EFE-A220-70B6F4B03967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86F918EA-5AE4-4EFE-A220-70B6F4B03967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86F918EA-5AE4-4EFE-A220-70B6F4B03967}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9F817294-9367-4BFB-B332-867DDCA44DC5} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
+		{266E5AF0-6B4C-4D15-A76D-319D7840EC25} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
+		{619BA014-8AF0-49E0-8327-7993BD938C9C} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
+		{4F0ED347-696E-47C0-8DFC-C72B62D1AC81} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
+		{2FF59323-6B00-44D7-9254-1DDB965DA88A} = {D65A29A7-E35D-480D-ADD0-7840048635E8}
+		{8C9E6419-E68E-4EA4-BC64-3291EDA354AA} = {D65A29A7-E35D-480D-ADD0-7840048635E8}
+		{E27B3E09-92B9-41F4-B402-C7D229F16E4E} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
+		{38BE6E8A-D8C8-49BD-941C-F8E31AA58C90} = {3477FF24-4F33-4EB2-8B09-6AEC871B6752}
+		{31FE60EC-5E7C-44FF-B53D-CB888448DB86} = {3477FF24-4F33-4EB2-8B09-6AEC871B6752}
+		{42EDA704-B35C-4640-AF61-46111C6AAD98} = {3477FF24-4F33-4EB2-8B09-6AEC871B6752}
+		{5800310C-9A93-4793-9E80-85D19988C20E} = {D064279A-FF5C-450D-B4CE-D96EC6906A53}
+		{8C2AE25B-87A6-471D-B13B-FB86A505310C} = {D064279A-FF5C-450D-B4CE-D96EC6906A53}
+		{29F610F6-1C6B-4488-9593-128EEC750B0F} = {D064279A-FF5C-450D-B4CE-D96EC6906A53}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7C8836DA-E4F6-4A43-9CC5-7D0388147EFD}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 16
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://196.218.245.68:8080/tfs/asgaksaprojects
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = CodeShellCore\\CodeShellCore.csproj
+		SccProjectTopLevelParentUniqueName1 = CodeShellCore.sln
+		SccProjectName1 = CodeShellCore
+		SccLocalPath1 = CodeShellCore
+		SccProjectUniqueName2 = CodeShellCore.Caching\\CodeShellCore.Caching.csproj
+		SccProjectTopLevelParentUniqueName2 = CodeShellCore.sln
+		SccProjectName2 = CodeShellCore.Caching
+		SccLocalPath2 = CodeShellCore.Caching
+		SccProjectUniqueName3 = CodeShellCore.MQ\\CodeShellCore.MQ.csproj
+		SccProjectTopLevelParentUniqueName3 = CodeShellCore.sln
+		SccProjectName3 = CodeShellCore.MQ
+		SccLocalPath3 = CodeShellCore.MQ
+		SccProjectUniqueName4 = CodeShellCore.Reporting\\CodeShellCore.Reporting.csproj
+		SccProjectTopLevelParentUniqueName4 = CodeShellCore.sln
+		SccProjectName4 = CodeShellCore.Reporting
+		SccLocalPath4 = CodeShellCore.Reporting
+		SccProjectUniqueName5 = CodeShellCore.Web\\CodeShellCore.Web.csproj
+		SccProjectTopLevelParentUniqueName5 = CodeShellCore.sln
+		SccProjectName5 = CodeShellCore.Web
+		SccLocalPath5 = CodeShellCore.Web
+		SccProjectUniqueName6 = CodeShellCore.Web.Razor\\CodeShellCore.Web.Razor.csproj
+		SccProjectTopLevelParentUniqueName6 = CodeShellCore.sln
+		SccProjectName6 = CodeShellCore.Web.Razor
+		SccLocalPath6 = CodeShellCore.Web.Razor
+		SccProjectUniqueName7 = CodeShellCore.Moldster\\CodeShellCore.Moldster.csproj
+		SccProjectTopLevelParentUniqueName7 = CodeShellCore.sln
+		SccProjectName7 = CodeShellCore.Moldster
+		SccLocalPath7 = CodeShellCore.Moldster
+		SccProjectUniqueName8 = ExampleProject\\ExampleProject.csproj
+		SccProjectTopLevelParentUniqueName8 = CodeShellCore.sln
+		SccProjectName8 = ExampleProject
+		SccLocalPath8 = ExampleProject
+		SccProjectUniqueName9 = ExampleProject.UI\\ExampleProject.UI.csproj
+		SccProjectName9 = ExampleProject.UI
+		SccLocalPath9 = ExampleProject.UI
+		SccProjectUniqueName10 = ExampleProject.Commander\\ExampleProject.Commander.csproj
+		SccProjectTopLevelParentUniqueName10 = CodeShellCore.sln
+		SccProjectName10 = ExampleProject.Commander
+		SccLocalPath10 = ExampleProject.Commander
+		SccProjectUniqueName11 = ExampleProject.Config.Api\\ExampleProject.Config.Api.csproj
+		SccProjectTopLevelParentUniqueName11 = CodeShellCore.sln
+		SccProjectName11 = ExampleProject.Config.Api
+		SccLocalPath11 = ExampleProject.Config.Api
+		SccProjectUniqueName12 = Asga.Common\\Asga.Common.csproj
+		SccProjectTopLevelParentUniqueName12 = CodeShellCore.sln
+		SccProjectName12 = Asga.Common
+		SccLocalPath12 = Asga.Common
+		SccProjectUniqueName13 = Asga.Auth\\Asga.Auth.csproj
+		SccProjectTopLevelParentUniqueName13 = CodeShellCore.sln
+		SccProjectName13 = Asga.Auth
+		SccLocalPath13 = Asga.Auth
+		SccProjectUniqueName14 = CodeShellCore.UnitTest\\CodeShellCore.UnitTest.csproj
+		SccProjectName14 = CodeShellCore.UnitTest
+		SccLocalPath14 = CodeShellCore.UnitTest
+		SccProjectUniqueName15 = Asga\\Asga.csproj
+		SccProjectTopLevelParentUniqueName15 = CodeShellCore.sln
+		SccProjectName15 = Asga
+		SccLocalPath15 = Asga
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,6 @@
+﻿@model LinkModel
+<div class="btn-group" @Html.Raw(@Model.Attributes)>
+    <button class="btn btn-primary" title="@Html.Word(Model.Title)" (click)="@Model.Function">
+        <i class="fa @Model.IconClass fa-lg" aria-hidden="true"></i>
+    </button>
+</div>

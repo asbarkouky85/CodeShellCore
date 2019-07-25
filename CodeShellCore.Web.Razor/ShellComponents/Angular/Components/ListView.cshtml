@@ -1,0 +1,17 @@
+﻿@model SelectNgInput
+<table class="table table-striped">
+    <tbody>
+        <tr *ngFor="let item of @Model.ListName">
+            <td>
+                <label class="chiller_cb">
+                    <strong>@Html.Raw("{{ " + Model.Display + " }}")</strong>
+                    <input [id]="@Html.Raw("'"+Model.FieldName+"_'+item.id")"
+                           @if (Model.Multi) { @Html.Raw("type=\"checkbox\" [name]=\"'" + Model.FieldName + "_'+item.id\" [(ngModel)]=\"item.Tag.selected\"")  } else { @Html.Raw("type=\"radio\" name=\"" + Model.FieldName + "\" [value]=\"item.id\" [checked]=\"item.Tag && item.Tag.selected\"") }
+                           @Html.Raw(Model.ChangeFunction != null ? "(change)=\"" + Model.ChangeFunction + "\"" : "")
+                           @Html.Raw(Model.Attributes)>
+                    <span></span>
+                </label>
+            </td>
+        </tr>
+    </tbody>
+</table>

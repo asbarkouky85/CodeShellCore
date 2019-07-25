@@ -1,0 +1,11 @@
+﻿import { DataHttpService } from "CodeShell/Http";
+import { Injectable } from "@angular/core";
+
+@Injectable()
+export class %Resource%Service extends DataHttpService {
+
+    protected get BaseUrl(): string {
+        return "/apiAction/%Resource%";
+    }
+
+}

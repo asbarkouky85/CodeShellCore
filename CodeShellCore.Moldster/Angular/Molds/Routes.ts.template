@@ -1,0 +1,36 @@
+﻿import { Route } from "@angular/router";
+
+import { AuthFilter } from "CodeShell/Security/AuthFilter";
+import { DomainData, ResourceActions } from "CodeShell/Security/Models";
+import { Translator } from "CodeShell/Localization/Translator";
+
+import { Login } from "%BaseName%/Main/Login";
+
+%ComponentImports%
+%LocalizationImports%
+
+var routes: Route[] = [
+    { path: 'Login', component: Login, data: { action: 'anonymous' } }
+	%DefaultRoute%,
+%Routes%
+    { path: '**', redirectTo: '/' }
+
+];
+
+Translator.SetLoaders({
+    %LocalizationLoaders%
+});
+
+
+let data: DomainData[] | null = null;
+
+export function GetDomainsData(): DomainData[] {
+    if (!data) {
+        data = [
+%DomainsData%
+		];
+    }
+    return data;
+}
+
+export function Routes(): Route[] { return routes; }

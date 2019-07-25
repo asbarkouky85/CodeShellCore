@@ -1,0 +1,15 @@
+﻿.pull-last {
+    float: left;
+}
+
+.pull-first {
+    float: right;
+}
+
+.navbar.navbar-static-top {
+    margin-bottom:0px;
+}
+
+.profile-picture-sm {
+    height:40px;
+}

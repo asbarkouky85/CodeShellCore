@@ -1,0 +1,46 @@
+﻿@using CodeShellCore.Web.Razor.Models;
+@{
+    ModalModel MModal = Html.ModalModel();
+}
+<p-dialog [(visible)]="Show" [contentStyle]="{'max-height':'330px'}" [width]="ModalWidth" [modal]="@MModal.IsModalValue">
+    <p-header>
+        @if (!IsSectionDefined("header"))
+        {
+            @Html.GetPageTitle()
+        }
+        else
+        {
+            @RenderSection("header")
+        }
+    </p-header>
+
+    <div class="col-md-12">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
+                <div class="buttonGra-group pull-last">
+                    @foreach (var s in CodeShellCore.Shell.SupportedLanguages)
+                    {
+                        <button class="buttonGra buttonGra-sm" [ngClass]="CurrentLang=='@s'?'buttonGraAmethyst':'buttonGraWhite'" (click)="CurrentLang='@s'">
+                            @Html.Word(s)
+                        </button>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+        @RenderBody()
+    </div>
+
+
+    @RenderSection("lists", false)
+
+    @if (IsSectionDefined("buttons"))
+    {
+        <p-footer>
+            <div class="text-center">
+                @RenderSection("buttons")
+            </div>
+        </p-footer>
+    }
+</p-dialog>

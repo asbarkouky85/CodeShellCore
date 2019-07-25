@@ -1,0 +1,31 @@
+﻿import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { CodeShellModule } from "CodeShell/CodeShellModule";
+import { SharedModule } from "./SharedModule%Lazy%";
+import { Registry } from "CodeShell/Utilities/Registry";
+import { AuthFilter } from "CodeShell/Security/AuthFilter";
+import { ResourceActions } from "CodeShell/Security/Models";
+import { IServerConfig } from "CodeShell/IServerConfig";
+import { TranslateService } from "@ngx-translate/core";
+%ComponentImports%
+
+@NgModule({
+    declarations: [%Components%],
+    exports: [%Components%],
+    imports: [
+        CodeShellModule,
+		SharedModule,
+        RouterModule.forChild([
+%Routes%
+		])
+    ]
+})
+export class %Name%Module {
+
+    constructor(trans: TranslateService, conf: IServerConfig) {
+        trans.setDefaultLang(conf.Locale);
+        trans.use(conf.Locale);
+    }
+}
+
+%Registrations%

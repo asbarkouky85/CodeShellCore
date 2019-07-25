@@ -1,0 +1,34 @@
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { BaseModule } from 'CodeShell/BaseModule';
+import { IServerConfig } from "CodeShell/IServerConfig";
+import { DomainDataProvider } from 'CodeShell/Security/Models';
+
+import { %BaseAppModuleName% } from '%BaseAppModulePath%';
+import { %MainComponentName% } from '%MainComponentPath%';
+import { ServerConfig } from "%BaseName%/ServerConfig";
+
+import { SharedModule } from './SharedModule%Lazy%';
+%ModuleImports%
+import { Routes, GetDomainsData } from './%Code%Routes%Lazy%';
+
+@NgModule({
+    bootstrap: [%MainComponentName%],
+	declarations: [%MainComponentName%,%Declarations%],
+    imports: [
+        %BaseAppModuleName%.forRoot(),
+		SharedModule,
+		%Modules%
+        RouterModule.forRoot(Routes())
+    ],
+    providers: [
+        { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) },
+        { provide: IServerConfig, useValue: ServerConfig.Instance },
+    ]
+})
+export class %Code%Module extends BaseModule {
+	
+}
+
+%Registrations%
