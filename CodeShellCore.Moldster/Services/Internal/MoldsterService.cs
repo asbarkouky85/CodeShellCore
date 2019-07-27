@@ -59,9 +59,6 @@ namespace CodeShellCore.Moldster.Services.Internal
 
             Console.WriteLine("----------------------------");
             string moduleName = mod;
-
-            
-
             string[] pages = _data.GetDomainPages(mod, domain);
 
             foreach (var e in pages)

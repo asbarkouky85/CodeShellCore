@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using CodeShellCore.Security;
 using Asga.Common.Services;
 using Asga.Data;
-
+using Asga.Common.Data;
 
 namespace Asga.Auth.Data
 {

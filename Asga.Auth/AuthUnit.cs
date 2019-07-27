@@ -3,6 +3,7 @@ using CodeShellCore.Security;
 using Asga.Auth.Data;
 using Asga.Data;
 using Asga.Security;
+using Asga.Common.Data;
 
 namespace Asga.Auth
 {

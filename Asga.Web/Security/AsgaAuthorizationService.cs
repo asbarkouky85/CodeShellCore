@@ -1,4 +1,5 @@
-﻿using Asga.Security;
+﻿using Asga.Auth;
+using Asga.Security;
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
@@ -7,7 +8,7 @@ using CodeShellCore.Security.Sessions;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Asga.Auth.Security
+namespace Asga.Web.Security
 {
     public class AsgaAuthorizationService : AccessControlAuthorizationService, IAccessControlAuthorizationService
     {

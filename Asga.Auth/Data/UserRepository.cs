@@ -11,6 +11,7 @@ using Asga.Auth.Data;
 using Asga.Data;
 using Asga.Common.Services;
 using Asga.Common;
+using Asga.Common.Data;
 
 namespace Asga.Auth.Data
 {
@@ -26,7 +27,7 @@ namespace Asga.Auth.Data
         {
             q = q ?? Loader;
             long ten = _tenant.TenantId;
-            string code = AsgaShell.GetTenantCode(ten);
+            string code = "";
             string servic = "";
             return q.Select(d => new UserDTO
             {

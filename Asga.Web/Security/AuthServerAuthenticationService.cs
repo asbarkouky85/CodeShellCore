@@ -17,8 +17,9 @@ using CodeShellCore.MQ;
 using Asga.Auth.Dto;
 using CodeShellCore.Security.Sessions;
 using Asga.Auth.Services;
+using Asga.Auth;
 
-namespace Asga.Auth.Security
+namespace Asga.Web.Security
 {
     public class AuthServerAuthenticationService : RoleBasedTokenAuthenticationService
     {
@@ -95,7 +96,7 @@ namespace Asga.Auth.Security
 
         private void Publish(UserCacheDTO obj)
         {
-            Transporter.Publish(obj);
+            //Transporter.Publish(obj);
         }
     }
 }

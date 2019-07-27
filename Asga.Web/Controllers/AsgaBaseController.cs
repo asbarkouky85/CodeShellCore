@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Asga.Controllers
+namespace Asga.Web.Controllers
 {
     public class AsgaBaseController : BaseApiController
     {

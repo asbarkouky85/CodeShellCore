@@ -6,7 +6,7 @@ using System.Text;
 using Asga.Common;
 using CodeShellCore;
 
-namespace Asga.Data
+namespace Asga.Common.Data
 {
 
     public class AsgaTenantUnit<T> : AsgaUnitBase<T> where T : AsgaTenantContext

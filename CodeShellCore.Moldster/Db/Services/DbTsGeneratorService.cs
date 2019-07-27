@@ -20,14 +20,6 @@ namespace CodeShellCore.Moldster.Db.Services
     public class DbTsGeneratorService : ScriptGenerationService, IScriptGenerationService
     {
 
-        static Dictionary<string, string> baseComponents = new Dictionary<string, string>
-        {
-            { "Edit","CodeShell/BaseComponents/EditComponentBase"},
-            { "List","CodeShell/BaseComponents/ListComponentBase"},
-            { "Tree","CodeShell/BaseComponents/TreeComponentBase"},
-            { "Select","CodeShell/BaseComponents/SelectComponentBase"},
-        };
-
         IConfigUnit _unit;
         PageControlsService _controls;
         public DbTsGeneratorService(
@@ -155,28 +147,31 @@ namespace CodeShellCore.Moldster.Db.Services
             if (p.Category.BaseComponent != null)
             {
                 serviced = p.Resource != null;
+                string[] baseComponents = new[] { "Edit", "List", "Select" };
 
-                if (!baseComponents.TryGetValue(p.Category.BaseComponent, out string parent))
+                if (p.Category.BaseComponent == "Tree")
                 {
-                    parent = p.Category.BaseComponent;
+                    mod.Parent = "TreeComponentBase";
+                    mod.ParentPath = "codeshell/recursion";
                 }
-                else if (p.Resource == null)
+                else if (baseComponents.Contains(p.Category.BaseComponent))
                 {
-                    mod.Resource = "DefaultHttp";
-                    mod.ServicePath = "CodeShell/Http";
+                    mod.Parent = p.Category.BaseComponent + "BaseComponent";
+                    mod.ParentPath = "codeshell/baseComponents";
+                }
+                else
+                {
+                    mod.Parent = p.Category.BaseComponent.GetAfterLast("/");
+                    mod.ParentPath = p.Category.BaseComponent;
                 }
 
                 if (p.Resource != null)
-                    mod.ServicePath = $"{_paths.CoreAppName}/{p.Domain}/Http";
-
-                mod.ParentPath = parent;
+                    mod.ServicePath = $"{_paths.CoreAppName}/Http";
             }
             else
             {
-                mod.ParentPath = "CodeShell/BaseComponents/BaseComponent";
+                mod.ParentPath = "CodeShell/BaseComponents";
             }
-
-            mod.Parent = mod.ParentPath.GetAfterLast("/");
 
             string baseComponentTemplatePath = _molds.GetBaseComponentMold(serviced);
 

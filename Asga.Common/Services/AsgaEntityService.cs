@@ -11,11 +11,11 @@ using System.Collections.Generic;
 
 namespace Asga.Services
 {
-    public class AsgaEntityHandler<T> : CollectionsEntityService<T>, IEntityHandler<T> where T : class, IAsgaModel
+    public class AsgaEntityService<T> : CollectionsEntityService<T>, IEntityHandler<T> where T : class, IAsgaModel
     {
-        protected IAsgaRepository<T> AsgaRepository { get { return Repository as IAsgaRepository<T>; } }
+        protected IRepository<T> AsgaRepository { get { return Repository as IRepository<T>; } }
 
-        public AsgaEntityHandler(ICollectionUnitOfWork unit) : base(unit) { }
+        public AsgaEntityService(ICollectionUnitOfWork unit) : base(unit) { }
         
         public virtual SubmitResult SaveChanges(IEnumerable<T> lst)
         {

@@ -11,7 +11,7 @@ using CodeShellCore.Data.Services;
 using Asga.Services;
 
 
-namespace Asga.Controllers
+namespace Asga.Web.Controllers
 {
     public abstract class AsgaEntityController<T> : EntityController<T, long> , ILocalizableEntityController
         where T : class, IAsgaModel
@@ -33,10 +33,10 @@ namespace Asga.Controllers
 
         public virtual IActionResult GetCollection(string id, [FromQuery]LoadOptions opts)
         {
-            if (!(EntityService is AsgaEntityHandler<T>))
+            if (!(EntityService is AsgaEntityService<T>))
                 throw new Exception("Unsupported function GetCollection, Service should inherit from AsgaEntityService");
 
-            var res = ((AsgaEntityHandler<T>)EntityService).LoadCollection(id, opts);
+            var res = ((AsgaEntityService<T>)EntityService).LoadCollection(id, opts);
             return Respond(res);
         }
 

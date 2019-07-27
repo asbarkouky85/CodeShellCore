@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Sessions;
+using Asga.Security;
 
-namespace Asga.Security
+namespace Asga.Web.Security
 {
     public class MicroServiceAuthorizationService : AccessControlAuthorizationService, IAccessControlAuthorizationService
     {

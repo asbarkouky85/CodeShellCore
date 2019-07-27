@@ -1,20 +1,14 @@
 ﻿using System;
-using CodeShellCore;
 using CodeShellCore.Data;
-using CodeShellCore.Data.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using CodeShellCore.MQ.Events;
-using CodeShellCore.MQ;
-using CodeShellCore.DependencyInjection;
 using CodeShellCore.Helpers;
 using CodeShellCore.Security;
 using Asga.Security;
 using CodeShellCore.Data.ConfiguredCollections;
-using Asga.Common.Data;
 
-namespace Asga.Data
+namespace Asga.Common.Data
 {
-    public class AsgaUnitBase<T> : CollectionEFUnit<T>, IAsgaUnit where T : DbContext
+    public class AsgaUnitBase<T> : CollectionEFUnit<T> where T : DbContext
     {
         public override Action<ChangeLists> OnBeforeSave { get { return beforeSave; } }
         //public override Action<ChangeLists> OnSaveSuccess { get { return afterSave; } }
@@ -95,10 +89,6 @@ namespace Asga.Data
 
         }
 
-        public IAsgaRepository<T1> GetAsgaRepositoryFor<T1>() where T1 : class, IAsgaModel
-        {
-            return (IAsgaRepository<T1>)GetRepositoryFor<T1>();
-        }
     }
 
 }

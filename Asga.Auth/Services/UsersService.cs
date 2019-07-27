@@ -15,7 +15,7 @@ using System.Net;
 
 namespace Asga.Auth.Services
 {
-    public class UsersService : AsgaEntityHandler<User>
+    public class UsersService : AsgaEntityService<User>
     {
         private AuthUnit Unit;
         //private AsgaEmailService AsgaEmailService;

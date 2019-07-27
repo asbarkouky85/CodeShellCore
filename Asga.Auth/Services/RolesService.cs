@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Asga.Auth.Services
 {
-    public class RolesService : AsgaEntityHandler<Role>
+    public class RolesService : AsgaEntityService<Role>
     {
         private readonly CurrentTenant _currentTenant;
 

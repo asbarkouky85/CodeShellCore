@@ -1,4 +1,5 @@
-﻿using Asga.Common.Services;
+﻿using Asga.Common.Data;
+using Asga.Common.Services;
 using Asga.Data;
 
 namespace Asga.Auth.Data

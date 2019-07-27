@@ -52,9 +52,10 @@ namespace CodeShellCore.Moldster.Services.Internal
 
             string serviceName = resource + "Service";
             string servicePath = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Http\\" + serviceName + ".ts");
-            Utils.CreateFolderForFile(servicePath);
+            
             if (!File.Exists(servicePath))
             {
+                Utils.CreateFolderForFile(servicePath);
                 string serviceTemplate = _molds.ServiceMold;
                 string service = _writer.FillStringParameters(serviceTemplate, new ServiceTsModel { Resource = resource });
                 File.WriteAllText(servicePath, service);

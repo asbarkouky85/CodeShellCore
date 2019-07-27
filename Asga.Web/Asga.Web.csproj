@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
+    <ProjectReference Include="..\Asga.Common\Asga.Common.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+  </ItemGroup>
+
+</Project>

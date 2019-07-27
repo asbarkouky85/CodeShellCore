@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-namespace Asga.Data
+namespace Asga.Common.Data
 {
-    public class AsgaRepository<T, TContext> : CollectionRepository<T, TContext>, IAsgaRepository<T> where T : class, IModel<long> where TContext : DbContext
+    public class AsgaRepository<T, TContext> : CollectionRepository<T, TContext>, INameableRepository<T> where T : class, IModel<long> where TContext : DbContext
     {
         public AsgaRepository(TContext con, AsgaCollectionService service) : base(con, service)
         {

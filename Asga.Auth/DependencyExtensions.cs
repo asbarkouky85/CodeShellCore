@@ -9,7 +9,6 @@ using Asga.Common.Services;
 using Asga.Common.Data;
 using Asga.Security;
 using CodeShellCore.Security.Authentication;
-using CodeShellCore.Web.Security;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Security.Authorization;
 
@@ -21,13 +20,12 @@ namespace Asga.Auth
         {
             if (asDefaultModule)
             {
-                coll.AddUnitOfWork<AuthUnit, IAsgaUnit>();
+                coll.AddUnitOfWork<AuthUnit>();
                 coll.AddContext<AuthContext>();
             }
             else
             {
                 coll.AddScoped<AuthUnit>();
-                coll.AddScoped<IAsgaUnit, AuthUnit>();
                 coll.AddScoped<AuthContext>();
             }
             coll.AddCollectionUnitOfWork<AuthUnit>();
@@ -47,13 +45,9 @@ namespace Asga.Auth
             coll.AddTransient<WriterService>();
             coll.AddTransient<AuthLookupService>();
             coll.AddScoped<CurrentTenant>();
-            coll.AddTransient<IAuthenticationService, TokenAuthenticationService>();
-            coll.AddSingleton<ISessionManager, TokenSessionManager>();
             coll.AddTransient<AuthorizationService>();
             coll.AddHandlerFor<Role, RolesService>();
             coll.AddHandlerFor<User, UsersService>();
-            
-
         }
 
 

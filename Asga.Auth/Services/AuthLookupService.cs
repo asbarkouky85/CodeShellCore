@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using CodeShellCore.Security;
+using CodeShellCore.Data.Services;
 
 namespace Asga.Auth.Services
 {

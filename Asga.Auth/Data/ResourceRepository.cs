@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Asga.Common.Data;
 
 namespace Asga.Auth.Data
 {
@@ -25,7 +26,7 @@ namespace Asga.Auth.Data
                    where e.Role.UserRoles.Select(d => d.UserId).Contains(id)
                    select new ResourceV
                    {
-                       Id = e.Resource.Domain.Name + "__" + e.Resource.Name,
+                       Id = e.Resource.Name,
                        CanInsert = e.CanInsert,
                        CanDelete = e.CanDelete,
                        CanUpdate = e.CanUpdate,
