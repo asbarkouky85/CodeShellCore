@@ -39,10 +39,10 @@ import { ServerConfig } from "./ServerConfig";
         TranslateModule
     ]
 })
-export class ExampleProjectModule {
+export class %Name%Module {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: ExampleProjectModule,
+            ngModule: %Name%Module,
             providers: [
                 AuthFilter,
                 { provide: ServerConfigBase, useValue: ServerConfig.Instance },

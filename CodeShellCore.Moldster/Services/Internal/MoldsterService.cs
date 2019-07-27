@@ -44,6 +44,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             _ts.GenerateRoutes(modCode, lazy);
             _ts.GenerateModuleDefinition(modCode, lazy);
             _ts.GenerateBootFile(modCode);
+            
             _loc.GenerateJsonFiles(modCode);
 
         }
@@ -170,6 +171,11 @@ namespace CodeShellCore.Moldster.Services.Internal
             GotoColumn(resultCol);
             WriteSuccess();
             Console.WriteLine();
+        }
+
+        public void Init()
+        {
+            _ts.GenerateEnvironment();
         }
     }
 }

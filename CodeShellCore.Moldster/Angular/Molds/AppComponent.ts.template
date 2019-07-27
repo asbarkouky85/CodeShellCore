@@ -1,8 +1,7 @@
 ﻿import { Component, Injector, ViewChild, trigger, state, style, transition, animate } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Shell } from 'CodeShell/Shell';
-import { IServerConfig } from 'CodeShell/IServerConfig';
+import { ServerConfigBase,Shell } from 'codeshell/core';
 import { %BaseComponentName% } from '%BaseComponentPath%';
 
 @Component({

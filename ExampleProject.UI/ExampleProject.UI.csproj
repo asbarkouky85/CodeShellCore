@@ -14,11 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Core\CodeShell\**" />
     <Compile Remove="Logs\**" />
-    <Content Remove="Core\CodeShell\**" />
-    <EmbeddedResource Remove="Core\CodeShell\**" />
-    <None Remove="Core\CodeShell\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
