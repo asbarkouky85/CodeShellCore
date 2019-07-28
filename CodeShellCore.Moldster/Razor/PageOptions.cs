@@ -14,7 +14,7 @@ namespace CodeShellCore.Moldster.Razor
         public string PageIdentifier { get; set; }
         public Dictionary<string, ControlDTO> Controls { get; set; }
         public IEnumerable<string> RepeatedIds { get; set; }
-        public List<CodeShellCore.Web.Lister> Sources { get; set; }
+        public List<Lister> Sources { get; set; }
         public string ViewParamsString { get; set; }
         public string Layout { get; set; }
         public int DefaultAccessibility { get; set; }
@@ -33,7 +33,7 @@ namespace CodeShellCore.Moldster.Razor
         }
         public PageOptions()
         {
-            Sources = new List<CodeShellCore.Web.Lister>();
+            Sources = new List<Lister>();
             Controls = new Dictionary<string, ControlDTO>();
         }
         public string SourcesString
@@ -43,7 +43,7 @@ namespace CodeShellCore.Moldster.Razor
                 Dictionary<string, string> items = new Dictionary<string, string>();
                 if (Sources.Count == 0)
                     return null;
-                foreach (CodeShellCore.Web.Lister l in Sources)
+                foreach (Lister l in Sources)
                     items[l.ListName] = l.CollecionName;
                 return items.ToJson();
             }

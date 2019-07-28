@@ -1,12 +1,15 @@
 @echo off
 
-VersionSetter -p CodeShellCore 1.8.0.0
-VersionSetter -p CodeShellCore.Web 1.8.0.0
-VersionSetter -p CodeShellCore.Caching 1.8.0.0
-VersionSetter -p CodeShellCore.Reporting 1.8.0.0
-VersionSetter -p CodeShellCore.MQ 1.8.0.0
-VersionSetter -p Asga 1.8.0.0
-VersionSetter -p Asga.Common 1.8.0.0
-VersionSetter -p Asga.Auth 1.8.0.0
+VersionSetter -p CodeShellCore 2.0.0
+VersionSetter -p CodeShellCore.Web 2.0.0.0
+VersionSetter -p CodeShellCore.Caching 2.0.0.0
+VersionSetter -p CodeShellCore.Reporting 2.0.0.0
+VersionSetter -p CodeShellCore.MQ 2.0.0.0
+VersionSetter -p CodeShellCore.Moldster 2.0.0.0
+VersionSetter -p CodeShellCore.Web.Razor 2.0.0.0
+VersionSetter -p Asga 2.0.0.0
+VersionSetter -p Asga.Common 2.0.0.0
+VersionSetter -p Asga.Auth 2.0.0.0
+VersionSetter -p Asga.Web 2.0.0.0
 
 PAUSE

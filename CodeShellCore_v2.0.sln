@@ -47,7 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Batch", "00 Batch", "{3E
 		Batch\commander.bat = Batch\commander.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asga.Web", "Asga.Web\Asga.Web.csproj", "{7DB40C6E-58D7-47A8-A18B-C348F5C920EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Web", "Asga.Web\Asga.Web.csproj", "{7DB40C6E-58D7-47A8-A18B-C348F5C920EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

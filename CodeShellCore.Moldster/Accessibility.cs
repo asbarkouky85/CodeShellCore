@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Web
+namespace CodeShellCore.Moldster
 {
     public class Accessibility
     {
