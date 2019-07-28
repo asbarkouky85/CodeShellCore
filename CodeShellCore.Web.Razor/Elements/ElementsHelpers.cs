@@ -28,7 +28,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string groupClasses = "") where T : class
         {
             var elem = Provider.TextAreaGroup(helper, exp, coll, size, alternateLabel, placeHolder, attrs, localizable, inputAttr, inputClasses, groupClasses);
-            return elem.Write(InputControls.Textarea);
+            return elem.Write(InputControls.Textarea,localizable);
         }
 
 
@@ -61,7 +61,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string groupClasses = "")
         {
             var elem = Provider.TextBoxGroup(helper, exp, textType, coll, size, alternateLabel, placeHolder, localizable, attrs, inputAttr, inputClasses, groupClasses);
-            return elem.Write(InputControls.TextBox);
+            return elem.Write(InputControls.TextBox,localizable);
         }
 
 
