@@ -11,7 +11,6 @@ using Asga.Auth.Data;
 using Asga.Data;
 using Asga.Common.Services;
 using Asga.Common;
-using Asga.Common.Data;
 
 namespace Asga.Auth.Data
 {
@@ -23,11 +22,11 @@ namespace Asga.Auth.Data
             _tenant = tenant;
         }
 
-        public IQueryable<UserDTO> QueryUserDTO(IQueryable<User> q = null)
+        internal protected virtual IQueryable<UserDTO> QueryUserDTO(IQueryable<User> q = null)
         {
             q = q ?? Loader;
             long ten = _tenant.TenantId;
-            string code = "";
+            string code = AsgaShell.GetTenantCode(ten);
             string servic = "";
             return q.Select(d => new UserDTO
             {
@@ -45,13 +44,13 @@ namespace Asga.Auth.Data
             });
         }
 
-        public IUser GetByCredentials(string name, string password)
+        public virtual IUser GetByCredentials(string name, string password)
         {
             string pass = password.ToMD5();
             return QueryUserDTO(Loader.Where(d => d.LogonName == name && d.Password == pass)).FirstOrDefault();
         }
 
-        public IUser GetByUserId(object c)
+        public virtual IUser GetByUserId(object c)
         {
             long id = 0;
             if (c is string)
@@ -62,19 +61,19 @@ namespace Asga.Auth.Data
             return Loader.Where(d => d.Id == id).Select(UserDTO.FromAuthUser).FirstOrDefault();
         }
 
-        public IUser GetByName(string userName)
+        public virtual IUser GetByName(string userName)
         {
             return Loader.Where(d => d.LogonName == userName && (!d.IsDeleted)).Select(UserDTO.FromAuthUser).FirstOrDefault();
         }
 
-        public RegisterResult AddUser(IRegisterModel model)
+        public virtual RegisterResult AddUser(IRegisterModel model)
         {
             model.Password = model.Password.ToMD5();
             Saver.Add((User)model);
             return new RegisterResult { Success = true };
         }
 
-        public bool NameExists(string logonName)
+        public virtual bool NameExists(string logonName)
         {
             return Loader.Any(d => d.LogonName == logonName);
         }

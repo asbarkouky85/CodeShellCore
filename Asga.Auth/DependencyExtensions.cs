@@ -11,6 +11,7 @@ using Asga.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Security.Authorization;
+using CodeShellCore.Security;
 
 namespace Asga.Auth
 {
@@ -31,6 +32,10 @@ namespace Asga.Auth
             coll.AddCollectionUnitOfWork<AuthUnit>();
             coll.AddTransient<ISecurityUnit, AuthUnit>();
             coll.AddTransient<IRoleBasedSecurityUnit, AuthUnit>();
+
+            coll.AddTransient<IUserRepository, UserRepository>();
+            coll.AddTransient<IRoleRepository, RoleRepository>();
+            coll.AddTransient<IResourceRepository, ResourceRepository>();
 
             coll.AddTransient<AsgaCollectionService>();
             coll.AddRepositoryFor<Domain, DomainRepository>();
