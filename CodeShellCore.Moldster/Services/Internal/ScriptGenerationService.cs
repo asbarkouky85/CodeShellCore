@@ -52,10 +52,9 @@ namespace CodeShellCore.Moldster.Services.Internal
 
             string serviceName = resource + "Service";
             string servicePath = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Http\\" + serviceName + ".ts");
-            
+            Utils.CreateFolderForFile(servicePath);
             if (!File.Exists(servicePath))
             {
-                Utils.CreateFolderForFile(servicePath);
                 string serviceTemplate = _molds.ServiceMold;
                 string service = _writer.FillStringParameters(serviceTemplate, new ServiceTsModel { Resource = resource });
                 File.WriteAllText(servicePath, service);
@@ -248,59 +247,5 @@ namespace CodeShellCore.Moldster.Services.Internal
         public abstract void GenerateDomainModule(string moduleCode, string dom, bool lazy = true);
 
         public abstract void GenerateRoutes(string module, bool lazy);
-
-        public void GenerateEnvironment()
-        {
-            string path = Path.Combine(_paths.UIRoot, "declarations.d.ts");
-
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("Adding file [declarations.d.ts]");
-                File.WriteAllText(path, Properties.Resources.declarations_d);
-            }
-
-            path = Path.Combine(_paths.UIRoot, "package.json");
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("Adding file [package.json]");
-                File.WriteAllText(path, Properties.Resources.package_json);
-            }
-
-            path = Path.Combine(_paths.UIRoot, "tsconfig.json");
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("Adding file [tsconfig.json]");
-                File.WriteAllText(path, Properties.Resources.tsconfig_json);
-            }
-
-            path = Path.Combine(_paths.UIRoot, "WebPackSharedConfig.js");
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("Adding file [WebPackSharedConfig.js]");
-                File.WriteAllText(path, Properties.Resources.WebPackSharedConfig_js);
-            }
-
-            path = Path.Combine(_paths.UIRoot, "webpack.config.vendor.js");
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("Adding file [webpack.config.vendor.js]");
-                File.WriteAllText(path, Properties.Resources.webpack_config_vendor_js);
-            }
-            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "ServerConfig.ts");
-            Utils.CreateFolderForFile(path);
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("Adding file [ServerConfig.ts]");
-                File.WriteAllText(path, Properties.Resources.ServerConfig_ts);
-            }
-            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, _paths.CoreAppName + "BaseModule.ts");
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("Adding file [" + _paths.CoreAppName + "BaseModule.ts]");
-                string content = _writer.FillStringParameters(_molds.BaseModuleMold, new DomainTsModel { Name = _paths.CoreAppName });
-                File.WriteAllText(path, content);
-            }
-
-        }
     }
 }

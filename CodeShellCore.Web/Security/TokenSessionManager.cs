@@ -1,31 +1,30 @@
 ﻿using System;
-using CodeShellCore.DependencyInjection;
-using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
+using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Text;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace CodeShellCore.Web.Security
 {
     public class TokenSessionManager : WebSessionManagerBase, ISessionManager
     {
         public TimeSpan DefaultSessionTime { get { return new TimeSpan(24, 0, 0); } }
-
-        public TokenSessionManager()
+        
+        public TokenSessionManager(IUserDataService cache, IHttpContextAccessor context) : base(cache, context)
         {
         }
 
         public virtual string GetTokenFromHeader()
         {
-            if (Accessor.HttpContext == null)
+            if (_accessor.HttpContext == null)
                 return null;
-            return Accessor.HttpContext.GetHeader("auth-token");
+            return _accessor.HttpContext.GetHeader("auth-token");
         }
 
         protected virtual string GetJWTDataFromHeader()
         {
-            Accessor.HttpContext.User = null;
+            _accessor.HttpContext.User = null;
             string head = GetTokenFromHeader();
 
             if (head != null)
@@ -47,8 +46,8 @@ namespace CodeShellCore.Web.Security
                 if (data != null)
                 {
                     JWTData jwt = data.FromJson<JWTData>();
-
-                    if (jwt != null && jwt.IsValid(Accessor.HttpContext.Request.GetHostUrl()))
+                    var h = _accessor.HttpContext.Request.GetHostUrl();
+                    if (jwt != null && jwt.IsValid(h))
                     {
                         SetIdentity(jwt.UserId);
                     }
@@ -64,10 +63,10 @@ namespace CodeShellCore.Web.Security
             {
                 JWTData jwt = data.FromJson<JWTData>();
 
-                if (jwt != null && jwt.IsValid(Accessor.HttpContext.Request.GetHostUrl()))
+                if (jwt != null && jwt.IsValid(_accessor.HttpContext.Request?.GetHostUrl()))
                 {
                     SetIdentity(jwt.UserId);
-                    
+
                 }
             }
         }
@@ -75,9 +74,9 @@ namespace CodeShellCore.Web.Security
         public override object GetCurrentUserId()
         {
             long id;
-            if (Accessor.HttpContext == null)
+            if (_accessor.HttpContext == null)
                 return 0;
-            if (Accessor.HttpContext.User != null && long.TryParse(Accessor.HttpContext.User.Identity.Name, out id))
+            if (_accessor.HttpContext.User != null && long.TryParse(_accessor.HttpContext.User.Identity.Name, out id))
                 return id;
 
             return 0;
@@ -107,16 +106,11 @@ namespace CodeShellCore.Web.Security
             return null;
         }
 
-        public virtual void StartSession(IUser user, TimeSpan? length = null)
-        {
-            UsersCache[user.UserId] = user;
-        }
-
         public void EndSession()
         {
             ClearUserCache(GetCurrentUserId());
         }
 
-       
+
     }
 }

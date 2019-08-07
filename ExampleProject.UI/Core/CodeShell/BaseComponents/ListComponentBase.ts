@@ -1,0 +1,181 @@
+﻿import { BaseComponent } from "./BaseComponent";
+import { DataHttpService } from "CodeShell/Http";
+import { IModel, LoadOptions, DeleteResult, PropertyFilter, LoadResult } from "CodeShell/Helpers";
+import { Shell } from "CodeShell/Shell";
+
+export abstract class ListComponentBase extends BaseComponent {
+
+    filter: { [key: string]: PropertyFilter } = {};
+    protected abstract get Service(): DataHttpService;
+
+    list: any[] = [];
+    totalCount: number = 0;
+    pageIndex: number = 0;
+    options: LoadOptions = { Showing: 10, Skip: 0 };
+
+    Loader?: (opts: LoadOptions) => Promise<LoadResult>;
+
+    get CollectionId(): string | null { return null; }
+
+    ngOnInit(): void {
+        
+        let opts = this.GetLookupOptions();
+        if (opts != null) {
+            this.LoadLookupsAsync(opts).then(l => {
+                this.Lookups = l;
+                this.Start();
+            });
+        } else {
+            this.Start();
+
+        }
+    }
+
+    protected LoadLookupsAsync(opts: any): Promise<any> {
+   
+        return this.Service.Get("GetListLookups", opts);
+    }
+
+    Start() {
+        if (!this.IsEmbedded)
+            this.LoadData();
+        
+        this.OnReady();
+    }
+    protected OnReady(): void {
+        (window as Window).scrollTo(0, 0);
+    }
+
+    PageSelected(n: number) {
+        this.options.Skip = this.options.Showing * n;
+        this.LoadData();
+    }
+
+    protected Delete(item: any, idExpression: string) {
+
+        if (this.Debug)
+            console.log("Deleting", item)
+        Shell.Main.ShowDeleteConfirm(e => {
+            return this.AttemptDelete(item, idExpression);
+        });
+    }
+
+    protected async AttemptDelete(item: any, idExpression: string): Promise<DeleteResult> {
+        let id = item.id;
+        if (id == undefined) {
+            id = item.entity.id;
+            if (id == undefined)
+                id = idExpression;
+        }
+
+        var s = await this.Service.AttemptDelete(id);
+
+        if (s.canDelete) {
+            this.LoadData();
+            s.message = "delete_success";
+        }
+
+        return s;
+    }
+
+    protected LoadDataPromise(): Promise<LoadResult> {
+        if (this.Loader)
+            return this.Loader(this.options);
+
+        if (this.CollectionId == null) {
+            return this.Service.GetPaged("Get", this.options);
+        } else {
+            return this.Service.GetPaged("GetCollection/" + this.CollectionId, this.options);
+        }
+    }
+
+    Clear(id?: number) {
+        this.totalCount = 0;
+        this.list = [];
+    }
+
+    LoadData() {
+       
+     
+    
+        this.options.Filters = this.stringifyFilters();
+     
+        let prom = this.LoadDataPromise();
+        prom.then(e => {
+
+
+            if (this.Debug)
+                this.Log(e);
+            this.list = e.list;
+            this.totalCount = e.totalCount;
+        });
+    }
+    stringifyFilters():string
+    {
+        let filters: PropertyFilter[] = [];
+        for (var i in this.filter) {
+
+            if (this.filter[i].Value1 != undefined || this.filter[i].Value2 != undefined || this.filter[i].Ids.length > 0)
+                filters.push(this.filter[i]);
+        }
+        return JSON.stringify(filters);
+    }
+
+    ClearFilter(item: PropertyFilter) {
+        item.Value1 = undefined;
+        item.Value2 = undefined;
+        item.Ids = [];
+        this.ResetPagination();
+        this.LoadData();
+    }
+
+    SelectIdSingle(f: PropertyFilter, val: any) {
+        if (val == 0) {
+            f.Value1 = undefined;
+            f.Value2 = undefined;
+            f.Ids = [];
+        } else {
+            f.Ids = [val];
+        }
+        this.LoadData();
+    }
+
+    ToggleIdSingle(f: PropertyFilter, val: any) {
+        let s = f.Ids.indexOf(val);
+        if (s > -1)
+            f.Ids.splice(s, 1);
+        else {
+            f.Ids = [val];
+            f.Value1 = val;
+        }
+
+        this.LoadData();
+    }
+
+    ToggleId(f: PropertyFilter, id: number) {
+  
+        let s = f.Ids.indexOf(id);
+        if (s > -1)
+            f.Ids.splice(s, 1);
+        else {
+            f.Ids.push(id);
+        }
+        this.ResetPagination();
+        this.LoadData();
+    }
+
+    IsSelected(f: PropertyFilter, id: number): boolean {
+        return f.Ids.indexOf(id) > -1;
+    }
+
+    ResetPagination() {
+        this.options.Skip = 0;
+        this.pageIndex = 0;
+    }
+
+    HeaderSearch(term: string) {
+        this.options.SearchTerm = term;
+        this.ResetPagination();
+        this.LoadData();
+    }
+}

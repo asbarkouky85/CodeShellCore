@@ -23,20 +23,12 @@ namespace Asga.Web.Security
             User = acc.User as UserDTO;
         }
 
-        public override ISessionManager SessionManager { get { return _manager; } }
-
         protected override bool IsAuthorized(AuthorizationRequest<AuthorizationFilterContext> req)
         {
-            var user = req.Context.HttpContext.RequestServices.GetCurrentUser() as UserDTO;
-            if (user == null)
-                return false;
-            //used to check if user is activated or not
-            var userStatus = _unit.AuthUserRepository.GetValue(user.Id, x => x.IsDeleted);
-            if (userStatus)
-                return false;
-            if (user.Permissions.TryGetValue(req.Resource + "__" + req.Resource, out Permission perm))
+            
+            if (User.Permissions.TryGetValue(req.Resource, out Permission perm))
             {
-                var permissions = perm as AsgaPermission;
+                var permissions = perm as AccessibilityPermissions;
                 switch (req.Action)
                 {
                     case "CanViewDetails":

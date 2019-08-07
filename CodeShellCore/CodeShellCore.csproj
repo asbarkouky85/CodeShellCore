@@ -9,9 +9,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <FileVersion>2.0.0.0</FileVersion>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <Version>2.0.0.0</Version>
+    <FileVersion>2.0.1.0</FileVersion>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <Version>2.0.1.0</Version>
     <AssemblyName>CodeShellCore</AssemblyName>
     <RootNamespace>CodeShellCore</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -41,10 +41,6 @@
     <Reference Include="System.Data.SqlClient">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\system.data.sqlclient\4.5.1\ref\netstandard2.0\System.Data.SqlClient.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Web\" />
   </ItemGroup>
 
 </Project>

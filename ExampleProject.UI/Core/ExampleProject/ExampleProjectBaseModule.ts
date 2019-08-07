@@ -1,51 +1,41 @@
-﻿import { NgModule } from "@angular/core";
+﻿import { ModuleWithProviders } from "@angular/compiler/src/core";
+import { NgModule } from "@angular/core";
+import { CodeShellModule } from "CodeShell/CodeShellModule";
 import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ModuleWithProviders } from "@angular/compiler/src/core";
-
 import { ToastrModule } from "ngx-toastr";
 import { TranslateModule } from "@ngx-translate/core";
-
-import { CodeShellModule } from "codeshell";
-import { CodeShellLocalizationModule } from "codeshell/localization";
-import { CodeShellDatesModule } from "codeshell/dates";
-import { CodeShellRecursionModule } from "codeshell/recursion";
-
-import { AuthFilter } from "codeshell/security";
-import { ServerConfigBase } from "codeshell/core";
-import { ServerConfig } from "./ServerConfig";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { Login } from "./Main/Login";
+import { AuthFilter } from "CodeShell/Security/AuthFilter";
+import { topBar } from "./Main/topBar";
+import { navigationSideBar } from "./Main/navigationSideBar";
 
 @NgModule({
-    declarations: [],
+    declarations: [Login, topBar, navigationSideBar],
 
     imports: [
         CodeShellModule,
-        CodeShellLocalizationModule,
-        CodeShellDatesModule,
-        CodeShellRecursionModule,
-
         BrowserModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot()
     ],
     exports: [
         CodeShellModule,
-        CodeShellLocalizationModule,
-        CodeShellDatesModule,
-        CodeShellRecursionModule,
         BrowserModule,
         BrowserAnimationsModule,
         ToastrModule,
-        TranslateModule
+        TranslateModule,
+        Login,
+        topBar,
+        navigationSideBar
     ]
 })
-export class ExampleProjectModule {
+export class ExampleProjectBaseModule {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: ExampleProjectModule,
+            ngModule: ExampleProjectBaseModule,
             providers: [
                 AuthFilter,
-                { provide: ServerConfigBase, useValue: ServerConfig.Instance },
             ]
         }
     }

@@ -36,7 +36,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             BootMold= Encoding.UTF8.GetString(Properties.Resources.Boot_ts);
             MainComponentMold= Encoding.UTF8.GetString(Properties.Resources.AppComponent_ts);
             BasicComponent = Encoding.UTF8.GetString(Properties.Resources.BasicComponent_ts);
-            BaseModuleMold = Encoding.UTF8.GetString(Properties.Resources.BaseModule_ts);
+            LookupComponent = Encoding.UTF8.GetString(Properties.Resources.LookupComponent_ts);
         }
 
         public string BootMold { get; private set; }
@@ -67,8 +67,6 @@ namespace CodeShellCore.Moldster.Services.Internal
         public string BasicComponent { get; private set; }
 
         public string LookupComponent { get; private set; }
-
-        public string BaseModuleMold { get; private set; }
 
         public string GetBaseComponentMold(bool serviced)
         {

@@ -34,7 +34,7 @@ namespace CodeShellCore.Cli
         {
             var conf = new ConfigurationBuilder();
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
+            
             conf.AddJsonFile($"appsettings.json", false, true);
             conf.AddJsonFile($"appsettings.{environmentName}.json", true, true);
             if (environmentName != null)

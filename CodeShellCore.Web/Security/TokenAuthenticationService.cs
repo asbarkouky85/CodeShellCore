@@ -1,16 +1,12 @@
-﻿using CodeShellCore.Security.Cryptography;
-using CodeShellCore.Data;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+using System;
 
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Text;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CodeShellCore.Helpers;
 using CodeShellCore.Security.Sessions;
+using CodeShellCore.Security;
 
 namespace CodeShellCore.Web.Security
 {
@@ -29,6 +25,7 @@ namespace CodeShellCore.Web.Security
             defaultProvider = Shell.GetConfigAs<string>("Security:TokenProvider", false);
             _sessionManager = sessionManager;
         }
+
         public override LoginResult Login(string name, string password)
         {
             LoginResult res = base.Login(name, password);
@@ -36,7 +33,6 @@ namespace CodeShellCore.Web.Security
             {
                 SetToken(res);
             }
-
             return res;
 
         }
@@ -54,7 +50,7 @@ namespace CodeShellCore.Web.Security
         protected virtual JWTData MakeJWT(LoginResult res)
         {
             TimeSpan time = new TimeSpan(1, 0, 0, 0);
-            return new JWTData
+            var jwt= new JWTData
             {
                 Name = res.UserData.Name,
                 UserId = res.UserData.UserId,
@@ -64,6 +60,9 @@ namespace CodeShellCore.Web.Security
                 DeviceId = _sessionManager.GetDeviceIdIfWeb(),
                 TokenId = Utils.RandomAlphabet(6, 2)
             };
+            if (res.UserData is IAuthorizableUser)
+                jwt.Roles = ((IAuthorizableUser)res.UserData).Roles;
+            return jwt;
         }
 
         protected void SetToken(LoginResult res)

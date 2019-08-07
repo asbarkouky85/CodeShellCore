@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Security.Authorization;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace CodeShellCore.Security
     public interface IAuthorizableUser : IUser
     {
         Dictionary<string, Permission> Permissions { get; set; }
+        IEnumerable Roles { get; set; }
     }
 }

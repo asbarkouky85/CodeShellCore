@@ -19,6 +19,5 @@ namespace CodeShellCore.Moldster.Services
         void GenerateEnums();
         string MapEntity<T>();
         string MapEnum<T>();
-        void GenerateEnvironment();
     }
 }

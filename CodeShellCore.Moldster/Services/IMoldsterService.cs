@@ -6,7 +6,6 @@ namespace CodeShellCore.Moldster.Services
 {
     public interface IMoldsterService : IServiceBase
     {
-        void Init();
         void RenderDomainModule(string mod, string domain, bool lazy);
         void RenderModuleDefinition(string mod, bool lazy);
         void RenderGuid(string module);

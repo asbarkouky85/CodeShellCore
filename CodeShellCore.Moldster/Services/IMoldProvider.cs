@@ -23,6 +23,5 @@ namespace CodeShellCore.Moldster.Services
         string ModuleTsConfigMold { get; }
         string BasicComponent { get; }
         string LookupComponent { get; }
-        string BaseModuleMold { get; }
     }
 }

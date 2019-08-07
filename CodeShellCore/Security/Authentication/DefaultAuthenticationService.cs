@@ -12,7 +12,7 @@ namespace CodeShellCore.Security.Authentication
 {
     public class DefaultAuthenticationService : ServiceBase, IAuthenticationService
     {
-       
+
 
         ISecurityUnit SecurityUnit;
 
@@ -23,7 +23,7 @@ namespace CodeShellCore.Security.Authentication
 
         protected void AppendPermissions(IUser user)
         {
-            if (user!=null && user is IAuthorizableUser)
+            if (user != null && user is IAuthorizableUser)
             {
                 ((IAuthorizableUser)user).Permissions = SecurityUnit.ResourceRepository.GetUserPermissions(user.UserId);
             }
@@ -63,18 +63,22 @@ namespace CodeShellCore.Security.Authentication
 
         public virtual SubmitResult RegisterUser(IRegisterModel model)
         {
-            if (SecurityUnit == null)
-                throw new Exception("Unit must implement ISecurityUnit to be valid for this function");
-
             if (SecurityUnit.UserRepository.NameExists(model.LogonName))
             {
                 return new SubmitResult(1, Strings.Message(MessageIds.user_name_exists));
             }
             RegisterResult res = SecurityUnit.UserRepository.AddUser(model);
             if (res.Success)
-                return SecurityUnit.SaveChanges();
+            {
+                var r = SecurityUnit.SaveChanges();
+                r.Data["Model"] = res.Entity;
+                return r;
+            }
             else
+            {
                 return new SubmitResult(1, res.Message);
+            }
+
         }
     }
 }

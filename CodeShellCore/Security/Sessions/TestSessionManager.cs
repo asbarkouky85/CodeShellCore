@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeShellCore.Security.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,12 +40,12 @@ namespace CodeShellCore.Security.Sessions
 
         public void AuthorizationRequest(string token)
         {
-            
+
         }
 
-        public TestSessionManager(object defaultUserId)
+        public TestSessionManager(IUserDataService ser,object userId) : base(ser)
         {
-            currentUserId = defaultUserId;
+            currentUserId = userId;
         }
     }
 }

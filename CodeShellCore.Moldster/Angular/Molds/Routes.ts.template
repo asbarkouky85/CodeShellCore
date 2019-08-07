@@ -1,8 +1,8 @@
 ﻿import { Route } from "@angular/router";
 
-import { AuthFilter } from "codeshell/security";
-import { DomainData, ResourceActions } from "codeshell/security";
-import { Translator } from "codeshell/localization";
+import { AuthFilter } from "CodeShell/Security/AuthFilter";
+import { DomainData, ResourceActions } from "CodeShell/Security/Models";
+import { Translator } from "CodeShell/Localization/Translator";
 
 import { Login } from "%BaseName%/Main/Login";
 

@@ -1,4 +1,4 @@
-﻿import { LocaleLoader } from "codeshell/localization";
+﻿import { LocaleLoader } from "CodeShell/Localization/LocaleLoader";
 
 import Columns from "./Columns.json";
 import Messages from "./Messages.json";

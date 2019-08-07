@@ -5,11 +5,15 @@ using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Sessions;
 using Microsoft.AspNetCore.Http;
+using CodeShellCore.Security.Authorization;
 
 namespace CodeShellCore.Web.Security
 {
     public class CookieSessionManager : WebSessionManagerBase, ISessionManager
     {
+        public CookieSessionManager(IUserDataService cache, IHttpContextAccessor context) : base(cache, context)
+        {
+        }
 
         public TimeSpan DefaultSessionTime
         {
@@ -18,7 +22,7 @@ namespace CodeShellCore.Web.Security
 
         public virtual void EndSession()
         {
-            Accessor.HttpContext.Response.Cookies.Delete("UserId");
+            _accessor.HttpContext.Response.Cookies.Delete("UserId");
 
         }
 
@@ -26,7 +30,7 @@ namespace CodeShellCore.Web.Security
         {
             int id = 0;
 
-            int.TryParse(Accessor.HttpContext.User.Identity.Name, out id);
+            int.TryParse(_accessor.HttpContext.User.Identity.Name, out id);
             return id;
         }
 
@@ -37,7 +41,7 @@ namespace CodeShellCore.Web.Security
 
         public void AuthorizationRequest()
         {
-            var authCookie = Accessor.HttpContext.Request.Cookies["UserId"];
+            var authCookie = _accessor.HttpContext.Request.Cookies["UserId"];
 
             if (authCookie != null)
             {
@@ -46,15 +50,16 @@ namespace CodeShellCore.Web.Security
                     string jwt = Shell.Encryptor.Decrypt(authCookie);
                     JWTData data = jwt.FromJson<JWTData>();
                     if (data != null)
-                        Accessor.HttpContext.User = new DefaultPrincipal(data.UserId.ToString());
+                        _accessor.HttpContext.User = new DefaultPrincipal(data.UserId.ToString());
                 }
                 catch { }
 
             }
         }
 
-        public virtual void StartSession(IUser user, TimeSpan? length = null)
+        public override void StartSession(IUser user, TimeSpan? length = null)
         {
+            base.StartSession(user, length);
             TimeSpan add = length ?? DefaultSessionTime;
             JWTData data = new JWTData
             {
@@ -63,7 +68,7 @@ namespace CodeShellCore.Web.Security
                 StartTime = DateTime.Now
             };
             string st = Shell.Encryptor.Encrypt(data.ToJson());
-            Accessor.HttpContext.Response.Cookies.Append("UserId", st, new CookieOptions { Expires = data.ExpireTime });
+            _accessor.HttpContext.Response.Cookies.Append("UserId", st, new CookieOptions { Expires = data.ExpireTime });
         }
 
         public void AuthorizationRequest(string token)

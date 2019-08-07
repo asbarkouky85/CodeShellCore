@@ -1,6 +1,5 @@
-﻿using System;
+﻿using CodeShellCore.Security.Authorization;
 using System.Collections.Generic;
-using Asga.Auth.Views;
 
 namespace Asga.Security
 {

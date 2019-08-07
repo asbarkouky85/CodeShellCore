@@ -16,7 +16,7 @@ namespace Asga.Common
             coll.AddTransient<IAuthorizationService, AuthorizationService>();
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddGenericRepository(typeof(AsgaRepository<,>));
-            coll.AddTransient<IPermissionCacheService, PermissionCacheService>();
+            //coll.AddTransient<IPermissionCacheService, PermissionCacheService>();
         }
     }
 }

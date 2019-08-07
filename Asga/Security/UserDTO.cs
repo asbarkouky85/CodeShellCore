@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Collections;
 
 namespace Asga.Security
 {
@@ -26,6 +27,7 @@ namespace Asga.Security
         public IEnumerable<string> Apps { get; set; }
         public IEnumerable<long> Customers { get; set; }
         public long? PartyId { get; set; }
+        public IEnumerable Roles { get; set; }
         public UserDTO()
         {
             Permissions = new Dictionary<string, Permission>();
@@ -46,12 +48,12 @@ namespace Asga.Security
                     UserTypeInt = d.UserType,
                     PartyId = d.CustomerId,
                     Apps = d.TenantAppUsers.Select(x => x.TenantApp.Name).ToList(),
-                    Customers = d.UserParties.Select(x => x.PartyId).ToList()
+                    Customers = d.UserParties.Select(x => x.PartyId).ToList(),
+                    Roles = d.UserRoles.Select(x => x.RoleId).ToList()
                 };
             }
         }
 
-        
 
     }
 }

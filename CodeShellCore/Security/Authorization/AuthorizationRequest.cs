@@ -4,18 +4,18 @@ using System.Text;
 
 namespace CodeShellCore.Security.Authorization
 {
-    public abstract class AuthorizationRequest
+    public class AuthorizationRequest
     {
         public string Resource { get; set; }
         public string Action { get; set; }
-        
+
     }
-    public class AuthorizationRequest<T> : AuthorizationRequest
+    public class AuthorizationRequest<T> : AuthorizationRequest where T : class
     {
-       
+
         public T Context { get; private set; }
 
-        public AuthorizationRequest(T context)
+        public AuthorizationRequest(T context=null)
         {
             Context = context;
 

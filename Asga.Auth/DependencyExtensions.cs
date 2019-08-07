@@ -42,11 +42,21 @@ namespace Asga.Auth
             coll.AddRepositoryFor<Resource, ResourceRepository>();
             coll.AddRepositoryFor<Role, RoleRepository>();
             coll.AddRepositoryFor<User, UserRepository>();
+
+            coll.AddRepositoryFor<RoleResource, AsgaRepository<RoleResource, AuthContext>>();
+            coll.AddRepositoryFor<RoleResourceAction, AsgaRepository<RoleResourceAction, AuthContext>>();
+            coll.AddRepositoryFor<UserRole, AsgaRepository<UserRole, AuthContext>>();
+            coll.AddRepositoryFor<DefaultRole, AsgaRepository<DefaultRole, AuthContext>>();
+            coll.AddRepositoryFor<TenantAppUser, AsgaRepository<TenantAppUser, AuthContext>>();
+            coll.AddRepositoryFor<UserParty, AsgaRepository<UserParty, AuthContext>>();
+
         }
 
         public static void AddAuthModule(this IServiceCollection coll, bool defaultModule = true)
         {
+
             coll.AddAuthData(defaultModule);
+            
             coll.AddTransient<WriterService>();
             coll.AddTransient<AuthLookupService>();
             coll.AddScoped<CurrentTenant>();

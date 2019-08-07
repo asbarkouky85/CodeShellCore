@@ -2,6 +2,7 @@
 using CodeShellCore.Services;
 using CodeShellCore.Types;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 
 namespace CodeShellCore.Web.Controllers
@@ -14,6 +15,13 @@ namespace CodeShellCore.Web.Controllers
         public BaseController()
         {
             Store = new InstanceStore<IServiceBase>(() => HttpContext.RequestServices);
+            
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            context.HttpContext.LoadCultureFromHeader();
+            base.OnActionExecuting(context);
         }
 
         protected T GetService<T>() where T : class,IServiceBase

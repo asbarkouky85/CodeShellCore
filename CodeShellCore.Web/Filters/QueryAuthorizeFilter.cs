@@ -14,48 +14,41 @@ namespace CodeShellCore.Web.Filters
         public string Resource { get; set; }
         public string Action { get; set; }
         public bool AllowAnonymous { get; set; }
-        private readonly IAuthorizationService _authorizationService;
+        protected readonly IAuthorizationService _authorizationService;
+        protected readonly IAccessControlAuthorizationService _accessControl;
         public QueryAuthorizeFilter()
         {
-            _authorizationService = Shell.ScopedInjector.GetService<IAuthorizationService>() ;
-        }
-
-        protected IAccessControlAuthorizationService AccessControl
-        {
-            get
-            {
-                if (_authorizationService is IAccessControlAuthorizationService)
-                    return (IAccessControlAuthorizationService)_authorizationService;
-                return null;
-            }
+            _authorizationService = Shell.ScopedInjector.GetService<IAuthorizationService>();
+            if (_authorizationService is IAccessControlAuthorizationService)
+                _accessControl = (IAccessControlAuthorizationService)_authorizationService;
         }
 
         public virtual void OnAuthorization(AuthorizationFilterContext context)
         {
             try
             {
+                if (_authorizationService == null)
+                    return;
+
                 var tok = context.HttpContext.Request.Query["Token"];
                 string token = null;
                 if (tok.Count > 0)
                     token = tok[0];
-                _authorizationService.SessionManager?.AuthorizationRequest(token);
+                _authorizationService.AuthorizationRequest(token);
 
-                if (AccessControl == null || AllowAnonymous)
+                if (_accessControl == null || AllowAnonymous)
                 {
                     return;
                 }
 
-                if (AccessControl != null)
-                {
-                    AuthorizationRequest<AuthorizationFilterContext> con = new AuthorizationRequest<AuthorizationFilterContext>(context);
+                AuthorizationRequest<AuthorizationFilterContext> con = new AuthorizationRequest<AuthorizationFilterContext>(context);
 
-                    con.Resource = Resource ?? context.HttpContext.GetController();
-                    con.Action = Action ?? context.HttpContext.GetAction();
+                con.Resource = Resource ?? context.HttpContext.GetController();
+                con.Action = Action ?? context.HttpContext.GetAction();
 
-                    if (!AccessControl.IsAuthorized(con))
-                        AccessControl?.OnUserIsUnauthorized(con);
+                if (!_accessControl.IsAuthorized(con))
+                    _accessControl.OnUserIsUnauthorized(con);
 
-                }
             }
             catch (Exception ex)
             {

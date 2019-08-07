@@ -22,9 +22,11 @@ const treeShakableModules = [
 
     "@agm/core",
 
+
     "./node_modules/@ngx-translate/core",
     "./node_modules/ngx-toastr",
     "./node_modules/angular-tree-component",
+    "./node_modules/primeng/dialog"
 ];
 const nonTreeShakableModules = [
 

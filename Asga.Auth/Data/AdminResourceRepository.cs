@@ -37,6 +37,16 @@ namespace Asga.Auth.Data
             return 0;
         }
 
+        public List<ResourceActionV> GetRoleResourceActions(object roleId)
+        {
+            return new List<ResourceActionV>();
+        }
+
+        public List<ResourceV> GetRoleResources(object roleId)
+        {
+            return new List<ResourceV>();
+        }
+
         public Dictionary<string, Permission> GetUserPermissions(object userId)
         {
             return new Dictionary<string, Permission>();

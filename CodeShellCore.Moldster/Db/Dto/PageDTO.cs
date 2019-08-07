@@ -51,7 +51,7 @@ namespace CodeShellCore.Moldster.Db.Dto
                     TenantId = p.TenantDomain.TenantId,
                     Page = p,
                     BaseScript = p.PageCategory.ScriptPath,
-                    ResourceName = p.Resource.Name,
+                    ResourceName = p.Resource.Domain.Name + "__" + p.Resource.Name,
                     ActionName = p.ResourceAction == null ? (p.SpecialPermission ?? null) : p.ResourceAction.Name,
                     PageIdentifier = p.TenantDomain.Domain.Name + "__" + p.Name,
                 };

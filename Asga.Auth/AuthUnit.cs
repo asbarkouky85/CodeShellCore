@@ -13,7 +13,7 @@ namespace Asga.Auth
         {
         }
 
-        public IUserRepository UserRepository { get { return GetRepository<UserRepository>(); ; } }
+        public IUserRepository UserRepository { get { return GetRepository<IUserRepository>(); ; } }
         public IAuthUserRepository AuthUserRepository { get { return GetRepository<UserRepository>(); } }
         public IResourceRepository ResourceRepository { get { return GetRepository<IResourceRepository>(); } }
         public IRoleRepository SecurityRoleRepository { get { return GetRepository<IRoleRepository>(); } }

@@ -1,0 +1,14 @@
+﻿<div style="text-align:center;vertical-align:central;">
+    <h3 mat-dialog-title>
+        {{title}}
+    </h3>
+    <hr  style="background-color:darkgray"/>
+    <div mat-dialog-content>
+        <p>{{message}}</p>
+    </div>
+
+    <div mat-dialog-actions style="text-align:center;vertical-align:central;">
+        <button mat-button (click)="onDismiss()">{{'Words.No' | translate}}</button>
+        <button mat-raised-button color="primary" (click)="onConfirm()">{{'Words.Yes' | translate}}</button>
+    </div>
+</div>

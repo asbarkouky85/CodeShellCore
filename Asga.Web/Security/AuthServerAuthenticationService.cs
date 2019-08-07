@@ -21,7 +21,7 @@ using Asga.Auth;
 
 namespace Asga.Web.Security
 {
-    public class AuthServerAuthenticationService : RoleBasedTokenAuthenticationService
+    public class AuthServerAuthenticationService : TokenAuthenticationService
     {
         private readonly IRoleBasedSecurityUnit _unit;
 

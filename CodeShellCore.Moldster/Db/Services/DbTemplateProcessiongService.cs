@@ -17,6 +17,16 @@ namespace CodeShellCore.Moldster.Db.Services
 {
     public class DbTemplateProcessingService : TemplateProcessingService, ICustomizablePagesService
     {
+        readonly static Dictionary<string, string> baseComponents = new Dictionary<string, string>
+        {
+            { "Edit","CodeShell/BaseComponents/EditComponentBase"},
+            { "List","CodeShell/BaseComponents/ListComponentBase"},
+            { "Tree","CodeShell/BaseComponents/TreeComponentBase"},
+            { "Select","CodeShell/BaseComponents/SelectComponentBase" }
+        };
+
+        
+
         readonly IConfigUnit _unit;
         //readonly DbTsGeneratorService _writer;
         readonly DomainService _domains;

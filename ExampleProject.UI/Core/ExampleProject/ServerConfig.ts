@@ -1,17 +1,14 @@
-import { ServerConfigBase } from "CodeShell/core";
+﻿import { IServerConfig } from "CodeShell/IServerConfig";
 
-export class ServerConfig implements ServerConfigBase {
-    GoogleKey: string = "";
-    BaseURL: string = "";
-    Domain: string = "";
-    Locale: string = "";
+export class ServerConfig implements IServerConfig {
+    Locale: string = "ar";
+    Domain: string = "ExampleProject";
 
-    constructor() {
-        let item: HTMLElement = document.getElementById("view-data") as HTMLElement;
-        if (item)
-            Object.assign(this, JSON.parse(item.innerHTML));
+    static _instance?: ServerConfig;
+    static get Instance(): ServerConfig {
+        if (!this._instance) {
+            this._instance = new ServerConfig();
+        }
+        return this._instance;
     }
-
-    private static _config: ServerConfig;
-    public static Instance: ServerConfig = new ServerConfig();
 }

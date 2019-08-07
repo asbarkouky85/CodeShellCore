@@ -16,14 +16,10 @@ namespace Asga.Web.Security
         {
         }
 
-        UserDTO User { get { return (UserDTO)SessionManager.GetUserData(); } }
-
         protected override bool IsAuthorized(AuthorizationRequest<AuthorizationFilterContext> req)
         {
             return SessionManager.IsLoggedIn();
         }
-
-        
 
     }
 }

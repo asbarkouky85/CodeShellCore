@@ -17,11 +17,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\Asga.Web\Asga.Web.csproj" />
   </ItemGroup>
 </Project>

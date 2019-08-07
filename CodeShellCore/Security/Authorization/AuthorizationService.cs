@@ -13,13 +13,14 @@ namespace CodeShellCore.Security.Authorization
         private readonly IAuthenticationService _auth;
         private readonly ISessionManager _manager;
 
-        public AuthorizationService(IAuthenticationService auth, ISessionManager manager) {
+        public AuthorizationService(IAuthenticationService auth, ISessionManager manager)
+        {
             _auth = auth;
             _manager = manager;
         }
         public object GetCurrentUserId()
         {
-            return SessionManager?.GetCurrentUserId();
+            return _manager?.GetCurrentUserId();
         }
 
         public virtual ISessionManager SessionManager
