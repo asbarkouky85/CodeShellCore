@@ -83,6 +83,16 @@ namespace CodeShellCore.Moldster.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        public static byte[] BaseModule_ts {
+            get {
+                object obj = ResourceManager.GetObject("BaseModule_ts", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         public static byte[] BasicComponent_ts {
             get {
                 object obj = ResourceManager.GetObject("BasicComponent_ts", resourceCulture);
@@ -103,20 +113,25 @@ namespace CodeShellCore.Moldster.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Builder_ts {
+        public static byte[] Component_ts {
             get {
-                object obj = ResourceManager.GetObject("Builder_ts", resourceCulture);
+                object obj = ResourceManager.GetObject("Component_ts", resourceCulture);
                 return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to declare module &quot;*.json&quot; {
+        ///    const value: any;
+        ///    export default value;
+        ///}
+        ///declare var jQuery: any;
+        ///declare var $: any;
+        ///.
         /// </summary>
-        public static byte[] Component_ts {
+        public static string declarations_d {
             get {
-                object obj = ResourceManager.GetObject("Component_ts", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("declarations_d", resourceCulture);
             }
         }
         
@@ -153,16 +168,6 @@ namespace CodeShellCore.Moldster.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] LookupComponent_ts {
-            get {
-                object obj = ResourceManager.GetObject("LookupComponent_ts", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         public static byte[] ModalComponent_ts {
             get {
                 object obj = ResourceManager.GetObject("ModalComponent_ts", resourceCulture);
@@ -177,6 +182,30 @@ namespace CodeShellCore.Moldster.Properties {
             get {
                 object obj = ResourceManager.GetObject("Module_ts", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;devDependencies&quot;: {
+        ///    &quot;@agm/core&quot;: &quot;1.0.0-beta.2&quot;,
+        ///    &quot;@angular/animations&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/cdk&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/cli&quot;: &quot;6.1.1&quot;,
+        ///    &quot;@angular/common&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/compiler&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/compiler-cli&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/core&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/forms&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/http&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/material&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/material-moment-adapter&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/platform-browser&quot;: &quot;5.2.5&quot;,
+        ///    &quot;@angular/platform-br [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string package_json {
+            get {
+                return ResourceManager.GetString("package_json", resourceCulture);
             }
         }
         
@@ -211,6 +240,30 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to import { ServerConfigBase } from &quot;CodeShell/core&quot;;
+        ///
+        ///export class ServerConfig implements ServerConfigBase {
+        ///    GoogleKey: string = &quot;&quot;;
+        ///    BaseURL: string = &quot;&quot;;
+        ///    Domain: string = &quot;&quot;;
+        ///    Locale: string = &quot;&quot;;
+        ///
+        ///    constructor() {
+        ///        let item: HTMLElement = document.getElementById(&quot;view-data&quot;) as HTMLElement;
+        ///        if (item)
+        ///            Object.assign(this, JSON.parse(item.innerHTML));
+        ///    }
+        ///
+        ///    private static _config: ServerConfig;
+        ///    public static Instance: ServerConfig = new Serv [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string ServerConfig_ts {
+            get {
+                return ResourceManager.GetString("ServerConfig_ts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] Service_ts {
@@ -241,12 +294,61 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;compilerOptions&quot;: {
+        ///    &quot;module&quot;: &quot;es2015&quot;,
+        ///    &quot;moduleResolution&quot;: &quot;node&quot;,
+        ///    &quot;target&quot;: &quot;es5&quot;,
+        ///    &quot;sourceMap&quot;: true,    
+        ///    &quot;experimentalDecorators&quot;: true,
+        ///    &quot;strictNullChecks&quot;: true,
+        ///    &quot;emitDecoratorMetadata&quot;: true,
+        ///    &quot;skipDefaultLibCheck&quot;: true,
+        ///    &quot;skipLibCheck&quot;: true, // Workaround for https://github.com/angular/angular/issues/17863. Remove this if you upgrade to a fixed version of Angular.
+        ///    &quot;strict&quot;: true,
+        ///    &quot;lib&quot;: [ &quot;es6&quot;, &quot;dom&quot; ],
+        ///    &quot;types&quot;: [ &quot;webpack-env&quot; ],
+        ///    [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string tsconfig_json {
+            get {
+                return ResourceManager.GetString("tsconfig_json", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] webpack_config_js {
             get {
                 object obj = ResourceManager.GetObject("webpack_config_js", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to const path = require(&apos;path&apos;);
+        ///const webpack = require(&apos;webpack&apos;);
+        ///const ExtractTextPlugin = require(&apos;extract-text-webpack-plugin&apos;);
+        ///const UglifyJsPlugin = require(&apos;uglifyjs-webpack-plugin&apos;);
+        ///
+        ///const treeShakableModules = [
+        ///
+        ///    &apos;@angular/core&apos;,
+        ///    &apos;@angular/common&apos;,
+        ///    &apos;@angular/forms&apos;,
+        ///    &apos;@angular/http&apos;,
+        ///    &apos;@angular/animations&apos;,
+        ///    &apos;@angular/platform-browser&apos;,
+        ///    &quot;@angular/platform-browser/animations&quot;,
+        ///    &apos;@angular/platform-browser-dynamic&apos;,
+        ///    &apos;@angular/router&apos;,
+        ///
+        ///    &apos;@angular/co [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string webpack_config_vendor_js {
+            get {
+                return ResourceManager.GetString("webpack_config_vendor_js", resourceCulture);
             }
         }
         
@@ -277,6 +379,26 @@ namespace CodeShellCore.Moldster.Properties {
             get {
                 object obj = ResourceManager.GetObject("webpack_tenant_js_json", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to const path = require(&apos;path&apos;);
+        ///const webpack = require(&apos;webpack&apos;);
+        ///const CheckerPlugin = require(&apos;awesome-typescript-loader&apos;).CheckerPlugin;
+        ///
+        ///module.exports = function WebpackSharedConfig(env) {
+        ///    const isDevBuild = !(env &amp;&amp; env.prod);
+        ///    const app = env.app ? env.app + &quot;-&quot; : &quot;&quot;;
+        ///    const version = isDevBuild ? &quot;dev&quot; : &quot;v&quot; + (env.version ? env.version : &quot;1.0.0.0&quot;)
+        ///    const clientBundleOutputDir = &apos;./wwwroot/dist&apos;;
+        ///    return {
+        ///        mode: isDevBuild ? &quot;development&quot; : &quot;production&quot;,
+        ///        s [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string WebPackSharedConfig_js {
+            get {
+                return ResourceManager.GetString("WebPackSharedConfig_js", resourceCulture);
             }
         }
     }

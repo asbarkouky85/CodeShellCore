@@ -24,6 +24,7 @@ namespace CodeShellCore.Moldster.Cli
                     { 2, "ProccessTemplates"},
                     { 3, "SyncLanguages"},
                     { 4, "WriteEnums"},
+                    { 5, "Init"}
                 };
             }
         }
@@ -108,6 +109,11 @@ namespace CodeShellCore.Moldster.Cli
         public void WriteEnums()
         {
             Scripts.GenerateEnums();
+        }
+
+        public void Init()
+        {
+            Scripts.GenerateEnvironment();
         }
     }
 }
