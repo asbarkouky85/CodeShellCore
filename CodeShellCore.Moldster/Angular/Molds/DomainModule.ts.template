@@ -1,7 +1,7 @@
 ﻿import { NgModule } from "@angular/core";
-import { CodeShellModule } from "CodeShell/CodeShellModule";
+import { CodeShellModule } from "codeshell";
 import { SharedModule } from "./SharedModule%Lazy%";
-import { Registry } from "CodeShell/Utilities/Registry";
+import { Registry } from "codeshell/core";
 %ComponentImports%
 
 @NgModule({
