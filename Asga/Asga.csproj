@@ -36,8 +36,4 @@
     <ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Auth\Views\" />
-  </ItemGroup>
-
 </Project>
