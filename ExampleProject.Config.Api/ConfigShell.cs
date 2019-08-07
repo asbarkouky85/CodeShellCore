@@ -5,8 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using CodeShellCore.Web.Razor;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Web.Razor.Angular;
 
 namespace ExampleProject.Config.Api
 {
@@ -25,7 +23,7 @@ namespace ExampleProject.Config.Api
             base.RegisterServices(coll);
             coll.AddMoldsterWeb(MoldsType.Db);
             coll.AddCodeShellEmbeddedViews();
-            coll.AddAngular2Helpers();
+            coll.AddAngularRazorHelpers();
         }
 
         protected override void OnReady()

@@ -13,7 +13,7 @@ namespace ExampleProject.Config.Api.Controllers
     public class ViewsController : DbViewsControllerBase
     {
         public ViewsController(
-            IRazorProcessorService ser,
+            IMoldsterRazorService ser,
             IDataService data,
             IConfigUnit unit) 
             : base(ser, data, unit)
