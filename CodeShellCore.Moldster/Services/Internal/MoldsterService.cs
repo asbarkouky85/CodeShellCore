@@ -133,7 +133,8 @@ namespace CodeShellCore.Moldster.Services.Internal
 
         public virtual void DevelopmentPack()
         {
-            RunCommand(_paths.UIRoot, "node", "node_modules/webpack/bin/webpack.js");
+            string args = $"--max_old_space_size=8138 node_modules/webpack/bin/webpack.js --debug --progress";
+            RunCommand(_paths.UIRoot, "node", args);
         }
 
         public virtual Result ProductionPack(string moduleName, string version)

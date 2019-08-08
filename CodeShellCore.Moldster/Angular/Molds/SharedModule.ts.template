@@ -1,5 +1,5 @@
 ﻿import { NgModule } from "@angular/core";
-import { CodeShellModule } from "CodeShell/CodeShellModule";
+import { CodeShellModule } from "codeshell";
 import { Registry } from "codeshell/core";
 import { ServerConfig } from "%BaseName%/ServerConfig";
 import { TranslateService } from "@ngx-translate/core";
