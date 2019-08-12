@@ -18,16 +18,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Core\ExampleProject\Http\AccountService.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\css\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\css\plugins\fonts\primeicons.svg" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Asga.Web\Asga.Web.csproj" />
     <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Core\ExampleProject\Http\AccountService.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

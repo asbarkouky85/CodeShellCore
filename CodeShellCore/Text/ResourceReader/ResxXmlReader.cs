@@ -5,6 +5,7 @@ namespace CodeShellCore.Text.ResourceReader
 {
     public class ResxXmlReader
     {
+
         public bool TryRead(string filePate, out ResourceContainer cont)
         {
             XmlSerializer ser = new XmlSerializer(typeof(ResourceContainer));

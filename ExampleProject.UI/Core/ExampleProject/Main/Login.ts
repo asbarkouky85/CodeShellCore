@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from 'codeshell/baseComponents';
 import { Shell } from 'codeshell/core';
-import { AccountServiceBase } from 'codeshell/security';
+import { AccountServiceBase, UserDTO } from 'codeshell/security';
 import { NoteType } from 'codeshell/helpers';
 
 @Component({ templateUrl: "./Login.html" })
@@ -10,6 +10,8 @@ export class Login extends BaseComponent {
         userName: '',
         password: ''
     };
+
+    
 
     AccountService: AccountServiceBase = Shell.Injector.get(AccountServiceBase);
 

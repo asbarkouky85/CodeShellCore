@@ -100,12 +100,7 @@ namespace CodeShellCore.Moldster.Cli
             }
         }
 
-        public void SyncLanguages()
-        {
-
-            Localization.SyncLanguages("ar", "en");
-        }
-
+        
         public void WriteEnums()
         {
             Scripts.GenerateEnums();

@@ -1,17 +1,32 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, EventEmitter } from "@angular/core";
 import { Shell, ServerConfigBase } from "codeshell/core";
 
 import { BaseComponent } from "codeshell/baseComponents";
+import { UserDTO } from "codeshell/security";
+import { Observable } from "rxjs";
+import { of } from "rxjs/observable/of";
+import value from "*.json";
 
 @Component({ templateUrl: "./navigationSideBar.html", selector: "navigationSideBar" })
 export class navigationSideBar extends BaseComponent {
+
     GetPageId(): number {
-        throw new Error("Method not implemented.");
+        return 0;
     }
-    get Config(): ServerConfigBase { return Shell.Injector.get(ServerConfigBase); }
+
+    isLoggedIn: boolean = false;
+
+    ngOnInit() {
+        super.ngOnInit();
+        this.isLoggedIn = Shell.Session.IsLoggedIn;
+        Shell.Session.LogStatus.subscribe((v: boolean) => {
+            this.isLoggedIn = v
+        });
+        console.log("nav")
+    }
 
     Logout() {
-        debugger;
+
         Shell.Session.EndSession();
         this.Router.navigateByUrl("/Login");
 

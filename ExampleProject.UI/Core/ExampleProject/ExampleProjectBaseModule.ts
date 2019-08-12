@@ -10,6 +10,9 @@ import { topBar } from "./Main/topBar";
 import { navigationSideBar } from "./Main/navigationSideBar";
 import { ServerConfigBase } from "codeshell/core";
 import { ServerConfig } from "./ServerConfig";
+import { AccountServiceBase } from "codeshell/security";
+import { AccountService } from "./Http/AccountService";
+import { UsersService } from "./Http/UsersService";
 
 @NgModule({
     declarations: [Login, topBar, navigationSideBar],
@@ -35,7 +38,9 @@ export class ExampleProjectBaseModule {
         return {
             ngModule: ExampleProjectBaseModule,
             providers: [
+                UsersService,
                 { provide: ServerConfigBase, useValue: ServerConfig.Instance },
+                { provide: AccountServiceBase, useClass: AccountService }
             ]
         }
     }

@@ -9,5 +9,6 @@ namespace CodeShellCore.Moldster.Services
     {
         void GenerateJsonFiles(string moduleCode);
         void SyncLanguages(string lang1, string lang2);
+        void InitializeResxFiles();
     }
 }

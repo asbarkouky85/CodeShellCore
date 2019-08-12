@@ -24,6 +24,11 @@
 
   <ItemGroup>
     <Content Remove="appsettings.json" />
+    <Content Remove="ShellComponents\Angular\PageHeader.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ShellComponents\Angular\PageHeader.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +43,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="ShellComponents\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

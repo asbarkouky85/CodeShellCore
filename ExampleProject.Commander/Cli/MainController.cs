@@ -10,7 +10,8 @@ namespace ExampleProject.Commander.Cli
         public override Dictionary<int, string> Functions => new Dictionary<int, string>
         {
             { 1,"Modules"},
-            { 2,"Webpack"}
+            { 2,"Webpack"},
+            { 3,"Localization"}
         };
 
         public void Modules()
@@ -22,6 +23,12 @@ namespace ExampleProject.Commander.Cli
         public void Webpack()
         {
             var con = new WebpackConsoleController();
+            con.Run();
+        }
+
+        public void Localization()
+        {
+            var con = new LocalizationConsoleController();
             con.Run();
         }
     }

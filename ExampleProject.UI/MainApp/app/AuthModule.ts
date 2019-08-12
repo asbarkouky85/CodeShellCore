@@ -17,7 +17,7 @@ import { UserCreate } from "./Auth/Users/UserCreate";
         CodeShellModule,
 		SharedModule,
         RouterModule.forChild([
-			﻿{ path : "UserCreate", component : UserCreate, canActivate: [AuthFilter], data: { name : "Auth__UserCreate", navigate: true, resource:"Auth__Users", action: ResourceActions.insert, apps:["Admin"] }},
+			﻿{ path : "UserCreate", component : UserCreate, canActivate: [AuthFilter], data: { name : "Auth__UserCreate", navigate: true, resource:"Users", action: ResourceActions.insert, apps:null }},
 
 		])
     ]

@@ -62,6 +62,35 @@ namespace CodeShellCore.Moldster.Services.Internal
             Console.WriteLine();
         }
 
+        
+
+        public void InitializeResxFiles()
+        {
+
+            using (var x = SW.Measure())
+            {
+                string[] types = new string[] { "Columns", "Words", "Pages", "Messages" };
+
+                foreach (string type in types)
+                {
+                    foreach (var lang in Shell.SupportedLanguages)
+                    {
+                        var fileName = type + "." + lang + ".resx";
+                        string filePath = Path.Combine(_paths.LocalizationRoot, "Localization", fileName);
+                        if (!File.Exists(filePath))
+                        {
+                            Utils.CreateFolderForFile(filePath);
+                            ResxXmlReader reader = new ResxXmlReader();
+                            var headers = ResHeaderItem.Default;
+                            reader.Save(filePath, new ResourceContainer { DataItems = new DataItem[0], Headers = headers });
+                            Console.WriteLine($"Created file [{fileName}]");
+                        }
+                    }
+                }
+                WriteSuccess(x.Elapsed);
+            }
+        }
+
         public void SyncLanguages(string lang1, string lang2)
         {
             using (var x = SW.Measure())
