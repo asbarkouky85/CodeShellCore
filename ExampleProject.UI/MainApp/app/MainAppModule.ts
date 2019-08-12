@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { BaseModule } from 'CodeShell/BaseModule';
-import { IServerConfig } from "CodeShell/IServerConfig";
-import { DomainDataProvider } from 'CodeShell/Security/Models';
+import { BaseModule } from 'codeshell';
+import { ServerConfigBase } from "codeshell/core";
+import { DomainDataProvider } from 'codeshell/security';
 
 import { ExampleProjectBaseModule } from 'ExampleProject/ExampleProjectBaseModule';
 import { AppComponent } from './AppComponent';
@@ -23,8 +23,7 @@ import { Routes, GetDomainsData } from './MainAppRoutes';
         RouterModule.forRoot(Routes())
     ],
     providers: [
-        { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) },
-        { provide: IServerConfig, useValue: ServerConfig.Instance },
+        { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) }
     ]
 })
 export class MainAppModule extends BaseModule {

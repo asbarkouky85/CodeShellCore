@@ -1,8 +1,7 @@
 ﻿import { Component, Injector, ViewChild, trigger, state, style, transition, animate } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Shell } from 'CodeShell/Shell';
-import { IServerConfig } from 'CodeShell/IServerConfig';
+import { ServerConfigBase,Shell } from 'codeshell/core';
 import { AppComponentBase } from 'ExampleProject/AppComponentBase';
 
 @Component({
@@ -17,7 +16,7 @@ import { AppComponentBase } from 'ExampleProject/AppComponentBase';
 })
 export class AppComponent extends AppComponentBase {
 
-    constructor(inj: Injector, trans: Title, conf: IServerConfig) {
+    constructor(inj: Injector, trans: Title, conf: ServerConfigBase) {
         super(inj, trans,conf);
         Shell.Main = this;
     }

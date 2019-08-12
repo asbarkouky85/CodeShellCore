@@ -1,11 +1,11 @@
 ﻿import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { CodeShellModule } from "CodeShell/CodeShellModule";
+import { CodeShellModule } from "codeshell";
 import { SharedModule } from "./SharedModule";
-import { Registry } from "CodeShell/Utilities/Registry";
-import { AuthFilter } from "CodeShell/Security/AuthFilter";
-import { ResourceActions } from "CodeShell/Security/Models";
-import { IServerConfig } from "CodeShell/IServerConfig";
+import { Registry } from "codeshell/core";
+import { AuthFilter, ResourceActions } from "codeshell/security";
+
+import { ServerConfigBase } from "codeshell/core";
 import { TranslateService } from "@ngx-translate/core";
 import { UserCreate } from "./Auth/Users/UserCreate";
 
@@ -17,14 +17,14 @@ import { UserCreate } from "./Auth/Users/UserCreate";
         CodeShellModule,
 		SharedModule,
         RouterModule.forChild([
-			﻿{ path : "UserCreate", component : UserCreate, canActivate: [AuthFilter], data: { name : "Auth__UserCreate", navigate: false, resource:"Auth__Users", action: ResourceActions.insert, apps:["Public"] }},
+			﻿{ path : "UserCreate", component : UserCreate, canActivate: [AuthFilter], data: { name : "Auth__UserCreate", navigate: true, resource:"Auth__Users", action: ResourceActions.insert, apps:["Admin"] }},
 
 		])
     ]
 })
 export class AuthModule {
 
-    constructor(trans: TranslateService, conf: IServerConfig) {
+    constructor(trans: TranslateService, conf: ServerConfigBase) {
         trans.setDefaultLang(conf.Locale);
         trans.use(conf.Locale);
     }

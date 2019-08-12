@@ -1,11 +1,9 @@
 ﻿import { Route } from "@angular/router";
 
-import { AuthFilter } from "CodeShell/Security/AuthFilter";
-import { DomainData, ResourceActions } from "CodeShell/Security/Models";
-import { Translator } from "CodeShell/Localization/Translator";
+import { DomainData, ResourceActions } from "codeshell/security";
 
 import { Login } from "ExampleProject/Main/Login";
-
+import { Translator } from "codeshell/localization";
 
 import { ar_Loader } from "./Localization/ar/Loader";
 import { en_Loader } from "./Localization/en/Loader";
@@ -30,7 +28,8 @@ let data: DomainData[] | null = null;
 export function GetDomainsData(): DomainData[] {
     if (!data) {
         data = [
-			{ name : "Auth" ,children: []},
+			{ name : "Auth" ,children: [
+				{ name : "Auth__UserCreate", navigate: true, resource:"Auth__Users", action: ResourceActions.insert, apps: ["Admin"] },]},
 
 		];
     }

@@ -5,7 +5,7 @@ import { SharedModule } from "./SharedModule%Lazy%";
 import { Registry } from "codeshell/core";
 import { AuthFilter, ResourceActions } from "codeshell/security";
 
-import { ServerConfigBase } from "CodeShell/core";
+import { ServerConfigBase } from "codeshell/core";
 import { TranslateService } from "@ngx-translate/core";
 %ComponentImports%
 

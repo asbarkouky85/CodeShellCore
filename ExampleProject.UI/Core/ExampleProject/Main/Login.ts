@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from 'CodeShell/BaseComponents';
-import { Shell } from 'CodeShell/Shell';
-import { IAccountService } from 'CodeShell/Security/IAccountService';
-import { NoteType } from 'CodeShell/Helpers';
+import { BaseComponent } from 'codeshell/baseComponents';
+import { Shell } from 'codeshell/core';
+import { AccountServiceBase } from 'codeshell/security';
+import { NoteType } from 'codeshell/helpers';
 
 @Component({ templateUrl: "./Login.html" })
 export class Login extends BaseComponent {
@@ -11,7 +11,7 @@ export class Login extends BaseComponent {
         password: ''
     };
 
-    AccountService: IAccountService = Shell.Injector.get(IAccountService);
+    AccountService: AccountServiceBase = Shell.Injector.get(AccountServiceBase);
 
     GetPageId(): number {
         return 0;

@@ -1,20 +1,21 @@
 ﻿import { ModuleWithProviders } from "@angular/compiler/src/core";
 import { NgModule } from "@angular/core";
-import { CodeShellModule } from "CodeShell/CodeShellModule";
+import { CodeShellModule } from "codeshell";
 import { BrowserModule } from "@angular/platform-browser";
 import { ToastrModule } from "ngx-toastr";
 import { TranslateModule } from "@ngx-translate/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { Login } from "./Main/Login";
-import { AuthFilter } from "CodeShell/Security/AuthFilter";
 import { topBar } from "./Main/topBar";
 import { navigationSideBar } from "./Main/navigationSideBar";
+import { ServerConfigBase } from "codeshell/core";
+import { ServerConfig } from "./ServerConfig";
 
 @NgModule({
     declarations: [Login, topBar, navigationSideBar],
 
     imports: [
-        CodeShellModule,
+        CodeShellModule.forRoot(),
         BrowserModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot()
@@ -24,7 +25,6 @@ import { navigationSideBar } from "./Main/navigationSideBar";
         BrowserModule,
         BrowserAnimationsModule,
         ToastrModule,
-        TranslateModule,
         Login,
         topBar,
         navigationSideBar
@@ -35,7 +35,7 @@ export class ExampleProjectBaseModule {
         return {
             ngModule: ExampleProjectBaseModule,
             providers: [
-                AuthFilter,
+                { provide: ServerConfigBase, useValue: ServerConfig.Instance },
             ]
         }
     }

@@ -1,6 +1,6 @@
 ﻿import { NgModule } from "@angular/core";
-import { CodeShellModule } from "CodeShell/CodeShellModule";
-import { Registry } from "CodeShell/Utilities/Registry";
+import { CodeShellModule } from "codeshell";
+import { Registry } from "codeshell/core";
 import { ServerConfig } from "ExampleProject/ServerConfig";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -9,7 +9,7 @@ import { TranslateService } from "@ngx-translate/core";
     declarations: [],
     exports: [],
     imports: [
-        CodeShellModule,
+        CodeShellModule
     ],
 	entryComponents:[]
 })

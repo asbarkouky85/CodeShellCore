@@ -16,7 +16,7 @@ import { %BaseComponentName% } from '%BaseComponentPath%';
 })
 export class %Name% extends %BaseComponentName% {
 
-    constructor(inj: Injector, trans: Title, conf: IServerConfig) {
+    constructor(inj: Injector, trans: Title, conf: ServerConfigBase) {
         super(inj, trans,conf);
         Shell.Main = this;
     }

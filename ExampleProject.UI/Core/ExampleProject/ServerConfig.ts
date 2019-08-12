@@ -1,6 +1,6 @@
-﻿import { IServerConfig } from "CodeShell/IServerConfig";
+﻿import { ServerConfigBase } from "codeshell/core";
 
-export class ServerConfig implements IServerConfig {
+export class ServerConfig implements ServerConfigBase {
     Locale: string = "ar";
     Domain: string = "ExampleProject";
 
