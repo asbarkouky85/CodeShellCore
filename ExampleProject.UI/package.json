@@ -74,7 +74,7 @@
     "webpack-hot-middleware": "2.24.3",
     "webpack-merge": "4.1.0",
     "zone.js": "0.8.12",
-    "codeshell": "1.1.7"
+    "codeshell": "1.2.0"
   },
   "name": "fms",
   "private": true,
