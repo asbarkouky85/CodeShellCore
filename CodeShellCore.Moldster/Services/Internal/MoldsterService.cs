@@ -177,6 +177,8 @@ namespace CodeShellCore.Moldster.Services.Internal
         public void Init()
         {
             _ts.GenerateEnvironment();
+            var sql = Properties.Resources.Creation;
+            File.WriteAllText(Path.Combine(_paths.ConfigRoot, "Creation.sql"), sql);
         }
     }
 }

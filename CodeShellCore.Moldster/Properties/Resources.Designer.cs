@@ -121,6 +121,27 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to create function [dbo].[CompareVersion](
+        ///	@v1 varchar(100),
+        ///	@v2 varchar(100)
+        ///)
+        ///returns int
+        ///AS
+        ///begin
+        ///declare @result int;
+        ///
+        ///    select @result=case 
+        ///    when CONVERT(int, LEFT(@v1, CHARINDEX(&apos;.&apos;, @v1)-1)) &lt; CONVERT(int, LEFT(@v2, CHARINDEX(&apos;.&apos;, @v2)-1)) then 2
+        ///    when CONVERT(int, LEFT(@v1, CHARINDEX(&apos;.&apos;, @v1)-1)) &gt; CONVERT(int, LEFT(@v2, CHARINDEX(&apos;.&apos;, @v2)-1)) then 1
+        ///    when CONVERT(int, substring(@v1, CHARINDEX(&apos;.&apos;, @v1)+1, LEN(@v1))) &lt; CONVERT(int, substring(@v2, CHARINDEX(&apos;.&apos;, @v2)+1, LEN(@ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Creation {
+            get {
+                return ResourceManager.GetString("Creation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to declare module &quot;*.json&quot; {
         ///    const value: any;
         ///    export default value;
@@ -187,6 +208,12 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
+        ///  &quot;dependencies&quot;: {
+        ///    &quot;angular-tree-component&quot;: &quot;^8.0.0&quot;,
+        ///    &quot;angular2-datetimepicker&quot;: &quot;^1.1.1&quot;,
+        ///    &quot;primeicons&quot;: &quot;^1.0.0-beta.10&quot;,
+        ///    &quot;primeng&quot;: &quot;6.1.3&quot;
+        ///  },
         ///  &quot;devDependencies&quot;: {
         ///    &quot;@agm/core&quot;: &quot;1.0.0-beta.2&quot;,
         ///    &quot;@angular/animations&quot;: &quot;5.2.5&quot;,
@@ -197,11 +224,7 @@ namespace CodeShellCore.Moldster.Properties {
         ///    &quot;@angular/compiler-cli&quot;: &quot;5.2.5&quot;,
         ///    &quot;@angular/core&quot;: &quot;5.2.5&quot;,
         ///    &quot;@angular/forms&quot;: &quot;5.2.5&quot;,
-        ///    &quot;@angular/http&quot;: &quot;5.2.5&quot;,
-        ///    &quot;@angular/material&quot;: &quot;5.2.5&quot;,
-        ///    &quot;@angular/material-moment-adapter&quot;: &quot;5.2.5&quot;,
-        ///    &quot;@angular/platform-browser&quot;: &quot;5.2.5&quot;,
-        ///    &quot;@angular/platform-br [rest of string was truncated]&quot;;.
+        ///    &quot;@angular [rest of string was truncated]&quot;;.
         /// </summary>
         public static string package_json {
             get {

@@ -199,4 +199,7 @@
   <data name="webpack_config_vendor_js" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Angular\Files\webpack_config_vendor_js.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="Creation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\SQL\Creation.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  </data>
 </root>
