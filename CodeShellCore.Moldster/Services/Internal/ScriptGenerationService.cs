@@ -252,6 +252,10 @@ namespace CodeShellCore.Moldster.Services.Internal
         {
             string path = Path.Combine(_paths.UIRoot, "declarations.d.ts");
 
+            var sql = Properties.Resources.Creation;
+            File.WriteAllText(Path.Combine(_paths.ConfigRoot, "Creation.sql"), sql);
+            Console.WriteLine("Adding file [Creation.sql] to " + _paths.ConfigRoot);
+
             if (!File.Exists(path))
             {
                 Console.WriteLine("Adding file [declarations.d.ts]");

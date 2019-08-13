@@ -2,6 +2,7 @@
 using CodeShellCore.Moldster.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace CodeShellCore.Moldster.Cli
@@ -109,6 +110,7 @@ namespace CodeShellCore.Moldster.Cli
         public void Init()
         {
             Scripts.GenerateEnvironment();
+   
         }
     }
 }
