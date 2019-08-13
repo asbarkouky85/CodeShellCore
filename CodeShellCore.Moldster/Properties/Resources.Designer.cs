@@ -61,12 +61,72 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;div [@loader]=&quot;ShowLoader ? &apos;shown&apos; : &apos;hidden&apos;&quot; class=&quot;loader-overlay&quot;&gt;
+        ///    &lt;div class=&quot;loader&quot;&gt;&lt;/div&gt;
+        ///&lt;/div&gt;
+        ///
+        ///&lt;div&gt;
+        ///    &lt;div class=&quot;wrapper&quot;&gt;
+        ///        &lt;div class=&quot;wrapper-content&quot;&gt;
+        ///            &lt;router-outlet&gt;&lt;/router-outlet&gt;
+        ///        &lt;/div&gt;
+        ///    &lt;/div&gt;
+        ///&lt;/div&gt;
+        ///
+        ///&lt;div [ngClass]=&quot;Config.Locale==&apos;ar&apos;? &apos;ui-rtl&apos;:null&quot; [dir]=&quot;Config.Locale==&apos;ar&apos;? &apos;rtl&apos;:null&quot;&gt;
+        ///    &lt;ng-template test-loader&gt;&lt;/ng-template&gt;
+        ///
+        ///    &lt;p-dialog #deleteDialog [(visible)]=&quot;deleteDialogShow&quot; [modal]=&quot;true&quot; width=&quot;600&quot;&gt;
+        ///        &lt;p- [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AppComponent_cshtml {
+            get {
+                return ResourceManager.GetString("AppComponent_cshtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] AppComponent_ts {
             get {
                 object obj = ResourceManager.GetObject("AppComponent_ts", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to import { Injector } from &quot;@angular/core&quot;;
+        ///import { Title } from &quot;@angular/platform-browser&quot;;
+        ///import { ServerConfigBase } from &quot;codeshell/core&quot;;
+        ///import { IAppComponent } from &quot;codeshell/baseComponents&quot;;
+        ///import { TestLoader } from &quot;codeshell/core&quot;;
+        ///
+        ///export class AppComponentBase extends IAppComponent {
+        ///    ModalLoader?: TestLoader | undefined;
+        ///    constructor(inj: Injector, trans: Title, conf: ServerConfigBase) {
+        ///        super(inj, trans, conf);
+        ///    }
+        ///}.
+        /// </summary>
+        public static string AppComponentBase_ts {
+            get {
+                return ResourceManager.GetString("AppComponentBase_ts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;UseHotUpdate&quot;: true,
+        ///  &quot;env&quot;: &quot;dev&quot;,
+        ///  &quot;Services&quot;: {
+        ///	
+        ///  }
+        ///}.
+        /// </summary>
+        public static string appsettings_json {
+            get {
+                return ResourceManager.GetString("appsettings_json", resourceCulture);
             }
         }
         
@@ -177,12 +237,79 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE&gt;
+        ///@model CodeShellCore.Web.Moldster.IndexModel
+        ///&lt;html&gt;
+        ///&lt;head&gt;
+        ///    &lt;title&gt;@Model.Title&lt;/title&gt;
+        ///    &lt;base href=&quot;@Model.Config.BaseURL&quot; /&gt;
+        ///    &lt;meta charset=&quot;utf-8&quot;&gt;
+        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+        ///
+        ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Cairo:700|Changa:400,700|Tajawal&quot; rel=&quot;stylesheet&quot;&gt;
+        ///
+        ///    &lt;link href=&quot;~/css/plugins/bootstrap@(Model.Config.Locale==&quot;ar&quot;?&quot;.rtl&quot;:&quot;&quot;).css&quot; rel=&quot;stylesheet&quot; /&gt;
+        ///    &lt;link href=&quot;~/css/plugins/animate.css [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Index_cshtml {
+            get {
+                return ResourceManager.GetString("Index_cshtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] LocaleLoader_ts {
             get {
                 object obj = ResourceManager.GetObject("LocaleLoader_ts", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;section class=&quot;row&quot;&gt;
+        ///
+        ///    &lt;div class=&quot;col-md-6 col-md-offset-3 col-sm-12 col-sm-offset-0&quot;&gt;
+        ///        &lt;div class=&quot;title-header text-center&quot;&gt;
+        ///            &lt;h1&gt;{{&apos;Words.Log__&apos; | translate}} &lt;span&gt;{{&apos;Words.In__&apos; | translate}}&lt;/span&gt;&lt;/h1&gt;
+        ///        &lt;/div&gt;
+        ///        &lt;div class=&quot;border&quot;&gt;&lt;/div&gt;
+        ///        &lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        &lt;form class=&quot;order-price &quot; #Form=&quot;ngForm&quot;&gt;
+        ///            &lt;div class=&quot;row&quot;&gt;
+        ///                &lt;div class=&quot;col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 &quot;&gt;
+        ///
+        ///                     [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Login_html {
+            get {
+                return ResourceManager.GetString("Login_html", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to import { Component } from &apos;@angular/core&apos;;
+        ///import { BaseComponent } from &apos;codeshell/baseComponents&apos;;
+        ///import { Shell } from &apos;codeshell/core&apos;;
+        ///import { AccountServiceBase } from &apos;codeshell/security&apos;;
+        ///import { NoteType } from &apos;codeshell/helpers&apos;;
+        ///
+        ///@Component({ templateUrl: &quot;./Login.html&quot; })
+        ///export class Login extends BaseComponent {
+        ///
+        ///    AccountService: AccountServiceBase = Shell.Injector.get(AccountServiceBase);
+        ///    model: any = {};
+        ///    GetPageId(): number { return 0; }
+        ///
+        ///    Login() {
+        ///        th [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Login_ts {
+            get {
+                return ResourceManager.GetString("Login_ts", resourceCulture);
             }
         }
         
@@ -422,6 +549,16 @@ namespace CodeShellCore.Moldster.Properties {
         public static string WebPackSharedConfig_js {
             get {
                 return ResourceManager.GetString("WebPackSharedConfig_js", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] wwwroot {
+            get {
+                object obj = ResourceManager.GetObject("wwwroot", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

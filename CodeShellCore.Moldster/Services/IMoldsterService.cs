@@ -15,7 +15,7 @@ namespace CodeShellCore.Moldster.Services
         void WriteWebpackConfigFiles(bool lazy);
         void DevelopmentPack();
         void VendorPack(bool production = false);
-
+        void AddStaticFiles();
         string GetUIVersion();
         Result ProductionPack(string moduleName,string version);
     }

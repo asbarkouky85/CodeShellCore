@@ -16,12 +16,12 @@ namespace CodeShellCore.Web.Controllers
     {
 
         public abstract string DefaultDomain { get; }
-        public abstract IServerConfig ServerConfig { get; }
         public abstract string GetDefaultTitle(string loc);
 
+        public virtual IServerConfig ServerConfig { get { return new DefaultServerConfig(); } }
         public virtual bool RestrictHttps { get; }
         public virtual string[] Domains { get; }
-        public virtual Func<IndexModel,IActionResult> EmptyUrlHandler { get; }
+        public virtual Func<IndexModel, IActionResult> EmptyUrlHandler { get; }
 
         public string JsEnvironment
         {
@@ -54,8 +54,6 @@ namespace CodeShellCore.Web.Controllers
                 return Redirect("https://" + Request.Host + Request.Path);
             }
 
-            
-
             string dom = DomainName;
             bool isDevBuild = JsEnvironment == "dev";
             string loc = conf?.lang == null ? Request.GetLocaleFromCookie() : conf.lang;
@@ -73,12 +71,13 @@ namespace CodeShellCore.Web.Controllers
             mod.Config.Locale = loc;
             mod.Config.Env = JsEnvironment;
             mod.Config.Version = ver;
+            mod.Config.Urls = Shell.GetConfigAs<Dictionary<string, string>>("Services", false);
 
             if (EmptyUrlHandler != null && Request.PathIsEmpty())
             {
                 return EmptyUrlHandler.Invoke(mod);
             }
-            
+
             mod.Config.Domain = dom;
             mod.Config.BaseURL = dom == DefaultDomain ? "/" : "/" + dom;
             mod.Config.Hash = isDevBuild ? "" : "~7d078181";

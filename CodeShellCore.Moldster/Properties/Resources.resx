@@ -202,4 +202,25 @@
   <data name="Creation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\SQL\Creation.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
   </data>
+  <data name="appsettings_json" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Files\appsettings_json.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="AppComponent_cshtml" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Files\AppComponent_cshtml.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="wwwroot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Files\wwwroot.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="AppComponentBase_ts" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Angular\Files\AppComponentBase_ts.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Login_html" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Angular\Files\Login_html.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Login_ts" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Angular\Files\Login_ts.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Index_cshtml" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Files\Index_cshtml.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

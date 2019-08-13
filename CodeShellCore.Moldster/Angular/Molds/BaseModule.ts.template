@@ -7,9 +7,6 @@ import { ToastrModule } from "ngx-toastr";
 import { TranslateModule } from "@ngx-translate/core";
 
 import { CodeShellModule } from "codeshell";
-import { CodeShellLocalizationModule } from "codeshell/localization";
-import { CodeShellDatesModule } from "codeshell/dates";
-import { CodeShellRecursionModule } from "codeshell/recursion";
 
 import { AuthFilter } from "codeshell/security";
 import { ServerConfigBase } from "codeshell/core";
@@ -19,20 +16,13 @@ import { ServerConfig } from "./ServerConfig";
     declarations: [],
 
     imports: [
-        CodeShellModule,
-        CodeShellLocalizationModule,
-        CodeShellDatesModule,
-        CodeShellRecursionModule,
-
+        CodeShellModule.forRoot(),
         BrowserModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot()
     ],
     exports: [
         CodeShellModule,
-        CodeShellLocalizationModule,
-        CodeShellDatesModule,
-        CodeShellRecursionModule,
         BrowserModule,
         BrowserAnimationsModule,
         ToastrModule,
@@ -44,7 +34,6 @@ export class %Name%Module {
         return {
             ngModule: %Name%Module,
             providers: [
-                AuthFilter,
                 { provide: ServerConfigBase, useValue: ServerConfig.Instance },
             ]
         }

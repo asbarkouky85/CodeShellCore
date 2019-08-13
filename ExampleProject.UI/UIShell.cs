@@ -14,10 +14,11 @@ using Asga.Web;
 using Microsoft.EntityFrameworkCore;
 using CodeShellCore;
 using System.Collections.Generic;
+using CodeShellCore.Web.Moldster;
 
 namespace ExampleProject.UI
 {
-    public class UIShell : WebShell
+    public class UIShell : MoldsterShell
     {
         public UIShell(IConfiguration config) : base(config)
         {
@@ -27,22 +28,7 @@ namespace ExampleProject.UI
 
         protected override CultureInfo defaultCulture => new CultureInfo("ar");
 
-        public override void ConfigureHttp(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            app.UseStaticFiles();
-
-
-
-            var hot = getConfig("UseHotUpdate")?.Value == "True";
-            if (hot)
-            {
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true
-                });
-            }
-            base.ConfigureHttp(app, env);
-        }
+        
 
         public override void RegisterServices(IServiceCollection coll)
         {
@@ -93,23 +79,6 @@ namespace ExampleProject.UI
             }
         }
 
-        public override void RegisterRoutes(IRouteBuilder routes)
-        {
-            base.RegisterRoutes(routes);
-            routes.MapRoute(
-                name: "domain",
-                template: "{id}",
-                defaults: new { controller = "Home", action = "Index" });
-
-            routes.MapRoute(
-                name: "ds",
-                template: "SetLocale/{lang}",
-                defaults: new { controller = "Home", action = "SetLocale" });
-
-
-            routes.MapSpaFallbackRoute(
-                name: "spa-fallback",
-                defaults: new { controller = "Home", action = "Index" });
-        }
+        
     }
 }

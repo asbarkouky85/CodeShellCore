@@ -296,12 +296,58 @@ namespace CodeShellCore.Moldster.Services.Internal
                 Console.WriteLine("Adding file [ServerConfig.ts]");
                 File.WriteAllText(path, Properties.Resources.ServerConfig_ts);
             }
+            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "AppComponentBase.ts");
+            Utils.CreateFolderForFile(path);
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [AppComponentBase.ts]");
+                File.WriteAllText(path, Properties.Resources.AppComponentBase_ts);
+            }
+
+            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Main/Login.ts");
+            Utils.CreateFolderForFile(path);
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [Login.ts]");
+                File.WriteAllText(path, Properties.Resources.Login_ts);
+            }
+
+            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Main/Login.html");
+            Utils.CreateFolderForFile(path);
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [Login.html]");
+                File.WriteAllText(path, Properties.Resources.Login_html);
+            }
             path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, _paths.CoreAppName + "BaseModule.ts");
             if (!File.Exists(path))
             {
                 Console.WriteLine("Adding file [" + _paths.CoreAppName + "BaseModule.ts]");
-                string content = _writer.FillStringParameters(_molds.BaseModuleMold, new DomainTsModel { Name = _paths.CoreAppName });
+                string content = _writer.FillStringParameters(_molds.BaseModuleMold, new DomainTsModel { Name = _paths.CoreAppName+"Base" });
                 File.WriteAllText(path, content);
+            }
+
+            path = Path.Combine(_paths.UIRoot, "appsettings.development.json");
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [appsettings.development.json]");
+                File.WriteAllText(path, Properties.Resources.appsettings_json);
+            }
+
+            path = Path.Combine(_paths.ConfigRoot, "Views/AppComponent.cshtml");
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [AppComponent.cshtml]");
+                File.WriteAllText(path, Properties.Resources.AppComponent_cshtml);
+
+            }
+
+            path = Path.Combine(_paths.UIRoot, "Pages/Index.cshtml");
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [Index.cshtml]");
+                File.WriteAllText(path, Properties.Resources.Index_cshtml);
+
             }
 
         }

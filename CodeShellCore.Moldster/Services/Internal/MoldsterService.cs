@@ -44,7 +44,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             _ts.GenerateRoutes(modCode, lazy);
             _ts.GenerateModuleDefinition(modCode, lazy);
             _ts.GenerateBootFile(modCode);
-            
+
             _loc.GenerateJsonFiles(modCode);
 
         }
@@ -60,7 +60,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             Console.WriteLine("----------------------------");
             string moduleName = mod;
 
-            
+
 
             string[] pages = _data.GetDomainPages(mod, domain);
 
@@ -160,6 +160,17 @@ namespace CodeShellCore.Moldster.Services.Internal
         {
             string args = "node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" + (production ? " --env.prod" : "");
             RunCommand(_paths.UIRoot, "node", args);
+        }
+
+        public virtual void AddStaticFiles()
+        {
+            string path = Path.Combine(_paths.UIRoot, "wwwroot");
+            string file = path + "/pkg.zip";
+            Utils.CreateFolderForFile(file);
+            File.WriteAllBytes(file, Properties.Resources.wwwroot);
+            System.IO.Compression.ZipFile.ExtractToDirectory(file, Path.Combine(_paths.UIRoot, "wwwroot"));
+            File.Delete(file);
+
         }
 
         public virtual void RenderGuid(string module)

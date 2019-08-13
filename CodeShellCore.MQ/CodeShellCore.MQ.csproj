@@ -11,8 +11,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <FileVersion>2.0.4.0</FileVersion>
     <AssemblyVersion>2.0.4.0</AssemblyVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>2.0.4.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

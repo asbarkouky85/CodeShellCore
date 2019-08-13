@@ -1,12 +1,10 @@
-﻿using CodeShellCore.Web.Moldster;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace ExampleProject.UI.Models
+namespace CodeShellCore.Web.Moldster
 {
-    public class ServerConfig : IServerConfig
+   public class DefaultServerConfig : IServerConfig
     {
         public string BaseURL { get; set; }
         public string Domain { get; set; }
@@ -14,5 +12,6 @@ namespace ExampleProject.UI.Models
         public string Env { get; set; }
         public string Version { get; set; }
         public string Hash { get; set; }
+        public Dictionary<string, string> Urls { get; set; }
     }
 }

@@ -25,7 +25,8 @@ namespace CodeShellCore.Moldster.Cli
                     { 2, "ProccessTemplates"},
                     { 3, "SyncLanguages"},
                     { 4, "WriteEnums"},
-                    { 5, "Init"}
+                    { 5, "Init"},
+                    { 6, "AddStaticFiles"},
                 };
             }
         }
@@ -111,6 +112,11 @@ namespace CodeShellCore.Moldster.Cli
         {
             Scripts.GenerateEnvironment();
    
+        }
+
+        public void AddStaticFiles()
+        {
+            Moldster.AddStaticFiles();
         }
     }
 }
