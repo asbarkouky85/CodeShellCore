@@ -12,7 +12,7 @@ namespace CodeShellCore.Moldster.Services
         void GenerateGuidComponent(string mod);
         void GenerateBootFile(string moduleCode);
         bool GenerateDataService(string resource, string domain = null);
-        void GenerateDomainModule(string moduleCode, string dom, bool lazy = true);
+        
         void GenerateDevWebPackFiles(IEnumerable<string> modules, IEnumerable<string> active = null);
         void GenerateWebPackFiles(string code, IEnumerable<string> others, bool lazy);
         void GenerateRoutes(string module, bool lazy);
@@ -20,5 +20,6 @@ namespace CodeShellCore.Moldster.Services
         string MapEntity<T>();
         string MapEnum<T>();
         void GenerateEnvironment();
+        void GenerateDomainModule(string mod, string domain, bool lazy);
     }
 }

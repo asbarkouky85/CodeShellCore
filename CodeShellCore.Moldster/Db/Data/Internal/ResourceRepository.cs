@@ -2,25 +2,15 @@
 
 namespace CodeShellCore.Moldster.Db.Data.Internal
 {
-    public class ResourceRepository : MoldsterRepository<Resource, ConfigurationContext>,IMoldsterResourceRepository
+    public class ResourceRepository : MoldsterRepository<Resource, MoldsterContext>, IMoldsterResourceRepository
     {
-        public ResourceRepository(ConfigurationContext con) : base(con)
+        public ResourceRepository(MoldsterContext con) : base(con)
         {
         }
 
-        public Resource GetResource(long domainId, string resourceName)
+        public Resource GetResource(string resourceName, string serviceName = null)
         {
-            Resource res = FindSingle(d => d.DomainId == domainId && d.Name == resourceName);
-
-            if (res == null)
-            {
-                res = new Resource
-                {
-                    Name = resourceName,
-                    DomainId = domainId
-                };
-                Add(res);
-            }
+            Resource res = FindSingle(d => d.Name == resourceName);
             return res;
         }
     }

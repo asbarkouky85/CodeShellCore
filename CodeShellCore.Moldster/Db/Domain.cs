@@ -10,8 +10,8 @@ namespace CodeShellCore.Moldster.Db
         public Domain()
         {
             DomainEntities = new HashSet<DomainEntity>();
-            Resources = new HashSet<Resource>();
-            TenantDomains = new HashSet<TenantDomain>();
+            PageCategories = new HashSet<PageCategory>();
+            Pages = new HashSet<Page>();
         }
 
         public long Id { get; set; }
@@ -23,12 +23,15 @@ namespace CodeShellCore.Moldster.Db
         public DateTime? UpdatedOn { get; set; }
         public long? CreatedBy { get; set; }
         public long? UpdatedBy { get; set; }
+        public long? ParentId { get; set; }
+        public string Chain { get; set; }
+        public string NameChain { get; set; }
 
         [InverseProperty("Domain")]
         public ICollection<DomainEntity> DomainEntities { get; set; }
         [InverseProperty("Domain")]
-        public ICollection<Resource> Resources { get; set; }
+        public ICollection<PageCategory> PageCategories { get; set; }
         [InverseProperty("Domain")]
-        public ICollection<TenantDomain> TenantDomains { get; set; }
+        public ICollection<Page> Pages { get; set; }
     }
 }

@@ -36,7 +36,6 @@ module.exports = function WebpackSharedConfig(env) {
             splitChunks: isDevBuild ? {}:{
                 chunks: 'all',
                 name: false,
-                maxSize: isDevBuild ? 0 : 999424,
                 hidePathInfo :true
             }
         },

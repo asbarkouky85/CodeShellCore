@@ -13,5 +13,8 @@ namespace CodeShellCore.Moldster.Models
         public string Routes { get; set; }
         public string Lazy { get; set; }
         public string BaseName { get; set; }
+        public string BaseAppModuleName { get; set; }
+        public string BaseAppModulePath { get; set; }
+        public string PathToRoot { get; set; }
     }
 }

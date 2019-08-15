@@ -51,6 +51,7 @@ namespace CodeShellCore.Moldster.Services.Internal
 
         public virtual void RenderDomainModule(string mod, string domain, bool lazy)
         {
+
             Console.WriteLine();
             Console.Write("Rendering Module ");
 
@@ -59,8 +60,6 @@ namespace CodeShellCore.Moldster.Services.Internal
 
             Console.WriteLine("----------------------------");
             string moduleName = mod;
-
-
 
             string[] pages = _data.GetDomainPages(mod, domain);
 

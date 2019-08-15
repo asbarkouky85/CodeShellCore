@@ -28,13 +28,13 @@ namespace CodeShellCore.Moldster.Db.Dto
             {
                 return e => new PageDTO
                 {
-                    TenantCode = e.TenantDomain.Tenant.Code,
-                    TenantId = e.TenantDomain.TenantId,
+                    TenantCode = e.Tenant.Code,
+                    TenantId = e.TenantId,
                     Page = e,
                     BaseScript = e.PageCategory.ScriptPath,
                     ParentHasResource = e.PageCategory.ResourceId != null,
                     ResourceName = e.Resource.Name,
-                    DomainName = e.TenantDomain.Domain.Name,
+                    DomainName = e.Domain.Name,
                     CollectionId = e.SourceCollection == null ? null : e.SourceCollection.Name
                 };
             }
@@ -46,30 +46,24 @@ namespace CodeShellCore.Moldster.Db.Dto
             {
                 return p => new PageDTO
                 {
-                    DomainName=p.TenantDomain.Domain.Name,
-                    TenantCode = p.TenantDomain.Tenant.Code,
-                    TenantId = p.TenantDomain.TenantId,
+                    DomainName = p.Domain.Name,
+                    TenantCode = p.Tenant.Code,
+                    TenantId = p.TenantId,
                     Page = p,
                     BaseScript = p.PageCategory.ScriptPath,
                     ResourceName = p.Resource.Name,
                     ActionName = p.ResourceAction == null ? (p.SpecialPermission ?? null) : p.ResourceAction.Name,
-                    PageIdentifier = p.TenantDomain.Domain.Name + "__" + p.Name,
+                    PageIdentifier = p.Domain.Name + "__" + p.Name,
                 };
             }
         }
 
         public string Registration { get { return "Registry.Register(\"" + Page.ViewPath + "\", " + ComponentName + ");\n"; } }
 
-        public string GetImportString(bool removeDomain = false)
+        public string GetImportString(bool sameFolder = false)
         {
-
-            string path = Page.ViewPath;
-            if (removeDomain)
-            {
-                Regex reg = new Regex("^" + DomainName + "/");
-                path = reg.Replace(Page.ViewPath, "");
-            }
-            return $"import {{ {ComponentName} }} from \"./{path}\";\n";
+            string path = !sameFolder ? "../" + Page.ViewPath : "./" + ComponentName;
+            return $"import {{ {ComponentName} }} from \"{path}\";\n";
         }
 
 

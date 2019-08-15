@@ -25,8 +25,8 @@ namespace CodeShellCore.Moldster.Db.Services
         public IEnumerable<DomainWithPagesDTO> GetDomainWithPages(long tenantId, string domainName = null)
         {
             if (domainName != null)
-                return Unit.TenantDomainRepository.FindAs(DomainWithPagesDTO.Expression, n => n.TenantId == tenantId && n.Domain.Name == domainName);
-            return Unit.TenantDomainRepository.FindAs(DomainWithPagesDTO.Expression, n => n.TenantId == tenantId);
+                return Unit.DomainRepository.FindAs(DomainWithPagesDTO.RenderingExpression, n => n.Pages.Any(p=>p.TenantId == tenantId) && n.Name == domainName);
+            return Unit.DomainRepository.FindAs(DomainWithPagesDTO.RenderingExpression, n => n.Pages.Any(p => p.TenantId == tenantId));
         }
 
         public PageOptions GetPageOptions(long pageId)
@@ -36,7 +36,7 @@ namespace CodeShellCore.Moldster.Db.Services
             PageOptions opts = Unit.PageRepository.FindSingleAs(d => new PageOptions
             {
                 PageId = pageId,
-                PageIdentifier = d.TenantDomain.Domain.Name + "__" + d.Name,
+                PageIdentifier = d.Domain.Name + "__" + d.Name,
                 ViewParamsString = d.ViewParams,
                 Layout = d.Layout + ".cshtml",
                 ViewPath = d.PageCategory.ViewPath,
@@ -104,7 +104,7 @@ namespace CodeShellCore.Moldster.Db.Services
 
         public SubmitResult UpdateTemplatePages(long template, long? tenant = null)
         {
-            IEnumerable<Page> pages = Unit.PageRepository.Find(d => d.PageCategoryId == template && (d.TenantDomain.TenantId == tenant || tenant == null));
+            IEnumerable<Page> pages = Unit.PageRepository.Find(d => d.PageCategoryId == template && (d.TenantId == tenant || tenant == null));
             var controls = Unit.ControlRepository.Find(d => d.PageCategoryId == template);
             foreach (Page p in pages)
             {

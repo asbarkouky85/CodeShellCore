@@ -21,15 +21,15 @@ namespace CodeShellCore.Moldster
 
         public static void AddMoldsterDbData(this IServiceCollection coll)
         {
-            coll.AddContext<ConfigurationContext>();
+            coll.AddContext<MoldsterContext>();
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));
 
-            coll.AddRepositoryFor<PageControl, PageControlRepository>();
-            coll.AddRepositoryFor<TenantDomain, TenantDomainRepository>();
-            coll.AddRepositoryFor<PageCategory, PageCategoryRepository>();
-            coll.AddRepositoryFor<Resource, ResourceRepository>();
-            coll.AddRepositoryFor<Page, PageRepository>();
+            coll.AddRepositoryFor<PageControl, PageControlRepository, IPageControlRepository>();
+            coll.AddRepositoryFor<PageCategory, PageCategoryRepository, IPageCategoryRepository>();
+            coll.AddRepositoryFor<Domain, DomainRepository, IDomainRepository>();
+            coll.AddRepositoryFor<Resource, ResourceRepository,IMoldsterResourceRepository>();
+            coll.AddRepositoryFor<Page, PageRepository, IPageRepository>();
         }
 
         public static void UseEnumerationMapping(this IServiceCollection coll, string toPath, Func<IScriptGenerationService, string> f)
@@ -41,7 +41,7 @@ namespace CodeShellCore.Moldster
             coll.AddSingleton<IMappedEnumerations>(mapp);
         }
 
-        
+
 
         public static void AddMoldsterCli(this IServiceCollection coll, MoldsType t)
         {

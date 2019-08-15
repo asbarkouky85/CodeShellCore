@@ -34,7 +34,7 @@ export class %Name%Module {
         return {
             ngModule: %Name%Module,
             providers: [
-                { provide: ServerConfigBase, useValue: ServerConfig.Instance },
+                { provide: ServerConfigBase, useClass: ServerConfig },
             ]
         }
     }

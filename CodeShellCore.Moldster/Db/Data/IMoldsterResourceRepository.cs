@@ -8,6 +8,6 @@ namespace CodeShellCore.Moldster.Db.Data
 {
     public interface IMoldsterResourceRepository : IRepository<Resource>
     {
-        Resource GetResource(long domainId, string resourceName);
+        Resource GetResource(string resourceName, string serviceName = null);
     }
 }

@@ -9,6 +9,6 @@ namespace CodeShellCore.Moldster.Db.Data
     public interface IPageRepository : IRepository<Page>
     {
         IEnumerable<PageDTO> GetSharedPagesForRouting(string tenantCode);
-        IEnumerable<PageDTO> GetDomainPagesForRouting(string tenantCode, string domain);
+        IEnumerable<PageDTO> GetDomainPagesForRouting(string tenantCode, long domainId);
     }
 }

@@ -14,6 +14,7 @@ using CodeShellCore.Moldster.Db.Data;
 using CodeShellCore.Moldster.Services.Internal;
 using CodeShellCore.Moldster.Angular.Models;
 using CodeShellCore.Cli;
+using CodeShellCore.Files;
 
 namespace CodeShellCore.Moldster.Db.Services
 {
@@ -29,41 +30,80 @@ namespace CodeShellCore.Moldster.Db.Services
         };
 
         IConfigUnit _unit;
+        private readonly IFileHandler fileHandler;
         PageControlsService _controls;
         public DbTsGeneratorService(
             WriterService se,
             PathProvider paths,
             IMoldProvider mold,
             IConfigUnit unit,
+            IFileHandler fileHandler,
             PageControlsService controls,
             IMappedEnumerations enums) : base(se, mold, paths, enums)
         {
             _unit = unit;
+            this.fileHandler = fileHandler;
             _controls = controls;
         }
 
-        public override void GenerateDomainModule(string tenantCode, string domain, bool lazy = true)
+        public override void GenerateDomainModule(string moduleCode, string domId, bool lazy = true)
         {
-            Console.Write($"Generating {domain}Module : ");
+            long? id = null;
+            if (domId == "Shared")
+                id = -1;
+            else if (domId != null)
+                id = _unit.DomainRepository.GetDomainByPath(domId).Id;
+            GenerateDomainModule(moduleCode, id, lazy);
+        }
+
+        public void GenerateDomainModule(string moduleCode, long? domId, bool lazy = true)
+        {
+            if (domId == -1)
+            {
+                GenerateDomainRecursive(new DomainWithPagesDTO { DomainName = "Shared" }, moduleCode, null, lazy);
+                return;
+            }
+
+            var doms = new List<DomainWithPagesDTO>();
+
+            doms = _unit.DomainRepository.GetByTenantCodeForRouting(moduleCode, domId);
+            var newList = new List<DomainWithPagesDTO>();
+            if (domId == null)
+                newList = doms.Where(d => d.ParentId == null).ToList();
+            else
+                newList = doms.Where(d => d.Id == domId).ToList();
+
+            foreach (var item in newList)
+                item.AppendChildren(doms);
+
+            string parent = domId == null ? null : _unit.DomainRepository.GetValue(domId.Value, d => d.Name);
+
+            foreach (var item in newList)
+                GenerateDomainRecursive(item, moduleCode, null, lazy);
+        }
+
+        void GenerateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null, bool lazy = true)
+        {
+            Console.Write($"Generating {dom.DomainName}Module : ");
             GotoColumn(resultcol);
-            bool shared = domain == "Shared";
-            DomainWithPagesDTO dom = null;
+            bool shared = dom.DomainName == "Shared";
+            string template = shared ? _molds.SharedModuleMold : _molds.GetDomainModuleMold(lazy);
+            string filePath = Path.Combine(_paths.UIRoot, tenantCode, "app\\" + (parentDomain != null ? "\\" + parentDomain + "\\" : "") + dom.DomainName + "\\" + dom.DomainName + "Module.ts");
 
             if (shared)
-                dom = new DomainWithPagesDTO
-                {
-                    DomainName = "Shared",
-                    Pages = _unit.PageRepository.GetSharedPagesForRouting(tenantCode)
-                };
+                dom.Pages = _unit.PageRepository.GetSharedPagesForRouting(tenantCode);
             else
-                dom = new DomainWithPagesDTO
-                {
-                    DomainName = domain,
-                    Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, domain)
-                };
+                dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id);
 
-            string template = shared ? _molds.SharedModuleMold : _molds.GetDomainModuleMold(lazy);
-            string filePath = Path.Combine(_paths.UIRoot, tenantCode, "app\\" + dom.DomainName + "Module.ts");
+            int c = 0;
+            if (parentDomain != null)
+            {
+                c = parentDomain.Count(d => d == '\\') + 1;
+            }
+
+            string rootPath = "../";
+            for (var i = 0; i < c; i++)
+                rootPath += "../";
 
             DomainTsModel model = new DomainTsModel
             {
@@ -73,14 +113,17 @@ namespace CodeShellCore.Moldster.Db.Services
                 Registrations = "",
                 Routes = "",
                 Lazy = lazy ? "" : "",
-                BaseName = _paths.CoreAppName
+                BaseName = _paths.CoreAppName,
+                BaseAppModuleName = _paths.CoreAppName + "BaseModule",
+                BaseAppModulePath = _paths.CoreAppName + "/" + _paths.CoreAppName + "BaseModule",
+                PathToRoot = rootPath
             };
 
             foreach (PageDTO p in dom.Pages.Where(d => d.Page.HasRoute || shared))
             {
                 string component = p.ComponentName;
 
-                model.ComponentImports += p.GetImportString();
+                model.ComponentImports += p.GetImportString(!shared);
                 model.Components += component + ",";
                 model.Registrations += p.Registration;
 
@@ -88,18 +131,33 @@ namespace CodeShellCore.Moldster.Db.Services
                     model.Routes += "\t\t\t" + ChildRoute(p) + ",\n";
             }
 
+            if (dom.SubDomains != null)
+            {
+                foreach (DomainWithPagesDTO dp in dom.SubDomains)
+                {
+                    model.Routes += dp.LazyLoadingRoute;
+                }
+            }
+
+
             string contents = _writer.FillStringParameters(template, model);
             Utils.CreateFolderForFile(filePath);
             File.WriteAllText(filePath, contents);
             WriteSuccess();
             Console.WriteLine();
+
+            if (dom.SubDomains != null && dom.SubDomains.Any())
+            {
+                foreach (var d in dom.SubDomains)
+                    GenerateDomainRecursive(d, tenantCode, (parentDomain == null ? "" : parentDomain + "\\") + dom.DomainName, lazy);
+            }
         }
 
         public override void GenerateComponent(string module, string domain, string viewPath)
         {
             using (ColorSetter.Set(ConsoleColor.DarkRed))
                 Console.Write(" Ts: ");
-            PageDTO p = _unit.PageRepository.FindSingleAs(PageDTO.ExpressionForRendering, d => d.TenantDomain.Tenant.Code == module && d.TenantDomain.Domain.Name == domain && d.ViewPath.Contains(viewPath));
+            PageDTO p = _unit.PageRepository.FindSingleAs(PageDTO.ExpressionForRendering, d => d.Tenant.Code == module && d.ViewPath.Contains(viewPath));
 
             string scriptTemplate = "";
             if (p.ParentHasResource)
@@ -230,7 +288,7 @@ namespace CodeShellCore.Moldster.Db.Services
 
             if (!lazy)
             {
-                List<string> modules = _unit.TenantDomainRepository.FindAs(d => d.Domain.Name, d => d.Tenant.Code == modCode);
+                List<string> modules = _unit.DomainRepository.FindAs(d => d.Name, d => d.Pages.Any(p => p.Tenant.Code == modCode) && d.ParentId == null);
                 foreach (var mod in modules)
                 {
                     tempModel.ModuleImports += $"import {{ {mod}Module }} from \"./{mod}Module\";\r";
@@ -348,7 +406,7 @@ namespace CodeShellCore.Moldster.Db.Services
             string fileName = modCode + "Routes";
             string filePath = Path.Combine(_paths.UIRoot, modCode, "app", fileName + ".ts");
 
-            var domains = _controls.GetDomainWithPages(modId);
+            IEnumerable<DomainWithPagesDTO> domains = _unit.DomainRepository.GetParentModules(modId);
             string routesTemplate = _molds.RoutesMold;
 
             var tempModel = new RoutesTsModel
@@ -365,7 +423,7 @@ namespace CodeShellCore.Moldster.Db.Services
             {
                 string dom = domain.DomainName;
                 //RoutesModel.Routes += "{ path:\"" + dom + "\", loadChildren:\"./" + dom + "Module#" + dom + "Module?chunkName=" + Current.Code + "." + dom + "\" },\n\t";
-                tempModel.Routes += "{ path:\"" + dom + "\", loadChildren:\"./" + dom + "Module#" + dom + "Module\" },\n\t";
+                tempModel.Routes += domain.LazyLoadingRoute;
                 tempModel.DomainsData += "\t\t\t" + DomainRouteData(domain) + ",\n";
             }
 
@@ -388,6 +446,7 @@ namespace CodeShellCore.Moldster.Db.Services
         private string DomainRouteData(DomainWithPagesDTO dom)
         {
             string children = "";
+            dom.Pages = _unit.PageRepository.FindAs(PageDTO.ExpressionForRouting, d => d.DomainId == dom.Id);
             foreach (var p in dom.Pages)
             {
                 if (!p.Page.HasRoute || !p.Page.AppearsInNavigation)

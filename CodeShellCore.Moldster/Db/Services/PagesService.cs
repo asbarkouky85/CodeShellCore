@@ -18,12 +18,15 @@ namespace CodeShellCore.Moldster.Db.Services
     public class PagesService : EntityService<Page>
     {
         IConfigUnit Unit;
-        public PagesService(IConfigUnit unit) : base(unit)
+        private readonly DomainService domainService;
+
+        public PagesService(IConfigUnit unit, DomainService domainService) : base(unit)
         {
             Unit = unit;
+            this.domainService = domainService;
         }
 
-        
+
 
         private void CheckLayout(CreatePageDTO dto, long pageCategory)
         {
@@ -73,46 +76,51 @@ namespace CodeShellCore.Moldster.Db.Services
 
         public SubmitResult Create(CreatePageDTO dto)
         {
-            long domainId = Unit.DomainRepository.GetSingleValue(d => d.Id, d => d.Name == dto.Domain);
-            if (domainId == 0)
-                throw new CodeShellHttpException(HttpStatusCode.BadRequest, "Unknown domain " + dto.Name);
+            string domainPath = dto.ComponentPath.GetBeforeLast("/");
+            var domainResult = domainService.CreatePathAndGetId(domainPath);
 
+            long domainId = (long)domainResult.Data["LastId"];
             long pageCategory = 0;
 
             if (dto.CategoryId == null)
-                pageCategory = Unit.PageCategoryRepository.GetSingleValue(d => d.Id, e => e.ViewPath == dto.CategoryPath);
+                pageCategory = Unit.PageCategoryRepository.GetSingleValue(d => d.Id, e => e.ViewPath == dto.TemplatePath);
             else if (Unit.PageCategoryRepository.Exist(e => e.Id == dto.CategoryId.Value))
                 pageCategory = dto.CategoryId.Value;
 
             if (pageCategory == 0)
-                throw new CodeShellHttpException(HttpStatusCode.BadRequest, "No Template " + dto.CategoryPath + " or id " + dto.CategoryId);
+                return new SubmitResult((int)HttpStatusCode.BadRequest, "No Template " + dto.TemplatePath + " or id " + dto.CategoryId);
 
-            if (dto.Apps == null || !dto.Apps.Any())
-                throw new CodeShellHttpException(HttpStatusCode.BadRequest, "Page must be associated with at least one app");
+            if (dto.Apps == null)
+                dto.Apps = new string[0];
 
             Resource res = null;
 
             if (dto.Resource != null)
-                res = Unit.ResourceRepository.GetResource(domainId, dto.Resource);
+                res = Unit.ResourceRepository.GetResource(dto.Resource);
 
-            TenantDomain dom = Unit.TenantDomainRepository.GetTenantDomain(domainId, dto.TenantCode);
+            if(res==null)
+                return new SubmitResult((int)HttpStatusCode.BadRequest, "No such Resource " + dto.Resource);
 
-            string folder = dto.CategoryPath.GetBeforeLast("/");
+            Tenant tenant = Unit.TenantRepository.FindSingle(d => d.Code == dto.TenantCode);
+            if (tenant == null)
+                return new SubmitResult(401, "Invalid tenant : " + dto.TenantCode);
+            string folder = dto.TemplatePath.GetBeforeLast("/");
             CheckLayout(dto, pageCategory);
 
             Page p = new Page
             {
                 Id = Utils.GenerateID(),
-                Name = dto.Name,
+                Name = dto.ComponentPath.GetAfterLast("/"),
                 AppearsInNavigation = dto.AppearsInNavigation,
                 ViewParams = dto.ViewParams?.ToJson(),
                 PageCategoryId = pageCategory,
                 RouteParameters = dto.RouteParameters,
-                ViewPath = folder + "/" + dto.Name,
+                ViewPath = dto.ComponentPath,
                 SpecialPermission = dto.SpecialPermission,
                 Layout = dto.Layout,
                 SourceCollectionId = dto.CollectionId,
-                DefaultAccessibility = dto.DefaultAccessibility ?? 2
+                DefaultAccessibility = dto.DefaultAccessibility ?? 2,
+                DomainId=domainId
             };
             p.Apps = "";
             string sep = "";
@@ -122,17 +130,17 @@ namespace CodeShellCore.Moldster.Db.Services
                 sep = ", ";
             }
 
-            if (Unit.PageRepository.Exist(d => d.ViewPath == p.ViewPath && d.TenantDomainId == dom.Id))
-                throw new CodeShellHttpException(HttpStatusCode.Conflict, "this page already exists " + dto.TenantCode + "/" + p.ViewPath);
+            if (Unit.PageRepository.Exist(d => d.Name == p.Name && d.DomainId == domainId && d.TenantId == tenant.Id))
+                return new SubmitResult((int)HttpStatusCode.Conflict, "this page already exists " + dto.TenantCode + "/" + p.ViewPath);
 
             if (dto.Usage == null)
-                throw new CodeShellHttpException(HttpStatusCode.BadRequest, "Usage cannot be null (R: routable,E: embeddable,RE: both)");
+                return new SubmitResult((int)HttpStatusCode.BadRequest, "Usage cannot be null (R: routable,E: embeddable,RE: both)");
 
             p.HasRoute = dto.Usage.Contains("R");
             p.CanEmbed = dto.Usage.Contains("E");
 
             if (!p.HasRoute && !p.CanEmbed)
-                throw new CodeShellHttpException(HttpStatusCode.BadRequest, "Invalid usage (R: routable,E: embeddable,RE: both)");
+                return new SubmitResult((int)HttpStatusCode.BadRequest, "Invalid usage (R: routable,E: embeddable,RE: both)");
 
             string[] strs = new string[] { "view", "insert", "update", "delete", "details" };
 
@@ -144,14 +152,14 @@ namespace CodeShellCore.Moldster.Db.Services
                 }
                 else
                 {
-                    var ra = res.ResourceActions.Where(d => d.Name.ToLower() == dto.ActionType.ToLower() && d.TenantId == dom.TenantId).FirstOrDefault();
+                    var ra = res.ResourceActions.Where(d => d.Name.ToLower() == dto.ActionType.ToLower() && d.TenantId == tenant.Id).FirstOrDefault();
                     if (ra == null)
                     {
                         ra = new ResourceAction
                         {
                             Id = Utils.GenerateID(),
                             Name = dto.ActionType,
-                            TenantId = dom.TenantId
+                            TenantId = tenant.Id
                         };
                         res.ResourceActions.Add(ra);
                     }
@@ -159,30 +167,16 @@ namespace CodeShellCore.Moldster.Db.Services
                 }
             }
 
-            dom.Pages.Add(p);
+            tenant.Pages.Add(p);
             if (res != null)
                 res.Pages.Add(p);
 
-            return Unit.SaveChanges();
+            var nn= Unit.SaveChanges();
+            nn.Data["entity"] = p;
+            return nn;
         }
 
-        public SubmitResult Update(CreatePageDTO dto)
-        {
-            Page p = Repository.FindSingle(dto.Id);
-            CheckLayout(dto, p.PageCategoryId.Value);
-
-            p.Id = dto.Id;
-            p.Name = dto.Name;
-            p.AppearsInNavigation = dto.AppearsInNavigation;
-            p.ViewParams = dto.ViewParams?.ToJson();
-            p.PrivilegeType = dto.ActionType;
-            p.RouteParameters = dto.RouteParameters;
-            p.ViewPath = p.ViewPath.GetBeforeLast("/") + "/" + dto.Name;
-            p.SpecialPermission = p.SpecialPermission;
-
-            Repository.Update(p);
-            return Unit.SaveChanges();
-        }
+        
         public override SubmitResult Create(Page obj)
         {
 

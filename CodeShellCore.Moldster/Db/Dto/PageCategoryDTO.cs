@@ -18,7 +18,7 @@ namespace CodeShellCore.Moldster.Db.Dto
                 {
                     Category = e,
                     Resource = e.Resource == null ? null : e.Resource.Name,
-                    Domain = e.Resource == null ? null : e.Resource.Domain.Name
+                    Domain = e.Resource == null ? null : e.Domain.Name
                 };
             }
         }

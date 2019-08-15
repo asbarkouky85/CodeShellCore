@@ -21,4 +21,6 @@ export class topBar extends BaseComponent {
         this.isLoggedIn = false;
         this.Router.navigateByUrl("/Login");
     }
+
+    ChangeLang() { }
 }

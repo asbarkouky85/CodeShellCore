@@ -3,21 +3,25 @@ import { CodeShellModule } from "codeshell";
 import { Registry } from "codeshell/core";
 import { ServerConfig } from "%BaseName%/ServerConfig";
 import { TranslateService } from "@ngx-translate/core";
+import { %BaseAppModuleName% } from '%BaseAppModulePath%';
 %ComponentImports%
 
 @NgModule({
     declarations: [%Components%],
-    exports: [%Components%],
+    exports: [
+		%Components%
+		%BaseAppModuleName%
+	],
     imports: [
-        CodeShellModule,
+        %BaseAppModuleName%.forRoot()
     ],
 	entryComponents:[%Components%]
 })
 export class %Name%Module {
 
-    constructor(trans: TranslateService) {
-        trans.setDefaultLang(ServerConfig.Instance.Locale);
-        trans.use(ServerConfig.Instance.Locale);
+	constructor(trans: TranslateService, conf: ServerConfigBase) {
+        trans.setDefaultLang(conf.Locale);
+        trans.use(conf.Locale);
     }
 }
 

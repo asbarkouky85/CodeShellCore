@@ -17,17 +17,15 @@ namespace CodeShellCore.Moldster.Db
         public long Id { get; set; }
         [StringLength(150)]
         public string Name { get; set; }
-        public long DomainId { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? CreatedOn { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? UpdatedOn { get; set; }
         public long? CreatedBy { get; set; }
         public long? UpdatedBy { get; set; }
+        [StringLength(50)]
+        public string ServiceName { get; set; }
 
-        [ForeignKey("DomainId")]
-        [InverseProperty("Resources")]
-        public Domain Domain { get; set; }
         [InverseProperty("Resource")]
         public ICollection<PageCategory> PageCategories { get; set; }
         [InverseProperty("Resource")]

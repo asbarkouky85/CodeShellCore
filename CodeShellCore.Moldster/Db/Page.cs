@@ -17,6 +17,7 @@ namespace CodeShellCore.Moldster.Db
         public string Name { get; set; }
         [StringLength(300)]
         public string ViewPath { get; set; }
+        public string Apps { get; set; }
         [Column(TypeName = "ntext")]
         public string ViewParams { get; set; }
         public long? ResourceId { get; set; }
@@ -33,8 +34,6 @@ namespace CodeShellCore.Moldster.Db
         public long? PageCategoryId { get; set; }
         [StringLength(100)]
         public string RouteParameters { get; set; }
-        public int DefaultAccessibility { get; set; }
-        public long? TenantDomainId { get; set; }
         public bool AppearsInNavigation { get; set; }
         public bool HasRoute { get; set; }
         public bool CanEmbed { get; set; }
@@ -44,13 +43,23 @@ namespace CodeShellCore.Moldster.Db
         public DateTime? UpdatedOn { get; set; }
         public long? CreatedBy { get; set; }
         public long? UpdatedBy { get; set; }
-        public string Apps { get; set; }
+        public int DefaultAccessibility { get; set; }
+        public bool? Presistant { get; set; }
+        public long DomainId { get; set; }
+        public long TenantId { get; set; }
 
-        [ForeignKey("PageCategoryId")]
+        [ForeignKey("DomainId")]
         [InverseProperty("Pages")]
+        [System.Runtime.Serialization.IgnoreDataMember]
+        public Domain Domain { get; set; }
+        [ForeignKey("PageCategoryId")]
+        
+        [InverseProperty("Pages")]
+        [System.Runtime.Serialization.IgnoreDataMember]
         public PageCategory PageCategory { get; set; }
         [ForeignKey("ResourceId")]
         [InverseProperty("Pages")]
+        [System.Runtime.Serialization.IgnoreDataMember]
         public Resource Resource { get; set; }
         [ForeignKey("ResourceActionId")]
         [InverseProperty("Pages")]
@@ -58,9 +67,9 @@ namespace CodeShellCore.Moldster.Db
         [ForeignKey("SourceCollectionId")]
         [InverseProperty("Pages")]
         public DomainEntityCollection SourceCollection { get; set; }
-        [ForeignKey("TenantDomainId")]
+        [ForeignKey("TenantId")]
         [InverseProperty("Pages")]
-        public TenantDomain TenantDomain { get; set; }
+        public Tenant Tenant { get; set; }
         [InverseProperty("Page")]
         public ICollection<PageControl> PageControls { get; set; }
     }

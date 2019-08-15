@@ -23,13 +23,13 @@ namespace CodeShellCore.Moldster.Db.Services
         {
             return _unit.PageRepository.GetValues(
                 d => d.ViewPath,
-                d => d.TenantDomain.Domain.Name == domain && d.TenantDomain.Tenant.Code == mod
+                d => d.Domain.NameChain.Contains("/" + domain + "/") && d.Tenant.Code == mod
                 ).ToArray();
         }
 
         public string[] GetModuleDomains(string modCode)
         {
-            return _unit.TenantDomainRepository.GetValues(d => d.Domain.Name, d => d.Tenant.Code == modCode).ToArray();
+            return _unit.DomainRepository.GetValues(d => d.Name, d => d.ParentId == null).ToArray();
         }
 
         public string[] GetModuleNames(bool? active = null)
@@ -41,7 +41,7 @@ namespace CodeShellCore.Moldster.Db.Services
         {
             long pageId = _unit.PageRepository.GetSingleValue(
                 d => d.Id,
-                d => d.TenantDomain.Tenant.Code == moduleCode && d.ViewPath == viewPath);
+                d => d.Tenant.Code == moduleCode && d.ViewPath == viewPath);
             return _controls.GetPageOptions(pageId);
         }
 
@@ -50,8 +50,8 @@ namespace CodeShellCore.Moldster.Db.Services
             return _unit.PageCategoryRepository.GetValues(
                 d => d.ViewPath,
                 d => d.Pages.Any(e =>
-                    e.TenantDomain.Tenant.Code == modCode &&
-                    (e.TenantDomain.Domain.Name == domain || domain == null)
+                    e.Tenant.Code == modCode &&
+                    (e.Domain.Name == domain || domain == null)
                 )).ToArray();
         }
     }

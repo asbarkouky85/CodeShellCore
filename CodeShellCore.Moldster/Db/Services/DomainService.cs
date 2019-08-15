@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Data.Helpers;
 
 namespace CodeShellCore.Moldster.Db.Services
 {
@@ -12,7 +13,7 @@ namespace CodeShellCore.Moldster.Db.Services
     {
         protected IConfigUnit Unit;
         private static Dictionary<Type, long> EntityIds;
-        
+
         public DomainService(IConfigUnit unit) : base(unit)
         {
             Unit = unit;
@@ -92,21 +93,51 @@ namespace CodeShellCore.Moldster.Db.Services
 
         }
 
-        public Resource GetResource(string domain, string resource)
+        List<string> _partitionPath(string path)
         {
-            Resource r = Unit.ResourceRepository.FindSingle(d => d.Name == resource && d.Domain.Name == domain);
-            if (r == null)
+            string[] spl = path.Split('/');
+            List<string> lst = new List<string>();
+            foreach (var s in spl)
             {
-                r = new Resource
-                {
-                    Id = Utils.GenerateID(),
-                    DomainId = GetDomainId(domain),
-                    Name = resource
-                };
-                Unit.ResourceRepository.Add(r);
+                if (!string.IsNullOrEmpty(s))
+                    lst.Add(s.Trim());
             }
+            return lst;
+        }
 
-            return r;
+        /// <summary>
+        /// id is returned in the data dictionary as LastId
+        /// </summary>
+        /// <param name="dom"></param>
+        /// <returns></returns>
+        public SubmitResult CreatePathAndGetId(string dom)
+        {
+            if (dom[0] != '/')
+                dom = "/" + dom;
+            var parts = _partitionPath(dom);
+            string searchTerm = "";
+            List<Domain> domains = new List<Domain>();
+            long? lastId = null;
+            foreach (var part in parts)
+            {
+                searchTerm += "/" + part;
+                Domain domain = Repository.FindSingle(d => d.NameChain == searchTerm);
+                if (domain == null)
+                {
+                    domain = new Domain
+                    {
+                        Id = Utils.GenerateID(),
+                        Name = part,
+                        ParentId = lastId
+                    };
+                    
+                    Repository.Add(domain);
+                }
+                lastId = domain.Id;
+            }
+            var res= Unit.SaveChanges();
+            res.Data["LastId"] = lastId;
+            return res;
         }
     }
 }

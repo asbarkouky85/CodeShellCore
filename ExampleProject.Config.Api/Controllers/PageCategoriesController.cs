@@ -1,26 +1,15 @@
-﻿using CodeShellCore.Data.Services;
-using CodeShellCore.Web.Controllers;
-using CodeShellCore.Moldster.Db;
-using CodeShellCore.Web.Filters;
-using Microsoft.AspNetCore.Mvc;
+﻿using CodeShellCore.Web.Filters;
+using CodeShellCore.Web.Razor.Controllers;
+using CodeShellCore.Moldster.Db.Services;
 
 namespace ExampleProject.Config.Api.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
-    public class PageCategoriesController : EntityController<PageCategory,long>,IEntityController<PageCategory,long>
+    public class PageCategoriesController : PageCategoriesControllerBase
     {
-        public PageCategoriesController(IEntityService<PageCategory> service) : base(service)
+        public PageCategoriesController(PageCategoryService service) : base(service)
         {
         }
-
-        public IActionResult Post([FromBody] PageCategory obj)
-        {
-            return DefaultPost(obj);
-        }
-
-        public IActionResult Put([FromBody] PageCategory obj)
-        {
-            return DefaultPut(obj);
-        }
+        
     }
 }

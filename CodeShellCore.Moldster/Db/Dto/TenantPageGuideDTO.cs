@@ -21,24 +21,26 @@ namespace CodeShellCore.Moldster.Db.Dto
                 {
                     Code = e.Code,
                     Name = e.Name,
-                    Domains = e.TenantDomains.Select(d => new DomainGuidDTO
+                    Domains = e.Pages.Select(d => new DomainGuidDTO
                     {
                         Name = d.Domain.Name,
-                        Resources = (from r in d.Domain.Resources
-                                     where r.Pages.Any(p => p.TenantDomainId == d.Id)
-                                     select new ResourceGuidDTO
-                                     {
-                                         Name = r.Name,
-                                         PageCount = r.Pages.Count(s => s.HasRoute && s.TenantDomainId == d.Id),
-                                         Pages = (from p in r.Pages
-                                                  where p.HasRoute && p.TenantDomainId == d.Id
-                                                  select new PageGuidDTO
-                                                  {
-                                                      Name = p.TenantDomain.Domain.Name + "__" + p.Name,
-                                                      PrivilegeName = p.ResourceActionId == null ? p.PrivilegeType : p.ResourceAction.Name,
-                                                      AppsString = p.Apps
-                                                  }).ToList()
-                                     }).ToList()
+                        Resources=new List<ResourceGuidDTO>()
+                        //TODO:
+                        //Resources = (from r in d.Domain.Resources
+                        //             where r.Pages.Any(p => p.TenantDomainId == d.Id)
+                        //             select new ResourceGuidDTO
+                        //             {
+                        //                 Name = r.Name,
+                        //                 PageCount = r.Pages.Count(s => s.HasRoute && s.TenantDomainId == d.Id),
+                        //                 Pages = (from p in r.Pages
+                        //                          where p.HasRoute && p.TenantDomainId == d.Id
+                        //                          select new PageGuidDTO
+                        //                          {
+                        //                              Name = p.TenantDomain.Domain.Name + "__" + p.Name,
+                        //                              PrivilegeName = p.ResourceActionId == null ? p.PrivilegeType : p.ResourceAction.Name,
+                        //                              AppsString = p.Apps
+                        //                          }).ToList()
+                        //             }).ToList()
                     }).ToList()
                 };
             }

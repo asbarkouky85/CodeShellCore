@@ -17,6 +17,7 @@ using CodeShellCore.Types;
 using CodeShellCore.Services.Http;
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.Text.Localization;
+using CodeShellCore.Files;
 
 namespace CodeShellCore
 {
@@ -116,7 +117,7 @@ namespace CodeShellCore
             if (conf != null)
                 coll.AddSingleton(d => new Encryptor(conf));
             coll.AddScoped<IUserAccessor, UserAccessor>();
-
+            coll.AddSingleton<IFileHandler, FileSystemHandler>();
         }
         protected abstract IConfigurationSection getConfig(string key);
         protected virtual void OnReady() { }

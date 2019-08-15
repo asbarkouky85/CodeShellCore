@@ -44,5 +44,6 @@ namespace CodeShellCore.Data
         DeleteResult CanDelete(object id);
 
         List<T> GetByExperession/*<TR, TVal>*/(IEnumerable<Expression<Func<T, bool>>> filtres);
+        
     }
 }

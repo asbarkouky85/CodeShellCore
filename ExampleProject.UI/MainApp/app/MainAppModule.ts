@@ -5,11 +5,10 @@ import { BaseModule } from 'codeshell';
 import { ServerConfigBase } from "codeshell/core";
 import { DomainDataProvider } from 'codeshell/security';
 
-import { ExampleProjectBaseModule } from 'ExampleProject/ExampleProjectBaseModule';
 import { AppComponent } from './AppComponent';
 import { ServerConfig } from "ExampleProject/ServerConfig";
 
-import { SharedModule } from './SharedModule';
+import { SharedModule } from './Shared/SharedModule';
 
 import { Routes, GetDomainsData } from './MainAppRoutes';
 
@@ -17,7 +16,6 @@ import { Routes, GetDomainsData } from './MainAppRoutes';
     bootstrap: [AppComponent],
 	declarations: [AppComponent,],
     imports: [
-        ExampleProjectBaseModule.forRoot(),
 		SharedModule,
 		
         RouterModule.forRoot(Routes())

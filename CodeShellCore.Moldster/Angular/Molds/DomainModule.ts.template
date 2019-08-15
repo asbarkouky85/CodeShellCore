@@ -8,7 +8,6 @@ import { Registry } from "codeshell/core";
     declarations: [%Components%],
     exports: [%Components%],
     imports: [
-        CodeShellModule,
 		SharedModule
     ]
 })

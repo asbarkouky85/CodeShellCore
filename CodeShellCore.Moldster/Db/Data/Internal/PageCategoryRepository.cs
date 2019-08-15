@@ -6,9 +6,9 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Db.Data.Internal
 {
-    public class PageCategoryRepository : MoldsterRepository<PageCategory, ConfigurationContext>, IPageCategoryRepository
+    public class PageCategoryRepository : MoldsterRepository<PageCategory, MoldsterContext>, IPageCategoryRepository
     {
-        public PageCategoryRepository(ConfigurationContext con) : base(con)
+        public PageCategoryRepository(MoldsterContext con) : base(con)
         {
         }
 

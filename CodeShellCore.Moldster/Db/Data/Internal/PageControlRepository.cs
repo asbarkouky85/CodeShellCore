@@ -7,9 +7,9 @@ using CodeShellCore.Moldster.Db.Dto;
 
 namespace CodeShellCore.Moldster.Db.Data.Internal
 {
-    public class PageControlRepository : MoldsterRepository<PageControl, ConfigurationContext>,IPageControlRepository
+    public class PageControlRepository : MoldsterRepository<PageControl, MoldsterContext>,IPageControlRepository
     {
-        public PageControlRepository(ConfigurationContext con) : base(con)
+        public PageControlRepository(MoldsterContext con) : base(con)
         {
         }
 

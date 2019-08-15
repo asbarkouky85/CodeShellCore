@@ -8,7 +8,7 @@ using CodeShellCore.Helpers;
 
 namespace CodeShellCore.Moldster.Db.Internal
 {
-    public class ConfigUnit : UnitOfWork<ConfigurationContext>, IConfigUnit
+    public class ConfigUnit : UnitOfWork<MoldsterContext>, IConfigUnit
     {
         public override Action<ChangeLists> OnBeforeSave => lst =>
         {
@@ -29,15 +29,13 @@ namespace CodeShellCore.Moldster.Db.Internal
         }
 
 
-        public IMoldsterResourceRepository ResourceRepository { get { return GetEFRepository<ResourceRepository>(); } }
-        public IPageCategoryRepository PageCategoryRepository { get { return GetRepository<PageCategoryRepository>(); } }
-        public IPageControlRepository PageControlRepository { get { return GetEFRepository<PageControlRepository>(); } }
-        public IPageRepository PageRepository { get { return GetRepository<PageRepository>(); } }
-        public ITenantDomainRepository TenantDomainRepository { get { return GetEFRepository<TenantDomainRepository>(); } }
-
+        public IMoldsterResourceRepository ResourceRepository { get { return GetRepository<IMoldsterResourceRepository>(); } }
+        public IPageCategoryRepository PageCategoryRepository { get { return GetRepository<IPageCategoryRepository>(); } }
+        public IPageControlRepository PageControlRepository { get { return GetRepository<IPageControlRepository>(); } }
+        public IPageRepository PageRepository { get { return GetRepository<IPageRepository>(); } }
+        public IDomainRepository DomainRepository { get { return GetRepository<IDomainRepository>(); } }
 
         public IRepository<Control> ControlRepository { get { return GetRepositoryFor<Control>(); } }
-        public IRepository<Domain> DomainRepository { get { return GetRepositoryFor<Domain>(); } }
         public IRepository<DomainEntity> DomainEntityRepository { get { return GetRepositoryFor<DomainEntity>(); } }
         public IRepository<DomainEntityProperty> EntityPropertyRepository { get { return GetRepositoryFor<DomainEntityProperty>(); } }
         public IRepository<ResourceAction> ResourceActionRepository { get { return GetRepositoryFor<ResourceAction>(); } }

@@ -244,8 +244,6 @@ namespace CodeShellCore.Moldster.Services.Internal
 
         public abstract void GenerateModuleDefinition(string module, bool lazy);
 
-        public abstract void GenerateDomainModule(string moduleCode, string dom, bool lazy = true);
-
         public abstract void GenerateRoutes(string module, bool lazy);
 
         public void GenerateEnvironment()
@@ -351,5 +349,9 @@ namespace CodeShellCore.Moldster.Services.Internal
             }
 
         }
+
+        
+
+        public abstract void GenerateDomainModule(string mod, string domain, bool lazy);
     }
 }

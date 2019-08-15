@@ -6,7 +6,7 @@ namespace CodeShellCore.UnitTest
 {
     public class UnitTestClass
     {
-        public void RunTest(Action<IServiceProvider> action)
+        public void RunScoped(Action<IServiceProvider> action)
         {
             using (var sc = Shell.GetScope())
             {

@@ -3,16 +3,11 @@
 </div>
 
 <div>
-    <top-bar></top-bar>
     <div class="wrapper">
-        <div class="wrapper-side">
-            <navigationSideBar></navigationSideBar>
-        </div>
         <div class="wrapper-content">
             <router-outlet></router-outlet>
         </div>
     </div>
-   
 </div>
 
 <div [ngClass]="Config.Locale=='ar'? 'ui-rtl':null" [dir]="Config.Locale=='ar'? 'rtl':null">
@@ -28,20 +23,6 @@
         <div class="submit-buttons pull-last">
             <button class="btn btn-default" (click)="OnDeleteCancel($event)">{{'Words.No' | translate}}</button>
             <button class="btn btn-primary" (click)="OnDeleteConfirm($event)">{{'Words.Yes' | translate}}</button>
-        </div>
-    </p-dialog>
-
-    <p-dialog #deleteDialog [(visible)]="ConfirmDialogShow" [modal]="true" width="600">
-        <p-header>
-            {{headerMsg }}
-        </p-header>
-        <p>   {{MsgData}}</p>
-        <br />
-
-        <div class="submit-buttons pull-last">
-            <button class="btn btn-default" (click)="OnDeleteCancel($event)">{{'Words.No' | translate}}</button>
-            <button class="btn btn-primary" (click)="OnDeleteConfirm($event)">{{'Words.Yes' | translate}}</button>
-
         </div>
     </p-dialog>
 

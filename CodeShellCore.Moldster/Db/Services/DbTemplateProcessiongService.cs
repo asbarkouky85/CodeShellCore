@@ -51,7 +51,7 @@ namespace CodeShellCore.Moldster.Db.Services
         public void ProcessAllTemplates(string modCode, IScriptGenerationService tsGen)
         {
             long tenantId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
-            var lst = _unit.PageCategoryRepository.GetValues(d => d.Id, d => d.Pages.Any(e => e.TenantDomain.TenantId == tenantId));
+            var lst = _unit.PageCategoryRepository.GetValues(d => d.Id, d => d.Pages.Any(e => e.TenantId == tenantId));
             foreach (long id in lst)
             {
                 TemplateToDb(id, tenantId, tsGen);
@@ -242,7 +242,7 @@ namespace CodeShellCore.Moldster.Db.Services
         public override void GenerateComponentTemplate(string moduleName, string viewPath)
         {
             long pageId = _unit.PageRepository.GetSingleValue(d => d.Id,
-                d => d.TenantDomain.Tenant.Code == moduleName && d.ViewPath == viewPath);
+                d => d.Tenant.Code == moduleName && d.ViewPath == viewPath);
 
             RenderPage(pageId);
         }

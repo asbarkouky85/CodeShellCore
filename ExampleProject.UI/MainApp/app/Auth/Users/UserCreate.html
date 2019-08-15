@@ -1,12 +1,12 @@
 <div [ngClass]="IsEmbedded?'panel panel-default head':'row wrapper border-bottom white-bg page-heading home'" *ngIf="!HideHeader">
     <div class="col-sm-5" *ngIf="!IsEmbedded">
-        <h2>{{'Pages.Auth__UserCreate' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        <h2>{{'Pages.Users__UserCreate' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
         <ol class="breadcrumb">
             <li>
                 <a routerLink="'/'">{{'Words.Main' | translate }}</a>
             </li>
             <li>
-                {{'Pages.Auth__UserCreate' | translate }}
+                {{'Pages.Users__UserCreate' | translate }}
             </li>
         </ol>
     </div>
@@ -31,7 +31,7 @@
     <div class="panel-heading blueColor" *ngIf="IsEmbedded">
         <div class="row">
             <div class="col-md-8">
-                {{'Pages.Auth__UserCreate' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+                {{'Pages.Users__UserCreate' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
             </div>
             <div class="col-md-4">
             </div>

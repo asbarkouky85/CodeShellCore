@@ -25,12 +25,6 @@ namespace CodeShellCore.Web.Razor.Controllers
             return Respond();
         }
 
-        [HttpPut]
-        public IActionResult Put([FromBody] CreatePageDTO obj)
-        {
-            SubmitResult = Service.Update(obj);
-            return Respond();
-        }
 
         public IActionResult SetViewParams(long id, [FromBody]ViewParams @params)
         {

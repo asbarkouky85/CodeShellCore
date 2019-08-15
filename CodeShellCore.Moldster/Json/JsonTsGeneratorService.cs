@@ -33,6 +33,10 @@ namespace CodeShellCore.Moldster.Json
             _data = data;
         }
 
+        public JsonTsGeneratorService(WriterService wt, IMoldProvider mold, PathProvider paths, IMappedEnumerations enums) : base(wt, mold, paths, enums)
+        {
+        }
+
         public override void GenerateMainComponent(string module)
         {
             NgModule mod = _data.GetNgModule(module);
@@ -194,9 +198,7 @@ namespace CodeShellCore.Moldster.Json
                 WriteSuccess(x.Elapsed);
             }
         }
-
-
-
+        
         public override void GenerateDomainModule(string moduleCode, string domain, bool lazy = true)
         {
             DomainWithPages dom = _data.GetDomainModuleWithPages(moduleCode, domain);

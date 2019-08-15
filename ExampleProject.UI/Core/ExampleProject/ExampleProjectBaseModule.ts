@@ -39,7 +39,7 @@ export class ExampleProjectBaseModule {
             ngModule: ExampleProjectBaseModule,
             providers: [
                 UsersService,
-                { provide: ServerConfigBase, useValue: ServerConfig.Instance },
+                { provide: ServerConfigBase, useClass: ServerConfig },
                 { provide: AccountServiceBase, useClass: AccountService }
             ]
         }

@@ -7,15 +7,13 @@ namespace CodeShellCore.Moldster.Db.Dto
     public class CreatePageDTO
     {
         public long Id { get; set; }
-        public string Domain { get; set; }
-        public string Roles { get; set; }
         public string TenantCode { get; set; }
-        public string Name { get; set; }
+        
+        public string ComponentPath { get; set; }
+        public string TemplatePath { get; set; }
         public string RouteParameters { get; set; }
-        public string CategoryPath { get; set; }
         public long? CategoryId { get; set; }
         public string Resource { get; set; }
-        public bool IsLookup { get; set; }
         public bool AppearsInNavigation { get; set; }
         public ViewParams ViewParams { get; set; }
         public string ActionType { get; set; }

@@ -19,13 +19,7 @@ namespace CodeShellCore.Moldster.Db
             return null;
         }
     }
-    public partial class TenantDomain : ISharedModel
-    {
-        public string[] GetNavPropertyNames()
-        {
-            return new string[] { "Domain", "Tenant" };
-        }
-    }
+
     public partial class ResourceAction : ISharedModel
     {
         public string[] GetNavPropertyNames()

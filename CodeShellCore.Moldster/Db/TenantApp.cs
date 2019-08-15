@@ -19,6 +19,8 @@ namespace CodeShellCore.Moldster.Db
         [Column(TypeName = "datetime")]
         public DateTime? UpdatedOn { get; set; }
         public long? UpdatedBy { get; set; }
+        [StringLength(300)]
+        public string DashboardUrl { get; set; }
 
         [ForeignKey("TenantId")]
         [InverseProperty("TenantApps")]

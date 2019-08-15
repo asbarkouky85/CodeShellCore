@@ -13,11 +13,6 @@ namespace CodeShellCore.Moldster.Db.Services
         }
 
         IConfigUnit Unit;
-        public SubmitResult AddDomain(TenantDomain tenantDomain)
-        {
-            Unit.TenantDomainRepository.Merge(tenantDomain);
-            return Unit.SaveChanges();
-        }
 
         
     }

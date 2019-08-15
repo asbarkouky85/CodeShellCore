@@ -11,8 +11,7 @@ namespace CodeShellCore.Moldster.Db.Data
         IPageCategoryRepository PageCategoryRepository { get; }
         IPageRepository PageRepository { get; }
         IRepository<DomainEntity> DomainEntityRepository { get; }
-        ITenantDomainRepository TenantDomainRepository { get; }
-        IRepository<Domain> DomainRepository { get; }
+        IDomainRepository DomainRepository { get; }
         IRepository<DomainEntityProperty> EntityPropertyRepository { get; }
         IRepository<Control> ControlRepository { get; }
         IRepository<TenantApp> TenantAppRepository { get; }

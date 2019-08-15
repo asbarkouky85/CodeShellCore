@@ -1,9 +1,11 @@
 ﻿import { Route } from "@angular/router";
 
+import { AuthFilter } from "codeshell/security";
 import { DomainData, ResourceActions } from "codeshell/security";
+import { Translator } from "codeshell/localization";
 
 import { Login } from "ExampleProject/Main/Login";
-import { Translator } from "codeshell/localization";
+
 
 import { ar_Loader } from "./Localization/ar/Loader";
 import { en_Loader } from "./Localization/en/Loader";
@@ -12,7 +14,7 @@ import { en_Loader } from "./Localization/en/Loader";
 var routes: Route[] = [
     { path: 'Login', component: Login, data: { action: 'anonymous' } }
 	,
-{ path:"Auth", loadChildren:"./AuthModule#AuthModule" },
+{ path:"Auth", loadChildren:"./Auth/AuthModule#AuthModule" },
 	
     { path: '**', redirectTo: '/' }
 
@@ -28,8 +30,7 @@ let data: DomainData[] | null = null;
 export function GetDomainsData(): DomainData[] {
     if (!data) {
         data = [
-			{ name : "Auth" ,children: [
-				{ name : "Auth__UserCreate", navigate: true, resource:"Auth__Users", action: ResourceActions.insert, apps: ["Admin"] },]},
+			{ name : "Auth" ,children: []},
 
 		];
     }

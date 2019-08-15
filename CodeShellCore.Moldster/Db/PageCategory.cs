@@ -21,7 +21,6 @@ namespace CodeShellCore.Moldster.Db
         public string BaseComponent { get; set; }
         [StringLength(300)]
         public string ViewPath { get; set; }
-        public string Layout { get; set; }
         [StringLength(300)]
         public string ScriptPath { get; set; }
         public long? ResourceId { get; set; }
@@ -31,7 +30,13 @@ namespace CodeShellCore.Moldster.Db
         public DateTime? UpdatedOn { get; set; }
         public long? CreatedBy { get; set; }
         public long? UpdatedBy { get; set; }
+        [StringLength(150)]
+        public string Layout { get; set; }
+        public long? DomainId { get; set; }
 
+        [ForeignKey("DomainId")]
+        [InverseProperty("PageCategories")]
+        public Domain Domain { get; set; }
         [ForeignKey("DomainEntityId")]
         [InverseProperty("PageCategories")]
         public DomainEntity DomainEntity { get; set; }
