@@ -9,9 +9,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <FileVersion>2.0.4.0</FileVersion>
-    <AssemblyVersion>2.0.4.0</AssemblyVersion>
-    <Version>2.0.4.0</Version>
+    <FileVersion>2.0.10.0</FileVersion>
+    <AssemblyVersion>2.0.10.0</AssemblyVersion>
+    <Version>2.0.10.0</Version>
     <AssemblyName>CodeShellCore</AssemblyName>
     <RootNamespace>CodeShellCore</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

@@ -20,9 +20,10 @@ GO
 alter table Pages drop column TenantDomainId;
 alter table Pages alter column DomainId bigint not null;
 alter table Pages alter column TenantId bigint not null;
-GO;
+GO
 alter table Domains add ParentId bigint null;
 alter table Domains add Chain varchar(max) null;
+alter table Domains add NameChain nvarchar(max) null;
 GO
 
 create trigger Domains_Chain_TR
@@ -70,24 +71,3 @@ create trigger Domains_Chain_TR
 
 GO
 
-CREATE FUNCTION [dbo].[GetPath]
-(
-	@EntityType varchar(50),
-	@chain nvarchar(max)
-	
-)
-RETURNS nvarchar(max)
-AS
-BEGIN
-	declare @ColumnNameList nvarchar(max);
-
-	if(@EntityType='Domain')
-		SELECT  
-			@ColumnNameList = COALESCE(@ColumnNameList,'')+(CASE WHEN (@ColumnNameList is NULL) THEN '' ELSE '/' END) +Name
-		FROM Domains 
-		WHERE @chain like '%|'+convert(varchar(15),Id)+'|%';
-
-	return @ColumnNameList;
-END
-
-GO
