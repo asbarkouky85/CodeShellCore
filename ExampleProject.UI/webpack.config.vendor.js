@@ -5,7 +5,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const treeShakableModules = [
 
-    '@angular/core',
     '@angular/common',
     '@angular/forms',
     '@angular/http',
@@ -19,13 +18,9 @@ const treeShakableModules = [
 
     '@angular/material',
     "@angular/material-moment-adapter",
-
-    "@agm/core",
-
-
+    
     "./node_modules/@ngx-translate/core",
     "./node_modules/ngx-toastr",
-    "./node_modules/angular-tree-component",
     "./node_modules/primeng/dialog"
 ];
 const nonTreeShakableModules = [

@@ -317,6 +317,34 @@ namespace CodeShellCore.Moldster.Services.Internal
                 Console.WriteLine("Adding file [Login.html]");
                 File.WriteAllText(path, Properties.Resources.Login_html);
             }
+            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Main/topBar.html");
+            Utils.CreateFolderForFile(path);
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [topBar.html]");
+                File.WriteAllText(path, Properties.Resources.topBar_html);
+            }
+            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Main/topBar.ts");
+            Utils.CreateFolderForFile(path);
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [topBar.ts]");
+                File.WriteAllText(path, Properties.Resources.topBar_ts);
+            }
+            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Main/navigationSideBar.html");
+            Utils.CreateFolderForFile(path);
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [navigationSideBar.html]");
+                File.WriteAllText(path, Properties.Resources.navigationSideBar_html);
+            }
+            path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Main/navigationSideBar.ts");
+            Utils.CreateFolderForFile(path);
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("Adding file [navigationSideBar.ts]");
+                File.WriteAllText(path, Properties.Resources.navigationSideBar_ts);
+            }
             path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, _paths.CoreAppName + "BaseModule.ts");
             if (!File.Exists(path))
             {

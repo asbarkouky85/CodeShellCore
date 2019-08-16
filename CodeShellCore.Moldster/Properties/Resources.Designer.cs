@@ -334,6 +334,51 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///&lt;nav class=&quot;navbar-default navbar-static-side&quot; role=&quot;navigation&quot;&gt;
+        ///    &lt;div class=&quot;sidebar-collapse&quot;&gt;
+        ///        &lt;ul class=&quot;nav &quot; id=&quot;side-menu&quot;&gt;
+        ///            &lt;li class=&quot;nav-header  &quot;&gt;
+        ///                &lt;div class=&quot;dropdown profile-element&quot;&gt;
+        ///                    &lt;span&gt;
+        ///                        &lt;img alt=&quot;image&quot; class=&quot;img-circle profile-picture-sm&quot; src=&quot;/img/default_user.png&quot; /&gt;
+        ///                    &lt;/span&gt;
+        ///                    &lt;a data-toggle=&quot;dropdown&quot; class=&quot;dropdown-toggle&quot; href=&quot;#&quot;&gt;
+        ///                      [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string navigationSideBar_html {
+            get {
+                return ResourceManager.GetString("navigationSideBar_html", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to import { Component } from &quot;@angular/core&quot;;
+        ///import { Shell } from &quot;codeshell/core&quot;;
+        ///
+        ///import { BaseComponent } from &quot;codeshell/baseComponents&quot;;
+        ///
+        ///@Component({ templateUrl: &quot;./navigationSideBar.html&quot;, selector: &quot;navigationSideBar&quot; })
+        ///export class navigationSideBar extends BaseComponent {
+        ///
+        ///    GetPageId(): number {
+        ///        return 0;
+        ///    }
+        ///
+        ///    isLoggedIn: boolean = false;
+        ///
+        ///    ngOnInit() {
+        ///        super.ngOnInit();
+        ///        this.isLoggedIn = Shell.Session.IsLoggedIn;
+        ///        Shell.Session.LogStat [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string navigationSideBar_ts {
+            get {
+                return ResourceManager.GetString("navigationSideBar_ts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {
         ///  &quot;dependencies&quot;: {
         ///    &quot;angular-tree-component&quot;: &quot;^8.0.0&quot;,
@@ -397,15 +442,14 @@ namespace CodeShellCore.Moldster.Properties {
         ///    BaseURL: string = &quot;&quot;;
         ///    Domain: string = &quot;&quot;;
         ///    Locale: string = &quot;&quot;;
+        ///	Urls : any = {};
         ///
         ///    constructor() {
         ///        let item: HTMLElement = document.getElementById(&quot;view-data&quot;) as HTMLElement;
         ///        if (item)
         ///            Object.assign(this, JSON.parse(item.innerHTML));
         ///    }
-        ///
-        ///    private static _config: ServerConfig;
-        ///    public static Instance: ServerConfig = new Serv [rest of string was truncated]&quot;;.
+        ///}.
         /// </summary>
         public static string ServerConfig_ts {
             get {
@@ -440,6 +484,53 @@ namespace CodeShellCore.Moldster.Properties {
             get {
                 object obj = ResourceManager.GetObject("SharedModule_ts", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///&lt;nav class=&quot;navbar navbar-default navbar-static-top&quot;&gt;
+        ///    &lt;div class=&quot;container-fluid&quot;&gt;
+        ///        &lt;div class=&quot;navbar-header&quot;&gt;
+        ///            
+        ///                &lt;div class=&quot;navbar-brand&quot;&gt;
+        ///                    &lt;a class=&quot;btn btn-primary &quot; onclick=&quot;slide()&quot; href=&quot;#&quot;&gt;
+        ///                        &lt;i class=&quot;fa fa-bars&quot;&gt;&lt;/i&gt;
+        ///                    &lt;/a&gt;
+        ///                &lt;/div&gt;
+        ///           
+        ///        &lt;/div&gt;
+        ///
+        ///        &lt;div class=&quot;collapse navbar-collapse pull-last&quot;&gt;
+        ///            &lt;ul class=&quot;nav navbar-nav&quot;&gt;
+        ///                 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string topBar_html {
+            get {
+                return ResourceManager.GetString("topBar_html", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to import { Component } from &quot;@angular/core&quot;;
+        ///import { Shell, ServerConfigBase } from &quot;codeshell/core&quot;;
+        ///
+        ///import { BaseComponent } from &quot;codeshell/baseComponents&quot;;
+        ///import { UserDTO } from &quot;codeshell/security&quot;;
+        ///import { HttpClient } from &quot;@angular/common/http&quot;;
+        ///
+        ///@Component({ templateUrl: &quot;./topBar.html&quot;, selector: &quot;top-bar&quot; })
+        ///export class topBar extends BaseComponent {
+        ///    GetPageId(): number {
+        ///        throw new Error(&quot;Method not implemented.&quot;);
+        ///    }
+        ///    isLoggedIn: boolean = false;
+        ///    
+        ///    ngOn [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string topBar_ts {
+            get {
+                return ResourceManager.GetString("topBar_ts", resourceCulture);
             }
         }
         

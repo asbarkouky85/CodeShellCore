@@ -31,9 +31,6 @@
             <li>
                 <a [routerLink]="['/']">{{'Words.Main' | translate}}</a>
             </li>
-            <li *ngIf="isLoggedIn">
-                <a [routerLink]="['/Auth/UserCreate']">{{'Pages.Auth__CreateUser' | translate}}</a>
-            </li>
         </ul>
     </div>
 </nav>

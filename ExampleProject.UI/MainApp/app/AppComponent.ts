@@ -1,4 +1,5 @@
-﻿import { Component, Injector, ViewChild, trigger, state, style, transition, animate } from '@angular/core';
+﻿import { Component, Injector } from '@angular/core';
+import { trigger, state, style, transition, animate } from "@angular/animations";
 import { Title } from '@angular/platform-browser';
 
 import { ServerConfigBase,Shell } from 'codeshell/core';
