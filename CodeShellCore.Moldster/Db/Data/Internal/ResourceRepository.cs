@@ -10,7 +10,7 @@ namespace CodeShellCore.Moldster.Db.Data.Internal
 
         public Resource GetResource(string resourceName, string serviceName = null)
         {
-            Resource res = FindSingle(d => d.Name == resourceName);
+            Resource res = FindSingle(d => d.Name == resourceName && (serviceName == null || d.Domain.Name == serviceName));
             return res;
         }
     }

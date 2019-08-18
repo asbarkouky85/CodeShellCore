@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CodeShellCore.Moldster.Services.Internal
 {
@@ -50,8 +51,15 @@ namespace CodeShellCore.Moldster.Services.Internal
         public bool GenerateDataService(string resource, string domain = null)
         {
 
-            string serviceName = resource + "Service";
-            string servicePath = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Http\\" + serviceName + ".ts");
+            //string serviceName = resource + "Service";
+            string folder = Path.Combine("Core", _paths.CoreAppName, "Http");
+
+            if (domain != null)
+            {
+                domain = new Regex("^/").Replace(domain, "").Replace("/", "\\");
+                folder = Path.Combine("Core", _paths.CoreAppName, domain, "Http");
+            }
+            string servicePath = Path.Combine(_paths.UIRoot, folder + "\\" + resource + "Service.ts");
             Utils.CreateFolderForFile(servicePath);
             if (!File.Exists(servicePath))
             {
@@ -59,14 +67,14 @@ namespace CodeShellCore.Moldster.Services.Internal
                 string service = _writer.FillStringParameters(serviceTemplate, new ServiceTsModel { Resource = resource });
                 File.WriteAllText(servicePath, service);
 
-                string httpPath = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, "Http.ts");
+                string httpPath = Path.Combine(_paths.UIRoot, folder + ".ts"); ;
                 List<string> lst = new List<string>();
                 if (File.Exists(httpPath))
                 {
                     string[] lines = File.ReadAllLines(httpPath);
                     lst.AddRange(lines);
                 }
-                lst.Add("export * from \"./Http/" + serviceName + "\";");
+                lst.Add("export * from \"./Http/" + resource + "Service\";");
                 File.WriteAllLines(httpPath, lst);
                 return true;
             }
@@ -349,7 +357,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             if (!File.Exists(path))
             {
                 Console.WriteLine("Adding file [" + _paths.CoreAppName + "BaseModule.ts]");
-                string content = _writer.FillStringParameters(_molds.BaseModuleMold, new DomainTsModel { Name = _paths.CoreAppName+"Base" });
+                string content = _writer.FillStringParameters(_molds.BaseModuleMold, new DomainTsModel { Name = _paths.CoreAppName + "Base" });
                 File.WriteAllText(path, content);
             }
 
@@ -378,7 +386,7 @@ namespace CodeShellCore.Moldster.Services.Internal
 
         }
 
-        
+
 
         public abstract void GenerateDomainModule(string mod, string domain, bool lazy);
     }

@@ -1,5 +1,4 @@
-alter table Resources drop constraint FK_Resources_Domains;
-alter table Resources drop column DomainId;
+alter table Resources alter column DomainId bigint null;
 alter table Resources add ServiceName varchar(50) null;
 GO
 alter table Pages drop constraint FK_Pages_TenantDomains;
@@ -25,8 +24,23 @@ alter table Domains add ParentId bigint null;
 alter table Domains add Chain varchar(max) null;
 alter table Domains add NameChain nvarchar(max) null;
 GO
+USE [Moldster]
+GO
+/****** Object:  Trigger [dbo].[Domains_Chain_TR]    Script Date: 8/18/2019 3:52:49 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 
-create trigger Domains_Chain_TR
+USE [Moldster]
+GO
+/****** Object:  Trigger [dbo].[Domains_Chain_TR]    Script Date: 8/18/2019 4:15:07 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER trigger [dbo].[Domains_Chain_TR]
     ON [dbo].[Domains]
     AFTER INSERT, UPDATE 
 	
@@ -55,11 +69,12 @@ create trigger Domains_Chain_TR
 
 			IF(@parentId IS NULL)
 				SELECT 
-					@chain='|'+CONVERT(NVARCHAR(25),@id)+'|'
+					@chain='|'+CONVERT(NVARCHAR(25),@id)+'|',
+					@nameChain='/'+@name+'/'
 			ELSE
 				SELECT 
 					@chain=Chain+CONVERT(NVARCHAR(25),@id)+'|',
-					@nameChain=NameChain+'/'+@name
+					@nameChain=NameChain+@name+'/'
 				FROM Domains WHERE Id=@parentId;
 
 			UPDATE Domains 
@@ -68,6 +83,8 @@ create trigger Domains_Chain_TR
 				NameChain=@nameChain
 			WHERE Id=@id;
 		end;
+
+
 
 GO
 

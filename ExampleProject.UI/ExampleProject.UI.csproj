@@ -5,7 +5,7 @@
     <SccProvider>SAK</SccProvider>
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
-    <TypeScriptToolsVersion>3.2</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -15,10 +15,6 @@
 
   <ItemGroup>
     <Compile Remove="Logs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Core\ExampleProject\Http\AccountService.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,10 +33,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="Core\ExampleProject\Http\AccountService.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

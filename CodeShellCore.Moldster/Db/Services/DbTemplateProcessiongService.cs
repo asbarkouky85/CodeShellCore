@@ -130,7 +130,7 @@ namespace CodeShellCore.Moldster.Db.Services
                 if (p.Resource != null)
                 {
                     serviceName = p.Resource + "Service.ts";
-                    serviceCreated = tsGen.GenerateDataService(p.Resource, p.Domain);
+                    serviceCreated = tsGen.GenerateDataService(p.Resource, p.ResourceDomain);
                 }
 
                 Console.Write(" Controls: ");

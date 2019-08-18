@@ -78,17 +78,17 @@ namespace CodeShellCore.Moldster.Json
                     if (serviced.Contains(conf.BaseComponent))
                     {
                         isServiced = true;
-                        model.ParentPath = "CodeShell/BaseComponents";
+                        model.ParentPath = "codeshell/baseComponents";
                         model.Parent = conf.BaseComponent + "ComponentBase";
                     }
                     else if (conf.BaseComponent == "Base")
                     {
-                        model.ParentPath = "CodeShell/BaseComponents";
+                        model.ParentPath = "codeshell/baseComponents";
                         model.Parent = "BaseComponent";
                     }
                     else
                     {
-                        model.ParentPath = "Base/" + conf.BaseComponent;
+                        model.ParentPath = _paths.CoreAppName+"/" + conf.BaseComponent;
                         model.Parent = conf.BaseComponent.GetAfterLast("/");
                     }
 

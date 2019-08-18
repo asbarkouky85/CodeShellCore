@@ -9,6 +9,7 @@ namespace CodeShellCore.Moldster.Db.Dto
     {
         public PageCategory Category { get; set; }
         public string Resource { get; set; }
+        public string ResourceDomain { get; set; }
         public string Domain { get; set; }
         public static Expression<Func<PageCategory, PageCategoryDTO>> Expression
         {
@@ -18,9 +19,11 @@ namespace CodeShellCore.Moldster.Db.Dto
                 {
                     Category = e,
                     Resource = e.Resource == null ? null : e.Resource.Name,
-                    Domain = e.Resource == null ? null : e.Domain.Name
+                    Domain = e.Resource == null ? null : e.Domain.Name,
+                    ResourceDomain = e.Resource == null ? null : (e.Resource.Domain == null ? null : e.Resource.Domain.NameChain)
                 };
             }
         }
+
     }
 }

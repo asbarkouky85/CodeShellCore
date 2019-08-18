@@ -15,19 +15,14 @@ using CodeShellCore.Moldster.Services.Internal;
 using CodeShellCore.Moldster.Angular.Models;
 using CodeShellCore.Cli;
 using CodeShellCore.Files;
+using System.Text.RegularExpressions;
 
 namespace CodeShellCore.Moldster.Db.Services
 {
     public class DbTsGeneratorService : ScriptGenerationService, IScriptGenerationService
     {
 
-        static Dictionary<string, string> baseComponents = new Dictionary<string, string>
-        {
-            { "Edit","CodeShell/BaseComponents/EditComponentBase"},
-            { "List","CodeShell/BaseComponents/ListComponentBase"},
-            { "Tree","CodeShell/BaseComponents/TreeComponentBase"},
-            { "Select","CodeShell/BaseComponents/SelectComponentBase"},
-        };
+        static string[] baseComponents = new[] { "Edit", "List", "Tree", "Select" };
 
         IConfigUnit _unit;
         private readonly IFileHandler fileHandler;
@@ -214,27 +209,38 @@ namespace CodeShellCore.Moldster.Db.Services
             {
                 serviced = p.Resource != null;
 
-                if (!baseComponents.TryGetValue(p.Category.BaseComponent, out string parent))
+                if (baseComponents.Contains(p.Category.BaseComponent))
                 {
-                    parent = p.Category.BaseComponent;
+                    mod.Parent = p.Category.BaseComponent + "ComponentBase";
+                    mod.ParentPath = "codeshell/baseComponents";
+                    if (p.Resource == null)
+                    {
+                        mod.Resource = "DefaultHttp";
+                        mod.ServicePath = "codeshell/http";
+                    }
                 }
-                else if (p.Resource == null)
+                else
                 {
-                    mod.Resource = "DefaultHttp";
-                    mod.ServicePath = "CodeShell/Http";
+                    mod.ParentPath = p.Category.BaseComponent;
+                    mod.Parent = mod.ParentPath.GetAfterLast("/");
                 }
 
                 if (p.Resource != null)
-                    mod.ServicePath = $"{_paths.CoreAppName}/{p.Domain}/Http";
+                {
+                    string folder = "Http";
 
-                mod.ParentPath = parent;
+                    if (p.ResourceDomain != null)
+                    {
+                        folder = Utils.CombineUrl(new Regex("^/").Replace(p.ResourceDomain, ""), folder);
+                    }
+
+                    mod.ServicePath = Utils.CombineUrl($"{_paths.CoreAppName}/{folder}");
+                }
             }
             else
             {
-                mod.ParentPath = "CodeShell/BaseComponents/BaseComponent";
+                mod.ParentPath = "codeshell/baseComponents";
             }
-
-            mod.Parent = mod.ParentPath.GetAfterLast("/");
 
             string baseComponentTemplatePath = _molds.GetBaseComponentMold(serviced);
 
