@@ -1,19 +1,17 @@
 ﻿import { NgModule } from "@angular/core";
-import { CodeShellModule } from "codeshell";
-import { Registry } from "codeshell/core";
-import { ServerConfig } from "%BaseName%/ServerConfig";
 import { TranslateService } from "@ngx-translate/core";
-import { %BaseAppModuleName% } from '%BaseAppModulePath%';
+import { %BaseName%BaseModule } from '%BaseName%/%BaseName%BaseModule';
+import { ServerConfigBase } from "codeshell/core";
 %ComponentImports%
 
 @NgModule({
     declarations: [%Components%],
     exports: [
 		%Components%
-		%BaseAppModuleName%
+		%BaseName%BaseModule
 	],
     imports: [
-        %BaseAppModuleName%.forRoot()
+        %BaseName%BaseModule
     ],
 	entryComponents:[%Components%]
 })

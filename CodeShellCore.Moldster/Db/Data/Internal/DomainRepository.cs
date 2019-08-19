@@ -52,6 +52,8 @@ namespace CodeShellCore.Moldster.Db.Data.Internal
                 throw new ArgumentException();
             if (path[0] != '/')
                 path = "/" + path;
+            if (path[path.Length - 1] != '/')
+                path += "/";
             return FindSingle(d => d.NameChain == path);
         }
 

@@ -1,32 +1,18 @@
-﻿import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ModuleWithProviders } from "@angular/compiler/src/core";
-
-import { ToastrModule } from "ngx-toastr";
-import { TranslateModule } from "@ngx-translate/core";
-
-import { CodeShellModule } from "codeshell";
-
-import { AuthFilter } from "codeshell/security";
+﻿import { ModuleWithProviders } from "@angular/compiler/src/core";
+import { NgModule } from "@angular/core";
+import { CodeShellModule } from "codeshell/index";
 import { ServerConfigBase } from "codeshell/core";
+import { AuthFilter } from "codeshell/security";
 import { ServerConfig } from "./ServerConfig";
 
 @NgModule({
     declarations: [],
 
     imports: [
-        CodeShellModule.forRoot(),
-        BrowserModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot()
+        CodeShellModule
     ],
     exports: [
-        CodeShellModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        ToastrModule,
-        TranslateModule
+        CodeShellModule
     ]
 })
 export class %Name%Module {

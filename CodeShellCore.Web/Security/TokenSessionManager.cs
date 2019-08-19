@@ -40,6 +40,8 @@ namespace CodeShellCore.Web.Security
 
         public virtual void AuthorizationRequest(string token)
         {
+            if (IsProccessed(_accessor.HttpContext))
+                return;
             if (token != null)
             {
                 string data = Shell.Encryptor.Decrypt(token);
@@ -53,6 +55,7 @@ namespace CodeShellCore.Web.Security
                     }
                 }
             }
+            SetProccessed(_accessor.HttpContext);
         }
 
         public virtual void AuthorizationRequest()
@@ -69,6 +72,7 @@ namespace CodeShellCore.Web.Security
 
                 }
             }
+            SetProccessed(_accessor.HttpContext);
         }
 
         public override object GetCurrentUserId()

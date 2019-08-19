@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Security.Authorization;
+using CodeShellCore.Security.Sessions;
 using CodeShellCore.Services.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,32 +15,35 @@ namespace CodeShellCore.Web.Filters
         public string Resource { get; set; }
         public string Action { get; set; }
         public bool AllowAnonymous { get; set; }
-        protected readonly IAuthorizationService _authorizationService;
-        protected readonly IAccessControlAuthorizationService _accessControl;
+        public bool AllowAll { get; set; }
+
         public QueryAuthorizeFilter()
         {
-            _authorizationService = Shell.ScopedInjector.GetService<IAuthorizationService>();
-            if (_authorizationService is IAccessControlAuthorizationService)
-                _accessControl = (IAccessControlAuthorizationService)_authorizationService;
+
         }
 
         public virtual void OnAuthorization(AuthorizationFilterContext context)
         {
             try
             {
+                
+                var tok = context.HttpContext.Request.Query["Token"];
+                var _manager = context.HttpContext.RequestServices.GetService<ISessionManager>();
+                _manager?.AuthorizationRequest(tok);
+
+                var _authorizationService = context.HttpContext.RequestServices.GetService<IAuthorizationService>();
                 if (_authorizationService == null)
                     return;
 
-                var tok = context.HttpContext.Request.Query["Token"];
-                string token = null;
-                if (tok.Count > 0)
-                    token = tok[0];
-                _authorizationService.AuthorizationRequest(token);
+                var _accessControl = (IAccessControlAuthorizationService)_authorizationService;
 
                 if (_accessControl == null || AllowAnonymous)
                 {
                     return;
                 }
+
+                if (AllowAll && _authorizationService.SessionManager.IsLoggedIn())
+                    return;
 
                 AuthorizationRequest<AuthorizationFilterContext> con = new AuthorizationRequest<AuthorizationFilterContext>(context);
 

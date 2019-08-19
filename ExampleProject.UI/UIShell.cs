@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Routing;
 
 using CodeShellCore.Web;
+using CodeShellCore.DependencyInjection;
 using CodeShellCore.Text;
 
 using Asga.Auth;
@@ -15,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using CodeShellCore;
 using System.Collections.Generic;
 using CodeShellCore.Web.Moldster;
+using ExampleProject.Entities;
+using CodeShellCore.Data.EntityFramework;
 
 namespace ExampleProject.UI
 {
@@ -28,14 +31,20 @@ namespace ExampleProject.UI
 
         protected override CultureInfo defaultCulture => new CultureInfo("ar");
 
-        
+
 
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
-            coll.AddAuthModule();
+            coll.AddAuthModule(false);
+
             coll.AddAsgaWeb();
 
+            coll.AddUnitOfWork<ExampleUnit>();
+            coll.AddContext<ExampleContext>();
+            coll.AddGenericRepository(typeof(Repository_Int64<,>));
+
+            coll.AddDbContext<ExampleContext>(d => d.UseInMemoryDatabase("ex"));
             coll.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("auth"));
         }
 
@@ -53,7 +62,7 @@ namespace ExampleProject.UI
                 c.Resources.Add(new Resource
                 {
                     Id = 2,
-                    Name = "Roles"
+                    Name = "Employees"
                 });
 
                 c.Roles.Add(new Role
@@ -63,7 +72,7 @@ namespace ExampleProject.UI
                     RoleResources = new List<RoleResource>
                 {
                     new RoleResource { Id=1,ResourceId=1,CanViewDetails=true,CanDelete=true,CanInsert=true },
-                    new RoleResource { Id=2,ResourceId=2,CanViewDetails=true,CanDelete=false }
+                    new RoleResource { Id=2,ResourceId=2,CanViewDetails=true,CanDelete=true,CanInsert=true }
                 }
                 });
                 c.Users.Add(new User
@@ -76,9 +85,14 @@ namespace ExampleProject.UI
                 }
                 });
                 c.SaveChanges();
+
+                var emp = sc.ServiceProvider.GetService<ExampleContext>();
+                emp.Employees.Add(new Employee { Id = 1, Name = "hassan" });
+                emp.Employees.Add(new Employee { Id = 2, Name = "Mohamed" });
+                emp.SaveChanges();
             }
         }
 
-        
+
     }
 }

@@ -39,6 +39,8 @@ namespace Asga.Web.Security
                         return permissions.Update;
                     case "CanViewDelete":
                         return permissions.Delete;
+                    case "Get":
+                        return permissions != null;
                 }
             }
 

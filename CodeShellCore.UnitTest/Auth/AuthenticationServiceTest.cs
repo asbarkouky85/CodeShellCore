@@ -28,7 +28,7 @@ namespace CodeShellCore.UnitTest.Auth
                 coll.AddAuthModule();
                 coll.AddAsgaWeb();
 
-                coll.AddTransient<IHttpContextAccessor, TestHttpContextAccessor>();
+                coll.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
                 
                 coll.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
                 coll.AddScoped<AuthDataInit>();
@@ -39,13 +39,21 @@ namespace CodeShellCore.UnitTest.Auth
         [Test]
         public void IUserAccessor()
         {
+            string token = "";
             RunScoped(sc =>
             {
                 var auth = sc.GetService<IAuthenticationService>();
                 var sess = sc.GetService<ISessionManager>();
                 var res = auth.Login("admin", "12345");
+                token = res.Token;
+                Assert.That(token != null);
+            });
 
-                sess.AuthorizationRequest(res.Token);
+            RunScoped(sc =>
+            {
+               // UnitTestShell.CurrentScope = null;
+                var sess = sc.GetService<ISessionManager>();
+                sess.AuthorizationRequest(token);
 
                 var acc = sc.GetService<IUserAccessor>();
                 Assert.That(acc.User != null && acc.User.UserId.Equals((long)1));

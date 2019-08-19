@@ -19,13 +19,15 @@ namespace CodeShellCore.Data.EntityFramework
     {
         protected InstanceStore<IRepository> Store;
         protected IServiceProvider _provider;
+        private bool _disposed = false;
 
         protected TContext DbContext { get; private set; }
         public virtual Action<ChangeLists> OnBeforeSave { get { return null; } }
         public virtual Action<ChangeLists> OnSaveSuccess { get { return null; } }
-
+        public bool IsDisposed { get { return _disposed; } }
         public UnitOfWork()
         {
+            Console.WriteLine(this);
             if (Shell.ScopedInjector == null)
             {
                var  Scope = Shell.GetScope();
@@ -136,6 +138,7 @@ namespace CodeShellCore.Data.EntityFramework
         public void Dispose()
         {
             DbContext.Dispose();
+            _disposed = true;
         }
 
 

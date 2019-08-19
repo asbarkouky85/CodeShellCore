@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Asga.Web\Asga.Web.csproj" />
     <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <ProjectReference Include="..\ExampleProject\ExampleProject.csproj" />
   </ItemGroup>
 
   <ItemGroup>

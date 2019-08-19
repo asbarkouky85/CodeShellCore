@@ -1,5 +1,6 @@
 alter table Resources alter column DomainId bigint null;
 alter table Resources add ServiceName varchar(50) null;
+alter table PageCategories add DomainId bigint null;
 GO
 alter table Pages drop constraint FK_Pages_TenantDomains;
 alter table Pages add DomainId bigint null;
@@ -23,24 +24,10 @@ GO
 alter table Domains add ParentId bigint null;
 alter table Domains add Chain varchar(max) null;
 alter table Domains add NameChain nvarchar(max) null;
-GO
-USE [Moldster]
-GO
-/****** Object:  Trigger [dbo].[Domains_Chain_TR]    Script Date: 8/18/2019 3:52:49 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
+
 GO
 
-USE [Moldster]
-GO
-/****** Object:  Trigger [dbo].[Domains_Chain_TR]    Script Date: 8/18/2019 4:15:07 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-ALTER trigger [dbo].[Domains_Chain_TR]
+CREATE trigger [dbo].[Domains_Chain_TR]
     ON [dbo].[Domains]
     AFTER INSERT, UPDATE 
 	

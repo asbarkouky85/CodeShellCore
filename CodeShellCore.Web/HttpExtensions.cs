@@ -18,6 +18,11 @@ namespace Microsoft.AspNetCore.Mvc
             return loc;
         }
 
+        public static bool IsProccessed(this HttpContext con)
+        {
+            return con.Items.ContainsKey("IsProccessed");
+        }
+
         public static string GetDeviceIdFromCookie(this HttpRequest req)
         {
             string did = null;

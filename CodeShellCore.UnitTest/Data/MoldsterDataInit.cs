@@ -16,8 +16,8 @@ namespace CodeShellCore.UnitTest.Data
         public void InitilizeDomains()
         {
             context.Tenants.Add(new Tenant { Id = 1, Code = "Main", Name = "Name" });
-            context.Domains.Add(new Domain { Id = 1, Name = "Auth", NameChain = "/Auth", Chain = "|1|" });
-            context.Domains.Add(new Domain { Id = 2, Name = "Users", NameChain = "/Auth/Users", ParentId = 1, Chain = "|1|2|" });
+            context.Domains.Add(new Domain { Id = 1, Name = "Auth", NameChain = "/Auth/", Chain = "|1|" });
+            context.Domains.Add(new Domain { Id = 2, Name = "Users", NameChain = "/Auth/Users/", ParentId = 1, Chain = "|1|2|" });
             context.Resources.Add(new Resource { Id = 1, Name = "Users" });
             context.SaveChanges();
         }

@@ -114,14 +114,15 @@ namespace CodeShellCore.Moldster.Db.Services
         {
             if (dom[0] != '/')
                 dom = "/" + dom;
+
             var parts = _partitionPath(dom);
             string searchTerm = "";
             List<Domain> domains = new List<Domain>();
             long? lastId = null;
             foreach (var part in parts)
             {
-                searchTerm += "/" + part;
-                Domain domain = Repository.FindSingle(d => d.NameChain == searchTerm);
+                searchTerm += "/" + part ;
+                Domain domain = Repository.FindSingle(d => d.NameChain == searchTerm+"/");
                 if (domain == null)
                 {
                     domain = new Domain
@@ -130,12 +131,12 @@ namespace CodeShellCore.Moldster.Db.Services
                         Name = part,
                         ParentId = lastId
                     };
-                    
+
                     Repository.Add(domain);
                 }
                 lastId = domain.Id;
             }
-            var res= Unit.SaveChanges();
+            var res = Unit.SaveChanges();
             res.Data["LastId"] = lastId;
             return res;
         }

@@ -4,6 +4,8 @@ using CodeShellCore.Security.Authorization;
 using CodeShellCore.Services.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using CodeShellCore.Security.Sessions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CodeShellCore.Web.Filters
 {
@@ -16,15 +18,11 @@ namespace CodeShellCore.Web.Filters
         public string Resource { get; set; }
         public string Action { get; set; }
         public bool AllowAnonymous { get; set; }
+        public bool AllowAll { get; set; }
 
-        protected readonly IAuthorizationService _authorizationService;
-        protected readonly IAccessControlAuthorizationService _accessControl;
         public ApiAuthorizeAttribute()
         {
-            _authorizationService = Shell.ScopedInjector.GetService<IAuthorizationService>();
 
-            if (_authorizationService is IAccessControlAuthorizationService)
-                _accessControl = (IAccessControlAuthorizationService)_authorizationService;
         }
 
 
@@ -33,15 +31,27 @@ namespace CodeShellCore.Web.Filters
         {
             try
             {
+                
+
+                if (!context.HttpContext.IsProccessed())
+                {
+                    var _manager = context.HttpContext.RequestServices.GetService<ISessionManager>();
+                    _manager?.AuthorizationRequest();
+                }
+
+                var _authorizationService = context.HttpContext.RequestServices.GetService<IAuthorizationService>();
                 if (_authorizationService == null)
                     return;
 
-                _authorizationService.AuthorizationRequest();
+                var _accessControl = (IAccessControlAuthorizationService)_authorizationService;
 
                 if (_accessControl == null || AllowAnonymous)
                 {
                     return;
                 }
+
+                if (AllowAll && _authorizationService.SessionManager.IsLoggedIn())
+                    return;
 
                 AuthorizationRequest<AuthorizationFilterContext> con = new AuthorizationRequest<AuthorizationFilterContext>(context);
 

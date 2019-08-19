@@ -30,8 +30,8 @@ namespace Asga.Auth
                 coll.AddScoped<AuthContext>();
             }
             coll.AddCollectionUnitOfWork<AuthUnit>();
-            coll.AddTransient<ISecurityUnit, AuthUnit>();
-            coll.AddTransient<IRoleBasedSecurityUnit, AuthUnit>();
+            coll.AddScoped<ISecurityUnit>(d => d.GetService<AuthUnit>());
+            coll.AddScoped<IRoleBasedSecurityUnit>(d => d.GetService<AuthUnit>());
 
             coll.AddTransient<IUserRepository, UserRepository>();
             coll.AddTransient<IRoleRepository, RoleRepository>();
@@ -56,7 +56,7 @@ namespace Asga.Auth
         {
 
             coll.AddAuthData(defaultModule);
-            
+
             coll.AddTransient<WriterService>();
             coll.AddTransient<AuthLookupService>();
             coll.AddScoped<CurrentTenant>();
