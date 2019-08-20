@@ -19,8 +19,6 @@ namespace CodeShellCore.Web.Razor.Controllers
 
         public IActionResult Post([FromBody] PageCategory obj)
         {
-            var domPath = Domains.CreatePathAndGetId(obj.ViewPath.GetBeforeLast("/"));
-            obj.DomainId = (long)domPath.Data["LastId"];
             return DefaultPost(obj);
         }
 

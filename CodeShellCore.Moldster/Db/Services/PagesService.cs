@@ -18,12 +18,11 @@ namespace CodeShellCore.Moldster.Db.Services
     public class PagesService : EntityService<Page>
     {
         IConfigUnit Unit;
-        private readonly DomainService domainService;
 
-        public PagesService(IConfigUnit unit, DomainService domainService) : base(unit)
+        public PagesService(IConfigUnit unit) : base(unit)
         {
             Unit = unit;
-            this.domainService = domainService;
+
         }
 
 
@@ -77,9 +76,9 @@ namespace CodeShellCore.Moldster.Db.Services
         public SubmitResult Create(CreatePageDTO dto)
         {
             string domainPath = dto.ComponentPath.GetBeforeLast("/");
-            var domainResult = domainService.CreatePathAndGetId(domainPath);
+            var domain = Unit.DomainRepository.GetOrCreatePath(domainPath);
 
-            long domainId = (long)domainResult.Data["LastId"];
+            
             long pageCategory = 0;
 
             if (dto.CategoryId == null)
@@ -98,7 +97,7 @@ namespace CodeShellCore.Moldster.Db.Services
             if (dto.Resource != null)
                 res = Unit.ResourceRepository.GetResource(dto.Resource);
 
-            if(res==null)
+            if (res == null)
                 return new SubmitResult((int)HttpStatusCode.BadRequest, "No such Resource " + dto.Resource);
 
             Tenant tenant = Unit.TenantRepository.FindSingle(d => d.Code == dto.TenantCode);
@@ -120,7 +119,7 @@ namespace CodeShellCore.Moldster.Db.Services
                 Layout = dto.Layout,
                 SourceCollectionId = dto.CollectionId,
                 DefaultAccessibility = dto.DefaultAccessibility ?? 2,
-                DomainId=domainId
+                DomainId = domain.Id
             };
             p.Apps = "";
             string sep = "";
@@ -130,7 +129,7 @@ namespace CodeShellCore.Moldster.Db.Services
                 sep = ", ";
             }
 
-            if (Unit.PageRepository.Exist(d => d.Name == p.Name && d.DomainId == domainId && d.TenantId == tenant.Id))
+            if (Unit.PageRepository.Exist(d => d.Name == p.Name && d.DomainId == domain.Id && d.TenantId == tenant.Id))
                 return new SubmitResult((int)HttpStatusCode.Conflict, "this page already exists " + dto.TenantCode + "/" + p.ViewPath);
 
             if (dto.Usage == null)
@@ -171,12 +170,11 @@ namespace CodeShellCore.Moldster.Db.Services
             if (res != null)
                 res.Pages.Add(p);
 
-            var nn= Unit.SaveChanges();
-            nn.Data["entity"] = p;
+            var nn = Unit.SaveChanges();
             return nn;
         }
 
-        
+
         public override SubmitResult Create(Page obj)
         {
 

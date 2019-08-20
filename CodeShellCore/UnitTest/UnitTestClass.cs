@@ -21,6 +21,7 @@ namespace CodeShellCore.UnitTest
                     UnitTestShell.CurrentScope = null;
                     Console.WriteLine("TEST ERROR : ");
                     Console.WriteLine(ex.GetMessageRecursive());
+                    
                     throw ex;
                 }
 

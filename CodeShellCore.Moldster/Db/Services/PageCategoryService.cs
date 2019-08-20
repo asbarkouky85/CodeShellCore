@@ -14,13 +14,12 @@ namespace CodeShellCore.Moldster.Db.Services
     {
         readonly IConfigUnit Unit;
         private readonly IFileHandler fileHandler;
-        private readonly DomainService domainService;
-
-        public PageCategoryService(IConfigUnit unit, IFileHandler fileHandler, DomainService domainService) : base(unit)
+       
+        public PageCategoryService(IConfigUnit unit, IFileHandler fileHandler) : base(unit)
         {
             Unit = unit;
             this.fileHandler = fileHandler;
-            this.domainService = domainService;
+            
         }
 
         public override SubmitResult Create(PageCategory obj)
@@ -28,9 +27,8 @@ namespace CodeShellCore.Moldster.Db.Services
             if (string.IsNullOrEmpty(obj.Name))
                 obj.Name = obj.ViewPath?.GetAfterLast("/");
 
-            var d = domainService.CreatePathAndGetId(obj.ViewPath.GetBeforeLast("/"));
-            obj.DomainId = (long)d.Data["LastId"];
-
+            var d = Unit.DomainRepository.GetOrCreatePath(obj.ViewPath.GetBeforeLast("/"));
+            
             string template = Path.Combine(Shell.AppRootPath, "Views", obj.ViewPath + ".cshtml");
             if (!fileHandler.Exists(template))
                 throw new Exception("No such template : " + template);
@@ -49,13 +47,14 @@ namespace CodeShellCore.Moldster.Db.Services
                 Resource r = Unit.ResourceRepository.GetResource(res, service);
                 if (r == null)
                     return new SubmitResult((int)HttpStatusCode.BadRequest, "Resource "+res+" not found");
-                r.PageCategories.Add(obj);
-
+               
                 string[] bases = new[] { "Edit", "List", "Tree" };
                 if (bases.Contains(obj.BaseComponent) && r == null)
                 {
                     throw new Exception("This " + obj.BaseComponent + " base component requires a Resource");
                 }
+                r.PageCategories.Add(obj);
+                return Unit.SaveChanges();
             }
             return base.Create(obj);
         }

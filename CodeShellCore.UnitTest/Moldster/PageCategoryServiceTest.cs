@@ -31,7 +31,9 @@ namespace CodeShellCore.UnitTest.Moldster
 
 
         [Test]
-        public void Create_HappyScenario_ShouldSave()
+        [TestCase("Auth/Users/UserList",1)]
+        [TestCase("Auth/Roles/RoleList", 2)]
+        public void Create_Cases(string viewPath,int rows)
         {
             RunScoped(sc =>
             {
@@ -39,19 +41,19 @@ namespace CodeShellCore.UnitTest.Moldster
                 {
                     DomainId = 2,
                     Name = "",
-                    ViewPath = "Auth/Users/UserEdit",
+                    ViewPath = viewPath,
                     ResourceName = "Users",
                     BaseComponent = "Edit"
                 };
 
                 var fileMock = new Mock<IFileHandler>();
-                fileMock.Setup(d => d.Exists(".\\Views\\Auth/Users/UserEdit.cshtml")).Returns(true);
+                fileMock.Setup(d => d.Exists(".\\Views\\"+viewPath+".cshtml")).Returns(true);
                 var unit = sc.GetService<IConfigUnit>();
-                var service = new PageCategoryService(unit, fileMock.Object, sc.GetService<DomainService>());
+                var service = new PageCategoryService(unit, fileMock.Object);
 
                 var res = service.Create(cat);
                 var x = sc.GetService<MoldsterContext>();
-                Assert.That(res.AffectedRows == 1);
+                Assert.AreEqual(rows, res.AffectedRows);
             });
 
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Db.Dto;
 
 namespace CodeShellCore.Moldster.Db.Data.Internal
@@ -65,6 +66,54 @@ namespace CodeShellCore.Moldster.Db.Data.Internal
                 ParentId = d.ParentId,
                 DomainName = d.Name
             }).ToList();
+        }
+
+        List<string> _partitionPath(string path)
+        {
+            string[] spl = path.Split('/');
+            List<string> lst = new List<string>();
+            foreach (var s in spl)
+            {
+                if (!string.IsNullOrEmpty(s))
+                    lst.Add(s.Trim());
+            }
+            return lst;
+        }
+
+        /// <summary>
+        /// id is returned in the data dictionary as LastId
+        /// </summary>
+        /// <param name="dom"></param>
+        /// <returns></returns>
+        public Domain GetOrCreatePath(string dom)
+        {
+            if (dom[0] != '/')
+                dom = "/" + dom;
+
+            var parts = _partitionPath(dom);
+            string searchTerm = "";
+            List<Domain> domains = new List<Domain>();
+            
+            Domain last = null;
+            foreach (var part in parts)
+            {
+                searchTerm += "/" + part;
+                Domain domain = FindSingle(d => d.NameChain == searchTerm + "/");
+                if (domain == null)
+                {
+                    domain = new Domain
+                    {
+                        Id = Utils.GenerateID(),
+                        Name = part,
+                        ParentId = last?.Id
+                    };
+
+                    Add(domain);
+                }
+                last = domain;
+            }
+            return last;
+            
         }
     }
 }

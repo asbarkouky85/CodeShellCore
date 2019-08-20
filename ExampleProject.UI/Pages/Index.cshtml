@@ -26,7 +26,7 @@
     }
 </head>
 <body>
-    <div id="view-data" style="display:none">@Model.ConfigString</div>
+    <div id="view-data" style="display:none">@Html.Raw(Model.ConfigString)</div>
     <app>
         <div class="loader-overlay">
             <div class="loader"></div>

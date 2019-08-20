@@ -113,6 +113,7 @@ namespace CodeShellCore.Moldster.Services.Internal
 
                     if (reader.TryRead(resLang1, out ResourceContainer cont1))
                     {
+                        cont1.DataItems = cont1.DataItems ?? new DataItem[0];
                         Console.WriteLine("Found " + type + "." + lang1 + ".resx with " + cont1.DataItems.Length + " items");
                         headers1 = cont1.Headers;
                         data1 = new List<DataItem>();
@@ -121,6 +122,7 @@ namespace CodeShellCore.Moldster.Services.Internal
 
                     if (reader.TryRead(resLang2, out ResourceContainer cont2))
                     {
+                        cont2.DataItems = cont2.DataItems ?? new DataItem[0];
                         Console.WriteLine("Found " + type + "." + lang2 + ".resx with " + cont2.DataItems.Length + " items");
                         headers2 = cont2.Headers;
                         data2 = new List<DataItem>();
