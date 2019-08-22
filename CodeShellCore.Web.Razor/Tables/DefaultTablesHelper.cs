@@ -55,6 +55,26 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
+        public CellWriter SelectorCellMulti<T>(IHtmlHelper<T> helper, string field, string rowIndex, string listName, string ngModel, object cellAttributes, object inputAttr, string listItem, string classes)
+        {
+            var writer = new CellWriter(helper);
+
+            //writer.AddToControls("SelectorCell");
+
+            //if (!writer.GetAccessibility().Write)
+            //    return new HtmlString("");
+
+            string lItem = helper.GetModelName() + "." + (listItem ?? "Tag");
+            writer.Initialize(null, null, cellAttributes, inputAttr, classes);
+            writer.InputModel = writer.InputModel.GetCheckInput(null, null, false, lItem);
+            writer.InputModel.MemberName = helper.GetModelName() + "." + ngModel;
+            writer.InputModel.FieldName = "'" + field + "'+" + rowIndex;
+
+            writer.InputModelExtraAttrs.evnt__change = helper.GetModelName() + $".Tag.ApplyTo({listName})";
+
+            return writer;
+        }
+
         public CellWriter TextBoxCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string textBoxType, IValidationCollection coll, object cellAttributes, object inputAttr, string classes)
         {
             throw new NotImplementedException();

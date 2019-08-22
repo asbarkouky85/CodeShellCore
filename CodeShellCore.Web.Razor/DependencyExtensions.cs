@@ -9,7 +9,6 @@ using CodeShellCore.Text.Localization;
 using CodeShellCore.Text.TextProviders;
 using CodeShellCore.Web.Razor.Elements;
 using CodeShellCore.Web.Razor.Tables;
-using CodeShellCore.Web.Razor.Tables.Internal;
 using CodeShellCore.Web.Razor.Services;
 
 using CodeShellCore.Moldster;
@@ -26,6 +25,7 @@ using CodeShellCore.Web.Razor.Text;
 using CodeShellCore.Web.Razor.General;
 using CodeShellCore.Web.Razor.Elements.Moldster;
 using CodeShellCore.Web.Razor.General.Moldster;
+using CodeShellCore.Web.Razor.Tables.Angular;
 
 namespace CodeShellCore.Web.Razor
 {
@@ -71,6 +71,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddScoped<IElementsHelper, AngularElementsHelper>();
             coll.AddScoped<IAngularElementsHelper, AngularElementsHelper>();
             coll.AddScoped<ITablesHelper, AngularTablesHelper>();
+            coll.AddScoped<IAngularTablesHelper, AngularTablesHelper>();
             coll.AddScoped<IGeneralHelper, DefaultGeneralHelper>();
         }
 
