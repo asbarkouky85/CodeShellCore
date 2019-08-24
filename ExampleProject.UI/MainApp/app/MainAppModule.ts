@@ -12,14 +12,13 @@ import { ExampleProjectBaseModule } from 'ExampleProject/ExampleProjectBaseModul
 import { AppComponent } from './AppComponent';
 import { SharedModule } from './Shared/SharedModule';
 import { Routes, GetDomainsData } from './MainAppRoutes';
-import { CommonModule } from '@angular/common';
 
 
 @NgModule({
     bootstrap: [AppComponent],
-    declarations: [AppComponent,],
+	declarations: [AppComponent,],
     imports: [
-        ToastrModule.forRoot(),
+		ToastrModule.forRoot(),
         CodeShellModule.forRoot(),
         ExampleProjectBaseModule.forRoot(),
         SharedModule,
@@ -31,7 +30,7 @@ import { CommonModule } from '@angular/common';
         { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) }
     ]
 })
-export class MainAppModule {//extends BaseModule {
+export class MainAppModule extends BaseModule {
 	
 }
 

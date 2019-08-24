@@ -8,7 +8,7 @@ import { ServerConfigBase } from "codeshell/core";
 import { ServerConfig } from "./ServerConfig";
 import { AccountServiceBase } from "codeshell/security";
 import { AccountService } from "./Http/AccountService";
-import { UsersService } from "./Auth/Users/Http";
+import { UsersService } from "./Http";
 
 @NgModule({
     declarations: [Login, topBar, navigationSideBar],
