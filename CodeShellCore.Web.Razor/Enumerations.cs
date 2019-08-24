@@ -46,6 +46,7 @@ namespace CodeShellCore.Web.Razor
         LocalizableTextBox, //"InputControls/LocalizableTextBox";
         Label,
         ListView,
+        CheckBoxCell,
     }
 
     public enum CellTypes

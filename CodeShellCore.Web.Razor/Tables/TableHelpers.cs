@@ -82,7 +82,6 @@ namespace CodeShellCore.Web.Razor.Tables
             return mod.Write(InputControls.CalendarTextBox);
         }
 
-
-
+        
     }
 }

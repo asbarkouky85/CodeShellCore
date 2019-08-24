@@ -8,10 +8,7 @@ using CodeShellCore.Web.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CodeShellCore.UnitTest.Moldster
 {
@@ -39,8 +36,8 @@ namespace CodeShellCore.UnitTest.Moldster
         [TestCase("Main", "Auth/Users/UserCreate", "Auth/Users/UserEdit", "Users", "insert", 0, 1)]
         [TestCase("Main", "Auth/Users/UserCreate", "Auth/Users/UserEdit", "Users", "Kill", 0, 2)]
 
-        [TestCase("Main", "Auth/Users/Modals/UserEditModal", "Auth/Users/UserEdit", "Users", "insert", 0, 1)]
-        public void Create_Cases(string tenant, string viewPath, string template, string resource, string actionType, int code, int rows)
+        [TestCase("Main", "Auth/Users/Modals/UserEditModal", "Auth/Users/UserEdit", "Users", "insert", 0, 2)]
+        public void Create_Using(string tenant, string viewPath, string template, string resource, string actionType, int code, int rows)
         {
             RunScoped(p =>
             {
@@ -61,12 +58,6 @@ namespace CodeShellCore.UnitTest.Moldster
                 TestContext.WriteLine(res.Message);
                 Assert.AreEqual(code, res.Code, "Code is incorrect");
                 Assert.AreEqual(rows, res.AffectedRows, "Affected rows is incorrect");
-
-                if (res.Code == 0)
-                {
-                    Page page = (Page)res.Data["entity"];
-                    Assert.Contains(page.DomainId, existingDomains, "domain id not in list", null);
-                }
 
 
             });

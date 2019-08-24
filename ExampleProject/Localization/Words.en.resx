@@ -1,5 +1,26 @@
 <?xml version="1.0"?>
 <root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <data name="In__" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Lang" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Log__" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value />
+  </data>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>

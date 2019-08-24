@@ -93,52 +93,8 @@ namespace CodeShellCore.Moldster.Db.Services
 
         }
 
-        List<string> _partitionPath(string path)
-        {
-            string[] spl = path.Split('/');
-            List<string> lst = new List<string>();
-            foreach (var s in spl)
-            {
-                if (!string.IsNullOrEmpty(s))
-                    lst.Add(s.Trim());
-            }
-            return lst;
-        }
+        
 
-        /// <summary>
-        /// id is returned in the data dictionary as LastId
-        /// </summary>
-        /// <param name="dom"></param>
-        /// <returns></returns>
-        public SubmitResult CreatePathAndGetId(string dom)
-        {
-            if (dom[0] != '/')
-                dom = "/" + dom;
-
-            var parts = _partitionPath(dom);
-            string searchTerm = "";
-            List<Domain> domains = new List<Domain>();
-            long? lastId = null;
-            foreach (var part in parts)
-            {
-                searchTerm += "/" + part ;
-                Domain domain = Repository.FindSingle(d => d.NameChain == searchTerm+"/");
-                if (domain == null)
-                {
-                    domain = new Domain
-                    {
-                        Id = Utils.GenerateID(),
-                        Name = part,
-                        ParentId = lastId
-                    };
-
-                    Repository.Add(domain);
-                }
-                lastId = domain.Id;
-            }
-            var res = Unit.SaveChanges();
-            res.Data["LastId"] = lastId;
-            return res;
-        }
+        
     }
 }

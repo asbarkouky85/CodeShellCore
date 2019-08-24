@@ -79,23 +79,14 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             RunScoped(sc =>
             {
-                var domainService = sc.GetService<DomainService>();
-                var res = domainService.CreatePathAndGetId(dom);
-
-                Assert.That(res.AffectedRows == affected);
+                var unit = sc.GetService<IConfigUnit>();
+                var domain = unit.DomainRepository.GetOrCreatePath(dom);
+                var res = unit.SaveChanges();
+                Assert.AreEqual(affected, res.AffectedRows);
+                Assert.That(domain != null);
             });
         }
 
-        [Test]
-        public void CreatePathAndGetId_ReturnsId()
-        {
-            RunScoped(sc =>
-            {
-                var domainService = sc.GetService<DomainService>();
-                var res = domainService.CreatePathAndGetId("Auth/Roles/Modals");
-
-                Assert.That(res.Data.ContainsKey("LastId"));
-            });
-        }
+        
     }
 }
