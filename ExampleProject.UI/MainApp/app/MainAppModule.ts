@@ -1,23 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
-import { BaseModule } from 'codeshell';
-import { ServerConfigBase } from "codeshell/core";
+import { BaseModule, CodeShellModule } from 'codeshell';
 import { DomainDataProvider } from 'codeshell/security';
 
+import { ExampleProjectBaseModule } from 'ExampleProject/ExampleProjectBaseModule';
+
 import { AppComponent } from './AppComponent';
-import { ServerConfig } from "ExampleProject/ServerConfig";
-
 import { SharedModule } from './Shared/SharedModule';
-
 import { Routes, GetDomainsData } from './MainAppRoutes';
+
 
 @NgModule({
     bootstrap: [AppComponent],
 	declarations: [AppComponent,],
     imports: [
-		SharedModule,
-		
+		ToastrModule.forRoot(),
+        CodeShellModule.forRoot(),
+        ExampleProjectBaseModule.forRoot(),
+        SharedModule,
+        BrowserModule,
+        BrowserAnimationsModule,
         RouterModule.forRoot(Routes())
     ],
     providers: [

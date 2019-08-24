@@ -15,8 +15,9 @@ declare @result int;
     else 0 end;
 return @result
 end;
+
 GO
-/****** Object:  UserDefinedFunction [dbo].[GenerateId]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[GenerateId]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -54,8 +55,9 @@ BEGIN
 
 END
 
+
 GO
-/****** Object:  UserDefinedFunction [dbo].[GetCount]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[GetCount]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -78,8 +80,9 @@ BEGIN
 
 END
 
+
 GO
-/****** Object:  Table [dbo].[Clients]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[Clients]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -104,7 +107,7 @@ CREATE TABLE [dbo].[Clients](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Controls]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[Controls]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -132,7 +135,7 @@ CREATE TABLE [dbo].[Controls](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[ControlValidators]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[ControlValidators]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -152,7 +155,7 @@ CREATE TABLE [dbo].[ControlValidators](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[DomainEntities]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[DomainEntities]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -177,7 +180,7 @@ CREATE TABLE [dbo].[DomainEntities](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[DomainEntityCollections]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[DomainEntityCollections]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -201,7 +204,7 @@ CREATE TABLE [dbo].[DomainEntityCollections](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[DomainEntityProperties]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[DomainEntityProperties]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -228,7 +231,7 @@ CREATE TABLE [dbo].[DomainEntityProperties](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Domains]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[Domains]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -242,16 +245,19 @@ CREATE TABLE [dbo].[Domains](
 	[UpdatedOn] [datetime] NULL,
 	[CreatedBy] [bigint] NULL,
 	[UpdatedBy] [bigint] NULL,
+	[ParentId] [bigint] NULL,
+	[Chain] [varchar](max) NULL,
+	[NameChain] [nvarchar](max) NULL,
  CONSTRAINT [PK_Domains] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[EntityCollectionConditions]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[EntityCollectionConditions]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -276,7 +282,7 @@ CREATE TABLE [dbo].[EntityCollectionConditions](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[PageCategories]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[PageCategories]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -296,6 +302,7 @@ CREATE TABLE [dbo].[PageCategories](
 	[CreatedBy] [bigint] NULL,
 	[UpdatedBy] [bigint] NULL,
 	[Layout] [varchar](150) NULL,
+	[DomainId] [bigint] NULL,
  CONSTRAINT [PK_PageCategories] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -305,7 +312,7 @@ CREATE TABLE [dbo].[PageCategories](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[PageControls]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[PageControls]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -327,7 +334,7 @@ CREATE TABLE [dbo].[PageControls](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[PageControlValidators]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[PageControlValidators]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -347,7 +354,7 @@ CREATE TABLE [dbo].[PageControlValidators](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[Pages]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[Pages]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -369,7 +376,6 @@ CREATE TABLE [dbo].[Pages](
 	[DisplayName] [nvarchar](150) NULL,
 	[PageCategoryId] [bigint] NULL,
 	[RouteParameters] [varchar](100) NULL,
-	[TenantDomainId] [bigint] NULL,
 	[AppearsInNavigation] [bit] NOT NULL CONSTRAINT [DF_Pages_AppearsInNavigation]  DEFAULT ((0)),
 	[HasRoute] [bit] NOT NULL,
 	[CanEmbed] [bit] NOT NULL,
@@ -379,6 +385,8 @@ CREATE TABLE [dbo].[Pages](
 	[UpdatedBy] [bigint] NULL,
 	[DefaultAccessibility] [int] NOT NULL,
 	[Presistant] [bit] NULL,
+	[DomainId] [bigint] NOT NULL,
+	[TenantId] [bigint] NOT NULL,
  CONSTRAINT [PK_Pages] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -388,7 +396,7 @@ CREATE TABLE [dbo].[Pages](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[ResourceActions]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[ResourceActions]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -413,7 +421,7 @@ CREATE TABLE [dbo].[ResourceActions](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Resources]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[Resources]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -423,11 +431,12 @@ GO
 CREATE TABLE [dbo].[Resources](
 	[Id] [bigint] NOT NULL,
 	[Name] [varchar](150) NULL,
-	[DomainId] [bigint] NOT NULL,
+	[DomainId] [bigint] NULL,
 	[CreatedOn] [datetime] NULL,
 	[UpdatedOn] [datetime] NULL,
 	[CreatedBy] [bigint] NULL,
 	[UpdatedBy] [bigint] NULL,
+	[ServiceName] [varchar](50) NULL,
  CONSTRAINT [PK_Resources_1] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -437,7 +446,7 @@ CREATE TABLE [dbo].[Resources](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[TenantApps]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[TenantApps]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -463,27 +472,7 @@ CREATE TABLE [dbo].[TenantApps](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[TenantDomains]    Script Date: 4/28/2019 6:40:39 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[TenantDomains](
-	[Id] [bigint] NOT NULL,
-	[TenantId] [bigint] NOT NULL,
-	[DomainId] [bigint] NOT NULL,
-	[CreatedOn] [datetime] NULL,
-	[UpdatedOn] [datetime] NULL,
-	[CreatedBy] [bigint] NULL,
-	[UpdatedBy] [bigint] NULL,
- CONSTRAINT [PK_TenantDomain] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [dbo].[Tenants]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[Tenants]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -502,7 +491,7 @@ CREATE TABLE [dbo].[Tenants](
 	[UpdatedBy] [bigint] NULL,
 	[IsActive] [bit] NOT NULL,
 	[Logo] [nvarchar](300) NULL,
-	[MainComponentBase] [nvarchar](300) NULL
+	[MainComponentBase] [nvarchar](max) NULL,
  CONSTRAINT [PK_Tenants] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -512,7 +501,7 @@ CREATE TABLE [dbo].[Tenants](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Users]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -537,7 +526,7 @@ CREATE TABLE [dbo].[Users](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Validators]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  Table [dbo].[Validators]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -623,6 +612,16 @@ REFERENCES [dbo].[DomainEntities] ([Id])
 GO
 ALTER TABLE [dbo].[PageCategories] CHECK CONSTRAINT [FK_PageCategories_DomainEntities1]
 GO
+ALTER TABLE [dbo].[PageCategories]  WITH CHECK ADD  CONSTRAINT [FK_PageCategories_Domains] FOREIGN KEY([DomainId])
+REFERENCES [dbo].[Domains] ([Id])
+GO
+ALTER TABLE [dbo].[PageCategories] CHECK CONSTRAINT [FK_PageCategories_Domains]
+GO
+ALTER TABLE [dbo].[PageCategories]  WITH CHECK ADD  CONSTRAINT [FK_PageCategories_PageCategories] FOREIGN KEY([Id])
+REFERENCES [dbo].[PageCategories] ([Id])
+GO
+ALTER TABLE [dbo].[PageCategories] CHECK CONSTRAINT [FK_PageCategories_PageCategories]
+GO
 ALTER TABLE [dbo].[PageCategories]  WITH CHECK ADD  CONSTRAINT [FK_PageCategories_Resources] FOREIGN KEY([ResourceId])
 REFERENCES [dbo].[Resources] ([Id])
 GO
@@ -662,6 +661,11 @@ REFERENCES [dbo].[DomainEntityCollections] ([Id])
 GO
 ALTER TABLE [dbo].[Pages] CHECK CONSTRAINT [FK_Pages_DomainEntityCollections1]
 GO
+ALTER TABLE [dbo].[Pages]  WITH CHECK ADD  CONSTRAINT [FK_Pages_Domains] FOREIGN KEY([DomainId])
+REFERENCES [dbo].[Domains] ([Id])
+GO
+ALTER TABLE [dbo].[Pages] CHECK CONSTRAINT [FK_Pages_Domains]
+GO
 ALTER TABLE [dbo].[Pages]  WITH CHECK ADD  CONSTRAINT [FK_Pages_PageCategories] FOREIGN KEY([PageCategoryId])
 REFERENCES [dbo].[PageCategories] ([Id])
 GO
@@ -677,10 +681,10 @@ REFERENCES [dbo].[Resources] ([Id])
 GO
 ALTER TABLE [dbo].[Pages] CHECK CONSTRAINT [FK_Pages_Resources]
 GO
-ALTER TABLE [dbo].[Pages]  WITH CHECK ADD  CONSTRAINT [FK_Pages_TenantDomains] FOREIGN KEY([TenantDomainId])
-REFERENCES [dbo].[TenantDomains] ([Id])
+ALTER TABLE [dbo].[Pages]  WITH CHECK ADD  CONSTRAINT [FK_Pages_Tenants] FOREIGN KEY([TenantId])
+REFERENCES [dbo].[Tenants] ([Id])
 GO
-ALTER TABLE [dbo].[Pages] CHECK CONSTRAINT [FK_Pages_TenantDomains]
+ALTER TABLE [dbo].[Pages] CHECK CONSTRAINT [FK_Pages_Tenants]
 GO
 ALTER TABLE [dbo].[ResourceActions]  WITH CHECK ADD  CONSTRAINT [FK_ResourceActions_Resources] FOREIGN KEY([ResourceId])
 REFERENCES [dbo].[Resources] ([Id])
@@ -702,17 +706,7 @@ REFERENCES [dbo].[Tenants] ([Id])
 GO
 ALTER TABLE [dbo].[TenantApps] CHECK CONSTRAINT [FK_TenantApps_Tenants]
 GO
-ALTER TABLE [dbo].[TenantDomains]  WITH CHECK ADD  CONSTRAINT [FK_TenantDomains_Domains] FOREIGN KEY([DomainId])
-REFERENCES [dbo].[Domains] ([Id])
-GO
-ALTER TABLE [dbo].[TenantDomains] CHECK CONSTRAINT [FK_TenantDomains_Domains]
-GO
-ALTER TABLE [dbo].[TenantDomains]  WITH CHECK ADD  CONSTRAINT [FK_TenantDomains_Tenants] FOREIGN KEY([TenantId])
-REFERENCES [dbo].[Tenants] ([Id])
-GO
-ALTER TABLE [dbo].[TenantDomains] CHECK CONSTRAINT [FK_TenantDomains_Tenants]
-GO
-/****** Object:  StoredProcedure [dbo].[AddAuditingColumns]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  StoredProcedure [dbo].[AddAuditingColumns]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -808,8 +802,9 @@ BEGIN
 	delete from @tables
 
 END;
+
 GO
-/****** Object:  StoredProcedure [dbo].[ChangeAccessibilty]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  StoredProcedure [dbo].[ChangeAccessibilty]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -840,8 +835,9 @@ begin
 					
 			);
 end;
+
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteTemplate]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  StoredProcedure [dbo].[DeleteTemplate]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -868,8 +864,9 @@ as
 		Controls
 	where PageCategoryId=@templateId;
 
+
 GO
-/****** Object:  StoredProcedure [dbo].[SetCollectionId]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  StoredProcedure [dbo].[SetCollectionId]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -905,8 +902,9 @@ BEGIN
 			);
 END
 
+
 GO
-/****** Object:  StoredProcedure [dbo].[SyncDBs]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  StoredProcedure [dbo].[SyncDBs]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1075,8 +1073,9 @@ BEGIN
 	SELECT * FROM @result;
 END;
 
+
 GO
-/****** Object:  StoredProcedure [dbo].[SyncTenants]    Script Date: 4/28/2019 6:40:39 PM ******/
+/****** Object:  StoredProcedure [dbo].[SyncTenants]    Script Date: 8/18/2019 4:29:27 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1332,5 +1331,9 @@ BEGIN
 	SELECT * FROM @result;
 END
 
-GO
 
+GO
+USE [master]
+GO
+ALTER DATABASE [Moldster] SET  READ_WRITE 
+GO

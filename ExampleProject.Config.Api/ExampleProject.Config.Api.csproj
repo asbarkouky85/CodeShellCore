@@ -13,12 +13,16 @@
 
   <ItemGroup>
     <Compile Remove="Logs\**" />
+    <Compile Remove="SQL\Backup\**" />
     <Compile Remove="wwwroot\**" />
     <Content Remove="Logs\**" />
+    <Content Remove="SQL\Backup\**" />
     <Content Remove="wwwroot\**" />
     <EmbeddedResource Remove="Logs\**" />
+    <EmbeddedResource Remove="SQL\Backup\**" />
     <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="Logs\**" />
+    <None Remove="SQL\Backup\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
 
@@ -52,7 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SQL\Backup\" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
   </ItemGroup>
 
 </Project>

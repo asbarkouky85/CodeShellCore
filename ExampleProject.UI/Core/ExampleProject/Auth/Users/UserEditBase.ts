@@ -1,6 +1,6 @@
 ﻿import { EditComponentBase } from "codeshell/baseComponents";
 import { Injectable } from "@angular/core";
-import { UsersService } from "ExampleProject/Auth/Users/Http";
+import { UsersService } from "ExampleProject/Http";
 import { Shell } from "codeshell/core";
 
 @Injectable()

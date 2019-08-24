@@ -1,4 +1,4 @@
-﻿import { Component } from "@angular/core";
+import { Component } from "@angular/core";
 import { Shell, ServerConfigBase } from "codeshell/core";
 
 import { BaseComponent } from "codeshell/baseComponents";

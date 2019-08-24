@@ -1,36 +1,22 @@
 ﻿import { ModuleWithProviders } from "@angular/compiler/src/core";
 import { NgModule } from "@angular/core";
-import { CodeShellModule } from "codeshell";
-import { BrowserModule } from "@angular/platform-browser";
-import { ToastrModule } from "ngx-toastr";
-import { TranslateModule } from "@ngx-translate/core";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { CodeShellModule } from "codeshell/index";
+import { ServerConfigBase } from "codeshell/core";
+import { AuthFilter } from "codeshell/security";
+import { ServerConfig } from "./ServerConfig";
 import { Login } from "./Main/Login";
 import { topBar } from "./Main/topBar";
 import { navigationSideBar } from "./Main/navigationSideBar";
-import { ServerConfigBase } from "codeshell/core";
-import { ServerConfig } from "./ServerConfig";
-import { AccountServiceBase } from "codeshell/security";
-import { AccountService } from "./Http/AccountService";
-import { UsersService } from "./Http/UsersService";
 
 @NgModule({
     declarations: [Login, topBar, navigationSideBar],
 
     imports: [
-        CodeShellModule.forRoot(),
-        BrowserModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot()
+        CodeShellModule
     ],
     exports: [
         CodeShellModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        ToastrModule,
-        Login,
-        topBar,
-        navigationSideBar
+        topBar, navigationSideBar
     ]
 })
 export class ExampleProjectBaseModule {
@@ -38,10 +24,17 @@ export class ExampleProjectBaseModule {
         return {
             ngModule: ExampleProjectBaseModule,
             providers: [
-                UsersService,
                 { provide: ServerConfigBase, useClass: ServerConfig },
-                { provide: AccountServiceBase, useClass: AccountService }
+                { provide: 'BASE_URL', useFactory: getBaseUrl },
             ]
         }
     }
+}
+
+var bs: string | null = null;
+
+export function getBaseUrl() {
+    if (bs == null)
+        bs = document.getElementsByTagName('base')[0].href;
+    return bs;
 }

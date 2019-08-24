@@ -1,9 +1,8 @@
-﻿import { Injector } from "@angular/core";
+import { Injector } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ServerConfigBase } from "codeshell/core";
 import { IAppComponent } from "codeshell/baseComponents";
 import { TestLoader } from "codeshell/core";
-import { AccountServiceBase } from "codeshell/security";
 
 export class AppComponentBase extends IAppComponent {
     ModalLoader?: TestLoader | undefined;
