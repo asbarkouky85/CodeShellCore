@@ -10,6 +10,7 @@ using CodeShellCore.Web.Razor.Models;
 using CodeShellCore.Web;
 using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Web.Razor.Validation.Internal;
+using CodeShellCore.Moldster.Razor;
 
 namespace CodeShellCore.Web.Razor.Elements
 {
@@ -17,7 +18,7 @@ namespace CodeShellCore.Web.Razor.Elements
     {
         protected IValidationCollection VCollection { get; set; }
         protected MemberExpression MemberExpression { get; set; }
-        public CodeShellCore.Moldster.Razor.Accessibility Accessibility { get; set; } = new CodeShellCore.Moldster.Razor.Accessibility(2);
+        
         public string ColumnId { get; set; }
         public NgControlGroup GroupModel { get; set; }
         public ControlGroupWriter(IHtmlHelper helper) : base(helper) { }

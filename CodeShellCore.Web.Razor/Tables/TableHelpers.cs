@@ -82,6 +82,36 @@ namespace CodeShellCore.Web.Razor.Tables
             return mod.Write(InputControls.CalendarTextBox);
         }
 
-        
+        public static IHtmlContent DragHeaderCell<T>(this IHtmlHelper<T> helper,
+            string tableName,
+            string width = null,
+            object cellAttributes = null)
+        {
+            CellWriter writer = Provider.DragHeaderCell<T>(helper, tableName, width, cellAttributes);
+            return writer.WriteHeaderCell();
+        }
+
+        public static IHtmlContent DragContentCell<T>(this IHtmlHelper<T> helper,
+            string tableName,
+            string modelName = null,
+            string width = null,
+            object cellAttributes = null)
+        {
+            CellWriter writer = Provider.DragContentCell<T>(helper, tableName, modelName, width, cellAttributes);
+            return writer.WriteCell(CellTypes.DragCell);
+        }
+
+        public static IHtmlContent LinkCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
+            string url,
+            bool blank = true,
+            object cellAttributes = null,
+            object linkAttributes = null,
+            string pipe = null)
+        {
+            CellWriter writer = Provider.LinkCell<T,TValue>(helper, exp, url, blank, cellAttributes, linkAttributes, pipe);
+            return writer.WriteCell(CellTypes.LabelCell);
+        }
+
+
     }
 }

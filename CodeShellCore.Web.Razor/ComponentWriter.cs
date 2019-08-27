@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Text.Localization;
+﻿using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Text.Localization;
 using CodeShellCore.Web.Razor.Models;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,8 +10,9 @@ namespace CodeShellCore.Web.Razor
 {
     public class ComponentWriter : IDisposable
     {
-        public dynamic _inputModelExtraAttrs = new ExpandoObject();
+        protected dynamic _inputModelExtraAttrs = new ExpandoObject();
         public dynamic InputModelExtraAttrs { get { return _inputModelExtraAttrs; } }
+        public Accessibility Accessibility { get; set; } = new Accessibility(2);
         protected ILocaleTextProvider TextProvider { get { return RazorConfig.LocaleTextProvider; } }
         protected IHtmlHelper Helper { get; private set; }
         public NgInput InputModel { get; set; }

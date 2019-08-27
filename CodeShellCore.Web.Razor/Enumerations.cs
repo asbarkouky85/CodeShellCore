@@ -8,27 +8,11 @@ namespace CodeShellCore.Web.Razor
 {
     public class ComponentNames
     {
-        public const string CalendarTextBox = "InputControls/CalendarTextBox";
-        public const string CheckBox = "InputControls/CheckBox";
-        public const string DateTimeTextBox = "InputControls/DateTimeTextBox";
-        public const string FileTextBox = "InputControls/FileTextBox";
-        public const string HijriCalendarTextBox = "InputControls/HijriCalendarTextBox";
-        public const string Radio = "InputControls/Radio";
-        public const string Select = "InputControls/Select";
-        public const string Select_Searchable = "InputControls/Select_Searchable";
-        public const string Textarea = "InputControls/Textarea";
-        public const string TextBox = "InputControls/TextBox";
-        public const string LocalizableTextBox = "InputControls/LocalizableTextBox";
-        public const string ButtonCell = "TableCells/ButtonCell";
-        public const string HeaderCell = "TableCells/HeaderCell";
-        public const string DragCell = "TableCells/DragCell";
-        public const string LabelCell = "TableCells/LabelCell";
-        public const string WordCell = "TableCells/WordCell";
-
         public const string SearchGroup = "SearchGroup";
         public const string ControlGroup = "ControlGroup";
 
         public const string Label = "Label";
+        public const string ListModifiers="TableCells/ListModifiers";
     }
 
     public enum InputControls

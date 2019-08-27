@@ -49,28 +49,8 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
         string permissionName = "Permission",
         string classes = "")
         {
-            ListModifiersModel mod = new ListModifiersModel
-            {
-                ModelExpression = helper.GetModelName(),
-                IdExpression = idExpression ?? helper.GetModelName() + ".id",
-                DeleteFunction = deleteFunction,
-                DetailsFunction = detailsFunction,
-                EditFunction = editFunction,
-                ReadOnly = false,
-                Modifiers = modifiers,
-                Classes = classes,
-                PermissionVariable = permissionName
-            };
-            identifier = identifier?.ToLower();
-
-            if (buttons != null)
-            {
-                mod.AdditionalButtons = buttons;
-                foreach (var b in mod.AdditionalButtons)
-                    b.Classes = "buttonGra-sm";
-            }
-
-            return helper.GetComponent("TableCells/ListModifiers", mod);
+            return Provider.ListModifiers<T>(helper,idExpression,buttons,detailsFunction,editFunction,deleteFunction,identifier,modifiers,permissionName,classes);
+            
         }
     }
 }

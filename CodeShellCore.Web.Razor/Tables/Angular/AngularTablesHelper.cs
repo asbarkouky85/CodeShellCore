@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using CodeShellCore.Web.Razor.Models;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace CodeShellCore.Web.Razor.Tables.Angular
 {
     public class AngularTablesHelper : DefaultTablesHelper, IAngularTablesHelper
     {
-        public CellWriter CheckBoxCell(IHtmlHelper helper, string field, string rowIndex, string listName, string ngModel, object cellAttributes, object inputAttr, string listItem, string classes)
+        public virtual CellWriter CheckBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string listName, string ngModel, object cellAttributes, object inputAttr, string listItem, string classes)
         {
             var writer = new CellWriter(helper);
 
@@ -21,7 +24,33 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             return writer;
         }
 
-        public CellWriter RadioBoxCell(IHtmlHelper helper,string field, string rowIndex, string property, bool asArray, object cellAttributes, object inputAttr, string listItem, string classes)
+        public virtual IHtmlContent ListModifiers<T>(IHtmlHelper<T> helper, string idExpression, IEnumerable<LinkModel> buttons, string detailsFunction, string editFunction, string deleteFunction, string identifier, string modifiers, string permissionName, string classes)
+        {
+            ListModifiersModel mod = new ListModifiersModel
+            {
+                ModelExpression = helper.GetModelName(),
+                IdExpression = idExpression ?? helper.GetModelName() + ".id",
+                DeleteFunction = deleteFunction,
+                DetailsFunction = detailsFunction,
+                EditFunction = editFunction,
+                ReadOnly = false,
+                Modifiers = modifiers,
+                Classes = classes,
+                PermissionVariable = permissionName
+            };
+            identifier = identifier?.ToLower();
+
+            if (buttons != null)
+            {
+                mod.AdditionalButtons = buttons;
+                foreach (var b in mod.AdditionalButtons)
+                    b.Classes = "buttonGra-sm";
+            }
+
+            return helper.GetComponent("TableCells/ListModifiers", mod);
+        }
+
+        public virtual CellWriter RadioBoxCell<T>(IHtmlHelper<T> helper,string field, string rowIndex, string property, bool asArray, object cellAttributes, object inputAttr, string listItem, string classes)
         {
             var writer = new CellWriter(helper);
 
@@ -48,7 +77,7 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             return writer;
         }
 
-        public CellWriter TextCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,string pipe, object cellAttributes)
+        public CellWriter TextCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string pipe, object cellAttributes)
         {
             using (var writer = new CellWriter(helper))
             {
@@ -64,11 +93,6 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
                 writer.InputModel.MemberName += pipe;
                 return writer;
             }
-        }
-
-        public CellWriter TextCell_Angular<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string pipe, object cellAttributes)
-        {
-            throw new NotImplementedException();
         }
     }
 }
