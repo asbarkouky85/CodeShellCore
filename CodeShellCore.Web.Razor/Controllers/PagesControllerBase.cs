@@ -26,9 +26,9 @@ namespace CodeShellCore.Web.Razor.Controllers
         }
 
 
-        public IActionResult SetViewParams(long id, [FromBody]ViewParams @params)
+        public IActionResult SetViewParams([FromBody]ViewParamsSetter @params)
         {
-            SubmitResult = Service.SetViewParams(id, @params);
+            SubmitResult = Service.SetViewParams(@params);
             return Respond();
         }
     }
