@@ -12,6 +12,7 @@ using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Moldster.Db.Razor;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Moldster.Db.Data;
+using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.Db.Services
 {
@@ -63,13 +64,61 @@ namespace CodeShellCore.Moldster.Db.Services
             }
         }
 
-        public SubmitResult SetViewParams(long id, ViewParams @params)
+        public SubmitResult SetViewParams(ViewParamsSetter setter)
         {
-            var p = Repository.FindSingle(id);
-            if (p == null)
-                throw new CodeShellHttpException(HttpStatusCode.NotFound, " id not found!!");
+            var ps = new List<Page>();
+            if (setter.PageName != null)
+                ps = Repository.Find(d => d.TenantId == setter.TenantId && d.Name == setter.PageName);
+            else if (setter.TemplateName != null)
+                ps = Repository.Find(d => d.TenantId == setter.TenantId && d.PageCategory.Name == setter.TemplateName);
+            else
+                throw new ArgumentException("PageName or TemplateName must be provided");
 
-            p.ViewParams = @params.ToJson();
+            if (!ps.Any())
+                throw new ArgumentOutOfRangeException("not found");
+
+            foreach (var p in ps)
+            {
+                var vp = new ViewParams();
+                if (p.ViewParams != null)
+                    vp = p.ViewParams.FromJson<ViewParams>();
+
+                if (vp.Other == null)
+                    vp.Other = new Dictionary<string, string>();
+
+                if (setter.Fields != null)
+                {
+                    vp.Fields = setter.Fields;
+                }
+
+                foreach (var kv in setter.Data)
+                {
+                    if (kv.Key.ToLower().StartsWith("other."))
+                    {
+                        string key = kv.Key.GetAfterFirst(".");
+                        if (kv.Value.ToLower() == "default")
+                        {
+                            vp.Other.Remove(key);
+                        }
+                        else
+                        {
+                            vp.Other[key] = kv.Value;
+                        }
+
+                    }
+                    else
+                    {
+                        var prop = typeof(ViewParams).GetProperty(kv.Key);
+                        if (prop != null)
+                        {
+                            prop.SetValue(vp, kv.Value);
+                        }
+                    }
+                }
+                p.ViewParams = vp.ToJson();
+                p.Presistant = true;
+            }
+
             return Unit.SaveChanges();
         }
 

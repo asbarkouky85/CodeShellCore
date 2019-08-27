@@ -1,4 +1,7 @@
-﻿using CodeShellCore.Moldster.Db.Data;
+﻿using CodeShellCore.Data.Lookups;
+using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Services;
@@ -21,15 +24,26 @@ namespace CodeShellCore.Moldster.Db.Services
         }
         public string[] GetDomainPages(string mod, string domain)
         {
+            if (string.IsNullOrEmpty(domain))
+                return new string[0];
+            var query = domain;
+            query = query[0] != '/' ? "/" + query : query;
+            query = query[query.Length - 1] != '/' ? query + "/" : query;
             return _unit.PageRepository.GetValues(
                 d => d.ViewPath,
-                d => d.Domain.NameChain.Contains("/" + domain + "/") && d.Tenant.Code == mod
+                d => d.Domain.NameChain.Contains(query) && d.Tenant.Code == mod
                 ).ToArray();
         }
 
-        public string[] GetModuleDomains(string modCode)
+        public IEnumerable<DomainRecursive> GetModuleDomains(string modCode)
         {
-            return _unit.DomainRepository.GetValues(d => d.Name, d => d.ParentId == null).ToArray();
+            var doms = _unit.DomainRepository.GetRooted(d => d.Pages.Any(e => e.Tenant.Code == modCode)).Recurse();
+            List<DomainRecursive> lst = new List<DomainRecursive>();
+            foreach (var d in doms)
+            {
+                lst.Add(DomainRecursive.ToDomainRecursive(d));
+            }
+            return lst;
         }
 
         public string[] GetModuleNames(bool? active = null)
@@ -53,6 +67,11 @@ namespace CodeShellCore.Moldster.Db.Services
                     e.Tenant.Code == modCode &&
                     (e.Domain.Name == domain || domain == null)
                 )).ToArray();
+        }
+
+        public TenantPageGuideDTO GetTenantGuide(long id)
+        {
+            return _unit.TenantRepository.FindSingleAs(TenantPageGuideDTO.Expression, id);
         }
     }
 }

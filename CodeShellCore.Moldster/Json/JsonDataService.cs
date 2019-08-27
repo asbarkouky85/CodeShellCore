@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
@@ -121,9 +121,15 @@ namespace CodeShellCore.Moldster.Json
             };
         }
 
-        public string[] GetModuleDomains(string modCode)
+        public IEnumerable<DomainRecursive> GetModuleDomains(string modCode)
         {
-            return GetNgModule(modCode).Domains.Select(d => d.Name).ToArray();
+            throw new NotImplementedException();
+            //return GetNgModule(modCode).Domains.Select(d => d.Name).ToArray();
+        }
+
+        public TenantPageGuideDTO GetTenantGuide(long id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

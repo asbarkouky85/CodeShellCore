@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Moldster.Definitions;
+﻿using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 using System;
@@ -13,7 +14,8 @@ namespace CodeShellCore.Moldster.Services
         string[] GetDomainPages(string mod, string domain);
         string[] GetTemplatePaths(string modCode, string domain = null);
         string[] GetModuleNames(bool? active = null);
-        string[] GetModuleDomains(string modCode);
+        IEnumerable<DomainRecursive> GetModuleDomains(string modCode);
         PageOptions GetPageOptions(string moduleCode, string viewPath);
+        TenantPageGuideDTO GetTenantGuide(long id);
     }
 }

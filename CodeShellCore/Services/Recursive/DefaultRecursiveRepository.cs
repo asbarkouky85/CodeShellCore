@@ -9,7 +9,7 @@ using CodeShellCore.Data.Lookups;
 
 namespace CodeShellCore.Services.Recursive
 {
-    public class DefaultRecursiveRepository<T, TContext> : AdapterRepository_Int64<T, IRecursiveModel, TContext>, IRecursiveRepository<T>
+    public class DefaultRecursiveRepository<T, TContext> : Repository_Int64<T, TContext>, IRecursiveRepository<T>
          where T : class, IRecursiveModel
          where TContext : DbContext
     {

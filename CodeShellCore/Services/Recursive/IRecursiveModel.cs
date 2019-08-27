@@ -11,8 +11,8 @@ namespace CodeShellCore.Services.Recursive
         long? ParentId { get; set; }
         string Chain { get; set; }
         string NameChain { get; set; }
-        bool HasContents { get; set; }
-        int ContentCount { get; set; }
+        //bool HasContents { get; set; }
+        //int ContentCount { get; set; }
         IEnumerable<IRecursiveModel> Children { get; set; }
     }
 }

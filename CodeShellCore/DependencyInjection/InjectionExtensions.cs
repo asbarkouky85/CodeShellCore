@@ -72,7 +72,13 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<CustomFieldRepository<T, TContext>>();
         }
 
-
+        public static T GetCurrentUserAs<T>(this IServiceProvider prov) where T : class, IUser
+        {
+            var user = prov.GetCurrentUser();
+            if (user == null)
+                return null;
+            return (T)user;
+        }
 
 
         public static void AddCollectionUnitOfWork<T>(this IServiceCollection coll) where T : class, ICollectionUnitOfWork

@@ -11,6 +11,7 @@ namespace CodeShellCore.Moldster.Db.Razor
         public string EditUrl { get; set; }
         public string DetailsUrl { get; set; }
         public string ListUrl { get; set; }
+        public IEnumerable<FieldDefinition> Fields { get; set; } = new List<FieldDefinition>();
         
         public Dictionary<string, string> Other { get; set; }
         public ViewParams()

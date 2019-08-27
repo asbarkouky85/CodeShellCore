@@ -98,7 +98,7 @@ namespace CodeShellCore.Web.Razor
 
             return helper.GetComponent("Pagination", m);
         }
-        
+
         public static IHtmlContent PageHeader<T>(this IHtmlHelper<T> helper, string addUrl = null, IHtmlContent addButton = null, IHtmlContent addButtonEmbedded = null)
         {
             var mod = helper.HeaderModel();
@@ -123,13 +123,7 @@ namespace CodeShellCore.Web.Razor
 
         public static ViewParams GetViewParams(this IHtmlHelper helper)
         {
-            var se = helper.GetViewData<ViewParams>();
-            if (se == null)
-            {
-                se = new ViewParams();
-                helper.SetViewData(se);
-            }
-            return se;
+            return helper.Config().ViewParams;
         }
 
         /// <summary>
@@ -222,7 +216,7 @@ namespace CodeShellCore.Web.Razor
             return model;
         }
 
-        
+
 
         #endregion
 
@@ -396,6 +390,18 @@ namespace CodeShellCore.Web.Razor
             return helper.GetComponent("Buttons/SubmitButton");
         }
 
+        public static IHtmlContent TreeButton(this IHtmlHelper helper, string icon, string title, string function, object attr = null)
+        {
+            var mod = new LinkModel
+            {
+                Title = title,
+                IconClass = icon,
+                Function = function,
+                Attrs = attr
+            };
+            return helper.GetComponent("Buttons/TreeButton", mod);
+        }
+
         public static IHtmlContent GetAddEntityString<T>(this IHtmlHelper<T> helper)
         {
             var s = helper.ViewData.ModelMetadata.ModelType.RealModelType().Name;
@@ -431,7 +437,7 @@ namespace CodeShellCore.Web.Razor
         /// <param name="content"></param>
         /// <param name="attr"></param>
         /// <returns></returns>
-        public static IHtmlContent Button(this IHtmlHelper helper,
+        public static IHtmlContent Button<T>(this IHtmlHelper<T> helper,
             string text = null,
             string function = null,
             string url = null,
@@ -443,18 +449,8 @@ namespace CodeShellCore.Web.Razor
             string title = null,
             object attr = null)
         {
-            LinkModel model = new LinkModel
-            {
-                Text = content != null ? content : (text == null ? null : helper.Word(text)),
-                Function = function,
-                BtnClassEnum = btn,
-                Url = url,
-                IconClass = icon,
-                Attrs = attr,
-                Classes = classes,
-                Title = title
-            };
-            return helper.GetComponent("Buttons/Button", model);
+            return Provider.Button(helper, text, function, url, btn, icon, identifier, content, classes, title, attr);
+            
         }
         #endregion
 

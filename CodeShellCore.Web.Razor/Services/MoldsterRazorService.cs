@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using CodeShellCore.Web.Razor.Services;
 using CodeShellCore.Services.Http;
+using System.Collections.Generic;
+using CodeShellCore.Moldster.Db.Dto;
 
 namespace CodeShellCore.Moldster.Razor.Services
 {
@@ -37,7 +39,11 @@ namespace CodeShellCore.Moldster.Razor.Services
                 var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
 
                 viewDictionary["CollectViewData"] = true;
-                viewDictionary["PageControls"] = new TemplateDataCollector();
+                viewDictionary["PageControls"] = new TemplateDataCollector
+                {
+                    EntityName = null,
+                    Controls = new List<ControlDTO>()
+                };
                 if (layout != null)
                 {
                     viewDictionary["PageOptions"] = new PageOptions

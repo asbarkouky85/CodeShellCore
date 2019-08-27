@@ -70,7 +70,12 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-
+        public IHtmlContent GetLabelControl(bool localizable = false)
+        {
+            if (!(InputModel is LabelNgInput))
+                InputModel = InputModel.GetLabelInput();
+            return GetInputControl(localizable ? "LocalizableLabel" : "Label");
+        }
         public virtual void SetOptions(int size, string alternateLabel = null, string placeHolder = null, object attrs = null, object inputAttr = null, string classes = "", string grClasses = "")
         {
             GroupModel.Label = alternateLabel ?? GroupModel.Label;
@@ -84,12 +89,12 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        public virtual IHtmlContent WriteLabel()
+        public virtual IHtmlContent WriteLabel(bool localizable = false)
         {
-         
+
             if (!(InputModel is LabelNgInput))
                 InputModel = InputModel.GetLabelInput();
-            GroupModel.InputControl = GetInputControl(InputControls.Label);
+            GroupModel.InputControl = GetInputControl(localizable ? InputControls.LocalizableLabel : InputControls.Label);
             return Helper.Partial(Helper.GetTheme().LabelGroupTemplate, GroupModel);
         }
 
@@ -112,14 +117,14 @@ namespace CodeShellCore.Web.Razor.Elements
             {
                 switch (cont)
                 {
-                    
+
                     case InputControls.CheckBox:
                         ((CheckNgInput)InputModel).Enabled = false;
                         break;
                     case InputControls.Radio:
                         ((RadioNgInput)InputModel).Enabled = false;
                         break;
-                    
+
                     default:
                         return WriteLabel();
                 }

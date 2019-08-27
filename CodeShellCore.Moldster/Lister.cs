@@ -19,6 +19,24 @@ namespace CodeShellCore.Moldster
                 ListName = listName
             };
         }
-        
+
+        public static Lister<T> Make<T>(string listName, string collectionName = null)
+        {
+            return new Lister<T>(listName, collectionName);
+        }
+
+    }
+
+    public class Lister<T> : Lister
+    {
+        private long entityId;
+
+        public override string CollecionName { get { return "C" + entityId + (CollectionIdentifier == null ? "" : "__" + CollectionIdentifier); } }
+        public override bool IsLookup { get { return true; } set { } }
+        public Lister(string listName, string collecionIdentifier = null)
+        {
+            ListName = listName;
+            CollectionIdentifier = collecionIdentifier;
+        }
     }
 }

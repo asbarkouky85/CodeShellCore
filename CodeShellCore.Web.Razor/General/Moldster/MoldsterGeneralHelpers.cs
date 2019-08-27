@@ -11,6 +11,7 @@ using CodeShellCore.Types;
 using System.Linq;
 using CodeShellCore.Text;
 using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Db.Razor;
 
 namespace CodeShellCore.Web.Razor.General.Moldster
 {
@@ -78,10 +79,10 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         /// <param name="helper"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static CodeShellCore.Moldster.Razor.Accessibility GetAccessibility(this IHtmlHelper helper, string id)
+        public static Accessibility GetAccessibility(this IHtmlHelper helper, string id)
         {
             if (helper.CollectingData())
-                return new CodeShellCore.Moldster.Razor.Accessibility(2);
+                return new Accessibility(2);
 
             return helper.Config().GetAccessibility(id.ToLower());
         }
@@ -160,8 +161,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
             }
 
         }
-
-
+        
         public static IHtmlContent ComponentSelectorFromOther(this IHtmlHelper helper, string id, string def = null, object attr = null)
         {
             string res = "";

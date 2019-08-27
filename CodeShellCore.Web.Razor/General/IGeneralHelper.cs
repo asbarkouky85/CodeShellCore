@@ -9,5 +9,6 @@ namespace CodeShellCore.Web.Razor.General
     public interface IGeneralHelper
     {
         IHtmlContent TabTitle(IHtmlHelper helper, string containerId, string activationVariable, string textId, object attr);
+        IHtmlContent Button<T>(IHtmlHelper<T> helper, string text, string function, string url, BtnClass btn, string icon, string identifier, IHtmlContent content, string classes, string title, object attr);
     }
 }

@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Razor.Models
 {
@@ -16,6 +11,7 @@ namespace CodeShellCore.Web.Razor.Models
         public string NgModelName { get; set; }
         public string AngularJsConfig { get; set; }
         public string MemberName { get; set; }
+        public string EntityPropertyName { get; set; } = "Empty";
         public string PlaceHolder { get; set; }
         public string RowIndex { get; set; }
         public string TextBoxType { get; set; }
@@ -47,6 +43,7 @@ namespace CodeShellCore.Web.Razor.Models
             {
                 MemberName = MemberName,
                 NgModelName = NgModelName,
+                EntityPropertyName = EntityPropertyName,
                 UploadUrl = uploadUrl,
                 FormFieldName = formFieldName,
                 AttributeObject = AttributeObject,
@@ -64,6 +61,7 @@ namespace CodeShellCore.Web.Razor.Models
                 Display = displayMember,
                 ValueMember = valueMember,
                 AttributeObject = AttributeObject,
+                EntityPropertyName = EntityPropertyName,
                 Classes = Classes,
                 Multi = multi,
                 Nullable = nullable,
@@ -72,30 +70,33 @@ namespace CodeShellCore.Web.Razor.Models
             };
         }
 
-        public LabelNgInput GetLabelInput(string pipe = null, string url = null,bool blank=true)
+        public LabelNgInput GetLabelInput(string pipe = null, string url = null, bool blank = true)
         {
             return new LabelNgInput
             {
                 MemberName = MemberName,
                 NgModelName = NgModelName,
                 AttributeObject = AttributeObject,
+                EntityPropertyName = EntityPropertyName,
                 Classes = Classes,
                 Pipe = pipe,
                 Url = url,
-                Blank=blank
+                Blank = blank
             };
         }
 
 
 
-        public RadioNgInput GetRadioInput(Dictionary<string, object> values)
+        public RadioNgInput GetRadioInput(Dictionary<string, object> values, bool enabled = true)
         {
             return new RadioNgInput
             {
                 MemberName = MemberName,
                 NgModelName = NgModelName,
                 Values = values,
+                EntityPropertyName = EntityPropertyName,
                 AttributeObject = AttributeObject,
+                Enabled = enabled,
                 Classes = Classes,
                 GroupName = GroupName
             };
@@ -110,6 +111,7 @@ namespace CodeShellCore.Web.Razor.Models
                 TrueString = trueString,
                 FalseString = falseString,
                 AttributeObject = AttributeObject,
+                EntityPropertyName = EntityPropertyName,
                 UseIcon = useIcon,
                 Classes = Classes,
                 Enabled = true,

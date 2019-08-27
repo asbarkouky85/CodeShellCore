@@ -18,7 +18,7 @@ namespace CodeShellCore.Caching.Redis
             {
                 Host = Shell.GetConfigAs<string>("RedisConfig:Host"),
                 Port = Shell.GetConfigAs<int>("RedisConfig:Port"),
-                DatabaseId = Shell.GetConfigAs<int>("RedisConfig:DatabaseId")
+                DatabaseId = GetDatabaseId()
             };
 
             _endPoint = new RedisEndpoint(_config.Host, _config.Port, null, _config.DatabaseId);
@@ -31,6 +31,11 @@ namespace CodeShellCore.Caching.Redis
             {
                 return client.Get<T>(typeof(T).Name + ":" + key);
             }
+        }
+
+        protected virtual long GetDatabaseId()
+        {
+            return Shell.GetConfigAs<int>("RedisConfig:DatabaseId");
         }
 
 

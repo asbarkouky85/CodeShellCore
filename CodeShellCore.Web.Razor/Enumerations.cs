@@ -45,6 +45,7 @@ namespace CodeShellCore.Web.Razor
         TextBox, //"InputControls/TextBox";
         LocalizableTextBox, //"InputControls/LocalizableTextBox";
         Label,
+        LocalizableLabel,
         ListView,
         CheckBoxCell,
     }

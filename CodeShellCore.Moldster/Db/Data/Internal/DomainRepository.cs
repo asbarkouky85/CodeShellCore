@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using CodeShellCore.Data.Lookups;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Services.Recursive;
 
 namespace CodeShellCore.Moldster.Db.Data.Internal
 {
-    public class DomainRepository : MoldsterRepository<Domain, MoldsterContext>, IDomainRepository
+    public class DomainRepository : MoldsterRepository<Domain, MoldsterContext>, IDomainRepository,IRecursiveRepository<Domain>
     {
+        DefaultRecursiveRepository<Domain, MoldsterContext> _recRepo; 
         public DomainRepository(MoldsterContext con) : base(con)
         {
+            _recRepo = new DefaultRecursiveRepository<Domain, MoldsterContext>(con);
         }
 
         internal IQueryable<Domain> ByTenantCode(string moduleCode, IQueryable<Domain> q = null)
@@ -114,6 +119,36 @@ namespace CodeShellCore.Moldster.Db.Data.Internal
             }
             return last;
             
+        }
+
+        public IEnumerable<RecursionModel> GetRecursionModels()
+        {
+            return _recRepo.GetRecursionModels();
+        }
+
+        public IEnumerable<RecursionModel> GetRecursionModels(Expression<Func<Domain, bool>> filter)
+        {
+            return _recRepo.GetRecursionModels();
+        }
+
+        public IEnumerable<Domain> GetChildren(object prime)
+        {
+            return _recRepo.GetChildren(prime);
+        }
+
+        public IEnumerable<Domain> GetChildren(object prime, Expression<Func<Domain, bool>> filter)
+        {
+            return _recRepo.GetChildren(prime, filter);
+        }
+
+        public IEnumerable<Domain> GetRooted(Expression<Func<Domain, bool>> filter)
+        {
+            return _recRepo.GetRooted(filter);
+        }
+
+        public void DeleteAllSubs(object prime)
+        {
+            _recRepo.DeleteAllSubs(prime);
         }
     }
 }

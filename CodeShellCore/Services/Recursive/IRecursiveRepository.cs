@@ -9,15 +9,15 @@ using System.Text;
 
 namespace CodeShellCore.Services.Recursive
 {
-    public interface IRecursiveRepository<T> : IAdapterRepository<T, IRecursiveModel> where T : class, IRecursiveModel
+    public interface IRecursiveRepository<T> : IRepository<T> where T : class, IRecursiveModel
     {
         IEnumerable<RecursionModel> GetRecursionModels();
-        IEnumerable<RecursionModel> GetRecursionModels(Expression<Func<T,bool>> filter);
+        IEnumerable<RecursionModel> GetRecursionModels(Expression<Func<T, bool>> filter);
         IEnumerable<T> GetChildren(object prime);
 
-        IEnumerable<T> GetChildren(object prime,Expression<Func<T,bool>> filter);
+        IEnumerable<T> GetChildren(object prime, Expression<Func<T, bool>> filter);
         IEnumerable<T> GetRooted(Expression<Func<T, bool>> filter);
         void DeleteAllSubs(object prime);
-        
+
     }
 }
