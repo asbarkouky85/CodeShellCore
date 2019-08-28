@@ -7,7 +7,7 @@ VersionSetter -p CodeShellCore.Reporting 2.1.18
 VersionSetter -p CodeShellCore.Web 2.1.18
 
 VersionSetter -p CodeShellCore.Moldster 2.1.18
-VersionSetter -p CodeShellCore.Web.Razor 2.1.18
+VersionSetter -p CodeShellCore.Web.Razor 2.1.19
 
 VersionSetter -p Asga 2.1.18
 VersionSetter -p Asga.Common 2.1.18

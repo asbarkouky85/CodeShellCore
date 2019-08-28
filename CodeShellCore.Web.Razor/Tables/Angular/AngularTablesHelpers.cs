@@ -10,7 +10,8 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
     {
         static IAngularTablesHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IAngularTablesHelper>(); } }
 
-        public static IHtmlContent CheckBoxCell<T>(this IHtmlHelper<T> helper,
+        public static IHtmlContent CheckBoxCell<T>(
+            this IHtmlHelper<T> helper,
             string field,
             string rowIndex,
             string listName,
