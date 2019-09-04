@@ -96,7 +96,7 @@ namespace CodeShellCore.Web.Razor
                 TotalCount = srcName == null ? "totalCount" : srcName + ".TotalCount"
             };
 
-            return helper.GetComponent("Pagination", m);
+            return helper.GetComponent("Components/Pagination", m);
         }
 
         public static IHtmlContent PageHeader<T>(this IHtmlHelper<T> helper, string addUrl = null, IHtmlContent addButton = null, IHtmlContent addButtonEmbedded = null)
@@ -423,20 +423,6 @@ namespace CodeShellCore.Web.Razor
                 icon: "glyphicon glyphicon-plus");
         }
 
-        /// <summary>
-        /// write a button tag according to parameters
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="helper"></param>
-        /// <param name="text">if not null text is translated using Word()</param>
-        /// <param name="function">full function name and arguments</param>
-        /// <param name="url">link to go to on click</param>
-        /// <param name="btn">button class</param>
-        /// <param name="icon">fa or glyphicon class, if not null an 'i' tag is added</param>
-        /// <param name="identifier"></param>
-        /// <param name="content"></param>
-        /// <param name="attr"></param>
-        /// <returns></returns>
         public static IHtmlContent Button<T>(this IHtmlHelper<T> helper,
             string text = null,
             string function = null,
@@ -452,6 +438,8 @@ namespace CodeShellCore.Web.Razor
             return Provider.Button(helper, text, function, url, btn, icon, identifier, content, classes, title, attr);
             
         }
+
+        
         #endregion
 
         #region Containers

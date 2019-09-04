@@ -52,9 +52,10 @@ namespace CodeShellCore.Web.Razor.Tables
             bool multi = false,
             object cellAttributes = null,
             object inputAttr = null,
-            string classes = "")
+            string classes = "",
+            bool nullable = false)
         {
-            CellWriter mod = Provider.SelectCell(helper, exp, source, displayMember, valueMember, required, multi, cellAttributes, inputAttr, classes);
+            CellWriter mod = Provider.SelectCell(helper, exp, source, displayMember, valueMember, required, multi, cellAttributes, inputAttr, classes, nullable);
             return mod.Write(InputControls.Select);
         }
 
@@ -65,7 +66,7 @@ namespace CodeShellCore.Web.Razor.Tables
             object inputAttr = null,
             string classes = "")
         {
-            CellWriter mod = Provider.TextBoxCell(helper, exp, textBoxType, coll, cellAttributes, inputAttr, classes);
+            CellWriter mod = Provider.TextBoxCell(helper, exp, textBoxType, null, coll, cellAttributes, inputAttr, classes);
             return mod.Write(InputControls.TextBox);
         }
 
@@ -108,7 +109,7 @@ namespace CodeShellCore.Web.Razor.Tables
             object linkAttributes = null,
             string pipe = null)
         {
-            CellWriter writer = Provider.LinkCell<T,TValue>(helper, exp, url, blank, cellAttributes, linkAttributes, pipe);
+            CellWriter writer = Provider.LinkCell<T, TValue>(helper, exp, url, blank, cellAttributes, linkAttributes, pipe);
             return writer.WriteCell(CellTypes.LabelCell);
         }
 

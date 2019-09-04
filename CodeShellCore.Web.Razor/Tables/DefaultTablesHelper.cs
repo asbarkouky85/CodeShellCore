@@ -26,7 +26,10 @@ namespace CodeShellCore.Web.Razor.Tables
 
         public CellWriter DragHeaderCell<T>(IHtmlHelper<T> helper, string tableName, string width, object cellAttributes)
         {
-            throw new NotImplementedException();
+            var writer = new CellWriter(helper);
+            writer.Initialize(null, width, cellAttributes, null);
+            writer.InputModel.PlaceHolder = RazorConfig.LocaleTextProvider.Word("Drag");
+            return writer;
         }
 
         public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes)
@@ -57,15 +60,26 @@ namespace CodeShellCore.Web.Razor.Tables
 
         public CellWriter LinkCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string url, bool blank, object cellAttributes, object linkAttributes, string pipe)
         {
-            throw new NotImplementedException();
+            var writer = new CellWriter(helper);
+
+            writer.Initialize(null, null, cellAttributes, null);
+            writer.InputModel = writer.InputModel.GetLabelInput(pipe, url, blank);
+            pipe = pipe == null ? "" : " | " + pipe;
+            if (pipe.Contains("translate"))
+            {
+                writer.InputModel.NgModelName = "'Words.'+" + writer.InputModel.NgModelName;
+            }
+
+            writer.InputModel.MemberName += pipe;
+            return writer;
         }
 
-        public virtual CellWriter SelectCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string displayMember, string valueMember, bool required, bool multi, object cellAttributes, object inputAttr, string classes)
+        public virtual CellWriter SelectCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string displayMember, string valueMember, bool required, bool multi, object cellAttributes, object inputAttr, string classes,bool nullable)
         {
             var writer = new CellWriter(helper);
             writer.UseExpression(exp);
             writer.Initialize(null, null, cellAttributes, inputAttr, classes);
-            writer.InputModel = writer.InputModel.GetSelectInput(source.IsLookup ? "Lookups." + source.ListName : source.ListName, displayMember, valueMember);
+            writer.InputModel = writer.InputModel.GetSelectInput(source.IsLookup ? "Lookups." + source.ListName : source.ListName, displayMember, valueMember,multi,nullable);
             if (required)
                 writer.UseValidation(helper.VCollection().AddRequired());
             return writer;
@@ -91,9 +105,17 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter TextBoxCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string textBoxType, IValidationCollection coll, object cellAttributes, object inputAttr, string classes)
+        public virtual CellWriter TextBoxCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string textBoxType,string rowIndex, IValidationCollection coll, object cellAttributes, object inputAttr, string classes)
         {
-            throw new NotImplementedException();
+            var writer = new CellWriter(helper);
+            writer.UseExpression(exp);
+            
+            writer.InputModel.TextBoxType = textBoxType;
+            writer.InputModel.RowIndex = rowIndex;
+            writer.Initialize(null, null, cellAttributes, inputAttr, classes);
+            if (coll != null)
+                writer.UseValidation(coll, rowIndex: rowIndex);
+            return writer;
         }
 
         public virtual CellWriter TextCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, object cellAttributes)

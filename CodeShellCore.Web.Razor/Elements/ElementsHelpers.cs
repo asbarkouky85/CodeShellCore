@@ -68,7 +68,7 @@ namespace CodeShellCore.Web.Razor.Elements
 
         public static IHtmlContent AutoComplete<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
             Lister src,
-            bool required = false,
+            IValidationCollection coll = null,
             int size = -1,
             string alternateLabel = null,
             string placeHolder = null,
@@ -77,7 +77,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
-            var elem = Provider.AutoCompleteGroup(helper, exp, src, required, size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
+            var elem = Provider.AutoCompleteGroup(helper, exp, src, coll, size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.TextBox);
         }
 
@@ -104,12 +104,13 @@ namespace CodeShellCore.Web.Razor.Elements
             int size = -1,
             string alternateLabel = null,
             string placeHolder = null,
+            IValidationCollection coll=null,
             object attrs = null,
             object inputAttr = null,
             string inputClasses = "",
             string groupClasses = "")
         {
-            return Provider.InputControl(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
+            return Provider.InputControl(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder,coll, attrs, inputAttr, inputClasses, groupClasses);
         }
 
         public static IHtmlContent FileGroup<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
@@ -190,11 +191,13 @@ namespace CodeShellCore.Web.Razor.Elements
             object inputAttr = null,
             string inputClasses = "",
             string groupClasses = "",
+            bool nullable = true,
             string idExtra = "",
             string readOnlyProperty = null,
-            bool nullable = true)
+            string readOnlyPipe = null
+            )
         {
-            var elem = Provider.SelectControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, nullable);
+            var elem = Provider.SelectControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses,idExtra,readOnlyProperty,readOnlyPipe, nullable);
             return elem.Write(InputControls.Select);
         }
 
@@ -216,6 +219,28 @@ namespace CodeShellCore.Web.Razor.Elements
         {
             var elem = Provider.SearchableControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, nullable);
             return elem.Write(InputControls.Select_Searchable);
+        }
+
+        public static IHtmlContent SelectInputControl<T, TValue>(
+            this IHtmlHelper<T> helper,
+            Expression<Func<T, TValue>> exp,
+            Lister lister,
+            string display,
+            string valueMember = null,
+            bool required = false,
+            string readOnlyProperty = null,
+            bool nullable = true,
+            object attrs = null,
+            string inputClasses = "",
+            string readOnlyPipe = null,
+            string idExtra = "")
+        {
+            ControlGroupWriter mod = Provider.SelectInputControl(helper, exp, lister, display, valueMember, required, readOnlyProperty, nullable, attrs, inputClasses, readOnlyPipe, idExtra);
+            if (!mod.Accessibility.Read)
+                return null;
+            if (!mod.Accessibility.Write)
+                return mod.GetLabelControl();
+            return mod.GetInputControl(InputControls.Select);
         }
 
         public static IHtmlContent ListView<T>(this IHtmlHelper<T> helper, string selectionSource,

@@ -30,8 +30,29 @@ namespace CodeShellCore.Web.Razor.Elements
             return "";
         }
 
+        public virtual void UseProperty(string memberName, string columnId, string propertyName, bool useGroup = true)
+        {
+            ColumnId = columnId;
+            string groupName = useGroup ? "FG_" + memberName.Replace(".", "_") : null;
 
-        public virtual void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp)
+            InputModel = new NgInput
+            {
+                MemberName = memberName,
+                NgModelName = Helper.GetModelName(),
+                NgFormName = Helper.GetFormName(),
+                EntityPropertyName = propertyName,
+                GroupName = groupName
+            };
+
+            GroupModel = new NgControlGroup
+            {
+                Label = TextProvider.Column(ColumnId),
+                Name = groupName,
+                PropertyName = InputModel.MemberName.GetAfterLast(".").UCFirst()
+            };
+        }
+
+        public override void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp)
         {
             ColumnId = RazorUtils.GetColumnId(exp);
             MemberExpression = RazorUtils.GetMemberExpression(exp);
@@ -71,12 +92,7 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        public IHtmlContent GetLabelControl(bool localizable = false)
-        {
-            if (!(InputModel is LabelNgInput))
-                InputModel = InputModel.GetLabelInput();
-            return GetInputControl(localizable ? "LocalizableLabel" : "Label");
-        }
+        
         public virtual void SetOptions(int size, string alternateLabel = null, string placeHolder = null, object attrs = null, object inputAttr = null, string classes = "", string grClasses = "")
         {
             GroupModel.Label = alternateLabel ?? GroupModel.Label;

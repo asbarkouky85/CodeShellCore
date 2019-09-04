@@ -25,7 +25,8 @@ namespace Asga.Web.Security
 
         protected override bool IsAuthorized(AuthorizationRequest<AuthorizationFilterContext> req)
         {
-            
+            if (User == null)
+                return false;
             if (User.Permissions.TryGetValue(req.Resource, out Permission perm))
             {
                 var permissions = perm as AccessibilityPermissions;

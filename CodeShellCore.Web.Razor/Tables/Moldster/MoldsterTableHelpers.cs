@@ -1,10 +1,12 @@
 ﻿using CodeShellCore.Moldster;
 using CodeShellCore.Web.Razor.Containers;
+using CodeShellCore.Web.Razor.Models;
 using CodeShellCore.Web.Razor.Validation;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace CodeShellCore.Web.Razor.Tables.Moldster
@@ -19,13 +21,14 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             bool isColumn = false,
             string size = null,
             object cellAttributes = null,
-             bool ignoreAccessibility = false)
+            bool ignoreAccessibility = false)
         {
             var writer = Provider.HeaderCell(helper, parent, textId, isColumn, size, cellAttributes, ignoreAccessibility);
             return writer.WriteHeaderCell();
         }
 
-        public static IHtmlContent HeaderCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
+        public static IHtmlContent HeaderCell<T, TValue>(this IHtmlHelper<T> helper,
+            Expression<Func<T, TValue>> exp,
             MoldsterHtmlContainer parent = null,
             string width = null,
             bool ignoreAccessibility = false,
@@ -36,21 +39,21 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
         }
 
         public static IHtmlContent TextCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
-            MoldsterHtmlContainer parent,
+            MoldsterHtmlContainer parent = null,
             string modelName = null,
             object cellAttributes = null,
             string pipe = null)
         {
-            var writer = Provider.TextCell(helper, exp,parent, pipe, cellAttributes);
+            var writer = Provider.TextCell(helper, exp, parent, pipe, cellAttributes);
             return writer.WriteCell(CellTypes.LabelCell);
         }
 
-        public static IHtmlContent SelectCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
-
+        public static IHtmlContent SelectCell<T, TValue>(this IHtmlHelper<T> helper,
+            Expression<Func<T, TValue>> exp,
             Lister source,
             string displayMember,
-            string valueMember = null,
-            MoldsterHtmlContainer parent = null,
+            string valueMember,
+            MoldsterHtmlContainer parent=null,
             bool required = false,
             bool multi = false,
             bool nullable = false,
@@ -99,19 +102,64 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
 
 
         public static IHtmlContent CalendarCell<T, TValue>(
-            IHtmlHelper<T> helper, 
-            Expression<Func<T, TValue>> exp, 
+            IHtmlHelper<T> helper,
+            Expression<Func<T, TValue>> exp,
             MoldsterHtmlContainer parent,
-            CalendarTypes rangeType, 
-            Calendars cals, 
+            CalendarTypes rangeType,
+            Calendars cals,
             DateRange range,
-            bool required, 
+            bool required,
             object cellAttributes,
             object inputAttr,
             string classes)
         {
-            CellWriter wt = Provider.CalendarCell(helper, exp, parent, rangeType,cals,range,required, cellAttributes, inputAttr, classes);
+            CellWriter wt = Provider.CalendarCell(helper, exp, parent, rangeType, cals, range, required, cellAttributes, inputAttr, classes);
             return wt.Write(InputControls.CalendarTextBox);
+        }
+
+        public static IHtmlContent DragHeaderCell<T>(this IHtmlHelper<T> helper,
+            string tableName,
+            string width = null,
+            object cellAttributes = null)
+        {
+            CellWriter writer = Provider.DragHeaderCell<T>(helper, tableName, width, cellAttributes);
+            return writer.WriteHeaderCell();
+        }
+
+        public static IHtmlContent DragContentCell<T>(this IHtmlHelper<T> helper,
+            string tableName,
+            string modelName = null,
+            string width = null,
+            object cellAttributes = null)
+        {
+            CellWriter writer = Provider.DragContentCell<T>(helper, tableName, modelName, width, cellAttributes);
+            return writer.WriteCell(CellTypes.DragCell);
+        }
+
+        public static IHtmlContent LinkCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
+            string url,
+            bool blank = true,
+            object cellAttributes = null,
+            object linkAttributes = null,
+            string pipe = null)
+        {
+            CellWriter writer = Provider.LinkCell<T, TValue>(helper, exp, url, blank, cellAttributes, linkAttributes, pipe);
+            return writer.WriteCell(CellTypes.LabelCell);
+        }
+
+        public static IHtmlContent ListModifiers<T>(this IHtmlHelper<T> helper,
+            string idExpression = null,
+            IEnumerable<LinkModel> buttons = null,
+            string detailsFunction = null,
+            string editFunction = null,
+            string deleteFunction = null,
+            string identifier = "ListModifiers",
+            string modifiers = "DER",
+            string permissionName = "Permission",
+            string classes = "")
+        {
+            return Provider.ListModifiers<T>(helper, idExpression, buttons, detailsFunction, editFunction, deleteFunction, identifier, modifiers, permissionName, classes);
+
         }
     }
 }

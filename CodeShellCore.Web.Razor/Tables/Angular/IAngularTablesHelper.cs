@@ -12,7 +12,7 @@ using System.Text;
 namespace CodeShellCore.Web.Razor.Tables.Angular
 {
 
-    public interface IAngularTablesHelper
+    public interface IAngularTablesHelper : ITablesHelper
     {
         CellWriter TextCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string pipe, object cellAttributes);
         CellWriter CheckBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string listName, string ngModel, object cellAttributes, object inputAttr, string listItem, string classes);

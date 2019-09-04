@@ -15,7 +15,7 @@ namespace CodeShellCore.Web.Controllers
         {
             if (!res.Success)
                 Response.StatusCode = (int)HttpStatusCode.ExpectationFailed;
-
+            
             return Json(res);
 
         }

@@ -30,5 +30,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
             }
             return base.Button(helper, text, function, url, btn, icon, identifier, content, classes, title, attr);
         }
+
+        
     }
 }

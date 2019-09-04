@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace CodeShellCore.Web.Razor.Tables.Angular
 {
@@ -35,7 +37,7 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             string listItem = "Tag",
             string classes = "")
         {
-            CellWriter mod = Provider.RadioBoxCell(helper,field, rowIndex, property, asArray, cellAttributes, inputAttr, listItem, classes);
+            CellWriter mod = Provider.RadioBoxCell(helper, field, rowIndex, property, asArray, cellAttributes, inputAttr, listItem, classes);
             return mod.Write(InputControls.CheckBoxCell);
         }
 
@@ -50,8 +52,18 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
         string permissionName = "Permission",
         string classes = "")
         {
-            return Provider.ListModifiers<T>(helper,idExpression,buttons,detailsFunction,editFunction,deleteFunction,identifier,modifiers,permissionName,classes);
-            
+            return Provider.ListModifiers<T>(helper, idExpression, buttons, detailsFunction, editFunction, deleteFunction, identifier, modifiers, permissionName, classes);
+
+        }
+
+        public static IHtmlContent TextCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
+            string pipe,
+            string modelName = null,
+            object cellAttributes = null
+            )
+        {
+            var writer = Provider.TextCell(helper, exp, pipe, cellAttributes);
+            return writer.WriteCell(CellTypes.LabelCell);
         }
     }
 }

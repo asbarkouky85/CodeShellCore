@@ -46,9 +46,9 @@ namespace CodeShellCore.Moldster.Db.Services
             return lst;
         }
 
-        public string[] GetModuleNames(bool? active = null)
+        public string[] GetModuleCodes(bool? active = null)
         {
-            return _unit.TenantRepository.GetValues(d => d.Name, d => d.IsActive == active || active == null).ToArray();
+            return _unit.TenantRepository.GetValues(d => d.Code, d => d.IsActive == active || active == null).ToArray();
         }
 
         public PageOptions GetPageOptions(string moduleCode, string viewPath)

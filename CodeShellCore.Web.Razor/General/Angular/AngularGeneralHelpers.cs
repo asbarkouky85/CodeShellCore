@@ -25,7 +25,7 @@ namespace CodeShellCore.Web.Razor.General.Angular
         {
             return new NgForm(helper, ngForm, ngModel, attrs);
         }
-        
+
         public static IHtmlContent CalendarFilter(this IHtmlHelper helper, string filterName, string property)
         {
             FilterModel mod = new FilterModel
@@ -33,9 +33,9 @@ namespace CodeShellCore.Web.Razor.General.Angular
                 FilterName = filterName,
                 Property = property
             };
-            return helper.GetComponent("Filters/Calendar", mod);
+            return helper.GetComponent("Components/Filters/Calendar", mod);
         }
-        
+
         public static IHtmlContent ComponentSelector(this IHtmlHelper helper, string componentPath, string id)
         {
             string res = "";
@@ -47,6 +47,16 @@ namespace CodeShellCore.Web.Razor.General.Angular
             return new HtmlString(res);
         }
 
-        
+        public static IHtmlContent SelectModalButton<T>(this IHtmlHelper<T> helper,
+            string textId,
+            string function,
+            string bind = null,
+            object attrs = null,
+            string identifier = null,
+            string validationFunction = null)
+        {
+
+            return Provider.SelectModalButton(helper, textId, function, bind, attrs, identifier, validationFunction);
+        }
     }
 }

@@ -268,6 +268,7 @@ namespace Asga.Auth.Services
 
         public Role GetUserRole(long id)
         {
+            
             var role = Unit.RoleRepository.FindSingle(r => r.UserRoles.Select(d => d.UserId).Contains(id) && r.IsUserRole);
             if (role == null)
             {

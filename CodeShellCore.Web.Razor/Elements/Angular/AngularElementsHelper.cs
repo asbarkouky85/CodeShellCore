@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 using CodeShellCore.Web.Razor.Models;
 using CodeShellCore.Web.Razor.Validation;
+using CodeShellCore.Helpers;
+using CodeShellCore.Text;
+using CodeShellCore.Web.Razor.General.Moldster;
+using CodeShellCore.Moldster.Db.Dto;
 
 namespace CodeShellCore.Web.Razor.Elements.Angular
 {
@@ -15,7 +19,7 @@ namespace CodeShellCore.Web.Razor.Elements.Angular
     {
         public IHtmlContent InputControl_Ng<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, IValidationCollection coll, int size, string alternateLabel, string placeHolder, object attrs, string listItem, string inputClasses)
         {
-            var mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, null, attrs, inputClasses, null);
+            var mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder,coll, null, attrs, inputClasses, null);
             if (component == InputControls.CheckBox)
                 ((CheckNgInput)mod.InputModel).ListItemName = listItem ?? helper.GetModelName();
 
@@ -62,6 +66,32 @@ namespace CodeShellCore.Web.Razor.Elements.Angular
             }
             mod.InputModel = sel;
             return mod.Write("Components/ListView");
+        }
+
+        public virtual IHtmlContent SelectModalButton<T>(IHtmlHelper<T> helper, string textId, string function, string bind, object attrs, string identifier, string validationFunction)
+        {
+            var mod = new PopupOpenerModel
+            {
+                Text = textId.StartsWith("col__") ? helper.Column(textId.GetAfterFirst("__")) : helper.Word(textId),
+                Function = function,
+                Content = bind,
+                Attrs = attrs,
+                GroupName = identifier ?? textId.Replace(" ", "_"),
+                ValidationFunction = validationFunction,
+                Required = validationFunction != null
+            };
+
+            if (mod.Required)
+            {
+                var coll = helper.VCollection().AddCustom("required_modal", helper.Message("value_is_required").ToString());
+                mod.FormFieldName = "field__" + Utils.GenerateID();
+                coll.SetMember("x", mod.FormFieldName);
+                mod.ValidationMessage = coll.GetMessages();
+            }
+
+
+
+            return helper.GetComponent("Components/ModalSelectButton", mod);
         }
 
         public IHtmlContent ValueBinding<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> ex, string pipe)

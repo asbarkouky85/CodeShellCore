@@ -41,7 +41,7 @@ namespace CodeShellCore.Moldster.Json
             return Data;
         }
 
-        public string[] GetModuleNames(bool? active = null)
+        public string[] GetModuleCodes(bool? active = null)
         {
             return Data.Modules.Select(d => d.Name).ToArray();
         }

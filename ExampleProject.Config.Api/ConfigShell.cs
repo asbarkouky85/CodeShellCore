@@ -23,7 +23,7 @@ namespace ExampleProject.Config.Api
             base.RegisterServices(coll);
             coll.AddMoldsterWeb(MoldsType.Db);
             coll.AddCodeShellEmbeddedViews();
-            coll.AddAngularRazorHelpers();
+            coll.AddMoldsterRazorHelpers();
         }
 
         protected override void OnReady()

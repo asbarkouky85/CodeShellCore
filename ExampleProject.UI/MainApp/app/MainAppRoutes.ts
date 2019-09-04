@@ -15,6 +15,7 @@ var routes: Route[] = [
     { path: 'Login', component: Login, data: { action: 'anonymous' } }
 	,
 { path:"Auth", loadChildren:"./Auth/AuthModule#AuthModule" },
+	{ path:"WorkForce", loadChildren:"./WorkForce/WorkForceModule#WorkForceModule" },
 	
     { path: '**', redirectTo: '/' }
 
@@ -31,6 +32,7 @@ export function GetDomainsData(): DomainData[] {
     if (!data) {
         data = [
 			{ name : "Auth" ,children: []},
+			{ name : "WorkForce" ,children: []},
 
 		];
     }

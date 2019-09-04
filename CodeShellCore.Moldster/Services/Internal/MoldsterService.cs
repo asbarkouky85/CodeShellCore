@@ -118,8 +118,8 @@ namespace CodeShellCore.Moldster.Services.Internal
         {
             using (var x = SW.Measure())
             {
-                string[] modules = _data.GetModuleNames();
-                string[] act = _data.GetModuleNames(true);
+                string[] modules = _data.GetModuleCodes();
+                string[] act = _data.GetModuleCodes(true);
                 _ts.GenerateDevWebPackFiles(modules, act);
                 foreach (var t in modules)
                 {

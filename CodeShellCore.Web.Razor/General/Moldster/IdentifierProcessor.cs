@@ -16,7 +16,7 @@ namespace CodeShellCore.Web.Razor
         {
             helper.AddToViewControls(new ControlDTO
             {
-                Identifier = id,
+                Identifier = id?.ToLower(),
                 ControlType = cont
             });
             return helper.GetAccessibility(id);
@@ -26,21 +26,23 @@ namespace CodeShellCore.Web.Razor
         {
             parent.Control.Children.Add(new ControlDTO
             {
-                Identifier = id,
+                Identifier = id?.ToLower(),
                 ControlType = cont
             });
             return helper.GetAccessibility(id);
         }
 
-        public Accessibility Process<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string cont)
+        public Accessibility Process<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string cont, string extra = null)
         {
             string id = RazorUtils.GetIdentifier(exp);
+            if (extra != null)
+                id += extra;
             return Process(helper, id, cont.ToString());
         }
 
-        public Accessibility Process<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls cont)
+        public Accessibility Process<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls cont, string extra = null)
         {
-            return Process(helper, exp, cont.ToString());
+            return Process(helper, exp, cont.ToString(), extra);
         }
 
         public Accessibility ProcessCell<T>(IHtmlHelper<T> helper, string textId, string cont, MoldsterHtmlContainer parent = null)
@@ -70,7 +72,7 @@ namespace CodeShellCore.Web.Razor
             return ProcessCell(helper, id, cont.ToString(), parent);
         }
 
-        public Accessibility ProcessCell<T,TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string cont, MoldsterHtmlContainer parent = null)
+        public Accessibility ProcessCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string cont, MoldsterHtmlContainer parent = null)
         {
             string id = RazorUtils.GetIdentifier(exp);
             return ProcessCell(helper, id, cont, parent);

@@ -106,7 +106,7 @@ namespace CodeShellCore.Moldster.Cli
         {
             while (true)
             {
-                var ten = Data.GetModuleNames();
+                var ten = Data.GetModuleCodes();
                 string modCode = GetSelectionFromUser("Select Tenant", ten);
                 if (modCode == null)
                     break;
@@ -119,7 +119,7 @@ namespace CodeShellCore.Moldster.Cli
         {
             while (true)
             {
-                var ten = Data.GetModuleNames();
+                var ten = Data.GetModuleCodes();
                 string modCode = GetSelectionFromUser("Select Module", ten);
                 if (modCode == null)
                     break;

@@ -60,6 +60,9 @@ namespace CodeShellCore.Web.Security
 
         public virtual void AuthorizationRequest()
         {
+            if (IsProccessed(_accessor.HttpContext))
+                return;
+
             string data = GetJWTDataFromHeader();
 
             if (data != null)
@@ -69,7 +72,6 @@ namespace CodeShellCore.Web.Security
                 if (jwt != null && jwt.IsValid(_accessor.HttpContext.Request?.GetHostUrl()))
                 {
                     SetIdentity(jwt.UserId);
-
                 }
             }
             SetProccessed(_accessor.HttpContext);

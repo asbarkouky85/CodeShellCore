@@ -47,7 +47,7 @@ namespace CodeShellCore.Moldster.Cli
         {
             while (true)
             {
-                var ten = Data.GetModuleNames();
+                var ten = Data.GetModuleCodes();
                 string modCode = GetSelectionFromUser("Select Module", ten);
 
                 string version = Moldster.GetUIVersion();

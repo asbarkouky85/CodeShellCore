@@ -25,6 +25,8 @@
     <None Remove="ShellComponents\Angular\Containers\LocalizableControlGroup.cshtml" />
     <None Remove="ShellComponents\Angular\InputControls\CalendarTextBox.cshtml" />
     <None Remove="ShellComponents\Angular\InputControls\CheckBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\CheckBoxCell.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\CustomField.cshtml" />
     <None Remove="ShellComponents\Angular\InputControls\DateTimeTextBox.cshtml" />
     <None Remove="ShellComponents\Angular\InputControls\FileTextBox.cshtml" />
     <None Remove="ShellComponents\Angular\InputControls\HijriCalendarTextBox.cshtml" />
@@ -59,6 +61,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="ShellComponents\Angular\InputControls\CustomField.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ShellComponents\Angular\InputControls\CheckBoxCell.cshtml" />
     <EmbeddedResource Include="ShellComponents\Angular\Layout\CollapsableComponentsLayout.cshtml" />
     <EmbeddedResource Include="ShellComponents\Angular\Layout\EmptyLayout.cshtml" />
     <EmbeddedResource Include="ShellComponents\Angular\Layout\ModalLayout.cshtml" />
@@ -122,13 +131,11 @@
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.0.1" />
   </ItemGroup>
-  
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
     <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
     <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
   </ItemGroup>
-  
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <FileVersion>2.1.19.0</FileVersion>

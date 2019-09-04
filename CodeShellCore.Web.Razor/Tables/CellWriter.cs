@@ -92,6 +92,7 @@ namespace CodeShellCore.Web.Razor.Tables
 
         public override IHtmlContent Write(string componentName, bool useLocalization = false)
         {
+
             if (!Accessibility.Read)
                 return null;
             if (!Accessibility.Write)
@@ -137,7 +138,7 @@ namespace CodeShellCore.Web.Razor.Tables
         {
             if (LinkModel != null)
             {
-                return Helper.Partial("Components/" + componentName, LinkModel);
+                return Helper.GetComponent(componentName, LinkModel);
             }
             else
             {

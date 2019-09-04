@@ -12,6 +12,7 @@ using CodeShellCore.Web.UnitTest;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq;
+using Asga.Auth;
 
 namespace CodeShellCore.UnitTest.Razor
 {
@@ -31,10 +32,10 @@ namespace CodeShellCore.UnitTest.Razor
             shell.ConfigureAngular2Razor();
         }
 
-        private Mock<IHtmlHelper> GetHelper(List<string> paths, List<object> args)
+        private Mock<IHtmlHelper<T>> GetHelper<T>(List<string> paths, List<object> args)
         {
-            var helperMock = new Mock<IHtmlHelper>();
-            var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
+            var helperMock = new Mock<IHtmlHelper<T>>();
+            var viewDictionary = new ViewDataDictionary<T>(new EmptyModelMetadataProvider(), new ModelStateDictionary());
 
             viewDictionary["ModelName"] = "model";
             viewDictionary["FormName"] = "Form";
@@ -63,7 +64,7 @@ namespace CodeShellCore.UnitTest.Razor
                 List<string> paths = new List<string>();
                 List<object> args = new List<object>();
 
-                var helperMock = GetHelper(paths, args);
+                var helperMock = GetHelper<User>(paths, args);
 
                 var wt = service.CheckBoxCell(helperMock.Object, "name", "i", "lst", null, null, null, null, "");
                 var st = wt.Write(InputControls.CheckBoxCell);

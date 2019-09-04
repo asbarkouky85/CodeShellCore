@@ -5,16 +5,16 @@ using System.Text;
 
 namespace CodeShellCore.Web.Razor.Themes
 {
-    public class SplitTheme : DefaultTheme, IRazorTheme
+    public class SplitTheme : AngularTheme
     {
         public SplitTheme()
         {
         }
 
-        public override string ControlGroupTemplate { get { return "ControlGroup_Split"; } }
+        public override string ControlGroupTemplate { get { return "~/ShellComponents/Angular/Containers/ControlGroup_Split.cshtml"; } }
 
         public override int DefaultControlGroupSize { get { return 6; } }
-        public override string LabelGroupTemplate { get { return "LabelGroup_Split"; } }
+        public override string LabelGroupTemplate { get { return "~/ShellComponents/Angular/Containers/LabelGroup_Split.cshtml"; } }
 
         public override string GetButtonClass(BtnClass type)
         {

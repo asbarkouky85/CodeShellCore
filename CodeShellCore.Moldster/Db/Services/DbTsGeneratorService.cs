@@ -71,10 +71,19 @@ namespace CodeShellCore.Moldster.Db.Services
             foreach (var item in newList)
                 item.AppendChildren(doms);
 
-            string parent = domId == null ? null : _unit.DomainRepository.GetValue(domId.Value, d => d.Name);
+            string parent = domId == null ? null : _unit.DomainRepository.GetValue(domId.Value, d => d.NameChain);
+            if (parent != null)
+            {
+                parent = new Regex("^/").Replace(parent, "");
+                parent = new Regex("/$").Replace(parent, "");
+                if (parent.IndexOf('/') > -1)
+                    parent = parent.GetBeforeLast("/");
+                else
+                    parent = null;
+            }
 
             foreach (var item in newList)
-                GenerateDomainRecursive(item, moduleCode, null, lazy);
+                GenerateDomainRecursive(item, moduleCode, parent, lazy);
         }
 
         void GenerateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null, bool lazy = true)
@@ -157,8 +166,8 @@ namespace CodeShellCore.Moldster.Db.Services
             string scriptTemplate = "";
             if (p.ParentHasResource)
                 scriptTemplate = _molds.ComponentMold;
-            else if (p.ResourceName != null)
-                scriptTemplate = _molds.LookupComponent;
+            //else if (p.ResourceName != null)
+            //    scriptTemplate = _molds.LookupComponent;
             else
                 scriptTemplate = _molds.BasicComponent;
 

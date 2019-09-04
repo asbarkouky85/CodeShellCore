@@ -81,8 +81,11 @@ namespace CodeShellCore.Web.Razor
             coll.AddSingleton<ILocaleTextProvider, AngularTextProvider>();
             coll.AddScoped<IElementsHelper, MoldsterElementsHelper>();
             coll.AddScoped<IAngularElementsHelper, MoldsterElementsHelper>();
+
+            coll.AddScoped<IAngularTablesHelper, MoldsterTableHelper>();
             coll.AddScoped<ITablesHelper, MoldsterTableHelper>();
             coll.AddScoped<IMoldsterTableHelper, MoldsterTableHelper>();
+            
             coll.AddScoped<IGeneralHelper, MoldsterGeneralHelper>();
         }
 

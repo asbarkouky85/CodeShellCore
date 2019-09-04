@@ -11,16 +11,15 @@ namespace CodeShellCore.Web.Razor.Elements
 {
     public class DefaultElementsHelper : IElementsHelper
     {
-        public virtual ControlGroupWriter AutoCompleteGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister src, bool required, int size, string alternateLabel, string placeHolder, object attrs, object inputAttr, string inputClasses, string groupClasses)
+        public virtual ControlGroupWriter AutoCompleteGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister src, IValidationCollection coll, int size, string alternateLabel, string placeHolder, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
             var mod = new ControlGroupWriter(helper);
 
             mod.UseExpression(exp);
             mod.SetOptions(size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
-            IValidationCollection coll = null;
-            if (required)
-                coll = helper.VCollection().AddRequired();
-            mod.UseValidation(coll, mod.InputModel.FieldName, alternateLabel);
+
+            if (coll != null)
+                mod.UseValidation(coll, mod.InputModel.FieldName, alternateLabel);
 
             mod.InputModel.TextBoxType = "text";
             mod.InputModel.NgOptions = src.IsLookup ? "Lookups." + src.ListName : src.ListName;
@@ -88,13 +87,14 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        protected ComponentWriter GetInputControlWriter<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, object attrs, object inputAttr, string inputClasses, string groupClasses)
+        protected ComponentWriter GetInputControlWriter<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, IValidationCollection coll, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
             var mod = new ControlGroupWriter(helper);
 
             mod.UseExpression(exp);
             mod.SetOptions(size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
-
+            if (coll != null)
+                mod.UseValidation(coll, null, alternateLabel);
             switch (component)
             {
                 case InputControls.Radio:
@@ -109,9 +109,13 @@ namespace CodeShellCore.Web.Razor.Elements
             return mod;
         }
 
-        public virtual IHtmlContent InputControl<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, object attrs, object inputAttr, string inputClasses, string groupClasses)
+        public virtual IHtmlContent InputControl<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, IValidationCollection coll, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
-            ComponentWriter mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
+            ComponentWriter mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, attrs, inputAttr, inputClasses, groupClasses);
+            if (!mod.Accessibility.Read)
+                return null;
+            if (!mod.Accessibility.Write)
+                return mod.GetLabelControl();
             return mod.Write(component);
         }
 
@@ -139,7 +143,7 @@ namespace CodeShellCore.Web.Razor.Elements
 
         protected ComponentWriter GetListViewWriter<T>(IHtmlHelper<T> helper, Expression<Func<T, IEnumerable>> exp, string listName, string display, bool mutli, string change)
         {
-            var mod = new ControlGroupWriter(helper);
+            var mod = new ComponentWriter(helper);
             mod.UseExpression(exp);
             var sel = mod.InputModel.GetSelectInput(listName, display, null, mutli);
             sel.Display = display;
@@ -147,7 +151,7 @@ namespace CodeShellCore.Web.Razor.Elements
             return mod;
         }
 
-        protected ComponentWriter GetListViewWriter<T>(IHtmlHelper<T> helper, string selectionSource,string dataSource, string display, bool mutli, string change)
+        protected ComponentWriter GetListViewWriter<T>(IHtmlHelper<T> helper, string selectionSource, string dataSource, string display, bool mutli, string change)
         {
             var mod = new ComponentWriter(helper);
             mod.InputModel = new Models.NgInput
@@ -202,7 +206,24 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        public virtual ControlGroupWriter SelectControlGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string display, string valueMember, bool multi, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, bool nullable)
+        public virtual ControlGroupWriter SelectControlGroup<T, TValue>(
+            IHtmlHelper<T> helper,
+            Expression<Func<T, TValue>> exp,
+            Lister source,
+            string display,
+            string valueMember,
+            bool multi,
+            bool required,
+            int size,
+            string alternateLabel,
+            object attrs,
+            object inputAttr,
+            string inputClasses,
+            string groupClasses,
+            string idExtra,
+            string readOnlyProperty,
+            string readOnlyPipe,
+            bool nullable)
         {
             var mod = new ControlGroupWriter(helper);
 
@@ -216,6 +237,8 @@ namespace CodeShellCore.Web.Razor.Elements
             return mod;
 
         }
+
+
 
         public virtual ControlGroupWriter TextAreaGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, IValidationCollection coll, int size, string alternateLabel, string placeHolder, object attrs, bool localizable, object inputAttr, string inputClasses, string groupClasses) where T : class
         {
@@ -243,6 +266,22 @@ namespace CodeShellCore.Web.Razor.Elements
 
             return mod;
 
+        }
+
+        public virtual ControlGroupWriter SelectInputControl<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister lister, string display, string valueMember, bool required, string readOnlyProperty, bool nullable, object attrs, string inputClasses, string readOnlyPipe, string idExtra)
+        {
+            var mod = new ControlGroupWriter(helper);
+
+            mod.UseExpression(exp);
+            mod.SetOptions(1, null, null, attrs, attrs, inputClasses, null);
+            mod.InputModel = mod.InputModel.GetSelectInput((lister.IsLookup ? "Lookups." : "") + lister.ListName, display, valueMember, false, nullable);
+
+            if (required)
+            {
+                mod.UseValidation(helper.VCollection().AddRequired(), mod.InputModel.FieldName);
+            }
+            mod.InputModel.GroupName = null;
+            return mod;
         }
     }
 }
