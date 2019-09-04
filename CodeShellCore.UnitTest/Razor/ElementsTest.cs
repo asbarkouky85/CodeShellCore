@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq;
 using Asga.Auth;
+using Microsoft.AspNetCore.Html;
+using System.Linq.Expressions;
 
 namespace CodeShellCore.UnitTest.Razor
 {
@@ -32,22 +34,54 @@ namespace CodeShellCore.UnitTest.Razor
             shell.ConfigureAngular2Razor();
         }
 
-        private Mock<IHtmlHelper<T>> GetHelper<T>(List<string> paths, List<object> args)
+        private Mock<IHtmlHelper> GetHelper(List<string> paths = null, List<object> args = null)
         {
-            var helperMock = new Mock<IHtmlHelper<T>>();
-            var viewDictionary = new ViewDataDictionary<T>(new EmptyModelMetadataProvider(), new ModelStateDictionary());
+            var helperMock = new Mock<IHtmlHelper>();
+            var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
 
             viewDictionary["ModelName"] = "model";
             viewDictionary["FormName"] = "Form";
 
             helperMock.SetupGet(d => d.ViewData).Returns(viewDictionary);
+            if (paths != null || args != null)
+            {
+                helperMock.Setup(
+                   d => d
+                   .PartialAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<ViewDataDictionary>()))
+                   .Callback((string x, object d, ViewDataDictionary dic) =>
+                   {
+
+                       paths?.Add(x);
+                       args?.Add(d);
+                   }
+               );
+            }
+
+
+            return helperMock;
+        }
+
+        private Mock<IHtmlHelper<T>> GetHelper<T>(List<string> paths = null, List<object> args = null)
+        {
+            var helperMock = new Mock<IHtmlHelper<T>>();
+            var mock2 = helperMock.As<IHtmlHelper>();
+            var viewDictionary = new ViewDataDictionary<T>(new EmptyModelMetadataProvider(), new ModelStateDictionary());
+
+            viewDictionary["ModelName"] = "model";
+            viewDictionary["FormName"] = "Form";
+
+            Expression<Func<IHtmlHelper, ViewDataDictionary>> ex = d => d.ViewData;
+
+            helperMock.SetupGet(d => d.ViewData).Returns(viewDictionary);
+            mock2.SetupGet(d=>d.ViewData).Returns(viewDictionary);
+           
             helperMock.Setup(
                     d => d
                     .PartialAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<ViewDataDictionary>()))
                     .Callback((string x, object d, ViewDataDictionary dic) =>
                     {
-                        paths.Add(x);
-                        args.Add(d);
+                        paths?.Add(x);
+                        args?.Add(d);
                     }
                 );
 
@@ -65,7 +99,7 @@ namespace CodeShellCore.UnitTest.Razor
                 List<object> args = new List<object>();
 
                 var helperMock = GetHelper<User>(paths, args);
-
+                var dd = helperMock.Object.ViewData;
                 var wt = service.CheckBoxCell(helperMock.Object, "name", "i", "lst", null, null, null, null, "");
                 var st = wt.Write(InputControls.CheckBoxCell);
 
@@ -75,5 +109,23 @@ namespace CodeShellCore.UnitTest.Razor
                 Assert.That(!args.Any(d => d == null), () => "some arguments are null");
             });
         }
+
+        [Test]
+        public void LocalizationTest()
+        {
+            RunScoped(sc =>
+            {
+                var h = GetHelper();
+                h.Setup(d => d.Raw(It.IsAny<string>())).Returns((string d) =>
+                {
+                    return new HtmlString(d);
+                });
+                IHtmlContent c = h.Object.Word(TestEnum.One);
+
+                Assert.AreEqual("{{'Words.TestEnum_One' | translate }}", c.ToString());
+            });
+        }
     }
+
+    enum TestEnum { One, Two };
 }

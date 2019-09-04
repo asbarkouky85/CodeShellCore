@@ -88,12 +88,7 @@ namespace CodeShellCore.Web
             base.RegisterServices(coll);
             coll.AddMvc().AddJsonOptions(e=> e.SerializerSettings.DateTimeZoneHandling=Newtonsoft.Json.DateTimeZoneHandling.Local);
             coll.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            coll.AddSingleton<AuthorizationService>();
-            coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<FileService>();
-            coll.AddScoped<Language>();
-            if (useLocalization)
-                coll.AddSingleton<ILocaleTextProvider, ResxTextProvider>();
         }
 
         protected override IConfigurationSection getConfig(string key)

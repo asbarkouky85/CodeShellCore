@@ -6,51 +6,47 @@ namespace CodeShellCore.Text.Localization
 {
     public class Strings
     {
-        private static ILocaleTextProvider provider;
+        private static readonly ILocaleTextProvider _provider;
 
-        private static ILocaleTextProvider Provider
+        static Strings()
         {
-            get
-            {
-                if (provider == null)
-                    provider = Shell.RootInjector.GetService<ILocaleTextProvider>();
-                return provider;
-            }
+            _provider = Shell.RootInjector.GetService<ILocaleTextProvider>();
         }
+
 
         public static string Word(string index, string cult = null)
         {
-            if (Provider == null)
+            if (_provider == null)
                 return index;
-            return Provider.Word(index, cult);
+            return _provider.Word(index, cult);
         }
 
         public static string Word(Enum index, string cult = null)
         {
-            if (Provider == null)
+            if (_provider == null)
                 return index.GetString();
-            return Provider.Word(index, cult);
+            return _provider.Word(index, cult);
         }
 
         public static string Column(string index, string cult = null)
         {
-            if (Provider == null)
+            if (_provider == null)
                 return index;
-            return Provider.Column(index, cult);
+            return _provider.Column(index, cult);
         }
 
         public static string Page(string index, string cult = null)
         {
-            if (Provider == null)
+            if (_provider == null)
                 return index;
-            return Provider.Page(index, cult);
+            return _provider.Page(index, cult);
         }
 
         public static string Message(string index, params string[] formatElements)
         {
-            if (Provider == null)
+            if (_provider == null)
                 return index;
-            return Provider.Message(index, formatElements);
+            return _provider.Message(index, formatElements);
         }
 
     }

@@ -1,10 +1,11 @@
-﻿using CodeShellCore.Text.Localization;
+﻿using CodeShellCore.Text;
+using CodeShellCore.Text.Localization;
 using System;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Text.TextProviders
+namespace CodeShellCore.Web.Razor.Text
 {
-    public class AngularTextProvider : ILocaleTextProvider
+    public class AngularTextProvider : IRazorLocaleTextProvider
     {
         public string Column(string index, string cult = null)
         {

@@ -1,14 +1,9 @@
-﻿using CodeShellCore.Text.Localization;
-using CodeShellCore.Web.Razor.Text;
+﻿using CodeShellCore.Web.Razor.Text;
 using CodeShellCore.Web.Razor.Themes;
 using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Web.Razor.Validation.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Razor
 {
@@ -22,7 +17,7 @@ namespace CodeShellCore.Web.Razor
         private string _dateValidationPattern;
         private string _formName;
         private Type _validatorCollectionType;
-        private ILocaleTextProvider _localeTextProvider;
+        private IRazorLocaleTextProvider _localeTextProvider;
         private IExpressionStringifier _stringifier;
         private IRazorTheme _theme;
         private static RazorConfig Instance
@@ -84,7 +79,7 @@ namespace CodeShellCore.Web.Razor
             set { Instance._formName = value; }
         }
 
-        public static ILocaleTextProvider LocaleTextProvider
+        public static IRazorLocaleTextProvider LocaleTextProvider
         {
             get { return Instance._localeTextProvider; }
             set { Instance._localeTextProvider = value; }
@@ -111,7 +106,7 @@ namespace CodeShellCore.Web.Razor
             _dateValidationPattern = "^([0-2][0-9]|3[0-1])[/]([0-1][0-9])[/]([1-9][0-9]{3})$";
             _formName = "Form";
             _validatorCollectionType = typeof(ValidationCollection);
-            _localeTextProvider = Shell.RootInjector.GetService<ILocaleTextProvider>();
+            _localeTextProvider = Shell.RootInjector.GetService<IRazorLocaleTextProvider>();
             _stringifier = new DefaultExpressionStringifier();
             _theme = new DefaultTheme();
         }

@@ -18,6 +18,8 @@ using CodeShellCore.Services.Http;
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Files;
+using CodeShellCore.Text.TextProviders;
+using CodeShellCore.Data.Services;
 
 namespace CodeShellCore
 {
@@ -116,8 +118,14 @@ namespace CodeShellCore
             string conf = getConfig(ConfigNames.AuthenticationEncKey).Value;
             if (conf != null)
                 coll.AddSingleton(d => new Encryptor(conf));
-            coll.AddScoped<IUserAccessor, UserAccessor>();
+            
             coll.AddSingleton<IFileHandler, FileSystemHandler>();
+            if (useLocalization)
+                coll.AddSingleton<ILocaleTextProvider, ResxTextProvider>();
+            coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
+
+            coll.AddScoped<Language>();
+            coll.AddScoped<IUserAccessor, UserAccessor>();
         }
         protected abstract IConfigurationSection getConfig(string key);
         protected virtual void OnReady() { }

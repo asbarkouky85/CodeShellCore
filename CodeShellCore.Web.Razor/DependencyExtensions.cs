@@ -6,7 +6,6 @@ using Microsoft.Extensions.FileProviders;
 
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.Text.Localization;
-using CodeShellCore.Text.TextProviders;
 using CodeShellCore.Web.Razor.Elements;
 using CodeShellCore.Web.Razor.Tables;
 using CodeShellCore.Web.Razor.Services;
@@ -68,7 +67,7 @@ namespace CodeShellCore.Web.Razor
 
         public static void AddAngularRazorHelpers(this IServiceCollection coll)
         {
-            coll.AddSingleton<ILocaleTextProvider, AngularTextProvider>();
+            coll.AddSingleton<IRazorLocaleTextProvider, AngularTextProvider>();
             coll.AddScoped<IElementsHelper, AngularElementsHelper>();
             coll.AddScoped<IAngularElementsHelper, AngularElementsHelper>();
             coll.AddScoped<ITablesHelper, AngularTablesHelper>();
@@ -78,7 +77,7 @@ namespace CodeShellCore.Web.Razor
 
         public static void AddMoldsterRazorHelpers(this IServiceCollection coll)
         {
-            coll.AddSingleton<ILocaleTextProvider, AngularTextProvider>();
+            coll.AddSingleton<IRazorLocaleTextProvider, AngularTextProvider>();
             coll.AddScoped<IElementsHelper, MoldsterElementsHelper>();
             coll.AddScoped<IAngularElementsHelper, MoldsterElementsHelper>();
 
