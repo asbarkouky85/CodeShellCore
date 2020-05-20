@@ -46,10 +46,5 @@ namespace Asga.Auth.Data
         {
             return new List<ResourceV>();
         }
-
-        public Dictionary<string, Permission> GetUserPermissions(object userId)
-        {
-            return new Dictionary<string, Permission>();
-        }
     }
 }

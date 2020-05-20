@@ -16,11 +16,11 @@ namespace CodeShellCore.Services.Email
 
         public EmailService()
         {
-            Config = Shell.GetConfigAs<SmtpConfig>("Email", false);
+            Config = Shell.GetConfigObject<SmtpConfig>("Email");
         }
 
-        public Result SendEmail(string To, string Subject, string MsgBody, bool html = false,/*string displayName="no-Reply",*/ IEnumerable<FileBytes> files = null)
-        {
+        public Result SendEmail(string To, string Subject, string MsgBody, bool html = false,string displayName="no-Reply", IEnumerable<FileBytes> files = null)
+        { 
             try
             {
 
@@ -37,7 +37,7 @@ namespace CodeShellCore.Services.Email
                     SmtpServer.EnableSsl = Config.SmtpEnableSSL;
 
                     MailMessage mail = new MailMessage();
-                    mail.From = new MailAddress(Config.SmtpUser, "i-Maher" /*displayName*/);
+                    mail.From = new MailAddress(Config.SmtpUser, displayName);
                     mail.To.Add(To);
                     mail.Subject = Subject;
                     mail.Body = MsgBody;

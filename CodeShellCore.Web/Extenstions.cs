@@ -14,11 +14,13 @@ using CodeShellCore.Text.Localization;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Text;
 using CodeShellCore.Security.Authorization;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using Newtonsoft.Json;
 using CodeShellCore.Files;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Web.Security;
+using System;
+using CodeShellCore.Files.Logging;
 
 namespace CodeShellCore.Reporting
 {
@@ -53,6 +55,33 @@ namespace CodeShellCore.Web
 {
     public static class Extenstions
     {
+
+        public static HttpResult HandleRequestError(this HttpContext context, Exception excep)
+        {
+            HttpRequest req = context.Request;
+            string url = req.GetFullUrl();
+            HttpResult res = new HttpResult
+            {
+                Code = 1,
+                RequestUrl = url,
+                Method = req.Method
+            };
+
+            res.SetException(excep);
+
+            if (excep is CodeShellHttpException)
+                context.Response.StatusCode = (int)((CodeShellHttpException)excep).Status;
+            else if (excep is ArgumentOutOfRangeException)
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            else if (excep is ArgumentException)
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            else
+                context.Response.StatusCode = 500;
+            
+            Logger.WriteException(excep);
+            return res;
+        }
+
         public static HttpResponseMessage ToWebResponse(this SubmitResult data)
         {
             HttpResponseMessage mes = new HttpResponseMessage();
@@ -177,9 +206,9 @@ namespace CodeShellCore.Web
         public static void LoadCultureFromHeader(this HttpContext http)
         {
 
-            if (http.Request.Headers.Keys.Contains("locale"))
+            if (http.Request.Headers.Keys.Contains(HttpHeaderKeys.Language))
             {
-                string loc = http.Request.Headers["locale"];
+                string loc = http.Request.Headers[HttpHeaderKeys.Language];
 
                 Language lan = http.RequestServices.GetService<Language>();
                 if (loc.Length == 2)

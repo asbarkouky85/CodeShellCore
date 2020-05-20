@@ -23,7 +23,7 @@ namespace Asga.Common.Services
             _user = user;
             _current = current;
         }
-        public override SubmitResult SetDataFor(Type type, long id, Dictionary<string, LocalizablesDTO> dto)
+        public override SubmitResult SetDataFor(Type type, object id, Dictionary<string, LocalizablesDTO> dto)
         {
             var res = base.SetDataFor(type, id, dto);
             

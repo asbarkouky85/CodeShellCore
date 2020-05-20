@@ -7,9 +7,9 @@ namespace CodeShellCore.Text.Localization
 {
     public interface ILocalizablesRepository<T> : IRepository<T> where T : class, ILocalizable
     {
-        void Apply(string type, long id, int langId, IEnumerable<T> data);
+        void Apply(string type, object id, int langId, IEnumerable<T> data);
 
-        IEnumerable<LocalizablesLoader> Get(string type, long id, IEnumerable<int> langs);
+        IEnumerable<LocalizablesLoader> Get(string type, object id, IEnumerable<int> langs);
 
     }
 }

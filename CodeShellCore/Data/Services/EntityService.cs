@@ -33,7 +33,7 @@ namespace CodeShellCore.Data.Services
             UnitOfWork.EnableJsonLoading();
             return Repository.FindSingle(id);
         }
-  
+
 
         public virtual SubmitResult Create(T obj)
         {
@@ -137,6 +137,12 @@ namespace CodeShellCore.Data.Services
         public virtual LoadResult LoadObjects(LoadOptions opts)
         {
             return Load(opts);
+        }
+
+        public LoadResult<TDTO> LoadDTO<TDTO>(System.Linq.Expressions.Expression<Func<T, TDTO>> ex, LoadOptions opts) where TDTO : class
+        {
+            var op = opts.GetOptionsFor<TDTO>();
+            return Repository.FindAs(ex, op);
         }
     }
 }

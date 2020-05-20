@@ -4,22 +4,25 @@ using System.Net;
 using System.Reflection;
 using System.Globalization;
 using System.Collections.Generic;
-using System.Threading;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security;
 using CodeShellCore.Files.Logging;
 using CodeShellCore.Security.Cryptography;
 using CodeShellCore.Types;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Files;
 using CodeShellCore.Text.TextProviders;
 using CodeShellCore.Data.Services;
+using CodeShellCore.Tasks;
+using CodeShellCore.Text;
+using CodeShellCore.Helpers;
+using CodeShellCore.CLI;
+using CodeShellCore.MQ;
 
 namespace CodeShellCore
 {
@@ -27,30 +30,38 @@ namespace CodeShellCore
     {
 
         #region Fields
-        protected static Shell App;
-        private static Dictionary<string, IServiceScope> Scopes = new Dictionary<string, IServiceScope>();
+
         private IServiceProvider _rootProvider;
-        private static readonly object _locker = new object();
+        private string _reportRoot;
         private static Encryptor _encryptor;
+        private static readonly object _locker = new object();
+
+        protected static Shell App;
         #endregion
+
+        public Shell()
+        {
+            ProjectAssembly = GetType().Assembly;
+            SolutionFolder = AppDomain.CurrentDomain.BaseDirectory.GetBeforeFirst("\\" + ProjectAssembly.GetName().Name);
+
+        }
 
         #region Static Properties
 
+        public static string EnvironmentName { get; protected set; }
+        public static string SolutionFolder { get; private set; }
+        public static Assembly ProjectAssembly { get; private set; }
+        public static bool UseLocalization { get { return App.useLocalization; } }
+        public static CultureInfo DefaultCulture { get { return App.defaultCulture; } }
+        public static IEnumerable<string> SupportedLanguages { get { return App.Supordedlanguage; } }
         public static IServiceProvider RootInjector { get { return App.rootProvider; } }
         public static IServiceProvider ScopedInjector { get { return App._scopedProvider; } }
-        public static bool UseLocalization { get { return App.useLocalization; } }
-
-        public static IEnumerable<string> SupportedLanguages { get { return App.Supordedlanguage; } }
-
-        public static string LocalizationAssembly { get { return App.localizationAssembly ?? ProjectAssembly.GetName().Name; } }
-        public static string ReportsRoot { get { return App.reportsRoot; } }
-        public static string AppRootPath { get { return App.appRoot; } }
-
         public static IUser User { get { return App._scopedProvider.GetCurrentUser(); } }
+        public static string AppRootPath { get { return App.appRoot; } }
+        public static string LocalizationAssembly { get { return App.localizationAssembly ?? ProjectAssembly.GetName().Name; } }
         public static string PublicRoot { get { return App.publicRelativePath; } }
-        public static Assembly ProjectAssembly { get { return App.GetType().Assembly; } }
-        public static CultureInfo DefaultCulture { get { return App.defaultCulture; } }
-        public static AuthorizationService AuthorizationService { get { return ScopedInjector.GetRequiredService<AuthorizationService>(); } }
+        public static string ReportsRoot { get { return App.reportsRoot; } }
+
 
         public static Encryptor Encryptor
         {
@@ -70,39 +81,43 @@ namespace CodeShellCore
             }
         }
 
-        public static IServiceProvider ThreadInjector
-        {
-            get
-            {
-                string id = Thread.CurrentThread.ManagedThreadId.ToString();
-
-                IServiceScope scope;
-                if (Scopes.TryGetValue(id, out scope))
-                    return scope.ServiceProvider;
-
-                IServiceScopeFactory f = RootInjector.GetRequiredService<IServiceScopeFactory>();
-                Scopes[id] = f.CreateScope();
-                return Scopes[id].ServiceProvider;
-            }
-        }
-
-
-
         #endregion
 
         #region Optional Properties
+        protected virtual bool useTransporter => false;
+        protected virtual bool useTimedJobs => false;
+        protected virtual IEnumerable<string> Supordedlanguage { get { return new[] { "ar", "en" }; } }
         protected virtual string publicRelativePath { get { return ""; } }
         protected virtual string localizationAssembly { get { return null; } }
-        protected virtual string reportsRoot { get { return Path.Combine(appRoot, "Reports"); } }
+        protected virtual string reportsRoot
+        {
+            get
+            {
+                if (_reportRoot == null)
+                {
+                    var sol = Utils.GetSolutionFolder(GetType().Assembly);
+                    var conf = getConfig("ReportsRoot");
+                    if (!string.IsNullOrEmpty(conf?.Value))
+                        _reportRoot = (conf.Value as string).Replace("{PARENT}", sol);
+                    else
+                        _reportRoot = Path.Combine(appRoot, "Reports");
+                }
+                return _reportRoot;
+            }
+        }
         protected virtual IServiceProvider rootProvider
         {
-            get { if (_rootProvider == null) _rootProvider = makeProvider(); return _rootProvider; }
+            get
+            {
+                if (_rootProvider == null)
+                    _rootProvider = _makeProvider();
+                return _rootProvider;
+            }
         }
         #endregion
 
         #region Required Properties
         protected abstract bool useLocalization { get; }
-        protected virtual IEnumerable<string> Supordedlanguage { get { return new[] { "ar", "en" }; } }
 
         protected abstract string appRoot { get; }
         protected abstract CultureInfo defaultCulture { get; }
@@ -115,24 +130,41 @@ namespace CodeShellCore
 
         public virtual void RegisterServices(IServiceCollection coll)
         {
-            string conf = getConfig(ConfigNames.AuthenticationEncKey).Value;
-            if (conf != null)
-                coll.AddSingleton(d => new Encryptor(conf));
-            
             coll.AddSingleton<IFileHandler, FileSystemHandler>();
             if (useLocalization)
                 coll.AddSingleton<ILocaleTextProvider, ResxTextProvider>();
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
-
+            coll.AddTransient<IOutputWriter, ConsoleOutputWriter>();
             coll.AddScoped<Language>();
             coll.AddScoped<IUserAccessor, UserAccessor>();
+            coll.AddScoped<UserAccessor>();
         }
         protected abstract IConfigurationSection getConfig(string key);
-        protected virtual void OnReady() { }
+        protected virtual void OnReady()
+        {
 
-        public virtual void Dispose() { }
+        }
 
-        private IServiceProvider makeProvider()
+        public virtual void Dispose()
+        {
+            Logger.Default?.Dispose();
+            if (useTransporter)
+                Transporter.Exit();
+
+        }
+
+        protected void StartJobs()
+        {
+            var jobs = RootInjector.GetService<JobConfig>().Jobs;
+            foreach (var job in jobs)
+            {
+                IJobRunner runner = RootInjector.GetService<IJobRunner>();
+                runner.Job = job;
+                runner.Timer.Start();
+            }
+        }
+
+        private IServiceProvider _makeProvider()
         {
             ServiceCollection collection = new ServiceCollection();
             App.RegisterServices(collection);
@@ -143,16 +175,23 @@ namespace CodeShellCore
 
         #region Static Methods
 
+
+
         public static void Start(Shell cont)
         {
             App = cont;
-            string path = Path.Combine(AppRootPath, "Logs");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-            Logger.Set(ProjectAssembly.GetName().Name, path);
 
-            AppDomain.CurrentDomain.ProcessExit += (e, s) => { App.Dispose(); };
-            Console.Title = ProjectAssembly.GetName().Name + " (v" + ProjectAssembly.GetVersionString() + ")";
+            Logger.Set(ProjectAssembly.GetName().Name);
+            AppDomain.CurrentDomain.ProcessExit += (e, s) =>
+            {
+                App.Dispose();
+            };
+            string envName = EnvironmentName == null ? "" : "-" + EnvironmentName;
+            Console.Title = ProjectAssembly.GetName().Name + "-v" + ProjectAssembly.GetVersionString() + envName;
+            if (App.useTransporter)
+                Transporter.Start();
+            if (App.useTimedJobs)
+                App.StartJobs();
             cont.OnReady();
 
         }
@@ -160,17 +199,6 @@ namespace CodeShellCore
         public static void Exit()
         {
             App.Dispose();
-        }
-
-        public static string GetUrl(string key, string currentHost = "localhost", bool https = false, bool required = true)
-        {
-            string subject = GetConfigAs<string>(key, required);
-            if (subject != null)
-            {
-                subject = subject.Replace("{CURRENT_HOST}", currentHost);
-                subject = subject.Replace("{CURRENT_PROTOCOL}", https ? "https" : "http");
-            }
-            return subject;
         }
 
         public static IConfigurationSection GetConfig(string key, bool required = true)
@@ -185,6 +213,13 @@ namespace CodeShellCore
         public static T GetConfigAs<T>(string key, bool required = true)
         {
             IConfigurationSection sec = GetConfig(key, required);
+
+            return sec.Get<T>();
+        }
+
+        public static T GetConfigObject<T>(string key) where T : class
+        {
+            IConfigurationSection sec = GetConfig(key, false);
 
             return sec.Get<T>();
         }

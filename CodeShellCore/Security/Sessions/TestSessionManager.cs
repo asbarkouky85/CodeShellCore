@@ -13,6 +13,7 @@ namespace CodeShellCore.Security.Sessions
 
         //public TimeSpan DefaultSessionTime => throw new NotImplementedException();
         public TimeSpan DefaultSessionTime { get { return new TimeSpan(1, 0, 0); } set { } }//DefaultSessionTime= value;
+
         public override object GetCurrentUserId()
         {
             return currentUserId;
@@ -23,11 +24,6 @@ namespace CodeShellCore.Security.Sessions
             currentUserId = user.UserId;
         }
 
-        public void EndSession()
-        {
-
-        }
-
         public bool IsLoggedIn()
         {
             return true;
@@ -35,15 +31,15 @@ namespace CodeShellCore.Security.Sessions
 
         public void AuthorizationRequest()
         {
-
+            throw new NotImplementedException();
         }
 
         public void AuthorizationRequest(string token)
         {
-
+            throw new NotImplementedException();
         }
 
-        public TestSessionManager(IUserDataService ser,object userId) : base(ser)
+        public TestSessionManager(object userId)
         {
             currentUserId = userId;
         }

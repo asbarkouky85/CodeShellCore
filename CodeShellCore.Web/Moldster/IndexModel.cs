@@ -10,5 +10,7 @@ namespace CodeShellCore.Web.Moldster
         public IServerConfig Config { get; set; }
         public string[] Chunks { get; set; }
         public string ConfigString { get { return Config.ToJson(); } }
+
+        public string PackageId { get; internal set; }
     }
 }

@@ -14,6 +14,7 @@ namespace CodeShellCore.Data
     {
         ChangeLists GetChangeSet();
         void EnableJsonLoading();
+        event EventHandler<ChangeLists> Saving;
         IRepository<T> GetRepositoryFor<T>() where T : class;
         T GetRepository<T>() where T : class,IRepository;
         SubmitResult SaveChanges(string successMessage = null, string faileMessage = null);

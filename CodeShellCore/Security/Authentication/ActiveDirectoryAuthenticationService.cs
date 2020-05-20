@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using CodeShellCore.Data;
 using CodeShellCore.Data.Helpers;
+using CodeShellCore.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Security.Authentication
 {
 
-    public class ActiveDirectoryAuthenticationService : IAuthenticationService
+    public class ActiveDirectoryAuthenticationService : ServiceBase, IAuthenticationService
     {
         //bool _securityUnitChecked = false;
         protected ISecurityUnit _securityUnit;
@@ -19,6 +20,11 @@ namespace CodeShellCore.Security.Authentication
         public ActiveDirectoryAuthenticationService(ISecurityUnit unit)
         {
             _securityUnit = unit;
+        }
+
+        public SubmitResult ChangePassword(ChangePasswordDTO dto)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual bool Check(string name, string password)
@@ -73,7 +79,12 @@ namespace CodeShellCore.Security.Authentication
 
         public virtual SubmitResult RegisterUser(IRegisterModel model)
         {
-            return null;
+            return new SubmitResult();
+        }
+
+        public SubmitResult RequestPasswordReset(ResetPasswordDTO dto)
+        {
+            return new SubmitResult();
         }
     }
 }

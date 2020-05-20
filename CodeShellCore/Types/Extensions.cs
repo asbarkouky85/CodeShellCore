@@ -24,6 +24,8 @@ namespace CodeShellCore.Types
         {
             if (type.IsGenericType)
                 return type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+            else if (type == typeof(string))
+                return true;
             return false;
         }
 

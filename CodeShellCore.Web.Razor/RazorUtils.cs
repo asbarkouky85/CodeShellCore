@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Data;
+using CodeShellCore.Linq.Stringifiers;
 using CodeShellCore.Text;
 using CodeShellCore.Types;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -104,15 +105,23 @@ namespace CodeShellCore.Web.Razor
             return RazorConfig.ExpressionStringifier.GetMemberName((MemberExpression)expression.Body);
         }
 
-        
+        public static string GetMemberNameDefault<T, TValue>(Expression<Func<T, TValue>> expression)
+        {
+            return new DefaultExpressionStringifier().GetMemberName((MemberExpression)expression.Body);
+        }
 
         public static string UrlToPageId(string url)
         {
             Regex reg = new Regex(@"^\/");
             if (reg.IsMatch(url))
                 url = url.Substring(1);
+            string[] spl = url.Split('/');
+            var len = spl.Length;
+            if (spl.Length >= 2)
+                return spl[len - 2] + "__" + spl[len - 1];
+            else
+                return url;
 
-            return url.Replace("/", "__");
         }
     }
 }

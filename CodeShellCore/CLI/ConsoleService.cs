@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Services.Http;
+﻿using CodeShellCore.Http;
 using CodeShellCore.Text;
 using CodeShellCore.Services;
 using System;
@@ -7,72 +7,76 @@ using System.Reflection;
 using System.Text;
 using System.Diagnostics;
 using CodeShellCore.Helpers;
+using CodeShellCore.CLI;
 
 namespace CodeShellCore.Cli
 {
     public class ConsoleService : ServiceBase
     {
+        protected  IOutputWriter Out;
+
+        public ConsoleService(IOutputWriter writer)
+        {
+            Out = writer;
+        }
+        public virtual int SuccessCol { get { return 8; } }
         public void WriteSuccess(TimeSpan? time = null, int column = 0)
         {
+            column = column == 0 ? SuccessCol : column;
             string elapsed = time.HasValue ? " " + time.Value.TotalSeconds.ToString("F4") + "s" : "";
-            Console.ForegroundColor = ConsoleColor.Green;
-            if (column != 0)
+            using (Out.Set(ConsoleColor.Green))
+            {
                 GotoColumn(column);
-            Console.Write("SUCCESS" + elapsed);
-            Console.ForegroundColor = ConsoleColor.Gray;
+                Out.Write("SUCCESS" + elapsed);
+            }
+
         }
 
-        private bool isConsole
+        protected void WriteFileOperation(string processName, string fileName, bool lineAfter = true)
         {
-            get
-            {
-                try
-                {
-                    var n = Console.CursorLeft;
-                    return true;
-                }
-                catch {
-                    return false;
-                }
-            }
+            Out.Write($"{processName} [");
+
+            WriteColored($"{fileName}", ConsoleColor.Yellow);
+            Out.Write("]...");
+            if (lineAfter)
+                Out.WriteLine();
         }
 
         public void GotoColumn(int column)
         {
-            if (!isConsole)
-                return;
-            int current = Console.CursorLeft;
-            int dest = column * 8;
-
-            if (dest > current)
-            {
-                double tabs_dec = ((double)(dest - current) / (double)8);
-                int tabs = (int)tabs_dec;
-                if (tabs < tabs_dec)
-                    tabs += 1;
-                string t = "";
-                for (var i = 0; i < tabs; i++)
-                {
-                    t += "\t";
-                }
-                Console.Write(t);
-            }
+            Out.GotoColumn(column);
         }
 
         public void WriteWarning(string content)
         {
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine(content);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            using (Out.Set(ConsoleColor.Yellow))
+            {
+                Out.WriteLine(content);
+            }
         }
 
-        public void WriteFailed(TimeSpan? time = null)
+        public void WriteFailed(TimeSpan? time = null, Result res = null, bool lineAfter = false)
         {
             string elapsed = time.HasValue ? " - " + time.Value.TotalSeconds.ToString("F4") + "s" : "";
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("FAILED" + elapsed);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine();
+            using (Out.Set(ConsoleColor.Red))
+            {
+                Out.Write("FAILED" + elapsed);
+                if (res != null)
+                {
+                    Out.WriteLine(res.Message);
+                    Out.WriteLine(res.ExceptionMessage);
+                }
+            }
+            if (res?.StackTrace != null)
+            {
+                using (Out.Set(ConsoleColor.DarkRed))
+                {
+                    foreach (var f in res.StackTrace)
+                        Out.WriteLine(f);
+                }
+            }
+            if (lineAfter)
+                Out.WriteLine();
         }
 
 
@@ -87,61 +91,65 @@ namespace CodeShellCore.Cli
 
         public void WriteException(string message, string type, string[] stack)
         {
-            Console.WriteLine();
-            Console.WriteLine("Exception Type :\t" + type);
-            Console.WriteLine("Exception Message :\t" + message);
-            Console.WriteLine();
-            Console.WriteLine("Stack Trace : ");
-            Console.WriteLine();
-
+            using (Out.Set(ConsoleColor.Red))
+            {
+                Out.WriteLine();
+                Out.WriteLine("Exception Type :\t" + type);
+                Out.WriteLine("Exception Message :\t" + message);
+            }
+            Out.WriteLine();
             if (stack != null)
             {
-                foreach (string st in stack)
-                    Console.WriteLine(st.Trim());
+                using (Out.Set(ConsoleColor.DarkRed))
+                {
+                    foreach (string st in stack)
+                        Out.WriteLine(st.Trim());
+                }
+                Out.WriteLine();
             }
 
         }
 
         public void WriteExceptionShort(string message, string type)
         {
-            Console.WriteLine();
-            Console.WriteLine("(" + type + ") :\t" + message);
-            Console.WriteLine();
+            Out.WriteLine();
+            Out.WriteLine("(" + type + ") :\t" + message);
+            Out.WriteLine();
 
         }
 
-        public void RunCommand(string folder, string command, string arguments = null)
+        public Process GetCommandProcess(string folder, string command, string arguments, bool useShell = false)
         {
-            using (var x = SW.Measure())
+            ProcessStartInfo inf = new ProcessStartInfo
             {
-                ProcessStartInfo inf = new ProcessStartInfo
-                {
-                    WorkingDirectory = folder,
-                    FileName = command,
+                WorkingDirectory = folder,
+                FileName = command,
+                UseShellExecute = useShell
+            };
 
-                };
-                if (arguments != null)
-                    inf.Arguments = arguments;
-                Console.WriteLine();
-                using (ColorSetter.Set(ConsoleColor.Cyan))
-                {
-                    Console.Write("Executing : ");
-                }
-                Console.Write($"{command} {arguments}");
-                Console.WriteLine();
-                using (ColorSetter.Set(ConsoleColor.Yellow))
-                {
-                    Console.WriteLine("----------------------------------------");
-                }
-                Process p = Process.Start(inf);
-                p.WaitForExit();
 
-                using (ColorSetter.Set(ConsoleColor.Yellow))
-                {
-                    Console.WriteLine("----------------------------------------");
-                }
-                WriteSuccess(x.Elapsed);
-                Console.WriteLine();
+            if (arguments != null)
+                inf.Arguments = arguments;
+            Out.WriteLine();
+            using (Out.Set(ConsoleColor.Cyan))
+            {
+                Out.Write("Executing : ");
+            }
+            Out.WriteLine($"{command} {arguments}");
+
+            var p = new Process();
+            p.StartInfo = inf;
+            return p;
+            
+        }
+
+        
+
+        public void WriteColored(string text, ConsoleColor color)
+        {
+            using (Out.Set(color))
+            {
+                Out.Write(text);
             }
         }
 
@@ -168,15 +176,44 @@ namespace CodeShellCore.Cli
 
                 if (ex.InnerException != null)
                 {
-                    Console.WriteLine();
+                    Out.WriteLine();
                     WriteException(ex.InnerException, full);
                 }
                 else
                 {
-                    Console.WriteLine("-----------------------------------");
+                    Out.WriteLine("-----------------------------------");
                 }
             }
 
+        }
+
+        public string[] GetCommandOutput(string folder, string file, string args, out int exitCode)
+        {
+            var cmd = GetCommandProcess(folder, file, args);
+            cmd.StartInfo.RedirectStandardOutput = true;
+            List<string> st = new List<string>();
+            cmd.Start();
+            while (!cmd.StandardOutput.EndOfStream)
+            {
+                st.Add(cmd.StandardOutput.ReadLine());
+            }
+            cmd.WaitForExit();
+            exitCode = cmd.ExitCode;
+            return st.ToArray();
+        }
+
+        public int RunCommand(string folder, string command, string arguments = null, bool useShell = false)
+        {
+            using (var x = SW.Measure())
+            {
+                var p = GetCommandProcess(folder, command, arguments, useShell);
+                p.Start();
+                p.WaitForExit();
+                Out.WriteLine();
+                WriteSuccess(x.Elapsed);
+                Out.WriteLine();
+                return p.ExitCode;
+            }
         }
     }
 }

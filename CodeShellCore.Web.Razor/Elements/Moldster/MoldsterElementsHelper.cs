@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Html;
 using CodeShellCore.Moldster;
+using CodeShellCore.Web.Razor.Models;
 
 namespace CodeShellCore.Web.Razor.Elements.Moldster
 {
@@ -25,7 +26,28 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
             return d;
         }
 
-        public override IHtmlContent SelectModalButton<T>(IHtmlHelper<T> helper, string textId, string function, string bind, object attrs, string identifier, string validationFunction)
+        public override ControlGroupWriter CustomInputGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string componentName, bool required, int size, object attrs, object inputAttrs, string classes)
+        {
+            var wt = base.CustomInputGroup(helper, exp, componentName, required, size, attrs, inputAttrs, classes);
+            wt.Accessibility = proc.Process(helper, exp, componentName);
+            return wt;
+        }
+
+        public override ControlGroupWriter RichTextBox<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> expression, string modules = null, int size = 6, object attrs = null, object inputAttrs = null, string classes = null)
+        {
+            var wt = base.RichTextBox(helper, expression, modules, size, attrs, inputAttrs, classes);
+            wt.Accessibility = proc.Process(helper, expression, "RichTextBox");
+            return wt;
+        }
+
+        public override ControlGroupWriter RichLabel<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, int size, object attrs, object inputAttrs, string classes)
+        {
+            var wt = base.RichLabel(helper, exp, size, attrs, inputAttrs, classes);
+            wt.Accessibility = proc.Process(helper, exp, "RichLabel");
+            return wt;
+        }
+
+        public override IHtmlContent SelectModalButton<T>(IHtmlHelper<T> helper, string textId, string function, string bind, object attrs, string identifier, string validationFunction, string url, IEnumerable<LinkModel> buttons = null)
         {
             if (identifier != null)
             {
@@ -35,7 +57,7 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
                 if (!acc.Write)
                     function = null;
             }
-            return base.SelectModalButton(helper, textId, function, bind, attrs, identifier, validationFunction);
+            return base.SelectModalButton(helper, textId, function, bind, attrs, identifier, validationFunction, url, buttons);
         }
 
         public override ControlGroupWriter CalendarGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, CalendarTypes type, DateRange range, Calendars cals, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses)
@@ -59,9 +81,9 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
             return d;
         }
 
-        public override ControlGroupWriter FileGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string formFieldName, string uploadUrl, IValidationCollection coll, int size, string alternateLabel, string placeHolder, object attrs, object inputAttr, string inputClasses, string groupClasses)
+        public override ControlGroupWriter FileGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string formFieldName, string uploadAction, bool required, bool multiple, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
-            var d = base.FileGroup(helper, exp, formFieldName, uploadUrl, coll, size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
+            var d = base.FileGroup(helper, exp, formFieldName, uploadAction, required, multiple, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses);
             d.Accessibility = proc.Process(helper, exp, InputControls.FileTextBox);
             return d;
         }
@@ -73,21 +95,9 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
             return d;
         }
 
-        public override ControlGroupWriter SearchableControlGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string display, string valueMember, bool multi, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, bool nullable)
-        {
-            var d = base.SearchableControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, nullable);
-            d.Accessibility = proc.Process(helper, exp, InputControls.CalendarTextBox);
-            helper.AddSource(source);
-            return d;
-        }
 
-        //public override ControlGroupWriter SelectControlGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string display, string valueMember, bool multi, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, bool nullable)
-        //{
-        //    var d = base.SelectControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, nullable);
-        //    d.Accessibility = proc.Process(helper, exp, InputControls.CalendarTextBox);
-        //    helper.AddSource(source);
-        //    return d;
-        //}
+
+
 
         public override ControlGroupWriter TextAreaGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, IValidationCollection coll, int size, string alternateLabel, string placeHolder, object attrs, bool localizable, object inputAttr, string inputClasses, string groupClasses)
         {
@@ -130,25 +140,57 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
 
         public override IHtmlContent InputControl<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, IValidationCollection coll, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
-            var acc = proc.Process(helper, exp, component);
-            if (!acc.Read)
+            ComponentWriter mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, attrs, inputAttr, inputClasses, groupClasses);
+            mod.Accessibility = proc.Process(helper, exp, component);
+            if (!mod.Accessibility.Read)
                 return null;
-
-            var wt= base.InputControl(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, attrs, inputAttr, inputClasses, groupClasses);
-            
-            return wt;
+            if (!mod.Accessibility.Write)
+                return mod.GetLabelControl();
+            return mod.GetInputControl(component);
         }
 
         public override ControlGroupWriter SelectInputControl<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister lister, string display, string valueMember, bool required, string readOnlyProperty, bool nullable, object attrs, string inputClasses, string readOnlyPipe, string idExtra)
         {
             var mod = base.SelectInputControl(helper, exp, lister, display, valueMember, required, readOnlyProperty, nullable, attrs, inputClasses, readOnlyPipe, idExtra);
             mod.Accessibility = proc.Process(helper, exp, InputControls.Select);
-            if (mod.Accessibility.Write)
+
+            if (mod.Accessibility.Read)
+            {
+                lister.CollectionIdentifier = helper.GetCollectionName(RazorUtils.GetIdentifier(exp));
+                helper.AddSource(lister);
+            }
+
+
+            if (!mod.Accessibility.Write)
             {
                 if (readOnlyProperty != null)
                 {
                     mod.InputModel.NgModelName = (readOnlyPipe == "translate" ? "'Words.'+" : "") + mod.InputModel.NgModelName;
                     mod.InputModel.MemberName = readOnlyProperty + (readOnlyPipe == null ? "" : " | " + readOnlyPipe);
+                }
+            }
+
+            return mod;
+        }
+
+        public override ControlGroupWriter SearchableControlGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string display, string valueMember, bool multi, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, string readOnlyProperty, bool nullable)
+        {
+            var mod = base.SearchableControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, readOnlyProperty, nullable);
+            mod.Accessibility = proc.Process(helper, exp, InputControls.CalendarTextBox);
+
+            if (mod.Accessibility.Read)
+            {
+                source.CollectionIdentifier = helper.GetCollectionName(RazorUtils.GetIdentifier(exp));
+                helper.AddSource(source);
+            }
+
+
+            if (!mod.Accessibility.Write)
+            {
+                if (readOnlyProperty != null)
+                {
+                    // mod.InputModel.NgModelName = (readOnlyPipe == "translate" ? "'Words.'+" : "") + mod.InputModel.NgModelName;
+                    mod.InputModel.MemberName = readOnlyProperty;
                 }
             }
             return mod;
@@ -157,10 +199,17 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
         public override ControlGroupWriter SelectControlGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string display, string valueMember, bool multi, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, string idExtra, string readOnlyProperty, string readOnlyPipe, bool nullable)
         {
 
-            var mod = base.SelectControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses,idExtra,readOnlyProperty,readOnlyPipe, nullable);
+            var mod = base.SelectControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, idExtra, readOnlyProperty, readOnlyPipe, nullable);
             mod.Accessibility = proc.Process(helper, exp, InputControls.Select, idExtra);
 
-            if (mod.Accessibility.Write)
+            if (mod.Accessibility.Read)
+            {
+                source.CollectionIdentifier = helper.GetCollectionName(RazorUtils.GetIdentifier(exp));
+                helper.AddSource(source);
+            }
+
+
+            if (!mod.Accessibility.Write)
             {
                 if (readOnlyProperty != null)
                 {
@@ -172,5 +221,9 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
             return mod;
 
         }
+
+
+
+
     }
 }

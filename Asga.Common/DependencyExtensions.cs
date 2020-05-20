@@ -1,4 +1,5 @@
 ﻿using Asga.Common.Data;
+using Asga.Common.Services;
 using Asga.Data;
 using Asga.Security;
 using CodeShellCore.Data.Services;
@@ -10,13 +11,13 @@ namespace Asga.Common
 {
     public static class DependencyExtensions
     {
-        public static void AddAsga(this IServiceCollection coll)
+        public static void AddAsgaCommon(this IServiceCollection coll)
         {
             coll.AddScoped<CurrentTenant>();
-            coll.AddTransient<IAuthorizationService, AuthorizationService>();
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddGenericRepository(typeof(AsgaRepository<,>));
-            //coll.AddTransient<IPermissionCacheService, PermissionCacheService>();
+            coll.AddTransient<AsgaCollectionService>();
+            coll.AddTransient(typeof(AsgaRepository<,>));
         }
     }
 }

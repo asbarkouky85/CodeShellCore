@@ -1,22 +1,18 @@
 ﻿using CodeShellCore.Data.Lookups;
-using CodeShellCore.Security.Authentication;
-using Asga.Auth.Dto;
-using Asga.Services;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
 using CodeShellCore.Security;
 using CodeShellCore.Data.Services;
+using Asga.Auth.Dto;
+using Asga.Auth.Data;
+using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Asga.Auth.Services
 {
-    public class AuthLookupService : LookupsService<AuthUnit>
+    public class AuthLookupService : LookupsService<AuthUnit>, IAuthLookupService
     {
         private readonly IUserAccessor _accessor;
 
-        public AuthLookupService(AuthUnit unit,IUserAccessor accessor) : base(unit)
+        public AuthLookupService(AuthUnit unit, IUserAccessor accessor) : base(unit)
         {
             _accessor = accessor;
         }
@@ -26,7 +22,7 @@ namespace Asga.Auth.Services
             dynamic lookups = new ExpandoObject();
             if (data.ContainsKey("domains"))
             {
-                
+
                 lookups.domains = Unit.DomainRepository.FindAs(DomainWithResourcesDTO.Expression);
             }
             return lookups;
@@ -48,7 +44,7 @@ namespace Asga.Auth.Services
                 }, e => e.IsUserRole == false);
 
             if (data.ContainsKey("apps"))
-                lookups.apps = Unit.TenantAppRepository.FindAs(e => new Named<long> { Id = e.Id, Name = e.Name });
+                lookups.apps = Unit.AppRepository.FindAs(e => new Named<long> { Id = e.Id, Name = e.Name });
             return lookups;
         }
     }

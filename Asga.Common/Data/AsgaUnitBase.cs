@@ -1,6 +1,7 @@
 ﻿using System;
 using CodeShellCore.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Helpers;
 using CodeShellCore.Security;
 using Asga.Security;
@@ -13,9 +14,9 @@ namespace Asga.Common.Data
         public override Action<ChangeLists> OnBeforeSave { get { return beforeSave; } }
         //public override Action<ChangeLists> OnSaveSuccess { get { return afterSave; } }
         IUserAccessor _acc;
-        public AsgaUnitBase(IUserAccessor acc)
+        public AsgaUnitBase(IServiceProvider provider):base(provider)
         {
-            _acc = acc;
+            _acc = provider.GetService<IUserAccessor>();
         }
 
         //private void afterSave(ChangeLists lsts)

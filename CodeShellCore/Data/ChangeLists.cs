@@ -9,8 +9,8 @@ namespace CodeShellCore.Data
 {
     public class ChangeLists
     {
-        public IList Added { get; set; }
-        public IList Updated { get; set; }
-        public IList Deleted { get; set; }
+        public IEnumerable<object> Added { get; set; }
+        public IEnumerable<object> Updated { get; set; }
+        public IEnumerable<object> Deleted { get; set; }
     }
 }

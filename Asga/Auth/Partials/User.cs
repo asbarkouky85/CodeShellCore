@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using System.Text;
+using CodeShellCore.Files;
 
 namespace Asga.Auth
 {
@@ -23,19 +24,15 @@ namespace Asga.Auth
             get { return (UserTypes)UserType; }
             set { UserType = (int)value; }
         }
-
         [NotMapped]
         public string UserTypeString { get { return ((UserTypes)UserType).GetString(); } }
-
-        [NotMapped]
-        public IEnumerable<TenantAppUser> Apps { get; set; }
-
-        [NotMapped]
-        public IEnumerable<UserParty> Parties { get; set; }
         [NotMapped]
         public IEnumerable<UserRole> Roles { get; set; }
-
         [NotMapped]
         public long? RoleId { get; set; }
+
+        [NotMapped]
+        public TmpFileData PhotoFile { get; set; }
+        
     }
 }

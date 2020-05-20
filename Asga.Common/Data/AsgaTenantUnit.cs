@@ -11,7 +11,7 @@ namespace Asga.Common.Data
 
     public class AsgaTenantUnit<T> : AsgaUnitBase<T> where T : AsgaTenantContext
     {
-        public AsgaTenantUnit(CurrentTenant data,IUserAccessor userAccessor):base(userAccessor)
+        public AsgaTenantUnit(CurrentTenant data, IServiceProvider provider) : base(provider)
         {
             DbContext.ConnectionString = Shell.GetConfigAs<string>("ConnectionStrings:Auth");
         }

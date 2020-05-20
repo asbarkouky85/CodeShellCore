@@ -24,7 +24,7 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public CellWriter DragHeaderCell<T>(IHtmlHelper<T> helper, string tableName, string width, object cellAttributes)
+        public virtual CellWriter DragHeaderCell<T>(IHtmlHelper<T> helper, string tableName, string width, object cellAttributes)
         {
             var writer = new CellWriter(helper);
             writer.Initialize(null, width, cellAttributes, null);
@@ -32,22 +32,25 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes)
+        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes,bool sorting)
         {
             using (var writer = new CellWriter(helper))
             {
+                writer.ColumnModel.MemberName = textId;
+                writer.ColumnModel.Sorting = sorting;
                 writer.ColumnModel.Attributes = cellAttributes == null ? "" : RazorUtils.ToAttributeString(cellAttributes);
                 writer.InputModel.PlaceHolder = isColumn ? RazorConfig.LocaleTextProvider.Column(textId) : RazorConfig.LocaleTextProvider.Word(textId);
                 return writer;
             }
         }
 
-        public virtual CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes)
+        public virtual CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes,bool sorting)
         {
             using (var writer = new CellWriter(helper))
             {
                 writer.UseExpression(exp);
                 writer.Initialize(null, size, cellAttributes, null);
+                writer.ColumnModel.Sorting = sorting;
                 writer.InputModel.PlaceHolder = RazorConfig.LocaleTextProvider.Column(writer.ColumnId);
                 return writer;
             }
@@ -61,7 +64,7 @@ namespace CodeShellCore.Web.Razor.Tables
         public CellWriter LinkCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string url, bool blank, object cellAttributes, object linkAttributes, string pipe)
         {
             var writer = new CellWriter(helper);
-
+            writer.UseExpression(exp);
             writer.Initialize(null, null, cellAttributes, null);
             writer.InputModel = writer.InputModel.GetLabelInput(pipe, url, blank);
             pipe = pipe == null ? "" : " | " + pipe;
@@ -74,14 +77,14 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter SelectCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string displayMember, string valueMember, bool required, bool multi, object cellAttributes, object inputAttr, string classes,bool nullable)
+        public virtual CellWriter SelectCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string displayMember, string valueMember, bool required, bool multi, object cellAttributes, object inputAttr, string classes,bool nullable,string rowIndex)
         {
             var writer = new CellWriter(helper);
             writer.UseExpression(exp);
             writer.Initialize(null, null, cellAttributes, inputAttr, classes);
             writer.InputModel = writer.InputModel.GetSelectInput(source.IsLookup ? "Lookups." + source.ListName : source.ListName, displayMember, valueMember,multi,nullable);
             if (required)
-                writer.UseValidation(helper.VCollection().AddRequired());
+                writer.UseValidation(helper.VCollection().AddRequired(),rowIndex:rowIndex);
             return writer;
         }
 

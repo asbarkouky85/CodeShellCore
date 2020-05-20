@@ -1,6 +1,8 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Linq;
+using CodeShellCore.Security;
+using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,10 +14,7 @@ namespace CodeShellCore.Web.Controllers
     {
         IActionResult Get([FromQuery]LoadOptions opt);
         IActionResult GetSingle([FromRoute]TPrime id);
-
-        [HttpPost]
         IActionResult Post([FromBody] T obj);
-        [HttpPut]
         IActionResult Put([FromBody] T obj);
         IActionResult Delete(TPrime id);
     }

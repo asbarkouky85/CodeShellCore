@@ -12,14 +12,13 @@ using CodeShellCore.Files.Storage;
 namespace CodeShellCore.MQ
 {
 
-    public abstract class Consumer : ServiceBase, IConsumer, IEventHandler
+    public abstract class Consumer : ServiceBase, IConsumer
     {
         protected InstanceStore<IServiceBase> Store;
         protected FileStorageService Failed;
         protected FileStorageService Successful;
         public Consumer()
         {
-            Logger.WriteLine(GetType().FullName);
             Scope = new ScopeContainer(Shell.GetScope());
             Injector = Scope.Scope.ServiceProvider;
             Store = new InstanceStore<IServiceBase>(() => Injector);
@@ -27,8 +26,6 @@ namespace CodeShellCore.MQ
         }
         protected ScopeContainer Scope;
         protected IServiceProvider Injector { get; private set; }
-
-        public abstract Task Handle<TObj>(TObj item) where TObj : class;
 
         public virtual Task Handle<TObject>(CrudEvent<TObject> item) where TObject : class
         {
@@ -45,6 +42,25 @@ namespace CodeShellCore.MQ
                     re.SetException(ex);
                     RecordResult(re, item);
                     Logger.WriteException(ex);
+                    throw;
+                }
+            });
+        }
+
+        protected Task ConsumeEvent<T>(T ev, Func<T, SubmitResult> action) where T : class
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    var res = action(ev);
+                    RecordResult(res);
+                }
+                catch (Exception ex)
+                {
+                    SubmitResult re = new SubmitResult(1);
+                    re.SetException(ex);
+                    RecordResult(re, ev);
                     throw;
                 }
             });
@@ -69,26 +85,26 @@ namespace CodeShellCore.MQ
             });
         }
 
-        protected Task Respond<T,TR>(ConsumeContext<T> context, Func<T, TR> action) where T : class where  TR :class 
+        protected Task Respond<T, TR>(ConsumeContext<T> context, Func<T, TR> action) where T : class where TR : class
         {
-            
-                try
-                {
-                    var res = action(context.Message);
-                    return context.RespondAsync<TR>(res);
-                }
-                catch (Exception ex)
-                {
-                    return Task.Run(() =>
-                    {
-                        SubmitResult re = new SubmitResult(1);
-                        re.SetException(ex);
-                        RecordResult(re, context.Message);
-                        
-                    });
-                    throw;
+
+            try
+            {
+                var res = action(context.Message);
+                return context.RespondAsync<TR>(res);
             }
-            
+            catch (Exception ex)
+            {
+                return Task.Run(() =>
+                {
+                    SubmitResult re = new SubmitResult(1);
+                    re.SetException(ex);
+                    RecordResult(re, context.Message);
+
+                });
+                throw;
+            }
+
         }
 
         protected void RecordResult(SubmitResult res, object data = null)

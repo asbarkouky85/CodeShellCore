@@ -13,6 +13,10 @@ using CodeShellCore.Text.Localization;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Text.Localization.Internal;
 using CodeShellCore.Data.CustomFields;
+using CodeShellCore.Tasks;
+using System.Collections.Generic;
+using CodeShellCore.Files.Reporting;
+using CodeShellCore.MultiTenant;
 
 namespace CodeShellCore.DependencyInjection
 {
@@ -24,22 +28,41 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<IEntityService<T>, TRepo>();
             coll.AddTransient<IEntityHandler<T>, TRepo>();
         }
-        public static void AddServiceFor<T, TRepo>(this IServiceCollection coll) where T : class where TRepo : class, IEntityService<T>
+        public static void AddServiceFor<T, TService>(this IServiceCollection coll) where T : class where TService : class, IEntityService<T>
         {
-            coll.AddTransient<TRepo>();
-            coll.AddTransient<IEntityService<T>, TRepo>();
+            coll.AddTransient<TService>();
+            coll.AddTransient<IEntityService<T>, TService>();
+        }
+
+        public static void AddRdlcGenerator(this IServiceCollection coll)
+        {
+            coll.AddTransient<RdlcDataSetGenerator>();
+        }
+
+        public static void AddServiceFor<T, TService, ITService>(this IServiceCollection coll)
+            where T : class
+            where TService : class, ITService
+            where ITService : class, IEntityService<T>
+        {
+            coll.AddTransient<TService>();
+            coll.AddTransient<IEntityService<T>, TService>();
+            coll.AddTransient<ITService, TService>();
         }
 
         public static void AddGenericRepository(this IServiceCollection coll, Type t)
         {
             coll.AddTransient(typeof(Repository<,>), t);
-
+            coll.AddTransient(t);
         }
 
+        /// <summary>
+        /// Register a class to be used for collection repositories should implement ICollectionEFRepository[,]
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="t">Must implement ICollectionEFRepository[,]</param>
         public static void AddGenericCollectionRepository(this IServiceCollection coll, Type t)
         {
-            coll.AddTransient(typeof(ICollectionRepository<>), t);
-            coll.AddTransient(typeof(CollectionRepository<,>), t);
+            coll.AddTransient(typeof(ICollectionEFRepository<,>),t);
         }
 
         public static void AddRepositoryFor<T, TRepo, ITRepo>(this IServiceCollection coll)
@@ -63,7 +86,7 @@ namespace CodeShellCore.DependencyInjection
         {
             coll.AddTransient<ILocalizationDataService, LocalizationDataService<T>>();
             coll.AddTransient<ILocalizablesRepository<T>, LocalizableRepository<T, TContext>>();
-    
+
         }
 
         public static void AddCustomFields<T, TContext>(this IServiceCollection coll) where T : class, ICustomField where TContext : DbContext
@@ -86,10 +109,10 @@ namespace CodeShellCore.DependencyInjection
             coll.AddScoped<ICollectionUnitOfWork>(d => d.GetRequiredService<T>());
         }
 
-        public static void AddUnitOfWork<T,IT>(this IServiceCollection coll) where T : class,IUnitOfWork,IT where IT : class
+        public static void AddUnitOfWork<T, IT>(this IServiceCollection coll) where T : class, IUnitOfWork, IT where IT : class
         {
             coll.AddScoped<T>();
-            coll.AddScoped<IUnitOfWork>( d => d.GetRequiredService<T>());
+            coll.AddScoped<IUnitOfWork>(d => d.GetRequiredService<T>());
             coll.AddScoped<IT>(d => d.GetRequiredService<T>());
         }
 
@@ -121,7 +144,13 @@ namespace CodeShellCore.DependencyInjection
         public static void SetCurrentUser(this IServiceProvider provider, IUser user)
         {
             var acc = provider.GetService<IUserAccessor>();
-            acc.User = user;
+            acc.Set(user);
+        }
+
+        public static void SetCurrentUserId(this IServiceProvider provider, object id)
+        {
+            var acc = provider.GetService<IUserAccessor>();
+            acc.UserId = id;
         }
 
         public static IUser GetCurrentUser(this IServiceProvider provider)
@@ -138,6 +167,26 @@ namespace CodeShellCore.DependencyInjection
         {
             coll.AddSingleton<T>();
             coll.AddSingleton<ICollectionConfigService, T>();
+        }
+
+        public static void AddTimedJobs(this IServiceCollection coll, IEnumerable<ITimedJob> jobs)
+        {
+            JobConfig conf = new JobConfig(jobs);
+            coll.AddTransient<IJobRunner, JobRunner>();
+            coll.AddSingleton(conf);
+        }
+
+        public static void AddTimedJobs<T>(this IServiceCollection coll, IEnumerable<ITimedJob> jobs) where T : class, IJobRunner
+        {
+            JobConfig conf = new JobConfig(jobs);
+            coll.AddTransient<IJobRunner, T>();
+            coll.AddSingleton(conf);
+        }
+
+        public static void AddMultiTenantData<T>(this IServiceCollection coll) where T : class, ITenantDataProvider
+        {
+            coll.AddScoped<CurrentTenant>();
+            coll.AddTransient<ITenantDataProvider, T>();
         }
     }
 }

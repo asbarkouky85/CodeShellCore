@@ -7,6 +7,6 @@ namespace CodeShellCore.Data.Helpers
     public class DeleteResult : SubmitResult
     {
         public bool CanDelete { get; set; }
-        public string tableName { get; set; }
+        public string TableName { get; set; }
     }
 }

@@ -9,17 +9,20 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
 {
     public class AngularTablesHelper : DefaultTablesHelper, IAngularTablesHelper
     {
-        public virtual CellWriter CheckBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string listName, string ngModel, object cellAttributes, object inputAttr, string listItem, string classes)
+        public virtual CellWriter CheckBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string listName, string ngModel, string changeFunction, object cellAttributes, object inputAttr, string listItem, string classes)
         {
             var writer = new CellWriter(helper);
 
-            string lItem = helper.GetModelName() + "." + (listItem ?? "Tag");
+            string lItem = helper.GetModelName() + (listItem != null ? "." + listItem : "");
             writer.Initialize(null, null, cellAttributes, inputAttr, classes);
             writer.InputModel = writer.InputModel.GetCheckInput(null, null, false, lItem);
             writer.InputModel.MemberName = helper.GetModelName() + "." + ngModel;
             writer.InputModel.FieldName = "'" + field + "'+" + rowIndex;
 
-            writer.InputModelExtraAttrs.evnt__change = helper.GetModelName() + $".Tag.ApplyTo({listName})";
+            if (changeFunction != null)
+                writer.InputModelExtraAttrs.evnt__change = changeFunction;
+            else if (listName != null)
+                writer.InputModelExtraAttrs.evnt__change = helper.GetModelName() + $".Tag.ApplyTo({listName})";
 
             return writer;
         }
@@ -44,13 +47,13 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             {
                 mod.AdditionalButtons = buttons;
                 foreach (var b in mod.AdditionalButtons)
-                    b.Classes = "buttonGra-sm";
+                    b.Classes = b.Classes ?? helper.GetTheme().SmallBtnClass;
             }
 
             return helper.GetComponent("TableCells/ListModifiers", mod);
         }
 
-        public virtual CellWriter RadioBoxCell<T>(IHtmlHelper<T> helper,string field, string rowIndex, string property, bool asArray, object cellAttributes, object inputAttr, string listItem, string classes)
+        public virtual CellWriter RadioBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string property, bool asArray, string changeFunction, object cellAttributes, object inputAttr, string listItem, string classes)
         {
             var writer = new CellWriter(helper);
 
@@ -72,12 +75,14 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             writer.InputModel = writer.InputModel.GetCheckInput(null, null, false, lItem, type);
             writer.InputModel.FieldName = "'" + field + "'";
 
-            if (asArray)
+            if (changeFunction != null)
+                writer.InputModelExtraAttrs.evnt__change = changeFunction;
+            else if (asArray)
                 writer.InputModelExtraAttrs.evnt__change = helper.GetModelName() + $".Tag.SelectOnly({property})";
             return writer;
         }
 
-        public CellWriter TextCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string pipe, object cellAttributes)
+        public virtual CellWriter TextCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string pipe, object cellAttributes)
         {
             using (var writer = new CellWriter(helper))
             {

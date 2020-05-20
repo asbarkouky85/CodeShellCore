@@ -9,9 +9,10 @@ namespace CodeShellCore.Web.Security
 {
     public class TokenSessionManager : WebSessionManagerBase, ISessionManager
     {
-        public TimeSpan DefaultSessionTime { get { return new TimeSpan(24, 0, 0); } }
-        
-        public TokenSessionManager(IUserDataService cache, IHttpContextAccessor context) : base(cache, context)
+
+        public override TimeSpan DefaultSessionTime { get { return new TimeSpan(24, 0, 0); } }
+
+        public TokenSessionManager(IHttpContextAccessor context) : base(context)
         {
         }
 
@@ -19,7 +20,7 @@ namespace CodeShellCore.Web.Security
         {
             if (_accessor.HttpContext == null)
                 return null;
-            return _accessor.HttpContext.GetHeader("auth-token");
+            return _accessor.HttpContext.GetHeader(HttpHeaderKeys.Authorization);
         }
 
         protected virtual string GetJWTDataFromHeader()
@@ -38,7 +39,7 @@ namespace CodeShellCore.Web.Security
             return null;
         }
 
-        public virtual void AuthorizationRequest(string token)
+        public override void AuthorizationRequest(string token)
         {
             if (IsProccessed(_accessor.HttpContext))
                 return;
@@ -58,7 +59,7 @@ namespace CodeShellCore.Web.Security
             SetProccessed(_accessor.HttpContext);
         }
 
-        public virtual void AuthorizationRequest()
+        public override void AuthorizationRequest()
         {
             if (IsProccessed(_accessor.HttpContext))
                 return;
@@ -88,7 +89,7 @@ namespace CodeShellCore.Web.Security
             return 0;
         }
 
-        public bool IsLoggedIn()
+        public override bool IsLoggedIn()
         {
             if (GetCurrentUserId() == null)
                 return false;
@@ -112,10 +113,7 @@ namespace CodeShellCore.Web.Security
             return null;
         }
 
-        public void EndSession()
-        {
-            ClearUserCache(GetCurrentUserId());
-        }
+        
 
 
     }

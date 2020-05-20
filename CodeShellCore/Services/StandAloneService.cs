@@ -8,20 +8,23 @@ namespace CodeShellCore.Services
 {
     public class StandAloneService : ServiceBase, IDisposable
     {
-        protected IServiceScope Scope;
+
         protected InstanceStore<object> Store { get; private set; }
 
-        public StandAloneService() {
-            Scope = Shell.GetScope();
-            Store = new InstanceStore<object>(() => Scope.ServiceProvider);
+        public StandAloneService(IServiceProvider provider)
+        {
+            Store = new InstanceStore<object>(provider);
+        }
+
+        protected T GetService<T>()
+        {
+            return Store.GetInstance<T>();
         }
 
         public override void Dispose()
         {
             base.Dispose();
             Store.Clear();
-            Scope.Dispose();
-            
         }
     }
 }

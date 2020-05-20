@@ -7,10 +7,11 @@ using CodeShellCore.Text;
 using CodeShellCore.Helpers;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Security;
+using CodeShellCore.Security.Authorization;
 
 namespace CodeShellCore.Web.Security
 {
-    public class TokenAuthenticationService : DefaultAuthenticationService, IAuthenticationService
+    public class TokenAuthenticationService : PermissableAuthenticationService, IAuthenticationService
     {
         private string defaultProvider;
         private readonly ISessionManager _sessionManager;
@@ -20,7 +21,7 @@ namespace CodeShellCore.Web.Security
             get { return defaultProvider; }
             private set { defaultProvider = value; }
         }
-        public TokenAuthenticationService(ISecurityUnit unit,ISessionManager sessionManager) : base(unit)
+        public TokenAuthenticationService(ISecurityUnit unit, ISessionManager sessionManager, IUserDataService userData) : base(unit, userData)
         {
             defaultProvider = Shell.GetConfigAs<string>("Security:TokenProvider", false);
             _sessionManager = sessionManager;
@@ -50,7 +51,7 @@ namespace CodeShellCore.Web.Security
         protected virtual JWTData MakeJWT(LoginResult res)
         {
             TimeSpan time = new TimeSpan(1, 0, 0, 0);
-            var jwt= new JWTData
+            var jwt = new JWTData
             {
                 Name = res.UserData.Name,
                 UserId = res.UserData.UserId,
@@ -82,7 +83,7 @@ namespace CodeShellCore.Web.Security
         {
             using (var sc = Shell.GetScope())
             {
-                TimeSpan time = (sc.ServiceProvider.GetService<ISessionManager>()?.DefaultSessionTime)??new TimeSpan(1,0,0,0);
+                TimeSpan time = (sc.ServiceProvider.GetService<ISessionManager>()?.DefaultSessionTime) ?? new TimeSpan(1, 0, 0, 0);
                 JWTData jwt = new JWTData
                 {
                     UserId = userId,
@@ -93,7 +94,7 @@ namespace CodeShellCore.Web.Security
 
                 return Shell.Encryptor.Encrypt(jwt.ToJson());
             }
-            
+
         }
 
 

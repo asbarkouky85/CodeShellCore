@@ -16,5 +16,21 @@ namespace CodeShellCore.Text
         {
             return @enum.GetType().Name + "_" + @enum.ToString();
         }
+
+
+        public static string ToEnumString<T>(this long value)
+        {
+            var t = typeof(T);
+            var x = Enum.GetName(t, value);
+            return t.Name + "_" + x;
+        }
+
+        public static string ToEnumString<T>(this int value)
+        {
+            var t = typeof(T);
+            var x = Enum.GetName(t, value);
+            return t.Name + "_" + x;
+        }
+
     }
 }

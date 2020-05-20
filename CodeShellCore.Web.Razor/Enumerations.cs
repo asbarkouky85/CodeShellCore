@@ -29,7 +29,7 @@ namespace CodeShellCore.Web.Razor
         public const string ControlGroup = "ControlGroup";
 
         public const string Label = "Label";
-        public const string ListModifiers="TableCells/ListModifiers";
+        public const string ListModifiers = "TableCells/ListModifiers";
     }
 
     public enum InputControls
@@ -49,6 +49,8 @@ namespace CodeShellCore.Web.Razor
         LocalizableLabel,
         ListView,
         CheckBoxCell,
+        RichTextLabel,
+        RichTextBox
     }
 
     public enum CellTypes

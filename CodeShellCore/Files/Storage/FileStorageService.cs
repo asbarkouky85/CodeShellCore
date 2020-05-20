@@ -15,8 +15,8 @@ namespace CodeShellCore.Files.Storage
         AsyncFileHandler Writer;
         string FilePath;
         List<CachedItem> PendingAdd;
-        int CurrentLine;
-        int StartingLine;
+        long CurrentLine;
+        long StartingLine;
 
         public FileStorageService(string fileLocation, bool isRelativePath = true)
         {
@@ -31,7 +31,7 @@ namespace CodeShellCore.Files.Storage
                 {
                     StartingLine = 0;
                     CurrentLine = 0;
-                    
+
                 }
                 else
                 {
@@ -45,9 +45,9 @@ namespace CodeShellCore.Files.Storage
             }
         }
 
-        private int GetCurrentLine()
+        private long GetCurrentLine()
         {
-            return File.ReadAllLines(FilePath).Length;
+            return Writer.CountLines();
         }
 
         public List<CachedItem> GetContents()
@@ -60,9 +60,9 @@ namespace CodeShellCore.Files.Storage
             return new List<CachedItem>();
         }
 
-        public int Add(object item, Exception exception = null)
+        public long Add(object item, Exception exception = null)
         {
-            int cur = CurrentLine;
+            long cur = CurrentLine;
             CurrentLine++;
             PendingAdd.Add(new CachedItem(item, exception));
             return cur;

@@ -1,9 +1,13 @@
-﻿using CodeShellCore.Text;
+﻿using CodeShellCore.Http;
+using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore
 {
@@ -87,6 +91,27 @@ namespace CodeShellCore
         public static bool HasProperty(this object obj, string property)
         {
             return obj.GetType().GetProperties().Any(d => d.Name == property);
+        }
+
+        public static string ToHexCode(this Color color)
+        {
+            var argb = color.ToArgb();
+            var d = (argb & 0xFFFFFF).ToString("X6");
+            return "#"+d;
+        }
+
+        public static async Task<T> ReadAsAsync<T>(this HttpResponseMessage data) where T : class
+        {
+            if (data.IsSuccessStatusCode)
+            {
+                string responseString = await data.Content.ReadAsStringAsync();
+                var res = responseString.FromJson<T>();
+                return res;
+            }
+            else
+            {
+                throw new CodeShellHttpException(data);
+            }
         }
     }
 }

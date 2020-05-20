@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Definitions;
-using CodeShellCore.Moldster.Json;
+
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Web.Controllers;
@@ -17,33 +17,28 @@ namespace CodeShellCore.Web.Razor.Controllers
     [ApiExceptionFilter]
     public class BaseMoldsterViewsController : BaseController
     {
-        protected readonly IRazorRenderingService Razor;
-        protected readonly IDataService Data;
+        private readonly ServerViewsService views;
 
-        public BaseMoldsterViewsController(IRazorRenderingService ser, IDataService data)
+        public BaseMoldsterViewsController(ServerViewsService views)
         {
-            Razor = ser;
-            Data = data;
+            this.views = views;
         }
+
         public virtual IActionResult GetPage([FromQuery]PageAcquisitorDTO dto)
         {
-            PageOptions p = Data.GetPageOptions(dto.ModuleCode, dto.ViewPath);
-            p.Layout = Utils.CombineUrl(RazorConfig.Theme.LayoutBase, p.Layout);
-            var html = Razor.RenderPartial(HttpContext, p.ViewPath, null, new Dictionary<string, object> { { "PageOptions", p } });
-            html += $"\n<div style='display:none' #lookupOptionsContainer values='{p.SourcesString}'></div>";
-            html += $"\n<div style='display:none' #viewParamsContainer values='{p.ViewParamsString}'></div>";
+            var html = views.GetPage(dto);
+            return Content(html);
+        }
 
+        public virtual IActionResult GetPageById(long id)
+        {
+            var html = views.GetPageById(id);
             return Content(html);
         }
 
         public virtual IActionResult GetMainComponent([FromQuery]PageAcquisitorDTO dto)
         {
-            PageOptions p = new PageOptions();
-
-            var html = Razor.RenderPartial(HttpContext, dto.ViewPath, null, new Dictionary<string, object> { { "PageOptions", p } });
-            html += $"\n<div style='display:none' #lookupOptionsContainer values='{p.SourcesString}'></div>";
-            html += $"\n<div style='display:none' #viewParamsContainer values='{p.ViewParamsString}'></div>";
-
+            var html = views.GetMainComponent(dto.ViewPath);
             return Content(html);
         }
     }

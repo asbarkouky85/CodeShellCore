@@ -22,7 +22,7 @@ namespace CodeShellCore.Text.TextProviders
 
         public ResxTextProvider()
         {
-            _lang = Shell.ScopedInjector == null ? Shell.ScopedInjector.GetService<Language>() : Language.Default;
+            _lang = Shell.ScopedInjector != null ? Shell.ScopedInjector.GetService<Language>() : Language.Default;
         }
 
         static void InitializeCulutre(string cult)

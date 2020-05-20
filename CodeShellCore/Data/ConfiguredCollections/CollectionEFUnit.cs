@@ -8,9 +8,13 @@ namespace CodeShellCore.Data.ConfiguredCollections
 {
     public class CollectionEFUnit<TContext> : UnitOfWork<TContext>, ICollectionUnitOfWork where TContext : DbContext
     {
-        public ICollectionRepository<T> GetCollectionRepositoryFor<T>() where T : class, IModel<long>
+        public CollectionEFUnit(IServiceProvider provider) : base(provider)
         {
-            return Store.GetInstance<CollectionRepository<T, TContext>>();
+        }
+
+        public ICollectionRepository<T> GetCollectionRepositoryFor<T>() where T : class
+        {
+            return Store.GetInstance<ICollectionEFRepository<T,TContext>>();
         }
 
 

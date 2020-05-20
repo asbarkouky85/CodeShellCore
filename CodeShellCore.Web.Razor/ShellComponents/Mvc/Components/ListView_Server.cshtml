@@ -1,0 +1,20 @@
+﻿@model SelectNgInput
+<table class="table table-striped">
+    <tbody>
+        @foreach (var item in Model.Choices)
+        {
+            <tr>
+                <td>
+                    <span class="chiller_cb">
+                        <label for="@Model.FieldName-@item.Id">{{item.@Html.Raw(Model.Display)}}</label>
+                        <input id="@Model.FieldName-@item.Id"
+                               @if (Model.Multi) { @Html.Raw("type=\"checkbox\" [name]=\"'" +Model.FieldName+"_"+item.Id+ "\"")  } else { @Html.Raw("type=\"radio\" name=\"" + Model.FieldName + "\"") }
+                               @Html.Raw(Model.ChangeFunction != null ? "(change)=\"" + Model.ChangeFunction + "\"" : "")>
+                        <span></span>
+                    </span>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

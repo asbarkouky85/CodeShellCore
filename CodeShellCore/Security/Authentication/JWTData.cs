@@ -14,7 +14,7 @@ namespace CodeShellCore.Security.Authentication
         public DateTime StartTime { get; set; }
         public DateTime ExpireTime { get; set; }
         public string Provider { get; set; }
-        public IEnumerable Roles { get; set; }
+        public IEnumerable<object> Roles { get; set; } = new List<object>();
         public string DeviceId { get; set; }
         public string TokenId { get; set; }
 

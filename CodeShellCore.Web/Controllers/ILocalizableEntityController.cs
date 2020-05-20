@@ -8,7 +8,7 @@ namespace CodeShellCore.Web.Controllers
 {
     public interface ILocalizableEntityController
     {
-        IActionResult GetLocalizationData(long id);
-        IActionResult SetLocalizationData(long id, [FromBody]Dictionary<string, LocalizablesDTO> data);
+        IActionResult GetLocalizationData(object id);
+        IActionResult SetLocalizationData(object id, [FromBody]Dictionary<string, LocalizablesDTO> data);
     }
 }

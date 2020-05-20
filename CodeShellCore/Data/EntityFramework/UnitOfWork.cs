@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
+using CodeShellCore.DependencyInjection;
+using System.Data.SqlClient;
+using CodeShellCore.Linq;
 
 namespace CodeShellCore.Data.EntityFramework
 {
@@ -19,28 +22,20 @@ namespace CodeShellCore.Data.EntityFramework
     {
         protected InstanceStore<IRepository> Store;
         protected IServiceProvider _provider;
-        private bool _disposed = false;
+        protected virtual Type GenericRepositoryType { get; }
+        protected virtual bool UseChangeColumns { get { return false; } }
 
         protected TContext DbContext { get; private set; }
         public virtual Action<ChangeLists> OnBeforeSave { get { return null; } }
         public virtual Action<ChangeLists> OnSaveSuccess { get { return null; } }
-        public bool IsDisposed { get { return _disposed; } }
-        public UnitOfWork()
-        {
-            Console.WriteLine(this);
-            if (Shell.ScopedInjector == null)
-            {
-               var  Scope = Shell.GetScope();
-                _provider = Scope.ServiceProvider;
-                
-            }
-            else
-            {
-                _provider = Shell.ScopedInjector;
-            }
-            DbContext =_provider.GetService<TContext>();
-            Store = new InstanceStore<IRepository>(_provider);
+        public bool IsDisposed { get; private set; } = false;
+        public event EventHandler<ChangeLists> Saving;
 
+        public UnitOfWork(IServiceProvider provider)
+        {
+            _provider = provider;
+            DbContext = _provider.GetService<TContext>();
+            Store = new InstanceStore<IRepository>(_provider);
         }
 
         public ChangeLists GetChangeSet()
@@ -64,13 +59,6 @@ namespace CodeShellCore.Data.EntityFramework
             return Store.GetInstance<T>();
         }
 
-        public T GetEFRepository<T>() where T : EFRepository<TContext>, IRepository
-        {
-            return Store.GetInstance<T>();
-        }
-
-        
-
         public IRepository GetRepository(Type t)
         {
             return Store.GetInstance(t);
@@ -82,7 +70,48 @@ namespace CodeShellCore.Data.EntityFramework
             var repo = _provider.GetService<IRepository<T>>();
             if (repo != null)
                 return repo;
+            if (GenericRepositoryType != null)
+            {
+                var t = GenericRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
+                return (IRepository<T>)Store.GetInstance(t);
+            }
             return Store.GetInstance<Repository<T, TContext>>();
+        }
+
+        protected virtual void FillChangeColumns(ChangeLists lst)
+        {
+            if (!UseChangeColumns)
+                return;
+            object uId = _provider.GetCurrentUser()?.UserId;
+            long? userId = null;
+
+            if (uId is string && long.TryParse((string)uId, out long id))
+            {
+                userId = id;
+            }
+            else if (uId != null)
+            {
+                userId = (long?)uId;
+            }
+
+            foreach (IChangeColumns mod in lst.Added)
+            {
+                if (userId != null)
+                {
+                    mod.CreatedBy = userId;
+                    mod.UpdatedBy = userId;
+                }
+
+                mod.CreatedOn = DateTime.Now;
+                mod.UpdatedOn = DateTime.Now;
+            }
+
+            foreach (IChangeColumns mod in lst.Updated)
+            {
+                if (userId != null)
+                    mod.UpdatedBy = userId;
+                mod.UpdatedOn = DateTime.Now;
+            }
         }
 
         /// <summary>
@@ -99,10 +128,12 @@ namespace CodeShellCore.Data.EntityFramework
 
             ChangeLists lst = null;
 
-            if (OnBeforeSave != null || OnSaveSuccess != null)
+            if (OnBeforeSave != null || OnSaveSuccess != null || Saving != null || UseChangeColumns)
             {
                 lst = GetChangeSet();
                 OnBeforeSave?.Invoke(lst);
+                Saving?.Invoke(this, lst);
+                FillChangeColumns(lst);
             }
 
             try
@@ -130,7 +161,7 @@ namespace CodeShellCore.Data.EntityFramework
             }
             catch (Exception ex)
             {
-                res = CustomizeExpetion(ex, failMessage);
+                res = CustomizeException(ex, failMessage);
             }
             return res;
         }
@@ -138,12 +169,20 @@ namespace CodeShellCore.Data.EntityFramework
         public void Dispose()
         {
             DbContext.Dispose();
-            _disposed = true;
+            IsDisposed = true;
         }
 
+        SqlException GetSqlException(Exception ex)
+        {
+            if (ex is SqlException)
+                return (SqlException)ex;
+            else if (ex.InnerException != null)
+                return GetSqlException(ex.InnerException);
+            else
+                return null;
+        }
 
-
-        public virtual SubmitResult CustomizeExpetion(Exception ex, string failMessage = null)
+        public virtual SubmitResult CustomizeException(Exception ex, string failMessage = null)
         {
             var res = new SubmitResult
             {
@@ -151,7 +190,20 @@ namespace CodeShellCore.Data.EntityFramework
                 Message = failMessage
             };
             res.SetException(ex);
-            
+
+            var sqlException = GetSqlException(ex);
+            if (sqlException != null)
+            {
+                if (sqlException.Number == 547)
+                {
+                    DeleteResult deleteResult = res.MapToResult<DeleteResult>();
+                    deleteResult.Code = 547;
+                    deleteResult.CanDelete = false;
+                    deleteResult.TableName = SqlInterpreter.N00547(sqlException.Message)[5].Split('.')[1];
+                    return deleteResult;
+                }
+            }
+
             return res;
         }
     }

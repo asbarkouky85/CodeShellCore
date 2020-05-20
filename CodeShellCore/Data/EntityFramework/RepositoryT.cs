@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Transactions;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +16,8 @@ namespace CodeShellCore.Data.EntityFramework
     /// A repository is treated like a data source for a specific entity where you should be able to add, edit and delete and
     /// also retrieve lists with specific conditions
     /// </summary>
-    /// <typeparam name="T">the physical or viewmodel type</typeparam>
-    public abstract class Repository<T, TContext> : EFRepository<TContext>, IRepository<T> where T : class where TContext : DbContext
+    /// <typeparam name="T">the physical type</typeparam>
+    public abstract class Repository<T, TContext> : IRepository<T> where T : class where TContext : DbContext
     {
         #region members
         private DbSet<T> _saver;
@@ -106,9 +108,17 @@ namespace CodeShellCore.Data.EntityFramework
         #endregion
 
         public abstract TValue GetValue<TValue>(object id, Expression<Func<T, TValue>> ex);
-        public abstract T FindSingle(object id);
+        public virtual T FindSingle(object id)
+        {
+            return DbContext.Set<T>().Find(id);
+        }
         public abstract TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
-        public abstract void DeleteById(object ob);
+        public virtual void DeleteById(object ob)
+        {
+            var d = DbContext.Set<T>().Find(ob);
+            if (d != null)
+                Saver.Remove(d);
+        }
         public abstract bool IdExists(object ob);
 
         /// <summary>
@@ -200,7 +210,7 @@ namespace CodeShellCore.Data.EntityFramework
         /// <returns>should not be a queryable object</returns>
         public virtual List<T> Find(Expression<Func<T, bool>> exp)
         {
-            
+
             return Loader.Where(exp).ToList();
         }
 
@@ -226,7 +236,7 @@ namespace CodeShellCore.Data.EntityFramework
             {
                 throw ex;
             }
-            
+
         }
 
         public virtual LoadResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
@@ -253,7 +263,7 @@ namespace CodeShellCore.Data.EntityFramework
             {
                 throw ex;
             }
-            
+
         }
 
         public virtual IEnumerable<TValue> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter)
@@ -282,20 +292,78 @@ namespace CodeShellCore.Data.EntityFramework
         public List<TR> FindAs<TR>(Expression<Func<T, TR>> ex, IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
         {
             var q = Loader;
-            foreach(var filter in filtes)
+            foreach (var filter in filtes)
                 q = q.Where(filter);
             return q.Select(ex).ToList();
         }
 
-        public abstract DeleteResult CanDelete(object id);
 
-         public List<T> GetByExperession/*<TR,TVal>*/(IEnumerable<Expression<Func<T, bool>>> filtres)/* Func<T, TVal> GroupColumn, Func<T, TR> selction*/
+        public virtual DeleteResult CanDelete(object id)
+        {
+            if (!IdExists(id))
+                return new DeleteResult { CanDelete = true, Code = 0 };
+            using (var txscope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                DeleteResult res = new DeleteResult();
+                try
+                {
+                    DeleteById(id);
+                    DbContext.SaveChanges();
+                    txscope.Dispose();
+                    res.AffectedRows = 0;
+                    res.CanDelete = true;
+                    res.Code = 0;
+                    return res;
+                    //txscope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    txscope.Dispose();
+
+                    res.AffectedRows = 0;
+                    res.CanDelete = false;
+                    res.Code = 1;
+                    res.ExceptionMessage = ex.Message;
+                    int? number = ((SqlException)ex.InnerException)?.Number;
+                    string tableName = "";
+                    if (number == 547)
+                        tableName = SqlInterpreter.N00547(ex.InnerException.Message)[5].Split('.')[1];
+                    res.TableName = tableName;
+                    // Log error    
+                    return res;
+
+                }
+            }
+        }
+        public virtual LoadResult FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
+        {
+            if (dir == SortDir.ASC)
+                return Loader.OrderBy(sort).Select(exp).LoadWith(opts);
+            else
+                return Loader.OrderByDescending(sort).Select(exp).LoadWith(opts);
+        }
+
+        public TVal GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null)
         {
             var q = Loader;
-            foreach (var filter in filtres)
+            if (filter != null)
                 q = q.Where(filter);
-           // var de = q.ToLookup(GroupColumn, selction);
-            return q.ToList();
+            if (!q.Any())
+            {
+                return Activator.CreateInstance<TVal>();
+            }
+            return q.Max(exp);
+        }
+
+        public T Merge(Expression<Func<T, bool>> ex, T obj)
+        {
+            var item = Loader.Where(ex).FirstOrDefault();
+            if (item == null)
+            {
+                item = obj;
+                Add(item);
+            }
+            return item;
         }
     }
 }

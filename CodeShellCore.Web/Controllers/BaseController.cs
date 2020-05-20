@@ -9,12 +9,12 @@ namespace CodeShellCore.Web.Controllers
 {
     public class BaseController : Controller
     {
-        protected InstanceStore<IServiceBase> Store;
+        protected InstanceStore<object> Store;
         protected SubmitResult SubmitResult { get; set; }
 
         public BaseController()
         {
-            Store = new InstanceStore<IServiceBase>(() => HttpContext.RequestServices);
+            Store = new InstanceStore<object>(() => HttpContext.RequestServices);
             
         }
 
@@ -24,7 +24,7 @@ namespace CodeShellCore.Web.Controllers
             base.OnActionExecuting(context);
         }
 
-        protected T GetService<T>() where T : class,IServiceBase
+        protected T GetService<T>() where T : class
         {
             return Store.GetInstance<T>();
         }

@@ -34,12 +34,6 @@ namespace CodeShellCore.Web.Razor.Elements
             mod.UseExpression(exp);
             mod.SetOptions(size, alternateLabel, null, attrs, inputAttr, inputClasses, groupClasses);
 
-            if (!mod.Accessibility.Write)
-            {
-                mod.InputModel.MemberName = mod.InputModel.MemberName + " | date :'dd-MM-yyyy'";
-                return mod;
-            }
-
             IValidationCollection coll = helper.GetDateValidators(type, required, range, mod.InputModel.MemberName, alternateLabel);
             mod.UseValidation(coll, mod.InputModel.FieldName, alternateLabel);
 
@@ -52,7 +46,9 @@ namespace CodeShellCore.Web.Razor.Elements
             var mod = new ControlGroupWriter(helper);
             mod.UseExpression(exp);
             mod.SetOptions(size, alternateLabel, null, attrs, inputAttr, inputClasses, groupClasses);
-            mod.InputModel = mod.InputModel.GetCheckInput(helper.Word(trueString), helper.Word(falseString), useIcon);
+            var tr = trueString == null ? null : helper.Word(trueString);
+            var fal = falseString == null ? null : helper.Word(falseString);
+            mod.InputModel = mod.InputModel.GetCheckInput(tr, fal, useIcon);
             return mod;
         }
 
@@ -75,13 +71,14 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        public virtual ControlGroupWriter FileGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string formFieldName, string uploadUrl, IValidationCollection coll, int size, string alternateLabel, string placeHolder, object attrs, object inputAttr, string inputClasses, string groupClasses)
+        public virtual ControlGroupWriter FileGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string formFieldName, string uploadUrl, bool required,bool multiple, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
             var mod = new ControlGroupWriter(helper);
             mod.UseExpression(exp);
-            mod.InputModel = mod.InputModel.GetFileInput(uploadUrl, formFieldName);
-            mod.SetOptions(size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
-            mod.UseValidation(coll, formFieldName, alternateLabel);
+            mod.InputModel = mod.InputModel.GetFileInput(uploadUrl, formFieldName,multiple);
+            mod.SetOptions(size, alternateLabel, null, attrs, inputAttr, inputClasses, groupClasses);
+            if (required)
+                mod.UseValidation(helper.VCollection().AddRequired(), formFieldName, alternateLabel);
 
             return mod;
 
@@ -116,7 +113,7 @@ namespace CodeShellCore.Web.Razor.Elements
                 return null;
             if (!mod.Accessibility.Write)
                 return mod.GetLabelControl();
-            return mod.Write(component);
+            return mod.GetInputControl(component);
         }
 
         public virtual ControlGroupWriter LabelGroup<T, TValue>(
@@ -191,13 +188,13 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        public virtual ControlGroupWriter SearchableControlGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string display, string valueMember, bool multi, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, bool nullable)
+        public virtual ControlGroupWriter SearchableControlGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string display, string valueMember, bool multi, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, string readOnlyProperty, bool nullable)
         {
             var mod = new ControlGroupWriter(helper);
 
             mod.UseExpression(exp);
             mod.SetOptions(size, alternateLabel, null, attrs, inputAttr, inputClasses, groupClasses);
-            mod.InputModel = mod.InputModel.GetSelectInput((source.IsLookup ? "Lookups." : "") + source.ListName, display, valueMember, false, nullable);
+            mod.InputModel = mod.InputModel.GetSelectInput((source.IsLookup ? "Lookups." : "") + source.ListName, display, valueMember, multi, nullable);
 
             if (required)
                 mod.UseValidation(helper.VCollection().AddRequired(), mod.InputModel.FieldName, alternateLabel);
@@ -266,6 +263,47 @@ namespace CodeShellCore.Web.Razor.Elements
 
             return mod;
 
+        }
+
+        public virtual ControlGroupWriter CustomInputGroup<T, TValue>(
+            IHtmlHelper<T> helper,
+            Expression<Func<T, TValue>> exp,
+            string componentName,
+            bool required,
+            int size,
+            object attrs,
+            object inputAttrs,
+            string classes)
+        {
+            var wt = new ControlGroupWriter(helper);
+            wt.UseExpression(exp);
+            wt.SetOptions(size, null, null, attrs, inputAttrs, classes);
+
+            return wt;
+        }
+
+        public virtual ControlGroupWriter RichLabel<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, int size, object attrs, object inputAttrs, string classes)
+        {
+            ControlGroupWriter wt = new ControlGroupWriter(helper);
+            wt.UseExpression(exp);
+            wt.SetOptions(size, null, null, attrs, inputAttrs, null, classes);
+            return wt;
+        }
+
+        public virtual ControlGroupWriter RichTextBox<T, TValue>(IHtmlHelper<T> helper,
+            Expression<Func<T, TValue>> expression,
+            string modules = null,
+            int size = 6,
+            object attrs = null,
+            object inputAttrs = null,
+            string classes = null)
+        {
+            ControlGroupWriter wt = new ControlGroupWriter(helper);
+            wt.UseExpression(expression);
+            wt.SetOptions(size, null, null, attrs, inputAttrs, null, classes);
+            wt.InputModel.AngularJsConfig = modules;
+
+            return wt;
         }
 
         public virtual ControlGroupWriter SelectInputControl<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister lister, string display, string valueMember, bool required, string readOnlyProperty, bool nullable, object attrs, string inputClasses, string readOnlyPipe, string idExtra)

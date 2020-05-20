@@ -8,120 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ShellComponents\Angular\Buttons\Button.cshtml" />
-    <None Remove="ShellComponents\Angular\Buttons\SubmitButton.cshtml" />
-    <None Remove="ShellComponents\Angular\Buttons\TreeButton.cshtml" />
-    <None Remove="ShellComponents\Angular\Components\ChillerCheckBox.cshtml" />
-    <None Remove="ShellComponents\Angular\Components\ListView.cshtml" />
-    <None Remove="ShellComponents\Angular\Components\ListView_Server.cshtml" />
-    <None Remove="ShellComponents\Angular\Components\ModalSelectButton.cshtml" />
-    <None Remove="ShellComponents\Angular\Components\PageHeader.cshtml" />
-    <None Remove="ShellComponents\Angular\Components\Pagination.cshtml" />
-    <None Remove="ShellComponents\Angular\Containers\Cell.cshtml" />
-    <None Remove="ShellComponents\Angular\Containers\ControlGroup.cshtml" />
-    <None Remove="ShellComponents\Angular\Containers\ControlGroup_Split.cshtml" />
-    <None Remove="ShellComponents\Angular\Containers\LabelGroup.cshtml" />
-    <None Remove="ShellComponents\Angular\Containers\LabelGroup_Split.cshtml" />
-    <None Remove="ShellComponents\Angular\Containers\LocalizableControlGroup.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\CalendarTextBox.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\CheckBox.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\CheckBoxCell.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\CustomField.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\DateTimeTextBox.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\FileTextBox.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\HijriCalendarTextBox.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\Label.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\LocalizableLabel.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\LocalizableTextBox.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\Radio.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\Select.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\Select_Searchable.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\Textarea.cshtml" />
-    <None Remove="ShellComponents\Angular\InputControls\TextBox.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\CollapsableComponentsLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\DefaultLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\EditLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\EmptyLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\ListLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\ModalComponentLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\ModalLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\ModalTreeLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\PublicEditLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\SelectLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\SelectModalLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\TreeLayout.cshtml" />
-    <None Remove="ShellComponents\Angular\Layout\_ViewImports.cshtml" />
-    <None Remove="ShellComponents\Angular\TableCells\ButtonCell.cshtml" />
-    <None Remove="ShellComponents\Angular\TableCells\CellValidation.cshtml" />
-    <None Remove="ShellComponents\Angular\TableCells\DragCell.cshtml" />
-    <None Remove="ShellComponents\Angular\TableCells\HeaderCell.cshtml" />
-    <None Remove="ShellComponents\Angular\TableCells\LabelCell.cshtml" />
-    <None Remove="ShellComponents\Angular\TableCells\ListModifiers.cshtml" />
-    <None Remove="ShellComponents\Angular\_ViewImports.cshtml" />
+    
+    <EmbeddedResource Include="ShellComponents\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ShellComponents\Angular\InputControls\CustomField.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\CheckBoxCell.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\CollapsableComponentsLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\EmptyLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\ModalLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\ModalTreeLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\PublicEditLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\SelectLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\TreeLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\PageHeader.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\_ViewImports.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="ShellComponents\Angular\Buttons\Button.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Buttons\SubmitButton.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Buttons\TreeButton.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Components\ChillerCheckBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Components\ListView.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Components\ListView_Server.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Components\ModalSelectButton.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Components\Pagination.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Containers\Cell.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Containers\ControlGroup.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Containers\ControlGroup_Split.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Containers\LabelGroup.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Containers\LabelGroup_Split.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Containers\LocalizableControlGroup.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\CalendarTextBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\CheckBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\DateTimeTextBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\FileTextBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\HijriCalendarTextBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\Label.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\LocalizableLabel.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\LocalizableTextBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\Radio.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\Select.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\Select_Searchable.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\Textarea.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\TextBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\DefaultLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\EditLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\ListLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\ModalComponentLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\SelectModalLayout.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\Layout\_ViewImports.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\TableCells\ButtonCell.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\TableCells\CellValidation.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\TableCells\DragCell.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\TableCells\HeaderCell.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\TableCells\LabelCell.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\TableCells\ListModifiers.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\RichTextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\RichTextLabel.cshtml" />
   </ItemGroup>
   
   <ItemGroup>
@@ -138,9 +31,9 @@
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <FileVersion>2.1.21.0</FileVersion>
-    <AssemblyVersion>2.1.21.0</AssemblyVersion>
-    <Version>2.1.21.0</Version>
+    <Version>2.10.15.0</Version>
+    <AssemblyVersion>2.10.15.0</AssemblyVersion>
+    <FileVersion>2.10.15.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

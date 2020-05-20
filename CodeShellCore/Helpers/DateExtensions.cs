@@ -15,5 +15,10 @@ namespace CodeShellCore.Helpers
         {
             return new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
         }
+
+        public static DateTime RemoveMilli(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second);
+        }
     }
 }

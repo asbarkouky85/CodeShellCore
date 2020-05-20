@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;

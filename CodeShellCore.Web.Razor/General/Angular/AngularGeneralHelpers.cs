@@ -9,6 +9,7 @@ using CodeShellCore.Web.Razor.Models;
 using CodeShellCore.Text;
 using CodeShellCore.Web.Razor.Containers;
 using CodeShellCore.Web.Razor.Elements.Angular;
+using System.Collections.Generic;
 
 namespace CodeShellCore.Web.Razor.General.Angular
 {
@@ -53,10 +54,11 @@ namespace CodeShellCore.Web.Razor.General.Angular
             string bind = null,
             object attrs = null,
             string identifier = null,
-            string validationFunction = null)
+            string validationFunction = null,
+            string url = null,
+            IEnumerable<LinkModel> buttons = null)
         {
-
-            return Provider.SelectModalButton(helper, textId, function, bind, attrs, identifier, validationFunction);
+            return Provider.SelectModalButton(helper, textId, function, bind, attrs, identifier, validationFunction, url,buttons);
         }
     }
 }

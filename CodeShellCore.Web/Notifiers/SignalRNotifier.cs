@@ -1,29 +1,33 @@
-﻿using CodeShellCore.Services.Notifications;
+﻿using CodeShellCore.Http.Pushing;
+using CodeShellCore.Services.Notifications;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Notifiers
 {
-    public class SignalRNotifier<T, TNotifier> : INotificationContext<TNotifier>
-        where T : Hub<TNotifier>
-        where TNotifier : class, INotifier
-
+    public class SignalRNotifier<T, TContract> : IMessagePusher<TContract>
+        where T : Hub<TContract>
+        where TContract : class
     {
-        protected IHubContext<T, TNotifier> Context;
+        protected IHubContext<T, TContract> Context;
 
-        public SignalRNotifier(IHubContext<T, TNotifier> con)
+        public SignalRNotifier(IHubContext<T, TContract> con)
         {
             Context = con;
         }
 
-        public void Run(Func<TNotifier, Task> action)
+        public void Publish(Func<TContract, Task> action, string[] only = null, string[] exclude = null)
         {
-            var t = action(Context.Clients.All);
-            t.Wait();
+            var cl = Context.Clients.All;
 
+            if (only != null)
+                cl = Context.Clients.Clients(only);
+            else if (exclude != null)
+                cl = Context.Clients.AllExcept(exclude);
+
+            var t = action(cl);
+            t.Wait();
         }
     }
 }

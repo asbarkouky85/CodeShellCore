@@ -1,4 +1,0 @@
-﻿<Field Name="%Name%">
-	<DataField>%Name%</DataField>
-	<rd:TypeName>%Type%</rd:TypeName>
-</Field>

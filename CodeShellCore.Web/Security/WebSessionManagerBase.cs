@@ -5,31 +5,31 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using CodeShellCore.Security.Authorization;
+using Microsoft.Extensions.Primitives;
 
 namespace CodeShellCore.Web.Security
 {
-    public abstract class WebSessionManagerBase : SessionManagerBase
+    public abstract class WebSessionManagerBase : SessionManagerBase, ISessionManager
     {
-        public WebSessionManagerBase(IUserDataService cache, IHttpContextAccessor context) : base(cache)
+        protected readonly IHttpContextAccessor _accessor;
+
+        public virtual TimeSpan DefaultSessionTime => new TimeSpan(1, 0, 0, 0, 0);
+
+        public WebSessionManagerBase(IHttpContextAccessor context)
         {
             _accessor = context;
         }
 
-        protected IHttpContextAccessor _accessor;
-
         public virtual void StartSession(IUser user, TimeSpan? length = null)
         {
-            UserData.Save(user.UserId, user);
+
         }
 
         protected virtual void SetIdentity(object userId)
         {
             _accessor.HttpContext.User = new DefaultPrincipal(userId.ToString());
-            var user = GetUserData();
-            Shell.ScopedInjector.SetCurrentUser(user);
+            Shell.ScopedInjector.SetCurrentUserId(userId);
         }
 
         public void SetContextItem(string index, object value)
@@ -50,6 +50,14 @@ namespace CodeShellCore.Web.Security
             return _accessor.HttpContext?.Request?.GetDeviceIdFromCookie();
         }
 
+        public override string GetConnectionId()
+        {
+            var head = _accessor.HttpContext?.Request?.Headers;
+            if (head != null && head.TryGetValue(HttpHeaderKeys.ConnectionId, out StringValues val))
+                return val;
+            return null;
+        }
+
         protected bool IsProccessed(HttpContext con)
         {
             return con.Items.ContainsKey("IsProccessed");
@@ -59,5 +67,20 @@ namespace CodeShellCore.Web.Security
         {
             con.Items["IsProccessed"] = true;
         }
+
+        public override void EndSession()
+        {
+            if (_accessor.HttpContext != null)
+            {
+                var ser = _accessor.HttpContext.RequestServices.GetService<IUserDataService>();
+                ser.ClearUserData(GetCurrentUserId());
+            }
+        }
+
+        public abstract bool IsLoggedIn();
+
+        public abstract void AuthorizationRequest();
+
+        public abstract void AuthorizationRequest(string token);
     }
 }

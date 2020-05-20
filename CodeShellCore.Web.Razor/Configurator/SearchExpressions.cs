@@ -1,0 +1,34 @@
+﻿using CodeShellCore.Linq;
+using CodeShellCore.Moldster.Configurator.Dtos;
+using CodeShellCore.Moldster.Db.Dto;
+//using Configurator.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CodeShellCore.Web.Razor.Configurator
+{
+    public static class SearchExpressions
+    {
+        public static void RegisterExpressions()
+        {
+            ExpressionStore.RegisterSearchExpression<PageListDTO>(term =>
+            e => e.ViewPath.Contains(term) || e.PageCategoryName.Contains(term) || e.BaseComponent.Contains(term));
+
+            ExpressionStore.RegisterSearchExpression<PageCategoryListDTO>(term => e => e.Name.Contains(term) || e.BaseComponent.Contains(term) || e.ResourceName.Contains(term));
+
+            ExpressionStore.RegisterSearchExpression<NavigationGroupDTO>(term => e => e.Name.Contains(term));
+
+            ExpressionStore.RegisterSearchExpression<NavigationPageDTO>(term => e => e.Url.Contains(term));
+
+            ExpressionStore.RegisterSearchExpression<NavigationPageListDTO>(term => e => e.Url.Contains(term) ||
+             e.Name.Contains(term));
+
+            ExpressionStore.RegisterSearchExpression<PageControlListDTO>(term => e =>
+            e.PageName.Contains(term) || e.ControlIdentifier.Contains(term) || e.ControlType.Contains(term));
+
+            ExpressionStore.RegisterSearchExpression<ResourceListDTO>(term => e => e.Name.Contains(term) || e.Domain.Contains(term));
+        }
+    }
+}

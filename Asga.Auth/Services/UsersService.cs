@@ -1,12 +1,15 @@
-﻿using Asga.Auth.Dto;
+﻿using Asga.Auth.Data;
+using Asga.Auth.Dto;
 using Asga.Data;
+using Asga.Security;
 using Asga.Services;
 using CodeShellCore;
+using CodeShellCore.Caching;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Security;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
@@ -15,19 +18,22 @@ using System.Net;
 
 namespace Asga.Auth.Services
 {
-    public class UsersService : AsgaEntityService<User>
+    public class UsersService : AsgaEntityService<User>, IUsersService
     {
         private AuthUnit Unit;
-        //private AsgaEmailService AsgaEmailService;
+
         private readonly IUserAccessor _user;
+        private readonly ICacheProvider cache;
         private static Dictionary<long, string> ResetUserTokens = new Dictionary<long, string>();
-        public UsersService(AuthUnit unit,
-            //AsgaEmailService AsgaEmailService,
-            IUserAccessor user) : base(unit)
+        public UsersService(
+            AuthUnit unit,
+            IUserAccessor user,
+            ICacheProvider cache
+            ) : base(unit)
         {
             Unit = unit;
-            //AsgaEmailService = AsgaEmailService;
             _user = user;
+            this.cache = cache;
         }
 
         #region Overrides
@@ -44,13 +50,11 @@ namespace Asga.Auth.Services
             }
 
             u.Roles = Unit.UserRoleRepository.Find(d => d.UserId == ID);
-            u.Apps = Unit.TenantAppUsersRepository.Find(d => d.UserId == ID);
-            u.Parties = Unit.UserPartyRepository.Find(d => d.UserId == ID);
-            u.TenantAppUsers = null;
 
             u.Password = null;
             return u;
         }
+
         //public SubmitResult UpdateUserLogo(PartyLogoChange dto)
         //{
         //   var users= Repository.Find(u => dto.Data.Any(s => s == u.Id));
@@ -62,30 +66,6 @@ namespace Asga.Auth.Services
         //    return Unit.SaveChanges();
         //}
 
-        public SubmitResult UpdateUserParties(UserPartiesChanged ev)
-        {
-            Unit.UserPartyRepository.Delete(d => d.UserId == ev.UserId);
-
-            foreach (var id in ev.Parties)
-            {
-                Unit.UserPartyRepository.Add(new UserParty
-                {
-                    UserId = ev.UserId,
-                    PartyId = id
-                });
-            }
-            return Unit.SaveChanges();
-        }
-
-        public SubmitResult UpdateUserParties(long userId, long partyId)
-        {
-            Unit.UserPartyRepository.Add(new UserParty
-            {
-                UserId = userId,
-                PartyId = partyId
-            });
-            return Unit.SaveChanges();
-        }
 
         public override SubmitResult Create(User obj)
         {
@@ -107,45 +87,8 @@ namespace Asga.Auth.Services
                 obj.UserRoles.Add(new UserRole { RoleId = obj.RoleId.Value });
             }
 
-            if (obj.Apps != null)
-            {
-                foreach (var ap in obj.Apps)
-                {
-                    ap.Id = Utils.GenerateID();
-                    obj.TenantAppUsers.Add(ap);
-                }
-            }
-            //check if user have not roles add default role  
-            if (obj.Apps == null && obj.Role == null)
-            {
-                //get default role by user type
-                var defaultRoles = Unit.DefaultRoleRepository.GetValues(d => new { d.RoleId, d.Role.TenantAppId }, c => c.UserType == obj.UserType);
-                defaultRoles.ForEach(i =>
-                {
-                    //add User Role
-                    var ur = new UserRole
-                    {
-                        Id = Utils.GenerateID(),
-                        RoleId = i.RoleId ?? 0
-                    };
-                    obj.UserRoles.Add(ur);
-                    //add Tenant App User
-                    var appobj = new TenantAppUser
-                    {
-                        Id = Utils.GenerateID(),
-                        TenantAppId = i.TenantAppId ?? 0,
-                    };
-                    obj.TenantAppUsers.Add(appobj);
-                });
-            }
-            if (obj.Parties != null)
-            {
-                foreach (var ap in obj.Parties)
-                {
-                    ap.Id = Utils.GenerateID();
-                    obj.UserParties.Add(ap);
-                }
-            }
+
+
             return base.Create(obj);
         }
 
@@ -164,8 +107,7 @@ namespace Asga.Auth.Services
             }
 
             Unit.UserRoleRepository.ApplyChanges(obj.Roles);
-            Unit.TenantAppUsersRepository.ApplyChanges(obj.Apps);
-            Unit.UserPartyRepository.ApplyChanges(obj.Parties);
+
             if (obj.Role != null)
             {
                 Unit.RoleResourceRepository.ApplyChanges(obj.Role.RoleResources);
@@ -182,12 +124,19 @@ namespace Asga.Auth.Services
                 });
             }
             //if role id == null means its delete so delete recored from user role table
-            if(obj.RoleId == null)
+            if (obj.RoleId == null)
             {
                 Unit.UserRoleRepository.Delete(d => d.UserId == obj.Id);
             }
 
-            return Unit.SaveChanges();
+
+
+            var ch = Unit.SaveChanges();
+            if (ch.Code == 0)
+            {
+                cache.Remove<UserDTO>(obj.Id);
+            }
+            return ch;
         }
 
         public override DeleteResult DeleteById(object prime)
@@ -214,7 +163,7 @@ namespace Asga.Auth.Services
         }
 
 
-        public  long SoftDelete(long id ,bool isDeleted)
+        public long SoftDelete(long id, bool isDeleted)
         {
             try
             {
@@ -228,7 +177,7 @@ namespace Asga.Auth.Services
                     {
                         return result.AffectedRows;
                     }
-                    
+
                 }
                 return 0;
 
@@ -241,34 +190,9 @@ namespace Asga.Auth.Services
 
         }
 
-        public SimpleListModel<UserListModel> GetFilteredUsers(UsersFilterModel filter)
-        {
-            var filteredUsers = Repository.Find(x => x.UserType == 0  &&
-            (string.IsNullOrEmpty(filter.Id) || x.Id.ToString() == filter.Id)
-            && (string.IsNullOrEmpty(filter.Name) || x.FirstName.ToLower().Contains(filter.Name.ToLower()) || x.LastName.ToLower().Contains(filter.Name.ToLower()))
-            && (string.IsNullOrEmpty(filter.Email) || x.Email.ToLower().Contains(filter.Email.ToLower()))
-            && (string.IsNullOrEmpty(filter.UserName) || x.LogonName.ToLower().Contains(filter.UserName.ToLower()))
-            && (filter.RoleId == 0 || x.UserRoles.Select(r => r.RoleId).Contains(filter.RoleId))
-         );
-            var count = filteredUsers.Count();
-
-            var returnedList = filteredUsers.Select(x => new UserListModel
-            {
-                Id = x.Id,
-                IsDeleted = x.IsDeleted,
-                email = x.Email,
-                LogonName = x.LogonName,
-                Role = Unit.UserRoleRepository.Find(r => r.UserId == x.Id).Select(r => Unit.RoleRepository.
-                FindSingle(rr => rr.Id == r.RoleId)).FirstOrDefault()?.Name ?? ""
-            });
-            return new SimpleListModel<UserListModel> { Count = count, List = returnedList };
-
-
-        }
-
         public Role GetUserRole(long id)
         {
-            
+
             var role = Unit.RoleRepository.FindSingle(r => r.UserRoles.Select(d => d.UserId).Contains(id) && r.IsUserRole);
             if (role == null)
             {
@@ -347,13 +271,16 @@ namespace Asga.Auth.Services
             var submitResult = new SubmitResult();
             try
             {
-                var token = Shell.Encryptor.Decrypt(dto.Token);
-                if (ResetUserTokens.ContainsKey(dto.UserId) && ResetUserTokens.GetValueOrDefault(dto.UserId) == token)
+                if (ResetUserTokens.TryGetValue(dto.UserId, out string existing))
                 {
-                    var user = Unit.AuthUserRepository.FindSingle(dto.UserId);
-                    user.Password = dto.Password.ToMD5();
-                    Unit.AuthUserRepository.Update(user);
-                    Unit.SaveChanges();
+                    var token = Shell.Encryptor.Decrypt(dto.Token);
+                    if (token == existing)
+                    {
+                        var user = Unit.AuthUserRepository.FindSingle(dto.UserId);
+                        user.Password = dto.Password.ToMD5();
+                        Unit.AuthUserRepository.Update(user);
+                        Unit.SaveChanges();
+                    }
                 }
                 submitResult.Code = 0;
             }
@@ -390,20 +317,20 @@ namespace Asga.Auth.Services
 
         public string GetRoleNameById(long id)
         {
-           return Unit.RoleRepository.GetValue(id, x => x.Name)??"";
+            return Unit.RoleRepository.GetValue(id, x => x.Name) ?? "";
         }
-        
+
         public Role GetUserRoleFromDb(long id)
         {
             var role = Unit.RoleRepository.FindSingle(r => r.UserRoles.Select(d => d.UserId).Contains(id));
-           
+
             return role;
         }
 
-      public List<User> GetUsersByRoleId(long Roleid)
+        public List<User> GetUsersByRoleId(long Roleid)
         {
-      var xx=  Unit.UserRoleRepository.Find(x => x.RoleId == Roleid);
-            return Repository.Find(x => xx.Any(y=>y.UserId==x.Id))?.ToList() ?? new List<User>();
+            var xx = Unit.UserRoleRepository.Find(x => x.RoleId == Roleid);
+            return Repository.Find(x => xx.Any(y => y.UserId == x.Id))?.ToList() ?? new List<User>();
         }
 
     }

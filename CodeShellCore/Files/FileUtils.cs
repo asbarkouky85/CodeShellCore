@@ -5,14 +5,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CodeShellCore.Helpers;
 using CodeShellCore.Services;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using CodeShellCore.Text;
+using System.IO.Compression;
 
 namespace CodeShellCore.Files
 {
     public class FileUtils
     {
-        
+
         public static string GetThumbString(string path, int maxWidth, int maxHeight)
         {
             if (string.IsNullOrEmpty(path))
@@ -49,9 +50,9 @@ namespace CodeShellCore.Files
             return Utils.CombineUrl(url, inf.Name).Replace("\\", "/");
         }
 
-        public static FileBytes DownloadFile(string url,string logTo=null)
+        public static FileBytes DownloadFile(string url, string logTo = null)
         {
-            
+
             using (HttpService ser = HttpService.GetInstance())
             {
                 if (logTo != null)
@@ -60,5 +61,52 @@ namespace CodeShellCore.Files
                 return ser.DownloadFile(url);
             }
         }
+
+        public static bool TryDownloadFile(string url, out FileBytes bytes)
+        {
+            try
+            {
+                bytes = DownloadFile(url);
+                return true;
+            }
+            catch
+            {
+                bytes = null;
+                return false;
+            }
+        }
+
+        public static void CompressDirectory(string folderPath, string targetPath)
+        {
+            if (File.Exists(targetPath))
+                File.Delete(targetPath);
+            ZipFile.CreateFromDirectory(folderPath, targetPath, CompressionLevel.Optimal, false);
+        }
+
+        public static void DecompressDirectory(string file, string folder)
+        {
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+            string dir = Path.GetDirectoryName(folder);
+            string newDir = Path.Combine(dir, Utils.GenerateID().ToString());
+
+            ZipFile.ExtractToDirectory(file, newDir);
+
+            string[] files = Directory.GetFiles(newDir, "*", SearchOption.AllDirectories);
+            foreach (var f in files)
+            {
+                var relative = f.Replace(newDir + "\\", "");
+                string newFile = Path.Combine(folder, relative);
+                if (File.Exists(newFile))
+                    File.Delete(newFile);
+                else
+                    Utils.CreateFolderForFile(newFile);
+                File.Move(f, newFile);
+            }
+            Utils.DeleteDirectory(newDir);
+        }
+
     }
 }

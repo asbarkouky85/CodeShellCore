@@ -8,12 +8,27 @@ namespace CodeShellCore.Security
 {
     public static class DependencyExtensions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="authenticatedOnly">if false all users are allowed to all apis, true means that all logged in users will be allowed to pass</param>
+        public static void AddCodeShellSecurity(this IServiceCollection coll, bool authenticatedOnly = false)
+        {
+            coll.AddTransient<IUserDataService, UserDataService>();
+            coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
+            if (!authenticatedOnly)
+                coll.AddTransient<IAuthorizationService, AuthorizationService>();
+            else
+                coll.AddTransient<IAuthorizationService, AuthenticatedOnlyAuthorizationService>();
+
+            coll.AddTransient<IAuthenticationService, PermissableAuthenticationService>();
+        }
+
         public static void AddCodeShellSecurity<TUnit, TSession>(this IServiceCollection coll) where TUnit : class, ISecurityUnit where TSession : class, ISessionManager
         {
-            coll.AddTransient<IUserDataService, DefaultUserDataService>();
-            coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
-            coll.AddTransient<IAuthorizationService, AuthorizationService>();
-            coll.AddTransient<IAuthenticationService, DefaultAuthenticationService>();
+            coll.AddCodeShellSecurity();
+            coll.AddTransient<IUserDataService, DbUserDataService>();
             coll.AddTransient<ISessionManager, TSession>();
             coll.AddScoped<ISecurityUnit, TUnit>();
 
@@ -21,10 +36,9 @@ namespace CodeShellCore.Security
 
         public static void AddCodeShellSecurity<TUnit>(this IServiceCollection coll, long userId) where TUnit : class, ISecurityUnit
         {
-            coll.AddTransient<IUserDataService, DefaultUserDataService>();
-            coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
-            coll.AddTransient<IAuthorizationService, AuthorizationService>();
-            coll.AddTransient<ISessionManager>(d => new TestSessionManager(d.GetService<IUserDataService>(), userId));
+            coll.AddCodeShellSecurity();
+            coll.AddTransient<IUserDataService, DbUserDataService>();
+            coll.AddTransient<ISessionManager>(d => new TestSessionManager(userId));
             coll.AddScoped<ISecurityUnit, TUnit>();
 
         }

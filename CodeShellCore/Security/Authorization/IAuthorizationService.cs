@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Sessions;
+using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,10 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.Security.Authorization
 {
-    public interface IAuthorizationService
+    public interface IAuthorizationService : IServiceBase
     {
-        IAuthenticationService AuthenticationService { get; }
-        
         ISessionManager SessionManager { get; }
-        LoginResult Login(LoginModel mod);
-        void AuthorizationRequest(string token = null);
-        void LogOut();
+        bool IsAuthorized(AuthorizationRequest req);
+        void OnUserIsUnauthorized(AuthorizationRequest args);
     }
 }

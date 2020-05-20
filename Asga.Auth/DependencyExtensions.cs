@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.Data;
+using CodeShellCore.Services;
+using CodeShellCore.Security.Authorization;
+using CodeShellCore.Security;
+
 using Asga.Auth.Data;
 using Asga.Auth.Services;
-using Asga.Services;
-using CodeShellCore.Services;
 using Asga.Common.Services;
 using Asga.Common.Data;
 using Asga.Security;
-using CodeShellCore.Security.Authentication;
-using CodeShellCore.Security.Sessions;
-using CodeShellCore.Security.Authorization;
-using CodeShellCore.Security;
 
 namespace Asga.Auth
 {
@@ -29,26 +28,24 @@ namespace Asga.Auth
                 coll.AddScoped<AuthUnit>();
                 coll.AddScoped<AuthContext>();
             }
-            coll.AddCollectionUnitOfWork<AuthUnit>();
+
             coll.AddScoped<ISecurityUnit>(d => d.GetService<AuthUnit>());
             coll.AddScoped<IRoleBasedSecurityUnit>(d => d.GetService<AuthUnit>());
 
             coll.AddTransient<IUserRepository, UserRepository>();
             coll.AddTransient<IRoleRepository, RoleRepository>();
             coll.AddTransient<IResourceRepository, ResourceRepository>();
+            coll.AddTransient<IUsersEntityLinkRepository, UserEntityLinkRepository>();
 
-            coll.AddTransient<AsgaCollectionService>();
             coll.AddRepositoryFor<Domain, DomainRepository>();
             coll.AddRepositoryFor<Resource, ResourceRepository>();
             coll.AddRepositoryFor<Role, RoleRepository>();
-            coll.AddRepositoryFor<User, UserRepository>();
+            coll.AddRepositoryFor<User, UserRepository, IAuthUserRepository>();
+            coll.AddRepositoryFor<UserEntityLink, UserEntityLinkRepository>();
 
-            coll.AddRepositoryFor<RoleResource, AsgaRepository<RoleResource, AuthContext>>();
-            coll.AddRepositoryFor<RoleResourceAction, AsgaRepository<RoleResourceAction, AuthContext>>();
-            coll.AddRepositoryFor<UserRole, AsgaRepository<UserRole, AuthContext>>();
-            coll.AddRepositoryFor<DefaultRole, AsgaRepository<DefaultRole, AuthContext>>();
-            coll.AddRepositoryFor<TenantAppUser, AsgaRepository<TenantAppUser, AuthContext>>();
-            coll.AddRepositoryFor<UserParty, AsgaRepository<UserParty, AuthContext>>();
+            coll.AddCollectionUnitOfWork<AuthUnit>();
+            coll.AddTransient<AsgaCollectionService>();
+            coll.AddTransient(typeof(AsgaRepository<,>));
 
         }
 
@@ -58,18 +55,11 @@ namespace Asga.Auth
             coll.AddAuthData(defaultModule);
 
             coll.AddTransient<WriterService>();
-            coll.AddTransient<AuthLookupService>();
+            coll.AddTransient<IAuthLookupService, AuthLookupService>();
             coll.AddScoped<CurrentTenant>();
             coll.AddTransient<AuthorizationService>();
-            coll.AddHandlerFor<Role, RolesService>();
-            coll.AddHandlerFor<User, UsersService>();
+            coll.AddServiceFor<Role, RolesService, IRolesService>();
+            coll.AddServiceFor<User, UsersService, IUsersService>();
         }
-
-
-
-        //public static void AuthConsumers(this IRabbitMqReceiveEndpointConfigurator e)
-        //{
-
-        //}
     }
 }

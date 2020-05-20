@@ -8,23 +8,21 @@ namespace CodeShellCore.Security.Sessions
 {
     public abstract class SessionManagerBase
     {
-        protected readonly IUserDataService UserData;
 
-        public SessionManagerBase(IUserDataService cache)
+        public SessionManagerBase()
         {
-            UserData = cache;
-        }
-
-        public virtual void ClearUserCache(object id)
-        {
-            UserData.ClearUserData(id);
         }
 
         public abstract object GetCurrentUserId();
-        
-        public virtual IUser GetUserData()
+
+        public virtual string GetConnectionId()
         {
-            return UserData.GetUserData(GetCurrentUserId());
+            return null;
+        }
+
+        public virtual void EndSession()
+        {
+            
         }
     }
 }

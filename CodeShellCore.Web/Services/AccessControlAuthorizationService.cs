@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Security.Authorization;
 using CodeShellCore.Web;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using CodeShellCore.Web.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -15,18 +15,19 @@ namespace CodeShellCore.Web.Services
 {
     public abstract class AccessControlAuthorizationService : AuthorizationService, IAccessControlAuthorizationService
     {
-        public AccessControlAuthorizationService(IAuthenticationService auth, ISessionManager manager) : base(auth, manager)
+
+        public AccessControlAuthorizationService(ISessionManager manager) : base(manager)
         {
         }
 
-        public bool IsAuthorized(AuthorizationRequest req)
+        public override bool IsAuthorized(AuthorizationRequest req)
         {
             return IsAuthorized((AuthorizationRequest<AuthorizationFilterContext>)req);
         }
 
         protected abstract bool IsAuthorized(AuthorizationRequest<AuthorizationFilterContext> req);
 
-        public void OnUserIsUnauthorized(AuthorizationRequest args)
+        public override void OnUserIsUnauthorized(AuthorizationRequest args)
         {
             onUserIsUnAuthorized((AuthorizationRequest<AuthorizationFilterContext>)args);
         }
@@ -42,7 +43,7 @@ namespace CodeShellCore.Web.Services
             res.Message = "UnAuthorized";
             res.Data["creds"] = new
             {
-                Token = (Shell.AuthorizationService.SessionManager as TokenSessionManager).GetTokenFromHeader(),
+                Token = (SessionManager as TokenSessionManager).GetTokenFromHeader(),
                 DeviceId = args.Context.HttpContext.Request.GetDeviceIdFromCookie(),
                 CurrentHost=args.Context.HttpContext.Request.GetHostUrl()
             };

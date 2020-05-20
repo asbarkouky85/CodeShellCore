@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Web.Razor.Models;
+﻿using CodeShellCore.Text;
+using CodeShellCore.Web.Razor.Models;
 using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Web.Razor.Validation.Internal;
 using Microsoft.AspNetCore.Html;
@@ -29,7 +30,7 @@ namespace CodeShellCore.Web.Razor.Tables
         protected string ModelName { get; set; }
         protected string MemberName { get; set; }
 
-        public virtual void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp)
+        public override void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp)
         {
             ColumnId = RazorUtils.GetColumnId(exp);
             MemberName = RazorUtils.GetMemberName(exp);
@@ -38,6 +39,7 @@ namespace CodeShellCore.Web.Razor.Tables
             ModelName = Helper.GetModelName();
 
             ColumnModel = new ColumnModel();
+            ColumnModel.MemberName = RazorUtils.GetMemberNameDefault(exp);
 
             InputModel = new NgInput
             {
@@ -149,7 +151,7 @@ namespace CodeShellCore.Web.Razor.Tables
 
         protected override string AddInputControlAttributes()
         {
-            if (VCollection != null)
+            if (VCollection != null && Accessibility.Write)
                 return VCollection.GetAttributes();
             return "";
         }

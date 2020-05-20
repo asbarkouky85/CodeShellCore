@@ -1,6 +1,8 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
+using CodeShellCore.Security;
+using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeShellCore.Web.Controllers
@@ -16,12 +18,14 @@ namespace CodeShellCore.Web.Controllers
         }
 
         [HttpGet]
+        [ApiAuthorize(Actions = new[] { DefaultActions.View })]
         public virtual IActionResult Get([FromQuery]LoadOptions opt)
         {
             return Respond(EntityService.Load(opt));
         }
 
         [HttpGet]
+        [ApiAuthorize(Actions = new[] { DefaultActions.Update, DefaultActions.ViewDetails })]
         public virtual IActionResult GetSingle([FromRoute]TPrime id)
         {
             T obj = EntityService.GetSingle(id);
@@ -29,6 +33,7 @@ namespace CodeShellCore.Web.Controllers
         }
 
         [HttpDelete]
+        [ApiAuthorize(Actions = new[] { DefaultActions.Delete })]
         public IActionResult Delete(TPrime id)
         {
             SubmitResult = EntityService.DeleteById(id);
@@ -39,7 +44,7 @@ namespace CodeShellCore.Web.Controllers
         {
             if (ModelIsValid())
                 SubmitResult = EntityService.Create(obj);
-       
+
             return Respond();
         }
 
@@ -56,5 +61,6 @@ namespace CodeShellCore.Web.Controllers
         {
             return EntityService.IsUnique(dto);
         }
+
     }
 }

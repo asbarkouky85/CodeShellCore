@@ -28,30 +28,31 @@ namespace Asga.Auth.Data
             q = q ?? Loader;
             long ten = _tenant.TenantId;
             string code = "";
-            string servic = "";
+
             return q.Select(d => new UserDTO
             {
                 Id = d.Id,
                 UserId = d.Id,
                 LogonName = d.LogonName,
-                Name = d.FirstName + " " + d.LastName,
+                Name = d.Name,
                 TenantId = d.TenantId ?? ten,
                 TenantCode = code,
                 UserTypeInt = d.UserType,
-                PartyId = d.CustomerId,
-                Apps = d.TenantAppUsers.Select(x => x.TenantApp.Name).ToList(),
-                Customers = d.UserParties.Select(x => x.PartyId).ToList(),
-                CustomerLogo = d.CustomerLogo == null ? null : servic + "/" + d.CustomerLogo
+                PersonId = d.PersonId,
+                Apps = d.AppId == null ? new string[0] : new string[] { d.App.Name },
+                Roles = d.UserRoles.Select(e => e.RoleId.ToString()).ToList(),
+                App = d.AppId != null ? d.App.Name : null,
+                Photo = d.Photo
             });
         }
 
-        public virtual IUser GetByCredentials(string name, string password)
+        public virtual IUser GetByCredentials(string name, string password, bool forUi = true)
         {
             string pass = password.ToMD5();
             return QueryUserDTO(Loader.Where(d => d.LogonName == name && d.Password == pass)).FirstOrDefault();
         }
 
-        public virtual IUser GetByUserId(object c)
+        public virtual IUser GetByUserId(object c, bool forUi = true)
         {
             long id = 0;
             if (c is string)
@@ -59,12 +60,12 @@ namespace Asga.Auth.Data
             else
                 id = (long)c;
 
-            return Loader.Where(d => d.Id == id).Select(UserDTO.FromAuthUser).FirstOrDefault();
+            return QueryUserDTO(Loader.Where(d => d.Id == id)).FirstOrDefault();
         }
 
-        public virtual IUser GetByName(string userName)
+        public virtual IUser GetByName(string userName, bool forUi = true)
         {
-            return Loader.Where(d => d.LogonName == userName && (!d.IsDeleted)).Select(UserDTO.FromAuthUser).FirstOrDefault();
+            return QueryUserDTO(Loader.Where(d => d.LogonName == userName && (!d.IsDeleted))).FirstOrDefault();
         }
 
         public virtual RegisterResult AddUser(IRegisterModel model)
@@ -77,6 +78,22 @@ namespace Asga.Auth.Data
         public virtual bool NameExists(string logonName)
         {
             return Loader.Any(d => d.LogonName == logonName);
+        }
+
+        public bool EmailExists(string email)
+        {
+            return Loader.Any(d => d.Email == email);
+        }
+
+        public void ResetUserPassword(ChangePasswordDTO dto)
+        {
+            User u = Loader.FirstOrDefault(d => d.Email == dto.Email);
+            if (u != null)
+            {
+                u.Password = dto.Password.ToMD5();
+                Update(u);
+            }
+
         }
     }
 }

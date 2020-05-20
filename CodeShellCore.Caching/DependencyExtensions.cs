@@ -13,5 +13,11 @@ namespace CodeShellCore.Caching
             coll.AddTransient<ICacheProvider, RedisCacheService>();
             coll.AddTransient<IDbCacheProvider, RedisCacheService>();
         }
+
+        public static void AddRedisCaching<T>(this IServiceCollection coll) where T : RedisCacheService
+        {
+            coll.AddTransient<ICacheProvider, T>();
+            coll.AddTransient<IDbCacheProvider, T>();
+        }
     }
 }

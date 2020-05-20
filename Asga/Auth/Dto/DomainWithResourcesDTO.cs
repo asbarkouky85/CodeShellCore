@@ -29,7 +29,13 @@ namespace Asga.Auth.Dto
                                               {
                                                   Id = a.Id,
                                                   Name = a.Name
-                                              }
+                                              },
+                                    Collections = from b in n.ResourceCollections
+                                                  select new Named<long>
+                                                  {
+                                                      Id = b.Id,
+                                                      Name = b.Name
+                                                  }
                                 }
                 };
             }

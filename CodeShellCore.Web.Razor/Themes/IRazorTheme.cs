@@ -15,6 +15,8 @@ namespace CodeShellCore.Web.Razor.Themes
         string LabelGroupTemplate { get; }
         string CellTemplate { get; }
         string HeaderCellTemplate { get; }
+        bool SortingInTables { get; }
+        string SmallBtnClass { get; }
 
         string GetButtonClass(BtnClass type);
         string GetTemplate(string componentName);

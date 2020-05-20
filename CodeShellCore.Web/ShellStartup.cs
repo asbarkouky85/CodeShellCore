@@ -37,6 +37,7 @@ namespace CodeShellCore.Web
             l.ApplicationStopped.Register(OnShutdown);
         }
 
+
         private void OnShutdown()
         {
             Shell.Exit();

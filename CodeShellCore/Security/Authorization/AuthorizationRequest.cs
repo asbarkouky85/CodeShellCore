@@ -8,6 +8,8 @@ namespace CodeShellCore.Security.Authorization
     {
         public string Resource { get; set; }
         public string Action { get; set; }
+        public IEnumerable<DefaultActions> Actions { get; set; }
+        public bool IntegrationAction { get; set; }
 
     }
     public class AuthorizationRequest<T> : AuthorizationRequest where T : class

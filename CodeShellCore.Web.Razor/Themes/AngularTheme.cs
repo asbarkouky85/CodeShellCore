@@ -13,6 +13,10 @@ namespace CodeShellCore.Web.Razor.Themes
 
         public string LayoutBase { get { return "~/ShellComponents/Angular"; } }
 
+        public virtual bool SortingInTables => true;
+
+        public string SmallBtnClass => "btn-sm";
+
         public virtual string GetButtonClass(BtnClass type)
         {
             return "btn-" + type.ToString().ToLower();

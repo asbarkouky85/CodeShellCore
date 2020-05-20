@@ -3,66 +3,37 @@ using System.Collections.Generic;
 using System.IO;
 using System.ComponentModel;
 using CodeShellCore.Helpers;
+using System.Linq;
 
 namespace CodeShellCore.Files.Logging
 {
-    public class Logger
+    public class Logger : IDisposable
     {
-        #region Private Fields
+        public static Logger Default { get; private set; }
+        public FileLocation Location { get; private set; }
+        public AsyncFileHandler TextWriter { get; private set; }
+        public int DaysToKeepFiles { get; set; } = 7;
 
-        private string _FilePath;
-        private string App;
         private TimeSpan DeleteLimit { get { return new TimeSpan(DaysToKeepFiles, 0, 0, 0); } }
-
-        #endregion
-
-        #region Static
-
-        
-        private static string LocationsFilePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) + @"\fileLocations.xml";
-        private static LocationCollection LocationCollection = LocationCollection.GetCollection(LocationsFilePath);
-        private static Logger _default;
-
-        private static Logger Default
+        string CurrentTimeString
         {
             get
             {
-                if (_default == null) _default = new Logger("TraceLog");
-                return _default;
+                DateTime now = DateTime.Now;
+                string milli = now.Millisecond.ToString("D3");
+
+                return now.ToString("dd/MM/yyyy HH:mm:ss." + milli);
             }
         }
 
-        public static TracerWriter Out { get { return Default.TextWriter; } }
-        public static Dictionary<string, FileLocation> FileLocations { get { return LocationCollection.Dictionary; } }
-        #endregion
-
-        #region Public Properties
-        public TracerWriter TextWriter { get; private set; }
-        [DefaultValue(7)]
-        public int DaysToKeepFiles { get; set; }
-        public int LineCount { get; private set; }
-        public string FolderPath { get; private set; }
-        public string FileName { get { return (new System.IO.FileInfo(_FilePath)).Name; } } 
-        #endregion
-
-        #region Constructor
         private Logger(string app, string folder = null)
         {
-            App = app;
 
-            FileLocation f = LocationCollection.GetFileLocation(app, folder);
-
-            FolderPath = f.FolderPath;
-            _FilePath = f.FilePath;
-            try
-            {
-                Utils.CreateFolderForFile(_FilePath);
-                StartFile();
-            }
-            catch { }
-
+            folder = string.IsNullOrEmpty(folder) ? Path.Combine(Shell.AppRootPath, "Logs") : folder;
+            Location = FileLocation.Make(app, folder);
+            _startFile();
         }
-        #endregion
+
 
         #region Static Methods
 
@@ -71,9 +42,9 @@ namespace CodeShellCore.Files.Logging
             return new Logger(AppName, logFolder);
         }
 
-        public static void Set(string AppName, string logFolder)
+        public static void Set(string AppName, string logFolder = null)
         {
-            _default = new Logger(AppName, logFolder);
+            Default = new Logger(AppName, logFolder);
         }
 
         public static void WriteLine(object ob)
@@ -91,67 +62,75 @@ namespace CodeShellCore.Files.Logging
             Default?.WriteLogException(e, st);
         }
 
-
-
         #endregion
-        
+
         public void WriteLogLine(string st)
         {
+            st = "[" + CurrentTimeString + "] " + st;
+            Console.WriteLine(st);
             TextWriter?.WriteLine(st);
         }
 
         public void WriteLogException(Exception e, string st = null)
         {
-            
+
             if (st != null)
                 WriteLogLine(st);
 
-            WriteLogLine(e.Message);
+            WriteLogLine(e.GetMessageRecursive());
             WriteLogLine("Exception Type : " + e.GetType().Name);
-            string[] arr = e.StackTrace.Split(new char[] { '\n' });
+            string[] arr = new string[0];
+            if (e is AggregateException && e.InnerException != null)
+            {
+                WriteLogLine("Inner Exception " + e.InnerException.GetType().Name);
+                arr = e.InnerException.StackTrace.Split(new char[] { '\n' });
+            }
+            else
+            {
+                arr = e.StackTrace.Split(new char[] { '\n' });
+            }
+               
 
             foreach (string str in arr)
                 WriteLogLine(str.Replace('\r', ' '));
-            
-        }
-        
-        void StartFile()
-        {
-            TextWriter = new TracerWriter(_FilePath);
-            LineCount = TextWriter.Handler.CountLines();
-            TextWriter.Handler.AfterWriting += FileObj_AfterWriting;
+
         }
 
-        void FileObj_AfterWriting(object sender, int count)
+        private void _startFile()
         {
-            LineCount += count;
-            if (LineCount >= 4000)
+            TextWriter = AsyncFileHandler.GetWriter(Location.FilePath);
+            TextWriter.MaxLines = 4000;
+            TextWriter.MaxLinesReached += OnMaxLines;
+            TextWriter.WritingFailed += OnMaxLines;
+            if (TextWriter.Start() == -1)
             {
-                _FilePath = Path.Combine(FolderPath, LocationCollection.NewFileName());
-                TextWriter.ChangeFile(_FilePath);
-
-                LocationCollection.Dictionary[App].FilePath = _FilePath;
-                LocationCollection.Save();
-
-                LineCount = 0;
-                Cleanup();
+                OnMaxLines(TextWriter, new EventArgs());
             }
         }
 
-        void Cleanup()
+        private void OnMaxLines(object sender, EventArgs args)
+        {
+            Location.MoveToNewFile();
+            TextWriter.ChangeFile(Location.FilePath);
+        }
+
+        void _cleanUp()
         {
             try
             {
-                foreach (string file in Directory.GetFiles(FolderPath))
+                DirectoryInfo d = new DirectoryInfo(Location.FolderPath);
+                var deleteables = d.GetFiles().Where(inf => DateTime.Now - inf.CreationTime >= DeleteLimit).ToList();
+                foreach (var file in deleteables)
                 {
-                    FileInfo inf = new FileInfo(file);
-                    if ((DateTime.Now - inf.CreationTime) >= DeleteLimit)
-                    {
-                        File.Delete(file);
-                    }
+                    File.Delete(file.FullName);
                 }
             }
             catch { }
+        }
+
+        public void Dispose()
+        {
+            TextWriter?.Dispose();
         }
     }
 }

@@ -2,36 +2,36 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 
 namespace CodeShellCore.Files
 {
-    public class AsyncFileHandler
+    public class AsyncFileHandler : IDisposable
     {
-        private Thread WritingThread;
-        private List<string> WritingBuffer;
-        private bool Writing = false;
+        static List<WriterByPath> _writers = new List<WriterByPath>();
 
-        private static List<WriterByPath> Writers = new List<WriterByPath>();
-
-        public event EventHandler<int> AfterWriting;
+        /// <summary>
+        /// Number of lines in the current file
+        /// </summary>
+        public long LineCount { get; private set; }
+        /// <summary>
+        ///  default 40000 when reached triggers <see cref="MaxLinesReached"/>
+        /// </summary>
+        public long MaxLines { get; set; } = 0;
+        /// <summary>
+        /// Triggered when <see cref="LineCount"/> count exeeds <see cref="MaxLines"/>
+        /// </summary>
+        public event EventHandler MaxLinesReached;
+        public event EventHandler WritingFailed;
         public string FilePath { get; private set; }
-        
+
         private AsyncFileHandler(string fileName)
         {
             FilePath = fileName;
-            if (!File.Exists(fileName))
-            {
-                FileStream st = File.Create(fileName);
-                st.Close();
-            }
-            WritingBuffer = new List<string>();
         }
 
         public static AsyncFileHandler GetWriter(string path)
         {
-            WriterByPath p = Writers.Where(d => d.FilePath == path).FirstOrDefault();
+            WriterByPath p = _writers.Where(d => d.FilePath == path).FirstOrDefault();
             if (p == null)
             {
                 p = new WriterByPath
@@ -39,47 +39,34 @@ namespace CodeShellCore.Files
                     FilePath = path,
                     Writer = new AsyncFileHandler(path)
                 };
-                p.Writer.Start();
+                _writers.Add(p);
             }
             return p.Writer;
         }
 
-        public int Start()
+        public void ChangeFile(string fileName)
         {
-
-            int lines = CountLines();
-
-            WritingThread = new Thread(WritingFunction);
-            WritingThread.Name = "LoggerThread";
-            WritingThread.IsBackground = true;
-            WritingThread.Start();
-
-            return lines;
+            Stop();
+            FilePath = fileName;
+            Start();
         }
 
-        public void Append(string txt)
+        public long Start()
         {
-            lock (this)
-            {
-                if (Writing)
-                    Monitor.Wait(this);
 
-                WritingBuffer.Add(txt);
-                Monitor.Pulse(this);
-            }
+            LineCount = CountLines();
+            return LineCount;
         }
+
+        public void Stop() { }
 
         public string Read()
         {
             string st = "";
             lock (this)
             {
-                if (Writing)
-                    Monitor.Wait(this);
-
                 if (File.Exists(FilePath))
                     st = File.ReadAllText(FilePath);
-                Monitor.Pulse(this);
             }
             return st;
         }
@@ -88,68 +75,69 @@ namespace CodeShellCore.Files
         {
             lock (this)
             {
-                if (Writing)
-                    Monitor.Wait(this);
-
                 File.WriteAllText(FilePath, "");
-                Monitor.Pulse(this);
             }
         }
 
-        public int CountLines()
+        public long CountLines()
         {
-            int lines = 0;
+            var lineCounter = 0;
+            if (!File.Exists(FilePath))
+                return 0;
             lock (this)
             {
-                lines = File.ReadAllLines(FilePath).Length;
+                try
+                {
+                    lineCounter = File.ReadAllLines(FilePath).Count();
+                }
+                catch
+                {
+                    return -1;
+                }
+
             }
-            return lines;
+            return lineCounter;
         }
 
         public void WriteLine(string value)
         {
             Console.WriteLine(value);
-            TextItem txt = new TextItem(value, this);
-            Thread th = new Thread(txt.AppendFunction);
-            th.IsBackground = true;
-            th.Start();
+            _append(value);
         }
 
-        protected void WritingFunction()
+        public void Dispose()
         {
-            while (true)
+            Stop();
+        }
+
+        private void _append(string txt)
+        {
+            lock (this)
             {
-                lock (this)
+                try
                 {
-                    if (WritingBuffer.Count == 0)
-                        Monitor.Wait(this);
-
-                    Writing = true;
-                    Monitor.Pulse(this);
-
-                    try
+                    using (StreamWriter wt = new StreamWriter(FilePath, true))
                     {
-                        using (StreamWriter wt = new StreamWriter(FilePath, true))
-                        {
-                            foreach (string st in WritingBuffer)
-                            {
-                                wt.WriteLine(st);
-                            }
-                        }
+                        wt.WriteLine(txt);
+                        LineCount++;
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-
-                    AfterWriting?.Invoke(this, WritingBuffer.Count);
-
-                    WritingBuffer = new List<string>();
-                    Writing = false;
-                    Monitor.Pulse(this);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Writing Failed : " + e.GetMessageRecursive());
+                    WritingFailed?.Invoke(this, new EventArgs());
 
                 }
             }
+
+            if (MaxLines != 0 && MaxLinesReached != null)
+            {
+                if (LineCount >= MaxLines && MaxLines != 0)
+                {
+                    MaxLinesReached?.Invoke(this, new EventArgs());
+                }
+            }
         }
+
     }
 }

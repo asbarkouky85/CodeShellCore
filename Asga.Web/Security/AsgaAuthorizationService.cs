@@ -13,13 +13,11 @@ namespace Asga.Web.Security
     public class AsgaAuthorizationService : AccessControlAuthorizationService, IAccessControlAuthorizationService
     {
         private readonly ISessionManager _manager;
-        private readonly AuthUnit _unit;
         private UserDTO User;
 
-        public AsgaAuthorizationService(IUserAccessor acc, ISessionManager manager, AuthUnit unit, IAuthenticationService auth) : base(auth, manager)
+        public AsgaAuthorizationService(IUserAccessor acc, ISessionManager manager) : base(manager)
         {
             _manager = manager;
-            _unit = unit;
             User = acc.User as UserDTO;
         }
 
@@ -27,9 +25,9 @@ namespace Asga.Web.Security
         {
             if (User == null)
                 return false;
-            if (User.Permissions.TryGetValue(req.Resource, out Permission perm))
+            if (User.Permissions.TryGetValue(req.Resource, out DataAccessPermission perm))
             {
-                var permissions = perm as AccessibilityPermissions;
+                var permissions = perm;
                 switch (req.Action)
                 {
                     case "CanViewDetails":

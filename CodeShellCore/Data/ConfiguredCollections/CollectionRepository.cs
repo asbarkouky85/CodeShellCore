@@ -9,10 +9,13 @@ using System.Text;
 
 namespace CodeShellCore.Data.ConfiguredCollections
 {
-    public class CollectionRepository<T,TContext> : Repository_Int64<T, TContext>, ICollectionRepository<T> where T : class, IModel<long> where TContext : DbContext
+    public class CollectionRepository<T, TContext, TPrime> : KeyRepository<T, TContext, TPrime>, ICollectionEFRepository<T,TContext>
+        where T : class, IModel<TPrime>
+        where TContext : DbContext
+
     {
         protected readonly ICollectionConfigService _service;
-        public CollectionRepository(TContext con,ICollectionConfigService service) : base(con)
+        public CollectionRepository(TContext con, ICollectionConfigService service) : base(con)
         {
             _service = service;
         }
@@ -42,7 +45,7 @@ namespace CodeShellCore.Data.ConfiguredCollections
 
         public LoadResult<TObject> LoadCollectionAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp, ListOptions<TObject> opts) where TObject : class
         {
-            
+
             return QueryCollection(collectionId).Select(exp).LoadWith(opts);
         }
     }

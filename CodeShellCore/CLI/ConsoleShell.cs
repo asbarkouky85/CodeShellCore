@@ -33,12 +33,13 @@ namespace CodeShellCore.Cli
         public ConsoleShell()
         {
             var conf = new ConfigurationBuilder();
-            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             
-            conf.AddJsonFile($"appsettings.json", false, true);
-            conf.AddJsonFile($"appsettings.{environmentName}.json", true, true);
-            if (environmentName != null)
-                Console.WriteLine("Using environment : " + environmentName);
+            EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            conf.AddJsonFile($"appsettings.json", true, true);
+            conf.AddJsonFile($"appsettings.{EnvironmentName}.json", true, true);
+            if (EnvironmentName != null)
+                Console.WriteLine("Using environment : " + EnvironmentName);
             _configRoot = conf.Build();
 
         }
@@ -66,9 +67,5 @@ namespace CodeShellCore.Cli
 
         protected override IServiceProvider _scopedProvider { get { return CurrentScope?.ServiceProvider; } }
 
-        protected override void OnReady()
-        {
-            Console.Title = ProjectAssembly.GetName().Name + " (v" + ProjectAssembly.GetVersionString() + ")";
-        }
     }
 }

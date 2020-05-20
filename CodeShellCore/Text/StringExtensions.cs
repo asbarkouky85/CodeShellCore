@@ -48,9 +48,21 @@ namespace CodeShellCore.Text
         /// </summary>
         /// <param name="ob"></param>
         /// <returns></returns>
-        public static string ToJson(this object ob)
+        public static string ToJson(this object ob,JsonSerializerSettings sett=null)
         {
+            if (sett != null)
+                return JsonConvert.SerializeObject(ob, sett);
             return JsonConvert.SerializeObject(ob);
+        }
+
+        /// <summary>
+        /// Serializes object to json string
+        /// </summary>
+        /// <param name="ob"></param>
+        /// <returns></returns>
+        public static string ToJsonIndent(this object ob)
+        {
+            return JsonConvert.SerializeObject(ob,Formatting.Indented);
         }
 
         /// <summary>
@@ -64,7 +76,23 @@ namespace CodeShellCore.Text
             return JsonConvert.SerializeObject(ob, formatting);
         }
 
+        public static string ToEnglishNumber(this string input)
+        {
+            string EnglishNumbers = "";
 
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (Char.IsDigit(input[i]))
+                {
+                    EnglishNumbers += char.GetNumericValue(input, i);
+                }
+                else
+                {
+                    EnglishNumbers += input[i].ToString();
+                }
+            }
+            return EnglishNumbers;
+        }
 
 
         public static T FromJson<T>(this string st)
@@ -171,6 +199,27 @@ namespace CodeShellCore.Text
             double value = 0;
             double.TryParse(str, out value);
             return value;
+        }
+
+        public static bool GetPatternContents(this string subject, string pattern,out string[] data)
+        {
+            Regex reg = new Regex(pattern);
+            var s = reg.Match(subject);
+            if (!s.Success)
+            {
+                data = new string[0];
+                return false;
+            }
+            var lst = new List<string>();
+            for (var i= 0;i < s.Groups.Count;i++)
+            {
+                if (i > 0)
+                {
+                    lst.Add(s.Groups[i].Value);
+                }
+            }
+            data = lst.ToArray();
+            return true;
         }
 
         public static long ConvertToLong(this String str)

@@ -9,9 +9,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <FileVersion>2.1.21.0</FileVersion>
-    <AssemblyVersion>2.1.21.0</AssemblyVersion>
-    <Version>2.1.21.0</Version>
+    <Version>2.9.15.0</Version>
+    <AssemblyVersion>2.9.15.0</AssemblyVersion>
+    <FileVersion>2.9.15.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -23,7 +23,11 @@
 
   <ItemGroup>
     
+    <PackageReference Include="AspNetCore.HealthChecks" Version="1.0.0" />
+    
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
     
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.1.1" />

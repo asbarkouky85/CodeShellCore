@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System;

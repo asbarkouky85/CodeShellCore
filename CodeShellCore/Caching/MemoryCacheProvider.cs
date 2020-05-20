@@ -6,46 +6,46 @@ namespace CodeShellCore.Caching
 {
     public class MemoryCacheProvider : ICacheProvider
     {
-        static Dictionary<Type, SortedList<object, object>> Data = new Dictionary<Type, SortedList<object, object>>();
+        static Dictionary<Type, SortedList<string, object>> Data = new Dictionary<Type, SortedList<string, object>>();
         public void Dispose() { }
 
-        private SortedList<object, object> getList<T>()
+        private SortedList<string, object> getList<T>()
         {
-            if (Data.TryGetValue(typeof(T), out SortedList<object, object> lst))
+            if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
             {
                 return lst;
             }
             else
             {
-                return new SortedList<object, object>();
+                return new SortedList<string, object>();
             }
         }
 
         public T Get<T>(object key) where T : class
         {
-            if (getList<T>().TryGetValue(key, out object ob))
+            if (getList<T>().TryGetValue(key.ToString(), out object ob))
                 return (T)ob;
 
             return null;
         }
         public void Store<T>(object key, T entity) where T : class
         {
-            if (Data.TryGetValue(typeof(T), out SortedList<object, object> lst))
+            if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
             {
-                lst[key] = entity;
+                lst[key.ToString()] = entity;
             }
             else
             {
-                Data[typeof(T)] = new SortedList<object, object>();
-                Data[typeof(T)][key] = entity;
+                Data[typeof(T)] = new SortedList<string, object>();
+                Data[typeof(T)][key.ToString()] = entity;
             }
         }
 
         public bool Remove<T>(object key) where T : class
         {
-            if (Data.TryGetValue(typeof(T), out SortedList<object, object> lst))
+            if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
             {
-                lst.Remove(key);
+                lst.Remove(key.ToString());
                 return true;
             }
             return false;

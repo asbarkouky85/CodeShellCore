@@ -18,16 +18,16 @@ namespace CodeShellCore.Text.Localization.Internal
         {
         }
 
-        public void Apply(string type, long id, int langId, IEnumerable<T> data)
+        public void Apply(string type, object id, int langId, IEnumerable<T> data)
         {
-            var res = Loader.Where(d => d.EntityId == id && d.EntityType == type && d.LocaleId == langId).ToList();
+            var res = Loader.Where(d => d.EntityId.Equals(id) && d.EntityType == type && d.LocaleId == langId).ToList();
             foreach (var item in res)
             {
                 Delete(item);
             }
             foreach (var ob in data)
             {
-                ob.EntityId = id;
+                ob.EntityId = (long)id;
                 ob.LocaleId = langId;
                 ob.EntityType = type;
                 ob.Id= Utils.GenerateID();
@@ -35,10 +35,10 @@ namespace CodeShellCore.Text.Localization.Internal
             }
         }
 
-        public IEnumerable<LocalizablesLoader> Get(string type, long id, IEnumerable<int> langs)
+        public IEnumerable<LocalizablesLoader> Get(string type, object id, IEnumerable<int> langs)
         {
 
-            return Loader.Where(d => langs.Contains(d.LocaleId) && d.EntityId == id && d.EntityType == type)
+            return Loader.Where(d => langs.Contains(d.LocaleId) && d.EntityId.Equals(id) && d.EntityType == type)
                      .GroupBy(s => s.LocaleId, (q, b) => new LocalizablesLoader
                      {
                          LocaleId = q,

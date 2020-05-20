@@ -1,21 +1,26 @@
-﻿using Asga.Data;
+﻿using Asga.Auth.Data;
+using Asga.Data;
 using Asga.Security;
 using Asga.Services;
+using CodeShellCore.Caching;
 using CodeShellCore.Data;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
+using CodeShellCore.Security.Authorization;
 using System.Linq;
 
 namespace Asga.Auth.Services
 {
-    public class RolesService : AsgaEntityService<Role>
+    public class RolesService : AsgaEntityService<Role>, IRolesService
     {
         private readonly CurrentTenant _currentTenant;
+        private readonly ICacheProvider _cacheProvider;
 
-        public RolesService(AuthUnit unit, CurrentTenant currentTenant) : base(unit)
+        public RolesService(AuthUnit unit, CurrentTenant currentTenant,ICacheProvider cacheProvider) : base(unit)
         {
             _currentTenant = currentTenant;
+            _cacheProvider = cacheProvider;
         }
 
         private AuthUnit Unit => (AuthUnit)UnitOfWork;
@@ -36,17 +41,15 @@ namespace Asga.Auth.Services
 
         public override SubmitResult Update(Role obj)
         {
-            //var roleInDb = Repository.Exist(x => x.Name == obj.Name.Trim() && x.Id != obj.Id);
-            //if (roleInDb)
-            //{
-            //    return new SubmitResult(400, "Role Already Exist");
-
-
-            //}
             Repository.Update(obj);
             Unit.RoleResourceRepository.ApplyChanges(obj.RoleResources);
             Unit.RoleResourceActionRepository.ApplyChanges(obj.RoleResourceActions);
             var res = Unit.SaveChanges();
+            if (res.AffectedRows > 0)
+            {
+                _cacheProvider.Remove<RoleCacheItem>(obj.Id);
+
+            }
             return res;
         }
 
@@ -61,19 +64,7 @@ namespace Asga.Auth.Services
             obj.RoleResources.ForEach(d => d.Id = Utils.GenerateID());
             return base.Create(obj);
         }
-
-        public RoleCacheResponse GetUpdatedRoles(TenantCacheDto tenantCacheDto)
-        {
-            var updatedRoles = Repository.FindAs(RoleCacheResponse.Expression, d => d.UpdatedOn > tenantCacheDto.LastUpdate || d.CreatedOn > tenantCacheDto.LastUpdate);
-
-            return new RoleCacheResponse()
-            {
-                LastUpdate = Unit.RoleRepository.GetLastUpdateDate(),
-                RoleCacheDtos = updatedRoles
-            };
-        }
-
-
+        
         public override EditingDTO<Role> GetSingleEditingDTO(object id)
         {
             var res = base.GetSingleEditingDTO(id);

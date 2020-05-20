@@ -19,7 +19,7 @@ namespace CodeShellCore.Web.Razor.Elements.Angular
     {
         public IHtmlContent InputControl_Ng<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, IValidationCollection coll, int size, string alternateLabel, string placeHolder, object attrs, string listItem, string inputClasses)
         {
-            var mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder,coll, null, attrs, inputClasses, null);
+            var mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, null, attrs, inputClasses, null);
             if (component == InputControls.CheckBox)
                 ((CheckNgInput)mod.InputModel).ListItemName = listItem ?? helper.GetModelName();
 
@@ -68,7 +68,15 @@ namespace CodeShellCore.Web.Razor.Elements.Angular
             return mod.Write("Components/ListView");
         }
 
-        public virtual IHtmlContent SelectModalButton<T>(IHtmlHelper<T> helper, string textId, string function, string bind, object attrs, string identifier, string validationFunction)
+        public virtual IHtmlContent SelectModalButton<T>(IHtmlHelper<T> helper,
+            string textId,
+            string function,
+            string bind,
+            object attrs,
+            string identifier,
+            string validationFunction,
+            string url,
+           IEnumerable<LinkModel> lst = null)
         {
             var mod = new PopupOpenerModel
             {
@@ -78,7 +86,9 @@ namespace CodeShellCore.Web.Razor.Elements.Angular
                 Attrs = attrs,
                 GroupName = identifier ?? textId.Replace(" ", "_"),
                 ValidationFunction = validationFunction,
-                Required = validationFunction != null
+                Required = validationFunction != null,
+                Url = url,
+                Buttons = lst
             };
 
             if (mod.Required)

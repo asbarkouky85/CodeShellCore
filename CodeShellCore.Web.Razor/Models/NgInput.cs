@@ -37,7 +37,7 @@ namespace CodeShellCore.Web.Razor.Models
             return NgFormName + "__" + MemberName?.Replace(".", "_") + (RowIndex == null ? "" : "{{" + RowIndex + "}}");
         }
 
-        public FileNgInput GetFileInput(string uploadUrl, string formFieldName)
+        public FileNgInput GetFileInput(string uploadUrl, string formFieldName, bool multiple = false)
         {
             return new FileNgInput
             {
@@ -47,6 +47,7 @@ namespace CodeShellCore.Web.Razor.Models
                 UploadUrl = uploadUrl,
                 FormFieldName = formFieldName,
                 AttributeObject = AttributeObject,
+                Multiple = multiple,
                 Classes = Classes
             };
         }

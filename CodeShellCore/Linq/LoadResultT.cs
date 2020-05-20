@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
@@ -9,5 +10,6 @@ namespace CodeShellCore.Linq
     {
         [IgnoreDataMember]
         public IEnumerable<T> ListT { get { return List as IEnumerable<T>; } }
+
     }
 }

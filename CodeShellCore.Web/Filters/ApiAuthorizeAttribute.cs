@@ -1,11 +1,14 @@
-﻿using CodeShellCore.Data.Helpers;
+﻿using System;
+using System.Collections.Generic;
+
 using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Security.Authorization;
-using CodeShellCore.Services.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using CodeShellCore.Security.Sessions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+
+using CodeShellCore.Http;
+using CodeShellCore.Security;
+using CodeShellCore.Security.Sessions;
+using CodeShellCore.Security.Authorization;
 
 namespace CodeShellCore.Web.Filters
 {
@@ -14,11 +17,12 @@ namespace CodeShellCore.Web.Filters
     public class ApiAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
 
-
+        public DefaultActions[] Actions { get; set; }
         public string Resource { get; set; }
         public string Action { get; set; }
         public bool AllowAnonymous { get; set; }
         public bool AllowAll { get; set; }
+        public bool IntegrationAction { get; set; }
 
         public ApiAuthorizeAttribute()
         {
@@ -39,24 +43,25 @@ namespace CodeShellCore.Web.Filters
                     _manager?.AuthorizationRequest();
                 }
 
-                var _authorizationService = context.HttpContext.RequestServices.GetService<IAuthorizationService>();
-                if (_authorizationService == null)
+                if (AllowAnonymous)
                     return;
 
-                var _accessControl = (IAccessControlAuthorizationService)_authorizationService;
+                var _accessControl = context.HttpContext.RequestServices.GetService<IAuthorizationService>();
 
-                if (_accessControl == null || AllowAnonymous)
+                if (_accessControl == null)
                 {
                     return;
                 }
 
-                if (AllowAll && _authorizationService.SessionManager.IsLoggedIn())
+                if (AllowAll && _accessControl.SessionManager.IsLoggedIn())
                     return;
 
                 AuthorizationRequest<AuthorizationFilterContext> con = new AuthorizationRequest<AuthorizationFilterContext>(context);
 
                 con.Resource = Resource ?? context.HttpContext.GetController();
                 con.Action = Action ?? context.HttpContext.GetAction();
+                con.Actions = Actions;
+                con.IntegrationAction = IntegrationAction;
 
                 if (!_accessControl.IsAuthorized(con))
                     _accessControl?.OnUserIsUnauthorized(con);

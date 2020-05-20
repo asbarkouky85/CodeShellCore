@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Reporting.Models;
 using CodeShellCore.Services;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using CodeShellCore.Types;
 using System;
 using System.Collections;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using CodeShellCore.Files.Reporting;
 
 namespace CodeShellCore.Reporting.Services
 {

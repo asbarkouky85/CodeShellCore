@@ -6,10 +6,13 @@ namespace CodeShellCore.Cli
 {
     public class ColorSetter : IDisposable
     {
-        ConsoleColor _current;
-        private ColorSetter(ConsoleColor color)
+        public bool IsDisposed { get; private set; }
+        private ConsoleColor _fallBack;
+        public ConsoleColor CurrentColor { get; private set; }
+        public ColorSetter(ConsoleColor color)
         {
-            _current = Console.ForegroundColor;
+            _fallBack = Console.ForegroundColor;
+            CurrentColor = color;
             Console.ForegroundColor = color;
         }
 
@@ -20,7 +23,8 @@ namespace CodeShellCore.Cli
 
         public void Dispose()
         {
-            Console.ForegroundColor = _current;
+            Console.ForegroundColor = _fallBack;
+            IsDisposed = true;
         }
 
         public static ColorSetter NumberGradient(long number)

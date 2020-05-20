@@ -5,22 +5,21 @@ using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Sessions;
 using Microsoft.AspNetCore.Http;
-using CodeShellCore.Security.Authorization;
 
 namespace CodeShellCore.Web.Security
 {
     public class CookieSessionManager : WebSessionManagerBase, ISessionManager
     {
-        public CookieSessionManager(IUserDataService cache, IHttpContextAccessor context) : base(cache, context)
+        public CookieSessionManager(IHttpContextAccessor context) : base(context)
         {
         }
 
-        public TimeSpan DefaultSessionTime
+        public override TimeSpan DefaultSessionTime
         {
             get { return new TimeSpan(12, 0, 0); }
         }
 
-        public virtual void EndSession()
+        public override void EndSession()
         {
             _accessor.HttpContext.Response.Cookies.Delete("UserId");
 
@@ -34,12 +33,12 @@ namespace CodeShellCore.Web.Security
             return id;
         }
 
-        public bool IsLoggedIn()
+        public override bool IsLoggedIn()
         {
             return !GetCurrentUserId().Equals(0);
         }
 
-        public void AuthorizationRequest()
+        public override void AuthorizationRequest()
         {
             var authCookie = _accessor.HttpContext.Request.Cookies["UserId"];
 
@@ -71,9 +70,9 @@ namespace CodeShellCore.Web.Security
             _accessor.HttpContext.Response.Cookies.Append("UserId", st, new CookieOptions { Expires = data.ExpireTime });
         }
 
-        public void AuthorizationRequest(string token)
+        public override void AuthorizationRequest(string token)
         {
-            throw new NotImplementedException();
+            AuthorizationRequest();
         }
     }
 }

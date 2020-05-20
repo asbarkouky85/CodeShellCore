@@ -1,5 +1,8 @@
 ﻿using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
+using CodeShellCore.Security.Sessions;
+using CodeShellCore.Web.Filters;
+using CodeShellCore.Web.Security;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,28 +10,42 @@ using System.Text;
 
 namespace CodeShellCore.Web.Controllers
 {
-    public class AccountControllerBase : BaseApiController
+    [ApiAuthorize(AllowAnonymous =true)]
+    public class AccountControllerBase : BaseApiController, IAccountController
     {
-        readonly AuthorizationService Service;
-        public AccountControllerBase(AuthorizationService service)
+        readonly IAuthenticationService _service;
+        readonly ISessionManager _manager;
+        IUserDataService userData => GetService<IUserDataService>();
+
+        public AccountControllerBase(IAuthenticationService service, ISessionManager manger)
         {
-            Service = service;
+            _service = service;
+            _manager = manger;
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody]LoginModel model)
+        [ApiAuthorize(AllowAnonymous =true)]
+        public virtual IActionResult Login([FromBody]LoginModel model)
         {
-            return Respond(Service.Login(model));
+            return Respond(_service.Login(model.UserName, model.Password));
         }
 
+        [ApiAuthorize(AllowAnonymous = true)]
         public IActionResult RefreshToken([FromBody]RefreshTokenDTO refresh)
         {
-            var uid = Service.SessionManager.CheckRefreshTokenWEB(refresh.Token);
+            var uid = _manager.CheckRefreshTokenWEB(refresh.Token);
             LoginResult res = new LoginResult(false, "InvalidToken");
             if (uid != null)
             {
-                res = Service.AuthenticationService.LoginById(uid);
+                res = _service.LoginById(uid);
             }
+            return Respond(res);
+        }
+
+        [ApiAuthorize(AllowAll = true, AllowAnonymous = false)]
+        public virtual IActionResult GetUserData()
+        {
+            var res = userData.GetUserDataForUI(_manager.GetCurrentUserId());
             return Respond(res);
         }
     }

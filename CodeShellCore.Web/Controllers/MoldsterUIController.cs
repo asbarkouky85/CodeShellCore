@@ -20,8 +20,21 @@ namespace CodeShellCore.Web.Controllers
 
         public virtual IServerConfig ServerConfig { get { return new DefaultServerConfig(); } }
         public virtual bool RestrictHttps { get; }
-        public virtual string[] Domains { get; }
+        public virtual string[] Domains => Tenants.Select(d => d.Key).ToArray();
         public virtual Func<IndexModel, IActionResult> EmptyUrlHandler { get; }
+        public virtual Dictionary<string, TenantInfoItem> Tenants
+        {
+            get
+            {
+                var _tenants = new Dictionary<string, TenantInfoItem>();
+                string infoFile = Path.Combine(Shell.AppRootPath, "tenantInfo.json");
+                if (System.IO.File.Exists(infoFile))
+                {
+                    _tenants = System.IO.File.ReadAllText(infoFile).FromJson<Dictionary<string, TenantInfoItem>>();
+                }
+                return _tenants;
+            }
+        }
 
         public string JsEnvironment
         {
@@ -56,22 +69,44 @@ namespace CodeShellCore.Web.Controllers
 
             string dom = DomainName;
             bool isDevBuild = JsEnvironment == "dev";
+
+            TenantInfoItem info = null;
+
+            if (Tenants.TryGetValue(dom, out TenantInfoItem item))
+            {
+                info = item;
+            }
+
+            string version = Shell.ProjectAssembly.GetVersionString();
+            if (item != null && item.Version != null)
+                version = item.Version;
+
             string loc = conf?.lang == null ? Request.GetLocaleFromCookie() : conf.lang;
-            string ver = isDevBuild ? "dev" : "v" + Shell.ProjectAssembly.GetVersionString();
-            string path = Path.Combine(Shell.AppRootPath, Shell.PublicRoot, "dist", ver);
-            string search = isDevBuild ? "dev*.js" : dom + "-" + ver + "*.js";
+            string package = isDevBuild ? "dev" : "v" + version;
+            string path = Path.Combine(Shell.AppRootPath, Shell.PublicRoot, "dist", package);
+            string search = isDevBuild ? "dev*.js" : dom + "-" + package + "*.js";
             Utils.CreateFolderForFile(path + "\\n.x");
             string[] files = Directory.GetFiles(path, search);
 
             var mod = new IndexModel
             {
                 Title = GetDefaultTitle(loc),
-                Config = ServerConfig
+                Config = ServerConfig,
+                PackageId = package
             };
             mod.Config.Locale = loc;
             mod.Config.Env = JsEnvironment;
-            mod.Config.Version = ver;
-            mod.Config.Urls = Shell.GetConfigAs<Dictionary<string, string>>("Services", false);
+            mod.Config.Version = version;
+            var urls = Shell.GetConfigAs<Dictionary<string, string>>("Services", false);
+            if (urls != null)
+            {
+                mod.Config.Urls = new Dictionary<string, string>();
+                foreach (var s in urls)
+                {
+                    mod.Config.Urls[s.Key] = WebUtils.FillConfigUrlParams(s.Value, Request);
+                }
+            }
+
 
             if (EmptyUrlHandler != null && Request.PathIsEmpty())
             {

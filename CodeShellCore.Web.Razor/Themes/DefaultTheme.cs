@@ -5,13 +5,23 @@ namespace CodeShellCore.Web.Razor.Themes
 {
     public class DefaultTheme : IRazorTheme
     {
+        /// <summary>
+        /// "~/ShellComponents"
+        /// </summary>
         public virtual string LayoutBase { get { return "~/ShellComponents"; } }
+        /// <summary>
+        /// 6
+        /// </summary>
         public virtual int DefaultControlGroupSize { get { return 6; } }
         public virtual string ControlGroupTemplate { get { return "~/ShellComponents/Containers/ControlGroup.cshtml"; } }
         public virtual string LocalizableControlGroupTemplate { get { return "~/ShellComponents/Containers/LocalizableControlGroup.cshtml"; } }
         public virtual string LabelGroupTemplate { get { return "~/ShellComponents/Containers/LabelGroup.cshtml"; } }
         public virtual string CellTemplate { get { return "~/ShellComponents/Containers/Cell.cshtml"; } }
         public virtual string HeaderCellTemplate { get { return "~/ShellComponents/TableCells/HeaderCell.cshtml"; } }
+
+        public virtual bool SortingInTables { get { return true; } }
+
+        public string SmallBtnClass => "btn-sm";
 
         public virtual string GetButtonClass(BtnClass type)
         {

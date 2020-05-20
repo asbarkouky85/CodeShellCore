@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeShellCore.Files.Reporting;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

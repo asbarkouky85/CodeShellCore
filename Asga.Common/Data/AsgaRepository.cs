@@ -10,7 +10,7 @@ using System;
 
 namespace Asga.Common.Data
 {
-    public class AsgaRepository<T, TContext> : CollectionRepository<T, TContext>, INameableRepository<T> where T : class, IModel<long> where TContext : DbContext
+    public class AsgaRepository<T, TContext> : CollectionRepository<T, TContext,long>, INameableRepository<T> where T : class, IModel<long> where TContext : DbContext
     {
         public AsgaRepository(TContext con, AsgaCollectionService service) : base(con, service)
         {
@@ -23,18 +23,6 @@ namespace Asga.Common.Data
             base.Add(obj);
         }
 
-        protected virtual IQueryable<Named<long>> QueryNamed(IQueryable<T> query = null)
-        {
-            query = query ?? Loader;
-            var q = (IQueryable<INamed<long>>)query;
-
-            return q.Select(d => new Named<long>
-            {
-                Id = d.Id,
-                Name = d.Name
-            });
-
-        }
 
         public IEnumerable<Named<long>> FindAsLookup(string collectionId = null)
         {

@@ -10,10 +10,10 @@ namespace CodeShellCore.Web.UnitTest
     public class TestHttpContextAccessor : IHttpContextAccessor
     {
         private HttpContext _context;
-        public TestHttpContextAccessor()
+        public TestHttpContextAccessor(IServiceProvider prov)
         {
             _context = new DefaultHttpContext();
-            
+            _context.RequestServices = prov;
             //cont?.Invoke(context);
         }
 

@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using CodeShellCore.Helpers;
 using CodeShellCore.Services;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using CodeShellCore.Files.Logging;
 
 namespace CodeShellCore.Web.Razor.Services
@@ -38,14 +38,14 @@ namespace CodeShellCore.Web.Razor.Services
             {
                 using (var c = SW.Measure())
                 {
-
+                    
                     ViewEngineResult viewResult = _razorViewEngine.FindView(actionContext, viewName, false);
-                    Logger.WriteLine("Finding View     : " + c.Elapsed.TotalSeconds.ToString("F4") + "s");
+                    
                     if (viewResult.View == null)
                         throw new Exception($"{viewName} does not match any available view");
 
                     var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
-                    Logger.WriteLine("View Dictionary  : " + c.Elapsed.TotalSeconds.ToString("F4") + "s");
+                    
                     if (model != null)
                         viewDictionary.Model = model;
 
@@ -65,15 +65,13 @@ namespace CodeShellCore.Web.Razor.Services
                         sw,
                         opts
                     );
-                    Logger.WriteLine("Creating Context : " + c.Elapsed.TotalSeconds.ToString("F4") + "s");
+                    
                     var t = RenderAsync(viewResult, viewContext);
                     t.Wait();
                     if (t.Result.Code != 200)
                     {
                         throw new CodeShellHttpException(t.Result);
                     }
-
-                    Logger.WriteLine("Rending          : " + c.Elapsed.TotalSeconds.ToString("F4") + "s");
                     return sw.ToString();
                 }
             }

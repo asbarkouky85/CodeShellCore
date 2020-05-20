@@ -29,7 +29,7 @@ namespace CodeShellCore.Text.Localization.Internal
         {
             _lang = lang;
         }
-        public Dictionary<string, LocalizablesDTO> GetDataFor<TEntity>(long Id) where TEntity : class
+        public Dictionary<string, LocalizablesDTO> GetDataFor<TEntity>(object Id) where TEntity : class
         {
             return GetDataFor(typeof(TEntity), Id);
         }
@@ -45,12 +45,12 @@ namespace CodeShellCore.Text.Localization.Internal
         {
             return AllCulturelanguage.Where(s => s.Value.Equals(lang)).Select(s => s.Key).FirstOrDefault();
         }
-        public SubmitResult SetDataFor<TEntity>(long id, Dictionary<string, LocalizablesDTO> dto) where TEntity : class
+        public SubmitResult SetDataFor<TEntity>(object id, Dictionary<string, LocalizablesDTO> dto) where TEntity : class
         {
             return SetDataFor(typeof(TEntity), id, dto);
         }
 
-        public Dictionary<string, LocalizablesDTO> GetDataFor(Type t, long Id)
+        public Dictionary<string, LocalizablesDTO> GetDataFor(Type t, object Id)
         {
             Dictionary<string, LocalizablesDTO> res = new Dictionary<string, LocalizablesDTO>();
             var dat = _Loc.Get(t.Name, Id, AllCulturelanguage.Keys);
@@ -71,12 +71,12 @@ namespace CodeShellCore.Text.Localization.Internal
             return res;
         }
 
-        public virtual SubmitResult SetDataFor(Type type, long id, Dictionary<string, LocalizablesDTO> dto)
+        public virtual SubmitResult SetDataFor(Type type, object id, Dictionary<string, LocalizablesDTO> dto)
         {
             return SetDataFor(type.Name, id, dto);
         }
 
-        public virtual SubmitResult SetDataFor(string type, long id, Dictionary<string, LocalizablesDTO> dto)
+        public virtual SubmitResult SetDataFor(string type, object id, Dictionary<string, LocalizablesDTO> dto)
         {
             foreach (var item in dto)
             {

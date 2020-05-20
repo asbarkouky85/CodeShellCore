@@ -8,7 +8,8 @@ namespace CodeShellCore.Web.Razor.Models
     {
         public string ModalId { get; set; }
         public bool UseSearch { get; set; }
-        public int Width { get; set; }
+        public object Attrs { get; set; }
+        public string AttrString { get { return RazorUtils.ToAttributeString(Attrs); } }
         public bool IsModal { get; set; }
         public string IsModalValue { get { return IsModal.ToString().ToLower(); } }
     }

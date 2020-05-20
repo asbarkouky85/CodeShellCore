@@ -6,6 +6,6 @@ namespace CodeShellCore.Data.ConfiguredCollections
 {
     public interface ICollectionUnitOfWork : IUnitOfWork
     {
-        ICollectionRepository<T> GetCollectionRepositoryFor<T>() where T : class, IModel<long>;
+        ICollectionRepository<T> GetCollectionRepositoryFor<T>() where T : class;
     }
 }

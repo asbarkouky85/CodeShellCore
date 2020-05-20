@@ -18,14 +18,14 @@ namespace CodeShellCore.Web.Razor.Elements
     {
         protected IValidationCollection VCollection { get; set; }
         protected MemberExpression MemberExpression { get; set; }
-        
+
         public string ColumnId { get; set; }
         public NgControlGroup GroupModel { get; set; }
         public ControlGroupWriter(IHtmlHelper helper) : base(helper) { }
 
         protected override string AddInputControlAttributes()
         {
-            if (VCollection != null)
+            if (VCollection != null && Accessibility.Write)
                 return VCollection.GetAttributes();
             return "";
         }
@@ -71,7 +71,7 @@ namespace CodeShellCore.Web.Razor.Elements
             {
                 Label = TextProvider.Column(ColumnId),
                 Name = groupName,
-                PropertyName = InputModel.MemberName.GetAfterLast(".").UCFirst()
+                PropertyName = RazorUtils.GetMemberNameDefault(exp).GetAfterLast(".")
             };
 
 
@@ -92,11 +92,11 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        
+
         public virtual void SetOptions(int size, string alternateLabel = null, string placeHolder = null, object attrs = null, object inputAttr = null, string classes = "", string grClasses = "")
         {
             GroupModel.Label = alternateLabel ?? GroupModel.Label;
-            GroupModel.Size = size;
+            GroupModel.Size = size == -1 ? Helper.GetTheme().DefaultControlGroupSize : size;
             GroupModel.Attributes = RazorUtils.ToAttributeString(attrs);
             GroupModel.GroupCssClass = grClasses;
 
@@ -120,7 +120,11 @@ namespace CodeShellCore.Web.Razor.Elements
             if (!Accessibility.Read)
                 return null;
             if (!Accessibility.Write)
+            {
+                InputModel.AttributeObject = null;
                 return WriteLabel();
+            }
+
             string template = localizable ? Helper.GetTheme().LocalizableControlGroupTemplate : Helper.GetTheme().ControlGroupTemplate;
             GroupModel.InputControl = GetInputControl(componentName);
             return Helper.Partial(template, GroupModel);
@@ -141,8 +145,12 @@ namespace CodeShellCore.Web.Razor.Elements
                     case InputControls.Radio:
                         ((RadioNgInput)InputModel).Enabled = false;
                         break;
-
+                    case InputControls.CalendarTextBox:
+                    case InputControls.DateTimeTextBox:
+                        InputModel.MemberName = InputModel.MemberName + " | date :'dd-MM-yyyy'";
+                        return WriteLabel();
                     default:
+                        InputModel.AttributeObject = null;
                         return WriteLabel();
                 }
 

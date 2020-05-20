@@ -6,7 +6,7 @@ using System.Net;
 using CodeShellCore.Data;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Services;
-using CodeShellCore.Services.Http;
+using CodeShellCore.Http;
 using CodeShellCore.Text;
 using CodeShellCore.Data.ConfiguredCollections;
 

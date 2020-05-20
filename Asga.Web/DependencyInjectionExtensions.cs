@@ -1,4 +1,5 @@
 ﻿using Asga.Auth;
+using Asga.Auth.Data;
 using Asga.Web.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;

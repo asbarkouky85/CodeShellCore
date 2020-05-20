@@ -11,5 +11,6 @@ namespace CodeShellCore.Web.Razor.Models
         public string ValidationFunction { get; set; }
         public string FormFieldName { get; set; }
         public IHtmlContent ValidationMessage { get; set; }
+        public IEnumerable<LinkModel> Buttons { get; set; }
     }
 }

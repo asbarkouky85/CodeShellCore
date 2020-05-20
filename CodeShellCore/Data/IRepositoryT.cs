@@ -14,8 +14,8 @@ namespace CodeShellCore.Data
     {
         TValue GetValue<TValue>(object id, Expression<Func<T, TValue>> ex);
         TValue GetSingleValue<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter);
-        IEnumerable<TValue> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter=null);
-        IEnumerable<TValue> GetValues<TValue,TOrder>(Expression<Func<T, TValue>> ex,Expression<Func<T,TOrder>> order, Expression<Func<T, bool>> filter = null);
+        IEnumerable<TValue> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter = null);
+        IEnumerable<TValue> GetValues<TValue, TOrder>(Expression<Func<T, TValue>> ex, Expression<Func<T, TOrder>> order, Expression<Func<T, bool>> filter = null);
 
         T FindSingle(object id);
         T FindSingle(Expression<Func<T, bool>> expression);
@@ -28,6 +28,7 @@ namespace CodeShellCore.Data
         void Delete(T obj);
         void DeleteById(object id);
         void Merge(T obj);
+        T Merge(Expression<Func<T, bool>> ex, T obj);
 
         List<T> GetList();
         List<T> Find(Expression<Func<T, bool>> exp);
@@ -36,14 +37,13 @@ namespace CodeShellCore.Data
         List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class;
         LoadResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class;
         List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class;
-
+        LoadResult FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class;
         int Count(Expression<Func<T, bool>> exp);
-
+        TVal GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null);
+       
         bool Exist(Expression<Func<T, bool>> exp);
         bool IdExists(object id);
         DeleteResult CanDelete(object id);
 
-        List<T> GetByExperession/*<TR, TVal>*/(IEnumerable<Expression<Func<T, bool>>> filtres);
-        
     }
 }

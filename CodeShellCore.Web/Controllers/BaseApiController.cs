@@ -4,6 +4,7 @@ using System.Net;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Web.Filters;
+using CodeShellCore.Helpers;
 
 namespace CodeShellCore.Web.Controllers
 {
@@ -15,7 +16,7 @@ namespace CodeShellCore.Web.Controllers
         {
             if (!res.Success)
                 Response.StatusCode = (int)HttpStatusCode.ExpectationFailed;
-            
+
             return Json(res);
 
         }
@@ -34,10 +35,10 @@ namespace CodeShellCore.Web.Controllers
             return Json(ob);
         }
 
-        public IActionResult Respond(SubmitResult res=null)
+        public IActionResult Respond(Result res = null)
         {
             if (res == null)
-                res = SubmitResult;
+                res = SubmitResult ?? new SubmitResult();
             if (res.Code == 0)
                 Response.StatusCode = (int)HttpStatusCode.OK;
             else

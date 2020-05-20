@@ -12,7 +12,7 @@ namespace CodeShellCore.Web.Razor
 {
     public class IdentifierProcessor
     {
-        public Accessibility Process<T>(IHtmlHelper<T> helper, string id, string cont)
+        public Accessibility Process(IHtmlHelper helper, string id, string cont)
         {
             helper.AddToViewControls(new ControlDTO
             {
@@ -22,7 +22,7 @@ namespace CodeShellCore.Web.Razor
             return helper.GetAccessibility(id);
         }
 
-        private Accessibility Process<T>(IHtmlHelper<T> helper, MoldsterHtmlContainer parent, string id, string cont)
+        private Accessibility Process(IHtmlHelper helper, MoldsterHtmlContainer parent, string id, string cont)
         {
             parent.Control.Children.Add(new ControlDTO
             {
@@ -45,7 +45,7 @@ namespace CodeShellCore.Web.Razor
             return Process(helper, exp, cont.ToString(), extra);
         }
 
-        public Accessibility ProcessCell<T>(IHtmlHelper<T> helper, string textId, string cont, MoldsterHtmlContainer parent = null)
+        public Accessibility ProcessCell(IHtmlHelper helper, string textId, string cont, MoldsterHtmlContainer parent = null)
         {
             string id = textId;
 
@@ -61,7 +61,7 @@ namespace CodeShellCore.Web.Razor
             }
         }
 
-        public Accessibility ProcessCell<T>(IHtmlHelper<T> helper, string textId, InputControls cont, MoldsterHtmlContainer parent = null)
+        public Accessibility ProcessCell(IHtmlHelper helper, string textId, InputControls cont, MoldsterHtmlContainer parent = null)
         {
             return ProcessCell(helper, textId, cont.ToString(), parent);
         }

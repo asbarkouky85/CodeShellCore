@@ -10,5 +10,6 @@ namespace CodeShellCore.Security
     {
         IUserRepository UserRepository { get; }
         IResourceRepository ResourceRepository { get; }
+        IUsersEntityLinkRepository UsersEntityLinkRepository { get; }
     }
 }

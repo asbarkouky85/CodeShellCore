@@ -2,15 +2,17 @@
 
 namespace CodeShellCore.Security.Sessions
 {
-    public interface ISessionManager
+    public interface ISessionManager 
     {
         TimeSpan DefaultSessionTime { get; }
         void StartSession(IUser user, TimeSpan? length = null);
         void EndSession();
         bool IsLoggedIn();
         object GetCurrentUserId();
+        string GetConnectionId();
         void AuthorizationRequest();
         void AuthorizationRequest(string token);
-        void ClearUserCache(object id);
+        //void ClearUserCache(object id);
+        //IUser GetUserData();
     }
 }

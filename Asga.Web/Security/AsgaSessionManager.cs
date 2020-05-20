@@ -12,7 +12,7 @@ namespace Asga.Web.Security
 {
     public class AsgaSessionManager : TokenSessionManager
     {
-        public AsgaSessionManager(IUserDataService cache,IHttpContextAccessor acc) : base(cache,acc)
+        public AsgaSessionManager(IHttpContextAccessor acc) : base(acc)
         {
         }
 
