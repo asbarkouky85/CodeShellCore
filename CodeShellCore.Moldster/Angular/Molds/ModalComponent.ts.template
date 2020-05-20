@@ -1,8 +1,0 @@
-﻿import { Component } from "@angular/core";
-import { %BaseClass% } from "%BaseClassLocation%";
-
-@Component({ templateUrl: "./%ComponentName%.html" })
-export class %ComponentName% extends %BaseClass% {
-	public GetPageId() : number { return %PageId%; }
-	public get CollectionId(): string | null { return %CollectionId%; }
-}

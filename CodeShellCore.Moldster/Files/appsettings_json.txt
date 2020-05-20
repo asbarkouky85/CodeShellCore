@@ -1,7 +1,0 @@
-﻿{
-  "UseHotUpdate": true,
-  "env": "dev",
-  "Services": {
-	
-  }
-}
