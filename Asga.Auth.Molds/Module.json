@@ -1,0 +1,27 @@
+{
+  "Name": "Authentication",
+  "InstallPath": "Auth",
+  "Categories": [
+    {
+      "Path": "Users/UserEdit",
+      "Base": "Edit",
+      "Resource": "Users"
+    },
+    {
+      "Path": "Users/UserList",
+      "Base": "List",
+      "Resource": "Users"
+    },
+    {
+      "Path": "Roles/RoleEdit",
+      "Base": "Edit",
+      "Resource": "Roles"
+    },
+    {
+      "Path": "Roles/RoleList",
+      "Base": "List",
+      "Resource": "Roles"
+    }
+  ],
+  "Resources": [ "Users", "Roles" ]
+}

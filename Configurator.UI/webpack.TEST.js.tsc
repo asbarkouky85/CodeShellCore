@@ -1,0 +1,27 @@
+﻿{
+  "atom": { "rewriteTsconfig": false },
+  "compilerOptions": {
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
+    "sourceMap": false,
+    "experimentalDecorators": true,
+    "strictNullChecks": false,
+    "emitDecoratorMetadata": true,
+    "skipDefaultLibCheck": true,
+    "suppressExcessPropertyErrors": true,
+    "skipLibCheck": true, 
+    "strict": false,
+    "lib": [ "es6", "dom" ],
+    "types": [ "webpack-env" ],
+    "baseUrl": "./Core"
+  },
+  "exclude": [
+    "bin",
+    "node_modules",
+    "obj",
+    "**/*.jit.ts",
+    "ClientApp",
+    "Auth"
+  ]
+}

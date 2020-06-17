@@ -1,0 +1,6 @@
+﻿@model PaginationModel
+<paginate [showing]="@Model.Showing" 
+          [total-count]="@Model.TotalCount" 
+          [max-pages]="@Model.MaxPages" 
+          [(currentPage)]="@Model.CurrentPage" 
+          (pageChange)="@Model.SelectEvent"></paginate>

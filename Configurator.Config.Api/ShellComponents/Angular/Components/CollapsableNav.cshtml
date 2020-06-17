@@ -1,0 +1,9 @@
+﻿@model CollapsableModel
+@if (Html.GetAccessibility(Model.PartIdentifier).Read)
+{
+    <li>
+        <a (click)="SF.Select(@Model.Index,'@Model.PartIdentifier')" [ngClass]="SF.IsActive(@Model.Index)?'active':null" *ngIf="@Html.Raw(Model.PageCondition)">
+            @Html.Word(Model.PartIdentifier)
+        </a>
+    </li>
+}

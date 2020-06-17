@@ -1,0 +1,16 @@
+﻿@model NgControlGroup
+
+<div class="row form-group @Model.GroupCssClass"
+     id="@Model.Name"
+     @Html.Raw($"#{Model.Name}=\"bsFormGroup\" bs-group")
+     @Html.Raw(Model.Attributes)>
+    <label class="col-sm-3 control-label">
+        @Html.Raw(Model.Label)
+        @if (Model.IsRequired)
+        {<span style="color:red" @Html.Raw(Model.RequiredCondition==null?"":"*ngIf=\""+Model.RequiredCondition+"\"")> * </span>}
+    </label>
+    <div class="col-sm-9">
+        @Model.InputControl
+        @Model.ValidationMessages
+    </div>
+</div>

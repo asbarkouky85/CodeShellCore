@@ -1,0 +1,60 @@
+﻿.visit-status-setter {
+    position:fixed;
+    background-color:white;
+    padding:15px;
+    box-shadow:1px 1px 3px rgba(0,0,0,.4);
+}
+.table, .padTop {
+    font-size: 13px;
+}
+
+.wrapper-side.navbar-inverse nav-side.compressed {
+    left: -220px;
+    height: 0px;
+    opacity: 0;
+}
+
+.wrapper-content.wrapper-content-toggle {
+    transition: all 1s ease-in-out,opacity 1s ease-in-out;
+    width: auto !important;
+}
+.table tr.active td {
+    background-color: #123456 !important;
+    color: white;
+}
+
+.new-line{
+    display:block;
+}
+
+.generationInfoline {
+    display: inline;
+    list-style: none;
+}
+
+@keyframes slide-animation {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.output-word {
+    padding: 3px;
+    animation: slide-animation 0.8s;
+}
+
+.output-word-container {
+    margin-bottom: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    height: 300px;
+    overflow-y: scroll;
+    background-color: #aaaacf;
+    font-family: cambria;
+    padding: 15px;
+    box-shadow: 2px 2px 3px rgba(0,0,0,.4) inset
+}

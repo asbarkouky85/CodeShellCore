@@ -1,0 +1,11 @@
+﻿@model NgControlGroup
+
+<div class="form-group col-md-@Model.Size @Model.GroupCssClass"
+     id="@Model.Name"
+     @Html.Raw($"#{Model.Name}=\"bsFormGroup\" bs-group")
+     @Html.Raw(Model.Attributes)>
+    <label>@Html.Raw(Model.Label) @if (Model.IsRequired)
+    {<span style="color:red">*</span>}</label>
+    @Model.InputControl
+    @Model.ValidationMessages
+</div>

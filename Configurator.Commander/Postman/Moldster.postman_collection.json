@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "195749ce-d057-47b7-97ed-67427887fe03",
+		"name": "SmartLab",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register Razor File",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"viewPath\": \"Maintenance/WorkOrders/WorkOrderPartList\",\n  \"BaseComponent\": \"List\",\n  \"resourceName\": \"Assets/PartTypes\"\n}"
+				},
+				"url": {
+					"raw": "{{configUrl}}/apiAction/PageCategories/Post",
+					"host": [
+						"{{configUrl}}"
+					],
+					"path": [
+						"apiAction",
+						"PageCategories",
+						"Post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Page",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"TenantCode\": \"ASGA\",\n    \"Domain\": \"Maintenance\",\n    \"Resource\": \"WorkOrders\",\n    \"Name\": \"WorkOrderPartListEmbed\",\n    \"CategoryPath\": \"Maintenance/WorkOrders/WorkOrderPartList\",\n    \"ActionType\": \"details\",\n    \"Usage\": \"E\",\n    \"RouteParameters\": null,\n    \"DefaultAccessibility\": 2,\n    \"AppearsInNavigation\": false,\n    \"Layout\": null,\n    \"SpecialPermission\": null,\n    \"ViewParams\": null,\n    \"Apps\": [\n        \"SuperAdmin\",\n        \"CustomerAdmin\"\n    ],\n    \"CollectionId\": null,\n    \"CategoryId\": null\n}"
+				},
+				"url": {
+					"raw": "{{configUrl}}/apiAction/Pages/Post",
+					"host": [
+						"{{configUrl}}"
+					],
+					"path": [
+						"apiAction",
+						"Pages",
+						"Post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set ViewParams",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"type": "text",
+						"value": "{{sysToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tenantId\": 4,\n    \"pageName\": null,\n    \"templateName\": \"ItemsEdit\",\n    \"data\": {},\n    \"Fields\": [\n            {\n                \"Name\": \"StartOfContract\"\n            },\n            {\n                \"Name\": \"TypeOfContract\"\n            },\n            {\n                \"Name\": \"ContractCustomer\"\n            },\n            {\n                \"Name\": \"EndOfContract\"\n            },\n            {\n                \"Name\": \"ContractStatus\"\n            }\n        ]\n}"
+				},
+				"url": {
+					"raw": "{{configUrl}}/apiAction/Pages/SetViewParams",
+					"host": [
+						"{{configUrl}}"
+					],
+					"path": [
+						"apiAction",
+						"Pages",
+						"SetViewParams"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

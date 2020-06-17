@@ -1,0 +1,316 @@
+<div class="page-header" [ngClass]="IsEmbedded?'section-header':'container-fluid'" *ngIf="!HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12" *ngIf="!IsEmbedded">
+            <h2>{{'Pages.Roles__RoleEdit' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12" *ngIf="!IsEmbedded">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="IsEmbedded" class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    {{'Pages.Roles__RoleEdit' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+
+        <ol class="breadcrumb">
+            <li>
+                <a routerLink="'/'">{{'Words.Main' | translate }}</a>
+            </li>
+            <li>
+                {{'Pages.Roles__RoleEdit' | translate }}
+            </li>
+        </ol>
+    </div>
+</div><div [ngClass]="IsEmbedded?'panel panel-default embedded':'animated fadeInRight'">
+
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
+                <div class="btn-group btn-group-sm pull-last">
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='ar'?'btn-primary':'btn-default'" (click)="CurrentLang='ar'">
+                            {{'Words.ar' | translate }}
+                        </button>
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='en'?'btn-primary':'btn-default'" (click)="CurrentLang='en'">
+                            {{'Words.en' | translate }}
+                        </button>
+                </div>
+            </div>
+
+        </div>
+        
+
+
+<form #Form="ngForm">
+    
+<div class="row form-group "
+     id="FG_entity_name"
+     #FG_entity_name="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.Role__Name' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.Role__Name' | translate }}"
+       name="Form__entity_name"
+       [(ngModel)]="model.entity.name"
+       title="{{'Columns.Role__Name' | translate }}"
+       [li-watch]="model"
+
+       
+       required  >
+    <p *ngIf="!FG_entity_name.Write">{{FG_entity_name.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__entity_name'] && Form.controls['Form__entity_name'].invalid && (Form.controls['Form__entity_name'].dirty || Form.controls['Form__entity_name'].touched)"><small *ngIf="Form.controls['Form__entity_name'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.Role__Name' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+    
+<div class="row form-group "
+     id="FG_entity_description"
+     #FG_entity_description="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.Role__Description' | translate }}
+    </label>
+    <div class="col-sm-9">
+        
+<textarea class="form-control "
+          placeholder="{{'Columns.Role__Description' | translate }}"
+          name="Form__entity_description"
+          [(ngModel)]="model.entity.description"
+          maxlength="300"  ></textarea>
+
+        <span *ngIf="Form.controls['Form__entity_description'] && Form.controls['Form__entity_description'].invalid && (Form.controls['Form__entity_description'].dirty || Form.controls['Form__entity_description'].touched)"><small *ngIf="Form.controls['Form__entity_description'].errors!.maxlength" class="form-text text-danger">{{'Messages.invalid_max_length' | translate : {p0:'300'} }}</small>
+</span>
+    </div>
+</div>
+
+</form>
+
+<div  id="PrivilegesControl" #PrivilegesControl>
+
+<label class="section-header">{{'Words.Privileges' | translate }}</label>
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs">
+            <li *ngFor="let res of Lookups.domains" [ngClass]="res.Selected?'active':null">
+                <a (click)="Priv.Select(res)">{{ 'Words.'+res.name | translate }}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+<form #Form="ngForm" >
+        <div *ngFor="let dom of Lookups.domains">
+            <div *ngIf="dom.Selected" class="col-md-12">
+                <table class="table table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th style="width:300px;">{{'Words.Resource' | translate }}</th>
+                                <th class="cursorPointer" [ngClass]="GetHeaderClass('available')"  >
+        {{'Words.available' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('available')"></i>
+    </th>
+
+                                <th class="cursorPointer" [ngClass]="GetHeaderClass('canViewDetails')"  >
+        {{'Words.canViewDetails' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('canViewDetails')"></i>
+    </th>
+
+                                <th class="cursorPointer" [ngClass]="GetHeaderClass('canUpdate')"  >
+        {{'Words.canUpdate' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('canUpdate')"></i>
+    </th>
+
+                                <th class="cursorPointer" [ngClass]="GetHeaderClass('canInsert')"  >
+        {{'Words.canInsert' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('canInsert')"></i>
+    </th>
+
+                                <th class="cursorPointer" [ngClass]="GetHeaderClass('canDelete')"  >
+        {{'Words.canDelete' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('canDelete')"></i>
+    </th>
+
+
+                            <th>{{'Words.Other' | translate }}</th>
+                                <th class="cursorPointer" [ngClass]="GetHeaderClass('CollectionId')"  >
+        {{'Columns.RoleResource__CollectionId' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('CollectionId')"></i>
+    </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let r of dom.resources;let i = index" (change)="Priv.ItemChanged(r)">
+                            <td>{{ 'Words.'+ r.name | translate }}</td>
+                            <td  >
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'available'+i"
+           [name]="'available'+i"
+           [(ngModel)]="r.available"
+           [li-watch]="r"
+            >
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+                            <td  >
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'canViewDetails'+i"
+           [name]="'canViewDetails'+i"
+           [(ngModel)]="r.Tag.canViewDetails"
+           [li-watch]="r"
+            [disabled]="!r.available" >
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+                            <td  >
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'canUpdate'+i"
+           [name]="'canUpdate'+i"
+           [(ngModel)]="r.Tag.canUpdate"
+           [li-watch]="r"
+            [disabled]="!r.available" >
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+                            <td  >
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'canInsert'+i"
+           [name]="'canInsert'+i"
+           [(ngModel)]="r.Tag.canInsert"
+           [li-watch]="r"
+            [disabled]="!r.available" >
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+                            <td  >
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'canDelete'+i"
+           [name]="'canDelete'+i"
+           [(ngModel)]="r.Tag.canDelete"
+           [li-watch]="r"
+            [disabled]="!r.available" >
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+
+                            <td>
+                                <div class="form-group" *ngFor="let ac of r.actions">
+                                    <div class="row col-md-12">
+                                        <div class="col-md-2">
+                                            <label class="chiller_cb">
+                                                <input type="checkbox" [id]="'ac-'+ac.id" [(ngModel)]="ac.Tag.selected" (change)="Priv.ActionChanged(ac.Tag)" />
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                        <label class="col-md-10" [for]="'ac-'+ac.id">{{ 'Words.'+ac.name | translate }}</label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td  >
+    
+<select class="form-control"
+        name="Form__collectionId{{i}}" 
+        [li-watch]="r"
+        [(ngModel)]="r.collectionId"
+        required  >
+    <option *ngFor="let item of r.collections" [ngValue]="item.id">{{item.name}}</option>
+</select>
+
+    <div style="position:relative">
+        <div class="cell-validation" *ngIf="Form.controls['Form__collectionId'+i+''] && Form.controls['Form__collectionId'+i+''].invalid && Form.controls['Form__collectionId'+i+''].touched">
+    <i class="fa fa-exclamation-circle redColor"></i>
+    <div class="messages">
+        <small *ngIf="Form.controls['Form__collectionId'+i+''].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.RoleResource__CollectionId' | translate } }}</small>
+
+    </div>
+</div>
+
+    </div>
+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</form>
+</div></div>
+
+
+        
+        <div class="row submit-buttons">
+            <div class="col-md-12">
+                <div class="pull-last">
+                    
+        <button class="btn btn-primary"
+            [disabled]="!CanSubmit"
+            (click)="Submit()">
+        {{'Words.Save' | translate }}
+    </button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style='display:none' #lookupOptionsContainer values='{"domains":"C0","r.collections":"C0"}'></div>
+<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{}}'></div>

@@ -1,0 +1,62 @@
+﻿using CodeShellCore.Data.Services;
+using CodeShellCore.Moldster.Configurator.Services;
+using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster.Services;
+using CodeShellCore.Web.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CodeShellCore.Web.Razor.Configurator
+{
+    public class DomainsController : EntityController<Domain, long>, ILookupLoaderController
+    {
+        DomainService _service;
+        ConfiguratorLookupService _lookups => GetService<ConfiguratorLookupService>();
+        IModulesService _modules => GetService<IModulesService>();
+        public DomainsController(DomainService configDomainService) : base(configDomainService)
+        {
+            _service = configDomainService;
+        }
+
+        public IActionResult GetEditLookups([FromQuery] Dictionary<string, string> data)
+        {
+            return Respond(_lookups.Modules(data));
+        }
+
+        public IActionResult GetListLookups([FromQuery] Dictionary<string, string> data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IActionResult GetTree()
+        {
+            return Respond(_service.GetTree());
+        }
+
+        public IActionResult PageCategoryCounters()
+        {
+            Dictionary<long, int> dic = _service.PageCategoryCounters();
+            return Respond(dic);
+        }
+
+        public IActionResult PageCounters(long id)
+        {
+            Dictionary<long, int> dic = _service.PageCounters(id);
+            return Respond(dic);
+        }
+
+        public IActionResult UpdateFiles(string assemblyName)
+        {
+            var res = _modules.UpdateModuleFiles(assemblyName);
+            return Respond(res);
+        }
+
+        public IActionResult InstallModule(string assemblyName)
+        {
+            var res = _modules.InstallModule(assemblyName);
+            return Respond(res);
+        }
+    }
+}

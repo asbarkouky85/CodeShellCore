@@ -1,0 +1,53 @@
+@*ID:4*@
+@model EditingDTO<User>
+@{
+    Layout = Html.Config().Layout;
+    Html.AddParameter("EditProfile", "false");
+    Html.UseSplitTheme();
+}
+<form #Form="ngForm">
+    <div class="row">
+        @Html.ControlGroup(d => d.Entity.Name, coll: Html.VCollection().AddRequired(), size: 12)
+    </div>
+    <div class="row">
+        @Html.ControlGroup(d => d.Entity.LogonName, coll: Html.VCollection().AddRequired().AddPattern("'" + Patterns.UserName + "'").AddUnique("model.entity.id"))
+        @Html.ControlGroup(d => d.Entity.Email, coll: Html.VCollection().AddRequired().AddEmail().AddUnique("model.entity.id"))
+        
+    </div>
+    <div class="row">
+        @Html.ControlGroup(d => d.Entity.Password, TextBoxTypes.Password, coll: Html.VCollection().AddRequired("IsNew").AddLength(20, 5), inputAttr: new { autocomplete = "new-password" })
+        @Html.SelectControlGroup(d => d.Entity.AppId, Lister.Make("apps"), "name", "id")
+    </div>
+    <div class="row">
+        @Html.ControlGroup(d => d.Entity.PasswordConfim, TextBoxTypes.Password, coll: Html.VCollection().AddRequired("model.entity.password!=null").AddLength(20, 5).AddPattern("model.entity.password"))
+        @Html.FileGroup(d => d.Entity.PhotoFile, "photo", "Upload")
+    </div>
+    <div class="row">
+        @Html.CalendarGroup(d => d.Entity.BirthDate, CalendarTypes.PastDate)
+        @Html.ControlGroup(d => d.Entity.Mobile, coll: Html.VCollection().AddNumeric(), size: 3)
+        @Html.RadioGroup(d => d.Entity.Gender, new Dictionary<string, object> { { "Female", 0 }, { "Male", 1 } }, size: 3)
+    </div>
+</form>
+<hr />
+
+<div class="row form-group">
+    @if (Html.StartContainer("div", "UserRoles", new { @class = "col-md-6" }))
+    {
+        Html.AddSource(Lister.Make<Role>("roles"));
+        <label class="section-header">@Html.Word("UserRoles")</label>
+        @Html.ListView(d => d.Entity.Roles, "Lookups.roles", "name", true)
+        @Html.CloseContainer("div")
+    }
+</div>
+<hr />
+<div class="row form-group">
+    @if (Html.StartContainer("div", "UserPrivileges", attrs: new { @class = "col-md-9" }))
+    {
+        @Html.Partial("~/Views/Auth/Components/DomainResources.cshtml")
+        @Html.CloseContainer("div")
+    }
+</div>
+
+@section buttons{
+    @Html.SubmitButton()
+}

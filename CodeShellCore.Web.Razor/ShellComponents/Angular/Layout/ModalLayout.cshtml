@@ -1,0 +1,58 @@
+﻿@using CodeShellCore.Web.Razor.Models;
+@{
+    ModalModel MModal = Html.GetViewData<ModalModel>("ModalData");
+}
+<p-dialog @("#" + MModal.ModalId) [(visible)]="@("Show"+MModal.ModalId)" [modal]="@MModal.IsModalValue" @Html.Raw(MModal.AttrString) >
+
+    <p-header>
+        @if (!IsSectionDefined("header"))
+        {
+            @Html.Raw("{{'Words." + MModal.ModalId + "' | translate }}")
+        }
+        else {
+            @RenderSection("header")
+        }
+
+    </p-header>
+
+    @if (MModal.UseSearch)
+    {
+
+        <div class="col-md-12 search-group">
+
+            <input type="text"
+                   [(ngModel)]="@(MModal.ModalId+"_Search")"
+                   [ngModelOptions]="{standalone: true}"
+                   (keydown.enter)="@Html.Raw("ModalSearch('"+MModal.ModalId+"',"+MModal.ModalId+"_Search)")"
+                   class="form-control"
+                   placeholder="@Html.Word("Search")">
+
+            <i class="fa fa-search" (click)="@Html.Raw("ModalSearch('"+MModal.ModalId+"',"+MModal.ModalId+"_Search)")"></i>
+        </div>
+
+
+    }
+
+        <div class="col-md-12">
+            @RenderBody()
+        </div>
+   
+
+    @if (IsSectionDefined("buttons"))
+    {
+        <p-footer>
+            <div class="form-group">
+                <div class="text-center modal-buttons">
+                    @RenderSection("buttons")
+                </div>
+            </div>
+        </p-footer>
+    }
+
+</p-dialog>
+
+@{
+    Html.SetNgForm("Form");
+    Html.SetNgModel("model");
+}
+

@@ -1,0 +1,25 @@
+[
+  {
+    "Name": "Local",
+    "ConnectionParams": {
+      "UserId": "app",
+      "Password": "123456",
+      "Server": "."
+    },
+    "Upload": {
+      "Type": "FS",
+      "PathOnServer": "C:\\Publish\\Configurator.UI",
+      "ServerUrl": "http://192.168.1.21"
+    },
+    "SourceDatabase": "SurgeryRegister",
+    "Databases": [ "TEST" ],
+    "ConfigDatabase": "Configurator.Config"
+  },
+  {
+    "Name": "Testing",
+    "Upload": {
+      "Type": "FS",
+      "PathOnServer": "\\\\dev-server\\Publish\\TenantConfigurator"
+    }
+  }
+]

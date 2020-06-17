@@ -1,0 +1,26 @@
+﻿@model BundlingTask
+@{
+    Layout = Html.Config().Layout;
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            @Html.HeaderCell(d => d.Id)
+            @Html.HeaderCell(d => d.TenantCode)
+            @Html.HeaderCell(d => d.Version)
+            @Html.HeaderCell(d => d.StartedOn)
+            @Html.HeaderCell(d => d.Status)
+            @Html.HeaderCell(d => d.CompletedOn)
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            @Html.TextCell(d => d.Id)
+            @Html.TextCell(d => d.TenantCode)
+            @Html.TextCell(d => d.Version)
+            @Html.TextCell(d => d.StartedOn)
+            @Html.TextCell(d => d.Status)
+            @Html.TextCell(d => d.CompletedOn)
+        </tr>
+    </tbody>
+</table>

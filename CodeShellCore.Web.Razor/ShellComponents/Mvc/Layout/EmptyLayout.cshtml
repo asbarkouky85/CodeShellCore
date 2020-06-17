@@ -1,0 +1,13 @@
+﻿@if (IsSectionDefined("header"))
+{
+@RenderSection("header")
+}
+else
+{
+@Html.PageHeader(Html.GetViewParams().AddUrl)
+}
+
+@RenderBody()
+@RenderSection("lists", false)
+@RenderSection("buttons", false)
+

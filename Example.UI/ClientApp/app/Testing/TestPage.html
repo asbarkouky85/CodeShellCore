@@ -1,0 +1,96 @@
+<div class="page-header" [ngClass]="IsEmbedded?'section-header':'container-fluid'" *ngIf="!HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12" *ngIf="!IsEmbedded">
+            <h2>{{'Pages.Testing__TestPage' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12" *ngIf="!IsEmbedded">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="IsEmbedded" class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    {{'Pages.Testing__TestPage' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+
+        <ol class="breadcrumb">
+            <li>
+                <a routerLink="'/'">{{'Words.Main' | translate }}</a>
+            </li>
+            <li>
+                {{'Pages.Testing__TestPage' | translate }}
+            </li>
+        </ol>
+    </div>
+</div><div [ngClass]="IsEmbedded?'panel panel-default embedded':'animated fadeInRight'">
+
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
+                <div class="btn-group btn-group-sm pull-last">
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='ar'?'btn-primary':'btn-default'" (click)="CurrentLang='ar'">
+                            {{'Words.ar' | translate }}
+                        </button>
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='en'?'btn-primary':'btn-default'" (click)="CurrentLang='en'">
+                            {{'Words.en' | translate }}
+                        </button>
+                </div>
+            </div>
+
+        </div>
+        <form #Form="ngForm" >
+
+<div class="row form-group"
+     id="FG_description"
+     #FG_description="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.Role__Description' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <quill-editor  [modules]="quillConfig"              [(ngModel)]="model.description"
+              name="Form__description"
+              placeholder="{{'Columns.Role__Description' | translate }}"
+               ></quill-editor>
+
+        
+    </div>
+</div>
+</form>
+
+        
+        <div class="row submit-buttons">
+            <div class="col-md-12">
+                <div class="pull-last">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style='display:none' #lookupOptionsContainer values=''></div>
+<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{}}'></div>

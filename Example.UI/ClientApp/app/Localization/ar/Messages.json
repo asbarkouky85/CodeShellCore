@@ -1,0 +1,7 @@
+{
+  "delete_confirm_message": "delete confirm message",
+  "field_required": "field required",
+  "operation_unavailable": "operation unavailable",
+  "unauthorized_operation": "unauthorized operation",
+  "unexpected_error": "unexpected error"
+}

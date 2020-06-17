@@ -1,0 +1,4 @@
+﻿@model NgInput
+<duration-input [readOnly]="true"
+                [(totalSeconds)]="@Model.NgModelName@(".")@Model.MemberName"
+                @Html.Raw(Model.Attributes)></duration-input>

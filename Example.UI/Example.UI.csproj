@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Core\codeshell\baseComponents\loginBase.ts" />
+    <None Remove="Core\codeshell\directives\fileUploader.ts" />
+    <None Remove="Core\codeshell\utilities\defaultConfigs.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Asga.Web\Asga.Web.csproj" />
+    <ProjectReference Include="..\Example\Example.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Core\codeshell\baseComponents\loginBase.ts" />
+    <TypeScriptCompile Include="Core\codeshell\directives\fileUploader.ts" />
+    <TypeScriptCompile Include="Core\codeshell\utilities\defaultConfigs.ts" />
+  </ItemGroup>
+
+</Project>

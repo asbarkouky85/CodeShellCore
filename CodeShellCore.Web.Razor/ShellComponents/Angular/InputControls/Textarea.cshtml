@@ -1,0 +1,7 @@
+﻿@model NgInput
+
+<textarea class="form-control @Model.Classes"
+          placeholder="@Html.Raw(Model.PlaceHolder)"
+          name="@Html.Raw(Model.FieldName)"
+          [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+          @Html.Raw(Model.Attributes)></textarea>

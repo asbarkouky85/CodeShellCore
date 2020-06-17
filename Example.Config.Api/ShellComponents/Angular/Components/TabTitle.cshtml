@@ -1,0 +1,14 @@
+﻿@model ContainerModel
+<li class="nav-item" [ngClass]="@Model.ActivationProperty=='@Model.ContainerId'?'active':null"@Html.Raw(Model.AttributeString)>
+    <a (click)="@Model.ActivationProperty='@Model.ContainerId'">
+        @if (Model.TitleContent != null)
+        {
+            @Model.TitleContent
+        }
+        else
+        {
+            @Html.Word(Model.TitleTextId)
+        }
+
+    </a>
+</li>

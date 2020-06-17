@@ -1,0 +1,19 @@
+﻿<div class="di-container">
+    <div class="di-part-container">
+        <p *ngIf="readOnly">{{hours}}</p>
+        <input *ngIf="!readOnly" type="number" class="form-control di-hours" min="0" max="24" (change)="onPartChanged()" [(ngModel)]="hours" />
+        <label>{{'Words.Hours' | translate}}</label>
+    </div>
+
+    <div class="di-part-container">
+        <p *ngIf="readOnly">{{minutes}}</p>
+        <input *ngIf="!readOnly" type="number" class="form-control di-minutes" min="0" max="59" (change)="onPartChanged()" [(ngModel)]="minutes" />
+        <label>{{'Words.Minutes' | translate}}</label>
+    </div>
+    <div class="di-part-container">
+        <p *ngIf="readOnly">{{seconds}}</p>
+        <input *ngIf="!readOnly" type="number" class="form-control di-seconds" min="0" max="59" (change)="onPartChanged()" [(ngModel)]="seconds" />
+        <label>{{'Words.Seconds' | translate}}</label>
+    </div>
+
+</div>

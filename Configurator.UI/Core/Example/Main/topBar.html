@@ -1,0 +1,53 @@
+
+<nav class="navbar navbar-static-top top-bar">
+    <div class="container-fluid">
+        <div class="navbar-brand">
+            <a (click)="Slide()" class="mob">
+                <i class="fa fa-bars"></i>
+            </a>
+            <button (click)="ToggleNav()" class="btn btn-default not-mob">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="pull-last" *ngIf="isLoggedIn">
+            <ul class="nav navbar-nav">
+                <li style="padding-top:10px">
+                    <select class="form-control" [(ngModel)]="currentApp" (change)="appChanged()">
+                        <option [ngValue]="app" *ngFor="let app of apps">{{app.Name}}</option>
+                    </select>
+                </li>
+                <li *ngIf="!isLoggedIn">
+                    <a routerLink="/Login" routerLinkActive="hidden">
+                        {{'Words.Login' | translate}} <i class="fa fa-sign-in-alt"></i>
+                    </a>
+                </li>
+                <li *ngIf="isLoggedIn"  role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        {{user.name}}
+                        <img class="img-circle" [src]="user.photo?'/'+user.photo:'/img/default_user.png'" />
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu navbar-inverse">
+                        <li *ngIf="changePasswordItem">
+                            <a (click)="ChangePassword()">
+                                <i class="fa fa-key"></i>  &nbsp;&nbsp;{{'Words.ChangePassword' | translate}}
+                            </a>
+                        </li>
+                        <li *ngIf="editProfileItem">
+                            <a (click)="EditProfile()">
+                                <i class="fa fa-user"></i>  &nbsp;&nbsp;{{'Words.EditProfile' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a (click)="Logout()">
+                                <i class="fa fa-sign-out-alt"></i> &nbsp;&nbsp; {{'Words.Logout' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</nav>

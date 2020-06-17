@@ -1,0 +1,23 @@
+{
+  "AddEntity": "Add {{p0}}",
+  "Cancel": "Cancel",
+  "ChangePassword": "Change password",
+  "Count": "Count",
+  "Delete": "Delete",
+  "EditProfile": "Edit profile",
+  "Error": "Error",
+  "In__": "In",
+  "KeepMeLoggedIn": "Keep me logged in",
+  "Lang": "Lang",
+  "Log__": "Log",
+  "Login": "Login",
+  "Logout": "Logout",
+  "Main": "Main",
+  "No": "No",
+  "OK": "Ok",
+  "Password": "Password",
+  "Save": "Save",
+  "Search": "Search",
+  "UserName": "User name",
+  "Yes": "Yes"
+}

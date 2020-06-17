@@ -1,0 +1,34 @@
+@*ID:1935345175000*@
+
+@model PageListDTO
+
+@{
+    Layout = Html.Config().Layout;
+    var buttons = new List<LinkModel>();
+    buttons.Add(new LinkModel { IconClass = "fa fa-tasks", Url = Html.GetLink("ControlsLink", d => d.Id, "PageControls/PageCustomization"), BtnClassEnum = BtnClass.Primary, Title = "Controls" });
+}
+
+<div class="container-fluid">
+    <div class="row" *ngIf="Domain">
+        <div class="col-md-12 section-header">
+            {{Domain.nameChain}}
+        </div>
+    </div>
+    <div *ngFor="let model of list" class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3" title="@Html.Column(d => d.Name)">@Html.ValueBinding(d => d.Name)@Html.ValueBinding(d => d.RouteParameters)</div>
+                <div class="col-md-3 text-bold" [ngClass]="model.pageType=='Embedded'?'color-orange':'color-blue'">@Html.ValueBinding(d => d.PageType)</div>
+                <div class="col-md-2">@Html.ValueBinding(d => d.ResourceName) (@Html.ValueBinding(d => d.ActionType))</div>
+                <div class="col-md-4">@Html.ListModifiers(buttons: buttons, classes: "pull-last")</div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 text-italic color-lime" title="@Html.Column(d => d.PageCategoryName)">@Html.ValueBinding(d => d.PageCategoryName)</div>
+                <div class="col-md-3" title="Layout">@Html.ValueBinding(d => d.Layout)</div>
+                <div class="col-md-1" title="Referenced by / References">@Html.ValueBinding(d => d.ReferencedBy) / @Html.ValueBinding(d => d.References)</div>
+                <div class="col-md-5 text-bold" title="Apps">@Html.ValueBinding(d => d.AppsString)</div>
+            </div>
+        </div>
+    </div>
+</div>
+

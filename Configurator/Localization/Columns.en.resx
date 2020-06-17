@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Control__ControlType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control__Identifier" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__ActionType" xml:space="preserve">
+    <value>Action Type</value>
+  </data>
+  <data name="CreatePageDTO__Apps" xml:space="preserve">
+    <value>Apps</value>
+  </data>
+  <data name="CreatePageDTO__CollectionId" xml:space="preserve">
+    <value>Collection</value>
+  </data>
+  <data name="CreatePageDTO__ComponentDomain" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__ComponentName" xml:space="preserve">
+    <value>Component Name</value>
+  </data>
+  <data name="CreatePageDTO__ComponentPath" xml:space="preserve">
+    <value>Component Path</value>
+  </data>
+  <data name="CreatePageDTO__DefaultAccessibility" xml:space="preserve">
+    <value>Default Accessibility</value>
+  </data>
+  <data name="CreatePageDTO__Layout" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="CreatePageDTO__NavigationGroup" xml:space="preserve">
+    <value>Navigation Group</value>
+  </data>
+  <data name="CreatePageDTO__Resource" xml:space="preserve">
+    <value>Resource</value>
+  </data>
+  <data name="CreatePageDTO__ResourceId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__RouteParameters" xml:space="preserve">
+    <value>Route Parameters</value>
+  </data>
+  <data name="CreatePageDTO__SpecialPermission" xml:space="preserve">
+    <value>Special Permission</value>
+  </data>
+  <data name="CreatePageDTO__TemplatePath" xml:space="preserve">
+    <value>Template Path</value>
+  </data>
+  <data name="CreatePageDTO__TenantCode" xml:space="preserve">
+    <value>Tenant Code</value>
+  </data>
+  <data name="CreatePageDTO__Usage" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="CustomField__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CustomField__Type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DbCreationRequest__Environment" xml:space="preserve">
+    <value>Environment</value>
+  </data>
+  <data name="DbCreationRequest__TenantCode" xml:space="preserve">
+    <value>Tenant</value>
+  </data>
+  <data name="ModuleRequestDTO__AssemblyName" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="NavigationGroup__Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NavigationPage__DisplayOrder" xml:space="preserve">
+    <value>Display Order</value>
+  </data>
+  <data name="NavigationPage__Url" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="NotificationDTO__Payload" xml:space="preserve">
+    <value>Message from server</value>
+  </data>
+  <data name="NotificationDTO__TenantCode" xml:space="preserve">
+    <value>Tenant Code</value>
+  </data>
+  <data name="PageCategoryListDTO__BaseComponent" xml:space="preserve">
+    <value>Base Component</value>
+  </data>
+  <data name="PageCategoryListDTO__DomainName" xml:space="preserve">
+    <value>Domain Name</value>
+  </data>
+  <data name="PageCategoryListDTO__Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PageCategoryListDTO__ResourceName" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="PageCategoryParameter__DefaultValue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryParameter__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryParameter__TypeString" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="PageCategory__BaseComponent" xml:space="preserve">
+    <value>Base Component</value>
+  </data>
+  <data name="PageCategory__CreatedOn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__Layout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__Name" xml:space="preserve">
+    <value>Page Category Name</value>
+  </data>
+  <data name="PageCategory__ResourceId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__ResourceName" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="PageCategory__ScriptPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__ViewPath" xml:space="preserve">
+    <value>View Path</value>
+  </data>
+  <data name="PageControlListDTO__Accessability" xml:space="preserve">
+    <value>Accessability</value>
+  </data>
+  <data name="PageControlListDTO__AccessabilityId" xml:space="preserve">
+    <value>Accessability</value>
+  </data>
+  <data name="PageControlListDTO__ControlIdentifier" xml:space="preserve">
+    <value>Control Identifier</value>
+  </data>
+  <data name="PageControlListDTO__ControlType" xml:space="preserve">
+    <value>Control Type</value>
+  </data>
+  <data name="PageControlListDTO__PageName" xml:space="preserve">
+    <value>Page Name</value>
+  </data>
+  <data name="PageControlListDTO__Persistent" xml:space="preserve">
+    <value>Persistent</value>
+  </data>
+  <data name="PageControlListDTO__SourceCollection" xml:space="preserve">
+    <value>Source Collection</value>
+  </data>
+  <data name="PageControlListDTO__SourceCollectionId" xml:space="preserve">
+    <value>SourceCollection</value>
+  </data>
+  <data name="PageCustomizationDTO__Display" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="PageCustomizationDTO__Presistant" xml:space="preserve">
+    <value>Persistent</value>
+  </data>
+  <data name="PageDTO__TenantCode" xml:space="preserve">
+    <value>Tenant Code</value>
+  </data>
+  <data name="PageFullDataDTO__Display" xml:space="preserve">
+    <value>Page </value>
+  </data>
+  <data name="PageListDTO__Apps" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__BaseComponent" xml:space="preserve">
+    <value>Base Component</value>
+  </data>
+  <data name="PageListDTO__Layout" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="PageListDTO__Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PageListDTO__PageCategoryName" xml:space="preserve">
+    <value>Page Category</value>
+  </data>
+  <data name="PageListDTO__PageType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__ResourceName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__TenantCode" xml:space="preserve">
+    <value>Tenant Code</value>
+  </data>
+  <data name="PageListDTO__ViewPath" xml:space="preserve">
+    <value>View Path</value>
+  </data>
+  <data name="PageParameter__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameter__ParameterValue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameter__TypeString" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="PageParameter__UseDefault" xml:space="preserve">
+    <value>Use Category Default</value>
+  </data>
+  <data name="Page__Layout" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="Page__Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Page__SpecialPermission" xml:space="preserve">
+    <value>Permission Type</value>
+  </data>
+  <data name="Page__TenantCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__ViewPath" xml:space="preserve">
+    <value>View Path</value>
+  </data>
+  <data name="Resource__Domain" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource__DomainId" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="Resource__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select Component" xml:space="preserve">
+    <value>Select Component</value>
+  </data>
+  <data name="TemplateDTO__BaseComponent" xml:space="preserve">
+    <value>Base Component</value>
+  </data>
+  <data name="TemplateDTO__Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TemplateDTO__ResourceName" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="TemplateDTO__ViewPath" xml:space="preserve">
+    <value>View Path</value>
+  </data>
+  <data name="TenantDTO__TenantCode" xml:space="preserve">
+    <value>Tenant Code</value>
+  </data>
+  <data name="Tenant__Code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__ConnectionString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__CreatedOn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__DbName" xml:space="preserve">
+    <value>Database Name</value>
+  </data>
+  <data name="Tenant__Environment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Force" xml:space="preserve">
+    <value>+Version</value>
+  </data>
+  <data name="Tenant__IsActive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Logo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Tenant__Version" xml:space="preserve">
+    <value />
+  </data>
+</root>

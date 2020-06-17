@@ -1,0 +1,36 @@
+﻿@if (IsSectionDefined("header"))
+{
+    @RenderSection("header")
+}
+else
+{
+    @Html.PageHeader(Html.GetViewParams().AddUrl)
+}
+
+<div class="tab-content">
+    <div id="Details" class="tab-pane active">
+        <div class="wrapper wrapper-content animated fadeInRight m-t-lgg ng-scope home">
+            <div class="row">
+                <div class="col-md-3  ">
+                    <ul class="typeOreder">
+                        @RenderSection("navs")
+                    </ul>
+                </div>
+                <div class="col-md-9 mainCircle">
+                    <div class="panel-group mainPanel" id="accordion">
+                        @RenderSection("contents")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (IsSectionDefined("logs"))
+    {
+        <div id="ActionLogs" class="tab-pane">
+            @RenderSection("logs", false)
+        </div>
+    }
+
+</div>
+
+@RenderBody()

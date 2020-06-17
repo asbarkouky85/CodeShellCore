@@ -1,0 +1,73 @@
+@*ID:1936352598000*@
+
+@model TenantEditDTO
+@{
+    Layout = Html.Config().Layout;
+    Html.AddModal("SelectTemplateModel", "PageCategories/PageCategorySelect");
+    Html.UseSplitTheme();
+}
+
+<form #Form="ngForm">
+    <div class="row">
+        @Html.ControlGroup(a => a.Entity.Code, coll: Html.VCollection().AddRequired().AddUnique("model.id"))
+        @Html.ControlGroup(a => a.Entity.Name, coll: Html.VCollection().AddRequired())
+    </div>
+    <div class="row">
+        @Html.ControlGroup(d => d.DbName, coll: Html.VCollection().AddPattern($"'{Patterns.Identifier}'"))
+        @Html.ControlGroup(a => a.Entity.ConnectionString, coll: Html.VCollection())
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            @Html.SelectModalButton("MainComponentBase", "SelectTemplate()", "model.entity.mainComponentBase")
+        </div>
+        @Html.LabelGroup(d => d.Entity.Version)
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 section-header">@Html.Word("Publishing")</div>
+    </div>
+
+    <div class="row">
+        @if (Html.StartContainer("div", "update_buttons", attrs: new { @class = "from-group" }))
+        {
+            <div class="col-md-3">
+                <br />
+                <div class="input-group btn-group">
+                    @Html.Button("UpdateConfigurations", function: "SyncTenant()", btn: BtnClass.Info, icon: "fa fa-sync")
+                    @Html.Button("Render", function: "Render()", btn: BtnClass.Default, icon: "fa fa-image")
+                </div>
+            </div>
+            @Html.CloseContainer("div")
+        }
+        @Html.SelectControlGroup(d => d.Environment, Lister.Make("environments", false), "name", "name", size: 2, inputAttr: new { evnt__change = "env_change()" })
+        @Html.SelectControlGroup(d => d.DbName, Lister.Make("databases", false), "name", "name", size: 3, idExtra: "_selector")
+
+        @Html.CheckBoxGroup(d => d.Force,trueString:null,falseString:null, size: 1, inputAttr: new { title = "Force" })
+
+
+        @if (Html.StartContainer("div", "update_buttons", attrs: new { @class = "from-group" }))
+        {
+            <div class="col-md-3">
+                <br />
+
+                <div class="input-group btn-group">
+
+                    @Html.Button("UpdateDatabase", function: "UpdateDatabase()", btn: BtnClass.Primary, icon: "fa fa-download", attr: new { calc__disabled = "!model.dbName" })
+                    @Html.Button("Publish", function: "Publish()", btn: BtnClass.Success, icon: "fa fa-upload", attr: new { calc__disabled = "!model.environment" })
+                </div>
+            </div>
+            @Html.CloseContainer("div")
+        }
+
+    </div>
+
+</form>
+
+<div class="row" style="height:400px">
+    @Html.ComponentSelectorFromOther("OutputListener")
+</div>
+
+@section buttons{
+    @Html.SubmitButton()
+}

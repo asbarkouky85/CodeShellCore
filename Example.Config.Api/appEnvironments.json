@@ -1,0 +1,53 @@
+[
+  {
+    "Name": "Local",
+    "ConnectionParams": {
+      "UserId": "app",
+      "Password": "123456",
+      "Server": "(local)",
+      "Database": ""
+    },
+    "SourceDataBase": null,
+	"SourceBackupPath":null,
+	"ConfigDatabase":null,
+	"ConfigBackupPath":null,
+    "Databases": []
+  },
+  {
+    "Name": "Development",
+    "ConnectionParams": {
+      "UserId": "app",
+      "Password": "123456",
+      "Server": "asga_dev",
+      "Database": ""
+    },
+    "SourceDataBase": null,
+    "Databases": [],
+    "Upload": {
+      "Type": "FS",
+      "Server": "",
+      "ServerUrl": "http://asga_dev",
+      "PathOnServer": "\\\\dev-server\\Publish\\"
+    }
+  },
+  {
+    "Name": "Production",
+    "ConnectionParams": {
+      "UserId": "app",
+      "Password": "123456",
+      "Server": null,
+      "Database": ""
+    },
+    "SourceDataBase": null,
+    "Databases": [],
+    "Upload": {
+      "Type": "FTP",
+      "Server": "(ftp server)",
+      "ServerUrl": "(http server)",
+      "PathOnServer": "(path from ftp home to project)",
+      "UserName": "(ftp user name)",
+      "Password": "(ftp password)",
+      "Active": true
+    }
+  }
+]

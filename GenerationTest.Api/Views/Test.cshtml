@@ -1,0 +1,17 @@
+﻿@model User
+
+@{
+    Layout = "~/ShellComponents/Angular/Layout/EditLayout.cshtml";
+
+    Html.Config().Controls["user__name"] = new ControlDTO { Accessibilty = 1 };
+    Html.Config().Controls["user__appid"] = new ControlDTO { Accessibilty = 2 };
+    Html.HeaderModel().AddToButtons(Html.Word("Hello"), function: "SayHello()", icon: "fa fa-open");
+}
+
+<div>
+    @Html.ControlGroup(d => d.Name, coll: Html.VCollection().AddRequired())
+    @Html.RadioGroup(d => d.AppId, Html.EnumDictionary<CodeShellCore.Moldster.MoldsType, bool>())
+    @Html.RadioGroup(d => d.AppId, new Dictionary<string, object> { { "Type1", "'t1'" }, { "Type2", "'t2'" } })
+    @Html.FileGroup(d => d.Name, "field", "Upload")
+    @Html.Button()
+</div>

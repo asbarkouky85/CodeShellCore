@@ -1,0 +1,119 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Pages__PageList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+
+        <ol class="breadcrumb">
+            <li>
+                <a routerLink="'/'">{{'Words.Main' | translate }}</a>
+            </li>
+            <li>
+                {{'Pages.Pages__PageList' | translate }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Pages__PageList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{totalCount}}</span></span>
+            </div>
+            <div class="col-md-8">
+                <search-group (termChange)="HeaderSearch($event)"></search-group>
+            </div>
+        </div>
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+
+        <div class="table-responsive">
+            
+
+
+
+<div class="container-fluid">
+    <div class="row" *ngIf="Domain">
+        <div class="col-md-12 section-header">
+            {{Domain.nameChain}}
+        </div>
+    </div>
+    <div *ngFor="let model of list" class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3" title="{{'Columns.PageListDTO__Name' | translate }}">{{model.name}}{{model.routeParameters}}</div>
+                <div class="col-md-3 text-bold" [ngClass]="model.pageType=='Embedded'?'color-orange':'color-blue'">{{model.pageType}}</div>
+                <div class="col-md-2">{{model.resourceName}} ({{model.actionType}})</div>
+                <div class="col-md-4"><div class="btn-group btnResponsive pull-last">
+            <a *ngIf="Permission.update" class="btn btn-primary btn-sm" [routerLink]="'/Pages/PageEdit/' +model.id">
+                <i class="fa fa-pen"></i>
+            </a>
+
+
+
+    <a class="btn btn-primary btn-sm"
+       [routerLink]="'/PageControls/PageCustomization/'+model.id"
+       
+        title="{{'Words.Controls' | translate }}">
+        <i class="fa fa-tasks"></i> 
+    </a>
+                <a *ngIf="Permission.delete" class="btn btn-danger btn-sm" (click)="Delete(model,model.id)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+
+</div></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 text-italic color-lime" title="{{'Columns.PageListDTO__PageCategoryName' | translate }}">{{model.pageCategoryName}}</div>
+                <div class="col-md-3" title="Layout">{{model.layout}}</div>
+                <div class="col-md-1" title="Referenced by / References">{{model.referencedBy}} / {{model.references}}</div>
+                <div class="col-md-5 text-bold" title="Apps">{{model.appsString}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </div>
+
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+    </div>
+
+</div>
+<div style='display:none' #lookupOptionsContainer values=''></div>
+<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":null,"EditUrl":"/Pages/PageEdit","DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{"ControlsLink":"PageControls/PageCustomization"}}'></div>

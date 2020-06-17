@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using CodeShellCore.Data.Helpers;
+using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Services;
+
+namespace CodeShellCore.Moldster.Services.Db
+{
+    public interface IPageControlDataService : IServiceBase
+    {
+        IEnumerable<DomainWithPagesDTO> GetDomainWithPages(long tenantId, string domainName = null);
+        SubmitResult UpdateTemplateControls(PageCategory p, List<ControlDTO> controls);
+        SubmitResult DeleteUnusedControls(PageCategory p, List<ControlDTO> controls);
+        SubmitResult UpdateTemplatePages(long id, long? tenantId = null);
+    }
+}

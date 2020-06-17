@@ -1,0 +1,21 @@
+@*ID:5*@
+@model EditingDTO<Role>
+
+@{
+    Layout = Html.Config().Layout;
+}
+
+<form #Form="ngForm">
+    @Html.ControlGroup(d => d.Entity.Name, coll: Html.VCollection().AddRequired())
+    @Html.TextAreaGroup(d => d.Entity.Description, coll: Html.VCollection().AddLength(300))
+</form>
+
+@if (Html.StartContainer("div", "PrivilegesControl"))
+{
+    @Html.Partial("~/Views/Auth/Components/DomainResources.cshtml")
+    @Html.CloseContainer("div")
+}
+
+@section buttons{
+    @Html.SubmitButton()
+}
