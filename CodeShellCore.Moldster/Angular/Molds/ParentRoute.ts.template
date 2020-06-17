@@ -1,6 +1,0 @@
-﻿	{ 
-	path:"%DomainName%",
-	children:[
-		%Children%
-		]
-	}
