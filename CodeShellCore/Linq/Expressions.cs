@@ -111,6 +111,37 @@ namespace CodeShellCore.Linq
             return Combine<T>(pExp, greaterExp, smaller);
         }
 
+        static object Parse(string t, Type typ)
+        {
+            var nam = typ.RealType().Name;
+            switch (nam)
+            {
+                case "Int32":
+                case "Int64":
+                case "Int16":
+                    return int.Parse(t);
+                case "Boolean":
+                    return bool.Parse(t);
+            }
+            return t;
+        }
+
+        public static Expression<Func<T, bool>> GetEqualsExpression<T>(string propertyName, string value1)
+        {
+            ParameterExpression pExp = Expression.Parameter(typeof(T));
+            MemberExpression mExp = GetMemberExpression(pExp, propertyName);
+            if (mExp == null)
+                return null;
+            var real = mExp.Type.RealType();
+            MethodInfo inf = real.GetMethod("Equals", new[] { real.RealType() });
+            var ob = Parse(value1, mExp.Type);
+            ConstantExpression cExp = Expression.Constant(ob);
+            UnaryExpression uExp = Expression.Convert(cExp, real);
+            MethodCallExpression mcExp = Expression.Call(mExp, inf, uExp);
+
+            return Expression.Lambda<Func<T, bool>>(mcExp, pExp);
+        }
+
         public static Expression<Func<T, bool>> GetStringContainsFilter<T>(string propertyName, string str)
         {
             ParameterExpression pExp = Expression.Parameter(typeof(T));

@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asga\Asga.csproj" />
+    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
     <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
 

@@ -8,20 +8,20 @@ namespace CodeShellCore.Web.Razor.Themes
         /// <summary>
         /// "~/ShellComponents"
         /// </summary>
-        public virtual string LayoutBase { get { return "~/ShellComponents"; } }
+        public virtual string BasePath { get { return "~/ShellComponents"; } }
         /// <summary>
         /// 6
         /// </summary>
         public virtual int DefaultControlGroupSize { get { return 6; } }
-        public virtual string ControlGroupTemplate { get { return "~/ShellComponents/Containers/ControlGroup.cshtml"; } }
-        public virtual string LocalizableControlGroupTemplate { get { return "~/ShellComponents/Containers/LocalizableControlGroup.cshtml"; } }
-        public virtual string LabelGroupTemplate { get { return "~/ShellComponents/Containers/LabelGroup.cshtml"; } }
-        public virtual string CellTemplate { get { return "~/ShellComponents/Containers/Cell.cshtml"; } }
-        public virtual string HeaderCellTemplate { get { return "~/ShellComponents/TableCells/HeaderCell.cshtml"; } }
+        public virtual string DefaultControlGroupTemplate => BasePath + "/Containers/ControlGroup.cshtml";
+        public virtual string LocalizableControlGroupTemplate => BasePath + "/Containers/LocalizableControlGroup.cshtml";
+        public virtual string LabelGroupTemplate => BasePath + "/Containers/LabelGroup.cshtml";
+        public virtual string CellTemplate => BasePath + "/Containers/Cell.cshtml";
+        public virtual string HeaderCellTemplate => BasePath + "/TableCells/HeaderCell.cshtml";
 
-        public virtual bool SortingInTables { get { return true; } }
+        public virtual bool SortingInTables => true;
 
-        public string SmallBtnClass => "btn-sm";
+        public virtual string SmallBtnClass => "btn-sm";
 
         public virtual string GetButtonClass(BtnClass type)
         {
@@ -30,22 +30,40 @@ namespace CodeShellCore.Web.Razor.Themes
 
         public virtual string GetCell(CellTypes types)
         {
-            return "~/ShellComponents/TableCells/" + types.ToString() + ".cshtml";
+            return BasePath + "/TableCells/" + types.ToString() + ".cshtml";
+        }
+
+        public virtual string GetControlGroupTemplate(InputControls type, bool localizable = false)
+        {
+            if (type == InputControls.Label)
+                return LabelGroupTemplate;
+            else if (localizable)
+                return LocalizableControlGroupTemplate;
+
+            return DefaultControlGroupTemplate;
+        }
+
+        public virtual string GetControlGroupTemplate(string inputType, bool localizable = false)
+        {
+            if (localizable)
+                return LocalizableControlGroupTemplate;
+
+            return DefaultControlGroupTemplate;
         }
 
         public virtual string GetInputControl(InputControls cont)
         {
-            return "~/ShellComponents/InputControls/" + cont.ToString() + ".cshtml";
+            return BasePath + "/InputControls/" + cont.ToString() + ".cshtml";
         }
 
         public virtual string GetInputControl(string cont)
         {
-            return "~/ShellComponents/InputControls/" + cont + ".cshtml";
+            return BasePath + "/InputControls/" + cont + ".cshtml";
         }
 
         public virtual string GetTemplate(string componentName)
         {
-            return Utils.CombineUrl("~/ShellComponents/Components/", componentName + ".cshtml");
+            return BasePath + "/" + componentName + ".cshtml";
         }
     }
 }

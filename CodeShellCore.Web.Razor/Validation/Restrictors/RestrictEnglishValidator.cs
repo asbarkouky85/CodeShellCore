@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Text.Localization;
-
+using CodeShellCore.Web.Razor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +25,11 @@ namespace CodeShellCore.Web.Razor.Validation.Restrictors
             {
                 return "";
             }
+        }
+
+        public override IEnumerable<ValidatorModel> GetMessageModels()
+        {
+            return new ValidatorModel[0];
         }
     }
 }

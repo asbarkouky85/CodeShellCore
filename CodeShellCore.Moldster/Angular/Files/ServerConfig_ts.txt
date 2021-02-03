@@ -2,6 +2,8 @@
 
 export class ServerConfig implements ServerConfigBase {
     GoogleKey: string = "";
+	DefaultLocale: string = "";
+    Version?: string | null | undefined;
     BaseURL: string = "";
     Domain: string = "";
     Locale: string = "";

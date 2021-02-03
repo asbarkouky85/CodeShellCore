@@ -1,10 +1,11 @@
-﻿import { Injectable, OnInit, ViewChild, ElementRef, Input, ComponentRef, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Route, Router } from "@angular/router";
+﻿import { Injectable, OnInit, ViewChild, ElementRef, Input, ComponentRef, OnDestroy, ComponentFactoryResolver, ComponentFactory, Injector } from "@angular/core";
+import { ActivatedRoute, Route, Router, NavigationExtras } from "@angular/router";
 import { Location } from "@angular/common";
 
 import { Shell } from "../shell";
 import { Permission, RouteData } from "../security/models";
 import { NoteType, ViewParams, DeleteResult, ComponentRequest, LocalizablesDTO } from "../helpers";
+import { Registry } from "codeshell/core";
 
 @Injectable()
 export abstract class BaseComponent implements OnInit, OnDestroy {
@@ -17,8 +18,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     private _modalCancel = false;
 
     protected Route: ActivatedRoute;
+    protected Injector: Injector;
+    protected get Resolver(): ComponentFactoryResolver { return this.Injector.get(ComponentFactoryResolver); };
     protected RouteData: RouteData = new RouteData;
-    
+
     EmbeddedInit?: () => void;
 
     onlyNumber(evt: any) {
@@ -54,7 +57,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     OnOk: (sender: any) => Promise<boolean> = e => Promise.resolve(true);
     OnCancel: (sender: any) => Promise<boolean> = e => Promise.resolve(true);
 
-
     get ViewParams(): ViewParams {
 
         if (!this._viewParams) {
@@ -71,9 +73,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         return Shell.Injector.get(Router);
     }
 
-    constructor(route: ActivatedRoute) {
+    constructor(route: ActivatedRoute, inj: Injector) {
         this.Route = route;
-
+        this.Injector = inj;
         let conf = route.routeConfig as Route;
 
         if (conf) {
@@ -100,6 +102,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     GetPageId(): number { return 0; }
+
+    GetMainUrl(): string {
+        return Shell.Main.GetMainUrl();
+    }
 
     ngAfterViewInit() {
         Shell.ViewLoaded.emit({});
@@ -182,10 +188,18 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     private OpenModal<T extends BaseComponent>(path: string): Promise<ComponentRef<T>> {
-        var comp = Shell.Main.GetDialogAs<T>(path);
-        if (comp != null) {
-            return Promise.resolve(comp);
+        //var comp = Shell.Main.GetDialogAs<T>(path);
+        let e = Registry.Get(path);
+        if (e) {
+            console.log(this.Resolver)
+            var fac = this.Resolver.resolveComponentFactory(e) as ComponentFactory<T>;
+            let comp: ComponentRef<T> = fac.create(Shell.Injector);
+            if (comp != null && Shell.Main.ModalLoader) {
+                Shell.Main.ModalLoader.UseComponent(comp);
+                return Promise.resolve(comp);
+            }
         }
+
         return Promise.reject("not found");
     }
 
@@ -296,11 +310,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         })
     }
 
-    NavigateToComponent(url: string) {
+    NavigateToComponent(url: string, ext?: NavigationExtras) {
         if (url.length > 0) {
             if (url[0] != "/")
                 url = "/" + url;
-            this.Router.navigateByUrl(url);
+            this.Router.navigate([url], ext);
         }
     }
 

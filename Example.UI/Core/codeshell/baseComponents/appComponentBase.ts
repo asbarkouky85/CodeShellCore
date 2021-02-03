@@ -1,5 +1,5 @@
 ﻿import { Injector, ComponentFactoryResolver, ComponentRef, EventEmitter, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
 import { ToastrService } from "ngx-toastr";
@@ -17,19 +17,20 @@ import { HttpClient } from "@angular/common/http";
 export abstract class IAppComponent {
 
     private _loaderTimeout: number | null = null;
-    
+
     ShowLoader: boolean = false;
     IsLoggedIn: boolean = false;
-    
+
     deleteDialogShow: boolean = false;
     confirmTitle?: string;
     confirmMessage?: string;
+    RestrictLang?: string;
 
     promptShow: boolean = false;
     promptMessage: string = "";
 
     ShowNav: boolean = true;
-    
+
     TokenIsExpired: EventEmitter<void> = new EventEmitter<void>();
     SideBarStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
     get FactoryResolver(): ComponentFactoryResolver { return Shell.Injector.get(ComponentFactoryResolver); }
@@ -44,8 +45,10 @@ export abstract class IAppComponent {
     abstract ModalLoader?: TestLoader;
 
     @ViewChild("topBar") topBar?: TopBarBase;
-    
+
     constructor(inj: Injector, private title: Title, private conf: ServerConfigBase) {
+
+        
         
         Shell.Injector = inj;
         Shell.Start(this);
@@ -57,7 +60,7 @@ export abstract class IAppComponent {
             this.IsLoggedIn = true;
             this.OnStartupSessionFound(d);
         }).catch(e => {
-           
+
             this.OnStartupNoSession(e)
         });
 
@@ -76,7 +79,9 @@ export abstract class IAppComponent {
     }
 
     ngOnInit() {
-
+        if (this.RestrictLang && this.Config.Locale != this.RestrictLang) {
+            this.ChangeLangAsync(this.RestrictLang).then(e => location.reload());
+        }
     }
 
     GetMainUrl(): string {
@@ -84,7 +89,7 @@ export abstract class IAppComponent {
     }
 
     OnStartupSessionFound(dto: UserDTO) {
-        
+
     }
 
     OnStartupNoSession(response: any) {
@@ -156,11 +161,11 @@ export abstract class IAppComponent {
         };
     }
 
-    
+
 
     ShowDeleteConfirm(): Promise<boolean> {
         this.deleteDialogShow = true;
-        
+
         this.confirmTitle = Shell.Word("Delete");
         this.confirmMessage = Shell.Message("delete_confirm_message");
         return new Promise((res, rej) => {
@@ -186,7 +191,7 @@ export abstract class IAppComponent {
             this.confirmMessage = translate ? Shell.Message(message) : message;
 
             this.OnDeleteConfirm = e => {
-                
+
                 this.deleteDialogShow = false;
                 res();
             };
@@ -211,9 +216,13 @@ export abstract class IAppComponent {
         this.ShowMessage(type, Shell.Message(messageId), Shell.Word(title));
     }
 
-    SetTitle(pageIdentifier: string) {
-        this.title.setTitle(Shell.Page(pageIdentifier));
+    SetTitle(pageIdentifier: string, translate = true) {
+        if (translate)
+            this.title.setTitle(Shell.Page(pageIdentifier));
+        else
+            this.title.setTitle(pageIdentifier);
     }
+
 
     ClearModalLoader() {
         if (this.ModalLoader)

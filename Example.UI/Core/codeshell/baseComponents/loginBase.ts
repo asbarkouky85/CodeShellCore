@@ -3,9 +3,25 @@ import { AccountServiceBase } from "codeshell/security";
 import { Shell } from "codeshell/core";
 import { Utils } from "codeshell/helpers";
 
-export class LoginBase extends BaseComponent{
+export class LoginBase extends BaseComponent {
     AccountService: AccountServiceBase = Shell.Injector.get(AccountServiceBase);
     model: any = {};
+    ForgotPasswordUrl?: string;
+
+    ShowPassword(passInput: HTMLInputElement) {
+        passInput.type = "text";
+    }
+
+    HidePassword(passInput: HTMLInputElement) {
+        passInput.type = "password";
+    }
+
+    TogglePassword(passInput: HTMLInputElement) {
+        if (passInput.type == "text")
+            passInput.type = "password";
+        else
+            passInput.type = "text";
+    }
 
     ngOnInit() {
         super.ngOnInit();

@@ -26,6 +26,11 @@
             border-color: #1A6BC3;
         }
 
+        .chiller_cb input:disabled:checked ~ span {
+            background: #1A6BC3;
+            border-color: #1A6BC3;
+        }
+
             .chiller_cb input:checked ~ span:before {
                 width: 1rem;
                 height: 0.15rem;
@@ -101,6 +106,7 @@
 
     .chiller_cb strong {
         margin: 0px 22px;
+        line-height: 25px;
     }
 
 table.table.table-striped .chiller_cb input {
@@ -118,3 +124,4 @@ table.table.table-striped .chiller_cb input {
     .check-label i, .check-label span {
         padding: 0px 10px;
     }
+

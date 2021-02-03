@@ -1,8 +1,6 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Data.Helpers;
-using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Definitions;
-using CodeShellCore.Moldster.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,7 +79,7 @@ namespace CodeShellCore.Moldster.Cli
 
                     Console.Write("Adding tenant to config database...");
 
-                    var res = tenants.Create(new Db.Tenant
+                    var res = tenants.Create(new Tenant
                     {
                         Id = id,
                         Code = code,

@@ -6,6 +6,17 @@ import { KeyValue } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
 import { SubmitResult, NoteType, DeleteResult } from "../helpers";
 
+export function absUrl(url: string | null | undefined): string {
+    if (url) {
+        if (url.length > 0) {
+            if (url[0] != "/")
+                url = "/" + url;
+        }
+        return url;
+    }
+    return "/";
+}
+
 export function List_RemoveItem(lst: any[], item: any) {
     let ind = lst.indexOf(item);
     if (ind > -1)
@@ -137,7 +148,16 @@ export class Utils {
     private static i: number = 0;
     private static lastSec: number;
 
-    public static GetIdString(): string {
+    static GetQueryString(obj: any) {
+		var str = [];
+		for (var p in obj)
+			if (obj.hasOwnProperty(p)) {
+				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+			}
+		return str.join("&");
+	}
+
+    static GetIdString(): string {
         let sec = new Date().getTime();
         let gen: string = "";
         if (sec == this.lastSec) {
@@ -161,7 +181,7 @@ export class Utils {
 
         if (note) {
             if (deleting) {
-                var del: DeleteResult = Object.assign(new DeleteResult,res);
+                var del: DeleteResult = Object.assign(new DeleteResult, res);
                 res = del;
                 if (del.tableName) {
                     var message = Shell.Message("delete_error_message", { p0: Shell.Word(del.tableName) })
@@ -205,13 +225,13 @@ export class Utils {
         return res;
     }
 
-    public static GetId(): number {
+    static GetId(): number {
         var s = [];
 
         return Number.parseInt(this.GetIdString());
     }
 
-    public static Combine(...items: string[]): string {
+    static Combine(...items: string[]): string {
         let endsWithSlash = new RegExp("\/$");
         let startsWithSlash = new RegExp("^\/");
         let final = "";
@@ -234,8 +254,11 @@ export class Utils {
         return final;
     }
 
-    public static GetEnumName<T>(con: new () => T) {
-
+    static CalcAge(bDate: Date): number {
+        var cDate = new Date();
+        var mill = cDate.getTime() - bDate.getTime();
+        var age = Math.floor(mill / (365 * 24 * 60 * 60 * 1000));
+        return age;
     }
 
     public static GetEnumString(E: any, value: number) {

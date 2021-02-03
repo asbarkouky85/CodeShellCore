@@ -7,13 +7,13 @@ namespace CodeShellCore.Security.Authorization
 {
     public class AuthenticatedOnlyAuthorizationService : AuthorizationService
     {
-        public AuthenticatedOnlyAuthorizationService(ISessionManager manager) : base(manager)
+        public AuthenticatedOnlyAuthorizationService(IUserAccessor manager) : base(manager)
         {
         }
 
         public override bool IsAuthorized(AuthorizationRequest req)
         {
-            return SessionManager.IsLoggedIn();
+            return User.IsUser;
         }
     }
 }

@@ -37,21 +37,7 @@
 
     </div>
     <div class="row" *ngIf="!IsEmbedded">
-
-        <ol class="breadcrumb">
-            <li>
-                <a routerLink="'/'">@Html.Word("Main")</a>
-            </li>
-            @foreach (var item in Model.BreadCrums)
-            {
-                <li>
-                    <a routerLink="@item.Value">@Html.Page(item.Key)</a>
-                </li>
-            }
-            <li>
-                @Model.Title
-            </li>
-        </ol>
+        @Html.BreadCrumbs(Model)
     </div>
 </div>
 

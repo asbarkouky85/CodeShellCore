@@ -7,8 +7,10 @@ export class ListItemWatcher {
     @Input("li-watch") mod?: any;
 
     @HostListener("change", ['$event']) Change(ev: any) {
-        if (this.item)
+        if (this.item){
             this.item.SetModified();
+        }
+            
         
     }
 

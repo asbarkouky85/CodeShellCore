@@ -16,6 +16,8 @@ export abstract class EditComponentBase extends BaseComponent {
     @ViewChild("Form") Form?: NgForm;
     CurrentLang: string = "ar";
 
+    UI_Lang: string = "ar";
+
     private _formState: string = "VALID";
     private _formValidity = new EventEmitter<boolean>();
 
@@ -33,17 +35,16 @@ export abstract class EditComponentBase extends BaseComponent {
     LoadLookups: boolean = false;
     IsNew: boolean = true;
     FormIsValid: boolean = true;
+    modelId?: number;
+    file_field?: string;
 
     DataSubmitted?: (model: any, result: SubmitResult) => void;
     DataSubmittedEvent: EventEmitter<SubmitResult> = new EventEmitter<SubmitResult>();
 
     get CanSubmit(): boolean {
-        if (this.Form) {
-            return this.Form.valid != null && this.Form.valid;
-        }
-        return true;
+        return this.FormIsValid;
     }
-    set CanSubmit(st: boolean) {}
+    set CanSubmit(st: boolean) { }
 
     get Loc(): LocalizablesDTO {
 
@@ -62,7 +63,7 @@ export abstract class EditComponentBase extends BaseComponent {
     ngOnInit() {
 
         this.model = this._bound ? this._bound : this.DefaultModel();
-        
+
         let lookupOpts = this.GetLookupOptions();
 
         if (!this.IsEmbedded) {
@@ -76,21 +77,28 @@ export abstract class EditComponentBase extends BaseComponent {
             }
         }
 
-        this.CurrentLang = Shell.Main.Config.Locale;
+        this.UI_Lang = Shell.Main.Config.DefaultLocale;
+        this.CurrentLang = Shell.Main.Config.DefaultLocale == "ar" ? "en" : "ar";
 
         if (this.Form && this.Form.statusChanges) {
             this.Form.statusChanges.subscribe(d => {
                 if (d != this._formState) {
                     this.FormIsValid = d != "INVALID";
-                    this._formValidity.emit(this.FormIsValid);
-
                     this.OnFormValidityChange(this.FormIsValid);
+                    this.EmitValidity();
                 }
+                
                 this._formState = d;
             });
-            setTimeout(() => this._formValidity.emit(this.CanSubmit), 200);
+            setTimeout(() => this.EmitValidity(), 200);
         }
     }
+
+
+
+
+    get ModelId(): number { return this.model.id; }
+    set ModelId(val: number) { this.model.id = val; }
 
     DefaultModel(): any { return {}; }
 
@@ -98,22 +106,26 @@ export abstract class EditComponentBase extends BaseComponent {
 
     }
 
+    EmitValidity() {
+        this._formValidity.emit(this.CanSubmit);
+    }
+
     protected LoadLookupsAsync(opts: any): Promise<any> {
-        return this.Service.Get("GetEditLookups", opts);
+        return this.Service.GetEditLookups(opts);
     }
 
     protected StartEditOrCreate() {
 
         if (!this.IsNew) {
-            let id = Number.parseInt(this.RouteParams['id']);
-            this.Fill(id);
+            this.modelId = Number.parseInt(this.RouteParams['id']);
+            this.Fill(this.modelId);
 
         } else {
             this.StartNew();
         }
     }
 
-    private StartComponent() {
+    protected StartComponent() {
 
         if (!this.IsEmbedded) {
             this.Route.params.subscribe(params => {
@@ -142,12 +154,12 @@ export abstract class EditComponentBase extends BaseComponent {
         this.IsInitialized = true;
         setTimeout(() => this.SetAccessibility(), 700);
 
-        if (this.UseLocalization && this.model && this.model.id != 0) {
-            this.Service.GetLocalizationData(this.model.id).then(s => {
+        if (this.UseLocalization && this.model && this.ModelId != 0) {
+            this.Service.GetLocalizationData(this.ModelId).then(s => {
                 this.Localizables = s
             })
         }
-       
+
         this.OnReady();
     }
 
@@ -156,6 +168,12 @@ export abstract class EditComponentBase extends BaseComponent {
         this.model = await this.GetModelFromServerAsync(id);
         this.IsNew = false;
         this._componentStarted();
+    }
+
+    Clear() {
+        this.model = this.DefaultModel();
+        this.Localizables = {};
+        this.IsNew = true;
     }
 
     async BindAsync(mod: any): Promise<void> {
@@ -221,7 +239,7 @@ export abstract class EditComponentBase extends BaseComponent {
      * @param id as obtaind from url
      */
     protected GetModelFromServerAsync(id: number): Promise<any> {
-        return this.Service.Get("GetSingle", id);
+        return this.Service.GetSingle(id);
     }
 
     /**
@@ -238,8 +256,10 @@ export abstract class EditComponentBase extends BaseComponent {
                 submit = true;
             }
         }
+
         if (submit) {
-            var res = await this.Service.SetLocalizationData(this.model.id, s);
+            var e = this.model;
+            var res = await this.Service.SetLocalizationData(this.ModelId, s);
         }
     }
 
@@ -259,8 +279,9 @@ export abstract class EditComponentBase extends BaseComponent {
 
         if (this.IsNew) {
             prom = await this.SubmitNewAsync();
+
             if (prom.data.Id) {
-                this.model.id = prom.data.Id;
+                this.ModelId = prom.data.Id;
                 await this.SubmitLocalizablesAsync();
             }
         }
@@ -307,5 +328,22 @@ export abstract class EditComponentBase extends BaseComponent {
         Utils.HandleError(res, true);
     }
 
-
+    Delete(id: number) {
+        Shell.Main.ShowDeleteConfirm().then(e => {
+            if (e) {
+                this.Service.Delete("Delete", id).then(e => {
+                    if (!this.IsEmbedded) {
+                        this.NotifyTranslate("delete_success");
+                        if (this.ViewParams.ListUrl) {
+                            this.NavigateToComponent(this.ViewParams.ListUrl);
+                        } else {
+                            this.Navigation.back();
+                        }
+                    }
+                }).catch(e => {
+                    Utils.HandleError(e, true, true);
+                })
+            }
+        })
+    }
 }

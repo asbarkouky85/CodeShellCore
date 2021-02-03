@@ -14,6 +14,13 @@ namespace CodeShellCore.Web.Moldster.Configurator
 
         public string LogonName => "admin";
 
+        public string App => "Admin";
+
+        public string GetPersonId()
+        {
+            return null;
+        }
+
         public long? GetUserIdAsLong()
         {
             return null;

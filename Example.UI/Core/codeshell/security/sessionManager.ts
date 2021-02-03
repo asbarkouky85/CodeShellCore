@@ -46,24 +46,40 @@ export class SessionManager {
 
                 this.StartSession(data);
             } catch (e) {
+                Promise.reject("Failed to refresh using token");
             }
         }
-        return Promise.reject("no token")
+        return Promise.reject("No token or refresh token found")
     }
 
-    async GetUserAsync(): Promise<UserDTO> {
+    async ReloadUserDataAsync(): Promise<UserDTO> {
         var token = this.GetToken();
-        if (!token) {
-            return this.TryRefreshAsync();
+        if (!token)
+            return Promise.reject("Cannot reload user data without token");
+        await this.GetUserDataFromServer();
+        if (userData) {
+            this.MapPermissions(userData);
+            this.OnLogin.emit(userData);
         }
+        return userData as UserDTO;
+
+    }
+
+    GetUserAsync(): Promise<UserDTO> {
 
         if (userData) {
             return Promise.resolve(userData);
         }
 
-        if (!SessionManager._loadPromise)
-            SessionManager._loadPromise = this.GetUserDataFromServer();
+        if (!SessionManager._loadPromise) {
+            var token = this.GetToken();
+            if (!token) {
+                SessionManager._loadPromise = this.TryRefreshAsync();
+            } else {
+                SessionManager._loadPromise = this.GetUserDataFromServer();
+            }
 
+        }
         return SessionManager._loadPromise;
     }
 
@@ -155,7 +171,6 @@ export class SessionManager {
 
         return id;
     }
-
 
     public GetPermission(id: string): Permission {
 

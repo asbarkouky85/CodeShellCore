@@ -50,6 +50,8 @@ namespace CodeShellCore.Web.Razor.Elements
                 Name = groupName,
                 PropertyName = InputModel.MemberName.GetAfterLast(".").UCFirst()
             };
+
+            Helper.AddText(StringType.Column, columnId);
         }
 
         public override void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp)
@@ -74,7 +76,7 @@ namespace CodeShellCore.Web.Razor.Elements
                 PropertyName = RazorUtils.GetMemberNameDefault(exp).GetAfterLast(".")
             };
 
-
+            Helper.AddText(StringType.Column, ColumnId);
         }
 
         public void UseValidation(IValidationCollection coll, string fieldName = null, string alternateLabel = null)
@@ -88,7 +90,7 @@ namespace CodeShellCore.Web.Razor.Elements
             GroupModel.IsRequired = VCollection.HasRequired();
             if (GroupModel.IsRequired)
                 GroupModel.RequiredCondition = VCollection.GetRequiredCondition();
-            GroupModel.ValidationMessages = VCollection.GetMessages();
+            GroupModel.ValidationMessages = VCollection.GetMessages(Helper);
 
         }
 
@@ -112,7 +114,7 @@ namespace CodeShellCore.Web.Razor.Elements
             if (!(InputModel is LabelNgInput))
                 InputModel = InputModel.GetLabelInput();
             GroupModel.InputControl = GetInputControl(localizable ? InputControls.LocalizableLabel : InputControls.Label);
-            return Helper.Partial(Helper.GetTheme().LabelGroupTemplate, GroupModel);
+            return Helper.Partial(Helper.GetTheme().GetControlGroupTemplate(InputControls.Label, false), GroupModel);
         }
 
         public override IHtmlContent Write(string componentName, bool localizable = false)
@@ -125,7 +127,7 @@ namespace CodeShellCore.Web.Razor.Elements
                 return WriteLabel();
             }
 
-            string template = localizable ? Helper.GetTheme().LocalizableControlGroupTemplate : Helper.GetTheme().ControlGroupTemplate;
+            string template = Helper.GetTheme().GetControlGroupTemplate(componentName, localizable);
             GroupModel.InputControl = GetInputControl(componentName);
             return Helper.Partial(template, GroupModel);
         }
@@ -163,7 +165,7 @@ namespace CodeShellCore.Web.Razor.Elements
                 }
 
             }
-            string template = localizable ? Helper.GetTheme().LocalizableControlGroupTemplate : Helper.GetTheme().ControlGroupTemplate;
+            string template = Helper.GetTheme().GetControlGroupTemplate(cont, localizable);
             GroupModel.InputControl = GetInputControl(cont);
             return Helper.Partial(template, GroupModel);
         }

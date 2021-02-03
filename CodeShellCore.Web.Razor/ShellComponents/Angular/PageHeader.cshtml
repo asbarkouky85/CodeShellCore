@@ -2,6 +2,7 @@
 @{
     string buttonsCls = Model.ToolsSection == null ? "col-md-12" : "col-md-4";
 }
+@Html.GetModelTypeName()
 <div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
     <div class="row">
         <div class="col-sm-5 col-xs-12">
@@ -37,21 +38,7 @@
 
     </div>
     <div class="row" *ngIf="!IsEmbedded">
-
-        <ol class="breadcrumb">
-            <li>
-                <a routerLink="'/'">@Html.Word("Main")</a>
-            </li>
-            @foreach (var item in Model.BreadCrums)
-            {
-                <li>
-                    <a routerLink="@item.Value">@Html.Page(item.Key)</a>
-                </li>
-            }
-            <li>
-                @Model.Title
-            </li>
-        </ol>
+        @Html.BreadCrumbs(Model)
     </div>
 </div>
 

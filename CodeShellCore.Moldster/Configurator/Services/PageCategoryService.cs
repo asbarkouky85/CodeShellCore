@@ -2,9 +2,9 @@
 using CodeShellCore.Data.Services;
 using CodeShellCore.Files;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Db;
-using CodeShellCore.Moldster.Db.Data;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;

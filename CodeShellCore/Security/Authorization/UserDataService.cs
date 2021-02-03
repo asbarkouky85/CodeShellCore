@@ -22,24 +22,23 @@ namespace CodeShellCore.Security.Authorization
         {
             return new List<RoleCacheItem>();
         }
+
         protected virtual IUser GetUserFromDataSource(string c)
         {
             return null;
         }
-        public virtual Dictionary<string, DataAccessPermission> GetRolesPermissions(IEnumerable<object> lst)
-        {
 
-            List<ResourceActionV> ras = new List<ResourceActionV>();
-            Dictionary<string, Permission> rs = new Dictionary<string, Permission>();
+        public virtual Dictionary<string, DataAccessPermission> GetRolesPermissions(IEnumerable<string> lst)
+        {
             var ret = new Dictionary<string, DataAccessPermission>();
             List<object> unCached = new List<object>();
 
-            foreach (object role in lst)
+            foreach (string role in lst)
             {
                 var roleFromCache = GetRoleFromCache(role);
                 if (roleFromCache != null)
                 {
-                    rs = Append(rs, roleFromCache);
+                    ret = Append(ret, roleFromCache);
                 }
                 else
                 {
@@ -53,23 +52,19 @@ namespace CodeShellCore.Security.Authorization
                 foreach (var fromSrc in find)
                 {
                     SaveRoleInCache(fromSrc);
-                    rs = Append(rs, fromSrc);
+                    ret = Append(ret, fromSrc);
                 }
             }
-            
-            foreach (var per in rs)
-            {
-                ret[per.Key] = per.Value.ToDataPermission();
-            }
+
             return ret;
         }
 
-        protected virtual Dictionary<string, Permission> Append(Dictionary<string, Permission> permissions, RoleCacheItem roleItem)
+        protected virtual Dictionary<string, DataAccessPermission> Append(Dictionary<string, DataAccessPermission> permissions, RoleCacheItem roleItem)
         {
             foreach (var r in roleItem.Resources)
             {
-                if (!permissions.TryGetValue(r.Key, out Permission perm))
-                    perm = new Permission(0);
+                if (!permissions.TryGetValue(r.Key, out DataAccessPermission perm))
+                    perm = new DataAccessPermission(0);
                 
                 if (roleItem.Collections!=null && roleItem.Collections.TryGetValue(r.Key, out string coll))
                     perm.CollectionId = coll;
@@ -85,10 +80,10 @@ namespace CodeShellCore.Security.Authorization
 
         public virtual void SaveRoleInCache(RoleCacheItem item)
         {
-            cache.Store(item.RoleId, item);
+            cache.Store(item.RoleId.ToString(), item);
         }
 
-        protected virtual RoleCacheItem GetRoleFromCache(object role)
+        protected virtual RoleCacheItem GetRoleFromCache(string role)
         {
             return cache.Get<RoleCacheItem>(role);
         }

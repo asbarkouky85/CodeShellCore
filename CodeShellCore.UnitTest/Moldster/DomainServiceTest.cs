@@ -1,15 +1,12 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 using CodeShellCore.Moldster;
 using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Moldster.Db;
 using Microsoft.EntityFrameworkCore;
-using CodeShellCore.Moldster.Db.Data;
 using CodeShellCore.UnitTest.Data;
 using CodeShellCore.Web.Razor;
+using CodeShellCore.Moldster.Data;
 
 namespace CodeShellCore.UnitTest.Moldster
 {
@@ -22,7 +19,7 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             Shell.Start(new UnitTestShell(coll =>
             {
-                coll.AddMoldsterWeb(MoldsType.Db);
+                coll.AddMoldsterWeb();
                 coll.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
                 coll.AddScoped<MoldsterDataInit>();
             }));

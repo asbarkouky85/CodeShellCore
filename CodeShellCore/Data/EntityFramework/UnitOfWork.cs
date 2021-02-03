@@ -13,43 +13,61 @@ using CodeShellCore.DependencyInjection;
 using System.Data.SqlClient;
 using CodeShellCore.Linq;
 using CodeShellCore.Data.ConfiguredCollections;
+using CodeShellCore.Security;
+using CodeShellCore.Security.Authorization;
 
 namespace CodeShellCore.Data.EntityFramework
 {
     /// <summary>
     /// Unit of work is a container for all the repositories
     /// </summary>
-    public abstract class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
+    public abstract class UnitOfWork<TContext> : DefaultUnitOfWork, IUnitOfWork where TContext : DbContext
     {
-        protected InstanceStore<IRepository> Store;
-        protected IServiceProvider _provider;
-        private ILocaleTextProvider _textProvider;
-        protected virtual Type GenericRepositoryType { get; }
+        bool _userObtained = false;
+        bool _obtainingUser = false;
+        static bool _resourcesObtained = false;
+        static bool _obtainingResources = false;
+        IAuthorizableUser _authorizable;
+        static string[] _collectionResources = new string[0];
+
         protected virtual bool UseChangeColumns { get { return false; } }
-        public ILocaleTextProvider Strings
-        {
-            get
-            {
-                if (_textProvider == null)
-                    _textProvider = _provider.GetService<ILocaleTextProvider>();
-                return _textProvider;
-            }
-        }
+        protected virtual bool UseCollectionPermission => false;
 
         protected TContext DbContext { get; private set; }
-        public virtual Action<ChangeLists> OnBeforeSave { get { return null; } }
-        public virtual Action<ChangeLists> OnSaveSuccess { get { return null; } }
-        public bool IsDisposed { get; private set; } = false;
-        public event EventHandler<ChangeLists> Saving;
 
-        public UnitOfWork(IServiceProvider provider)
+        /// <summary>
+        /// override to process changes before saving
+        /// </summary>
+        public virtual Action<ChangeLists> OnBeforeSave { get { return null; } }
+        /// <summary>
+        /// override to proccess changes after saving
+        /// </summary>
+        public virtual Action<ChangeLists> OnSaveSuccess { get { return null; } }
+
+        public override event EventHandler<ChangeLists> Saving;
+
+        public UnitOfWork(IServiceProvider provider) : base(provider)
         {
-            _provider = provider;
             DbContext = _provider.GetService<TContext>();
-            Store = new InstanceStore<IRepository>(_provider);
+
         }
 
-        public ChangeLists GetChangeSet()
+        private bool _hasCollections(string res)
+        {
+            if (!_resourcesObtained && !_obtainingResources)
+            {
+                _obtainingResources = true;
+                var unit = _provider.GetService<ISecurityUnit>();
+                if (unit != null)
+                    _collectionResources = unit.ResourceRepository.GetResourcesWithCollections();
+
+                _obtainingResources = false;
+                _resourcesObtained = true;
+            }
+            return _collectionResources.Contains(res);
+        }
+
+        public override ChangeLists GetChangeSet()
         {
             IEnumerable<EntityEntry> entries = DbContext.ChangeTracker.Entries();
             return new ChangeLists
@@ -60,39 +78,83 @@ namespace CodeShellCore.Data.EntityFramework
             };
         }
 
-        public void EnableJsonLoading()
+        public override void EnableJsonLoading()
         {
             DbContext.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        public T GetRepository<T>() where T : class, IRepository
+        public override IRepository GetRepositoryFor(Type i)
         {
-            return Store.GetInstance<T>();
-        }
-
-        public IRepository GetRepository(Type t)
-        {
+            var req = typeof(IRepository<>).MakeGenericType(i);
+            var repo = _provider.GetService(req) as IRepository;
+            if (repo != null)
+                return repo;
+            var gen = GenericRepositoryType ?? typeof(Repository<,>);
+            var t = gen.MakeGenericType(i, typeof(TContext));
             return Store.GetInstance(t);
         }
 
-        public ICollectionRepository<T> GetCollectionRepositoryFor<T>() where T : class
+        public override ICollectionRepository<T> GetCollectionRepositoryFor<T>()
         {
-            return Store.GetInstance<ICollectionEFRepository<T, TContext>>();
+            if (GenericCollectionRepositoryType != null)
+            {
+                var t = GenericCollectionRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
+                return (ICollectionRepository<T>)Store.GetInstance(t);
+            }
+            return Store.GetInstance<ICollectionEFRepository<T, TContext>>(r => appendCollectionId(r));
         }
 
-        public IRepository<T> GetRepositoryFor<T>() where T : class
+        private bool _obtainUser()
+        {
+            if (!_userObtained)
+            {
+                _obtainingUser = true;
+                var x = UserAccessor.User;
+                if (x is IAuthorizableUser)
+                    _authorizable = x as IAuthorizableUser;
+                _userObtained = true;
+                _obtainingUser = false;
+            }
+            return _authorizable != null;
+        }
+
+        protected virtual void appendCollectionId(IRepository r)
+        {
+            if (!UseCollectionPermission || IgnorePermissions || _obtainingUser || !(r is ICollectionRepository))
+                return;
+
+            var repo = r as ICollectionRepository;
+            var res = EntityToResource(repo.EntityName);
+
+            if (!_hasCollections(res))
+                return;
+
+            if (!_obtainUser())
+                return;
+
+            if (_authorizable.Permissions.TryGetValue(res, out DataAccessPermission perm))
+                repo.CollectionId = perm.CollectionId;
+
+        }
+
+        public override IRepository<T> GetRepositoryFor<T>()
         {
             var i = typeof(T);
             var repo = _provider.GetService<IRepository<T>>();
             if (repo != null)
+            {
+                appendCollectionId(repo);
                 return repo;
+            }
+
             if (GenericRepositoryType != null)
             {
                 var t = GenericRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
                 return (IRepository<T>)Store.GetInstance(t);
             }
-            return Store.GetInstance<Repository<T, TContext>>();
+            return Store.GetInstance<Repository<T, TContext>>(r => appendCollectionId(r));
         }
+
 
         protected virtual void FillChangeColumns(ChangeLists lst)
         {
@@ -124,7 +186,7 @@ namespace CodeShellCore.Data.EntityFramework
         /// Attempts to submit changes to the data source
         /// </summary>
         /// <returns>if success <see cref="SubmitResult.Code"/> is 0</returns>
-        public virtual SubmitResult SaveChanges(string successMessage = null, string failMessage = null)
+        public override SubmitResult SaveChanges(string successMessage = null, string failMessage = null)
         {
             SubmitResult res = new SubmitResult();
             string def = Strings.Word(MessageIds.success_message);
@@ -172,7 +234,7 @@ namespace CodeShellCore.Data.EntityFramework
             return res;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             DbContext.Dispose();
             IsDisposed = true;
@@ -211,6 +273,11 @@ namespace CodeShellCore.Data.EntityFramework
             }
 
             return res;
+        }
+
+        public override T GetRepository<T>()
+        {
+            return Store.GetInstance<T>(r => appendCollectionId(r));
         }
     }
 }

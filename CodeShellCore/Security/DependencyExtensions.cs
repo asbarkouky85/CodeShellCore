@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Caching;
 using CodeShellCore.Security.Authentication;
+using CodeShellCore.Security.Authentication.Internal;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +39,7 @@ namespace CodeShellCore.Security
         {
             coll.AddCodeShellSecurity();
             coll.AddTransient<IUserDataService, DbUserDataService>();
-            coll.AddTransient<ISessionManager>(d => new TestSessionManager(userId));
+            coll.AddTransient<ISessionManager>(d => new TestSessionManager(userId, d));
             coll.AddScoped<ISecurityUnit, TUnit>();
 
         }

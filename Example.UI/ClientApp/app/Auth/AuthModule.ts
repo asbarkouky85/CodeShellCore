@@ -14,12 +14,14 @@ import { TranslateService } from "@ngx-translate/core";
     exports: [],
     imports: [
 		SharedModule,
+		
         RouterModule.forChild([
 { path:"Roles", loadChildren:"./Roles/RolesModule#RolesModule" },
 	{ path:"Users", loadChildren:"./Users/UsersModule#UsersModule" },
 	
 		])
-    ]
+    ],
+	entryComponents:[]
 })
 export class AuthModule {
 

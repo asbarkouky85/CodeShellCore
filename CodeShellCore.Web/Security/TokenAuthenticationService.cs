@@ -8,29 +8,30 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
+using CodeShellCore.Security.Authentication.Internal;
 
 namespace CodeShellCore.Web.Security
 {
     public class TokenAuthenticationService : PermissableAuthenticationService, IAuthenticationService
     {
         private string defaultProvider;
-        private readonly ISessionManager _sessionManager;
+
+        protected virtual TimeSpan? TokenLifeTime => new TimeSpan(1, 0, 0, 0);
 
         protected virtual string TokenProvider
         {
             get { return defaultProvider; }
             private set { defaultProvider = value; }
         }
-        public TokenAuthenticationService(ISecurityUnit unit, ISessionManager sessionManager, IUserDataService userData) : base(unit, userData)
+        public TokenAuthenticationService(ISecurityUnit unit, IUserDataService userData) : base(unit, userData)
         {
             defaultProvider = Shell.GetConfigAs<string>("Security:TokenProvider", false);
-            _sessionManager = sessionManager;
         }
 
         public override LoginResult Login(string name, string password, bool remember = false)
         {
             LoginResult res = base.Login(name, password);
-            if (res.Success)
+            if (res.IsSuccess)
             {
                 SetToken(res, remember);
             }
@@ -41,7 +42,7 @@ namespace CodeShellCore.Web.Security
         public override LoginResult LoginById(string id)
         {
             LoginResult res = base.LoginById(id);
-            if (res.Success)
+            if (res.IsSuccess)
             {
                 SetToken(res);
             }
@@ -50,16 +51,15 @@ namespace CodeShellCore.Web.Security
 
         protected virtual JWTData MakeJWT(LoginResult res)
         {
-            TimeSpan time = new TimeSpan(1, 0, 0, 0);
+
             var jwt = new JWTData
             {
-                Name = res.UserData.Name,
                 UserId = res.UserData.UserId,
                 Provider = TokenProvider,
                 StartTime = DateTime.Now,
-                ExpireTime = DateTime.Now + time,
-                DeviceId = _sessionManager.GetDeviceIdIfWeb(),
-                TokenId = Utils.RandomAlphabet(6, 2)
+                ExpireTime = TokenLifeTime == null ? DateTime.MaxValue : DateTime.Now + TokenLifeTime.Value,
+                DeviceId = SecurityUnit?.ClientData.DeviceId,
+                TokenId = Utils.RandomAlphabet(6, CharType.Small)
             };
             if (res.UserData is IAuthorizableUser)
                 jwt.Roles = ((IAuthorizableUser)res.UserData).Roles;
@@ -73,14 +73,19 @@ namespace CodeShellCore.Web.Security
             res.Token = Shell.Encryptor.Encrypt(jwt.ToJson());
             if (remember)
             {
-                RefreshJWTData r = new RefreshJWTData
-                {
-                    DeviceId = jwt.DeviceId,
-                    TokenId = jwt.TokenId,
-                    UserId = jwt.UserId
-                };
+                var r = GenerateRefrehToken(jwt);
                 res.RefreshToken = Shell.Encryptor.Encrypt(r.ToJson());
             }
+        }
+
+        protected virtual RefreshJWTData GenerateRefrehToken(JWTData jwt)
+        {
+            return new RefreshJWTData
+            {
+                DeviceId = jwt.DeviceId,
+                TokenId = jwt.TokenId,
+                UserId = jwt.UserId
+            };
         }
 
         public static string MakeTestToken(string userId, string provider)

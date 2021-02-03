@@ -2,18 +2,19 @@
 import { TranslateService } from "@ngx-translate/core";
 import { BaseAppBaseModule } from 'BaseApp/BaseAppBaseModule';
 import { ServerConfigBase, Registry } from "codeshell/core";
+import { ChangePassword } from "./ChangePassword";
 
 
 @NgModule({
-    declarations: [],
+    declarations: [ChangePassword,],
     exports: [
-		
+		ChangePassword,
 		BaseAppBaseModule
 	],
     imports: [
         BaseAppBaseModule
     ],
-	entryComponents:[]
+	entryComponents:[ChangePassword, ]
 })
 export class SharedModule {
 
@@ -23,3 +24,4 @@ export class SharedModule {
     }
 }
 
+Registry.Register("Shared/ChangePassword", ChangePassword);

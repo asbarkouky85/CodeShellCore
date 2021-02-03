@@ -6,6 +6,8 @@ namespace CodeShellCore.Moldster.Definitions
 {
     public class DbCreationRequest
     {
+        public bool? Recursive { get; set; } = true;
+        public bool? ReplaceExisting { get; set; }
         public bool? Force { get; set; }
         public string Environment { get; set; }
         public string TenantCode { get; set; }

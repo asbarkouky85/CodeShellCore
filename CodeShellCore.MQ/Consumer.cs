@@ -8,24 +8,40 @@ using CodeShellCore.Services;
 using CodeShellCore.Files.Logging;
 using CodeShellCore.Types;
 using CodeShellCore.Files.Storage;
+using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.MQ
 {
 
     public abstract class Consumer : ServiceBase, IConsumer
     {
-        protected InstanceStore<IServiceBase> Store;
-        protected FileStorageService Failed;
-        protected FileStorageService Successful;
+        protected IServiceScope _scope;
+        protected InstanceStore<object> Store;
+        private static Logger _logger;
+        private static object _locker = new { };
+        protected Logger MQLog => _getLogger();
+        protected IServiceProvider Injector { get; private set; }
         public Consumer()
         {
-            Scope = new ScopeContainer(Shell.GetScope());
-            Injector = Scope.Scope.ServiceProvider;
-            Store = new InstanceStore<IServiceBase>(() => Injector);
-            Failed = new FileStorageService("FailedCommands/" + GetType().Name + ".json");
+            _scope = Shell.GetScope();
+            Injector = _scope.ServiceProvider;
+            Store = new InstanceStore<object>(() => Injector);
         }
-        protected ScopeContainer Scope;
-        protected IServiceProvider Injector { get; private set; }
+
+
+        private Logger _getLogger()
+        {
+            if (_logger == null)
+            {
+                lock (_locker)
+                {
+                    _logger = Logger.Create(Shell.ProjectAssembly.GetName().Name, Path.Combine(Shell.AppRootPath, "MQLogs"));
+                }
+            }
+            _logger.ClassName = GetType().Name;
+            return _logger;
+        }
 
         public virtual Task Handle<TObject>(CrudEvent<TObject> item) where TObject : class
         {
@@ -34,6 +50,7 @@ namespace CodeShellCore.MQ
                 try
                 {
                     var res = Store.GetInstance<IEntityHandler<TObject>>().Handle(item);
+
                     RecordResult(res, item);
                 }
                 catch (Exception ex)
@@ -53,8 +70,9 @@ namespace CodeShellCore.MQ
             {
                 try
                 {
+
                     var res = action(ev);
-                    RecordResult(res);
+                    RecordResult(res, ev);
                 }
                 catch (Exception ex)
                 {
@@ -73,7 +91,7 @@ namespace CodeShellCore.MQ
                 try
                 {
                     var res = action(context.Message);
-                    RecordResult(res);
+                    RecordResult(res, context.Message);
                 }
                 catch (Exception ex)
                 {
@@ -107,28 +125,32 @@ namespace CodeShellCore.MQ
 
         }
 
-        protected void RecordResult(SubmitResult res, object data = null)
+        protected void RecordResult(SubmitResult res, object data)
         {
-            if (res.Code != 0)
+            if (res.IsSuccess)
             {
-                Failed.Add(data, res.GetException());
-                Failed.Save();
+                MQLog.WriteLogLine($"Event {data.GetType().FullName} ---> Success [{res.AffectedRows}] rows");
             }
-        }
+            else
+            {
+                MQLog.WriteLogLine($"Event {data.GetType().FullName} ---> Failed {res.Message} {res.ExceptionMessage}");
+                var ex = res.GetException();
+                if (ex != null)
+                {
+                    var trace = ex.GetStackTrace(true);
+                    foreach (var line in trace)
+                    {
+                        MQLog.WriteLogLine(line);
+                    }
 
-        protected SubmitResult OnError(object ev, Exception ex)
-        {
-            Failed.Add(ev, ex);
-            Failed.Save();
-            SubmitResult re = new SubmitResult(1);
-            re.SetException(ex);
-            throw ex;
+                }
+            }
         }
 
         public override void Dispose()
         {
             base.Dispose();
-            Scope.Dispose();
+            _scope.Dispose();
         }
 
 

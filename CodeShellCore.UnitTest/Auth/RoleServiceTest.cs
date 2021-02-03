@@ -45,14 +45,14 @@ namespace CodeShellCore.UnitTest.Auth
             RunScoped(prov =>
             {
                 var s = prov.GetService<ICacheProvider>();
-                s.Store<RoleCacheItem>(1, new RoleCacheItem
+                s.Store<RoleCacheItem>("1", new RoleCacheItem
                 {
                     RoleId = 1
 
 
                 });
                 prov.GetService<RolesService>().Update(role);
-                var itemCached = s.Get<RoleCacheItem>(1);
+                var itemCached = s.Get<RoleCacheItem>("1");
                 Assert.AreEqual(null, itemCached);
             });
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Db.Dto
+namespace CodeShellCore.Moldster.Dto
 {
     public class DomainWithPagesDTO
     {
@@ -32,7 +32,7 @@ namespace CodeShellCore.Moldster.Db.Dto
                                  TenantCode = e.Tenant.Code,
                                  TenantId = e.TenantId,
                                  Page = e,
-                                 BaseScript = e.PageCategory.ScriptPath,
+                                 //BaseScript = e.PageCategory.ScriptPath,
                                  ParentHasResource = e.PageCategory.ResourceId != null,
                                  ResourceName = e.Resource.Name,
                                  DomainName = e.Domain.Name,

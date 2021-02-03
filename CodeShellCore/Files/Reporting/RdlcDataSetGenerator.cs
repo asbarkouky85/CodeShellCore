@@ -10,9 +10,9 @@ namespace CodeShellCore.Files.Reporting
     public class RdlcDataSetGenerator : ServiceBase
     {
         readonly WriterService Service;
-        public RdlcDataSetGenerator(WriterService service)
+        public RdlcDataSetGenerator()
         {
-            Service = service;
+            Service = new WriterService();
         }
 
         public string Bind<T>(T model, bool save = true) where T : ReportModel

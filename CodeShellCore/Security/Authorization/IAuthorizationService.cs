@@ -11,7 +11,7 @@ namespace CodeShellCore.Security.Authorization
 {
     public interface IAuthorizationService : IServiceBase
     {
-        ISessionManager SessionManager { get; }
+        bool IsLoggedIn { get; }
         bool IsAuthorized(AuthorizationRequest req);
         void OnUserIsUnauthorized(AuthorizationRequest args);
     }

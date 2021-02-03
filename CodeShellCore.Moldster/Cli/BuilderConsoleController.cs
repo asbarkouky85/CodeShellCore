@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Cli;
+using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Services;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace CodeShellCore.Moldster.Cli
 
         public void Init()
         {
-            Scripts.GenerateEnvironment();
+            Scripts.GenerateEnvironment(false);
 
         }
 
@@ -32,12 +33,12 @@ namespace CodeShellCore.Moldster.Cli
 
         public void AddStaticFiles()
         {
-            Scripts.AddStaticFiles();
+            Scripts.AddStaticFiles(false);
         }
 
         public void Add_core_codeshell()
         {
-            Scripts.AddCodeShell();
+            Scripts.AddCodeShell(false);
         }
     }
 }

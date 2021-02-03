@@ -14,31 +14,38 @@ namespace CodeShellCore.Text.TextProviders
     public class ResxTextProvider : ILocaleTextProvider
     {
         Language _lang;
+        static object _locker = new { };
 
         protected static Dictionary<string, Dictionary<string, string>> WordsDictionary = new Dictionary<string, Dictionary<string, string>>();
         protected static Dictionary<string, Dictionary<string, string>> ColsDictionary = new Dictionary<string, Dictionary<string, string>>();
         protected static Dictionary<string, Dictionary<string, string>> MessDictionary = new Dictionary<string, Dictionary<string, string>>();
         protected static Dictionary<string, Dictionary<string, string>> PageDictionary = new Dictionary<string, Dictionary<string, string>>();
 
+        public CultureInfo Culture => _lang.Culture;
+
         public ResxTextProvider(Language lang)
         {
             _lang = lang;
         }
 
-        static void InitializeCulutre(string cult)
+        static void _initCulture(string cult)
         {
-            if (Shell.UseLocalization)
-                UseLocalization(cult);
-            else
+            lock (_locker)
             {
-                WordsDictionary[cult] = new Dictionary<string, string>();
-                ColsDictionary[cult] = new Dictionary<string, string>();
-                MessDictionary[cult] = new Dictionary<string, string>();
-                PageDictionary[cult] = new Dictionary<string, string>();
+                if (Shell.UseLocalization)
+                    _readCultureResources(cult);
+                else
+                {
+                    WordsDictionary[cult] = new Dictionary<string, string>();
+                    ColsDictionary[cult] = new Dictionary<string, string>();
+                    MessDictionary[cult] = new Dictionary<string, string>();
+                    PageDictionary[cult] = new Dictionary<string, string>();
+                }
             }
+
         }
 
-        static void UseLocalization(string cult)
+        static void _readCultureResources(string cult)
         {
             string assembly = Shell.LocalizationAssembly;
 
@@ -65,7 +72,7 @@ namespace CodeShellCore.Text.TextProviders
             cult = cult ?? _lang.Culture.TwoLetterISOLanguageName;
 
             if (!WordsDictionary.ContainsKey(cult))
-                InitializeCulutre(cult);
+                _initCulture(cult);
 
             string word;
             if (WordsDictionary[cult].TryGetValue(index, out word))
@@ -78,7 +85,7 @@ namespace CodeShellCore.Text.TextProviders
         {
             cult = cult ?? _lang.Culture.TwoLetterISOLanguageName;
             if (!ColsDictionary.ContainsKey(cult))
-                InitializeCulutre(cult);
+                _initCulture(cult);
 
             string col;
             if (ColsDictionary[cult].TryGetValue(index, out col))
@@ -92,7 +99,7 @@ namespace CodeShellCore.Text.TextProviders
             cult = cult ?? _lang.Culture.TwoLetterISOLanguageName;
 
             if (!PageDictionary.ContainsKey(cult))
-                InitializeCulutre(cult);
+                _initCulture(cult);
 
             string word;
             if (PageDictionary[cult].TryGetValue(index, out word))
@@ -106,7 +113,7 @@ namespace CodeShellCore.Text.TextProviders
             string cult = _lang.Culture.TwoLetterISOLanguageName;
 
             if (!MessDictionary.ContainsKey(cult))
-                InitializeCulutre(cult);
+                _initCulture(cult);
 
             string mes;
             if (MessDictionary[cult].TryGetValue(index, out mes))
@@ -118,7 +125,7 @@ namespace CodeShellCore.Text.TextProviders
         public string MessageWithCulture(string index, string cult, params string[] formatElements)
         {
             if (!MessDictionary.ContainsKey(cult))
-                InitializeCulutre(cult);
+                _initCulture(cult);
 
             string mes;
             if (MessDictionary[cult].TryGetValue(index, out mes))
@@ -132,7 +139,7 @@ namespace CodeShellCore.Text.TextProviders
             string cult = _lang.Culture.TwoLetterISOLanguageName;
 
             if (!WordsDictionary.ContainsKey(cult))
-                InitializeCulutre(cult);
+                _initCulture(cult);
 
             string mes;
             if (WordsDictionary[cult].TryGetValue(index, out mes))
@@ -144,7 +151,7 @@ namespace CodeShellCore.Text.TextProviders
         public string WordWithCulture(string index, string cult, params string[] args)
         {
             if (!WordsDictionary.ContainsKey(cult))
-                InitializeCulutre(cult);
+                _initCulture(cult);
 
             string mes;
             if (WordsDictionary[cult].TryGetValue(index, out mes))

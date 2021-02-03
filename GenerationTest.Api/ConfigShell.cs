@@ -31,7 +31,8 @@ namespace GenerationTest.Api
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
-            coll.AddMoldsterWeb(MoldsType.Db);
+            coll.AddMoldsterWeb();
+            coll.AddMoldsterConfigurator();
             coll.AddCodeShellEmbeddedViews();
             coll.AddMoldsterRazorHelpers();
             var d = getConfig("ConnectionStrings:Moldster");

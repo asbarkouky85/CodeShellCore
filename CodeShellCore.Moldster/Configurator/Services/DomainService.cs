@@ -4,38 +4,24 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.Data;
 using CodeShellCore.Data.Helpers;
 using System.Linq;
 using CodeShellCore.Data.Lookups;
-using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster;
 
 namespace CodeShellCore.Moldster.Configurator.Services
 {
     public class DomainService : EntityService<Domain>
     {
         protected IConfigUnit Unit;
-        private static Dictionary<Type, long> EntityIds;
 
         public DomainService(IConfigUnit unit) : base(unit)
         {
             Unit = unit;
         }
 
-        public long GetEntityId<T>()
-        {
-            if (EntityIds == null)
-                EntityIds = GetEntityIds();
 
-            long id;
-            if (EntityIds.TryGetValue(typeof(T), out id))
-                return id;
-
-            DomainEntity ent = GetEntity(typeof(T).FullName);
-            EntityIds = null;
-            return ent.Id;
-
-        }
 
         public Dictionary<long, int> PageCategoryCounters()
         {
@@ -55,31 +41,25 @@ namespace CodeShellCore.Moldster.Configurator.Services
             return l.ToDictionary(d => d.Id, d => d.Count);
         }
 
-        public Dictionary<Type, long> GetEntityIds()
+        void CheckForShared()
         {
-            var d = Unit.DomainEntityRepository.FindAs(e => new
-            {
-                e.Name,
-                e.Id
-            });
-            Assembly assem = Assembly.Load("FMS");
-
-            Dictionary<Type, long> dic = new Dictionary<Type, long>();
-            foreach (var x in d)
-            {
-                Type entityType = assem.GetType(x.Name);
-                if (entityType != null)
-                    dic[entityType] = x.Id;
-            }
-
-            return dic;
+            Unit.DomainRepository.Merge(d => d.Name == "Shared", new Domain { Id = 1, Name = "Shared" });
+            Unit.SaveChanges();
         }
 
-        public IEnumerable<Domain> GetTree()
+        public IEnumerable<Domain> GetTree(long? tenantId = null)
         {
-            var lst = Unit.DomainRepository.GetList().Recurse().ToList();
-            lst.Add(new Domain { Id = -1, Name = "Shared", NameChain = "Shared", Children = new List<Domain>() });
-            return lst;
+            CheckForShared();
+            if (tenantId == null)
+                return Unit.DomainRepository.GetList().Recurse().ToList();
+            else
+                return Unit.DomainRepository.GetHavingPagesForTenant(tenantId.Value).Recurse().ToList();
+        }
+
+        public IEnumerable<Domain> GetCategoriesTree()
+        {
+            CheckForShared();
+            return Unit.DomainRepository.GetHavingCategories().Recurse().ToList();
         }
 
         public long GetDomainId(string domain)
@@ -100,29 +80,6 @@ namespace CodeShellCore.Moldster.Configurator.Services
             }
 
         }
-
-        public DomainEntity GetEntity(string fullName)
-        {
-            if (Unit.DomainEntityRepository.Exist(d => d.Name == fullName))
-                return Unit.DomainEntityRepository.FindSingle(d => d.Name == fullName);
-
-            DomainEntity ent = new DomainEntity
-            {
-                Name = fullName
-            };
-            string domain = fullName.GetBeforeLast(".").Replace("FMS.", "");
-
-
-            ent.DomainId = GetDomainId(domain);
-
-            Unit.DomainEntityRepository.Add(ent);
-            Unit.SaveChanges();
-            return ent;
-
-        }
-
-
-
 
     }
 }

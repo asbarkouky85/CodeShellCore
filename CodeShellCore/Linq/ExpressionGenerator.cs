@@ -91,6 +91,8 @@ namespace CodeShellCore.Linq
         {
             switch (f.FilterType)
             {
+                case "equals":
+                    return Expressions.GetEqualsExpression<T>(f.MemberName, f.Value1);
                 case "string":
                     return Expressions.GetStringContainsFilter<T>(f.MemberName, f.Value1);
                 case "decimal":

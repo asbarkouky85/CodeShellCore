@@ -1,10 +1,10 @@
-<div class="page-header" [ngClass]="IsEmbedded?'section-header':'container-fluid'" *ngIf="!HideHeader">
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
     <div class="row">
-        <div class="col-sm-5 col-xs-12" *ngIf="!IsEmbedded">
+        <div class="col-sm-5 col-xs-12">
             <h2>{{'Pages.Roles__RoleEdit' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
         </div>
 
-        <div class="col-sm-7 col-xs-12" *ngIf="!IsEmbedded">
+        <div class="col-sm-7 col-xs-12">
             <div class="row">
 
                 <div class="col-md-12 col-xs-12 padTop padBottom">
@@ -24,30 +24,33 @@
             </div>
         </div>
 
-        <div *ngIf="IsEmbedded" class="container-fluid">
-            <div class="row">
-                <div class="col-md-8">
-                    {{'Pages.Roles__RoleEdit' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
-                </div>
-                <div class="col-md-4">
-                </div>
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+        <li>
+        {{'Pages.Roles__RoleEdit' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Roles__RoleEdit' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
             </div>
         </div>
     </div>
-    <div class="row" *ngIf="!IsEmbedded">
+</div><div [ngClass]="IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'">
 
-        <ol class="breadcrumb">
-            <li>
-                <a routerLink="'/'">{{'Words.Main' | translate }}</a>
-            </li>
-            <li>
-                {{'Pages.Roles__RoleEdit' | translate }}
-            </li>
-        </ol>
-    </div>
-</div><div [ngClass]="IsEmbedded?'panel panel-default embedded':'animated fadeInRight'">
-
-    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+    <div [ngClass]="IsEmbedded?'panel-body':'content-block'">
         <div class="row" *ngIf="UseLocalization">
             <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
                 <div class="btn-group btn-group-sm pull-last">
@@ -87,7 +90,8 @@
     <p *ngIf="!FG_entity_name.Write">{{FG_entity_name.Value}}</p>
 
 
-        <span *ngIf="Form.controls['Form__entity_name'] && Form.controls['Form__entity_name'].invalid && (Form.controls['Form__entity_name'].dirty || Form.controls['Form__entity_name'].touched)"><small *ngIf="Form.controls['Form__entity_name'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.Role__Name' | translate } }}</small>
+        <span *ngIf="Form.controls['Form__entity_name'] && Form.controls['Form__entity_name'].invalid">
+        <small *ngIf="Form.controls['Form__entity_name'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.Role__Name' | translate } }}</small>
 </span>
     </div>
 </div>
@@ -108,7 +112,8 @@
           [(ngModel)]="model.entity.description"
           maxlength="300"  ></textarea>
 
-        <span *ngIf="Form.controls['Form__entity_description'] && Form.controls['Form__entity_description'].invalid && (Form.controls['Form__entity_description'].dirty || Form.controls['Form__entity_description'].touched)"><small *ngIf="Form.controls['Form__entity_description'].errors!.maxlength" class="form-text text-danger">{{'Messages.invalid_max_length' | translate : {p0:'300'} }}</small>
+        <span *ngIf="Form.controls['Form__entity_description'] && Form.controls['Form__entity_description'].invalid">
+        <small *ngIf="Form.controls['Form__entity_description'].errors!.maxlength" class="form-text text-danger">{{'Messages.invalid_max_length' | translate : {p0:'300'} }}</small>
 </span>
     </div>
 </div>
@@ -122,7 +127,7 @@
 <div class="row">
     <div class="col-md-12">
         <ul class="nav nav-tabs">
-            <li *ngFor="let res of Lookups.domains" [ngClass]="res.Selected?'active':null">
+            <li *ngFor="let res of Lookups.resourcesByDomain" [ngClass]="res.Selected?'active':null">
                 <a (click)="Priv.Select(res)">{{ 'Words.'+res.name | translate }}</a>
             </li>
         </ul>
@@ -130,8 +135,8 @@
 </div>
 
 <div class="row">
-<form #Form="ngForm" >
-        <div *ngFor="let dom of Lookups.domains">
+<form #PrivForm="ngForm" >
+        <div *ngFor="let dom of Lookups.resourcesByDomain">
             <div *ngIf="dom.Selected" class="col-md-12">
                 <table class="table table-striped text-center">
                     <thead>
@@ -183,7 +188,7 @@
            [name]="'available'+i"
            [(ngModel)]="r.available"
            [li-watch]="r"
-            >
+            (change)="Priv.ItemChanged(r)">
     <span></span>
 </label>
     <div style="position:relative">
@@ -198,7 +203,7 @@
            [name]="'canViewDetails'+i"
            [(ngModel)]="r.Tag.canViewDetails"
            [li-watch]="r"
-            [disabled]="!r.available" >
+            [disabled]="!r.available" (change)="Priv.ItemChanged(r)">
     <span></span>
 </label>
     <div style="position:relative">
@@ -213,7 +218,7 @@
            [name]="'canUpdate'+i"
            [(ngModel)]="r.Tag.canUpdate"
            [li-watch]="r"
-            [disabled]="!r.available" >
+            [disabled]="!r.available" (change)="Priv.ItemChanged(r)">
     <span></span>
 </label>
     <div style="position:relative">
@@ -228,7 +233,7 @@
            [name]="'canInsert'+i"
            [(ngModel)]="r.Tag.canInsert"
            [li-watch]="r"
-            [disabled]="!r.available" >
+            [disabled]="!r.available" (change)="Priv.ItemChanged(r)">
     <span></span>
 </label>
     <div style="position:relative">
@@ -243,7 +248,7 @@
            [name]="'canDelete'+i"
            [(ngModel)]="r.Tag.canDelete"
            [li-watch]="r"
-            [disabled]="!r.available" >
+            [disabled]="!r.available" (change)="Priv.ItemChanged(r)">
     <span></span>
 </label>
     <div style="position:relative">
@@ -264,27 +269,16 @@
                                     </div>
                                 </div>
                             </td>
-                            <td  >
-    
-<select class="form-control"
-        name="Form__collectionId{{i}}" 
-        [li-watch]="r"
-        [(ngModel)]="r.collectionId"
-        required  >
-    <option *ngFor="let item of r.collections" [ngValue]="item.id">{{item.name}}</option>
-</select>
+                                <td>
+                                    <select class="form-control"
+                                            name="PrivForm__collectionId{{i}}"
+                                            *ngIf="r.available"
+                                            [li-watch]="r.Tag"
+                                            [(ngModel)]="r.Tag.collectionId">
+                                        <option *ngFor="let item of r.collections" [ngValue]="item.id">{{item.name}}</option>
+                                    </select>
+                                </td>
 
-    <div style="position:relative">
-        <div class="cell-validation" *ngIf="Form.controls['Form__collectionId'+i+''] && Form.controls['Form__collectionId'+i+''].invalid && Form.controls['Form__collectionId'+i+''].touched">
-    <i class="fa fa-exclamation-circle redColor"></i>
-    <div class="messages">
-        <small *ngIf="Form.controls['Form__collectionId'+i+''].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.RoleResource__CollectionId' | translate } }}</small>
-
-    </div>
-</div>
-
-    </div>
-</td>
                         </tr>
                     </tbody>
                 </table>
@@ -312,5 +306,5 @@
     </div>
 </div>
 
-<div style='display:none' #lookupOptionsContainer values='{"domains":"C0","r.collections":"C0"}'></div>
-<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{}}'></div>
+<div style='display:none' #lookupOptionsContainer values='{"resourcesByDomain":"C0"}'></div>
+<div style='display:none' #viewParamsContainer values='{"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{}}'></div>

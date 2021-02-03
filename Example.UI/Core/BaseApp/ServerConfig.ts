@@ -1,6 +1,8 @@
 import { ServerConfigBase } from "codeshell/core";
 
 export class ServerConfig implements ServerConfigBase {
+    DefaultLocale: string="";
+    Version?: string | null | undefined;
     GoogleKey: string = "";
     BaseURL: string = "";
     Domain: string = "";

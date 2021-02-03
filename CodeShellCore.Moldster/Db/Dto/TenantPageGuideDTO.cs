@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Db.Dto
+namespace CodeShellCore.Moldster.Dto
 {
     public class TenantPageGuideDTO
     {

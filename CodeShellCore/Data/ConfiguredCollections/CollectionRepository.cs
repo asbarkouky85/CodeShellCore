@@ -1,28 +1,46 @@
 ﻿using CodeShellCore.Data.EntityFramework;
+using CodeShellCore.Data.Lookups;
 using CodeShellCore.Linq;
+using CodeShellCore.Security;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace CodeShellCore.Data.ConfiguredCollections
 {
-    public class CollectionRepository<T, TContext, TPrime> : KeyRepository<T, TContext, TPrime>, ICollectionEFRepository<T,TContext>
+    public class CollectionRepository<T, TContext, TPrime> : KeyRepository<T, TContext, TPrime>, ICollectionEFRepository<T, TContext>
         where T : class, IModel<TPrime>
         where TContext : DbContext
 
     {
         protected readonly ICollectionConfigService _service;
-        public CollectionRepository(TContext con, ICollectionConfigService service) : base(con)
+        protected readonly IUserAccessor UserAccessor;
+
+        public string CollectionId { get; set; }
+        public string EntityName { get => typeof(T).Name; }
+
+        public CollectionRepository(TContext con, ICollectionConfigService service, IUserAccessor acc) : base(con)
         {
             _service = service;
+            this.UserAccessor = acc;
+        }
+
+        protected override IQueryable<T> GetLoader()
+        {
+            if (CollectionId != null)
+            {
+                var exp = _service.GetCollectionExpression<T>(CollectionId, UserAccessor);
+                return base.GetLoader().Where(exp);
+            }
+            return base.GetLoader();
+
         }
 
         protected IQueryable<T> QueryCollection(string collectionId)
         {
-            var exp = _service.GetCollectionExpression<T>(collectionId);
+            var exp = _service.GetCollectionExpression<T>(collectionId, UserAccessor);
             if (exp == null)
                 throw new Exception("Unregistered collection " + collectionId);
             return Loader.Where(exp);
@@ -47,6 +65,17 @@ namespace CodeShellCore.Data.ConfiguredCollections
         {
 
             return QueryCollection(collectionId).Select(exp).LoadWith(opts);
+        }
+
+        public override IEnumerable<Named<object>> FindAsLookup(string collectionId = null)
+        {
+            var l = collectionId == null ? Loader : QueryCollection(collectionId);
+            return QueryNamed(l).OrderBy(d => d.Name).ToList();
+        }
+
+        public override IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
+        {
+            return base.FindAsLookup(collectionId, ex);
         }
     }
 }

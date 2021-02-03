@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.CLI
+namespace CodeShellCore.Cli
 {
     public interface IOutputWriter
     {
@@ -12,5 +12,6 @@ namespace CodeShellCore.CLI
         ColorSetter Set(ConsoleColor yellow);
         void WriteLine(string v, bool replaceLast = false);
         void GotoColumn(int column);
+        
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 using CodeShellCore.Web.Razor.Elements.Angular;
 using CodeShellCore.Web.Razor.General.Moldster;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Web.Razor.Validation;
 using System.Collections;
 using System.Collections.Generic;

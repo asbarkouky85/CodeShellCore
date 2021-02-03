@@ -1,16 +1,25 @@
 ﻿import { UserDTO, AuthorizationServiceBase, DomainDataProvider, RouteData } from "codeshell/security";
 import { FunctionItem } from "codeshell/security/navs";
 import { Shell } from "codeshell/core";
+import { Injector } from "@angular/core";
+import { Router } from "@angular/router";
+import { absUrl } from "codeshell/helpers";
 
 export class NavigationSideBarBase {
     user?: UserDTO;
     isLoggedIn: boolean = false;
     navs: FunctionItem[] = [];
+    get Router(): Router { return this.Injector.get(Router); }
+
+    constructor(protected Injector: Injector) {
+
+    }
 
     ngOnInit() {
 
         Shell.Session.LogStatus.subscribe((v: boolean) => {
-            this.isLoggedIn = v
+            this.isLoggedIn = v;
+            this.LoadNavigation();
         });
         Shell.Session.GetUserAsync()
             .then(user => {
@@ -26,6 +35,16 @@ export class NavigationSideBarBase {
     }
 
     OnReady() { }
+
+    GetMainUrl(): string {
+        return "/";
+    }
+
+    GotoMain() {
+        var main = absUrl(this.GetMainUrl());
+        console.log(main);
+        this.Router.navigateByUrl(main);
+    }
 
     LoadNavigation() {
         var auth: AuthorizationServiceBase = Shell.Injector.get(AuthorizationServiceBase);

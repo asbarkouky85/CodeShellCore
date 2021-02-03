@@ -235,15 +235,6 @@
   <data name="codeshell" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Files\codeshell.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="update_v2_1_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\SQL\update-v2.1.0.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="update_v2_2_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\SQL\update-v2.2.0.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="update_v2_5_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\SQL\update-v2.5.0.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="update_v2_6_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\SQL\update-v2.6.0.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
   </data>
@@ -270,5 +261,8 @@
   </data>
   <data name="Localization" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Files\Localization.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="update_v2_15_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\SQL\update-v2.15.0.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

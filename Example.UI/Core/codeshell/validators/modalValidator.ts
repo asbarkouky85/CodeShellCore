@@ -29,11 +29,7 @@ export class ModalValidator {
         this._isValid = val;
     }
 
-    constructor(private frm: NgForm) {
-
-
-        
-    }
+    constructor(private frm: NgForm) {}
 
     
 
@@ -44,4 +40,7 @@ export class ModalValidator {
         this.IsValid = false;
     }
 
+    ngOnDestroy(){
+        this.frm.control.removeControl(this.fieldName);
+    }
 }

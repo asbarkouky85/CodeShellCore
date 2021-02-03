@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Helpers;
+using CodeShellCore.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -24,8 +25,27 @@ namespace CodeShellCore.Files
             };
         }
 
+        public TmpFileData()
+        {
+
+        }
+
+        public TmpFileData(string url)
+        {
+            Url = url;
+            Name = url?.GetAfterLast("/");
+        }
+
+        public void DeleteTmp()
+        {
+            if (TmpPath != null && File.Exists(TmpPath))
+                File.Delete(TmpPath);
+        }
+
         public string SaveFile(string folder, bool publicFolder = true)
         {
+            if (string.IsNullOrEmpty(TmpPath))
+                return null;
             folder = publicFolder ? Path.Combine(Shell.PublicRoot, folder) : folder;
             folder = folder.Replace("\\", "/");
             string dir = Path.Combine(Shell.AppRootPath, folder).Replace("\\", "/");
@@ -53,7 +73,7 @@ namespace CodeShellCore.Files
                 string cur = Path.Combine(Shell.AppRootPath, TmpPath);
                 if (File.Exists(nw))
                     File.Delete(nw);
-                File.Move(cur, nw);
+                File.Copy(cur, nw);
             }
             return Path.Combine(folder, fileName).Replace(Shell.PublicRoot + "/", "").Replace("\\", "/");
         }

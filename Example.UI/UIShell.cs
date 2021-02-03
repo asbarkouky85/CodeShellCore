@@ -12,6 +12,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Asga.Web;
 using CodeShellCore.Security.Authorization;
+using CodeShellCore.Data.ConfiguredCollections;
+using Asga.Security;
+using CodeShellCore.Helpers;
+using CodeShellCore.Security.Sessions;
+using Example.UI.Security;
 
 namespace Example.UI
 {
@@ -31,7 +36,21 @@ namespace Example.UI
             coll.AddAuthModule(false);
             coll.AddAsgaWeb();
 
-            coll.AddTransient<IAuthorizationService, AuthenticatedOnlyAuthorizationService>();
+            coll.AddTransient<IAuthorizationService, ExampleAuthorizationService>();
+            coll.AddTransient<ISessionManager, ExampleSessionManager>();
+
+        }
+
+        protected override void OnReady()
+        {
+            base.OnReady();
+            RootInjector.GetService<ICollectionConfigService>().RegisterCollection<User>("MaleUsers", u =>
+            {
+                var rols = u.UserAs<UserDTO>().Roles.Select(e => long.Parse(e)).ToList();
+                return d => d.UserRoles.Any(e => rols.Any(f => e.RoleId == f));
+            });
+            var tok = Utils.CreateClientToken(new AppClient { ClientId = "Test.App" });
+            Console.WriteLine(tok);
         }
     }
 }

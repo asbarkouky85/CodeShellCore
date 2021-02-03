@@ -16,19 +16,19 @@ namespace CodeShellCore.Web.Controllers
         where T : class, IModel<TPrime>
     {
         ILocalizationDataService LocService => GetService<ILocalizationDataService>();
-
+        ILookupsService lookupsService => GetService<ILookupsService>();
         public MoldsterEntityController(IEntityService<T> service) : base(service)
         {
         }
 
         public virtual IActionResult GetEditLookups([FromQuery]Dictionary<string, string> data)
         {
-            return Respond(new { });
+            return Respond(lookupsService.GetRequestedLookups(data));
         }
 
         public virtual IActionResult GetListLookups([FromQuery]Dictionary<string, string> data)
         {
-            return Respond(new { });
+            return Respond(lookupsService.GetRequestedLookups(data));
         }
 
         public virtual IActionResult GetCollection(string id, [FromQuery]LoadOptions opts)

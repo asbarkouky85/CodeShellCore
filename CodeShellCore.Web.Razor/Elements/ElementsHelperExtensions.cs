@@ -14,7 +14,7 @@ namespace CodeShellCore.Web.Razor.Elements
 {
     public static class ElementsHelperExtensions
     {
-        static IElementsHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IElementsHelper>(); } }
+        //static IElementsHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IElementsHelper>(); } }
 
         public static IHtmlContent TextAreaGroup<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
             IValidationCollection coll = null,
@@ -27,6 +27,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "") where T : class
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.TextAreaGroup(helper, exp, coll, size, alternateLabel, placeHolder, attrs, localizable, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.Textarea, localizable);
         }
@@ -44,6 +45,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.LabelGroup(helper, exp, size, filter, alternateLabel, url, blank, attrs, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.Label);
         }
@@ -60,6 +62,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.TextBoxGroup(helper, exp, textType, coll, size, alternateLabel, placeHolder, localizable, attrs, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.TextBox, localizable);
         }
@@ -77,6 +80,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.AutoCompleteGroup(helper, exp, src, coll, size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.TextBox);
         }
@@ -93,6 +97,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.CheckBoxGroup(helper, exp, trueString, falseString, useIcon, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.CheckBox);
         }
@@ -110,6 +115,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             return Provider.InputControl(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, attrs, inputAttr, inputClasses, groupClasses);
         }
 
@@ -125,6 +131,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.FileGroup(helper, exp, formFieldName, uploadAction, required, multi, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.FileTextBox);
         }
@@ -143,6 +150,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string readOnlyPipe = null
             )
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.RadioGroup(helper, exp, options,required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, template, readOnlyProperty, readOnlyPipe);
             if (!elem.Accessibility.Write && readOnlyProperty != null)
             {
@@ -164,6 +172,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.CalendarGroup(helper, exp, type, range, cals, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.CalendarTextBox);
         }
@@ -181,6 +190,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string inputClasses = "",
             string groupClasses = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.DateTimeGroup(helper, exp, type, range, cals, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses);
             return elem.Write(InputControls.DateTimeTextBox);
         }
@@ -205,6 +215,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string readOnlyPipe = null
             )
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.SelectControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, idExtra, readOnlyProperty, readOnlyPipe, nullable);
             return elem.Write(InputControls.Select);
         }
@@ -225,6 +236,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string readOnlyProperty = null,
             bool nullable = false)
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.SearchableControlGroup(helper, exp, source, display, valueMember, multi, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, readOnlyProperty, nullable);
             return elem.Write(InputControls.Select_Searchable);
         }
@@ -243,6 +255,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string readOnlyPipe = null,
             string idExtra = "")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             ControlGroupWriter mod = Provider.SelectInputControl(helper, exp, lister, display, valueMember, required, readOnlyProperty, nullable, attrs, inputClasses, readOnlyPipe, idExtra);
             if (!mod.Accessibility.Read)
                 return null;
@@ -257,6 +270,7 @@ namespace CodeShellCore.Web.Razor.Elements
             bool mutli = false,
             string onChange = "Default")
         {
+            var Provider = helper.GetService<IElementsHelper>();
             return Provider.ListView(helper, selectionSource, dataSource, display, mutli, onChange);
         }
 
@@ -267,6 +281,7 @@ namespace CodeShellCore.Web.Razor.Elements
             string change = "Default",
             string displayPipe = null)
         {
+            var Provider = helper.GetService<IElementsHelper>();
             return Provider.ListView(helper, exp, listName, display, mutli, change);
 
         }
@@ -283,6 +298,7 @@ namespace CodeShellCore.Web.Razor.Elements
            string readonlyComponent = null
            )
         {
+            var Provider = helper.GetService<IElementsHelper>();
             ControlGroupWriter wt = Provider.CustomInputGroup(helper, exp, componentName, required, size, attrs, inputAttrs, classes);
             if (readonlyComponent != null && !wt.Accessibility.Write)
             {
@@ -301,6 +317,7 @@ namespace CodeShellCore.Web.Razor.Elements
             object inputAttrs = null,
             string classes = null)
         {
+            var Provider = helper.GetService<IElementsHelper>();
             var wt = Provider.RichTextBox(helper, exp, modules, size, attrs, inputAttrs, classes);
             if (wt.Accessibility.Write == false)
             {
@@ -319,6 +336,7 @@ namespace CodeShellCore.Web.Razor.Elements
             object inputAttrs = null,
             string classes = null)
         {
+            var Provider = helper.GetService<IElementsHelper>();
             ControlGroupWriter wt = Provider.RichLabel(helper, exp, size, attrs, inputAttrs, classes);
             return wt.Write(InputControls.RichTextLabel);
         }

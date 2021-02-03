@@ -9,18 +9,15 @@ namespace CodeShellCore.Security.Authentication
 {
     public class JWTData
     {
-        public string Name { get; set; }
         public string UserId { get; set; }
+        public string ClientId { get; set; }
+        public string TenantId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime ExpireTime { get; set; }
         public string Provider { get; set; }
-        public IEnumerable<object> Roles { get; set; } = new List<object>();
+        public IEnumerable<string> Roles { get; set; } = new List<string>();
         public string DeviceId { get; set; }
         public string TokenId { get; set; }
 
-        public virtual bool IsValid(string provider)
-        {
-            return ExpireTime > DateTime.Now && (string.IsNullOrEmpty(Provider) || Provider.ToLower() == provider.ToLower());
-        }
     }
 }

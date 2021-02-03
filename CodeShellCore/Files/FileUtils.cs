@@ -13,6 +13,19 @@ namespace CodeShellCore.Files
 {
     public class FileUtils
     {
+        public static string RelativeToAbsolute(string url)
+        {
+            return Path.Combine(Shell.AppRootPath, Shell.PublicRoot, url);
+        }
+
+        public static string StoreThumb(string path, ThumbSize size, bool relative = true)
+        {
+            using (var s = new ImagesService())
+            {
+                path = relative ? FileUtils.RelativeToAbsolute(path) : path;
+                return s.StoreThumb(path, size);
+            }
+        }
 
         public static string GetThumbString(string path, int maxWidth, int maxHeight)
         {

@@ -9,15 +9,15 @@ namespace CodeShellCore.Web.Razor.Themes
 
         int DefaultControlGroupSize { get; }
 
-        string LayoutBase { get; }
-        string ControlGroupTemplate { get; }
-        string LocalizableControlGroupTemplate { get; }
-        string LabelGroupTemplate { get; }
+        string BasePath { get; }
+        string DefaultControlGroupTemplate { get; }
         string CellTemplate { get; }
         string HeaderCellTemplate { get; }
         bool SortingInTables { get; }
         string SmallBtnClass { get; }
 
+        string GetControlGroupTemplate(InputControls type, bool localizable=false);
+        string GetControlGroupTemplate(string inputType, bool localizable=false);
         string GetButtonClass(BtnClass type);
         string GetTemplate(string componentName);
         string GetCell(CellTypes types);

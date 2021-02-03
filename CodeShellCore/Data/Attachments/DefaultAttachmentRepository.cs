@@ -22,13 +22,13 @@ namespace CodeShellCore.Data.Attachments
             return lst;
         }
 
-        public virtual void SaveChangesFor<TParent>(TParent model, IEnumerable<T> lst) where TParent : class, IModel<long>
+        public virtual void SaveChangesFor<TParent>(TParent model, IEnumerable<T> lst, string folder = null) where TParent : class, IModel<long>
         {
             string t = typeof(TParent).Name;
             var s = ChangeSet.Create(lst);
             foreach (var item in s.Added)
             {
-
+                item.FilePath = item.File?.SaveFile(folder ?? "");
                 item.EntityId = model.Id;
                 item.EntityType = t;
             }

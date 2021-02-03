@@ -82,14 +82,15 @@ export abstract class ListComponentBase extends BaseComponent {
             }
 
         }).catch(d => {
-            Utils.HandleError(d, true, true);
+            if (d != "cancelled")
+                Utils.HandleError(d, true, true);
         });
     }
 
     async DeleteAsync(item: any): Promise<DeleteResult> {
         var c = await Shell.Main.ShowDeleteConfirm();
         if (!c) {
-            return Promise.reject("user rejected");
+            return Promise.reject("cancelled");
         }
         return await this.Service.AttemptDelete(item);
     }
@@ -125,26 +126,33 @@ export abstract class ListComponentBase extends BaseComponent {
     }
 
     LoadData() {
-
-
-
         this.options.Filters = this.stringifyFilters();
 
         let prom = this.LoadDataPromise();
         prom.then(e => {
+            this.ProcessResponse(e);
             this.list = e.list;
             this.totalCount = e.totalCount;
             if (this.Selection)
                 this.Selection.List = this.list;
+            this.AfterLoad();
         });
     }
-    stringifyFilters(): string {
+
+    protected AfterLoad() { }
+    protected ProcessResponse(e: LoadResult) { }
+
+    GetFilters(): PropertyFilter[] {
         let filters: PropertyFilter[] = [];
         for (var i in this.filter) {
-
             if (this.filter[i].Value1 != undefined || this.filter[i].Value2 != undefined || this.filter[i].Ids.length > 0)
                 filters.push(this.filter[i]);
         }
+        return filters;
+    }
+
+    stringifyFilters(): string {
+        var filters = this.GetFilters();
         return JSON.stringify(filters);
     }
 

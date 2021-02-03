@@ -2,23 +2,25 @@
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.DependencyInjection;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using CodeShellCore.Security.Authorization;
 using Microsoft.Extensions.Primitives;
+using CodeShellCore.Security.Authentication;
 
 namespace CodeShellCore.Web.Security
 {
     public abstract class WebSessionManagerBase : SessionManagerBase, ISessionManager
     {
         protected readonly IHttpContextAccessor _accessor;
+        protected readonly IServiceProvider provider;
 
         public virtual TimeSpan DefaultSessionTime => new TimeSpan(1, 0, 0, 0, 0);
 
-        public WebSessionManagerBase(IHttpContextAccessor context)
+        public WebSessionManagerBase(IServiceProvider prov) : base(prov)
         {
-            _accessor = context;
+            provider = prov;
+            _accessor = prov.GetService<IHttpContextAccessor>();
         }
 
         public virtual void StartSession(IUser user, TimeSpan? length = null)
@@ -26,10 +28,16 @@ namespace CodeShellCore.Web.Security
 
         }
 
-        protected virtual void SetIdentity(string userId)
+        protected virtual void SetIdentity(JWTData jwt)
         {
-            _accessor.HttpContext.User = new DefaultPrincipal(userId.ToString());
-            Shell.ScopedInjector.SetCurrentUserId(userId);
+            _accessor.HttpContext.User = new DefaultPrincipal(jwt.UserId);
+            provider.SetCurrentUserId(jwt.UserId);
+        }
+
+        protected virtual void SetIdentity(ClientJwt jwt)
+        {
+            _accessor.HttpContext.User = new DefaultPrincipal(jwt.ClientId);
+            provider.SetCurrentUserId(jwt.ClientId, true);
         }
 
         public void SetContextItem(string index, object value)
@@ -45,11 +53,6 @@ namespace CodeShellCore.Web.Security
             return null;
         }
 
-        public string GetDeviceId()
-        {
-            return _accessor.HttpContext?.Request?.GetDeviceIdFromCookie();
-        }
-
         public override string GetConnectionId()
         {
             var head = _accessor.HttpContext?.Request?.Headers;
@@ -58,14 +61,9 @@ namespace CodeShellCore.Web.Security
             return null;
         }
 
-        protected bool IsProccessed(HttpContext con)
+        public override string GetCurrentUserId()
         {
-            return con.Items.ContainsKey("IsProccessed");
-        }
-
-        protected void SetProccessed(HttpContext con)
-        {
-            con.Items["IsProccessed"] = true;
+            return _accessor.HttpContext?.User?.Identity.Name;
         }
 
         public override void EndSession()
@@ -77,7 +75,11 @@ namespace CodeShellCore.Web.Security
             }
         }
 
-        public abstract bool IsLoggedIn();
+        public virtual bool IsLoggedIn()
+        {
+            var user = GetCurrentUserId();
+            return !string.IsNullOrEmpty(user);
+        }
 
         public abstract void AuthorizationRequest();
 

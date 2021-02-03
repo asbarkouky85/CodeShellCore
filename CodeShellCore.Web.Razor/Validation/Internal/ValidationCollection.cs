@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using CodeShellCore.Text.Localization;
+using CodeShellCore.Web.Razor.Models;
 using CodeShellCore.Web.Razor.Validation.Restrictors;
 using CodeShellCore.Web.Razor.Validation.Validators;
 using Microsoft.AspNetCore.Html;
@@ -74,7 +75,7 @@ namespace CodeShellCore.Web.Razor.Validation.Internal
             return this;
         }
 
-        public virtual IValidationCollection AddMinMax(string min, string max = null)
+        public virtual IValidationCollection AddMinMax(string min, string max = null, string message = null)
         {
             return this;
         }
@@ -125,6 +126,24 @@ namespace CodeShellCore.Web.Razor.Validation.Internal
             }
             string res = string.Format(RazorConfig.FieldErrorMessagesTemplate, FormName, FormFieldName, messages);
             return new HtmlString(res);
+        }
+
+        public IHtmlContent GetMessages(IHtmlHelper helper)
+        {
+            if (IsEmpty)
+                return null;
+            var mod = new ValidationMessagesModel
+            {
+                FieldName = FormFieldName,
+                FormName = FormName,
+                List = new List<ValidatorModel>()
+            };
+
+            foreach (Validator v in Validators)
+            {
+                mod.List.AddRange(v.GetMessageModels());
+            }
+            return helper.GetComponent("Components/ValidationMessages", mod);
         }
 
         public void SetMember(string columnId, string formFieldName, string alternateLabel = null)
@@ -203,6 +222,6 @@ namespace CodeShellCore.Web.Razor.Validation.Internal
             return this;
         }
 
-        
+
     }
 }

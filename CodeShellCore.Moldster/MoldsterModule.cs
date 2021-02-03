@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;

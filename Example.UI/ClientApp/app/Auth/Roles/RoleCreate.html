@@ -1,10 +1,10 @@
-<div class="page-header" [ngClass]="IsEmbedded?'section-header':'container-fluid'" *ngIf="!HideHeader">
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
     <div class="row">
-        <div class="col-sm-5 col-xs-12" *ngIf="!IsEmbedded">
+        <div class="col-sm-5 col-xs-12">
             <h2>{{'Pages.Roles__RoleCreate' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
         </div>
 
-        <div class="col-sm-7 col-xs-12" *ngIf="!IsEmbedded">
+        <div class="col-sm-7 col-xs-12">
             <div class="row">
 
                 <div class="col-md-12 col-xs-12 padTop padBottom">
@@ -24,15 +24,7 @@
             </div>
         </div>
 
-        <div *ngIf="IsEmbedded" class="container-fluid">
-            <div class="row">
-                <div class="col-md-8">
-                    {{'Pages.Roles__RoleCreate' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
-                </div>
-                <div class="col-md-4">
-                </div>
-            </div>
-        </div>
+
     </div>
     <div class="row" *ngIf="!IsEmbedded">
 
@@ -45,9 +37,21 @@
             </li>
         </ol>
     </div>
-</div><div [ngClass]="IsEmbedded?'panel panel-default embedded':'animated fadeInRight'">
+</div>
 
-    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Roles__RoleCreate' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div><div [ngClass]="IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'">
+
+    <div [ngClass]="IsEmbedded?'panel-body':'content-block'">
         <div class="row" *ngIf="UseLocalization">
             <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
                 <div class="btn-group btn-group-sm pull-last">
@@ -118,7 +122,6 @@
 <div  id="PrivilegesControl" #PrivilegesControl>
 
 <label class="section-header">{{'Words.Privileges' | translate }}</label>
-
 <div class="row">
     <div class="col-md-12">
         <ul class="nav nav-tabs">
@@ -182,7 +185,7 @@
            [id]="'available'+i"
            [name]="'available'+i"
            [(ngModel)]="r.available"
-           [li-watch]="r.Tag"
+           [li-watch]="r"
             >
     <span></span>
 </label>
@@ -197,7 +200,7 @@
            [id]="'canViewDetails'+i"
            [name]="'canViewDetails'+i"
            [(ngModel)]="r.Tag.canViewDetails"
-           [li-watch]="r.Tag"
+           [li-watch]="r"
             [disabled]="!r.available" >
     <span></span>
 </label>
@@ -212,7 +215,7 @@
            [id]="'canUpdate'+i"
            [name]="'canUpdate'+i"
            [(ngModel)]="r.Tag.canUpdate"
-           [li-watch]="r.Tag"
+           [li-watch]="r"
             [disabled]="!r.available" >
     <span></span>
 </label>
@@ -227,7 +230,7 @@
            [id]="'canInsert'+i"
            [name]="'canInsert'+i"
            [(ngModel)]="r.Tag.canInsert"
-           [li-watch]="r.Tag"
+           [li-watch]="r"
             [disabled]="!r.available" >
     <span></span>
 </label>
@@ -242,7 +245,7 @@
            [id]="'canDelete'+i"
            [name]="'canDelete'+i"
            [(ngModel)]="r.Tag.canDelete"
-           [li-watch]="r.Tag"
+           [li-watch]="r"
             [disabled]="!r.available" >
     <span></span>
 </label>

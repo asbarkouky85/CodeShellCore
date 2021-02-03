@@ -23,7 +23,10 @@ export abstract class UserEditBase extends DTOEditComponentBase {
 
     DefaultModel() {
         var mod = { entity: new User() };
-        mod.entity.tenantId = Shell.Session.User.tenantId;
+        if (Shell.Session.User.tenantId && Shell.Session.User.tenantId != 0) {
+            mod.entity.tenantId = Shell.Session.User.tenantId;
+        }
+            
         return mod;
     }
 
@@ -37,22 +40,19 @@ export abstract class UserEditBase extends DTOEditComponentBase {
     }
 
     protected async GetModelFromServerAsync(id: number): Promise<any> {
-        
+
         if (this.isEditProfile) {
             id = Shell.Session.User.id;
         }
         this.model = await super.GetModelFromServerAsync(id);
 
-        for (var i in this.model.entity.roles)
-            this.model.entity.roles[i] = ListItem.FromDB(this.model.entity.roles[i]);
-
+        
         return this.model;
     }
 
 
     protected StartComponent() {
         this.isEditProfile = this.GetParameterAsBoolean("EditProfile");
-        console.log("a7a");
         if (this.isEditProfile) {
             this.IsNew = false;
             var id = Shell.Session.User.id;
@@ -60,17 +60,19 @@ export abstract class UserEditBase extends DTOEditComponentBase {
         } else {
             super.StartComponent();
         }
-        
+
     }
 
-    Upload = (files: FileList) => this.Files.PostFiles("Upload",files);
+    Upload = (files: FileList) => this.Files.PostFiles("Upload", files);
 
     protected OnReady() {
+
+        this.model.entity.userRoles = ListItem.Convert(this.model.entity.userRoles);
 
         if (this.Lookups.roles) {
 
             this.Lookups.roles = Tagged.JoinLists({
-                Source: this.model.entity.roles,
+                Source: this.model.entity.userRoles,
                 Data: this.Lookups.roles,
                 Comparer: (d, s) => d.id == s.roleId,
                 CreateNew: d => {
@@ -80,7 +82,7 @@ export abstract class UserEditBase extends DTOEditComponentBase {
         }
 
         this.Priv = new PrivilegeService([], [], [], 0);
-        if (this.Lookups.domains != undefined) {
+        if (this.Lookups.resourcesByDomain != undefined) {
 
             this.Service.GetUserRole(this.model.entity.id).then(res => {
                 this.model.entity.role = res;
@@ -95,12 +97,12 @@ export abstract class UserEditBase extends DTOEditComponentBase {
                     s.selected = true;
                     this.ResourceActions.push(s);
                 }
-                this.Priv = new PrivilegeService(this.Lookups.domains, this.Privileges, this.ResourceActions, res.id);
+                this.Priv = new PrivilegeService(this.Lookups.resourcesByDomain, this.Privileges, this.ResourceActions, res.id);
             });
         }
     }
 
-    
+
 
     SubmitAsync(): Promise<SubmitResult> {
         if (this.PreventCreateSubmit && this.IsNew) {
@@ -112,11 +114,21 @@ export abstract class UserEditBase extends DTOEditComponentBase {
             this.model.entity.role.roleResourceActions = ListItem.GetChangedItems(this.ResourceActions);
             this.model.entity.role.roleResources = ListItem.GetChangedItems(this.Privileges);
         }
-
-        if (this.IsNew) {
-            this.model.entity.tenantId = Shell.Session.User.tenantId;
-        }
         return super.SubmitAsync();
+    }
+
+    OnSubmitSuccess(res: SubmitResult) {
+
+        if (this.isEditProfile) {
+            Shell.Session.ReloadUserDataAsync().then(e => {
+                super.OnSubmitSuccess(res);
+            })
+        } else {
+            super.OnSubmitSuccess(res);
+        }
+
+
+
     }
 
 }

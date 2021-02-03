@@ -33,6 +33,11 @@ namespace CodeShellCore.Web.Razor
                 string x = propName.GetAfterLast("__");
                 name = "*" + x.Replace('_', '-');
             }
+            else if (propName.Contains("twb__"))
+            {
+                string x = propName.GetAfterLast("__");
+                name = "[(" + x.Replace('_', '-') + ")]";
+            }
             else
             {
                 name = propName.ToLower().Replace('_', '-');
@@ -54,7 +59,7 @@ namespace CodeShellCore.Web.Razor
             {
                 lst.Add(ProcessProperty(pair.Key, pair.Value));
             }
-            string st = " "+string.Join(" ", lst);
+            string st = " " + string.Join(" ", lst);
 
             return st;
         }
@@ -70,7 +75,7 @@ namespace CodeShellCore.Web.Razor
             {
                 lst.Add(ProcessProperty(pair.Name, pair.GetValue(attr)));
             }
-            string st = " "+string.Join(" ", lst);
+            string st = " " + string.Join(" ", lst);
 
             return st;
         }

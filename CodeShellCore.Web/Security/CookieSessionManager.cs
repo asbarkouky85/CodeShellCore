@@ -10,7 +10,7 @@ namespace CodeShellCore.Web.Security
 {
     public class CookieSessionManager : WebSessionManagerBase, ISessionManager
     {
-        public CookieSessionManager(IHttpContextAccessor context) : base(context)
+        public CookieSessionManager(IServiceProvider prov) : base(prov)
         {
         }
 

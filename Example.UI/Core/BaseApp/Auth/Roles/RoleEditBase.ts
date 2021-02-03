@@ -27,7 +27,7 @@ export abstract class RoleEditBase extends DTOEditComponentBase {
     }
 
     protected OnReady() {
-        
+
         for (let priv of this.model.entity.roleResources) {
             this.Privileges.push(Object.assign(new Perm, priv));
         }
@@ -35,7 +35,7 @@ export abstract class RoleEditBase extends DTOEditComponentBase {
             this.ResourceActions.push(Object.assign(new ListItem, priv));
         }
         
-        this.Priv = new PrivilegeService(this.Lookups.domains, this.Privileges, this.ResourceActions, this.model.entity.id);
+        this.Priv = new PrivilegeService(this.Lookups.resourcesByDomain, this.Privileges, this.ResourceActions, this.model.entity.id);
 
     }
 

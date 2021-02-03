@@ -102,7 +102,13 @@ namespace CodeShellCore.Files
         public void WriteLine(string value)
         {
             Console.WriteLine(value);
-            _append(value);
+            _writeLineTS(value);
+        }
+
+        public void Write(string value)
+        {
+            Console.Write(value);
+            _writeTS(value);
         }
 
         public void Dispose()
@@ -110,7 +116,27 @@ namespace CodeShellCore.Files
             Stop();
         }
 
-        private void _append(string txt)
+        private void _writeTS(string txt)
+        {
+            lock (this)
+            {
+                try
+                {
+                    using (StreamWriter wt = new StreamWriter(FilePath, true))
+                    {
+                        wt.Write(txt);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Writing Failed : " + e.GetMessageRecursive());
+                    WritingFailed?.Invoke(this, new EventArgs());
+
+                }
+            }
+        }
+
+        private void _writeLineTS(string txt)
         {
             lock (this)
             {

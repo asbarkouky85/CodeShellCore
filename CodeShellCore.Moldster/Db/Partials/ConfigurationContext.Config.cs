@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 using CodeShellCore.Text;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Dto;
 using System;
 
-namespace CodeShellCore.Moldster.Db
+namespace CodeShellCore.Moldster
 {
     public partial class MoldsterContext
     {

@@ -13,7 +13,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
 {
     public static class MoldsterTableExtensions
     {
-        static IMoldsterTableHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IMoldsterTableHelper>(); } }
+        //static IMoldsterTableHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IMoldsterTableHelper>(); } }
 
         public static IHtmlContent HeaderCell<T>(
             this IHtmlHelper<T> helper,
@@ -24,6 +24,8 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             bool ignoreAccessibility = false,
             bool? sorting = null)
         {
+
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
             var writer = Provider.HeaderCell(helper, textId, isColumn, size, cellAttributes, ignoreAccessibility, sorting.Value);
             return writer.WriteHeaderCell();
@@ -37,6 +39,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             object cellAttributes = null,
             bool? sorting = null)
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
             CellWriter wt = Provider.HeaderCell(helper, exp, width, ignoreAccessibility, cellAttributes, sorting.Value);
             return wt.WriteHeaderCell();
@@ -49,6 +52,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             object cellAttributes = null,
             string pipe = null)
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             var writer = Provider.TextCell(helper, exp, pipe, cellAttributes);
             return writer.WriteCell(CellTypes.LabelCell);
         }
@@ -68,6 +72,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string readOnlyProp = null,
             string rowIndex = null)
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             var writer = Provider.SelectCell(helper, exp, source, displayMember, valueMember, required, multi, nullable, cellAttributes, inputAttr, classes, readOnlyProp, rowIndex);
 
             return writer.Write(InputControls.Select);
@@ -86,6 +91,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             object inputAttr = null,
             string classes = "")
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             CellWriter wt = Provider.AutoCompleteSelectCell(helper, exp, source, displayMember, valueMember, required, multi, nullable, cellAttributes, inputAttr, classes);
             return wt.Write(InputControls.Select_Searchable);
         }
@@ -101,6 +107,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string rowIndex = null,
             bool localizable = false)
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             CellWriter wt = Provider.TextBoxCell(helper, exp, textBoxType, coll, cellAttributes, inputAttr, classes, rowIndex, localizable);
             return wt.Write(InputControls.TextBox);
         }
@@ -119,6 +126,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string classes = "",
             string rowIndex = null)
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             CellWriter wt = Provider.CalendarCell(helper, exp, rangeType, cals, range, required, cellAttributes, inputAttr, classes, rowIndex);
             return wt.Write(InputControls.CalendarTextBox);
         }
@@ -129,6 +137,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string width = null,
             object cellAttributes = null)
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             CellWriter writer = Provider.DragHeaderCell<T>(helper, tableName, width, cellAttributes);
             return writer.WriteHeaderCell();
         }
@@ -140,6 +149,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string width = null,
             object cellAttributes = null)
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             CellWriter writer = Provider.DragContentCell<T>(helper, tableName, modelName, width, cellAttributes);
             return writer.WriteCell(CellTypes.DragCell);
         }
@@ -153,6 +163,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             object linkAttributes = null,
             string pipe = null)
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             CellWriter writer = Provider.LinkCell<T, TValue>(helper, exp, url, blank, cellAttributes, linkAttributes, pipe);
             return writer.Write(InputControls.Label);
         }
@@ -169,6 +180,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string permissionName = "Permission",
             string classes = "")
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             return Provider.ListModifiers<T>(helper, idExpression, buttons, detailsFunction, editFunction, deleteFunction, identifier, modifiers, permissionName, classes);
 
         }
@@ -185,6 +197,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string listItem = "Tag",
             string classes = "")
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             CellWriter mod = Provider.CheckBoxCell(helper, field, rowIndex, listName, ngModel, changeFunction, cellAttributes, inputAttr, listItem, classes);
             return mod.Write(InputControls.CheckBoxCell);
         }
@@ -201,6 +214,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string listItem = "Tag",
             string classes = "")
         {
+            var Provider = helper.GetService<IMoldsterTableHelper>();
             CellWriter mod = Provider.RadioBoxCell(helper, field, rowIndex, property, asArray, changeFunction, cellAttributes, inputAttr, listItem, classes);
             return mod.Write(InputControls.CheckBoxCell);
         }

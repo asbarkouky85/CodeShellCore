@@ -1,4 +1,6 @@
 ﻿using CodeShellCore.Data.Lookups;
+using CodeShellCore.Security.Authentication;
+using CodeShellCore.Security.Authorization;
 using CodeShellCore.Text;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +16,7 @@ using System.Threading;
 
 namespace CodeShellCore.Helpers
 {
+    public enum CharType { Capital, Small, Both }
     public static class Utils
     {
         static Random r = new Random();
@@ -51,6 +54,20 @@ namespace CodeShellCore.Helpers
         {
             string ser = JsonConvert.SerializeObject(attr);
             return ser.FromJson<T>();
+        }
+
+        public static string CreateClientToken(AppClient cl, DateTime? expire = null, string provider = null)
+        {
+            expire = expire ?? DateTime.MaxValue;
+            var jw = new ClientJwt
+            {
+                ClientId = cl.ClientId,
+                Secret = cl.Secret,
+                StartTime = DateTime.Now,
+                ExpireTime = expire.Value,
+                Provider = provider
+            };
+            return Shell.Encryptor.Encrypt(jw.ToJson());
         }
 
         public static string CreatePropertyDictionary(Type t, string folderPath, IEnumerable<string> ignore = null)
@@ -114,28 +131,71 @@ namespace CodeShellCore.Helpers
             }
             return st;
         }
-        public static string RandomAlphabet(int numOfChars, int CapitalAndSmall = 0) //CapitalAndSmall( 0 = capital and small ,1=capital,2 =small)
+
+        public static string RandomAlphaNumeric(int numOfChars, CharType? type = null)
         {
-            string allalpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //26
-            bool Case = CapitalAndSmall == 2 ? false : true;
+            type = type ?? CharType.Small;
+            string allalpha = "012345689ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var len = allalpha.Length;
             string st = "";
 
             for (int i = 0; i < numOfChars; i++)
             {
-
-                if (Case && (CapitalAndSmall < 2))//Capital
+                switch (type)
                 {
-                    st += allalpha[r.Next(0, 25)].ToString().ToUpper();
+                    case CharType.Capital:
+                        st += allalpha[r.Next(0, len)].ToString();
+                        break;
+                    case CharType.Small:
+                        st += allalpha[r.Next(0, len)].ToString().ToLower();
+                        break;
+                    case CharType.Both:
+                        var n = r.Next(0, 2);
+                        var l = n == 0 ? false : true;
+                        var c = allalpha[r.Next(0, len)].ToString();
+                        if (!l)
+                            c = c.ToLower();
+                        st += c;
+                        break;
                 }
-                else  //Small
-                {
-                    st += allalpha[r.Next(0, 25)].ToString().ToLower();
-                }
-                if (CapitalAndSmall == 0)
-                    Case = !Case;
             }
             return st;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numOfChars"></param>
+        /// <param name="type">Default small</param>
+        /// <returns></returns>
+        public static string RandomAlphabet(int numOfChars, CharType? type = null)
+        {
+            type = type ?? CharType.Small;
+            string allalpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var len = allalpha.Length;
+            string st = "";
+
+            for (int i = 0; i < numOfChars; i++)
+            {
+                switch (type)
+                {
+                    case CharType.Capital:
+                        st += allalpha[r.Next(0, len)].ToString();
+                        break;
+                    case CharType.Small:
+                        st += allalpha[r.Next(0, len)].ToString().ToLower();
+                        break;
+                    case CharType.Both:
+                        var n = r.Next(0, 2);
+                        var l = n == 0 ? false : true;
+                        var c = allalpha[r.Next(0, len)].ToString();
+                        if (!l)
+                            c = c.ToLower();
+                        st += c;
+                        break;
+                }
+            }
+            return st;
         }
 
         public static void RunCmdCommand(string command)
@@ -267,7 +327,7 @@ namespace CodeShellCore.Helpers
             {
                 Addition = 0;
             }
-                
+
 
             currentSecond = thisSec;
 

@@ -1,8 +1,9 @@
 ﻿using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster.Db;
-using CodeShellCore.Moldster.Db.Data;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Properties;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
@@ -19,6 +20,8 @@ namespace CodeShellCore.Moldster.Configurator.Services
         private readonly IConfigUnit _unit;
         private readonly IPathsService app;
         private readonly IModulesService mods;
+
+        protected override string EntitiesAssembly => "CodeShellCore.Moldster";
 
         public ConfiguratorLookupService(IConfigUnit unit, IPathsService app,IModulesService mods) : base(unit)
         {
@@ -44,9 +47,9 @@ namespace CodeShellCore.Moldster.Configurator.Services
             if (data.TryGetValue("Resources", out string r))
                 mod.Resources = _unit.ResourceRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.Name });
             if (data.TryGetValue("Collection", out string c))
-                mod.Collection = _unit.DomainEntityCollectionRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.Name });
+                mod.Collection = _unit.ResourceCollectionRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.Name });
             if (data.TryGetValue("Apps", out string a))
-                mod.Apps = _unit.TenantAppRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.Name });
+                mod.Apps = _unit.AppRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.Name });
             if (data.TryGetValue("NavigationGroup", out string n))
                 mod.NavigationGroup = _unit.NavigationGroupRepository.FindAs(s => s.Name);
             if (data.TryGetValue("TemplatePath", out string tP))
@@ -80,36 +83,15 @@ namespace CodeShellCore.Moldster.Configurator.Services
             dynamic mod = new ExpandoObject();
 
             if (data.TryGetValue("Collection", out string c))
-                mod.Collection = GetLookupNamed<DomainEntityCollection>(c);
+                mod.Collection = GetLookupNamed<ResourceCollection>(c);
+            if (data.TryGetValue("Layout", out string l))
+                mod.Layout = GetLayoutFiles();
             return mod;
         }
 
-        protected List<TemplateDTO> GetLayoutFiles(bool nameOnly = false)
+        protected List<LayoutFileDTO> GetLayoutFiles(bool nameOnly = false)
         {
-            var configPath = app.ConfigRoot;
-
-            configPath = Path.Combine(configPath, "ShellComponents/Angular/Layout");
-            List<TemplateDTO> templateList = new List<TemplateDTO>();
-
-            var templates = Directory.GetFiles(configPath);
-            foreach (var temp in templates)
-            {
-                string name = Path.GetFileName(temp).GetBeforeLast(".");
-
-                if (nameOnly)
-                {
-                    name = name.Replace("Layout", "");
-                }
-                else
-                {
-                    name = "Layout/" + name;
-                }
-                templateList.Add(new TemplateDTO
-                {
-                    Name = name
-                });
-            }
-            return templateList;
+            return app.GetLayouts(nameOnly);
         }
     }
 }

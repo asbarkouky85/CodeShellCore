@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Db.Dto
+namespace CodeShellCore.Moldster.Dto
 {
     public class PageListDTO
     {
@@ -51,8 +51,7 @@ namespace CodeShellCore.Moldster.Db.Dto
                     PageCategoryName = e.PageCategory.Name,
                     BaseComponent = e.PageCategory.BaseComponent,
                     DomainName = e.Domain.Name,
-                    Apps = e.Apps,
-                    Persistant = e.Presistant ?? false
+                    Apps = e.Apps
                 };
             }
         }

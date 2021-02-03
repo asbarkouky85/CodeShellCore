@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeShellCore.Text;
-using CodeShellCore.Moldster.Db.Razor;
-using CodeShellCore.Moldster.Db.Dto;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Dto;
 
 namespace CodeShellCore.Moldster.Razor
 {

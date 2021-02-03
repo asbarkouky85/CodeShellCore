@@ -7,39 +7,21 @@ import { LocalizablesDTO, ListItem } from "../helpers";
 @Injectable()
 export abstract class EntityHttpService extends HttpServiceBase {
 
-    public Get(action: string, params?: number | object): Promise<any> {
-        let req: HttpRequest = this.InitializeRequest(action, params);
-        return this.process(Methods.Get, req);
-    }
-
-    public Post(action: string, body: any, params?: number | object): Promise<any> {
-        let req: HttpRequest = this.InitializeRequest(action, params, body);
-        return this.process(Methods.Post, req);
-    }
-
-    public Put(action: string, body: any, params?: number | object): Promise<any> {
-        let req: HttpRequest = this.InitializeRequest(action, params, body);
-        return this.process(Methods.Put, req);
-    }
-
-    public Delete(action: string, id: number): Promise<any> {
-        let req: HttpRequest = this.InitializeRequest(action, id);
-        return this.process(Methods.Delete, req);
-    }
-
-    public GetAs<T>(action: string, params?: number | object): Promise<T> {
-        let req: HttpRequest = this.InitializeRequest(action, params);
-        return this.processAs<T>(Methods.Get, req);
-    }
-
-    public PostAs<T>(action: string, body: any, params?: number | object): Promise<T> {
-        let req: HttpRequest = this.InitializeRequest(action, params, body);
-        return this.processAs<T>(Methods.Post, req);
-    }
-
     public IsUnique(property: string, id: number | undefined | null, value: any) {
         let req: HttpRequest = this.InitializeRequest("IsUnique", { Property: property, Id: (id ? id : 0), Value: value });
         return this.processAs<boolean>(Methods.Get, req);
+    }
+
+    public GetEditLookups(opt: any): Promise<{ [key: string]: any[] }> {
+        return this.Get("GetEditLookups", opt);
+    }
+
+    public GetListLookups(opt: any): Promise<{ [key: string]: any[] }> {
+        return this.Get("GetListLookups", opt);
+    }
+
+    SetActive(id: number, state: boolean): Promise<SubmitResult> {
+        return this.Update("SetActive", { id: id, stateBool: state });
     }
 
     public GetSingle(id: number): Promise<DTO<any>> {
@@ -52,7 +34,6 @@ export abstract class EntityHttpService extends HttpServiceBase {
     }
 
     public Save(action: string, body: any, params?: number | object): Promise<SubmitResult> {
-        //debugger;
         let req: HttpRequest = this.InitializeRequest(action, params, body);
         return this.processAs<SubmitResult>(Methods.Post, req);
     }

@@ -13,5 +13,12 @@ namespace CodeShellCore.Web.Moldster
         public string Version { get; set; }
         public string Hash { get; set; }
         public Dictionary<string, string> Urls { get; set; }
+
+        public string DefaultLocale { get; private set; }
+
+        public DefaultServerConfig()
+        {
+            DefaultLocale = Shell.DefaultCulture.TwoLetterISOLanguageName;
+        }
     }
 }

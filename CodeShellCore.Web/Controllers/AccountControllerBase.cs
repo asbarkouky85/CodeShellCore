@@ -4,40 +4,36 @@ using CodeShellCore.Security.Sessions;
 using CodeShellCore.Web.Filters;
 using CodeShellCore.Web.Security;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.Web.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
     public class AccountControllerBase : BaseApiController, IAccountController
     {
-        readonly IAuthenticationService _service;
-        readonly ISessionManager _manager;
-        IUserDataService userData => GetService<IUserDataService>();
+        protected IAuthenticationService AuthenticationService => GetService<IAuthenticationService>();
+        protected ISessionManager SessionManager => GetService<ISessionManager>();
+        protected IUserDataService UserDataService => GetService<IUserDataService>();
 
-        public AccountControllerBase(IAuthenticationService service, ISessionManager manger)
+        public AccountControllerBase()
         {
-            _service = service;
-            _manager = manger;
+
         }
 
         [HttpPost]
         [ApiAuthorize(AllowAnonymous = true)]
         public virtual IActionResult Login([FromBody]LoginModel model)
         {
-            return Respond(_service.Login(model.UserName, model.Password, model.RememberMe ?? false));
+            return Respond(AuthenticationService.Login(model.UserName, model.Password, model.RememberMe ?? false));
         }
 
         [ApiAuthorize(AllowAnonymous = true)]
-        public IActionResult RefreshToken([FromBody]RefreshTokenDTO refresh)
+        public virtual IActionResult RefreshToken([FromBody]RefreshTokenDTO refresh)
         {
-            var uid = _manager.CheckRefreshTokenWEB(refresh.Token);
+            var uid = SessionManager.CheckRefreshTokenWEB(refresh.Token);
             LoginResult res = new LoginResult(false, "InvalidToken");
             if (uid != null)
             {
-                res = _service.LoginById(uid);
+                res = AuthenticationService.LoginById(uid);
             }
             return Respond(res);
         }
@@ -45,8 +41,23 @@ namespace CodeShellCore.Web.Controllers
         [ApiAuthorize(AllowAll = true, AllowAnonymous = false)]
         public virtual IActionResult GetUserData()
         {
-            var res = userData.GetUserDataForUI(_manager.GetCurrentUserId());
+            var res = UserDataService.GetUserDataForUI(SessionManager.GetCurrentUserId());
             return Respond(res);
         }
+
+        [ApiAuthorize(AllowAll = true, AllowAnonymous = false)]
+        public virtual IActionResult ChangePassword([FromBody]ChangePasswordDTO dto)
+        {
+            SubmitResult = AuthenticationService.ChangePassword(dto);
+            return Respond();
+        }
+
+        [ApiAuthorize(AllowAnonymous = true)]
+        public virtual IActionResult SendResetMail(ResetPasswordDTO email)
+        {
+            SubmitResult = AuthenticationService.RequestPasswordReset(email);
+            return Respond();
+        }
+
     }
 }

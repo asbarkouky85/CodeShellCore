@@ -1,8 +1,10 @@
 ﻿using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Web.Razor.Models;
+using CodeShellCore.Web.Razor.Text;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Dynamic;
 using System.Linq.Expressions;
@@ -14,7 +16,7 @@ namespace CodeShellCore.Web.Razor
         protected dynamic _inputModelExtraAttrs = new ExpandoObject();
         public dynamic InputModelExtraAttrs { get { return _inputModelExtraAttrs; } }
         public Accessibility Accessibility { get; set; } = new Accessibility(2);
-        protected ILocaleTextProvider TextProvider { get { return RazorConfig.LocaleTextProvider; } }
+        protected ILocaleTextProvider TextProvider { get; private set; }
         protected IHtmlHelper Helper { get; private set; }
         public NgInput InputModel { get; set; }
         public object Model { get; set; }
@@ -23,6 +25,7 @@ namespace CodeShellCore.Web.Razor
         public ComponentWriter(IHtmlHelper helper)
         {
             Helper = helper;
+            TextProvider = Injector.GetService<IRazorLocaleTextProvider>();
         }
 
         protected virtual string AddInputControlAttributes()

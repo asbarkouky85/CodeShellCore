@@ -1,12 +1,12 @@
 ﻿import { Directive, Input, ElementRef, Output, EventEmitter, OnChanges, HostListener } from "@angular/core";
 import { TmpFileData } from "codeshell/helpers";
 import { NgModel } from "@angular/forms";
+import { Event } from "@angular/router";
+import { element } from "@angular/core/src/render3/instructions";
 
-@Directive({ selector: "input[file-uploader]", exportAs: "[file-uploader]" })
+@Directive({ selector: "[file-uploader]", exportAs: "[file-uploader]" })
 export class FileUploader implements OnChanges {
 
-    private _fileData?: TmpFileData | null = null;
-    private _fileDataMany: TmpFileData[] = [];
 
     @Input("multiple")
     multiple: boolean = false;
@@ -19,7 +19,7 @@ export class FileUploader implements OnChanges {
     set FileData(data: TmpFileData | undefined | null) { this._fileData = data; }
 
     @Output("fileDataChange")
-    FileDataChange: EventEmitter<TmpFileData|null> = new EventEmitter<TmpFileData|null>();
+    FileDataChange: EventEmitter<TmpFileData | null> = new EventEmitter<TmpFileData | null>();
 
     @Input("fileDataMany")
     get fileDataMany(): TmpFileData[] { return this._fileDataMany; }
@@ -28,39 +28,69 @@ export class FileUploader implements OnChanges {
     @Output("fileDataManyChange")
     fileDataManyChange: EventEmitter<TmpFileData[]> = new EventEmitter<TmpFileData[]>();
 
+    @HostListener("dragover", ["$event"])
+    OnDragOver(event: DragEvent) {
+
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    @HostListener("drop", ["$event"])
+    OnDrop(event: DragEvent) {
+        if (event.dataTransfer) {
+            this._uploadTmp(event.dataTransfer.files)
+        }
+        event.preventDefault();
+    }
+
     @HostListener("change", ["$event"])
     OnChange(ev: any) {
-        if (this.Uploader && this.Element.files) {
-            //this.model.viewToModelUpdate(null);
-            this.Uploader(this.Element.files).then(d => {
-                
+        if (!this._fileInput)
+            return;
+        if (this.Element.files) {
+            this._uploadTmp(this.Element.files);
+        }
+        if (this.Element)
+            this.Element.value = "";
+    }
+
+    private _fileData?: TmpFileData | null = null;
+    private _fileDataMany: TmpFileData[] = [];
+    private _fileInput = false;
+
+    Element: HTMLInputElement;
+
+    constructor(elem: ElementRef) {
+        var el = elem.nativeElement as HTMLInputElement;
+        if (el.type && el.type == "file") {
+            this._fileInput = true;
+        }
+        this.Element = elem.nativeElement;
+    }
+
+    private _uploadTmp(files: FileList) {
+        if (this.Uploader) {
+            this.Uploader(files).then(d => {
+
                 if (this.multiple) {
                     this._fileDataMany = d;
                     this.fileDataManyChange.emit(this._fileDataMany);
                 } else if (d.length > 0) {
                     this._fileData = d[0];
                     this.FileDataChange.emit(this._fileData);
-                   // this.model.viewToModelUpdate("val");
                 } else {
                     this._fileData = null;
                     this.FileDataChange.emit(null);
-                    this.model.control.setValue(null);
-                   // this.model.viewToModelUpdate("val");
                 }
             }).catch(e => {
                 this._fileData = null;
                 this.FileDataChange.emit(null);
-                this.model.control.setValue(null);
-              //  this.model.viewToModelUpdate(null);
             })
         }
+        this.Element.value = "";
     }
 
-    Element: HTMLInputElement;
 
-    constructor(elem: ElementRef,private model: NgModel) {
-        this.Element = elem.nativeElement;
-    }
 
     ngOnChanges(changes: any): void {
 

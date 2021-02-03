@@ -10,5 +10,6 @@ namespace CodeShellCore.Security
     {
         List<ResourceActionV> GetRoleResourceActions(object roleId);
         List<ResourceV> GetRoleResources(object roleId);
+        string[] GetResourcesWithCollections();
     }
 }

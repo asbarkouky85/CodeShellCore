@@ -10,7 +10,7 @@ import { UserDTO } from "./security/models";
 
 export class Shell {
     private static _translate: TranslateService;
-    private static _session:SessionManager;
+    private static _session: SessionManager;
     public static get Translator(): TranslateService {
         if (Shell._translate == null)
             Shell._translate = Shell.Injector.get(TranslateService);
@@ -21,11 +21,15 @@ export class Shell {
         return this._session;
     }
 
-    public static Start(comp:IAppComponent){
-        this.Main=comp;
-        this._session=new SessionManager;
+    public static Start(comp: IAppComponent) {
+        this.Main = comp;
+        this._session = new SessionManager;
         this._session.GetDeviceId();
         this._session.CheckToken();
+    }
+
+    public static MainAs<T extends IAppComponent>(): T {
+        return Shell.Main as T;
     }
 
     public static Injector: Injector;

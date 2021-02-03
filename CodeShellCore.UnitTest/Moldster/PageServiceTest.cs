@@ -1,8 +1,7 @@
 ﻿using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Configurator.Services;
-using CodeShellCore.Moldster.Db;
-using CodeShellCore.Moldster.Db.Data;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Dto;
 using CodeShellCore.UnitTest.Data;
 using CodeShellCore.Web.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +18,7 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             Shell.Start(new UnitTestShell(coll =>
             {
-                coll.AddMoldsterWeb(MoldsType.Db);
+                coll.AddMoldsterWeb();
                 coll.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
                 coll.AddScoped<MoldsterDataInit>();
             }));

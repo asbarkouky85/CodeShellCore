@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 using System;
-using CodeShellCore.CLI;
+using CodeShellCore.Cli;
 
 namespace CodeShellCore.Web.Filters
 {

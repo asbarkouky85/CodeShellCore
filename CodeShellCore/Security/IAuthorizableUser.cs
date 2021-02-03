@@ -12,6 +12,6 @@ namespace CodeShellCore.Security
     public interface IAuthorizableUser : IUser
     {
         Dictionary<string, DataAccessPermission> Permissions { get; set; }
-        IEnumerable<object> Roles { get; set; }
+        IEnumerable<string> Roles { get; set; }
     }
 }

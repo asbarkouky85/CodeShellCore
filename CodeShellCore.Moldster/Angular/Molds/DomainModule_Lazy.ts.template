@@ -14,10 +14,12 @@ import { TranslateService } from "@ngx-translate/core";
     exports: [%Components%],
     imports: [
 		SharedModule,
+		%ParentModules%
         RouterModule.forChild([
 %Routes%
 		])
-    ]
+    ],
+	entryComponents:[%EmbeddedComponents%]
 })
 export class %Name%Module {
 

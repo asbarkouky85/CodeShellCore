@@ -17,12 +17,22 @@ namespace CodeShellCore.Data
         IEnumerable<TValue> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter = null);
         IEnumerable<TValue> GetValues<TValue, TOrder>(Expression<Func<T, TValue>> ex, Expression<Func<T, TOrder>> order, Expression<Func<T, bool>> filter = null);
 
+        IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex);
         T FindSingle(object id);
         T FindSingle(Expression<Func<T, bool>> expression);
+        /// <summary>
+        /// Returns true if exists
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="obj"></param>
+        /// <param name="existing"></param>
+        /// <returns></returns>
+        bool FindSingleOrAdd(Expression<Func<T, bool>> ex, T obj, out T existing);
         TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
         TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> expression) where TR : class;
 
         void Add(T obj);
+
         void Update(T obj);
         void Delete(Expression<Func<T, bool>> ex);
         void Delete(T obj);

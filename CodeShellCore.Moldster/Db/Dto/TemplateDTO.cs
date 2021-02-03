@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Db.Dto
+namespace CodeShellCore.Moldster.Dto
 {
     public class TemplateDTO : IDTO<PageCategory>
     {
@@ -13,6 +13,11 @@ namespace CodeShellCore.Moldster.Db.Dto
         public string ResourceName { get; set; }
         public long? ResourceId { get; set; }
         public DateTime CreatedOn { get; set; }
+    }
 
+    public class LayoutFileDTO
+    {
+        public string Name { get; set; }
+        public string ViewPath { get; set; }
     }
 }

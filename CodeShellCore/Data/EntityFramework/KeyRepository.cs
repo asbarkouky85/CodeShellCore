@@ -12,22 +12,36 @@ namespace CodeShellCore.Data.EntityFramework
 {
     public class KeyRepository<T, TContext, TPrime> : Repository<T, TContext>
          where T : class, IModel<TPrime>
+
         where TContext : DbContext
     {
         public KeyRepository(TContext con) : base(con)
         {
         }
 
-        public virtual IQueryable<Named<TPrime>> QueryNamed(IQueryable<T> q = null)
+        //protected virtual IQueryable<Named<TPrime>> QueryNamed(IQueryable<T> q = null)
+        //{
+        //    q = q ?? Loader;
+        //    if (typeof(T).Implements(typeof(INamed<TPrime>)))
+        //    {
+        //        return ((IQueryable<INamed<TPrime>>)q).Select(d => new Named<TPrime> { Id = d.Id, Name = d.Name });
+        //    }
+        //    else
+        //    {
+        //        return q.Select(d => new Named<TPrime> { Id = d.Id, Name = "(" + d.Id + ")" });
+        //    }
+        //}
+
+        protected virtual IQueryable<Named<object>> QueryNamed(IQueryable<T> q = null)
         {
             q = q ?? Loader;
             if (typeof(T).Implements(typeof(INamed<TPrime>)))
             {
-                return ((IQueryable<INamed<TPrime>>)q).Select(d => new Named<TPrime> { Id = d.Id, Name = d.Name });
+                return ((IQueryable<INamed<TPrime>>)q).Select(d => new Named<object> { Id = d.Id, Name = d.Name });
             }
             else
             {
-                return q.Select(d => new Named<TPrime> { Id = d.Id, Name = "(" + d.Id + ")" });
+                return q.Select(d => new Named<object> { Id = d.Id, Name = "(" + d.Id + ")" });
             }
         }
 
@@ -71,6 +85,16 @@ namespace CodeShellCore.Data.EntityFramework
             var ids = GetValues(d => d.Id, ex);
             foreach (var id in ids)
                 DeleteById(id);
+        }
+
+        public override IEnumerable<Named<object>> FindAsLookup(string collectionId = null)
+        {
+            return QueryNamed().OrderBy(d => d.Name).ToList();
+        }
+
+        public override IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
+        {
+            return QueryNamed(Loader.Where(ex)).OrderBy(d => d.Name).ToList();
         }
     }
 }

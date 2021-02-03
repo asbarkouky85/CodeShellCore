@@ -1,4 +1,4 @@
-﻿<!DOCTYPE>
+<!DOCTYPE>
 @model CodeShellCore.Web.Moldster.IndexModel
 <html>
 <head>

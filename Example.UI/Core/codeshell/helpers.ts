@@ -31,7 +31,7 @@ export class TmpFileData {
     tmpPath?: string;
     size?: number;
     name?: string;
-    uploadId?: string ;
+    uploadId?: string;
     mimeType?: string;
 }
 
@@ -73,9 +73,13 @@ export class LoadResult {
     showing?: number;
 }
 
+export class LoadResultGen<T>{
+    list: T[] = [];
+}
+
 export class PropertyFilter {
     MemberName: string = "";
-    FilterType: string = "";
+    FilterType: "date"|"day"|"reference"|"equals"|"string"|"decimal"|"int"|"custom" = "reference";
     Value1?: string;
     Value2?: string;
     Ids: any[] = [];

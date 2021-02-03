@@ -1,14 +1,11 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.CLI;
 using CodeShellCore.Data.Helpers;
-using CodeShellCore.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace CodeShellCore.Data.Services
 {
@@ -38,52 +35,48 @@ namespace CodeShellCore.Data.Services
             return data;
         }
 
-        //public Process SqlCmdQueryProcess(string query)
-        //{
-
-        //    if (ConnectionParams == null)
-        //        throw new Exception("Environment is null");
-        //    var param = ConnectionParams;
-
-        //    var db = "";
-        //    if (!string.IsNullOrEmpty(param.Database))
-        //        db = "-d " + param.Database;
-
-        //    var cmd = "sqlcmd";
-        //    var args = $"-U {param.UserId} -P {param.Password} -S {param.Server} {db} -Q \"{query}\"";
-        //    try
-        //    {
-        //        var p = new Process();
-        //        p.StartInfo = new ProcessStartInfo
-        //        {
-        //            FileName = cmd,
-        //            Arguments = args,
-        //            UseShellExecute = false,
-        //            RedirectStandardOutput = true
-        //        };
-        //        p.Start();
-        //        return p;
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-        protected IEnumerable<DatabaseFile> GetDatabaseFiles(string dbName)
+        protected IEnumerable<DatabaseFile> MakeNewDbFiles(string dbName, string backupPath)
         {
+            IEnumerable<DatabaseFile> files = new List<DatabaseFile>();
             try
             {
-                var q = "select name,physical_name from sys.database_files";
-                var files = GetDataAs<DatabaseFile>(q, dbName);
-                return files;
+                var q = $"RESTORE FILELISTONLY FROM DISK = '" + backupPath + "'";
+
+                var fs = GetDataAs<DatabaseFile>(q);
+
+                var paths = GetDataAs<SqlPaths>(@"SELECT SERVERPROPERTY('instancedefaultdatapath') AS [DefaultFile],SERVERPROPERTY('instancedefaultlogpath') AS [DefaultLog]").FirstOrDefault();
+                foreach (var f in fs)
+                {
+                    var lg = f.PhysicalName.Contains(".ldf") ? "_log.ldf" : ".mdf";
+                    (files as List<DatabaseFile>).Add(new DatabaseFile { LogicalName = f.LogicalName, PhysicalName = Path.Combine(paths.DefaultFile, dbName + lg) });
+                }
+
             }
             catch
             {
-                return new List<DatabaseFile>();
-            }
 
+            }
+            return files;
+        }
+
+        protected IEnumerable<DatabaseFile> GetDatabaseFiles(string dbName)
+        {
+            IEnumerable<DatabaseFile> files = new List<DatabaseFile>();
+            try
+            {
+                var q = $"select Count(*) as Count from master.dbo.sysdatabases where name='{dbName}'";
+                var c = GetDataAs<CountModel>(q).FirstOrDefault();
+                if (c.Count > 0)
+                {
+                    q = @"select name LogicalName,physical_name PhysicalName from [" + dbName + "].sys.database_files";
+                    files = GetDataAs<DatabaseFile>(q, dbName);
+                }
+            }
+            catch
+            {
+
+            }
+            return files;
         }
 
         protected IEnumerable<T> GetDataAs<T>(string sql, string database = null)
@@ -187,13 +180,23 @@ namespace CodeShellCore.Data.Services
         public SubmitResult RestoreDatabase(string dbName, string backupPath)
         {
             var files = GetDatabaseFiles(dbName);
+            string ext = "";
+            if (!files.Any())
+            {
+                files = MakeNewDbFiles(dbName, backupPath);
+                ext = "FILE = 1, NOUNLOAD, STATS = 10";
+            }
+            else
+            {
+                ext = "REPLACE";
+            }
             var isOffline = false;
-            var sql = $"RESTORE DATABASE [{dbName}] FROM DISK = '{backupPath}' WITH REPLACE";
+            var sql = $"RESTORE DATABASE [{dbName}] FROM DISK = '{backupPath}' WITH " + ext;
             foreach (var f in files)
             {
-                sql += $", MOVE '{f.name}' TO '{f.physical_name}'";
+                sql += $", MOVE '{f.LogicalName}' TO '{f.PhysicalName}'";
             }
-            WriteFileOperation("Restoring database " + dbName, backupPath);
+            WriteFileOperation("Restoring database " + dbName + " from : ", Path.GetFileName(backupPath), false);
 
             if (files.Any())
             {
@@ -214,6 +217,7 @@ namespace CodeShellCore.Data.Services
 
             if (isOffline)
                 RunSql($"alter database [{dbName}] set online");
+            Console.WriteLine();
             return res;
         }
     }

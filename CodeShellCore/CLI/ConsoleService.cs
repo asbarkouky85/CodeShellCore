@@ -7,13 +7,13 @@ using System.Reflection;
 using System.Text;
 using System.Diagnostics;
 using CodeShellCore.Helpers;
-using CodeShellCore.CLI;
+using CodeShellCore.Cli;
 
 namespace CodeShellCore.Cli
 {
     public class ConsoleService : ServiceBase
     {
-        protected  IOutputWriter Out;
+        protected IOutputWriter Out;
 
         public ConsoleService(IOutputWriter writer)
         {
@@ -140,10 +140,10 @@ namespace CodeShellCore.Cli
             var p = new Process();
             p.StartInfo = inf;
             return p;
-            
+
         }
 
-        
+
 
         public void WriteColored(string text, ConsoleColor color)
         {
@@ -161,29 +161,37 @@ namespace CodeShellCore.Cli
                 return;
             }
 
-
-            if (ex is CodeShellHttpException && ex.Message.TryRead(out HttpResult res))
+            if (ex is CodeShellHttpException)
             {
-                WriteResult(res);
+                var csEx = (ex as CodeShellHttpException);
+                if (csEx.HttpResult != null)
+                {
+                    WriteResult(csEx.HttpResult);
+                    return;
+                }
+                else if (ex.Message.TryRead(out HttpResult res))
+                {
+                    WriteResult(res);
+                    return;
+                }
+            }
+
+            string[] lines = ex.StackTrace?.Split(new char[] { '\n' });
+            if (full)
+                WriteException(ex.Message, ex.GetType().Name, lines);
+            else
+                WriteExceptionShort(ex.Message, ex.GetType().Name);
+
+            if (ex.InnerException != null)
+            {
+                Out.WriteLine();
+                WriteException(ex.InnerException, full);
             }
             else
             {
-                string[] lines = ex.StackTrace?.Split(new char[] { '\n' });
-                if (full)
-                    WriteException(ex.Message, ex.GetType().Name, lines);
-                else
-                    WriteExceptionShort(ex.Message, ex.GetType().Name);
-
-                if (ex.InnerException != null)
-                {
-                    Out.WriteLine();
-                    WriteException(ex.InnerException, full);
-                }
-                else
-                {
-                    Out.WriteLine("-----------------------------------");
-                }
+                Out.WriteLine("-----------------------------------");
             }
+
 
         }
 

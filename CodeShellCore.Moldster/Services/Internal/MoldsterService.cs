@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CodeShellCore.Cli;
-using CodeShellCore.CLI;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Db;
-using CodeShellCore.Moldster.Db.Data;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Definitions;
-using CodeShellCore.Moldster.Services.Db;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 using CodeShellCore.Text;
 
@@ -15,15 +17,13 @@ namespace CodeShellCore.Moldster.Services.Internal
 {
     public class MoldsterService : StandAloneService, IMoldsterService
     {
-        IDbTemplateProcessingService _cust => GetService<IDbTemplateProcessingService>();
         IConfigUnit unit => GetService<IConfigUnit>();
-        IScriptGenerationService _ts => GetService<IScriptGenerationService>();
-        ITemplateProcessingService _html => GetService<ITemplateProcessingService>();
+        IDataService _data => GetService<IDataService>();
         ILocalizationService _loc => GetService<ILocalizationService>();
         IOutputWriter _output => GetService<IOutputWriter>();
-
-        IDataService _data => GetService<IDataService>();
         IPageParameterDataService _pages => GetService<IPageParameterDataService>();
+        IScriptGenerationService _ts => GetService<IScriptGenerationService>();
+        ITemplateProcessingService _html => GetService<ITemplateProcessingService>();
 
         public MoldsterService(IServiceProvider provider) : base(provider)
         {
@@ -48,30 +48,7 @@ namespace CodeShellCore.Moldster.Services.Internal
 
         }
 
-        public virtual void RenderDomainModule(string mod, string domain, bool lazy)
-        {
-
-            _output.WriteLine();
-            _output.Write("Rendering Module ");
-
-            using (_output.Set(ConsoleColor.Yellow))
-                _output.Write(mod);
-
-            _output.WriteLine("----------------------------");
-            string moduleName = mod;
-
-            var pages = _data.GetDomainPagesForRendering(mod, domain);
-
-            foreach (var e in pages)
-            {
-                RenderPage(moduleName, e);
-            }
-            var domToDefine = domain.Contains("/") ? domain.GetBeforeFirst("/") : domain;
-            _ts.GenerateDomainModule(mod, domToDefine, lazy);
-            _ts.GenerateRoutes(mod, lazy);
-            _loc.GenerateJsonFiles(mod);
-            _output.WriteLine();
-        }
+        
 
         public virtual void RenderMainComponent(string mod)
         {
@@ -79,16 +56,6 @@ namespace CodeShellCore.Moldster.Services.Internal
             _html.GenerateMainComponentTemplate(mod);
             _ts.GenerateMainComponent(mod);
             _output.WriteLine();
-        }
-
-        public virtual void ProcessTemplates(string modCode, string domain = null)
-        {
-            string[] tem = _data.GetTemplatePaths(modCode, domain);
-            foreach (var t in tem)
-            {
-                _ts.GenerateBaseComponent(t);
-                _output.WriteLine();
-            }
         }
 
         public virtual void RenderPage(string moduleName, PageRenderDTO dto)
@@ -116,9 +83,42 @@ namespace CodeShellCore.Moldster.Services.Internal
             var p = unit.PageRepository.FindSingleAs(d => new { d.PageCategoryId, d.TenantId }, d => d.Id == value);
             if (p != null)
             {
-                _cust.ProcessForTenant(p.PageCategoryId.Value, p.TenantId);
+                _html.ProcessForTenant(p.PageCategoryId.Value, p.TenantId);
             }
             return new SubmitResult();
+        }
+
+        #region render domain
+        public SubmitResult RenderDomainModule(RenderDTO dto)
+        {
+            _output.WriteLine();
+            _output.Write("Rendering Module ");
+
+            using (_output.Set(ConsoleColor.Yellow))
+                _output.Write(dto.Mod);
+
+            _output.WriteLine("----------------------------");
+            string moduleName = dto.Mod;
+
+            var pages = _data.GetDomainPagesForRendering(dto.Mod, dto.NameChain, dto.Recursive ?? true);
+
+            foreach (var e in pages)
+            {
+                RenderPage(moduleName, e);
+
+            }
+            var domToDefine = dto.NameChain.Contains("/") ? dto.NameChain.GetBeforeFirst("/") : dto.Domain;
+            _ts.GenerateDomainModule(dto.Mod, domToDefine, dto.Lazy ?? true);
+            _ts.GenerateRoutes(dto.Mod, dto.Lazy ?? true);
+            _loc.GenerateJsonFiles(dto.Mod);
+            _output.WriteLine();
+            return new SubmitResult();
+        }
+
+        public virtual void RenderDomainModule(string mod, string domain, bool lazy)
+        {
+            RenderDomainModule(new RenderDTO { Mod = mod, NameChain = domain, Lazy = lazy });
+
         }
 
         public SubmitResult RenderAll(string modCode)
@@ -129,9 +129,11 @@ namespace CodeShellCore.Moldster.Services.Internal
             {
                 RenderDomainModule(modCode, d.NameChain, true);
             }
+
             RenderModuleDefinition(modCode, true);
             return new SubmitResult();
         }
+        #endregion
 
         public SyncResult SyncTenants(long src, long tar)
         {
@@ -191,6 +193,38 @@ namespace CodeShellCore.Moldster.Services.Internal
             }
 
 
+        }
+
+
+        public virtual void ProcessTemplates(string modCode, string domain = null)
+        {
+            if (domain == null)
+                ProcessAllTemplates(modCode);
+            else
+                ProcessDomainTemplates(domain, modCode);
+        }
+
+        public void ProcessAllTemplates(string modCode)
+        {
+            long tenantId = unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            var lst = unit.PageCategoryRepository.GetValues(d => d.Id, d => d.Pages.Any(e => e.TenantId == tenantId));
+            foreach (long id in lst)
+            {
+                _html.ProcessForTenant(id, tenantId);
+                _ts.GeneratePageCategory(id);
+            }
+        }
+
+        public void ProcessDomainTemplates(string domain, string modCode)
+        {
+            long tenantId = unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            IEnumerable<long> lst = unit.PageCategoryRepository.GetDomainTemplates(domain, tenantId);
+
+            foreach (long id in lst)
+            {
+                _html.ProcessForTenant(id, tenantId);
+                _ts.GeneratePageCategory(id);
+            }
         }
     }
 }

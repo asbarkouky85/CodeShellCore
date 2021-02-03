@@ -13,4 +13,19 @@ export abstract class ChangePasswordBase extends EditComponentBase{
     SubmitAsync(): Promise<SubmitResult> {
         return this.Service.ChangePassword(this.model);
     }
+
+    ShowPassword(passInput: HTMLInputElement) {
+        passInput.type = "text";
+    }
+
+    HidePassword(passInput: HTMLInputElement) {
+        passInput.type = "password";
+    }
+
+    TogglePassword(passInput: HTMLInputElement) {
+        if (passInput.type == "text")
+            passInput.type = "password";
+        else
+            passInput.type = "text";
+    }
 }

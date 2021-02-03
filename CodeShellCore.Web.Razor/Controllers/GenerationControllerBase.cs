@@ -1,12 +1,16 @@
-﻿using CodeShellCore.CLI;
+﻿using CodeShellCore.Cli;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Configurator;
 using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +32,10 @@ namespace CodeShellCore.Web.Razor.Controllers
         IPublisherService pub => GetService<IPublisherService>();
         IPathsService paths => GetService<IPathsService>();
         IDataService data => GetService<IDataService>();
-        IDbTemplateProcessingService c => GetService<IDbTemplateProcessingService>();
+        ITemplateProcessingService c => GetService<ITemplateProcessingService>();
         IPreviewService prev => GetService<IPreviewService>();
         IScriptGenerationService sc => GetService<IScriptGenerationService>();
+        IScriptModelMappingService map => GetService<IScriptModelMappingService>();
 
         public IActionResult ProcessForPage([FromQuery]MoldsterRequest req)
         {
@@ -53,7 +58,7 @@ namespace CodeShellCore.Web.Razor.Controllers
         [HttpPost]
         public IActionResult Render([FromBody]RenderDTO dto)
         {
-            molds.RenderDomainModule(dto.Mod, dto.NameChain, dto.Lazy ?? true);
+            SubmitResult = molds.RenderDomainModule(dto);
             return Respond();
         }
 
@@ -88,6 +93,12 @@ namespace CodeShellCore.Web.Razor.Controllers
         public IActionResult ModuleDefinition([FromBody]RenderDTO dto)
         {
             molds.RenderModuleDefinition(dto.Mod, dto.Lazy ?? true);
+            return Respond();
+        }
+
+        public IActionResult Mapping()
+        {
+            map.ScriptMapping();
             return Respond();
         }
 

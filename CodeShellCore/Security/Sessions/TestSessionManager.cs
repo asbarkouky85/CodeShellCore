@@ -39,9 +39,9 @@ namespace CodeShellCore.Security.Sessions
             throw new NotImplementedException();
         }
 
-        public TestSessionManager(string userId)
+        public TestSessionManager(string userId, IServiceProvider prov) : base(prov)
         {
             currentUserId = userId;
         }
-    }        
+    }
 }

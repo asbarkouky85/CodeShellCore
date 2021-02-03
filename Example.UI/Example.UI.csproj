@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Web\Asga.Web.csproj" />
+    <ProjectReference Include="..\Asga.Auth.Web\Asga.Auth.Web.csproj" />
     <ProjectReference Include="..\Example\Example.csproj" />
   </ItemGroup>
 
@@ -34,6 +34,11 @@
     <TypeScriptCompile Include="Core\codeshell\baseComponents\loginBase.ts" />
     <TypeScriptCompile Include="Core\codeshell\directives\fileUploader.ts" />
     <TypeScriptCompile Include="Core\codeshell\utilities\defaultConfigs.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\BaseApp\Mobile\" />
+    <Folder Include="Core\BaseApp\Public\" />
   </ItemGroup>
 
 </Project>

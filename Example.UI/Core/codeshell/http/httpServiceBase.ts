@@ -42,6 +42,44 @@ export abstract class HttpServiceBase {
         this.Server = Shell.Main.Config;
     }
 
+    public Get(action: string, params?: number | object): Promise<any> {
+        let req: HttpRequest = this.InitializeRequest(action, params);
+        return this.process(Methods.Get, req);
+    }
+
+    public GetAsHtml(action: string, params?: number | object): Promise<any> {
+        let req: HttpRequest = this.InitializeRequest(action, params);
+        if (req.Params.headers) {
+            req.Params.responseType = "text/html";
+        }
+        return this.process(Methods.Get, req);
+    }
+
+    public Post(action: string, body: any, params?: number | object): Promise<any> {
+        let req: HttpRequest = this.InitializeRequest(action, params, body);
+        return this.process(Methods.Post, req);
+    }
+
+    public Put(action: string, body: any, params?: number | object): Promise<any> {
+        let req: HttpRequest = this.InitializeRequest(action, params, body);
+        return this.process(Methods.Put, req);
+    }
+
+    public Delete(action: string, id: number): Promise<any> {
+        let req: HttpRequest = this.InitializeRequest(action, id);
+        return this.process(Methods.Delete, req);
+    }
+
+    public GetAs<T>(action: string, params?: number | object): Promise<T> {
+        let req: HttpRequest = this.InitializeRequest(action, params);
+        return this.processAs<T>(Methods.Get, req);
+    }
+
+    public PostAs<T>(action: string, body: any, params?: number | object): Promise<T> {
+        let req: HttpRequest = this.InitializeRequest(action, params, body);
+        return this.processAs<T>(Methods.Post, req);
+    }
+
 
     protected InitializeRequest(action: string, params?: number | object, body?: any): HttpRequest {
         let url: string = this.BaseUrl + "/" + action;
@@ -49,6 +87,8 @@ export abstract class HttpServiceBase {
         r.Params.headers = this.Headers;
         return r;
     }
+
+    
 
     protected async process(method: Methods, req: HttpRequest): Promise<any> {
         var p = new Promise<any>(() => { });
@@ -100,7 +140,6 @@ export abstract class HttpServiceBase {
     }
 
     protected OnError(e: HttpErrorResponse) {
-
         Utils.HandleError(e);
 
         Shell.Main.HideLoading();

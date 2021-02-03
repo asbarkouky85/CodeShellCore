@@ -15,10 +15,11 @@ namespace CodeShellCore.Web.Razor.General.Angular
 {
     public static class AngularGeneralHelpers
     {
-        static IAngularElementsHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IAngularElementsHelper>(); } }
+        //static IAngularElementsHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IAngularElementsHelper>(); } }
 
         public static IHtmlContent ValueBinding<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> ex, string pipe = null)
         {
+            var Provider = helper.GetService<IAngularElementsHelper>();
             return Provider.ValueBinding(helper, ex, pipe);
         }
 
@@ -58,6 +59,7 @@ namespace CodeShellCore.Web.Razor.General.Angular
             string url = null,
             IEnumerable<LinkModel> buttons = null)
         {
+            var Provider = helper.GetService<IAngularElementsHelper>();
             return Provider.SelectModalButton(helper, textId, function, bind, attrs, identifier, validationFunction, url,buttons);
         }
     }

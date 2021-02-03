@@ -21,9 +21,9 @@ namespace CodeShellCore.Types
         }
         Func<IServiceProvider> ProviderDelegate;
 
-        public InstanceStore(IServiceProvider provider = null)
+        public InstanceStore(IServiceProvider provider)
         {
-            _injector = provider ?? Shell.ScopedInjector;
+            _injector = provider;
         }
 
         public InstanceStore(Func<IServiceProvider> provider)
@@ -31,21 +31,24 @@ namespace CodeShellCore.Types
             ProviderDelegate = provider;
         }
 
-        public T GetInstance(Type t)
+        public T GetInstance(Type t, Action<T> onCreate = null)
         {
             if (!t.GetInterfaces().Contains(typeof(T)))
                 throw new Exception(t.Name + " does not implement IRepository");
             if (!TryGetValue(t, out T service))
             {
                 service = (T)Injector.GetService(t);
+
                 if (service == null)
-                        throw new Exception("Type " + t.FullName + " is not registered");
+                    throw new Exception("Type " + t.FullName + " is not registered");
+                else
+                    onCreate?.Invoke(service);
                 this[t] = service;
             }
             return (T)service;
         }
 
-        public TService GetInstance<TService>() where TService : T
+        public TService GetInstance<TService>(Action<T> onCreate = null) where TService : T
         {
             T service;
             Type t = typeof(TService);
@@ -54,6 +57,8 @@ namespace CodeShellCore.Types
                 service = Injector.GetService<TService>();
                 if (service == null)
                     throw new Exception("Type " + t.FullName + " is not registered");
+                else
+                    onCreate?.Invoke(service);
                 this[t] = service;
             }
             return (TService)service;

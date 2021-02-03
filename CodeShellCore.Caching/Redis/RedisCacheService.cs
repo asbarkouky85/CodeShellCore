@@ -24,7 +24,7 @@ namespace CodeShellCore.Caching.Redis
             _endPoint = new RedisEndpoint(_config.Host, _config.Port, null, _config.DatabaseId);
         }
 
-        public T Get<T>(object key) where T : class
+        public T Get<T>(string key) where T : class
         {
             
             using (RedisClient client = new RedisClient(_endPoint))
@@ -39,7 +39,7 @@ namespace CodeShellCore.Caching.Redis
         }
 
 
-        public T GetById<T>(object id) where T : class
+        public T GetById<T>(string id) where T : class
         {
             using (RedisClient client = new RedisClient(_endPoint))
             {
@@ -48,7 +48,7 @@ namespace CodeShellCore.Caching.Redis
             }
         }
 
-        public void Store<T>(object key, T entity) where T : class
+        public void Store<T>(string key, T entity) where T : class
         {
             using (RedisClient client = new RedisClient(_endPoint))
             {
@@ -87,7 +87,7 @@ namespace CodeShellCore.Caching.Redis
             }
         }
 
-        public bool Remove<T>(object key) where T : class
+        public bool Remove<T>(string key) where T : class
         {
             bool removed = false;
 

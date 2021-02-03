@@ -1,17 +1,13 @@
 ﻿using Asga.Auth;
 using Asga.Auth.Services;
-using Asga.Web.Controllers.Auth;
+using Asga.Auth.Web.Controllers;
 using CodeShellCore.Linq;
-using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Example.UI.Controllers
 {
-    
+
     public class RolesController : RolesControllerBase
     {
         public RolesController(IRolesService service, IAuthLookupService lookups) : base(service, lookups)

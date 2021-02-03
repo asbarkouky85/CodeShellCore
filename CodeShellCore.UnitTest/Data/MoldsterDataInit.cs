@@ -1,7 +1,4 @@
-﻿using CodeShellCore.Moldster.Db;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CodeShellCore.Moldster;
 
 namespace CodeShellCore.UnitTest.Data
 {

@@ -150,7 +150,7 @@ export abstract class TreeComponentBase extends BaseComponent {
         return this;
     }
 
-    OnTreeLoaded() { }
+    OnTreeLoaded: () => void = () => { };
     OnCheckBoxSelect(node: TreeNode) { }
     OnCheckBoxDeselect(nods: TreeNode) { }
     OnSelected(item: RecursionModel) { }
@@ -232,7 +232,6 @@ export abstract class TreeComponentBase extends BaseComponent {
                     item.hasContents = true;
                     item.contentCount = res[i];
                 }
-
             }
         });
     }
@@ -241,7 +240,6 @@ export abstract class TreeComponentBase extends BaseComponent {
         return new Promise((res, rej) => {
             setTimeout(() => {
                 this.ignore = true;
-                console.log("expanding")
                 if (this.treeComponent) {
                     for (let id of this.Expanded) {
                         if (id == null)
@@ -262,8 +260,9 @@ export abstract class TreeComponentBase extends BaseComponent {
     }
 
     onTreeInit() {
-        this.OnTreeLoaded();
-
+        setTimeout(() => {
+            this.OnTreeLoaded();
+        }, 300);
     }
 
     onExpanded(event: any) {
@@ -566,6 +565,24 @@ export abstract class TreeComponentBase extends BaseComponent {
             return newNode;
         }
         throw "no tree component";
+    }
+
+    SelectItemAsync(): Promise<RecursionModel> {
+
+        return new Promise((res, rej) => {
+            this.OnOk = d => {
+                res(this.selectedItem);
+                return Promise.resolve(true);
+            }
+            this.OnCancel = d => {
+                rej("user canceled");
+                return Promise.resolve(false);
+            }
+            this.StartAsync().then(comp => {
+                this.Show = true;
+
+            })
+        })
     }
 
     SubmitNewAsync(model: any): Promise<SubmitResult> {

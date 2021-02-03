@@ -1,23 +1,16 @@
-<div class="page-header" [ngClass]="IsEmbedded?'section-header':'container-fluid'" *ngIf="!HideHeader">
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
     <div class="row">
-        <div class="col-sm-5 col-xs-12" *ngIf="!IsEmbedded">
+        <div class="col-sm-5 col-xs-12">
             <h2>{{'Pages.Roles__RoleList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
         </div>
 
-        <div class="col-sm-7 col-xs-12" *ngIf="!IsEmbedded">
+        <div class="col-sm-7 col-xs-12">
             <div class="row">
 
                 <div class="col-md-12 col-xs-12 padTop padBottom">
                     <div class="pull-last btn-group">
 
                         
-    <a class="btn btn-success"
-       [routerLink]="'/Auth/Roles/RoleCreate'"
-        *ngIf="Permission.insert"
-       >
-        <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Role' | translate } }}
-    </a>
-
                         
     <button class="btn btn-info margin-sides"
             (click)="Refresh()"
@@ -31,33 +24,29 @@
             </div>
         </div>
 
-        <div *ngIf="IsEmbedded" class="container-fluid">
-            <div class="row">
-                <div class="col-md-8">
-                    {{'Pages.Roles__RoleList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
-                </div>
-                <div class="col-md-4">
 
-    <a class="btn btn-success buttonGra-sm"
-       [routerLink]="'/Auth/Roles/RoleCreate'"
-        *ngIf="Permission.insert"
-       >
-        <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Role' | translate } }}
-    </a>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="row" *ngIf="!IsEmbedded">
-
         <ol class="breadcrumb">
-            <li>
-                <a routerLink="'/'">{{'Words.Main' | translate }}</a>
-            </li>
-            <li>
-                {{'Pages.Roles__RoleList' | translate }}
-            </li>
-        </ol>
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+        <li>
+        {{'Pages.Roles__RoleList' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Roles__RoleList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
     </div>
 </div>
 <div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
@@ -116,4 +105,4 @@
 
 </div>
 <div style='display:none' #lookupOptionsContainer values=''></div>
-<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":"/Auth/Roles/RoleCreate","EditUrl":"/Auth/Roles/RoleEdit","DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{}}'></div>
+<div style='display:none' #viewParamsContainer values='{"AddUrl":null,"EditUrl":"/Auth/Roles/RoleEdit","DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{}}'></div>

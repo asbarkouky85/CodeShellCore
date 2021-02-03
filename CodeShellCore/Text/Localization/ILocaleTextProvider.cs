@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace CodeShellCore.Text.Localization
@@ -14,5 +15,6 @@ namespace CodeShellCore.Text.Localization
         string Page(string index, string cult = null);
         string Message(string index, params string[] formatElements);
         string MessageWithCulture(string index, string cult, params string[] formatElements);
+        CultureInfo Culture { get; }
     }
 }

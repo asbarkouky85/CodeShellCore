@@ -17,6 +17,10 @@ using CodeShellCore.Services.Email;
 using ConsoleTest1.Models;
 using CodeShellCore.Helpers;
 using CodeShellCore.Files;
+using Asga.Auth.Services;
+using Asga.Auth;
+using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Localization;
 
 namespace ConsoleTest1
 {
@@ -30,7 +34,43 @@ namespace ConsoleTest1
             { 4,"Tasks"},
             { 5,"TestEmail"},
             { 6,"TestExpressions"},
+            { 7,"TestLookups"},
+            { 8,"TestUtils"},
+            { 9,"TestFixPages"}
         };
+
+        public void TestFixPages()
+        {
+            var ser = Injector.GetService<ILocalizationService>();
+            ser.FixPages("ClientApp");
+        }
+
+        public void TestUtils()
+        {
+            var acc = new EnvironmentAccessor();
+            acc.CurrentEnvironment = new CodeShellCore.Moldster.Definitions.MoldsterEnvironment
+            {
+                Upload = new CodeShellCore.Net.UploadConfig
+                {
+                    ServerUrl = "http://i-maher.com:8019"
+                }
+            };
+            var ser = new CodeShellCore.Moldster.Builder.Internal.PublisherHttpService(acc);
+            var res = ser.HandleRequest(new CodeShellCore.Net.PublisherRequest
+            {
+                Type = CodeShellCore.Net.ServerRequestTypes.Decompress,
+                FileName = "wwwroot/dist/ClientApp-v1.0.6.1.zip",
+                DestinationFolder = "wwwroot/dist/v1.0.6.1"
+            });
+        }
+
+
+        public void TestLookups()
+        {
+            var s = Injector.GetService<IAuthLookupService>();
+            var data = s.GetRequestedLookups(new Dictionary<string, string> { { "users", "c0" } });
+
+        }
 
         public void TestExpressions()
         {
@@ -93,16 +133,22 @@ namespace ConsoleTest1
 
         public void TestLogger()
         {
-            Logger.Default.TextWriter.MaxLines = 100;
-            Thread th1 = new Thread(ThreadTest);
-            Thread th2 = new Thread(ThreadTest);
-            Thread th3 = new Thread(ThreadTest);
-            th1.Start();
-            Thread.Sleep(500);
-            th2.Start();
-            Thread.Sleep(500);
-            th3.Start();
-            Thread.Sleep(500);
+            //Logger.Default.TextWriter.MaxLines = 100;
+            //Thread th1 = new Thread(ThreadTest);
+            //Thread th2 = new Thread(ThreadTest);
+            //Thread th3 = new Thread(ThreadTest);
+            //th1.Start();
+            //Thread.Sleep(500);
+            //th2.Start();
+            //Thread.Sleep(500);
+            //th3.Start();
+            //Thread.Sleep(500);
+            var l = Logger.Create("Test", "./");
+            l.Write("hi");
+            l.WriteLogLine("");
+            l.Write("hi2");
+            l.GotoColumn(3);
+            l.WriteLogLine("hhh");
             //th2.Start();
         }
 

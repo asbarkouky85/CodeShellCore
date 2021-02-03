@@ -2,7 +2,14 @@
 @{
     Layout = Html.Config().Layout;
 }
-@using (Html.NgForm("Form"))
-{
-    @Html.RichTextBoxGroup(d => d.Description, "quillConfig")
-}
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.ComponentSelectorFromOther("UserList")
+    </div>
+    <div class="col-md-6">
+        @Html.ComponentSelectorFromOther("UserAdd")
+    </div>
+</div>
+
+

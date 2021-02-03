@@ -24,8 +24,8 @@ namespace Example.Config.Api
         {
             base.RegisterServices(coll);
 
-            coll.AddMoldsterWeb(MoldsType.Db);
-            coll.AddMoldsterConfigurator(MoldsType.Db);
+            coll.AddMoldsterWeb();
+            coll.AddMoldsterConfigurator();
             coll.AddMoldsterServerGeneration();
             coll.AddMoldsterRazorHelpers();
 
@@ -34,6 +34,7 @@ namespace Example.Config.Api
             coll.AddMoldsterModules(d =>
             {
                 d.Register("Asga.Auth.Molds", "{PARENT}/Asga.Auth.Molds");
+                d.Register("Asga.Public.Molds", "{PARENT}/Asga.Public.Molds");
             });
         }
 

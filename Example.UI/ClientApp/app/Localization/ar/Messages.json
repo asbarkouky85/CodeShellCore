@@ -1,7 +1,8 @@
 {
-  "delete_confirm_message": "delete confirm message",
-  "field_required": "field required",
+  "field_required": "{0} مطلوب",
   "operation_unavailable": "operation unavailable",
   "unauthorized_operation": "unauthorized operation",
-  "unexpected_error": "unexpected error"
+  "unexpected_error": "unexpected error",
+  "delete_confirm_message": "هل انت متأكد من المسح",
+  "test_message": "تجربه {0} و {1}"
 }

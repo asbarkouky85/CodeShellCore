@@ -12,6 +12,12 @@ export class ListItem implements IModel {
         return !items.some(d => d.state != "Removed");
     }
 
+    static GetLength(items: ListItem[]): number {
+        if (!items)
+            return 0;
+        return items.filter(e => e.state != 'Removed' && e.state!='Detached').length;
+    }
+
     public static GetChangedItems(items: ListItem[]): ListItem[] {
 
         return items.filter(e => e.state == "Added" || e.state == "Modified" || e.state == "Removed");
@@ -61,14 +67,22 @@ export class ListItem implements IModel {
         return it;
     }
 
+    AddToChangeList() {
+        if (this.state == "Detached" || !this.state) {
+            this.state = "Added";
+        } else if (this.state == "Attached") {
+            this.state = "Modified";
+        }
+    }
+
     public SetModified() {
 
-        if (this.state != "Added" && this.state!="Detached")
+        if (this.state != "Added" && this.state != "Detached")
             this.state = "Modified";
     }
 
     public SetRemoved() {
- 
+
         if (this.state != "Added")
             this.state = "Removed";
     }
@@ -87,18 +101,18 @@ export class ListItem implements IModel {
     }
 
     public ApplyTo(items: any[]) {
-     
-        
+
+
         if (this.selected)
             this.AddTo(items);
         else
             this.RemoveFrom(items);
-        
+
 
     }
 
     public RemoveFrom(items: any[]) {
-  
+
         if (this.state == "Added") {
             let ind = items.indexOf(this);
             if (ind > -1)
@@ -113,7 +127,7 @@ export class ListItem implements IModel {
     public AddTo(items: any[]) {
         if (this.state == "Removed") {
             this.state = "Attached";
-        } else if (this.state != "Added" && this.state!="Attached") {
+        } else if (this.state != "Added" && this.state != "Attached") {
             this.state = "Added";
             items.push(this);
         }

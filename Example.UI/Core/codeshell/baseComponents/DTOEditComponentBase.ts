@@ -1,8 +1,12 @@
 ﻿import { EditComponentBase } from "./editComponentBase";
 import { DTO, SubmitResult } from "../helpers";
 
-export abstract class DTOEditComponentBase extends EditComponentBase{
+export abstract class DTOEditComponentBase extends EditComponentBase {
     model: any = {};
+
+    get ModelId(): number { return this.model.entity.id; }
+    set ModelId(val: number) { this.model.entity.id=val; }
+
     DefaultModel() {
         return new DTO<any>();
     }

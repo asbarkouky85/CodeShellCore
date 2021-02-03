@@ -1,12 +1,10 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Configurator.Services;
-using CodeShellCore.Moldster.Db;
-using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
-using CodeShellCore.Moldster.Services.Db;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;

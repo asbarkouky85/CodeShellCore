@@ -12,10 +12,11 @@ namespace CodeShellCore.Web.Razor.Tables
 
     public static class TableHelperExtensions
     {
-        static ITablesHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<ITablesHelper>(); } }
+        //static ITablesHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<ITablesHelper>(); } }
 
         public static IHtmlContent HeaderRow(this IHtmlHelper helper, params string[] parameters)
         {
+            var Provider = helper.GetService<ITablesHelper>();
             return Provider.HeaderRow(helper, parameters);
         }
 
@@ -26,6 +27,7 @@ namespace CodeShellCore.Web.Razor.Tables
             object cellAttributes = null,
             bool? sorting = null)
         {
+            var Provider = helper.GetService<ITablesHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
             CellWriter mod = Provider.HeaderCell(helper, text, size, isColumn, cellAttributes, sorting.Value);
             return mod.WriteHeaderCell();
@@ -36,6 +38,7 @@ namespace CodeShellCore.Web.Razor.Tables
             object cellAttributes = null,
             bool? sorting = null)
         {
+            var Provider = helper.GetService<ITablesHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
             CellWriter mod = Provider.HeaderCell(helper, exp, size, cellAttributes, sorting.Value);
             return mod.WriteHeaderCell();
@@ -45,6 +48,7 @@ namespace CodeShellCore.Web.Razor.Tables
         public static IHtmlContent TextCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
             object cellAttributes = null)
         {
+            var Provider = helper.GetService<ITablesHelper>();
             CellWriter mod = Provider.TextCell(helper, exp, cellAttributes);
             return mod.WriteCell(CellTypes.LabelCell);
         }
@@ -61,6 +65,7 @@ namespace CodeShellCore.Web.Razor.Tables
             bool nullable = false,
             string rowIndex = null)
         {
+            var Provider = helper.GetService<ITablesHelper>();
             CellWriter mod = Provider.SelectCell(helper, exp, source, displayMember, valueMember, required, multi, cellAttributes, inputAttr, classes, nullable, rowIndex);
             return mod.Write(InputControls.Select);
         }
@@ -72,6 +77,7 @@ namespace CodeShellCore.Web.Razor.Tables
             object inputAttr = null,
             string classes = "")
         {
+            var Provider = helper.GetService<ITablesHelper>();
             CellWriter mod = Provider.TextBoxCell(helper, exp, textBoxType, null, coll, cellAttributes, inputAttr, classes);
             return mod.Write(InputControls.TextBox);
         }
@@ -87,6 +93,7 @@ namespace CodeShellCore.Web.Razor.Tables
             object inputAttr = null,
             string classes = "")
         {
+            var Provider = helper.GetService<ITablesHelper>();
             CellWriter mod = Provider.CalendarCell(helper, exp, rangeType, cals, range, required, cellAttributes, inputAttr, classes);
             return mod.Write(InputControls.CalendarTextBox);
         }
@@ -96,6 +103,7 @@ namespace CodeShellCore.Web.Razor.Tables
             string width = null,
             object cellAttributes = null)
         {
+            var Provider = helper.GetService<ITablesHelper>();
             CellWriter writer = Provider.DragHeaderCell<T>(helper, tableName, width, cellAttributes);
             return writer.WriteHeaderCell();
         }
@@ -106,6 +114,7 @@ namespace CodeShellCore.Web.Razor.Tables
             string width = null,
             object cellAttributes = null)
         {
+            var Provider = helper.GetService<ITablesHelper>();
             CellWriter writer = Provider.DragContentCell<T>(helper, tableName, modelName, width, cellAttributes);
             return writer.WriteCell(CellTypes.DragCell);
         }
@@ -117,6 +126,7 @@ namespace CodeShellCore.Web.Razor.Tables
             object linkAttributes = null,
             string pipe = null)
         {
+            var Provider = helper.GetService<ITablesHelper>();
             CellWriter writer = Provider.LinkCell(helper, exp, url, blank, cellAttributes, linkAttributes, pipe);
             return writer.Write(InputControls.Label);
         }

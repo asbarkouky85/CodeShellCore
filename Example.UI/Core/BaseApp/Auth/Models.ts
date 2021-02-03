@@ -9,8 +9,8 @@ export class UserRole {
 
 export class User{
     id: number = 0;
-    tenantId: number = 0;
-    roles: ListItem[] = [];
+    tenantId?: number;
+    userRoles: ListItem[] = [];
     parties: ListItem[] = [];
     email?: string;
     mobile?:string;
@@ -48,6 +48,7 @@ export class Perm extends ListItem{
     public canUpdate: boolean = false;
     public canInsert: boolean = false;
     public canDelete: boolean = false;
+    collectionId?: number;
 
     SetAll(set: boolean) {
         this.canDelete = set;

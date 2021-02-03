@@ -8,7 +8,10 @@ namespace CodeShellCore.Security
     {
         IUser User { get; }
         string UserId { get; set; }
+        string ClientId { get; set; }
         T UserAs<T>() where T : class, IUser;
+        bool IsUser { get; }
+        bool IsClient { get; }
         void Set(IUser user);
     }
 }

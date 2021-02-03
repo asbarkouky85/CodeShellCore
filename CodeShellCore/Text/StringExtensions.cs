@@ -175,7 +175,7 @@ namespace CodeShellCore.Text
         public static string GetAfterFirst(this string subject, string str, int length = 0)
         {
             int ind = subject.IndexOf(str);
-            if (ind != 0)
+            if (ind > -1)
             {
                 if (length == 0)
                     return subject.Substring(ind + str.Length);

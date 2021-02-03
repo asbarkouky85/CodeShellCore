@@ -7,23 +7,24 @@ import { AuthFilter, ResourceActions } from "codeshell/security";
 
 import { ServerConfigBase } from "codeshell/core";
 import { TranslateService } from "@ngx-translate/core";
-import { RoleEdit } from "./RoleEdit";
+import { AuthModule } from "../AuthModule";
 import { RoleList } from "./RoleList";
-import { RoleCreate } from "./RoleCreate";
+import { RoleEdit } from "./RoleEdit";
 
 
 @NgModule({
-    declarations: [RoleEdit,RoleList,RoleCreate,],
-    exports: [RoleEdit,RoleList,RoleCreate,],
+    declarations: [RoleList,RoleEdit,],
+    exports: [RoleList,RoleEdit,],
     imports: [
 		SharedModule,
+		AuthModule,
         RouterModule.forChild([
-			﻿{ path : "RoleEdit/:id", component : RoleEdit, canActivate: [AuthFilter], data: { name : "Roles__RoleEdit", navigate: false, resource:"", action: "allowAll", apps:null }},
 			﻿{ path : "RoleList", component : RoleList, canActivate: [AuthFilter], data: { name : "Roles__RoleList", navigate: false, resource:"", action: "allowAll", apps:null }},
-			﻿{ path : "RoleCreate", component : RoleCreate, canActivate: [AuthFilter], data: { name : "Roles__RoleCreate", navigate: false, resource:"", action: "allowAll", apps:null }},
+			﻿{ path : "RoleEdit/:id", component : RoleEdit, canActivate: [AuthFilter], data: { name : "Roles__RoleEdit", navigate: false, resource:"", action: "allowAll", apps:null }},
 
 		])
-    ]
+    ],
+	entryComponents:[]
 })
 export class RolesModule {
 
@@ -33,6 +34,5 @@ export class RolesModule {
     }
 }
 
-Registry.Register("Auth/Roles/RoleEdit", RoleEdit);
 Registry.Register("Auth/Roles/RoleList", RoleList);
-Registry.Register("Auth/Roles/RoleCreate", RoleCreate);
+Registry.Register("Auth/Roles/RoleEdit", RoleEdit);

@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { UserDTO } from "../security/models";
 
 export class Registry{
-    private static List: { [index: string]: new (x: ActivatedRoute) => BaseComponent } = {};
+    private static List: { [index: string]: new (...args:any[]) => BaseComponent } = {};
     private static _userType?: new () => UserDTO;
 
     public static get UserType(): new () => UserDTO {
@@ -18,7 +18,7 @@ export class Registry{
         Registry.List[name] = s;
     }
 
-    static Get(name: string) : (new (x: ActivatedRoute) => BaseComponent) | undefined  {
+    static Get(name: string) : (new (...args:any[]) => BaseComponent) | undefined  {
         if (Registry.List[name])
             return Registry.List[name];
         return undefined;

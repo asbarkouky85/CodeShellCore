@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.IO;
-
-using CodeShellCore.Data;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Text;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Db.Dto;
-using CodeShellCore.Moldster.Db.Razor;
+using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.Data;
 using System.Collections.Generic;
-using CodeShellCore.CLI;
+using CodeShellCore.Cli;
 using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Db;
-using CodeShellCore.Moldster.Services.Db;
-using CodeShellCore.Moldster.Services;
+using CodeShellCore.Moldster.Razor;
 
 namespace CodeShellCore.Moldster.Configurator.Services
 {
@@ -324,7 +318,6 @@ namespace CodeShellCore.Moldster.Configurator.Services
                     }
                 }
                 p.ViewParams = vp.ToJson();
-                p.Presistant = true;
             }
 
             return Unit.SaveChanges();
@@ -575,7 +568,12 @@ namespace CodeShellCore.Moldster.Configurator.Services
             {
                 var pars = Unit.PageParameterRepository.FindForJsonByPage(dto.Id);
                 var page = Unit.PageRepository.FindSingle(dto.Id);
-                page.Presistant = dto.Presistant;
+                if (page.Layout != dto.Layout)
+                {
+                    page.Layout = dto.Layout;
+                    Unit.PageRepository.Update(page);
+                }
+
 
                 if (dto.Route == null)
                     dto.Route = Unit.PageRouteRepository.FindByPage(dto.Id);
@@ -595,7 +593,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
 
         public PageCustomizationDTO GetCustomizationData(long id)
         {
-            var p = Unit.PageRepository.FindSingleAs(d => new { d.ViewPath, d.Name, d.TenantId, d.Tenant.Code, d.Presistant }, id);
+            var p = Unit.PageRepository.FindSingleAs(d => new { d.ViewPath, d.Name, d.TenantId, d.Tenant.Code, d.Layout }, id);
             if (p == null)
                 return null;
             var dto = new PageCustomizationDTO
@@ -608,7 +606,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
                 Id = id,
                 TenantId = p.TenantId,
                 TenantCode = p.Code,
-                Presistant = p.Presistant
+                Layout = p.Layout
             };
             return dto;
         }

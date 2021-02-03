@@ -1,52 +1,61 @@
-<nav class="navbar navbar-static-top top-bar">
+<nav class="top-bar">
     <div class="container-fluid">
-        <div class="navbar-brand">
-            <a (click)="Slide()" class="mob">
-                <i class="fa fa-bars"></i>
-            </a>
-            <button (click)="ToggleNav()" class="btn btn-default not-mob">
-                <i class="fa fa-bars"></i>
-            </button>
-        </div>
+        <div class="row">
+            <div class="pull-first">
+                <ul class="nav nav-pills">
+                    <li>
+                        <a (click)="Slide()" class="opt-btn mob">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                        <a (click)="ToggleNav()" class="opt-btn not-mob">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </li>
+                </ul>
 
-        <div class="pull-last">
-            <ul class="nav navbar-nav">
-                <li class="not-mob">
-                    <a (click)="ChangeLang()" href="#">
-                        {{'Words.Lang' | translate}}
-                    </a>
-                </li>
-                <li *ngIf="!isLoggedIn">
-                    <a routerLink="/Login" routerLinkActive="hidden">
-                        {{'Words.Login' | translate}} <i class="fa fa-sign-in-alt"></i>
-                    </a>
-                </li>
-                <li *ngIf="isLoggedIn"  role="presentation" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                        {{user.name}}
-                        <img class="img-circle" [src]="user.photo?'/'+user.photo:'/img/default_user.png'" />
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu navbar-inverse">
-                        <li>
-                            <a (click)="ChangePassword()">
-                                <i class="fa fa-key"></i>  &nbsp;&nbsp;{{'Words.ChangePassword' | translate}}
-                            </a>
-                        </li>
-                        <li>
-                            <a (click)="EditProfile()">
-                                <i class="fa fa-user"></i>  &nbsp;&nbsp;{{'Words.EditProfile' | translate}}
-                            </a>
-                        </li>
-                        <li>
-                            <a (click)="Logout()">
-                                <i class="fa fa-sign-out-alt"></i> &nbsp;&nbsp; {{'Words.Logout' | translate}}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+            </div>
+
+            <div class="pull-last">
+                <ul class="nav nav-pills">
+                    <li>
+                        <a (click)="ChangeLang()">
+                            {{'Words.Lang' | translate}}
+                        </a>
+                    </li>
+                    <li *ngIf="!isLoggedIn">
+                        <a routerLink="/Login" routerLinkActive="hidden">
+                            {{'Words.Login' | translate}} <i class="fa fa-sign-in-alt"></i>
+                        </a>
+                    </li>
+                    <li *ngIf="isLoggedIn" role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            {{user.name}}
+                            <img class="img-circle" [src]="user.photo?'/'+user.photo:'/img/default_user.png'" />
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu navbar-inverse">
+                            <li *ngIf="changePasswordComponent">
+                                <a (click)="ChangePassword()">
+                                    <i class="fa fa-key"></i>  &nbsp;&nbsp;{{'Words.ChangePassword' | translate}}
+                                </a>
+                            </li>
+
+                            <li *ngIf="editProfileComponent">
+                                <a (click)="EditProfile()">
+                                    <i class="fa fa-user"></i>  &nbsp;&nbsp;{{'Words.EditProfile' | translate}}
+                                </a>
+                            </li>
+                            <li>
+                                <a (click)="Logout()">
+                                    <i class="fa fa-sign-out-alt"></i> &nbsp;&nbsp; {{'Words.Logout' | translate}}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
+        
     </div>
 
 </nav>

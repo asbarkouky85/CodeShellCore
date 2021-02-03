@@ -1,11 +1,11 @@
-﻿using System;
+﻿using CodeShellCore.Helpers;
+using System;
 
 namespace CodeShellCore.Security.Authentication
 {
-    public class LoginResult 
+    public class LoginResult : Result
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
+        private bool _success = false;
         public IUser UserData { get; set; }
         public string Token { get; set; }
         public string RefreshToken { get; set; }
@@ -13,7 +13,8 @@ namespace CodeShellCore.Security.Authentication
 
         public LoginResult(bool success, string message, IUser userData = null)
         {
-            Success = success;
+            _success = success;
+            Code = success ? 0 : 1;
             Message = message;
             UserData = userData;
         }

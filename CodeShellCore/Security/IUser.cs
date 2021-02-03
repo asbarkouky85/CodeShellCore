@@ -11,7 +11,10 @@ namespace CodeShellCore.Security
         string UserId { get; }
         string Name { get; }
         string LogonName { get; }
+        string App { get; }
+
 
         long? GetUserIdAsLong();
+        string GetPersonId();
     }
 }

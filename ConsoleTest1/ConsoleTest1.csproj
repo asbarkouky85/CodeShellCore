@@ -23,6 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Asga.Auth.Module\Asga.Auth.Module.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
     <ProjectReference Include="..\CodeShellCore.MQ\CodeShellCore.MQ.csproj" />
   </ItemGroup>
 

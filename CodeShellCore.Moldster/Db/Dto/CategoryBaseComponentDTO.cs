@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Db.Dto
+namespace CodeShellCore.Moldster.Dto
 {
     public class CategoryBaseComponentDTO
     {
-        public string ScriptPath { get; internal set; }
+      //  public string ScriptPath { get; internal set; }
         public string ViewPath { get; internal set; }
         public string Name { get; internal set; }
         public string Resource { get; internal set; }

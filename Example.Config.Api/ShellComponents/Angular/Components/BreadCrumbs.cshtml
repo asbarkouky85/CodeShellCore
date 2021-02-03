@@ -1,0 +1,21 @@
+﻿@model PageHeaderModel
+<ol class="breadcrumb">
+    <li>
+        <a routerLink="/">@Html.Word("Main")</a>
+    </li>
+    @foreach (var item in Model.BreadCrums)
+    {
+        <li>
+            <a routerLink="@Html.Raw(item.Link)">@item.Title</a>
+        </li>
+    }
+    @if (Model.ListBreadCrumb != null)
+    {
+        <li>
+            <a routerLink="@Html.Raw(Model.ListBreadCrumb.Link)">@Model.ListBreadCrumb.Title</a>
+        </li>
+    }
+    <li>
+        @Model.Title
+    </li>
+</ol>

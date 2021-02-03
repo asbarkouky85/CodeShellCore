@@ -7,23 +7,28 @@ import { AuthFilter, ResourceActions } from "codeshell/security";
 
 import { ServerConfigBase } from "codeshell/core";
 import { TranslateService } from "@ngx-translate/core";
-import { UserList } from "./UserList";
+import { AuthModule } from "../AuthModule";
 import { UserCreate } from "./UserCreate";
+import { EditProfile } from "./EditProfile";
+import { UserList } from "./UserList";
 import { UserEdit } from "./UserEdit";
 
 
 @NgModule({
-    declarations: [UserList,UserCreate,UserEdit,],
-    exports: [UserList,UserCreate,UserEdit,],
+    declarations: [UserCreate,EditProfile,UserList,UserEdit,],
+    exports: [UserCreate,EditProfile,UserList,UserEdit,],
     imports: [
 		SharedModule,
+		AuthModule,
         RouterModule.forChild([
-			﻿{ path : "UserList", component : UserList, canActivate: [AuthFilter], data: { name : "Users__UserList", navigate: false, resource:"", action: "allowAll", apps:null }},
 			﻿{ path : "UserCreate", component : UserCreate, canActivate: [AuthFilter], data: { name : "Users__UserCreate", navigate: false, resource:"", action: "allowAll", apps:null }},
+			﻿{ path : "EditProfile", component : EditProfile, canActivate: [AuthFilter], data: { name : "Users__EditProfile", navigate: false, resource:"", action: "allowAll", apps:null }},
+			﻿{ path : "UserList", component : UserList, canActivate: [AuthFilter], data: { name : "Users__UserList", navigate: false, resource:"", action: "allowAll", apps:null }},
 			﻿{ path : "UserEdit/:id", component : UserEdit, canActivate: [AuthFilter], data: { name : "Users__UserEdit", navigate: false, resource:"", action: "allowAll", apps:null }},
 
 		])
-    ]
+    ],
+	entryComponents:[]
 })
 export class UsersModule {
 
@@ -33,6 +38,7 @@ export class UsersModule {
     }
 }
 
-Registry.Register("Auth/Users/UserList", UserList);
 Registry.Register("Auth/Users/UserCreate", UserCreate);
+Registry.Register("Auth/Users/EditProfile", EditProfile);
+Registry.Register("Auth/Users/UserList", UserList);
 Registry.Register("Auth/Users/UserEdit", UserEdit);

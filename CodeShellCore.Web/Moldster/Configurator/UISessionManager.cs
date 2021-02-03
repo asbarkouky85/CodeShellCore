@@ -6,27 +6,26 @@ using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using CodeShellCore.Text;
 using CodeShellCore.Http.Pushing;
+using System;
 
 namespace CodeShellCore.Web.Moldster.Configurator
 {
     public class UISessionManager : CodeShellCore.Web.Security.TokenSessionManager, IPushingSessionManager
     {
-        private readonly IHttpContextAccessor context;
+        
         static Dictionary<string, MoldsterAppData> _apps = new Dictionary<string, MoldsterAppData>();
 
-        public UISessionManager(IHttpContextAccessor context) : base(context)
+        public UISessionManager(IServiceProvider prov) : base(prov)
         {
-            this.context = context;
-            
         }
 
         public override void AuthorizationRequest()
         {
-            if (context.HttpContext.Request.Headers.TryGetValue("app-name", out StringValues value))
+            if (_accessor.HttpContext.Request.Headers.TryGetValue("app-name", out StringValues value))
             {
                 
                 if (_apps.TryGetValue(value.First(), out MoldsterAppData data))
-                    context.HttpContext.RequestServices.GetService<CurrentConfig>().App = data;
+                    _accessor.HttpContext.RequestServices.GetService<CurrentConfig>().App = data;
             }
             base.AuthorizationRequest();
         }

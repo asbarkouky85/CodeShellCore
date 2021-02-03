@@ -28,7 +28,7 @@ namespace CodeShellCore.Files.Logging
         private string GetLatestLogFile()
         {
             var d = new DirectoryInfo(FolderPath);
-            var f = d.GetFiles().OrderByDescending(e => e.LastWriteTimeUtc).FirstOrDefault();
+            var f = d.GetFiles("*.log").OrderByDescending(e => e.LastWriteTimeUtc).FirstOrDefault();
             if (f == null)
             {
                 return NewFilePath();

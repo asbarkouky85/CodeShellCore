@@ -14,8 +14,9 @@ import { en_Loader } from "./Localization/en/Loader";
 var routes: Route[] = [
     { path: 'Login', component: Login, data: { action: 'anonymous', name:"Login" } }
 	,
-{ path:"Auth", loadChildren:"./Auth/AuthModule#AuthModule" },
-	{ path:"Testing", loadChildren:"./Testing/TestingModule#TestingModule" },
+{ path:"Shared", loadChildren:"./Shared/SharedModule#SharedModule" },
+	{ path:"Auth", loadChildren:"./Auth/AuthModule#AuthModule" },
+	{ path:"Public", loadChildren:"./Public/PublicModule#PublicModule" },
 	
     { path: '**', redirectTo: '/' }
 
@@ -34,9 +35,8 @@ export function GetDomainsData(): DomainData[] {
 			{
 				name: "Main" ,
 				children: [
-					{ name: "Roles__RoleList", navigate: true, resource:"", action: "allowAll", apps: null , url: "Auth/Roles/RoleList"},
-					{ name: "Testing__TestPage", navigate: true, resource:"", action: "allowAll", apps: null , url: "Testing/TestPage"},
-					{ name: "Users__UserList", navigate: true, resource:"", action: "allowAll", apps: null , url: "Auth/Users/UserList"},]
+					{ name: "Users__UserList", navigate: true, resource:"", action: "allowAll", apps: null , url: "Auth/Users/UserList"},
+					{ name: "Roles__RoleList", navigate: true, resource:"", action: "allowAll", apps: null , url: "Auth/Roles/RoleList"},]
 			}
 		];
     }

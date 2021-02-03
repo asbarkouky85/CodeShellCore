@@ -67,7 +67,9 @@ namespace CodeShellCore.Web.Razor.Models
                 Multi = multi,
                 Nullable = nullable,
                 GroupName = GroupName,
-                NgFormName = NgFormName
+                NgFormName = NgFormName,
+                PlaceHolder = PlaceHolder,
+                RowIndex = RowIndex
             };
         }
 

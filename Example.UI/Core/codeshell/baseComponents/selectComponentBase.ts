@@ -2,6 +2,7 @@
 import { LoadResult, ListItem, TaggedArgs, LoadOptions } from "../helpers";
 import { ListSource } from "../data/listSource";
 import { EventEmitter } from "@angular/core";
+import { Tagged } from "codeshell/helpers/tagged";
 
 export abstract class SelectComponentBase extends BaseComponent {
 
@@ -37,6 +38,16 @@ export abstract class SelectComponentBase extends BaseComponent {
             }
         }
         return this.Source.TagArguments as TaggedArgs;
+    }
+
+    Select(model: Tagged) {
+        model.Tag.SelectOnly(this.Items);
+        this.Ok();
+    }
+
+    ClearSelection() {
+        this.Items.length = 0;
+        this.Ok();
     }
 
     LoadData() {

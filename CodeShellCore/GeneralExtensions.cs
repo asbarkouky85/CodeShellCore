@@ -13,6 +13,24 @@ namespace CodeShellCore
 {
     public static class GeneralExtensions
     {
+        public static bool FromBit(this int num, int bitOrder)
+        {
+            int data = (int)Math.Pow(2D, bitOrder);
+            bool val = ((num & data) >> bitOrder) == 1;
+            return val;
+        }
+
+        public static int SetBit(this int num, int bitOrder, bool value)
+        {
+            int data = (int)Math.Pow(2D, bitOrder);
+
+            if (value == true)
+                num = num | data;
+            else if (num >= data)
+                num = num - data;
+            return num;
+        }
+
         public static string GetMessageRecursive(this Exception ex, bool ignorInvocationException = true)
         {
 
@@ -97,7 +115,7 @@ namespace CodeShellCore
         {
             var argb = color.ToArgb();
             var d = (argb & 0xFFFFFF).ToString("X6");
-            return "#"+d;
+            return "#" + d;
         }
 
         public static async Task<T> ReadAsAsync<T>(this HttpResponseMessage data) where T : class

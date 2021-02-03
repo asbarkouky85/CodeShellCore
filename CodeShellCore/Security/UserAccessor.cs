@@ -1,9 +1,6 @@
-﻿
-using CodeShellCore.Security.Authorization;
-using CodeShellCore.Security.Sessions;
+﻿using CodeShellCore.Security.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 
 namespace CodeShellCore.Security
 {
@@ -28,6 +25,12 @@ namespace CodeShellCore.Security
         }
 
         public string UserId { get; set; }
+
+        public bool IsUser => !string.IsNullOrEmpty(UserId);
+        public bool IsClient => !string.IsNullOrEmpty(ClientId);
+
+        public string ClientId { get; set; }
+
         public T UserAs<T>() where T : class, IUser
         {
             return (T)User;

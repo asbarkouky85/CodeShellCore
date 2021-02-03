@@ -21,8 +21,9 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Tasks;
 using CodeShellCore.Text;
 using CodeShellCore.Helpers;
-using CodeShellCore.CLI;
+using CodeShellCore.Cli;
 using CodeShellCore.MQ;
+using CodeShellCore.Data;
 
 namespace CodeShellCore
 {
@@ -43,7 +44,7 @@ namespace CodeShellCore
         {
             ProjectAssembly = GetType().Assembly;
             SolutionFolder = AppDomain.CurrentDomain.BaseDirectory.GetBeforeFirst("\\" + ProjectAssembly.GetName().Name);
-
+            EnvironmentName = GetEnvironmentName();
         }
 
         #region Static Properties
@@ -55,7 +56,7 @@ namespace CodeShellCore
         public static CultureInfo DefaultCulture { get { return App.defaultCulture; } }
         public static IEnumerable<string> SupportedLanguages { get { return App.Supordedlanguage; } }
         public static IServiceProvider RootInjector { get { return App.rootProvider; } }
-        public static IServiceProvider ScopedInjector { get { return App._scopedProvider; } }
+       // public static IServiceProvider ScopedInjector { get { return App._scopedProvider; } }
         public static IUser User { get { return App._scopedProvider.GetCurrentUser(); } }
         public static string AppRootPath { get { return App.appRoot; } }
         public static string LocalizationAssembly { get { return App.localizationAssembly ?? ProjectAssembly.GetName().Name; } }
@@ -134,14 +135,22 @@ namespace CodeShellCore
             coll.AddTransient<ILocaleTextProvider, ResxTextProvider>();
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IOutputWriter, ConsoleOutputWriter>();
+            coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
             coll.AddScoped<Language>();
             coll.AddScoped<IUserAccessor, UserAccessor>();
             coll.AddScoped<UserAccessor>();
+            coll.AddScoped<ClientData>();
+
         }
         protected abstract IConfigurationSection getConfig(string key);
         protected virtual void OnReady()
         {
 
+        }
+
+        protected virtual string GetEnvironmentName()
+        {
+            return Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
         }
 
         public virtual void Dispose()
@@ -200,6 +209,7 @@ namespace CodeShellCore
             App.Dispose();
         }
 
+
         public static IConfigurationSection GetConfig(string key, bool required = true)
         {
             var val = App.getConfig(key);
@@ -209,6 +219,13 @@ namespace CodeShellCore
             return val;
         }
 
+        /// <summary>
+        /// Reads configuration from appsettings.{ASPNET_ENVIRONMENT}.json
+        /// </summary>
+        /// <typeparam name="T">the return type; can be a value object or a reference type (class)</typeparam>
+        /// <param name="key">the key from the config file</param>
+        /// <param name="required">if true the method will can</param>
+        /// <returns>the data in the appsettings formatted as <typeparamref name="T"/></returns>
         public static T GetConfigAs<T>(string key, bool required = true)
         {
             IConfigurationSection sec = GetConfig(key, required);

@@ -21,6 +21,7 @@ export class DateValidator {
     }
 
     compareDates(date1: Date, date2: Date): number {
+        
         if (Moment.isMoment(date1)) {
             var e = date1 as Moment.Moment;
             date1 = e.toDate()
@@ -34,6 +35,8 @@ export class DateValidator {
 
         date1.setHours(0, 0, 0, 0);
         date2.setHours(0, 0, 0, 0);
+
+        console.log(date1, date2);
 
         if (date1 >= date2)
             return 1;
@@ -57,7 +60,7 @@ export class DateValidator {
                     isValid = this.compareDates(v, min) == 1;
                 }
 
-                if (max != null)
+                if (max != null && isValid)
                 {
                     isValid = this.compareDates(v, max) == 2;
                 }

@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.CLI;
 using CodeShellCore.Http.Pushing;
-using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Dto;
 using System;
 using System.Drawing;
 
@@ -93,9 +92,11 @@ namespace CodeShellCore.Moldster.Configurator
             else
                 col = setter.CurrentColor;
 
-            Color clr = Color.FromName(col.ToString());
-
-            return clr.ToHexCode();
+            var str = col.ToString();
+            Color clr = Color.FromName(str);
+            
+            var h = clr.ToHexCode();
+            return h;
         }
     }
 }

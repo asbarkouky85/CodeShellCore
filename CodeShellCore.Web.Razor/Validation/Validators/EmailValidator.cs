@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Text.Localization;
-
+using CodeShellCore.Web.Razor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,11 @@ namespace CodeShellCore.Web.Razor.Validation.Validators
             {
                 return MakeMessage("pattern", TextProvider.Message(MessageIds.invalid_email));
             }
+        }
+
+        public override IEnumerable<ValidatorModel> GetMessageModels()
+        {
+            return new[] { MakeModel("pattern", TextProvider.Message(MessageIds.invalid_email)) };
         }
     }
 }

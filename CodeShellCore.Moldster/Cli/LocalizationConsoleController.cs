@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Cli;
+using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Services;
 using System;
 using System.Collections.Generic;

@@ -39,6 +39,19 @@ namespace CodeShellCore.Moldster.Definitions
 
         }
 
+        internal static void SetModule(MoldsterModule mod)
+        {
+            var lst = new List<MoldsterModule>();
+            foreach (var m in Modules)
+            {
+                if (m.AssemblyName == mod.AssemblyName)
+                    lst.Add(mod);
+                else
+                    lst.Add(m);
+            }
+            _modules = lst;
+        }
+
         public static bool GetProjectPath(string assemblyName, out string path)
         {
             return _paths.TryGetValue(assemblyName, out path);

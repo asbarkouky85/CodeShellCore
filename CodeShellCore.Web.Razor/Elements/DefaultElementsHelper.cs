@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using CodeShellCore.Web.Razor.Validation;
 using Microsoft.AspNetCore.Html;
 using CodeShellCore.Moldster;
+using System.Linq;
 
 namespace CodeShellCore.Web.Razor.Elements
 {
@@ -180,17 +181,21 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        public virtual ControlGroupWriter RadioGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Dictionary<string, object> options,bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, string template, string readonlyProperty, string readOnlyPipe)
+        public virtual ControlGroupWriter RadioGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Dictionary<string, object> options, bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, string template, string readonlyProperty, string readOnlyPipe)
         {
             var mod = GetNewWriter(helper);
 
             string[] keys = new string[options.Keys.Count];
+            string[] keyWords = new[] { "null" };
             options.Keys.CopyTo(keys, 0);
             foreach (var s in keys)
             {
-                if (!(options[s] is string))
+
+                if (!(options[s] is string) || keyWords.Contains(options[s].ToString().ToLower()))
+                {
                     options[s] = options[s].ToString().ToLower();
-                else if(!(options[s] as string).StartsWith("'"))
+                }
+                else if (!(options[s] as string).StartsWith("'"))
                 {
                     options[s] = $"'{options[s]}'";
                 }

@@ -1,34 +1,43 @@
-﻿import { Directive, Input, ElementRef } from "@angular/core";
+﻿import { Directive, Input, ElementRef, HostListener, SimpleChanges } from "@angular/core";
 import { NgModel, NG_VALIDATORS, FormControl, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
+import { ValidatorBase } from "./validatorBase";
 
-@Directive({
-    selector: '[max][ngModel]',
-    exportAs: 'max',
-    providers: [{
-        provide: NG_VALIDATORS,
-        useExisting: MaxValidator,
-        multi: true
-    }]
-})
-export class MaxValidator implements Validator {
-    @Input("max") Max: number = 0;
+@Directive({ selector: '[numberRange][ngModel]', exportAs: 'numberRange' })
+export class NumberRangeValidator extends ValidatorBase {
+    Identifier = "number_range";
+    private _max?: number;
 
+    @Input("min")
+    Min?: number;
 
-    constructor(private el: ElementRef) {
+    @Input("max")
+    get Max(): number | undefined { return this._max; };
+    set Max(val: number | undefined) { this._max = val; };
 
+    constructor(el: ElementRef, mod: NgModel) {
+        super(el, mod);
     }
 
     ngOnInit() {
 
-        (this.el.nativeElement as HTMLInputElement).max = this.Max.toString();
+        if (this.Max != undefined)
+            (this.Element as HTMLInputElement).max = this.Max.toString();
     }
 
-    validate(c: AbstractControl): ValidationErrors | null {
-        if (this.Max > 0) {
-            if (c.value > this.Max)
-                return { max: false }
+    protected RunIf(ch: SimpleChanges): boolean {
+        return ch.Min != undefined || ch.Max != undefined;
+    }
+
+    IsValid(): boolean {
+        var v = true;
+
+        if (this.Max) {
+            v = v && this.Model.value < this.Max;
         }
 
-        return null;
+        if (this.Min) {
+            v = v && this.Model.value > this.Min;
+        }
+        return v;
     }
 }

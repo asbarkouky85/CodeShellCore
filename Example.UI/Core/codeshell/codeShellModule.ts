@@ -18,7 +18,7 @@ import {
     BsFormGroup, ShowIf, OnEnter, SlimScroll, TestLoader, ImagePreLoad,
     ListItemWatcher, Editable, Radio, DirctionFix, FixDateTime, FixDate
 } from "./forms";
-import { MaxValidator, IsUnique, ModalValidator, DateValidator } from "./forms";
+import { IsUnique, ModalValidator, DateValidator } from "./forms";
 import { Paginate, SearchGroup } from "./forms";
 import { TranslationService, NgxTranslationService, Translator } from "./localization";
 import { AuthFilter } from "./security";
@@ -27,6 +27,8 @@ import { Selectable } from "codeshell/directives/selectable";
 import { DurationInput } from "./components/durationInput";
 import { FileUploader } from "./directives/fileUploader";
 import { TokenStorage } from "./security/tokenStorage";
+import { AbsoluteUrl } from "./pipes/absoluteUrl";
+import { NumberRangeValidator } from "./validators/rangeValidator";
 
 @NgModule({
     
@@ -49,10 +51,11 @@ import { TokenStorage } from "./security/tokenStorage";
     declarations: [
         BsFormGroup, ShowIf, OnEnter, SlimScroll, TestLoader, ImagePreLoad,
         ListItemWatcher, Editable, Radio,
-        MaxValidator, IsUnique, ModalValidator,
+        NumberRangeValidator, IsUnique, ModalValidator,
         Paginate, SearchGroup, DirctionFix,
         FixDate, FixDateTime, DateValidator,
-        Selectable, DurationInput, FileUploader
+        Selectable, DurationInput, FileUploader,
+        AbsoluteUrl
     ],
     exports: [
         CommonModule,
@@ -72,9 +75,10 @@ import { TokenStorage } from "./security/tokenStorage";
         FixDate, FixDateTime, DateValidator,
         BsFormGroup, ShowIf, OnEnter, SlimScroll, TestLoader, ImagePreLoad,
         ListItemWatcher, Editable, Radio,
-        MaxValidator, IsUnique, ModalValidator,
+        NumberRangeValidator, IsUnique, ModalValidator,
         Paginate, SearchGroup, DirctionFix,
-        Selectable, DurationInput, FileUploader
+        Selectable, DurationInput, FileUploader,
+        AbsoluteUrl
     ],
 })
 export class CodeShellModule {

@@ -1,9 +1,34 @@
-﻿export enum ResourceActions { view, details, update, insert, delete }
+﻿import { AuthorizationServiceBase } from "./authorizationServiceBase";
+import { Shell } from "codeshell/shell";
+import { FunctionItem } from "./navs";
+
+export enum ResourceActions { view, details, update, insert, delete }
 
 export class DomainDataProvider {
     Domains: DomainData[] = [];
     constructor(domains: DomainData[]) {
         this.Domains = domains;
+    }
+
+    GetByNavGroup(group: string, auth?: AuthorizationServiceBase, user?: UserDTO): FunctionItem[] {
+
+        //var auth: AuthorizationServiceBase = Shell.Injector.get(AuthorizationServiceBase);
+        var navs: FunctionItem[] = [];
+        var gr = this.Domains.find(e => e.name == group);
+        if (gr) {
+            for (var c of gr.children) {
+                var r: RouteData = Object.assign(new RouteData, c);
+                var isAuthorized = auth ? auth.IsAuthorized(user, r) : true;
+                if (isAuthorized && r.url) {
+                    var item: FunctionItem = {
+                        name: r.name,
+                        url: r.url
+                    }
+                    navs.push(item);
+                }
+            }
+        }
+        return navs;
     }
 }
 
@@ -26,8 +51,8 @@ export class RouteData {
 
 export class UserDTO {
     id: number = 0;
-    userId: number = 0;
-    tenantId: number = 0;
+    userId: string = "";
+    tenantId?: number;
     tenantCode: string = "";
     name: string = "";
     logonName: string = "";

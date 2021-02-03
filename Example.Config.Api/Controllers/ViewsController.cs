@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Db.Data;
+﻿using CodeShellCore.Moldster.Data;
 using CodeShellCore.Web.Razor.Controllers;
 using CodeShellCore.Web.Razor.Services;
 

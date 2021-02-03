@@ -9,6 +9,8 @@ namespace CodeShellCore.Moldster.Models
         public string Name { get; set; }
         public string ComponentImports { get; set; }
         public string Components { get; set; }
+        public string ParentModules { get; set; }
+        public string EmbeddedComponents { get; set; }
         public string Registrations { get; set; }
         public string Routes { get; set; }
         public string Lazy { get; set; }

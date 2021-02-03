@@ -5,25 +5,16 @@ using System.Text;
 
 namespace CodeShellCore.Security.Authorization
 {
-    public class DataAccessPermission
+    public class DataAccessPermission : Permission
     {
-        public string CollectionId { get; set; }
-        public IEnumerable<string> Actions { get; set; }
-        public bool Insert { get; set; }
-        public bool Update { get; set; }
-        public bool Delete { get; set; }
-        public bool Details { get; set; }
+        public bool Details => Privilege.FromBit(1);
+        public bool Insert => Privilege.FromBit(2);
+        public bool Update => Privilege.FromBit(3);
+        public bool Delete => Privilege.FromBit(4);
 
-        public DataAccessPermission(bool insert, bool update, bool delete, bool details)
+        public DataAccessPermission(int perm) : base(perm)
         {
-            Insert = insert;
-            Update = update;
-            Delete = delete;
-            Details = details;
+
         }
-
-        public DataAccessPermission() { }
-
-
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Asga.Auth;
 using Asga.Auth.Services;
-using Asga.Web.Controllers.Auth;
+using Asga.Auth.Web.Controllers;
 using CodeShellCore.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

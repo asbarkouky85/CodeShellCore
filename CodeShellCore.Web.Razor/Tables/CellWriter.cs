@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Text;
+﻿using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Text;
 using CodeShellCore.Web.Razor.Models;
 using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Web.Razor.Validation.Internal;
@@ -47,6 +48,7 @@ namespace CodeShellCore.Web.Razor.Tables
                 NgModelName = Helper.GetModelName(),
                 NgFormName = Helper.GetFormName()
             };
+            Helper.AddText(StringType.Column,ColumnId);
         }
 
         public virtual void Initialize(string placeHolder = null, string width = null, object attrs = null, object inputAttr = null, string classes = "")
@@ -116,6 +118,7 @@ namespace CodeShellCore.Web.Razor.Tables
                 {
 
                     case InputControls.CheckBox:
+                    case InputControls.CheckBoxCell:
                         ((CheckNgInput)InputModel).Enabled = false;
                         break;
                     case InputControls.Radio:
@@ -123,15 +126,15 @@ namespace CodeShellCore.Web.Razor.Tables
                         break;
                     case InputControls.CalendarTextBox:
                         InputModel.MemberName = InputModel.MemberName + " | date :'dd-MM-yyyy'";
-                        break;
+                        return WriteCell(CellTypes.LabelCell);
                     case InputControls.DateTimeTextBox:
                         InputModel.MemberName = InputModel.MemberName + " | date :'dd-MM-yyyy hh:mm a'";
-                        break;
+                        return WriteCell(CellTypes.LabelCell);
                     default:
                         InputModel.AttributeObject = null;
-                        break;
+                        return WriteCell(CellTypes.LabelCell);
                 }
-                return WriteCell(CellTypes.LabelCell);
+                
             }
                
             if (ColumnModel.InputControl == null)

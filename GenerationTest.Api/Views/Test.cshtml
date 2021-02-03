@@ -3,15 +3,25 @@
 @{
     Layout = "~/ShellComponents/Angular/Layout/EditLayout.cshtml";
 
-    Html.Config().Controls["user__name"] = new ControlDTO { Accessibilty = 1 };
+    Html.Config().Controls["user__name"] = new ControlDTO { Accessibilty = 2 };
     Html.Config().Controls["user__appid"] = new ControlDTO { Accessibilty = 2 };
+    Html.Config().Controls["user__birthdate"] = new ControlDTO { Accessibilty = 2 };
+    Html.Config().Controls["cell__isactive"] = new ControlDTO { Accessibilty = 1 };
+
+    Html.GetViewParams().Other["step_back"] = "Auth/Users";
+    Html.GetViewParams().ListUrl = "/Users/UserList";
+
     Html.HeaderModel().AddToButtons(Html.Word("Hello"), function: "SayHello()", icon: "fa fa-open");
+    Html.AddBreadCrumbMoldster("step_back", e => e.Id);
 }
 
 <div>
-    @Html.ControlGroup(d => d.Name, coll: Html.VCollection().AddRequired())
+    @Html.ControlGroup(d => d.Name, coll: Html.VCollection().AddRequired().AddPattern("'Hii'").AddEmail().AddNumeric().AddUnique("model.id").AddDate(CalendarTypes.PastDate).AddMinMax(10, 10).AddLength(10, 19))
     @Html.RadioGroup(d => d.AppId, Html.EnumDictionary<CodeShellCore.Moldster.MoldsType, bool>())
-    @Html.RadioGroup(d => d.AppId, new Dictionary<string, object> { { "Type1", "'t1'" }, { "Type2", "'t2'" } })
+    @Html.RadioGroup(d => d.AppId, new Dictionary<string, object> { { "Type1", "'t1'" }, { "Type2", "'t2'" }, { "Type3", "null" }, { "Type4", 0 } })
     @Html.FileGroup(d => d.Name, "field", "Upload")
+    @Html.CalendarGroup(d => d.BirthDate, CalendarTypes.PastDate, range: new DateRange("'1/10/1985'", "'31/12/2020'"))
+    @Html.ControlGroup(d => d.Name, coll: Html.VCollection().AddMinMax("1", null, "message"))
+    @Html.CheckBoxCell("IsActive","i")
     @Html.Button()
 </div>

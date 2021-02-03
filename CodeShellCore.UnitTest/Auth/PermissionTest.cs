@@ -33,12 +33,12 @@ namespace CodeShellCore.UnitTest.Auth
         }
 
         [Test]
-        [TestCase(3,2,true, "111")]
+        [TestCase(3, 2, true, "111")]
         [TestCase(7, 2, false, "11")]
-        public void SetBit(int perm,int bitId,bool val,string outPut)
+        public void SetBit(int perm, int bitId, bool val, string outPut)
         {
             Permission p = new Permission(perm);
-            p.SetBit(bitId, val);
+            p.Privilege = p.Privilege.SetBit(bitId, val);
             Assert.AreEqual(outPut, p.ToString());
         }
 
@@ -49,7 +49,7 @@ namespace CodeShellCore.UnitTest.Auth
         public void GetBit(int perm, int bitId, bool val)
         {
             Permission p = new Permission(perm);
-            var o = p.FromBit(bitId);
+            var o = p.Privilege.FromBit(bitId);
             Assert.AreEqual(val, o);
         }
     }

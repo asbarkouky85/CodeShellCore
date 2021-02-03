@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using CodeShellCore.Data.Lookups;
 
-namespace CodeShellCore.Moldster.Db
+namespace CodeShellCore.Moldster
 {
     public partial class Resource : INamed<long> { }
-    public partial class DomainEntityCollection : INamed<long> { }
+    public partial class ResourceCollection : INamed<long> { }
     public partial class Domain : IRecursiveModel
     {
         [NotMapped]

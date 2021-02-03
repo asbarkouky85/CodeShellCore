@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace CodeShellCore.Web.Razor.Services
 {
-    public class ConfigSessionManager : CodeShellCore.Web.Security.TokenSessionManager,IPushingSessionManager
+    public class ConfigSessionManager : CodeShellCore.Web.Security.TokenSessionManager, IPushingSessionManager
     {
-        public ConfigSessionManager(IHttpContextAccessor context) : base(context)
+        public ConfigSessionManager(IServiceProvider prov) : base(prov)
         {
         }
     }

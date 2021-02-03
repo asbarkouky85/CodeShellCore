@@ -4,15 +4,22 @@ using CodeShellCore.DependencyInjection;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Services.Internal;
-using CodeShellCore.Moldster.Db;
-using CodeShellCore.Moldster.Db.Internal;
-using CodeShellCore.Moldster.Db.Data;
-using CodeShellCore.Moldster.Db.Data.Internal;
-using CodeShellCore.Services;
+using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Configurator.Services;
-using CodeShellCore.Moldster.Services.Db;
-using CodeShellCore.Moldster.Services.Json;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.Builder.Internal;
+using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.CodeGeneration.Internal;
+using CodeShellCore.Moldster.Data.Internal;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Localization.Internal;
+using CodeShellCore.Moldster.Data.Repositories;
+using CodeShellCore.Moldster.Data.Repositories.Internal;
+using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Razor.Internal;
+using CodeShellCore.Security.Authorization;
+using CodeShellCore.Caching;
 
 namespace CodeShellCore.Moldster
 {
@@ -26,6 +33,7 @@ namespace CodeShellCore.Moldster
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));
 
+            coll.AddRepositoryFor<CustomText, CustomTextRepository, ICustomTextRepository>();
             coll.AddRepositoryFor<PageControl, PageControlRepository, IPageControlRepository>();
             coll.AddRepositoryFor<PageCategory, PageCategoryRepository, IPageCategoryRepository>();
             coll.AddRepositoryFor<Domain, DomainRepository, IDomainRepository>();
@@ -56,46 +64,42 @@ namespace CodeShellCore.Moldster
             ScriptMapSettings.Add(mapp);
         }
 
-        public static void AddMoldsterModules(this IServiceCollection coll,Action<MoldsterModulesConfig> modules) 
+        public static void AddMoldsterModules(this IServiceCollection coll, Action<MoldsterModulesConfig> modules)
         {
-           
+
             var conf = new MoldsterModulesConfig();
             modules(conf);
         }
 
-        public static void AddMoldsterConfigurator(this IServiceCollection coll, MoldsType t)
+        public static void AddMoldsterConfigurator(this IServiceCollection coll)
         {
-            coll.AddMoldsterCodeGeneration(t);
-            coll.AddTransient<WriterService>();
+            coll.AddMoldsterCodeGeneration();
 
-            switch (t)
-            {
-                case MoldsType.Db:
-                    coll.AddMoldsterDbData();
-                    coll.AddTransient<ConfiguratorLookupService>();
-                    coll.AddServiceFor<Domain, DomainService>();
-                    coll.AddServiceFor<PageCategory, PageCategoryService>();
-                    coll.AddServiceFor<Page, PagesService>();
-                    coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
-                    coll.AddServiceFor<PageControl, PageControlService>();
-                    coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
-                    coll.AddServiceFor<Tenant, TenantsService>();
-                    break;
+            coll.AddMoldsterDbData();
+            coll.AddTransient<ConfiguratorLookupService>();
 
-            }
+            
+            coll.AddServiceFor<Domain, DomainService>();
+            coll.AddServiceFor<PageCategory, PageCategoryService>();
+            coll.AddServiceFor<Page, PagesService>();
+            coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
+            coll.AddServiceFor<PageControl, PageControlService>();
+            coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
+            coll.AddServiceFor<Tenant, TenantsService>();
 
-
+            coll.AddTransient<IUserDataService, UserDataService>();
+            coll.AddTransient<ICacheProvider, CodeShellCore.Caching.MemoryCacheProvider>(); 
         }
 
-        public static void AddMoldsterCodeGeneration(this IServiceCollection coll, MoldsType t)
+        public static void AddMoldsterCodeGeneration(this IServiceCollection coll)
         {
             coll.AddSingleton<IMoldProvider, DefaultMoldProvider>();
 
-            coll.AddScoped<IPathsService, PathProvider>();
+            coll.AddScoped<IPathsService, DefaultPathsService>();
             coll.AddScoped<EnvironmentAccessor>();
 
-            coll.AddTransient<WriterService>();
             coll.AddTransient<ILocalizationService, LocalizationService>();
+            coll.AddTransient<ICustomTextService, CustomTextService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
             coll.AddTransient<IScriptModelMappingService, ScriptModelMappingService>();
             coll.AddTransient<IPublisherService, PublisherService>();
@@ -103,43 +107,27 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<ISqlCommandService, SqlCommandService>();
             coll.AddTransient<IBundlingService, BundlingService>();
             coll.AddTransient<IPreviewService, PreviewService>();
-            coll.AddTransient<IAppFileHandler, AppFileHandler>();
             coll.AddTransient<IModulesService, ModulesService>();
 
-            switch (t)
-            {
-                case MoldsType.Json:
-                    coll.AddTransient<IDataService, JsonDataService>();
-                    coll.AddTransient<IJsonConfigProvider, JsonDataService>();
-                    coll.AddTransient<IScriptGenerationService, JsonTsGeneratorService>();
-                    coll.AddTransient<ITemplateProcessingService, JsonTemplateProcessingService>();
-                    coll.AddTransient<IViewsService, DefaultViewsService>();
-                    break;
-                case MoldsType.Db:
-                    coll.AddMoldsterDbData();
-                    coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
-                    coll.AddTransient<IDataService, DbDataService>();
+            coll.AddMoldsterDbData();
+            coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
+            coll.AddTransient<IDataService, DbDataService>();
 
-                    coll.AddTransient<IPageControlDataService, PageControlDataService>();
-                    coll.AddTransient<IPageParameterDataService, PageParameterDataService>();
-                    coll.AddTransient<ITemplateDataService, TemplateDataService>();
-                    coll.AddTransient<IPagesDataService, PagesService>();
-                    coll.AddTransient<ITenantService, TenantsService>();
-                    
-                    coll.AddTransient<IViewsService, DbViewsHttpService>();
-                    coll.AddTransient<IMoldsterService, DbMoldsterService>();
-                    coll.AddTransient<IScriptGenerationService, DbTsGeneratorService>();
-                    coll.AddTransient<ITemplateProcessingService, DbTemplateProcessingService>();
-                    coll.AddTransient<IDbViewsService, DbViewsHttpService>();
-                    coll.AddTransient<IDbTemplateProcessingService, DbTemplateProcessingService>();
-                    break;
+            coll.AddTransient<IPageControlDataService, PageControlDataService>();
+            coll.AddTransient<IPageParameterDataService, PageParameterDataService>();
+            coll.AddTransient<ITemplateDataService, TemplateDataService>();
+            coll.AddTransient<IPagesDataService, PagesService>();
+            coll.AddTransient<ITenantService, TenantsService>();
 
-            }
+            coll.AddTransient<IViewsService, DefaultViewsService>();
+            coll.AddTransient<IMoldsterService, MoldsterService>();
+            coll.AddTransient<IScriptGenerationService, ScriptGenerationService>();
+            coll.AddTransient<ITemplateProcessingService, TemplateProcessingService>();
         }
 
-        public static void AddMoldsterCli(this IServiceCollection coll, MoldsType t)
+        public static void AddMoldsterCli(this IServiceCollection coll)
         {
-            coll.AddMoldsterCodeGeneration(t);
+            coll.AddMoldsterCodeGeneration();
         }
     }
 }

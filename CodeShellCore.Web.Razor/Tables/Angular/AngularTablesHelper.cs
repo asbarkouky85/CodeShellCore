@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Web.Razor.Models;
+﻿using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Web.Razor.Models;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -18,7 +19,7 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             writer.InputModel = writer.InputModel.GetCheckInput(null, null, false, lItem);
             writer.InputModel.MemberName = helper.GetModelName() + "." + ngModel;
             writer.InputModel.FieldName = "'" + field + "'+" + rowIndex;
-
+            helper.AddText(StringType.Word, field);
             if (changeFunction != null)
                 writer.InputModelExtraAttrs.evnt__change = changeFunction;
             else if (listName != null)

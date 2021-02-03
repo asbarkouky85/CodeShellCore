@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
 using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Lookups;
 using CodeShellCore.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -364,6 +365,26 @@ namespace CodeShellCore.Data.EntityFramework
                 Add(item);
             }
             return item;
+        }
+
+        public abstract IEnumerable<Named<object>> FindAsLookup(string collectionId = null);
+
+        public abstract IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex);
+
+        public bool FindSingleOrAdd(Expression<Func<T, bool>> ex, T obj, out T existing)
+        {
+            var item = FindSingle(ex);
+            if (item != null)
+            {
+                existing = item;
+                return true;
+            }
+            else
+            {
+                Add(obj);
+                existing = obj;
+                return false;
+            }
         }
     }
 }

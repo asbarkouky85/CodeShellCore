@@ -4,16 +4,23 @@ import { EventEmitter } from "@angular/core";
 
 export class ListSelectionService {
 
-    
+
     List: any[] = [];
     Ids: number[] = [];
     itemsSelected: boolean = false;
-    
+
+
+    private _last: number[] = [];
     private selectStart: number = -1;
     private _itemsSelectedChange = new EventEmitter<boolean>();
+    private _selectionChange = new EventEmitter<void>();
 
     get ItemsSelectedChange(): Observable<boolean> {
         return this._itemsSelectedChange;
+    }
+
+    get SelectionChanged(): Observable<void> {
+        return this._selectionChange;
     }
 
     get SelectedItems(): any[] {
@@ -27,6 +34,9 @@ export class ListSelectionService {
         if (anySelected != this.itemsSelected)
             this._itemsSelectedChange.emit(anySelected);
         this.itemsSelected = anySelected;
+        if (JSON.stringify(this._last) != JSON.stringify(this.Ids))
+            this._selectionChange.emit();
+        this._last = this.Ids;
     }
 
     SetItemSelectionStatus(item: any, status: boolean, only: boolean = false) {

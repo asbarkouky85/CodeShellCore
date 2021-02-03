@@ -13,7 +13,7 @@ import { ServerConfigBase, Registry } from "codeshell/core";
     imports: [
         %BaseName%BaseModule
     ],
-	entryComponents:[%Components%]
+	entryComponents:[%EmbeddedComponents%]
 })
 export class %Name%Module {
 

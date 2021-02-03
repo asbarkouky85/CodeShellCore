@@ -10,25 +10,19 @@ namespace CodeShellCore.Security.Authorization
 {
     public class AuthorizationService : ServiceBase, IAuthorizationService
     {
-        private readonly ISessionManager _manager;
+        protected readonly IUserAccessor User;
 
-        public AuthorizationService(ISessionManager manager)
+        public AuthorizationService(IUserAccessor manager)
         {
-            _manager = manager;
+            User = manager;
         }
 
-        public virtual ISessionManager SessionManager
-        {
-            get { return _manager; }
-        }
+        public virtual bool IsLoggedIn => User.IsUser;
 
-        public void AuthorizationRequest(string token = null)
-        {
-            if (token == null)
-                SessionManager.AuthorizationRequest();
-            else
-                SessionManager.AuthorizationRequest(token);
-        }
+        //public virtual ISessionManager SessionManager
+        //{
+        //    get { return user; }
+        //}
 
         public virtual bool IsAuthorized(AuthorizationRequest req)
         {
@@ -37,7 +31,15 @@ namespace CodeShellCore.Security.Authorization
 
         public virtual void OnUserIsUnauthorized(AuthorizationRequest args)
         {
-            
+            var ex = new UnauthorizedAccessException();
+            ex.Data["Request"] = new
+            {
+                args.Resource,
+                args.Clients,
+                args.Action,
+                args.Actions
+            };
+            throw ex;
         }
     }
 }

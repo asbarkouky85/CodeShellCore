@@ -17,6 +17,8 @@ using CodeShellCore.Tasks;
 using System.Collections.Generic;
 using CodeShellCore.Files.Reporting;
 using CodeShellCore.MultiTenant;
+using CodeShellCore.Data.Attachments;
+using CodeShellCore.Helpers;
 
 namespace CodeShellCore.DependencyInjection
 {
@@ -49,6 +51,19 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<ITService, TService>();
         }
 
+        public static void AddLookupsService<T>(this IServiceCollection coll) where T : class, ILookupsService
+        {
+            coll.AddTransient<ILookupsService, T>();
+        }
+
+        public static void AddLookupsService<T, IT>(this IServiceCollection coll)
+            where IT : class, ILookupsService
+            where T : class, IT
+        {
+            coll.AddTransient<ILookupsService, T>();
+            coll.AddTransient<IT, T>();
+        }
+
         public static void AddGenericRepository(this IServiceCollection coll, Type t)
         {
             coll.AddTransient(typeof(Repository<,>), t);
@@ -76,7 +91,13 @@ namespace CodeShellCore.DependencyInjection
         {
             coll.AddTransient<ILocalizationDataService, LocalizationDataService<T>>();
             coll.AddTransient<ILocalizablesRepository<T>, LocalizableRepository<T, TContext>>();
+        }
 
+        public static void AddAttachmentsEntity<T, TContext>(this IServiceCollection coll)
+            where T : class, IAttachmentModel, IModel<long>
+            where TContext : DbContext
+        {
+            coll.AddTransient<IAttachmentRepository<T>, DefaultAttachmentRepository<T, TContext>>();
         }
 
         public static void AddCustomFields<T, TContext>(this IServiceCollection coll) where T : class, ICustomField where TContext : DbContext
@@ -131,10 +152,16 @@ namespace CodeShellCore.DependencyInjection
             acc.Set(user);
         }
 
-        public static void SetCurrentUserId(this IServiceProvider provider, string id)
+        public static void SetCurrentUserId(this IServiceProvider provider, string id, bool asClient = false)
         {
             var acc = provider.GetService<IUserAccessor>();
             acc.UserId = id;
+            if (asClient)
+            {
+                acc.ClientId = id;
+                provider.GetService<ClientData>().ClientId = id;
+            }
+                
         }
 
         public static IUser GetCurrentUser(this IServiceProvider provider)

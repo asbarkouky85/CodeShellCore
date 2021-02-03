@@ -1,9 +1,8 @@
-import { ListComponentBase } from "codeshell/baseComponents";
+﻿import { ListComponentBase } from "codeshell/baseComponents";
 import { Injectable } from "@angular/core";
-import { RolesService } from "../Http";
-import { Shell } from "codeshell/core";
+import { RolesService } from "BaseApp/Auth/Http";
 
 @Injectable()
-export abstract class RoleListBase extends ListComponentBase {
-    Service = new RolesService();
+export abstract class RoleListBase extends ListComponentBase{
+	Service = new RolesService();
 }

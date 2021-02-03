@@ -1,4 +1,4 @@
-﻿using CodeShellCore.CLI;
+﻿using CodeShellCore.Cli;
 using CodeShellCore.Services;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;

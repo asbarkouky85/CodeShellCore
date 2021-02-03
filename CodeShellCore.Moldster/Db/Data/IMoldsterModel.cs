@@ -3,11 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Db.Data
+namespace CodeShellCore.Moldster
 {
-    public interface IMoldsterModel : IModel<long>
+    public interface IMoldsterModel : IModel<long>, IChangeColumns
     {
-        DateTime? CreatedOn { get; set; }
-        DateTime? UpdatedOn { get; set; }
     }
 }

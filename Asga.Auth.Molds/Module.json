@@ -1,7 +1,23 @@
 {
   "Name": "Authentication",
+  "AssemblyName": "Asga.Auth.Molds",
   "InstallPath": "Auth",
   "Categories": [
+    {
+      "Path": "Roles/RoleEdit",
+      "Base": "Edit",
+      "Resource": "Roles"
+    },
+    {
+      "Path": "Roles/RoleList",
+      "Base": "List",
+      "Resource": "Roles"
+    },
+    {
+      "Path": "Users/ChangePassword",
+      "Base": "Edit",
+      "Resource": "Users"
+    },
     {
       "Path": "Users/UserEdit",
       "Base": "Edit",
@@ -13,15 +29,13 @@
       "Resource": "Users"
     },
     {
-      "Path": "Roles/RoleEdit",
+      "Path": "Users/ForgotPassword",
       "Base": "Edit",
-      "Resource": "Roles"
-    },
-    {
-      "Path": "Roles/RoleList",
-      "Base": "List",
-      "Resource": "Roles"
+      "Resource": "Users"
     }
   ],
-  "Resources": [ "Users", "Roles" ]
+  "Resources": [
+    "Users:Auth",
+    "Roles:Auth"
+  ]
 }

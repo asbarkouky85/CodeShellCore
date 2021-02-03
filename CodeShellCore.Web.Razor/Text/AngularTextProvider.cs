@@ -2,11 +2,14 @@
 using CodeShellCore.Text.Localization;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace CodeShellCore.Web.Razor.Text
 {
     public class AngularTextProvider : IRazorLocaleTextProvider
     {
+        public CultureInfo Culture => Shell.DefaultCulture;
+
         public string Column(string index, string cult = null)
         {
             return "{{'Columns." + index + "' | translate }}";
@@ -21,16 +24,20 @@ namespace CodeShellCore.Web.Razor.Text
                 int i = 0;
                 foreach (string st in formatElements)
                 {
-                    if (st.Contains("{{"))
-                        dic["p" + (i++)] = st.Replace("{{", "").Replace("}}", "");
-                    else
-                        dic["p" + (i++)] = "'" + st + "'";
+                    dic["p" + (i++)] = _protect(st);
                 }
-
-
                 param += ": " + dic.ToJson().Replace("\"", "");
             }
             return param;
+        }
+
+        string _protect(string st)
+        {
+            if (st.Contains("{{"))
+                return st.Replace("{{", "").Replace("}}", "");
+            else if (!st.Contains("'"))
+                return $"'{st}'";
+            return st;
         }
 
         public string Message(string index, params string[] formatElements)

@@ -3,7 +3,7 @@
 
     <ul class="nav">
         <li>
-            <a [routerLink]="['/']">{{'Words.Main' | translate}}</a>
+            <a [routerLink]="GetMainUrl()">{{'Words.Main' | translate}}</a>
         </li>
         <li *ngFor="let it of navs">
             <a [routerLink]="'/'+it.url" routerLinkActive="active">{{'Pages.'+it.name | translate}}</a>

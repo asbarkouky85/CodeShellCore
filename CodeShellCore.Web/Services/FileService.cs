@@ -6,7 +6,7 @@ using System.IO;
 
 namespace CodeShellCore.Web.Services
 {
-    public class FileService : ServiceBase
+    public class FileService : ServiceBase, IFileUploadService
     {
         private static string _tmpRoot = null;
         protected virtual string TmpRoot
@@ -25,7 +25,7 @@ namespace CodeShellCore.Web.Services
 
 
 
-        public List<TmpFileData> Upload(Dictionary<string, IFormFile> files)
+        public virtual List<TmpFileData> Upload(Dictionary<string, IFormFile> files)
         {
             List<TmpFileData> lst = new List<TmpFileData>();
 

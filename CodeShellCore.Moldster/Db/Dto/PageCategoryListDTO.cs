@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Db.Dto
+namespace CodeShellCore.Moldster.Dto
 {
     public class PageCategoryListDTO
     {
@@ -14,7 +14,6 @@ namespace CodeShellCore.Moldster.Db.Dto
         public string DomainName { get; set; }
         public string Layout { get; set; }
         public string ViewPath { get; set; }
-        public string ScriptPath { get; set; }
         public long? ResourceId { get; set; }
 
         public long? DomainId { get; set; }

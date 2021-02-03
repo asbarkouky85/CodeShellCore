@@ -52,6 +52,15 @@ namespace CodeShellCore.Helpers
             return _exception;
         }
 
+        public static MobileResult<T> MakeMobileResult<T>(T data)
+        {
+            var res = new MobileResult<T>();
+            res.Code = 0;
+            res.Message = "Success";
+            res.Data = data;
+            return res;
+        }
+
         public virtual void SetException(Exception e, bool recurse = false)
         {
             _exception = e;
@@ -103,4 +112,6 @@ namespace CodeShellCore.Helpers
             return null;
         }
     }
+
+    
 }

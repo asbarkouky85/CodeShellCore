@@ -1,8 +1,14 @@
 ﻿using CodeShellCore.Data.Helpers;
+using CodeShellCore.DependencyInjection;
+using CodeShellCore.Helpers;
+using CodeShellCore.Security;
 using CodeShellCore.Services;
+using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 using System.Net;
 
 namespace CodeShellCore.Web.Controllers
@@ -11,16 +17,39 @@ namespace CodeShellCore.Web.Controllers
     {
         protected InstanceStore<object> Store;
         protected SubmitResult SubmitResult { get; set; }
+        
+        public ClientData ClientData
+        {
+            get
+            {
+                return GetService<ClientData>();
+            }
+        }
+
+        public IUserAccessor UserAccessor
+        {
+            get
+            {
+                return HttpContext.RequestServices.GetService<IUserAccessor>();
+            }
+        }
+
+        public ILocaleTextProvider TextProvider
+        {
+            get
+            {
+                return GetService<ILocaleTextProvider>();
+            }
+        }
 
         public BaseController()
         {
             Store = new InstanceStore<object>(() => HttpContext.RequestServices);
-            
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            context.HttpContext.LoadCultureFromHeader();
+            context.HttpContext.ProcessOnce();
             base.OnActionExecuting(context);
         }
 

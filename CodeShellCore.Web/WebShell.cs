@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using CodeShellCore.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CodeShellCore.Web
 {
@@ -53,6 +54,7 @@ namespace CodeShellCore.Web
         protected virtual void HandleSystemErrors(HttpContext cont, Exception ex)
         {
             var res = cont.HandleRequestError(ex);
+            cont.Response.ContentType = "application/json";
             cont.Response.WriteAsync(res.ToJson());
         }
 
@@ -127,7 +129,7 @@ namespace CodeShellCore.Web
             AddMvcFeatures(mvc);
             mvc.AddJsonOptions(e => e.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local);
             coll.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            coll.AddTransient<FileService>();
+            coll.AddTransient<IFileUploadService,FileService>();
         }
 
         protected override IConfigurationSection getConfig(string key)
