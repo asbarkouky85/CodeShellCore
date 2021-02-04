@@ -73,8 +73,12 @@ namespace CodeShellCore.Web
                     });
                 }
             });
+            
+            app.UseMvc(d =>
+            {
 
-            app.UseMvc(d => RegisterRoutes(d));
+                RegisterRoutes(d);
+            });
 
             if (UseHealthChecks)
             {
@@ -121,6 +125,10 @@ namespace CodeShellCore.Web
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
+            coll.Configure<MvcOptions>(r =>
+            {
+                r.EnableEndpointRouting = false;
+            });
             var mvc = coll.AddMvc();
             if (UseHealthChecks)
             {

@@ -44,6 +44,7 @@ namespace Example.Config.Api
 
         public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             app.UseMoldsterServerGeneration();
             base.ConfigureHttp(app, env);
         }
