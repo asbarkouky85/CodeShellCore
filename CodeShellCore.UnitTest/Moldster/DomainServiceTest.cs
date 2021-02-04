@@ -13,7 +13,6 @@ namespace CodeShellCore.UnitTest.Moldster
     [TestFixture]
     public class DomainServiceTest : UnitTestClass
     {
-
         [SetUp]
         public void SetUp()
         {
@@ -24,8 +23,7 @@ namespace CodeShellCore.UnitTest.Moldster
                 coll.AddScoped<MoldsterDataInit>();
             }));
 
-            RunScoped(sc => sc.GetService<MoldsterDataInit>().InitilizeDomains());
-
+            RunOnce(sc => sc.GetService<MoldsterDataInit>().InitilizeDomains());
         }
 
         [Test]
@@ -83,6 +81,6 @@ namespace CodeShellCore.UnitTest.Moldster
             });
         }
 
-        
+
     }
 }

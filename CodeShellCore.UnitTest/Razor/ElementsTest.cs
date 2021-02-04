@@ -26,7 +26,6 @@ namespace CodeShellCore.UnitTest.Razor
         {
             var shell = new UnitTestShell(coll =>
              {
-                 coll.AddCodeShellEmbeddedViews();
                  coll.AddAngularRazorHelpers();
                  coll.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
              });

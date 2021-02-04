@@ -6,6 +6,15 @@ namespace CodeShellCore.UnitTest
 {
     public class UnitTestClass
     {
+        static bool _ran = false;
+        protected void RunOnce(Action<IServiceProvider> provide)
+        {
+            if (!_ran)
+            {
+                RunScoped(provide);
+                _ran = true;
+            }
+        }
         public void RunScoped(Action<IServiceProvider> action)
         {
             using (var sc = Shell.GetScope())

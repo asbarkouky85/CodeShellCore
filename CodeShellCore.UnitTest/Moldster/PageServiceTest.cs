@@ -26,7 +26,7 @@ namespace CodeShellCore.UnitTest.Moldster
                 coll.AddScoped<MoldsterDataInit>();
                 coll.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
             }));
-            RunScoped(sc =>
+            RunOnce(sc =>
             {
                 var service = sc.GetService<MoldsterDataInit>();
                 service.InitilizeDomains();

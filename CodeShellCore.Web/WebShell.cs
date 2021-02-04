@@ -13,6 +13,7 @@ using CodeShellCore.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CodeShellCore.Web
 {
@@ -125,6 +126,7 @@ namespace CodeShellCore.Web
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
+            
             coll.Configure<MvcOptions>(r =>
             {
                 r.EnableEndpointRouting = false;
