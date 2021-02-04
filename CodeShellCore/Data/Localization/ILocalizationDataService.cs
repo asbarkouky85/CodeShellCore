@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Text.Localization
+namespace CodeShellCore.Data.Localization
 {
     public interface ILocalizationDataService : IServiceBase
     {

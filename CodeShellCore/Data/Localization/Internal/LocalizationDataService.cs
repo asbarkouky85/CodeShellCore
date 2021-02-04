@@ -6,8 +6,9 @@ using System.Linq;
 using CodeShellCore.Data;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
+using CodeShellCore.Text.Localization;
 
-namespace CodeShellCore.Text.Localization.Internal
+namespace CodeShellCore.Data.Localization.Internal
 {
     public class LocalizationDataService<T> : EntityService<T>, ILocalizationDataService where T : class, ILocalizable
     {

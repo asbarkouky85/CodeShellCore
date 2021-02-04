@@ -61,9 +61,10 @@ namespace CodeShellCore.UnitTest.Razor
             return helperMock;
         }
 
-        private Mock<IHtmlHelper<T>> GetHelper<T>(List<string> paths = null, List<object> args = null)
+        private Mock<IHtmlHelper<T>> GetHelper<T>(List<string> paths = null, List<object> args = null, HttpContext prov = null)
         {
             var helperMock = new Mock<IHtmlHelper<T>>();
+
             var mock2 = helperMock.As<IHtmlHelper>();
             var viewDictionary = new ViewDataDictionary<T>(new EmptyModelMetadataProvider(), new ModelStateDictionary());
 
@@ -73,8 +74,10 @@ namespace CodeShellCore.UnitTest.Razor
             Expression<Func<IHtmlHelper, ViewDataDictionary>> ex = d => d.ViewData;
 
             helperMock.SetupGet(d => d.ViewData).Returns(viewDictionary);
-            mock2.SetupGet(d=>d.ViewData).Returns(viewDictionary);
-           
+            mock2.SetupGet(d => d.ViewData).Returns(viewDictionary);
+            if (prov != null)
+                mock2.SetupGet(e => e.ViewContext).Returns(new ViewContext { HttpContext = prov });
+
             helperMock.Setup(
                     d => d
                     .PartialAsync(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<ViewDataDictionary>()))
@@ -98,9 +101,9 @@ namespace CodeShellCore.UnitTest.Razor
                 List<string> paths = new List<string>();
                 List<object> args = new List<object>();
 
-                var helperMock = GetHelper<User>(paths, args);
+                var helperMock = GetHelper<User>(paths, args, sc.GetService<IHttpContextAccessor>().HttpContext);
                 var dd = helperMock.Object.ViewData;
-                var wt = service.CheckBoxCell(helperMock.Object, "name", "i", "lst", null, null, null, null, "","");
+                var wt = service.CheckBoxCell(helperMock.Object, "name", "i", "lst", null, null, null, null, "", "");
                 var st = wt.Write(InputControls.CheckBoxCell);
 
                 Assert.Contains("~/ShellComponents/Angular/InputControls/CheckBoxCell.cshtml", paths);

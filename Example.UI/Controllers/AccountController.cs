@@ -10,8 +10,6 @@ namespace Example.UI.Controllers
 {
     public class AccountController : AccountControllerBase
     {
-        public AccountController(IAuthenticationService service, ISessionManager manger) : base(service, manger)
-        {
-        }
+        
     }
 }
