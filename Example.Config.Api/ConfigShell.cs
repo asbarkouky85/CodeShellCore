@@ -29,8 +29,6 @@ namespace Example.Config.Api
             coll.AddMoldsterServerGeneration();
             coll.AddMoldsterRazorHelpers();
 
-            coll.AddCodeShellEmbeddedViews();
-
             coll.AddMoldsterModules(d =>
             {
                 d.Register("Asga.Auth.Molds", "{PARENT}/Asga.Auth.Molds");
@@ -44,8 +42,9 @@ namespace Example.Config.Api
             mvc.AddMoldsterConfiguratorControllers();
         }
 
-        public override void ConfigureHttp(IApplicationBuilder app, IHostingEnvironment env)
+        public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             app.UseMoldsterServerGeneration();
             base.ConfigureHttp(app, env);
         }

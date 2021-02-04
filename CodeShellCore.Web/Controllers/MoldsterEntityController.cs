@@ -9,6 +9,7 @@ using CodeShellCore.Web.Controllers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Data;
 using CodeShellCore.Data.ConfiguredCollections;
+using CodeShellCore.Data.Localization;
 
 namespace CodeShellCore.Web.Controllers
 {

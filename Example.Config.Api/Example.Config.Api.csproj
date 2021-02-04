@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,15 +25,11 @@
   <ItemGroup>
     <Content Remove="appsettings.fms.json" />
     <Content Remove="appsettings.json" />
-    <Content Remove="ShellComponents\Angular\Components\BreadCrumbs.cshtml" />
     <Content Remove="ShellComponents\Angular\InputControls\RichTextBox.cshtml" />
     <Content Remove="ShellComponents\Angular\InputControls\RichTextLabel.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="ShellComponents\Angular\Components\BreadCrumbs.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="ShellComponents\Angular\InputControls\RichTextBox.cshtml" />
     <EmbeddedResource Include="ShellComponents\Angular\InputControls\RichTextLabel.cshtml" />
   </ItemGroup>

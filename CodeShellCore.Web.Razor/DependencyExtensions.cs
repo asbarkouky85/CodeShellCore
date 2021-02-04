@@ -50,14 +50,14 @@ namespace CodeShellCore.Web.Razor
         /// <param name="app"></param>
         public static void UseMoldsterServerGeneration(this IApplicationBuilder app)
         {
-
-            app.UseCors(d => d.WithOrigins("*")
+            app.UseRouting();
+            app.UseCors(d => d.WithOrigins("http://localhost:8050", "http://127.0.0.1:8050")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials()
                 .AllowCredentials());
-            app.UseSignalR(d =>
+            app.UseEndpoints(d =>
             {
+                
                 d.MapHub<GenerationHub>("/generationHub");
                 d.MapHub<TasksHub>("/tasksHub");
             });
@@ -171,14 +171,6 @@ namespace CodeShellCore.Web.Razor
             RazorConfig.ExpressionStringifier = new DefaultExpressionStringifier();
 
             RazorConfig.Theme = theme;
-        }
-
-        public static void AddCodeShellEmbeddedViews(this IServiceCollection coll)
-        {
-            coll.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.FileProviders.Add(new EmbeddedFileProvider(Assembly.Load("CodeShellCore.Web.Razor")));
-            });
         }
     }
 }

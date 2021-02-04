@@ -22,7 +22,7 @@ namespace GenerationTest.Api
         {
         }
         string enviro;
-        public override void ConfigureHttp(IApplicationBuilder app, IHostingEnvironment env)
+        public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             enviro = env.EnvironmentName;
             base.ConfigureHttp(app, env);
@@ -33,7 +33,6 @@ namespace GenerationTest.Api
             base.RegisterServices(coll);
             coll.AddMoldsterWeb();
             coll.AddMoldsterConfigurator();
-            coll.AddCodeShellEmbeddedViews();
             coll.AddMoldsterRazorHelpers();
             var d = getConfig("ConnectionStrings:Moldster");
             if (d != null)

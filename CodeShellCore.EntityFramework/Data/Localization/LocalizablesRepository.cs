@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using CodeShellCore.Helpers;
 using CodeShellCore.Data.EntityFramework;
 
-namespace CodeShellCore.Text.Localization.Internal
+namespace CodeShellCore.Data.Localization
 {
     public class LocalizableRepository<T, TContext> : 
         Repository_Int64<T, TContext>,

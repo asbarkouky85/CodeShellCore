@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Text.Localization
+namespace CodeShellCore.Data.Localization
 {
     public interface ILocalizablesRepository<T> : IRepository<T> where T : class, ILocalizable
     {

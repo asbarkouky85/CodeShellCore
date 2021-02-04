@@ -1,15 +1,10 @@
 {
-  "Login": "Login",
   "Users__UserCreate": "User create",
   "Users__EditProfile": "Edit profile",
   "Shared__ChangePassword": "Change password",
-  "Auth__UserListEmbed": "User list embed",
-  "Users__UserCombined": "User combined",
   "Users__UserList": "User list",
   "Roles__RoleList": "Role list",
   "Roles__RoleEdit": "Role edit",
   "Users__UserEdit": "User edit",
-  "__'+?id=model.id": "  '+?id=model.id",
-  "__'+model.roles.length>0?model.roles[0].id:0": "  '+model.roles.length>0?model.roles[0].id:0",
-  "Auth__ForgotPassword": "Forgot password"
+  "Public__ForgotPassword": "Forgot password"
 }

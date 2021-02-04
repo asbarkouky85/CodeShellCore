@@ -57,14 +57,21 @@ namespace CodeShellCore.Web.Razor
             {
                 InputModel.Attributes += AddInputControlAttributes();
                 InputModel.Attributes += RazorUtils.ToAttributeString(InputModel.AttributeObject);
-                return Helper.Partial(Helper.GetTheme().GetTemplate(componentName), InputModel);
+                return Partial(Helper.GetTheme().GetTemplate(componentName), InputModel);
             }
             else if (Model != null)
             {
-                return Helper.Partial(Helper.GetTheme().GetTemplate(componentName), InputModel);
+                return Partial(Helper.GetTheme().GetTemplate(componentName), InputModel);
             }
-            return Helper.Partial(Helper.GetTheme().GetTemplate(componentName));
+            return Partial(Helper.GetTheme().GetTemplate(componentName));
 
+        }
+
+        protected IHtmlContent Partial(string view, object model = null)
+        {
+            var con = Helper.PartialAsync(view, model);
+            con.Wait();
+            return con.Result;
         }
 
 
@@ -74,7 +81,7 @@ namespace CodeShellCore.Web.Razor
             InputModel.Attributes += RazorUtils.ToAttributeString(InputModel.AttributeObject);
             InputModel.Attributes += RazorUtils.ToAttributeStringDynamic(InputModelExtraAttrs);
             string template = Helper.GetTheme().GetInputControl(componentName);
-            return Helper.Partial(template, InputModel);
+            return Partial(template, InputModel);
         }
 
         public virtual IHtmlContent GetInputControl(InputControls cont)
@@ -84,7 +91,7 @@ namespace CodeShellCore.Web.Razor
             InputModel.Attributes += RazorUtils.ToAttributeString(InputModel.AttributeObject);
             InputModel.Attributes += RazorUtils.ToAttributeStringDynamic(InputModelExtraAttrs);
             string template = Helper.GetTheme().GetInputControl(cont);
-            return Helper.Partial(template, InputModel);
+            return Partial(template, InputModel);
         }
 
         public IHtmlContent GetLabelControl(bool localizable = false)

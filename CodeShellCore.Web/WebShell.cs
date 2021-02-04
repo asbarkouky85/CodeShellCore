@@ -13,6 +13,7 @@ using CodeShellCore.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CodeShellCore.Web
 {
@@ -58,7 +59,7 @@ namespace CodeShellCore.Web
             cont.Response.WriteAsync(res.ToJson());
         }
 
-        public virtual void ConfigureHttp(IApplicationBuilder app, IHostingEnvironment env)
+        public virtual void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             _appRoot = env.ContentRootPath;
 
@@ -73,8 +74,12 @@ namespace CodeShellCore.Web
                     });
                 }
             });
+            
+            app.UseMvc(d =>
+            {
 
-            app.UseMvc(d => RegisterRoutes(d));
+                RegisterRoutes(d);
+            });
 
             if (UseHealthChecks)
             {
@@ -121,15 +126,20 @@ namespace CodeShellCore.Web
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
+            
+            coll.Configure<MvcOptions>(r =>
+            {
+                r.EnableEndpointRouting = false;
+            });
             var mvc = coll.AddMvc();
             if (UseHealthChecks)
             {
                 coll.AddHealthChecks();
             }
             AddMvcFeatures(mvc);
-            mvc.AddJsonOptions(e => e.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local);
+            mvc.AddNewtonsoftJson(e => e.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local);
             coll.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            coll.AddTransient<IFileUploadService,FileService>();
+            coll.AddTransient<IFileUploadService, FileService>();
         }
 
         protected override IConfigurationSection getConfig(string key)

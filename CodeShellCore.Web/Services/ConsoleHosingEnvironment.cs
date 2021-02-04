@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CodeShellCore.Web.Services
 {
-    public class ConsoleHostingEnvironment : IHostingEnvironment
+    public class ConsoleHostingEnvironment : IWebHostEnvironment
     {
         private IFileProvider _webProvider;
         private IFileProvider _contentProvider;

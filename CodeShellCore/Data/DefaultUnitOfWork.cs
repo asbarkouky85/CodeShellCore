@@ -4,13 +4,11 @@ using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
-using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Security;
 using CodeShellCore.Helpers;
 using System.Collections.Generic;
 using CodeShellCore.Text;
 using System.Reflection;
-using CodeShellCore.Security.Authorization;
 
 namespace CodeShellCore.Data
 {
@@ -104,7 +102,7 @@ namespace CodeShellCore.Data
             var repo = _provider.GetService(req) as IRepository;
             if (repo != null)
                 return repo;
-            var gen = GenericRepositoryType ?? typeof(Repository<,>);
+            var gen = GenericRepositoryType ?? typeof(DefaultRepository<>);
             var t = gen.MakeGenericType(i);
             return Store.GetInstance(t);
         }

@@ -23,7 +23,7 @@ namespace CodeShellCore.UnitTest.Moldster
                 coll.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
                 coll.AddScoped<MoldsterDataInit>();
             }));
-            RunScoped(sc => sc.GetService<MoldsterDataInit>().InitilizeDomains());
+            RunOnce(sc => sc.GetService<MoldsterDataInit>().InitilizeDomains());
         }
 
 

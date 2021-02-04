@@ -4,6 +4,8 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.UnitTest.Data;
 using CodeShellCore.Web.Razor;
+using CodeShellCore.Web.UnitTest;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -18,11 +20,13 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             Shell.Start(new UnitTestShell(coll =>
             {
+                coll.AddMoldsterServerGeneration();
                 coll.AddMoldsterWeb();
                 coll.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
                 coll.AddScoped<MoldsterDataInit>();
+                coll.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
             }));
-            RunScoped(sc =>
+            RunOnce(sc =>
             {
                 var service = sc.GetService<MoldsterDataInit>();
                 service.InitilizeDomains();

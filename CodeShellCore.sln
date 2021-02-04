@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore", "CodeShellCore\CodeShellCore.csproj", "{9F817294-9367-4BFB-B332-867DDCA44DC5}"
 EndProject
@@ -83,6 +83,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerationTest.Api", "GenerationTest.Api\GenerationTest.Api.csproj", "{483F6129-46C7-49B0-8721-2BD0449E59A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Public.Molds", "Asga.Public.Molds\Asga.Public.Molds.csproj", "{590C44B2-F8C9-469B-ADC2-5A1E5356E819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShellCore.EntityFramework", "CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj", "{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -198,6 +200,10 @@ Global
 		{590C44B2-F8C9-469B-ADC2-5A1E5356E819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{590C44B2-F8C9-469B-ADC2-5A1E5356E819}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{590C44B2-F8C9-469B-ADC2-5A1E5356E819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,122 +236,9 @@ Global
 		{07547A2E-26D1-48B8-AC81-0DB6F22F3D80} = {44CDD569-EE2A-40F2-B417-79BC4F2D4D55}
 		{483F6129-46C7-49B0-8721-2BD0449E59A1} = {3477FF24-4F33-4EB2-8B09-6AEC871B6752}
 		{590C44B2-F8C9-469B-ADC2-5A1E5356E819} = {44CDD569-EE2A-40F2-B417-79BC4F2D4D55}
+		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C8836DA-E4F6-4A43-9CC5-7D0388147EFD}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 28
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://asga_tfs2:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = CodeShellCore.Caching\\CodeShellCore.Caching.csproj
-		SccProjectTopLevelParentUniqueName1 = CodeShellCore.sln
-		SccProjectName1 = CodeShellCore.Caching
-		SccLocalPath1 = CodeShellCore.Caching
-		SccProjectUniqueName2 = CodeShellCore.MQ\\CodeShellCore.MQ.csproj
-		SccProjectTopLevelParentUniqueName2 = CodeShellCore.sln
-		SccProjectName2 = CodeShellCore.MQ
-		SccLocalPath2 = CodeShellCore.MQ
-		SccProjectUniqueName3 = CodeShellCore.Reporting\\CodeShellCore.Reporting.csproj
-		SccProjectTopLevelParentUniqueName3 = CodeShellCore.sln
-		SccProjectName3 = CodeShellCore.Reporting
-		SccLocalPath3 = CodeShellCore.Reporting
-		SccProjectUniqueName4 = CodeShellCore.Web.Razor\\CodeShellCore.Web.Razor.csproj
-		SccProjectTopLevelParentUniqueName4 = CodeShellCore.sln
-		SccProjectName4 = CodeShellCore.Web.Razor
-		SccLocalPath4 = CodeShellCore.Web.Razor
-		SccProjectUniqueName5 = CodeShellCore\\CodeShellCore.csproj
-		SccProjectTopLevelParentUniqueName5 = CodeShellCore.sln
-		SccProjectName5 = CodeShellCore
-		SccLocalPath5 = CodeShellCore
-		SccProjectUniqueName6 = CodeShellCore.Web\\CodeShellCore.Web.csproj
-		SccProjectTopLevelParentUniqueName6 = CodeShellCore.sln
-		SccProjectName6 = CodeShellCore.Web
-		SccLocalPath6 = CodeShellCore.Web
-		SccProjectUniqueName7 = CodeShellCore.Moldster\\CodeShellCore.Moldster.csproj
-		SccProjectTopLevelParentUniqueName7 = CodeShellCore.sln
-		SccProjectName7 = CodeShellCore.Moldster
-		SccLocalPath7 = CodeShellCore.Moldster
-		SccProjectUniqueName8 = ConsoleTest1\\ConsoleTest1.csproj
-		SccProjectTopLevelParentUniqueName8 = CodeShellCore.sln
-		SccProjectName8 = ConsoleTest1
-		SccLocalPath8 = ConsoleTest1
-		SccProjectUniqueName9 = ConsoleTest2\\ConsoleTest2.csproj
-		SccProjectTopLevelParentUniqueName9 = CodeShellCore.sln
-		SccProjectName9 = ConsoleTest2
-		SccLocalPath9 = ConsoleTest2
-		SccProjectUniqueName10 = Asga.Auth.Molds\\Asga.Auth.Molds.csproj
-		SccProjectTopLevelParentUniqueName10 = CodeShellCore.sln
-		SccProjectName10 = Asga.Auth.Molds
-		SccLocalPath10 = Asga.Auth.Molds
-		SccProjectUniqueName11 = Example\\Example.csproj
-		SccProjectTopLevelParentUniqueName11 = CodeShellCore.sln
-		SccProjectName11 = Example
-		SccLocalPath11 = Example
-		SccProjectUniqueName12 = Example.Config.Api\\Example.Config.Api.csproj
-		SccProjectTopLevelParentUniqueName12 = CodeShellCore.sln
-		SccProjectName12 = Example.Config.Api
-		SccLocalPath12 = Example.Config.Api
-		SccProjectUniqueName13 = Example.UI\\Example.UI.csproj
-		SccProjectTopLevelParentUniqueName13 = CodeShellCore.sln
-		SccProjectName13 = Example.UI
-		SccLocalPath13 = Example.UI
-		SccProjectUniqueName14 = Asga.Auth\\Asga.Auth.csproj
-		SccProjectTopLevelParentUniqueName14 = CodeShellCore.sln
-		SccProjectName14 = Asga.Auth
-		SccLocalPath14 = Asga.Auth
-		SccProjectUniqueName15 = Asga.Auth.Module\\Asga.Auth.Module.csproj
-		SccProjectTopLevelParentUniqueName15 = CodeShellCore.sln
-		SccProjectName15 = Asga.Auth.Module
-		SccLocalPath15 = Asga.Auth.Module
-		SccProjectUniqueName16 = Asga.Public.Module\\Asga.Public.Module.csproj
-		SccProjectTopLevelParentUniqueName16 = CodeShellCore.sln
-		SccProjectName16 = Asga.Public.Module
-		SccLocalPath16 = Asga.Public.Module
-		SccProjectUniqueName17 = Asga.Public\\Asga.Public.csproj
-		SccProjectTopLevelParentUniqueName17 = CodeShellCore.sln
-		SccLocalPath17 = .
-		SccProjectFilePathRelativizedFromConnection17 = Asga.Public\\
-		SccProjectUniqueName18 = CodeShellCore.UnitTest\\CodeShellCore.UnitTest.csproj
-		SccProjectTopLevelParentUniqueName18 = CodeShellCore.sln
-		SccProjectName18 = CodeShellCore.UnitTest
-		SccLocalPath18 = CodeShellCore.UnitTest
-		SccProjectUniqueName19 = Asga.Mobile\\Asga.Mobile.csproj
-		SccProjectTopLevelParentUniqueName19 = CodeShellCore.sln
-		SccProjectName19 = Asga.Mobile
-		SccLocalPath19 = Asga.Mobile
-		SccProjectUniqueName20 = Asga.Mobile.Module\\Asga.Mobile.Module.csproj
-		SccProjectTopLevelParentUniqueName20 = CodeShellCore.sln
-		SccProjectName20 = Asga.Mobile.Module
-		SccLocalPath20 = Asga.Mobile.Module
-		SccProjectUniqueName21 = Asga.Dashboard\\Asga.Dashboard.csproj
-		SccProjectTopLevelParentUniqueName21 = CodeShellCore.sln
-		SccProjectName21 = Asga.Dashboard
-		SccLocalPath21 = Asga.Dashboard
-		SccProjectUniqueName22 = Asga.Mobile.Web\\Asga.Mobile.Web.csproj
-		SccProjectTopLevelParentUniqueName22 = CodeShellCore.sln
-		SccProjectName22 = Asga.Mobile.Web
-		SccLocalPath22 = Asga.Mobile.Web
-		SccProjectUniqueName23 = Asga.Auth.Web\\Asga.Auth.Web.csproj
-		SccProjectTopLevelParentUniqueName23 = CodeShellCore.sln
-		SccProjectName23 = Asga.Auth.Web
-		SccLocalPath23 = Asga.Auth.Web
-		SccProjectUniqueName24 = Asga.Public.Web\\Asga.Public.Web.csproj
-		SccProjectTopLevelParentUniqueName24 = CodeShellCore.sln
-		SccProjectName24 = Asga.Public.Web
-		SccLocalPath24 = Asga.Public.Web
-		SccProjectUniqueName25 = Asga.Dashboard.Web\\Asga.Dashboard.Web.csproj
-		SccProjectTopLevelParentUniqueName25 = CodeShellCore.sln
-		SccProjectName25 = Asga.Dashboard.Web
-		SccLocalPath25 = Asga.Dashboard.Web
-		SccProjectUniqueName26 = GenerationTest.Api\\GenerationTest.Api.csproj
-		SccProjectTopLevelParentUniqueName26 = CodeShellCore.sln
-		SccProjectName26 = GenerationTest.Api
-		SccLocalPath26 = GenerationTest.Api
-		SccProjectUniqueName27 = Asga.Public.Molds\\Asga.Public.Molds.csproj
-		SccProjectTopLevelParentUniqueName27 = CodeShellCore.sln
-		SccProjectName27 = Asga.Public.Molds
-		SccLocalPath27 = Asga.Public.Molds
 	EndGlobalSection
 EndGlobal

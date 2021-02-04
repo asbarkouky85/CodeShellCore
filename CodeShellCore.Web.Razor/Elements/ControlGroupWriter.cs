@@ -114,7 +114,7 @@ namespace CodeShellCore.Web.Razor.Elements
             if (!(InputModel is LabelNgInput))
                 InputModel = InputModel.GetLabelInput();
             GroupModel.InputControl = GetInputControl(localizable ? InputControls.LocalizableLabel : InputControls.Label);
-            return Helper.Partial(Helper.GetTheme().GetControlGroupTemplate(InputControls.Label, false), GroupModel);
+            return Partial(Helper.GetTheme().GetControlGroupTemplate(InputControls.Label, false), GroupModel);
         }
 
         public override IHtmlContent Write(string componentName, bool localizable = false)
@@ -129,7 +129,7 @@ namespace CodeShellCore.Web.Razor.Elements
 
             string template = Helper.GetTheme().GetControlGroupTemplate(componentName, localizable);
             GroupModel.InputControl = GetInputControl(componentName);
-            return Helper.Partial(template, GroupModel);
+            return Partial(template, GroupModel);
         }
 
         public override IHtmlContent Write(InputControls cont, bool localizable = false)
@@ -167,7 +167,7 @@ namespace CodeShellCore.Web.Razor.Elements
             }
             string template = Helper.GetTheme().GetControlGroupTemplate(cont, localizable);
             GroupModel.InputControl = GetInputControl(cont);
-            return Helper.Partial(template, GroupModel);
+            return Partial(template, GroupModel);
         }
 
     }

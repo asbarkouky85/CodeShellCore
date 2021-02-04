@@ -22,7 +22,7 @@ namespace CodeShellCore.Moldster
         public SyncResult SyncTenants(long source, long target)
         {
             SqlParameter par = new SqlParameter("res", System.Data.SqlDbType.VarChar, -1) { Direction = System.Data.ParameterDirection.Output };
-            Database.ExecuteSqlCommand("exec dbo.SyncTenants @p0,@p1,@res OUTPUT", source, target, par);
+            Database.ExecuteSqlRaw("exec dbo.SyncTenants @p0,@p1,@res OUTPUT", source, target, par);
             if (par.Value != null)
                 return par.Value.ToString().FromJson<SyncResult>();
             return null;

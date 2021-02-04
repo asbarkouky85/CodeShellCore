@@ -350,14 +350,14 @@ namespace CodeShellCore.Helpers
                 Addition++;
             else
                 Addition = 0;
-
+            
             currentSecond = thisSec;
 
             string st = (t.Year - 2000).ToString()
                 + t.DayOfYear.ToString("D3")
                 + currentSecond.ToString("D5")
                 + Addition.ToString("D3");
-
+            Console.WriteLine(st);
             return long.Parse(st);
         }
     }

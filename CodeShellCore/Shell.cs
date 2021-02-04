@@ -131,11 +131,13 @@ namespace CodeShellCore
 
         public virtual void RegisterServices(IServiceCollection coll)
         {
+            coll.AddLogging();
             coll.AddSingleton<IFileHandler, FileSystemHandler>();
             coll.AddTransient<ILocaleTextProvider, ResxTextProvider>();
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IOutputWriter, ConsoleOutputWriter>();
             coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
+            
             coll.AddScoped<Language>();
             coll.AddScoped<IUserAccessor, UserAccessor>();
             coll.AddScoped<UserAccessor>();

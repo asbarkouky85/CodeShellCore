@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Moldster.Db;
-using System;
 using Microsoft.EntityFrameworkCore;
+using CodeShellCore.Moldster;
 
 namespace GenerationTest.Api.Data
 {
