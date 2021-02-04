@@ -104,7 +104,7 @@ namespace CodeShellCore.Web.Razor.Tables
             if (ColumnModel.InputControl == null)
                 ColumnModel.InputControl = GetInputControl(componentName);
             string template = Helper.GetTheme().CellTemplate;
-            return Helper.Partial(template, ColumnModel);
+            return Partial(template, ColumnModel);
         }
 
         public override IHtmlContent Write(InputControls component, bool useLocalization = false)
@@ -140,7 +140,7 @@ namespace CodeShellCore.Web.Razor.Tables
             if (ColumnModel.InputControl == null)
                 ColumnModel.InputControl = GetInputControl(component);
             string template = Helper.GetTheme().CellTemplate;
-            return Helper.Partial(template, ColumnModel);
+            return Partial(template, ColumnModel);
         }
 
         public IHtmlContent WriteHeaderCell()
@@ -149,16 +149,16 @@ namespace CodeShellCore.Web.Razor.Tables
                 return null;
             ColumnModel.InputControl = new HtmlString(InputModel.PlaceHolder);
             string template = Helper.GetTheme().HeaderCellTemplate;
-            return Helper.Partial(template, ColumnModel);
+            return Partial(template, ColumnModel);
         }
 
         public IHtmlContent WriteCell(CellTypes types)
         {
             if (!Accessibility.Read)
                 return null;
-            ColumnModel.InputControl = Helper.Partial(Helper.GetTheme().GetCell(types), InputModel);
+            ColumnModel.InputControl = Partial(Helper.GetTheme().GetCell(types), InputModel);
             string template = Helper.GetTheme().CellTemplate;
-            return Helper.Partial(template, ColumnModel);
+            return Partial(template, ColumnModel);
         }
 
         public override IHtmlContent GetInputControl(string componentName)

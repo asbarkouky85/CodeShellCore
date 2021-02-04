@@ -623,11 +623,11 @@ namespace CodeShellCore.Moldster.Configurator.Services
 
         public CreatePageDTO GetSinglePage(long id)
         {
-            return Unit.PageRepository.FindSingleAs(a => new CreatePageDTO
+            var p = Unit.PageRepository.FindSingleAs(a => new CreatePageDTO
             {
                 Id = a.Id,
                 ActionType = a.PrivilegeType,
-                Apps = a.Apps != null ? a.Apps.Replace("\"", "").Replace(" ", "").Split(',').ToList() : null,
+                AppsString = a.Apps,
                 CategoryId = a.PageCategoryId,
                 CollectionId = a.SourceCollectionId,
                 ComponentName = a.ViewPath.GetAfterLast("/"),
@@ -647,6 +647,10 @@ namespace CodeShellCore.Moldster.Configurator.Services
                 ResourceId = a.ResourceId,
                 TenantId = a.TenantId
             }, a => a.Id == id);
+
+            p.Apps = p.AppsString != null ? p.AppsString.Replace("\"", "").Replace(" ", "").Split(',').ToList() : null;
+
+            return p;
         }
 
         public SubmitResult UpdatePageRefeneces(long pageId, long tenantId)

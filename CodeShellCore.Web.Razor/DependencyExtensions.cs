@@ -56,7 +56,7 @@ namespace CodeShellCore.Web.Razor
                 .AllowAnyMethod()
                 .AllowCredentials()
                 .AllowCredentials());
-            app.UseSignalR(d =>
+            app.UseEndpoints(d =>
             {
                 d.MapHub<GenerationHub>("/generationHub");
                 d.MapHub<TasksHub>("/tasksHub");
@@ -171,14 +171,6 @@ namespace CodeShellCore.Web.Razor
             RazorConfig.ExpressionStringifier = new DefaultExpressionStringifier();
 
             RazorConfig.Theme = theme;
-        }
-
-        public static void AddCodeShellEmbeddedViews(this IServiceCollection coll)
-        {
-            coll.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.FileProviders.Add(new EmbeddedFileProvider(Assembly.Load("CodeShellCore.Web.Razor")));
-            });
         }
     }
 }

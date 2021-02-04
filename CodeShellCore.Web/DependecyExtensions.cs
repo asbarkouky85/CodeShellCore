@@ -66,7 +66,7 @@ namespace CodeShellCore.Web
         {
             coll.AddMvc();
             coll.AddTransient<ILoggerFactory, LoggerFactory>();
-            coll.AddSingleton<IHostingEnvironment, ConsoleHostingEnvironment>();
+            coll.AddSingleton<IWebHostEnvironment, ConsoleHostingEnvironment>();
             coll.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
             coll.AddSingleton<DiagnosticSource>(d => new DiagnosticListener("app"));
             coll.AddScoped<HttpContext, DefaultHttpContext>();

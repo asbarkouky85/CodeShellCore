@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace CodeShellCore.Web
 {
@@ -27,13 +28,13 @@ namespace CodeShellCore.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             _ProjectShell.ConfigureHttp(app, env);
-            
+
             Shell.Start(_ProjectShell);
 
-            var l=app.ApplicationServices.GetRequiredService<IApplicationLifetime>();
+            var l = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
             l.ApplicationStopped.Register(OnShutdown);
         }
 

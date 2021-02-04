@@ -19,6 +19,7 @@ namespace CodeShellCore.Moldster.Dto
         public string Usage { get; set; }
         public string Layout { get; set; }
         public IEnumerable<string> Apps { get; set; }
+        public string AppsString { get; set; }
         public string PrivilegeType { get; set; }
 
         public int? DefaultAccessibility { get; set; }

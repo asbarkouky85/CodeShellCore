@@ -16,18 +16,9 @@ namespace CodeShellCore.Web.Moldster
 
         }
 
-        public override void ConfigureHttp(IApplicationBuilder app, IHostingEnvironment env)
+        public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseStaticFiles();
-
-            var hot = getConfig("UseHotUpdate")?.Value == "True";
-            if (hot)
-            {
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true
-                });
-            }
             base.ConfigureHttp(app, env);
         }
 

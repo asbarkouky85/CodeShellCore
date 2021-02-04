@@ -58,7 +58,7 @@ namespace CodeShellCore.Web
             cont.Response.WriteAsync(res.ToJson());
         }
 
-        public virtual void ConfigureHttp(IApplicationBuilder app, IHostingEnvironment env)
+        public virtual void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             _appRoot = env.ContentRootPath;
 
@@ -127,9 +127,9 @@ namespace CodeShellCore.Web
                 coll.AddHealthChecks();
             }
             AddMvcFeatures(mvc);
-            mvc.AddJsonOptions(e => e.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local);
+            mvc.AddNewtonsoftJson(e => e.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local);
             coll.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            coll.AddTransient<IFileUploadService,FileService>();
+            coll.AddTransient<IFileUploadService, FileService>();
         }
 
         protected override IConfigurationSection getConfig(string key)

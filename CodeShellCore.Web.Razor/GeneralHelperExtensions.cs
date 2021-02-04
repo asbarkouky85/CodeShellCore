@@ -96,13 +96,17 @@ namespace CodeShellCore.Web.Razor
                     helper.SetViewData(ob);
             }
 
-            return helper.Partial(st, model);
+            var t = helper.PartialAsync(st, model);
+            t.Wait();
+            return t.Result;
         }
 
         public static IHtmlContent GetComponent(this IHtmlHelper helper, string template, object model = null)
         {
             string st = helper.GetTheme().GetTemplate(template);
-            return helper.Partial(st, model);
+            var t = helper.PartialAsync(st, model);
+            t.Wait();
+            return t.Result;
         }
 
         public static IHtmlContent GetPageTitle(this IHtmlHelper helper)
