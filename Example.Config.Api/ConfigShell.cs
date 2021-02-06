@@ -7,14 +7,12 @@ using CodeShellCore.Web.Razor;
 using CodeShellCore.Moldster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace Example.Config.Api
 {
-    public class ConfigShell : CodeShellCore.Web.WebShell
+    public class ConfigShell : MoldsterWebShell
     {
-        protected override bool useLocalization { get { return false; } }
-
-        protected override CultureInfo defaultCulture => new CultureInfo("en");
 
         public ConfigShell(IConfiguration config) : base(config)
         {
@@ -24,35 +22,12 @@ namespace Example.Config.Api
         {
             base.RegisterServices(coll);
 
-            coll.AddMoldsterWeb();
-            coll.AddMoldsterConfigurator();
-            coll.AddMoldsterServerGeneration();
-            coll.AddMoldsterRazorHelpers();
-
+            coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(Configuration.GetConnectionString("Moldster")));
             coll.AddMoldsterModules(d =>
             {
                 d.Register("Asga.Auth.Molds", "{PARENT}/Asga.Auth.Molds");
                 d.Register("Asga.Public.Molds", "{PARENT}/Asga.Public.Molds");
             });
-        }
-
-        public override void AddMvcFeatures(IMvcBuilder mvc)
-        {
-            base.AddMvcFeatures(mvc);
-            mvc.AddMoldsterConfiguratorControllers();
-        }
-
-        public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            
-            app.UseMoldsterServerGeneration();
-            base.ConfigureHttp(app, env);
-        }
-
-        protected override void OnReady()
-        {
-            base.OnReady();
-            this.ConfigureAngular2Razor();
         }
     }
 }

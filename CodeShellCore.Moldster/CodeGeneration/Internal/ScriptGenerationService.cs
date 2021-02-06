@@ -1,97 +1,93 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Angular;
 using CodeShellCore.Moldster.Angular.Models;
+using CodeShellCore.Moldster.Angular;
 using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Models;
 using CodeShellCore.Services;
-using CodeShellCore.Text;
 using CodeShellCore.Text.ResourceReader;
-using System;
+using CodeShellCore.Text;
+using CodeShellCore.Types;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Internal
 {
     public class ScriptGenerationService : ConsoleService, IScriptGenerationService
     {
+        InstanceStore<object> _store;
         static string[] baseComponents = new[] { "Edit", "List", "Tree", "Select" };
 
-        protected readonly WriterService _writer;
-        protected readonly IMoldProvider _molds;
-        protected readonly IPathsService _paths;
-        protected readonly IConfigUnit _unit;
-        protected readonly IFileHandler _fileHandler;
-        protected readonly ILocalizationService _localization;
-        protected readonly IPageControlDataService _controls;
+        private MoldsterModuleOptions _opts;
+        protected WriterService _writer;
+
+        protected IMoldProvider _molds => _store.GetInstance<IMoldProvider>();
+        private IUIFileNameService _fileNameService => _store.GetInstance<IUIFileNameService>();
+        protected IPathsService _paths => _store.GetInstance<IPathsService>();
+        protected IConfigUnit _unit => _store.GetInstance<IConfigUnit>();
+        protected IFileHandler _fileHandler => _store.GetInstance<IFileHandler>();
+        protected ILocalizationService _localization => _store.GetInstance<ILocalizationService>();
+        protected IPageControlDataService _controls => _store.GetInstance<IPageControlDataService>();
 
         public ScriptGenerationService(
-            IPathsService paths,
-            IMoldProvider mold,
-            IConfigUnit unit,
-            IFileHandler fileHandler,
-            IPageControlDataService controls,
-            ILocalizationService loc,
+            IServiceProvider prov,
+            IOptions<MoldsterModuleOptions> opt,
             IOutputWriter output) : base(output)
         {
-            _unit = unit;
-            _fileHandler = fileHandler;
-            _controls = controls;
-            _localization = loc;
-            _paths = paths;
-            _molds = mold;
+            _store = new InstanceStore<object>(prov);
+            _opts = opt.Value;
             _writer = new WriterService();
         }
 
-        public void GenerateBootFile(string moduleCode, bool addStyle = false)
+        public void GenerateMainFile(string moduleCode, bool addStyle = false)
         {
-            Out.Write("Generating boot.ts...  \t\t\t");
+            string bootPath = _fileNameService.GetMainTsPath("main");
+            string pollyPath = _fileNameService.GetMainTsPath("pollyfills");
 
-            string bootPath = Path.Combine(_paths.UIRoot, moduleCode, "boot.ts");
-            string bootTemplate = _molds.BootMold;
-
-            string boot = _writer.FillStringParameters(bootTemplate, new BootTsModel
+            if (!File.Exists(bootPath))
             {
-                Code = moduleCode,
-                Style = addStyle ? "import \"./app.scss\"" : ""
-            });
-            File.WriteAllText(bootPath, boot);
+                Out.Write("Generating main.ts...  \t\t\t");
+                string bootTemplate = _molds.BootMold;
+                string boot = _writer.FillStringParameters(bootTemplate, new BootTsModel
+                {
+                    Code = moduleCode.UCFirst(),
+                    Style = addStyle ? "import \"./app.scss\"" : ""
+                });
+                File.WriteAllText(bootPath, boot);
+                WriteSuccess();
+                Out.WriteLine();
+            }
 
-            GotoColumn(SuccessCol);
-            WriteSuccess();
-            Out.WriteLine();
+            if (!File.Exists(pollyPath))
+            {
+                Out.Write("Generating pollyfills.ts...  \t\t\t");
+                string pollyTemplate = Properties.Resources.pollyfills_ts;
+                File.WriteAllText(pollyPath, pollyTemplate);
+                WriteSuccess();
+                Out.WriteLine();
+            }
         }
 
-        public void GenerateStyle(string moduleCode, string baseName)
+        public bool GenerateHttpService(string resource, string domain = null)
         {
-            Out.Write("Generating app.scss...  \t\t\t");
-
-            string path = Path.Combine(_paths.UIRoot, moduleCode, "app.scss");
-            if (baseName != null)
-                File.WriteAllText(path, $"@import \"../Core/{ _paths.CoreAppName}/Styles/{baseName}\";");
-
-            GotoColumn(SuccessCol);
-            WriteSuccess();
-            Out.WriteLine();
-        }
-
-        public bool GenerateDataService(string resource, string domain = null)
-        {
-            string folder = Path.Combine("Core", _paths.CoreAppName, "Http");
+            string folder = _fileNameService.GetHttpServiceFolder();
 
             if (domain != null)
             {
                 domain = new Regex("^/").Replace(domain, "").Replace("/", "\\");
-                folder = Path.Combine("Core", _paths.CoreAppName, domain, "Http");
+                folder = _fileNameService.GetHttpServiceFolder(domain);
             }
-            string servicePath = Path.Combine(_paths.UIRoot, folder + "\\" + resource + "Service.ts");
+
+            string servicePath = Path.Combine(_paths.UIRoot, folder + "/" + _fileNameService.ApplyConvension(resource, AppParts.Service) + ".ts");
             Utils.CreateFolderForFile(servicePath);
             if (!File.Exists(servicePath))
             {
@@ -99,49 +95,19 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 string service = _writer.FillStringParameters(serviceTemplate, new ServiceTsModel { Resource = resource });
                 File.WriteAllText(servicePath, service);
 
-                string httpPath = Path.Combine(_paths.UIRoot, folder + ".ts"); ;
+                string httpPath = Path.Combine(_paths.UIRoot, folder, "index.ts"); ;
                 List<string> lst = new List<string>();
                 if (File.Exists(httpPath))
                 {
                     string[] lines = File.ReadAllLines(httpPath);
                     lst.AddRange(lines);
                 }
-                lst.Add("export * from \"./Http/" + resource + "Service\";");
+                lst.Add("export * from \"./" + _fileNameService.ApplyConvension(resource, AppParts.Service) + "\";");
                 File.WriteAllLines(httpPath, lst);
                 return true;
             }
             return false;
 
-        }
-
-        public void GenerateGuidComponent(string modl)
-        {
-            using (var x = SW.Measure())
-            {
-                using (Out.Set(ConsoleColor.DarkRed))
-                    Out.Write(" Ts: ");
-
-                string path = Path.Combine(_paths.UIRoot, modl, "app", "Guide/Guide.ts");
-
-                string scriptPath = path + ".ts";
-                var scriptTemplate = _molds.BasicComponent;
-
-                string contents = _writer.FillStringParameters(scriptTemplate, new ComponentTsModel
-                {
-                    BaseClassLocation = "CodeShell/BaseComponents",
-                    BaseClass = "BaseComponent",
-                    ComponentName = "Guide",
-                    PageId = 0,
-                    Domain = "Guide",
-                    Resource = null,
-                    Selector = "guide",
-                    CollectionId = "null"
-                });
-                Utils.CreateFolderForFile(path);
-                File.WriteAllText(scriptPath, contents);
-                WriteSuccess();
-                Out.WriteLine();
-            }
         }
 
         public virtual void GenerateModuleDefinitionByPage(PageRenderDTO dto)
@@ -152,21 +118,31 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 );
 
             var dom = _unit.DomainRepository.GetSingleValue(d => d.Id, d => data.Chain.Contains("|" + d.Id + "|") && d.ParentId == null);
-            GenerateDomainModuleById(data.Code, dom, true);
+            GenerateDomainModuleById(data.Code, dom);
             if (data.HasNav)
             {
-                GenerateRoutesLazy(data.Code);
+                GenerateRoutes(data.Code);
             }
         }
 
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath)
         {
+            PageDTO p = _unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
+            string scriptPath = _fileNameService.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".ts";
+
             using (Out.Set(ConsoleColor.DarkRed))
             {
                 Out.Write(" Ts: ");
             }
 
-            PageDTO p = _unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
+
+            if (File.Exists(scriptPath) && !_opts.ReplaceComponentScripts)
+            {
+                WriteColored("Exists", ConsoleColor.Cyan);
+                Out.WriteLine();
+                return;
+            }
+
 
             string scriptTemplate = "";
             if (p.ParentHasResource)
@@ -174,7 +150,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             else
                 scriptTemplate = _molds.BasicComponent;
 
-            if (p.BaseScript == null)
+            if (p.BaseViewPath == null)
             {
                 WriteException(new Exception("Please process template first!!"), false);
                 WriteFailed();
@@ -183,18 +159,17 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
             string script = _writer.FillStringParameters(scriptTemplate, new ComponentTsModel
             {
-                BaseClassLocation = p.BaseScript,
-                BaseClass = p.BaseScript.GetAfterLast("/"),
+                BaseClassLocation = _fileNameService.GetBaseComponentFilePath(p.BaseViewPath, true),
+                BaseClass = p.BaseViewPath.GetAfterLast("/") + "Base",
                 ComponentName = p.Page.Name,
+                TemplateName = _fileNameService.ApplyConvension(p.Page.Name, AppParts.Component),
                 PageId = p.Page.Id,
                 Domain = p.DomainName,
                 Resource = p.ResourceName,
-                Selector = p.Page.Name.LCFirst(),
+                Selector = _fileNameService.GetComponentSelector(p.Page.Name),
 
                 CollectionId = p.CollectionId == null ? "null" : "'" + p.CollectionId + "'"
             });
-
-            string scriptPath = Path.Combine(_paths.UIRoot, p.TenantCode, "app", p.Page.ViewPath + ".ts");
 
             Utils.CreateFolderForFile(scriptPath);
             File.WriteAllText(scriptPath, script);
@@ -221,11 +196,10 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             {
                 serviced = p.Resource != null;
 
-
                 if (baseComponents.Contains(p.Category.BaseComponent))
                 {
                     mod.Parent = p.Category.BaseComponent + "ComponentBase";
-                    mod.ParentPath = "codeshell/baseComponents";
+                    mod.ParentPath = "codeshell/base-components";
                     if (p.Resource == null)
                     {
                         mod.Resource = "DefaultHttp";
@@ -234,54 +208,64 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 }
                 else if (p.Category.BaseComponent != null)
                 {
-                    mod.ParentPath = p.Category.BaseComponent;
+                    mod.ParentPath = _fileNameService.ApplyConvension(p.Category.BaseComponent, AppParts.BaseComponent);
                     mod.Parent = mod.ParentPath.GetAfterLast("/");
                 }
 
 
                 if (p.Resource != null)
                 {
-                    string folder = "Http";
+                    string folder = _fileNameService.GetHttpServiceFolder(null, true);
 
                     if (p.ResourceDomain != null)
                     {
-                        folder = Utils.CombineUrl(new Regex("^/").Replace(p.ResourceDomain, ""), folder);
+                        folder = _fileNameService.GetHttpServiceFolder(new Regex("^/").Replace(p.ResourceDomain, ""), true);
                     }
 
-                    mod.ServicePath = Utils.CombineUrl($"{_paths.CoreAppName}/{folder}");
+                    mod.ServicePath = Utils.CombineUrl(folder, _fileNameService.ApplyConvension(p.Resource, AppParts.Service));
                 }
             }
             else
             {
                 mod.Parent = "BaseComponent";
-                mod.ParentPath = "codeshell/baseComponents";
+                mod.ParentPath = "codeshell/base-components";
             }
 
             string baseComponentTemplatePath = _molds.GetBaseComponentMold(serviced);
 
             string contents = _writer.FillStringParameters(baseComponentTemplatePath, mod);
-            string path = Path.Combine(_paths.UIRoot, "Core\\" + _paths.CoreAppName, viewPath + "Base.ts");
+            string path = _fileNameService.GetBaseComponentFilePath(viewPath) + ".ts"; // Path.Combine(_paths.UIRoot, "Core\\" + _paths.CoreAppName, viewPath + "Base.ts");
 
             Utils.CreateFolderForFile(path);
             File.WriteAllText(path, contents);
 
         }
 
-        public virtual void GenerateMainComponent(string mod)
+        public virtual void GenerateAppComponent(string mod)
         {
+            string path = _fileNameService.GetComponentFilePath(mod, "app") + ".ts";
+
             using (Out.Set(ConsoleColor.DarkRed))
                 Out.Write(" Ts: ");
+
+            if (!_opts.ReplaceComponentScripts && File.Exists(path))
+            {
+                WriteColored("Exists", ConsoleColor.Cyan);
+                Out.WriteLine();
+                return;
+            }
 
             string mainCompBase = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == mod);
             string temp = _molds.MainComponentMold;
             var model = new AppComponentModel
             {
                 Name = "AppComponent",
+                TemplateName = _fileNameService.ApplyConvension("AppComponent", AppParts.Component),
                 BaseComponentName = mainCompBase.GetAfterLast("/") + "Base",
-                BaseComponentPath = _paths.CoreAppName + "/" + mainCompBase + "Base"
+                BaseComponentPath = _fileNameService.GetBaseComponentFilePath(mainCompBase, true)
             };
             string contents = _writer.FillStringParameters(temp, model);
-            string path = Path.Combine(_paths.UIRoot, mod, "app", "AppComponent.ts");
+
             Utils.CreateFolderForFile(path);
             File.WriteAllText(path, contents);
 
@@ -289,40 +273,41 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         }
 
-        public virtual void GenerateModuleDefinition(string modCode, bool lazy)
+        public virtual void GenerateAppModule(string modCode)
         {
             string moduleName = modCode + "Module";
-            string modulePath = Path.Combine(_paths.UIRoot, modCode, "app", moduleName + ".ts");
+            string modulePath = _fileNameService.GetModuleFilePath(modCode, "app", createFolder: false) + ".ts";
 
             Out.Write("Generating " + moduleName + ".ts : ");
+
+            if (!_opts.ReplaceMainModule && File.Exists(modulePath))
+            {
+                GotoColumn(SuccessCol);
+                WriteColored("Exists", ConsoleColor.Cyan);
+                Out.WriteLine();
+                return;
+            }
+
+
             var main = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == modCode);
             var tempModel = new ModuleTsModel
             {
-                Code = modCode,
+                Code = modCode.UCFirst(),
                 Modules = "",
                 ModuleImports = "",
                 MainComponentName = main,
-                MainComponentPath = "./" + main,
+                MainComponentPath = _fileNameService.GetComponentImportPath(main, fromDomain: false),
                 BaseName = _paths.CoreAppName,
-                BaseAppModuleName = _paths.CoreAppName + "BaseModule",
-                BaseAppModulePath = _paths.CoreAppName + "/" + _paths.CoreAppName + "BaseModule"
+                BaseAppModuleName = _paths.CoreAppName.UCFirst() + "BaseModule",
+                BaseAppModulePath = _fileNameService.GetBaseModuleFilePath(true),
+                RoutesModulePath = "./" + _fileNameService.ApplyConvension(modCode + "Routing", AppParts.Module)
             };
-
-            if (!lazy)
-            {
-                List<string> modules = _unit.DomainRepository.FindAs(d => d.Name, d => d.Pages.Any(p => p.Tenant.Code == modCode) && d.ParentId == null);
-                foreach (var mod in modules)
-                {
-                    tempModel.ModuleImports += $"import {{ {mod}Module }} from \"./{mod}Module\";\r";
-                    tempModel.Modules += $"{mod}Module, ";
-                }
-            }
 
             var homePage = _unit.PageRepository.GetHomePagePath(modCode);
             if (homePage != null)
             {
-                tempModel.ModuleImports += AngularUtils.ComponentImport(homePage, out string pageName);
-                tempModel.Declarations += pageName;
+                tempModel.ModuleImports += _fileNameService.GetComponentImportPath(homePage);
+                tempModel.Declarations += homePage.GetAfterLast("/");
             }
 
             string moduleTemplate = _molds.AppModuleMold;
@@ -334,13 +319,60 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             Out.WriteLine();
         }
 
-        public virtual void GenerateRoutes(string mod, bool lazy)
+        public virtual void GenerateRoutes(string modCode)
         {
-            Out.Write($"Generating Routes [{mod}Routes.ts] : ");
-            if (lazy)
-                GenerateRoutesLazy(mod);
-            else
-                GenerateRoutes(mod);
+            string filePath = _fileNameService.GetModuleFilePath(modCode, modCode + "Routing", createFolder: false) + ".ts";
+            Out.Write($"Generating Routes [{modCode}Routes.ts] : ");
+
+            if (!_opts.ReplaceMainRoutes && File.Exists(filePath))
+            {
+                GotoColumn(SuccessCol);
+                WriteColored("Exists", ConsoleColor.Cyan);
+                Out.WriteLine();
+                return;
+            }
+
+            long modId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+
+            IEnumerable<DomainWithPagesDTO> domains = _unit.DomainRepository.GetParentModules(modId);
+            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs(modId);
+            string routesTemplate = _molds.RoutesMold;
+
+            var tempModel = new RoutesTsModel
+            {
+                LocalizationImports = "",
+                ComponentImports = "",
+                LocalizationLoaders = "",
+                Routes = "",
+                Registration = "",
+                BaseName = _paths.CoreAppName
+            };
+
+            string home = _unit.PageRepository.GetHomePagePath(modCode);
+            if (home != null)
+            {
+                tempModel.ComponentImports += AngularUtils.ComponentImport(home, out string name);
+                tempModel.Routes += HomeRoute(name);
+            }
+
+            foreach (var domain in domains)
+            {
+                string dom = domain.DomainName;
+                tempModel.Routes += _fileNameService.GetDomainLazyLoadingRoute(domain.DomainName) + ",";
+            }
+            string sep = "";
+            foreach (var nav in navs)
+            {
+                tempModel.DomainsData += sep + GetNavigationObject(nav);
+                sep = ",\n\t\t\t";
+            }
+
+            AppendLocaleLoaders(tempModel);
+
+            string builder = _writer.FillStringParameters(routesTemplate, tempModel);
+            Utils.CreateFolderForFile(filePath);
+            File.WriteAllText(filePath, builder);
+
             GotoColumn(SuccessCol);
             WriteSuccess();
             Out.WriteLine();
@@ -359,15 +391,13 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 ResourceDomain = d.ResourceId != null ? d.Resource.Domain.Name : null
             }, d => d.Id == id);
 
-            var scriptPath = Path.Combine(_paths.CoreAppName, p.ViewPath + "Base");
-
             if (p.Resource != null)
             {
                 serviceName = p.Resource + "Service.ts";
-                serviceCreated = GenerateDataService(p.Resource, p.ResourceDomain);
+                serviceCreated = GenerateHttpService(p.Resource, p.ResourceDomain);
             }
 
-            string baseComponentPath = Path.Combine(_paths.UIRoot, "Core", scriptPath + ".ts");
+            string baseComponentPath = _fileNameService.GetBaseComponentFilePath(p.ViewPath) + ".ts";
             Utils.CreateFolderForFile(baseComponentPath);
 
             if (!File.Exists(baseComponentPath))
@@ -401,7 +431,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             Out.WriteLine();
         }
 
-        public virtual void GenerateDomainModuleById(string moduleCode, long? domId, bool lazy = true)
+        public virtual void GenerateDomainModuleById(string moduleCode, long? domId)
         {
             var doms = new List<DomainWithPagesDTO>();
             if (!_unit.DomainRepository.FindSingleOrAdd(e => e.Id == 1, new Domain { Id = 1, Name = "Shared" }, out Domain shared))
@@ -432,15 +462,15 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             }
 
             foreach (var item in newList)
-                GenerateDomainRecursive(item, moduleCode, parent, lazy);
+                GenerateDomainRecursive(item, moduleCode, parent);
         }
 
-        public virtual void GenerateDomainModule(string moduleCode, string domId, bool lazy = true)
+        public virtual void GenerateDomainModule(string moduleCode, string domId)
         {
             long? id = null;
             if (domId != null)
                 id = _unit.DomainRepository.GetDomainByPath(domId).Id;
-            GenerateDomainModuleById(moduleCode, id, lazy);
+            GenerateDomainModuleById(moduleCode, id);
         }
 
         public void MoveScript(MovePageRequest r)
@@ -465,21 +495,29 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         #region private methods
 
-        protected virtual void GenerateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null, bool lazy = true)
+        protected virtual void GenerateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null)
         {
+            string filePath = _fileNameService.GetModuleFilePath(tenantCode, dom.DomainName, parentDomain) + ".ts";
             Out.Write($"Generating {dom.DomainName}Module : ");
             GotoColumn(SuccessCol);
-            bool shared = dom.DomainName == "Shared";
-            string template = shared ? _molds.SharedModuleMold : _molds.GetDomainModuleMold(lazy);
-            string filePath = Path.Combine(_paths.UIRoot, tenantCode, "app\\" + (parentDomain != null ? "\\" + parentDomain + "\\" : "") + dom.DomainName + "\\" + dom.DomainName + "Module.ts");
 
+            if (!_opts.ReplaceDomainRoutes && File.Exists(filePath))
+            {
+                WriteColored("Exists", ConsoleColor.Cyan);
+                Out.WriteLine();
+                return;
+            }
+
+            bool shared = dom.DomainName == "Shared";
+            string template = shared ? _molds.SharedModuleMold : _molds.GetDomainModuleMold();
 
             dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id);
 
             if (dom.Pages.Any())
             {
                 var pages = dom.Pages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
-                _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
+                if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
+                    _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
             }
 
             int c = 0;
@@ -494,15 +532,15 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
             DomainTsModel model = new DomainTsModel
             {
-                ComponentImports = parentDomain == null ? "" : $"import {{ {parentDomain}Module }} from \"../{parentDomain}Module\";\n",
+                ComponentImports = parentDomain == null ? "" : $"import {{ {parentDomain}Module }} from \"../" + _fileNameService.ApplyConvension(parentDomain, AppParts.Module) + "\";\n",
                 Components = "",
                 Name = dom.DomainName,
                 Registrations = "",
                 Routes = "",
-                Lazy = lazy ? "" : "",
+                Lazy = "",
                 BaseName = _paths.CoreAppName,
-                BaseAppModuleName = _paths.CoreAppName + "BaseModule",
-                BaseAppModulePath = _paths.CoreAppName + "/" + _paths.CoreAppName + "BaseModule",
+                BaseAppModuleName = _paths.CoreAppName.UCFirst() + "BaseModule",
+                BaseAppModulePath = _fileNameService.GetBaseModuleFilePath(true),
                 PathToRoot = rootPath,
                 ParentModules = parentDomain == null ? "" : parentDomain + "Module,"
             };
@@ -513,7 +551,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
 
                 model.Components += p.ComponentName + ",";
-                model.ComponentImports += p.GetImportString(true);
+                model.ComponentImports += $"import {{ {p.ComponentName} }} from '{_fileNameService.GetComponentImportPath(p.ComponentName)}'";
                 model.Registrations += p.Registration;
 
                 if (p.Page.CanEmbed)
@@ -526,7 +564,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             {
                 foreach (DomainWithPagesDTO dp in dom.SubDomains)
                 {
-                    model.Routes += dp.LazyLoadingRoute;
+                    model.Routes += _fileNameService.GetDomainLazyLoadingRoute(dp.DomainName);
                 }
             }
 
@@ -540,135 +578,14 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             if (dom.SubDomains != null && dom.SubDomains.Any())
             {
                 foreach (var d in dom.SubDomains)
-                    GenerateDomainRecursive(d, tenantCode, (parentDomain == null ? "" : parentDomain + "\\") + dom.DomainName, lazy);
+                    GenerateDomainRecursive(d, tenantCode, (parentDomain == null ? "" : parentDomain + "\\") + dom.DomainName);
             }
-        }
-        private void GenerateRoutes(string modCode)
-        {
-            long modId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
-            string fileName = modCode + "Routes";
-            string filePath = Path.Combine(_paths.UIRoot, modCode, "app", fileName + ".ts");
-
-            IEnumerable<DomainWithPagesDTO> domains = _controls.GetDomainWithPages(modId);
-            string routesTemplate = _molds.RoutesMold;
-
-            var tempModel = new RoutesTsModel
-            {
-                LocalizationImports = "",
-                ComponentImports = "",
-                LocalizationLoaders = "",
-                Routes = "",
-                Registration = "",
-                BaseName = _paths.CoreAppName
-            };
-
-            foreach (var dom in domains)
-            {
-                AppendDomain(dom, tempModel);
-            }
-
-            AppendLocaleLoaders(tempModel);
-
-            string contents = _writer.FillStringParameters(routesTemplate, tempModel);
-            File.WriteAllText(filePath, contents);
-        }
-
-        private void AppendGuide(RoutesTsModel mod)
-        {
-            var p = new PageDTO
-            {
-                ActionName = "anonymous",
-                DomainName = "Guide",
-                PageIdentifier = "Guide__Guide",
-
-                Page = new Page
-                {
-                    Apps = null,
-                    CanEmbed = false,
-                    HasRoute = true,
-                    ViewPath = "Guide/Guide",
-
-                }
-            };
-
-            DomainWithPagesDTO guide = new DomainWithPagesDTO
-            {
-                DomainName = "Guide",
-                Pages = new List<PageDTO> { p }
-            };
-            AppendDomain(guide, mod);
-        }
-
-        private void AppendDomain(DomainWithPagesDTO dom, RoutesTsModel mod)
-        {
-            string parentRouteTemplate = _molds.ParentRouteMold;
-            ParentRouteTsModel parentRoute = new ParentRouteTsModel
-            {
-                DomainName = dom.DomainName,
-                Children = ""
-            };
-
-            string sep = "";
-            foreach (PageDTO p in dom.Pages)
-            {
-                if (p.Page.HasRoute)
-                {
-                    string component = p.Page.ViewPath.GetAfterLast("/");
-                    mod.ComponentImports += "import { " + component + " } from \"./" + p.Page.ViewPath + "\";\n";
-                    parentRoute.Children += sep + ChildRoute(p) + ",\n";
-                    sep = "\t\t";
-                }
-            }
-            mod.Routes += _writer.FillParameters(parentRouteTemplate, parentRoute) + ",\n";
-        }
-
-        private void GenerateRoutesLazy(string modCode)
-        {
-            long modId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
-            string fileName = modCode + "Routes";
-            string filePath = Path.Combine(_paths.UIRoot, modCode, "app", fileName + ".ts");
-
-            IEnumerable<DomainWithPagesDTO> domains = _unit.DomainRepository.GetParentModules(modId);
-            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs(modId);
-            string routesTemplate = _molds.RoutesMold;
-
-            var tempModel = new RoutesTsModel
-            {
-                LocalizationImports = "",
-                ComponentImports = "",
-                LocalizationLoaders = "",
-                Routes = "",
-                Registration = "",
-                BaseName = _paths.CoreAppName
-            };
-
-            string home = _unit.PageRepository.GetHomePagePath(modCode);
-            if (home != null)
-            {
-                tempModel.ComponentImports += AngularUtils.ComponentImport(home, out string name);
-                tempModel.Routes += HomeRoute(name);
-            }
-
-            foreach (var domain in domains)
-            {
-                string dom = domain.DomainName;
-                tempModel.Routes += domain.LazyLoadingRoute;
-            }
-            string sep = "";
-            foreach (var nav in navs)
-            {
-                tempModel.DomainsData += sep + GetNavigationObject(nav);
-                sep = ",\n\t\t\t";
-            }
-
-            AppendLocaleLoaders(tempModel);
-
-            string builder = _writer.FillStringParameters(routesTemplate, tempModel);
-            File.WriteAllText(filePath, builder);
         }
 
         private void AppendLocaleLoaders(RoutesTsModel mod)
         {
+            if (string.IsNullOrEmpty(_paths.LocalizationRoot))
+                return;
             string[] locales = Shell.SupportedLanguages.ToArray();
             foreach (string loc in locales)
             {
@@ -719,7 +636,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
             RouteTsModel route = new RouteTsModel
             {
-                Path = component + param,
+                Path = _fileNameService.ApplyConvension(component, AppParts.Route) + param,
 
                 Component = component,
                 Name = p.PageIdentifier,

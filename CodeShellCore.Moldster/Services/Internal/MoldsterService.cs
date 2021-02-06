@@ -31,30 +31,29 @@ namespace CodeShellCore.Moldster.Services.Internal
 
         }
 
-        public virtual void RenderModuleDefinition(string modCode, bool lazy)
+        public virtual void RenderModuleDefinition(string modCode)
         {
             string st = _data.GetAppStyle(modCode);
 
             RenderMainComponent(modCode);
 
-            _ts.GenerateDomainModule(modCode, "Shared", lazy);
-            _ts.GenerateRoutes(modCode, lazy);
-            _ts.GenerateModuleDefinition(modCode, lazy);
-            if (st != null)
-                _ts.GenerateStyle(modCode, st);
-            _ts.GenerateBootFile(modCode, st != null);
+            _ts.GenerateDomainModule(modCode, "Shared");
+            _ts.GenerateRoutes(modCode);
+            _ts.GenerateAppModule(modCode);
+            _ts.GenerateMainFile(modCode);
+            
 
             _loc.GenerateJsonFiles(modCode);
 
         }
 
-        
+
 
         public virtual void RenderMainComponent(string mod)
         {
             _output.Write("Writing Main Component for [" + mod + "] : ");
             _html.GenerateMainComponentTemplate(mod);
-            _ts.GenerateMainComponent(mod);
+            _ts.GenerateAppComponent(mod);
             _output.WriteLine();
         }
 
@@ -64,16 +63,6 @@ namespace CodeShellCore.Moldster.Services.Internal
             _output.GotoColumn(9);
             _html.GenerateComponentTemplate(moduleName, dto);
             _ts.GenerateComponent(moduleName, dto);
-
-            _output.WriteLine();
-        }
-
-        public virtual void RenderGuid(string module)
-        {
-            _output.Write("Writing Page \"Guide/Guide\"");
-            _output.GotoColumn(9);
-            _html.GenerateGuidTemplate(module);
-            _ts.GenerateGuidComponent(module);
 
             _output.WriteLine();
         }
@@ -108,8 +97,8 @@ namespace CodeShellCore.Moldster.Services.Internal
 
             }
             var domToDefine = dto.NameChain.Contains("/") ? dto.NameChain.GetBeforeFirst("/") : dto.Domain;
-            _ts.GenerateDomainModule(dto.Mod, domToDefine, dto.Lazy ?? true);
-            _ts.GenerateRoutes(dto.Mod, dto.Lazy ?? true);
+            _ts.GenerateDomainModule(dto.Mod, domToDefine);
+            _ts.GenerateRoutes(dto.Mod);
             _loc.GenerateJsonFiles(dto.Mod);
             _output.WriteLine();
             return new SubmitResult();
@@ -130,7 +119,7 @@ namespace CodeShellCore.Moldster.Services.Internal
                 RenderDomainModule(modCode, d.NameChain, true);
             }
 
-            RenderModuleDefinition(modCode, true);
+            RenderModuleDefinition(modCode);
             return new SubmitResult();
         }
         #endregion

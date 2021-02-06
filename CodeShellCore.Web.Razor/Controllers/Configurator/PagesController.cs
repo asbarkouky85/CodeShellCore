@@ -40,13 +40,13 @@ namespace CodeShellCore.Web.Razor.Configurator
             return Respond();
         }
 
-        public IActionResult SetViewParams([FromBody]ViewParamsSetter @params)
+        public IActionResult SetViewParams([FromBody] ViewParamsSetter @params)
         {
             SubmitResult = _service.SetViewParams(@params);
             return Respond();
         }
 
-        public IActionResult TenantCreated([FromBody]DbCreationRequest req)
+        public IActionResult TenantCreated([FromBody] DbCreationRequest req)
         {
 
             acc.CurrentEnvironment = paths.GetEnvironments().Find(d => d.Name == req.Environment);
@@ -63,7 +63,7 @@ namespace CodeShellCore.Web.Razor.Configurator
             return Respond(_service.GetAll(opt));
         }
 
-        public IActionResult GetPagesByDomain([FromQuery]LoadOptions opts, [FromQuery] long domainId)
+        public IActionResult GetPagesByDomain([FromQuery] LoadOptions opts, [FromQuery] long domainId)
         {
             return Respond(_service.GetPagesByDomain(domainId, opts));
         }
@@ -85,14 +85,14 @@ namespace CodeShellCore.Web.Razor.Configurator
             return Respond(data);
         }
 
-        public IActionResult ApplyCustomization([FromBody]PageCustomizationDTO dto)
+        public IActionResult ApplyCustomization([FromBody] PageCustomizationDTO dto)
         {
             SubmitResult = _service.ApplyCustomization(dto);
 
             return Respond();
         }
 
-        public IActionResult FindPages([FromQuery]LoadOptions opts, [FromBody]FindPageRequest request)
+        public IActionResult FindPages([FromQuery] LoadOptions opts, [FromBody] FindPageRequest request)
         {
             LoadResult<PageListDTO> pages = _service.FindPages(request, opts);
             return Respond(pages);
@@ -115,9 +115,9 @@ namespace CodeShellCore.Web.Razor.Configurator
 
                 cust.MoveHtmlTemplate(r);
                 scr.MoveScript(r);
-                scr.GenerateDomainModule(r.TenantCode, r.FromPath.GetBeforeLast("/"), true);
-                scr.GenerateDomainModule(r.TenantCode, r.ToPath.GetBeforeLast("/"), true);
-                scr.GenerateRoutes(r.TenantCode, true);
+                scr.GenerateDomainModule(r.TenantCode, r.FromPath.GetBeforeLast("/"));
+                scr.GenerateDomainModule(r.TenantCode, r.ToPath.GetBeforeLast("/"));
+                scr.GenerateRoutes(r.TenantCode);
             }
             return Respond();
         }
@@ -130,8 +130,8 @@ namespace CodeShellCore.Web.Razor.Configurator
                 var path = (MovePageRequest)data;
                 cust.DeleteHtmlTemplate(path.TenantCode, path.FromPath);
                 scr.DeleteScript(path.TenantCode, path.FromPath);
-                scr.GenerateDomainModule(path.TenantCode, path.FromPath.GetBeforeLast("/"), true);
-                scr.GenerateRoutes(path.TenantCode, true);
+                scr.GenerateDomainModule(path.TenantCode, path.FromPath.GetBeforeLast("/"));
+                scr.GenerateRoutes(path.TenantCode);
             }
             return Respond();
         }

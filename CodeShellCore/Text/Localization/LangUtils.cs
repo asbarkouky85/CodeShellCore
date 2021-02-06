@@ -93,6 +93,22 @@ namespace CodeShellCore.Text.Localization
             return dic;
         }
 
+        public static string CamelCaseToWords(string id, string separator)
+        {
+            Regex r = new Regex("[A-Z]");
+            MatchCollection col = r.Matches(id);
+            int i = 0;
+
+            foreach (Match d in col)
+            {
+                if (d.Index != 0)
+                {
+                    id = id.Insert(d.Index + (i++), separator);
+                }
+            }
+            return id;
+        }
+
         public static string IdToPhrase(string id)
         {
             if (id.Contains("__"))

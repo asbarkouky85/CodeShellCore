@@ -47,7 +47,7 @@ namespace CodeShellCore.Web.Razor.Configurator
         }
         public IActionResult WriteWebPackFiles()
         {
-            Bundling.WriteWebpackConfigFiles(true);
+            
             return Respond();
         }
 

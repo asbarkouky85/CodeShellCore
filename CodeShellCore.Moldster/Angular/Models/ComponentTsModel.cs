@@ -9,6 +9,7 @@ namespace CodeShellCore.Moldster.Models
         public string BaseClass { get; set; }
         public string BaseClassLocation { get; set; }
         public string ComponentName { get; set; }
+        public string TemplateName { get; set; }
         public long PageId { get; set; }
         public string Selector { get; set; }
         public string Resource { get; set; }

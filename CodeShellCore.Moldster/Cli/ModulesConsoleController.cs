@@ -124,7 +124,7 @@ namespace CodeShellCore.Moldster.Cli
                     else if (domainId == i)
                     {
                         //TODO:Module definition
-                        Moldster.RenderModuleDefinition(modCode, Lazy);
+                        Moldster.RenderModuleDefinition(modCode);
                         continue;
                     }
                 }
@@ -136,7 +136,7 @@ namespace CodeShellCore.Moldster.Cli
                         //TODO:Render All
                         foreach (var mod in rec.SubDomains)
                             Moldster.RenderDomainModule(modCode, mod.NameChain, Lazy);
-                        Moldster.RenderModuleDefinition(modCode, Lazy);
+                        Moldster.RenderModuleDefinition(modCode);
                     }
                     else
                     {

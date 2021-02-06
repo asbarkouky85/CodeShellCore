@@ -20,25 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Core\codeshell\baseComponents\loginBase.ts" />
-    <None Remove="Core\codeshell\directives\fileUploader.ts" />
-    <None Remove="Core\codeshell\utilities\defaultConfigs.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Asga.Auth.Web\Asga.Auth.Web.csproj" />
     <ProjectReference Include="..\Example\Example.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="Core\codeshell\baseComponents\loginBase.ts" />
-    <TypeScriptCompile Include="Core\codeshell\directives\fileUploader.ts" />
-    <TypeScriptCompile Include="Core\codeshell\utilities\defaultConfigs.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Core\BaseApp\Mobile\" />
-    <Folder Include="Core\BaseApp\Public\" />
   </ItemGroup>
 
 </Project>

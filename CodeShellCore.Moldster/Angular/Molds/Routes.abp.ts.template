@@ -1,0 +1,17 @@
+﻿import { AuthGuard, PermissionGuard } from '@abp/ng.core';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+    { path: 'Login', component: Login, data: { action: 'anonymous', name:"Login" } }
+	%DefaultRoute%,
+%Routes%
+    { path: '**', redirectTo: '/' }
+
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}

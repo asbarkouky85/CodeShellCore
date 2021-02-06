@@ -42,13 +42,14 @@ namespace CodeShellCore.Moldster.Dto
             }
         }
 
-        public string LazyLoadingRoute
-        {
-            get
-            {
-                return "{ path:\"" + DomainName + "\", loadChildren:\"./" + DomainName + "/" + DomainName + "Module#" + DomainName + "Module\" },\n\t";
-            }
-        }
+        //public string LazyLoadingRoute
+        //{
+        //    //() => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+        //    get
+        //    {
+        //        return "{ path:\"" + DomainName + "\", loadChildren:\"./" + DomainName + "/" + DomainName + "Module#" + DomainName + "Module\" },\n\t";
+        //    }
+        //}
 
         public void AppendChildren(IEnumerable<DomainWithPagesDTO> lst)
         {

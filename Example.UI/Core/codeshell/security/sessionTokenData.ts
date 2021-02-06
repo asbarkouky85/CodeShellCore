@@ -1,7 +1,7 @@
 ﻿import { TokenStorage } from "./tokenStorage";
 import { TokenData } from "./models";
 import * as Cookies from "js-cookie";
-import { Stored } from "codeshell/helpers/stored";
+import { Stored } from "codeshell/services/stored";
 
 export class SessionTokenData extends TokenStorage {
 

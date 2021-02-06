@@ -50,8 +50,7 @@ namespace CodeShellCore.Moldster
             UIUrl = Shell.GetConfigAs<string>("Moldster:UIUrl", false);
             LocalizationRoot = Shell.GetConfigAs<string>("Moldster:LocalizationRoot", false)?.Replace("{PARENT}", sol);
             UILaunchProfile = Shell.GetConfigAs<string>("Moldster:UILaunchProfile", false);
-            if (LocalizationRoot == null)
-                LocalizationRoot = ConfigRoot;
+            
         }
 
     }

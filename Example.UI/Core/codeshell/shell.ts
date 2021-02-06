@@ -1,12 +1,8 @@
 ﻿import { Injector, EventEmitter } from "@angular/core";
-import { SessionManager } from "./security/sessionManager";
+import { SessionManager } from "./security";
 import { TranslateService } from "@ngx-translate/core";
-import { IAppComponent } from "./baseComponents";
+import { IAppComponent } from "./base-components";
 import { ServerConfigBase } from "./serverConfigBase";
-
-import { UserDTO } from "./security/models";
-
-
 
 export class Shell {
     private static _translate: TranslateService;

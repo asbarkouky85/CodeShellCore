@@ -11,14 +11,13 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         private string baseComp;
         private string servicedBaseComp;
-        private string domModule;
+       
         private string domModule_lazy;
 
         public DefaultMoldProvider()
         {
             baseComp = Encoding.UTF8.GetString(Properties.Resources.BaseComponent_ts);
             servicedBaseComp = Encoding.UTF8.GetString(Properties.Resources.ServicedBaseComponent_ts);
-            domModule = Encoding.UTF8.GetString(Properties.Resources.DomainModule_ts);
             domModule_lazy = Encoding.UTF8.GetString(Properties.Resources.DomainModule_Lazy_ts);
 
             ComponentMold = Encoding.UTF8.GetString(Properties.Resources.Component_ts);
@@ -32,8 +31,8 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             DevWebpackConfigMold = Encoding.UTF8.GetString(Properties.Resources.webpack_config_js);
             ProWebpackConfigMold = Encoding.UTF8.GetString(Properties.Resources.webpack_tenant_js);
             ModuleTsConfigMold = Encoding.UTF8.GetString(Properties.Resources.webpack_tenant_js_json);
-            BootMold= Encoding.UTF8.GetString(Properties.Resources.Boot_ts);
-            MainComponentMold= Encoding.UTF8.GetString(Properties.Resources.AppComponent_ts);
+            BootMold = Encoding.UTF8.GetString(Properties.Resources.Boot_ts);
+            MainComponentMold = Encoding.UTF8.GetString(Properties.Resources.AppComponent_ts);
             BasicComponent = Encoding.UTF8.GetString(Properties.Resources.BasicComponent_ts);
             BaseModuleMold = Encoding.UTF8.GetString(Properties.Resources.BaseModule_ts);
         }
@@ -74,9 +73,9 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             return serviced ? servicedBaseComp : baseComp;
         }
 
-        public virtual string GetDomainModuleMold(bool lazy)
+        public virtual string GetDomainModuleMold()
         {
-            return lazy ? domModule_lazy : domModule;
+            return domModule_lazy;
         }
     }
 }

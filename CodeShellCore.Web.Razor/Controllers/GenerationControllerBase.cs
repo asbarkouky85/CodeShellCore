@@ -92,7 +92,7 @@ namespace CodeShellCore.Web.Razor.Controllers
 
         public IActionResult ModuleDefinition([FromBody]RenderDTO dto)
         {
-            molds.RenderModuleDefinition(dto.Mod, dto.Lazy ?? true);
+            molds.RenderModuleDefinition(dto.Mod);
             return Respond();
         }
 
@@ -174,7 +174,6 @@ namespace CodeShellCore.Web.Razor.Controllers
             var outwriter = GetService<IOutputWriter>();
             var oth = data.GetAppCodes().Where(d => d != req.TenantCode);
 
-            bundl.GenerateWebPackFiles(req.TenantCode, oth, true);
             var ver = bundl.GetAppVersion(req.TenantCode, true);
             if (req.Force ?? false)
             {

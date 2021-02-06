@@ -13,7 +13,7 @@ namespace CodeShellCore.Moldster.Dto
         public long TenantId { get; set; }
         public string TenantCode { get; set; }
         public Page Page { get; set; }
-        public string BaseScript { get; set; }
+        public string BaseViewPath { get; set; }
         public string PageIdentifier { get; set; }
         public string ActionName { get; set; }
         public string ResourceName { get; set; }

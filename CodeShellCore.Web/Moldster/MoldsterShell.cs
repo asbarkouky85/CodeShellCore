@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 
 namespace CodeShellCore.Web.Moldster
@@ -34,11 +33,6 @@ namespace CodeShellCore.Web.Moldster
                 name: "ds",
                 template: "SetLocale/{lang}",
                 defaults: new { controller = "Home", action = "SetLocale" });
-
-
-            routes.MapSpaFallbackRoute(
-                name: "spa-fallback",
-                defaults: new { controller = "Home", action = "Index" });
         }
     }
 }

@@ -10,8 +10,7 @@ namespace CodeShellCore.Moldster.Services
     {
         SubmitResult RenderDomainModule(RenderDTO dto);
         void RenderDomainModule(string mod, string domain, bool lazy);
-        void RenderModuleDefinition(string mod, bool lazy);
-        void RenderGuid(string module);
+        void RenderModuleDefinition(string mod);
         void RenderPage(string moduleName, PageRenderDTO dto);
         void ProcessTemplates(string module, string domain = null);
         SubmitResult ProcessForPage(long value);

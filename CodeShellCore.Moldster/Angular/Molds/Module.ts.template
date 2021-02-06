@@ -4,28 +4,27 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
-import { CodeShellModule } from 'codeshell/codeShellModule';
-import { BaseModule } from "codeshell/baseModule";
+import { CodeShellModule, BaseModule } from 'codeshell/main';
 import { DomainDataProvider } from 'codeshell/security';
 
-import { %BaseName%BaseModule } from '%BaseName%/%BaseName%BaseModule';
+import { %BaseAppModuleName% } from '%BaseAppModulePath%';
 
-import { AppComponent } from './AppComponent';
-import { SharedModule } from './Shared/SharedModule%Lazy%';
-import { Routes, GetDomainsData } from './%Code%Routes%Lazy%';
+import { %MainComponentName% } from '%MainComponentPath%';
+import { SharedModule } from './shared/shared.module';
+import { AppRoutingModule, GetDomainsData } from '%RoutesModulePath%';
 %ModuleImports%
 
 @NgModule({
-    bootstrap: [AppComponent],
-	declarations: [AppComponent,%Declarations%],
+    bootstrap: [%MainComponentName%],
+	declarations: [%MainComponentName%, %Declarations%],
     imports: [
 		ToastrModule.forRoot(),
         CodeShellModule.forRoot(),
-        %BaseName%BaseModule.forRoot(),
+        %BaseAppModuleName%.forRoot(),
         SharedModule,
         BrowserModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot(Routes())
+        AppRoutingModule
     ],
     providers: [
         { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) }

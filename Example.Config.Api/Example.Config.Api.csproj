@@ -25,13 +25,6 @@
   <ItemGroup>
     <Content Remove="appsettings.fms.json" />
     <Content Remove="appsettings.json" />
-    <Content Remove="ShellComponents\Angular\InputControls\RichTextBox.cshtml" />
-    <Content Remove="ShellComponents\Angular\InputControls\RichTextLabel.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\RichTextBox.cshtml" />
-    <EmbeddedResource Include="ShellComponents\Angular\InputControls\RichTextLabel.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,9 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="ShellComponents\Angular\InputControls\Select_Searchable.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Update="Views\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -35,7 +35,7 @@ namespace CodeShellCore.Moldster.Cli
 
         public void WriteWebPackFiles()
         {
-            Bundling.WriteWebpackConfigFiles(Lazy);
+           
         }
 
         public void PrepEnvironment()
@@ -46,7 +46,7 @@ namespace CodeShellCore.Moldster.Cli
 
         public void DevelopmentPack()
         {
-            Bundling.DevelopmentPack();
+            
         }
 
         public void UploadBundle()

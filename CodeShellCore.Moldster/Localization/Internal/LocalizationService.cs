@@ -80,6 +80,9 @@ namespace CodeShellCore.Moldster.Localization.Internal
 
         public void GenerateJsonFiles(string moduleCode)
         {
+            if (string.IsNullOrEmpty(_paths.LocalizationRoot))
+                return;
+
             Out.Write("Generating localization dictionaries : ");
 
             string template = _molds.LocaleLoaderMold;

@@ -48,7 +48,7 @@ namespace CodeShellCore.Text
         /// </summary>
         /// <param name="ob"></param>
         /// <returns></returns>
-        public static string ToJson(this object ob,JsonSerializerSettings sett=null)
+        public static string ToJson(this object ob, JsonSerializerSettings sett = null)
         {
             if (sett != null)
                 return JsonConvert.SerializeObject(ob, sett);
@@ -62,7 +62,7 @@ namespace CodeShellCore.Text
         /// <returns></returns>
         public static string ToJsonIndent(this object ob)
         {
-            return JsonConvert.SerializeObject(ob,Formatting.Indented);
+            return JsonConvert.SerializeObject(ob, Formatting.Indented);
         }
 
         /// <summary>
@@ -126,6 +126,8 @@ namespace CodeShellCore.Text
         /// <returns></returns>
         public static string LCFirst(this string st)
         {
+            if (st.Length == 0)
+                return st;
             return st.Substring(0, 1).ToLower() + st.Substring(1, st.Length - 1);
         }
 
@@ -201,7 +203,7 @@ namespace CodeShellCore.Text
             return value;
         }
 
-        public static bool GetPatternContents(this string subject, string pattern,out string[] data)
+        public static bool GetPatternContents(this string subject, string pattern, out string[] data)
         {
             Regex reg = new Regex(pattern);
             var s = reg.Match(subject);
@@ -211,7 +213,7 @@ namespace CodeShellCore.Text
                 return false;
             }
             var lst = new List<string>();
-            for (var i= 0;i < s.Groups.Count;i++)
+            for (var i = 0; i < s.Groups.Count; i++)
             {
                 if (i > 0)
                 {

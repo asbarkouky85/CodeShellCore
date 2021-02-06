@@ -29,6 +29,7 @@ namespace CodeShellCore.Moldster
 
         public static void AddMoldsterDbData(this IServiceCollection coll)
         {
+
             coll.AddContext<MoldsterContext>();
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));
@@ -78,7 +79,7 @@ namespace CodeShellCore.Moldster
             coll.AddMoldsterDbData();
             coll.AddTransient<ConfiguratorLookupService>();
 
-            
+
             coll.AddServiceFor<Domain, DomainService>();
             coll.AddServiceFor<PageCategory, PageCategoryService>();
             coll.AddServiceFor<Page, PagesService>();
@@ -88,7 +89,7 @@ namespace CodeShellCore.Moldster
             coll.AddServiceFor<Tenant, TenantsService>();
 
             coll.AddTransient<IUserDataService, UserDataService>();
-            coll.AddTransient<ICacheProvider, CodeShellCore.Caching.MemoryCacheProvider>(); 
+            coll.AddTransient<ICacheProvider, CodeShellCore.Caching.MemoryCacheProvider>();
         }
 
         public static void AddMoldsterCodeGeneration(this IServiceCollection coll)
@@ -98,6 +99,7 @@ namespace CodeShellCore.Moldster
             coll.AddScoped<IPathsService, DefaultPathsService>();
             coll.AddScoped<EnvironmentAccessor>();
 
+            coll.AddTransient<IUIFileNameService, AngularFileNameService>();
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<ICustomTextService, CustomTextService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
@@ -123,6 +125,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IMoldsterService, MoldsterService>();
             coll.AddTransient<IScriptGenerationService, ScriptGenerationService>();
             coll.AddTransient<ITemplateProcessingService, TemplateProcessingService>();
+
         }
 
         public static void AddMoldsterCli(this IServiceCollection coll)

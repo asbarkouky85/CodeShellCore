@@ -19,7 +19,7 @@ namespace CodeShellCore.Moldster.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -61,7 +61,7 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import { AccountServiceBase } from &quot;../../codeshell/security&quot;;
+        ///   Looks up a localized string similar to import { AccountServiceBase } from &quot;codeshell/security&quot;;
         ///
         ///export class AccountService extends AccountServiceBase {
         ///    protected BaseUrl = &quot;/apiAction/Account&quot;;
@@ -74,15 +74,11 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;div [@loader]=&quot;ShowLoader ? &apos;shown&apos; : &apos;hidden&apos;&quot; class=&quot;loader-overlay&quot;&gt;
-        ///    &lt;div class=&quot;loader&quot;&gt;&lt;/div&gt;
-        ///&lt;/div&gt;
-        ///
-        ///&lt;div&gt;
+        ///   Looks up a localized string similar to &lt;div&gt;
         ///    &lt;div class=&quot;wrapper&quot;&gt;
-        ///        &lt;top-bar #topBar&gt;&lt;/top-bar&gt;
+        ///        &lt;app-top-bar #topBar&gt;&lt;/app-top-bar&gt;
         ///        &lt;div class=&quot;wrapper-side&quot; *ngIf=&quot;IsLoggedIn &amp;&amp; ShowNav&quot;&gt;
-        ///            &lt;navigation-side-bar&gt;&lt;/navigation-side-bar&gt;
+        ///            &lt;app-navigation-side-bar&gt;&lt;/app-navigation-side-bar&gt;
         ///        &lt;/div&gt;
         ///        &lt;div class=&quot;wrapper-content&quot; [ngClass]=&quot;!IsLoggedIn || !ShowNav?&apos;expanded&apos;:null&quot;&gt;
         ///            &lt;router-outlet&gt;&lt;/router-outlet&gt;
@@ -90,7 +86,8 @@ namespace CodeShellCore.Moldster.Properties {
         ///    &lt;/div&gt;
         ///&lt;/div&gt;
         ///
-        ///&lt;div [ngClas [rest of string was truncated]&quot;;.
+        ///&lt;ng-template test-loader&gt;&lt;/ng-template&gt;
+        ///.
         /// </summary>
         public static string AppComponent_cshtml {
             get {
@@ -110,8 +107,8 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to import { ViewChild } from &quot;@angular/core&quot;;
-        ///import { IAppComponent } from &quot;codeshell/baseComponents&quot;;
-        ///import { TestLoader } from &quot;codeshell/core&quot;;
+        ///import { IAppComponent } from &quot;codeshell/base-components&quot;;
+        ///import { TestLoader } from &quot;codeshell/directives&quot;;
         ///
         ///export class AppComponentBase extends IAppComponent {
         ///
@@ -128,9 +125,7 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;GoogleKey&quot;: &quot;AIzaSyD2ZSFjCvupPXGlyAKNhK7xcFtAuZQCBCQ&quot;,
-        ///  &quot;UseHotUpdate&quot;: true,
-        ///  &quot;env&quot;: &quot;development&quot;
+        ///  
         ///}
         ///.
         /// </summary>
@@ -247,16 +242,6 @@ namespace CodeShellCore.Moldster.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] DomainModule_ts {
-            get {
-                object obj = ResourceManager.GetObject("DomainModule_ts", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         public static byte[] img {
             get {
                 object obj = ResourceManager.GetObject("img", resourceCulture);
@@ -337,9 +322,9 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to import { Component } from &apos;@angular/core&apos;;
-        ///import { LoginBase } from &apos;codeshell/baseComponents/loginBase&apos;;
+        ///import { LoginBase } from &apos;codeshell/base-components&apos;;
         ///
-        ///@Component({ templateUrl: &quot;./Login.html&quot; })
+        ///@Component({ templateUrl: &quot;./login.component.html&quot; })
         ///export class Login extends LoginBase {
         ///    ForgotPasswordUrl = &quot;/Auth/ForgotPassword&quot;;
         ///}.
@@ -392,9 +377,9 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to import { Component, Injector } from &quot;@angular/core&quot;;
-        ///import { NavigationSideBarBase } from &quot;codeshell/baseComponents/NavigationSideBarBase&quot;;
+        ///import { NavigationSideBarBase } from &quot;codeshell/base-components&quot;;
         ///
-        ///@Component({ templateUrl: &quot;./navigationSideBar.html&quot;, selector: &quot;navigation-side-bar&quot; })
+        ///@Component({ templateUrl: &quot;./navigation-side-bar.component.html&quot;, selector: &quot;app-navigation-side-bar&quot; })
         ///export class NavigationSideBar extends NavigationSideBarBase {
         ///
         ///    constructor(inj:Injector){
@@ -439,6 +424,24 @@ namespace CodeShellCore.Moldster.Properties {
             get {
                 object obj = ResourceManager.GetObject("ParentRoute_ts", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /***************************************************************************************************
+        /// * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
+        /// */
+        ///import &apos;@angular/localize/init&apos;;
+        ////**
+        /// * This file includes polyfills needed by Angular and is loaded before the app.
+        /// * You can add your own extra polyfills to this file.
+        /// *
+        /// * This file is divided into 2 sections:
+        /// *   1. Browser polyfills. These are applied before loading ZoneJS and are sorted by browser [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string pollyfills_ts {
+            get {
+                return ResourceManager.GetString("pollyfills_ts", resourceCulture);
             }
         }
         
@@ -550,9 +553,9 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to import { Component } from &quot;@angular/core&quot;;
-        ///import { TopBarBase } from &quot;codeshell/baseComponents/topBarBase&quot;;
+        ///import { TopBarBase } from &quot;codeshell/base-components&quot;;
         ///
-        ///@Component({ templateUrl: &quot;./topBar.html&quot;, selector: &quot;top-bar&quot;, exportAs: &quot;top-bar&quot; })
+        ///@Component({ templateUrl: &quot;./top-bar.component.html&quot;, selector: &quot;app-top-bar&quot;, exportAs: &quot;app-top-bar&quot; })
         ///export class TopBar extends TopBarBase {
         ///
         ///}.

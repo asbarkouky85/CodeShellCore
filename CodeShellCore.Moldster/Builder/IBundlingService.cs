@@ -18,11 +18,8 @@ namespace CodeShellCore.Moldster.Builder
         void AddShellComponents(bool replace);
         void GenerateEnvironment(bool replace);
         void AddSQLFiles();
-        void WriteWebpackConfigFiles(bool lazy);
-        void GenerateDevWebPackFiles(IEnumerable<string> modules, IEnumerable<string> active = null);
-        void GenerateWebPackFiles(string code, IEnumerable<string> others, bool lazy);
         string GetUIVersion();
-        void DevelopmentPack();
+
         void PrepEnvironment(bool prod = false);
         Result ProductionPack(string moduleName, string version = null, bool trace = false);
         bool StartProductionPackIfNeeded(string tenantCode, out BundlingTask tt, string version = null);

@@ -15,6 +15,7 @@ namespace CodeShellCore.Moldster.Models
         public string MainComponentName { get; set; }
         public string BaseAppModuleName { get; set; }
         public string BaseAppModulePath { get; set; }
+        public string RoutesModulePath { get; set; }
         public string BaseName { get; set; }
     }
 }

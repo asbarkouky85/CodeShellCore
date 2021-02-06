@@ -1,5 +1,5 @@
-﻿import { EntityHttpService } from "codeshell/http";
-import { Injectable } from "@angular/core";
+﻿import { Injectable } from "@angular/core";
+import { EntityHttpService } from "codeshell/http";
 
 @Injectable()
 export class %Resource%Service extends EntityHttpService {

@@ -1,6 +1,6 @@
 import { ViewChild } from "@angular/core";
-import { IAppComponent } from "codeshell/baseComponents";
-import { TestLoader } from "codeshell/core";
+import { IAppComponent } from "codeshell/base-components";
+import { TestLoader } from "codeshell/directives";
 
 export class AppComponentBase extends IAppComponent {
 

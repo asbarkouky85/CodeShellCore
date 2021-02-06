@@ -1,26 +1,31 @@
-﻿import { Route } from "@angular/router";
+﻿import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-import { AuthFilter } from "codeshell/security";
-import { DomainData, ResourceActions } from "codeshell/security";
+import { AuthFilter, DomainData, ResourceActions } from "codeshell/security";
 import { Translator } from "codeshell/localization";
 
-import { Login } from "%BaseName%/Main/Login";
+import { Login } from "@base/main/login.component";
 
 %ComponentImports%
 %LocalizationImports%
-
-var routes: Route[] = [
-    { path: 'Login', component: Login, data: { action: 'anonymous', name:"Login" } }
-	%DefaultRoute%,
-%Routes%
-    { path: '**', redirectTo: '/' }
-
-];
 
 Translator.SetLoaders({
     %LocalizationLoaders%
 });
 
+const routes: Routes = [
+    { path: 'Login', component: Login, data: { action: 'anonymous', name:"Login" } },
+%Routes%
+    %DefaultRoute%
+    { path: '**', redirectTo: '/' }
+
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}
 
 let data: DomainData[] | null = null;
 
@@ -32,5 +37,3 @@ export function GetDomainsData(): DomainData[] {
     }
     return data;
 }
-
-export function Routes(): Route[] { return routes; }

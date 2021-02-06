@@ -15,30 +15,34 @@ using CodeShellCore.Moldster.Models;
 using CodeShellCore.Services;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Data;
+using CodeShellCore.Text;
+using Microsoft.Extensions.Options;
 
 namespace CodeShellCore.Moldster.Builder.Internal
 {
     public class BundlingService : ConsoleService, IBundlingService
     {
+        
         private readonly IPathsService _paths;
         private readonly WriterService _writer;
         private readonly IMoldProvider _molds;
         private readonly IDataService _data;
-
-
+        private readonly IUIFileNameService _names;
 
         public BundlingService(
-
+            
             IPathsService paths,
             IMoldProvider molds,
             IDataService data,
+            IUIFileNameService names,
             IOutputWriter output) : base(output)
         {
+            
             _paths = paths;
             _writer = new WriterService();
             _molds = molds;
             _data = data;
-
+            _names = names;
         }
 
         public virtual bool AddVToVersion { get { return true; } }
@@ -67,7 +71,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         void AddToBaseFolder(string name, string content, bool checkForFolder = false, bool replace = false)
         {
-            var path = Path.Combine(_paths.UIRoot, "Core", _paths.CoreAppName, name);
+            var path = Path.Combine(_names.BaseFolder, name);
             if (checkForFolder)
                 Utils.CreateFolderForFile(path);
             if (!File.Exists(path) || replace)
@@ -89,20 +93,20 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         void BaseModuleFiles(bool replace)
         {
-            string content = _writer.FillStringParameters(_molds.BaseModuleMold, new DomainTsModel { Name = _paths.CoreAppName + "Base" });
+            string content = _writer.FillStringParameters(_molds.BaseModuleMold, new DomainTsModel { Name = _paths.CoreAppName.UCFirst() + "Base" });
 
-            AddToBaseFolder(_paths.CoreAppName + "BaseModule.ts", content, true, replace);
-            AddToBaseFolder("AppComponentBase.ts", Properties.Resources.AppComponentBase_ts, true, replace);
-            AddToBaseFolder("ServerConfig.ts", Properties.Resources.ServerConfig_ts, replace);
+            AddToBaseFolder(_names.ApplyConvension(_paths.CoreAppName + "BaseModule", AppParts.Module) + ".ts", content, true, replace);
+            AddToBaseFolder(_names.ApplyConvension("AppComponent", AppParts.BaseComponent) + ".ts", Properties.Resources.AppComponentBase_ts, true, replace);
+            // AddToBaseFolder("ServerConfig.ts", Properties.Resources.ServerConfig_ts, replace);
 
-            AddToBaseFolder("Main/Login.html", Properties.Resources.Login_html, true, replace);
-            AddToBaseFolder("Main/Login.ts", Properties.Resources.Login_ts, false, replace);
-            AddToBaseFolder("Main/topBar.html", Properties.Resources.topBar_html, false, replace);
-            AddToBaseFolder("Main/topBar.ts", Properties.Resources.topBar_ts, false, replace);
-            AddToBaseFolder("Main/navigationSideBar.html", Properties.Resources.navigationSideBar_html, false, replace);
-            AddToBaseFolder("Main/navigationSideBar.ts", Properties.Resources.navigationSideBar_ts, false, replace);
+            AddToBaseFolder(_names.ApplyConvension("Main/Login", AppParts.Component) + ".html", Properties.Resources.Login_html, true, replace);
+            AddToBaseFolder(_names.ApplyConvension("Main/Login", AppParts.Component) + ".ts", Properties.Resources.Login_ts, false, replace);
+            AddToBaseFolder(_names.ApplyConvension("Main/topBar", AppParts.Component) + ".html", Properties.Resources.topBar_html, false, replace);
+            AddToBaseFolder(_names.ApplyConvension("Main/topBar", AppParts.Component) + ".ts", Properties.Resources.topBar_ts, false, replace);
+            AddToBaseFolder(_names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".html", Properties.Resources.navigationSideBar_html, false, replace);
+            AddToBaseFolder(_names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".ts", Properties.Resources.navigationSideBar_ts, false, replace);
 
-            AddToBaseFolder("Http/AccountService.ts", Properties.Resources.AccountService_ts, true, replace);
+            AddToBaseFolder(_names.ApplyConvension("http/AccountService", AppParts.Service) + ".ts", Properties.Resources.AccountService_ts, true, replace);
         }
 
         public void AddShellComponents(bool replace)
@@ -117,20 +121,9 @@ namespace CodeShellCore.Moldster.Builder.Internal
             AddSQLFiles();
             BaseModuleFiles(replace);
 
-            AddToUI("package.json", Properties.Resources.package_json, replace);
-            AddToUI("tsconfig.json", Properties.Resources.tsconfig_json, replace);
-            AddToUI("declarations.d.ts", Properties.Resources.declarations_d, replace);
-            AddToUI("WebPackSharedConfig.js", Properties.Resources.WebPackSharedConfig_js, replace);
-            AddToUI("webpack.config.vendor.js", Properties.Resources.webpack_config_vendor_js, replace);
-            AddToUI("appsettings.development.json", Properties.Resources.appsettings_json, replace);
-
-            path = Path.Combine(_paths.UIRoot, "Pages/Index.cshtml");
-            if (!File.Exists(path) || replace)
-            {
-                Utils.CreateFolderForFile(path);
-                WriteFileOperation("Adding", "Index.cshtml", true);
-                File.WriteAllText(path, Properties.Resources.Index_cshtml);
-            }
+            //AddToUI("package.json", Properties.Resources.package_json, replace);
+            //AddToUI("tsconfig.json", Properties.Resources.tsconfig_json, replace);
+            //AddToUI("declarations.d.ts", Properties.Resources.declarations_d, replace);
 
             path = Path.Combine(_paths.ConfigRoot, "Views/AppComponent.cshtml");
             if (!File.Exists(path) || replace)
@@ -142,69 +135,14 @@ namespace CodeShellCore.Moldster.Builder.Internal
         }
         #endregion
 
-        public void GenerateDevWebPackFiles(IEnumerable<string> modules, IEnumerable<string> activeMods = null)
-        {
-            IEnumerable<string> apps = modules;
-            activeMods = activeMods ?? apps;
-            string packTemplate = _molds.DevWebpackConfigMold;
-            Out.Write("Generating webpack.config.js\t");
-            WebPackModel mod = new WebPackModel();
-            string sep = "";
-            foreach (string app in activeMods)
-            {
-                mod.Tenants += sep + $"\"{app}\" : \"./{app}/boot.ts\",\r";
-                sep = "\t\t\t";
-            }
-            string contents = _writer.FillStringParameters(packTemplate, mod);
-            string packPath = Path.Combine(_paths.UIRoot, "webpack.config.js");
-            File.WriteAllText(packPath, contents);
-            WriteSuccess(null);
-            Out.WriteLine();
-
-        }
-
-        public void GenerateWebPackFiles(string code, IEnumerable<string> others, bool lazy)
-        {
-            string packTemplate = _molds.ProWebpackConfigMold;
-            string jsonTemplate = _molds.ModuleTsConfigMold;
-
-            WebPackModel mod = new WebPackModel
-            {
-                Code = code,
-                Tenants = "",
-                Lazy = lazy ? "" : ""
-            };
-
-            foreach (var t in others)
-                mod.Tenants += $"\"{t}\",\r";
-
-            string packContents = _writer.FillStringParameters(packTemplate, mod);
-            string jsonContents = _writer.FillStringParameters(jsonTemplate, mod);
-
-            string packPath = $"webpack.{code}.js";
-            string jsonPath = $"webpack.{code}.js.tsc";
-
-            Out.Write("Generating " + packPath + "\t");
-            File.WriteAllText(Path.Combine(_paths.UIRoot, packPath), packContents);
-            WriteSuccess(null);
-            Out.WriteLine();
-
-            Out.Write("Generating " + jsonPath + "\t");
-            File.WriteAllText(Path.Combine(_paths.UIRoot, jsonPath), jsonContents);
-            WriteSuccess(null);
-            Out.WriteLine();
-
-        }
-
         public void AddCodeShell(bool replace)
         {
-            string folder = Path.Combine(_paths.UIRoot, "Core");
-            UnZip(Properties.Resources.codeshell, folder, "codeshell", replace);
+            UnZip(Properties.Resources.codeshell, _names.CoreFolder, "codeshell", replace);
         }
 
         public virtual void AddStaticFiles(bool replace)
         {
-            string folder = Path.Combine(_paths.UIRoot, "wwwroot");
+            string folder = Path.Combine(_paths.UIRoot, "src/assets");
             UnZip(Properties.Resources.css, folder, "css", replace);
             UnZip(Properties.Resources.img, folder, "img", replace);
             UnZip(Properties.Resources.js, folder, "js", replace);
@@ -244,29 +182,6 @@ namespace CodeShellCore.Moldster.Builder.Internal
             }
         }
 
-
-        public virtual void WriteWebpackConfigFiles(bool lazy)
-        {
-            using (var x = SW.Measure())
-            {
-                string[] modules = _data.GetAppCodes();
-                string[] act = _data.GetAppCodes(true);
-                GenerateDevWebPackFiles(modules, act);
-                foreach (var t in modules)
-                {
-                    string[] others = modules.Where(d => d != t).ToArray();
-                    GenerateWebPackFiles(t, others, lazy);
-                }
-            }
-
-        }
-
-        public virtual void DevelopmentPack()
-        {
-            string args = $"--max_old_space_size=8138 node_modules/webpack/bin/webpack.js --progress";
-            RunCommand(_paths.UIRoot, "node", args);
-        }
-
         public string GetAppVersion(string code, bool uiIfLager = false)
         {
             string ver = _data.GetAppVersion(code);
@@ -280,8 +195,6 @@ namespace CodeShellCore.Moldster.Builder.Internal
             }
             return ver;
         }
-
-
 
         public string GetNextVersionNumber(string ver)
         {
@@ -417,14 +330,6 @@ namespace CodeShellCore.Moldster.Builder.Internal
         {
             string args = "install";
             RunCommand(_paths.UIRoot, "npm", args, true);
-            args = "node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --progress";
-            RunCommand(_paths.UIRoot, "node", args);
-            if (prod)
-            {
-                args = "node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod --progress";
-                RunCommand(_paths.UIRoot, "node", args);
-            }
-
         }
 
 

@@ -1,6 +1,6 @@
 ﻿import * as Moment from "moment";
 import { RecursionModel } from "../helpers/recursionModel";
-import { TreeNode } from "angular-tree-component"
+import { TreeNode } from "codeshell/base-components/node_modules/angular-tree-component"
 import { Shell } from "../shell";
 import { KeyValue } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";

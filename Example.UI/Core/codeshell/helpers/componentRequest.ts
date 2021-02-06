@@ -1,4 +1,4 @@
-﻿import { BaseComponent } from "../baseComponents";
+﻿import { BaseComponent } from "../base-components";
 
 export class ComponentRequest<T extends BaseComponent> {
     Identifier: string = "";

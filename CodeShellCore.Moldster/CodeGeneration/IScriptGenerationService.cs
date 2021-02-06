@@ -10,17 +10,20 @@ namespace CodeShellCore.Moldster.CodeGeneration
     {
         void GenerateBaseComponent(string templatePath);
         void GenerateComponent(string moduleName, PageRenderDTO dto);
-        void GenerateMainComponent(string mod);
-        void GenerateModuleDefinition(string module, bool lazy);
-        void GenerateGuidComponent(string mod);
-        void GenerateBootFile(string moduleCode, bool addStyle = false);
-        void GenerateStyle(string moduleCode, string baseName);
-        bool GenerateDataService(string resource, string domain = null);
-        void GenerateDomainModule(string mod, string domain, bool lazy);
-        void GenerateDomainModuleById(string moduleCode, long? domId, bool lazy = true);
-        void GenerateRoutes(string module, bool lazy);
+        bool GenerateHttpService(string resource, string domain = null);
+
+        void GenerateAppComponent(string mod);
+        void GenerateAppModule(string module);
+        void GenerateDomainModule(string mod, string domain);
+        void GenerateDomainModuleById(string moduleCode, long? domId);
+
+        void GenerateMainFile(string moduleCode, bool addStyle = false);
+        
+
+        void GenerateRoutes(string module);
         void GeneratePageCategory(long id);
         void GenerateModuleDefinitionByPage(PageRenderDTO dto);
+
         void MoveScript(MovePageRequest r);
         void DeleteScript(string tenantCode, string fromPath);
     }

@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { TopBarBase } from "codeshell/baseComponents/topBarBase";
+import { TopBarBase } from "codeshell/base-components";
 
-@Component({ templateUrl: "./topBar.html", selector: "top-bar", exportAs: "top-bar" })
+@Component({ templateUrl: "./top-bar.component.html", selector: "app-top-bar", exportAs: "app-top-bar" })
 export class TopBar extends TopBarBase {
 
 }

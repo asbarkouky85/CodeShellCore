@@ -9,37 +9,34 @@ using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Text;
 using System;
 using System.IO;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Types;
+using Microsoft.Extensions.Options;
 
 namespace CodeShellCore.Moldster.Razor.Internal
 {
     public class TemplateProcessingService : ConsoleService, ITemplateProcessingService
     {
-        protected readonly IPathsService _paths;
-        protected readonly IConfigUnit _unit;
-        protected readonly IPageControlDataService _controls;
-        protected readonly ITemplateDataService _categories;
-        protected readonly IPageParameterDataService _pars;
-        protected readonly ILocalizationService _loc;
-        protected readonly IViewsService _dbViews;
+        InstanceStore<object> Store;
+
+        MoldsterModuleOptions opts;
+        protected IPathsService _paths => Store.GetInstance<IPathsService>();
+        protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
+        protected IPageControlDataService _controls => Store.GetInstance<IPageControlDataService>();
+        protected ITemplateDataService _categories => Store.GetInstance<ITemplateDataService>();
+        protected IPageParameterDataService _pars => Store.GetInstance<IPageParameterDataService>();
+        protected ILocalizationService _loc => Store.GetInstance<ILocalizationService>();
+        private IUIFileNameService _names => Store.GetInstance<IUIFileNameService>();
+        protected IViewsService _dbViews => Store.GetInstance<IViewsService>();
 
 
         public TemplateProcessingService(
-            IConfigUnit unit,
-            IViewsService views,
-            IPathsService paths,
-            IPageControlDataService con,
-            ITemplateDataService cats,
-            IPageParameterDataService pars,
-            ILocalizationService loc,
+            IServiceProvider prov,
+            IOptions<MoldsterModuleOptions> opt,
             IOutputWriter wtt) : base(wtt)
         {
-            _unit = unit;
-            _paths = paths;
-            _controls = con;
-            _dbViews = views;
-            _categories = cats;
-            _pars = pars;
-            _loc = loc;
+            opts = opt.Value;
+            Store = new InstanceStore<object>(prov);
         }
 
         public void GenerateGuidTemplate(string moduleCode)
@@ -52,20 +49,6 @@ namespace CodeShellCore.Moldster.Razor.Internal
             Utils.CreateFolderForFile(path);
             File.WriteAllText(path, contents);
             WriteSuccess();
-        }
-        public void WriteIdOnTemplate(PageCategory cat)
-        {
-            var dom = AppDomain.CurrentDomain;
-
-            string viewPath = Path.Combine(_paths.ConfigRoot, "Views", cat.ViewPath + ".cshtml");
-            string contents = File.ReadAllText(viewPath);
-
-            string firstFive = contents.Length < 6 ? "" : contents.Substring(0, 5);
-            if (firstFive != "@*ID:")
-            {
-                contents = "@*ID:" + cat.Id + "*@\n" + contents;
-                File.WriteAllText(viewPath, contents);
-            }
         }
 
         public void ProcessForTenant(string templatePath, string modCode)
@@ -95,7 +78,8 @@ namespace CodeShellCore.Moldster.Razor.Internal
             _controls.UpdateTemplateControls(p, dto.Controls);
             _controls.DeleteUnusedControls(p, dto.Controls);
             _categories.UpdateParameters(p, dto.Parameters);
-            _loc.UpdateFiles(dto.Localization);
+            if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
+                _loc.UpdateFiles(dto.Localization);
             WriteSuccess();
             return true;
         }
@@ -194,6 +178,12 @@ namespace CodeShellCore.Moldster.Razor.Internal
                     Out.Write(" Html: ");
 
                 PageDTO p = _unit.PageRepository.FindSingleForRendering(e => e.Id == id);
+                string templatePath = _names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".html";
+                if (!opts.ReplaceComponentHtml && File.Exists(templatePath))
+                {
+                    WriteColored("Exists", ConsoleColor.Cyan);
+                    return true;
+                }
 
                 string template = GetPage(p.Page.Id);
                 if (template == null)
@@ -201,9 +191,6 @@ namespace CodeShellCore.Moldster.Razor.Internal
                     WriteFailed(x.Elapsed);
                     return false;
                 }
-
-                string path = Path.Combine(_paths.UIRoot, p.TenantCode, "app", p.Page.ViewPath);
-                string templatePath = path + ".html";
 
                 Utils.CreateFolderForFile(templatePath);
                 File.WriteAllText(templatePath, template);
@@ -243,10 +230,19 @@ namespace CodeShellCore.Moldster.Razor.Internal
             {
                 using (Out.Set(ConsoleColor.DarkYellow))
                     Out.Write(" Html: ");
+                string filePath = _names.GetComponentFilePath(moduleCode, "app") + ".html";
+
+                if (!opts.ReplaceAppComponentHtml && File.Exists(filePath))
+                {
+                    GotoColumn(SuccessCol);
+                    WriteColored("Exists", ConsoleColor.Cyan);
+                    return;
+                }
+
                 string baseComponent = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == moduleCode);
 
                 string contents = _dbViews.GetMainComponent(baseComponent);
-                string filePath = Path.Combine(_paths.UIRoot, moduleCode, "app", "AppComponent.html");
+
 
                 Utils.CreateFolderForFile(filePath);
                 File.WriteAllText(filePath, contents);
@@ -257,8 +253,8 @@ namespace CodeShellCore.Moldster.Razor.Internal
 
         public void MoveHtmlTemplate(MovePageRequest r)
         {
-            string fromPath = Path.Combine(_paths.UIRoot, r.TenantCode, "app", r.FromPath + ".html");
-            string toPath = Path.Combine(_paths.UIRoot, r.TenantCode, "app", r.ToPath + ".html");
+            string fromPath = _names.GetComponentFilePath(r.TenantCode, r.FromPath) + ".html";
+            string toPath = _names.GetComponentFilePath(r.TenantCode, r.ToPath) + ".html";
             if (File.Exists(fromPath))
             {
                 Utils.CreateFolderForFile(toPath);
@@ -268,7 +264,7 @@ namespace CodeShellCore.Moldster.Razor.Internal
 
         public void DeleteHtmlTemplate(string tenantCode, string fromPath)
         {
-            string path = Path.Combine(_paths.UIRoot, tenantCode, "app", fromPath + ".html");
+            string path = _names.GetComponentFilePath(tenantCode, fromPath) + ".html";
             if (File.Exists(path))
             {
                 File.Delete(path);

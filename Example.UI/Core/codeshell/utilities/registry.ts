@@ -1,4 +1,4 @@
-﻿import { BaseComponent } from "../baseComponents";
+﻿import { BaseComponent } from "../base-components";
 import { ActivatedRoute } from "@angular/router";
 import { UserDTO } from "../security/models";
 

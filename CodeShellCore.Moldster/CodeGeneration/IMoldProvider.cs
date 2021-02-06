@@ -8,7 +8,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
     {
         string BootMold { get; }
         string GetBaseComponentMold(bool serviced);
-        string GetDomainModuleMold(bool lazy);
+        string GetDomainModuleMold();
         string ComponentMold { get; }
         string MainComponentMold { get; }
         string LocaleLoaderMold { get; }
