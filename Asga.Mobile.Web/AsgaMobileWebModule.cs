@@ -19,7 +19,7 @@ namespace Asga.Mobile
         }
         public static void UseAsgaMobileSignalR(this IApplicationBuilder app)
         {
-            app.UseSignalR(d =>
+            app.UseEndpoints(d =>
             {
                 d.MapHub<NotificationsHub>("/notificationsHub");
             });
