@@ -4,12 +4,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CodeShellCore.FileServer.Migrations
 {
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "Atch");
+
             migrationBuilder.CreateTable(
                 name: "AttachmentCategories",
+                schema: "Atch",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false),
@@ -29,6 +33,7 @@ namespace CodeShellCore.FileServer.Migrations
 
             migrationBuilder.CreateTable(
                 name: "BinaryAttachments",
+                schema: "Atch",
                 columns: table => new
                 {
                     Bytes = table.Column<byte[]>(nullable: true),
@@ -41,6 +46,7 @@ namespace CodeShellCore.FileServer.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Attachments",
+                schema: "Atch",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -60,12 +66,14 @@ namespace CodeShellCore.FileServer.Migrations
                     table.ForeignKey(
                         name: "FK_Attachments_AttachmentCategories",
                         column: x => x.AttachmentCategoryId,
+                        principalSchema: "Atch",
                         principalTable: "AttachmentCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Attachments_BinaryAttachments",
                         column: x => x.BinaryAttachmentId,
+                        principalSchema: "Atch",
                         principalTable: "BinaryAttachments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -73,11 +81,13 @@ namespace CodeShellCore.FileServer.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attachments_AttachmentCategoryId",
+                schema: "Atch",
                 table: "Attachments",
                 column: "AttachmentCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attachments_BinaryAttachmentId",
+                schema: "Atch",
                 table: "Attachments",
                 column: "BinaryAttachmentId",
                 unique: true,
@@ -87,13 +97,16 @@ namespace CodeShellCore.FileServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Attachments");
+                name: "Attachments",
+                schema: "Atch");
 
             migrationBuilder.DropTable(
-                name: "AttachmentCategories");
+                name: "AttachmentCategories",
+                schema: "Atch");
 
             migrationBuilder.DropTable(
-                name: "BinaryAttachments");
+                name: "BinaryAttachments",
+                schema: "Atch");
         }
     }
 }

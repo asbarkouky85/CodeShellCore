@@ -20,7 +20,7 @@ namespace CodeShellCore.FileServer.Data
         {
             modelBuilder.Entity<Attachment>(entity =>
             {
-                entity.ToTable("Attachments");
+                entity.ToTable("Attachments","Atch");
 
                 entity.Property(e => e.FileName).HasMaxLength(200);
                 entity.Property(e => e.FullPath).HasMaxLength(300);
@@ -41,7 +41,7 @@ namespace CodeShellCore.FileServer.Data
 
             modelBuilder.Entity<AttachmentCategory>(entity =>
             {
-                entity.ToTable("AttachmentCategories");
+                entity.ToTable("AttachmentCategories", "Atch");
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.FolderPath).HasMaxLength(150);
@@ -55,7 +55,7 @@ namespace CodeShellCore.FileServer.Data
 
             modelBuilder.Entity<BinaryAttachment>(entity =>
             {
-                entity.ToTable("BinaryAttachments");
+                entity.ToTable("BinaryAttachments", "Atch");
                 entity.Property(e => e.Id).ValueGeneratedNever();
             });
         }

@@ -16,11 +16,11 @@ namespace CodeShellCore.FileServer.Web.Controllers
     {
         IAttachmentFileService service => GetService<IAttachmentFileService>();
 
-        public FileBytes GetBytes(long id) => service.GetBytes(id);
-        public string GetFileName(long id) => service.GetFileName(id);
-        public FileBytes GetTempBytes(string path) => service.GetTempBytes(path);
-        public SubmitResult SaveAttachment([FromBody] SaveAttachmentRequest req) => service.SaveAttachment(req);
-        public IEnumerable<TmpFileData> Upload([FromForm] UploadRequestDto dto)
+        public virtual FileBytes GetBytes(long id) => service.GetBytes(id);
+        public virtual string GetFileName(long id) => service.GetFileName(id);
+        public virtual FileBytes GetTempBytes(string path) => service.GetTempBytes(path);
+        public virtual SubmitResult SaveAttachment([FromBody] SaveAttachmentRequest req) => service.SaveAttachment(req);
+        public virtual IEnumerable<TmpFileData> Upload([FromForm] UploadRequestDto dto)
         {
             dto.Files = new List<FileBytes>();
 

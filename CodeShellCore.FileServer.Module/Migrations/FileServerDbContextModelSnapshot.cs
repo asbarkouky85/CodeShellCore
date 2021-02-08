@@ -51,7 +51,7 @@ namespace CodeShellCore.FileServer.Migrations
                         .IsUnique()
                         .HasFilter("[BinaryAttachmentId] IS NOT NULL");
 
-                    b.ToTable("Attachments");
+                    b.ToTable("Attachments","Atch");
                 });
 
             modelBuilder.Entity("CodeShellCore.FileServer.AttachmentCategory", b =>
@@ -80,7 +80,7 @@ namespace CodeShellCore.FileServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AttachmentCategories");
+                    b.ToTable("AttachmentCategories","Atch");
                 });
 
             modelBuilder.Entity("CodeShellCore.FileServer.BinaryAttachment", b =>
@@ -91,7 +91,7 @@ namespace CodeShellCore.FileServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BinaryAttachments");
+                    b.ToTable("BinaryAttachments","Atch");
                 });
 
             modelBuilder.Entity("CodeShellCore.FileServer.Attachment", b =>

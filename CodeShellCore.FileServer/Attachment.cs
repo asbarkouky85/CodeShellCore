@@ -1,7 +1,10 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace CodeShellCore.FileServer
 {
+    
     public partial class Attachment : FileServerBaseModel
     {
         public string FileName { get; set; }
