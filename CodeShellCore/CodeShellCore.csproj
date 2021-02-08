@@ -9,17 +9,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.16.0.0</Version>
-    <AssemblyVersion>2.16.0.0</AssemblyVersion>
-    <FileVersion>2.16.0.0</FileVersion>
+    <Version>2.16.1.0</Version>
+    <AssemblyVersion>2.16.1.0</AssemblyVersion>
+    <FileVersion>2.16.1.0</FileVersion>
     <AssemblyName>CodeShellCore</AssemblyName>
     <RootNamespace>CodeShellCore</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="CodeShellCore.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Inflector.NetStandard" Version="1.2.2" />

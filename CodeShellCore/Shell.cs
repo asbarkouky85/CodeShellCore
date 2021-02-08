@@ -214,7 +214,7 @@ namespace CodeShellCore
         {
             var val = App.getConfig(key);
             if (val.Value == null && required)
-                throw new Exception("Config '" + key + "' is required to be present in the config file");
+                throw new Exception("Config '" + key + "' is required to be present in appsettings.json");
 
             return val;
         }

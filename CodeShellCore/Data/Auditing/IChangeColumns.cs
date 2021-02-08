@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Data
+namespace CodeShellCore.Data.Auditing
 {
     public interface IChangeColumns
     {

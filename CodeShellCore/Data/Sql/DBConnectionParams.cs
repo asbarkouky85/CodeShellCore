@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Data
+namespace CodeShellCore.Data.Sql
 {
     public class DbConnectionParams
     {

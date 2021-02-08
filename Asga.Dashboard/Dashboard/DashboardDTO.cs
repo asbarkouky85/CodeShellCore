@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Asga.Dashboard
 {
-    public class DashboardDTO : IEmplement
+    public class DashboardDTO 
     {
         public long Id { get; set; }
         public string Title { get; set; }

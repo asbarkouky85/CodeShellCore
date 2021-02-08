@@ -8,6 +8,11 @@ namespace CodeShellCore.Web.Services
 {
     public class FileService : ServiceBase, IFileUploadService
     {
+        public FileService()
+        {
+
+        }
+
         private static string _tmpRoot = null;
         protected virtual string TmpRoot
         {
@@ -22,8 +27,6 @@ namespace CodeShellCore.Web.Services
                 return _tmpRoot;
             }
         }
-
-
 
         public virtual List<TmpFileData> Upload(Dictionary<string, IFormFile> files)
         {
@@ -56,6 +59,9 @@ namespace CodeShellCore.Web.Services
             return lst;
         }
 
+        //public FileBytes GetFile(long id)
+        //{
 
+        //}
     }
 }

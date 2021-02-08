@@ -15,6 +15,7 @@ using CodeShellCore.Linq;
 using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
+using CodeShellCore.Data.Auditing;
 
 namespace CodeShellCore.Data.EntityFramework
 {

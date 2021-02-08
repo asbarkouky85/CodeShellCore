@@ -9,7 +9,7 @@ using CodeShellCore.Text;
 using CodeShellCore.Data.ConfiguredCollections;
 using System.Reflection;
 
-namespace CodeShellCore.Data.Services
+namespace CodeShellCore.Data.Lookups
 {
     public abstract class LookupsService<T> : ServiceBase, ILookupsService
         where T : class, IUnitOfWork

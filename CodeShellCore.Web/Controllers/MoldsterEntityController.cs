@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
 
 using CodeShellCore.Linq;
-using CodeShellCore.Text.Localization;
-using CodeShellCore.Web.Controllers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Data;
-using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.Localization;
+using CodeShellCore.Data.Lookups;
 
 namespace CodeShellCore.Web.Controllers
 {

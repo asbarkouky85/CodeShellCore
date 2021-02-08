@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Data.Services
+namespace CodeShellCore.Data.Sql
 {
     public class RestoreDbCommand
     {
