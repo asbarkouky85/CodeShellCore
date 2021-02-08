@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.FileServer.Business
+namespace CodeShellCore.Files.Uploads
 {
     public class TempFileDto : TmpFileData
     {

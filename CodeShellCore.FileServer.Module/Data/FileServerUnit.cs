@@ -8,6 +8,7 @@ namespace CodeShellCore.FileServer.Data
 {
     public class FileServerUnit : UnitOfWork<FileServerDbContext>, IFileServerUnit
     {
+        protected override Type GenericRepositoryType => typeof(Repository_Int64<,>);
         public FileServerUnit(IServiceProvider provider) : base(provider)
         {
         }

@@ -24,6 +24,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Cli;
 using CodeShellCore.MQ;
 using CodeShellCore.Data;
+using CodeShellCore.Files.Uploads;
 
 namespace CodeShellCore
 {
@@ -56,7 +57,7 @@ namespace CodeShellCore
         public static CultureInfo DefaultCulture { get { return App.defaultCulture; } }
         public static IEnumerable<string> SupportedLanguages { get { return App.Supordedlanguage; } }
         public static IServiceProvider RootInjector { get { return App.rootProvider; } }
-       // public static IServiceProvider ScopedInjector { get { return App._scopedProvider; } }
+        // public static IServiceProvider ScopedInjector { get { return App._scopedProvider; } }
         public static IUser User { get { return App._scopedProvider.GetCurrentUser(); } }
         public static string AppRootPath { get { return App.appRoot; } }
         public static string LocalizationAssembly { get { return App.localizationAssembly ?? ProjectAssembly.GetName().Name; } }
@@ -136,6 +137,7 @@ namespace CodeShellCore
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IOutputWriter, ConsoleOutputWriter>();
             coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
+            coll.AddTransient<IUploadedFilesHandler, UploadedFileHandler>();
             coll.AddScoped<Language>();
             coll.AddScoped<IUserAccessor, UserAccessor>();
             coll.AddScoped<UserAccessor>();

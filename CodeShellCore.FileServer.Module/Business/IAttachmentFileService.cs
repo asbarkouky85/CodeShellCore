@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Files;
+using CodeShellCore.Files.Uploads;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace CodeShellCore.FileServer.Business
         SubmitResult SaveAttachment(SaveAttachmentRequest req);
         FileBytes GetBytes(long id);
         FileBytes GetTempBytes(string path);
+        FileBytes GetBytesByUrl(string path);
         string GetFileName(long id);
     }
 }

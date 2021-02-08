@@ -14,15 +14,20 @@ using CodeShellCore.Data.Helpers;
 using CodeShellCore.FileServer.Business;
 using CodeShellCore.Helpers;
 using CodeShellCore.FileServer.Paths;
+using CodeShellCore.Linq;
+using CodeShellCore.Files.Uploads;
 
 namespace CodeShellCore.FileServer.Business.Internal
 {
-    public class AttachmentFileService : DataService<IFileServerUnit>, IAttachmentFileService
+    public class AttachmentFileService : UploadedFileHandler, IAttachmentFileService, IUploadedFilesHandler
     {
         private readonly IPathProvider _paths;
         private readonly IFileServerUnit unit;
 
-        public AttachmentFileService(IFileServerUnit unit, IPathProvider paths) : base(unit)
+        protected override string SaveRoot => _paths.RootFolderPath;
+        protected override string TempRoot => _paths.TempFolder;
+
+        public AttachmentFileService(IFileServerUnit unit, IPathProvider paths)
         {
             this.unit = unit;
             _paths = paths;
@@ -33,31 +38,14 @@ namespace CodeShellCore.FileServer.Business.Internal
             var cat = unit.AttachmentCategoryRepository.FindSingle(dto.AttachmentTypeId);
             ValidateFiles(cat, dto.Files);
 
-
             List<TempFileDto> lst = new List<TempFileDto>();
+            int i = 1;
             foreach (var d in dto.Files)
             {
-                var name = Guid.NewGuid();
-                var url = Utils.CombineUrl("Tmp", name + d.Extension);
-                string path = Path.Combine(_paths.TempFolder, url);
-
-                Utils.CreateFolderForFile(path);
-
-                File.WriteAllBytes(path, d.Bytes);
-
-                var tmpFile = new TempFileDto
-                {
-                    TmpPath = url,
-                    Name = d.FileName,
-                    AttachmentTypeId = dto.AttachmentTypeId,
-                    Id = Utils.GenerateID(),
-                    Size = d.Bytes.Length
-                };
-
-                using (MemoryStream str = new MemoryStream())
-                {
-                    lst.Add(tmpFile);
-                }
+                var tmpFile = AddToTemp(d, "file_" + (i++));
+                var t = tmpFile.MapTo<TempFileDto>(false);
+                t.AttachmentTypeId = cat.Id;
+                lst.Add(t);
             }
             return lst;
         }
@@ -82,7 +70,7 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         public SubmitResult SaveAttachment(SaveAttachmentRequest req)
         {
-            var cat = Unit.AttachmentCategoryRepository.FindSingle(req.AttachmentTypeId);
+            var cat = unit.AttachmentCategoryRepository.FindSingle(req.AttachmentTypeId);
 
             var path = Path.Combine(_paths.TempFolder, req.TmpPath);
             var dto = new FileBytes(path);
@@ -98,6 +86,7 @@ namespace CodeShellCore.FileServer.Business.Internal
                 AttachmentCategoryId = req.AttachmentTypeId
             };
 
+            string url = null;
             if (req.SaveInDb)
             {
                 att.BinaryAttachment = new BinaryAttachment(dto.Bytes);
@@ -106,14 +95,21 @@ namespace CodeShellCore.FileServer.Business.Internal
             {
                 var root = _paths.RootFolderPath;
                 var name = Guid.NewGuid();
-                att.FullPath = Path.Combine(root, cat.FolderPath ?? "default", name.ToString() + dto.Extension).Replace("\\", "/");
+                url = Utils.CombineUrl(cat.FolderPath ?? "default", name.ToString() + dto.Extension);
+                att.FullPath = Path.Combine(root, url).Replace("/", "\\");
 
                 Utils.CreateFolderForFile(att.FullPath);
                 File.WriteAllBytes(att.FullPath, dto.Bytes);
             }
 
             unit.AttachmentRepository.Add(att);
-            return unit.SaveChanges();
+            var s = unit.SaveChanges();
+            s.Data["FileData"] = new SavedFileDto
+            {
+                Id = att.Id.ToString(),
+                Path = url
+            };
+            return s;
         }
 
         public FileBytes GetBytes(long id)
@@ -177,6 +173,62 @@ namespace CodeShellCore.FileServer.Business.Internal
                 throw new ArgumentOutOfRangeException("not found");
             }
             return b;
+        }
+
+        public FileBytes GetBytesByUrl(string path)
+        {
+            string filePath = Path.Combine(_paths.RootFolderPath, path);
+            var b = new FileBytes(filePath);
+            if (b.Size == null)
+            {
+                throw new ArgumentOutOfRangeException("not found");
+            }
+            return b;
+        }
+
+        public override bool SaveTemp(TmpFileData req, out SavedFileDto dto, long? type = null, string folder = null, bool db = false)
+        {
+            dto = null;
+            if (req?.TmpPath != null)
+            {
+                var save = req.MapTo<SaveAttachmentRequest>(false);
+                save.AttachmentTypeId = type ?? 0;
+                save.SaveInDb = db;
+                var att = SaveAttachment(save);
+                if (att.IsSuccess && att.Data.TryGetValue("FileData", out object sv))
+                {
+                    dto = (SavedFileDto)sv;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override TmpFileData AddToTemp(FileBytes bts, string key)
+        {
+            var data = base.AddToTemp(bts, key);
+            if (data != null)
+            {
+                data.Url = Utils.CombineUrl("fileserver/gettempfile?path=" + data.TmpPath);
+            }
+            return data;
+        }
+
+        public override string GetUrlById(string id)
+        {
+            return Utils.CombineUrl("fileserver/getfile/" + id);
+        }
+
+        public override string GetUrlByPath(string path)
+        {
+            return Utils.CombineUrl("fileserver/getbypath?path=" + path);
+        }
+
+        public override void DeleteTmp(TmpFileData tmp)
+        {
+            var path = Path.Combine(_paths.TempFolder, tmp.TmpPath);
+            if (File.Exists(path))
+                File.Delete(path);
         }
     }
 }

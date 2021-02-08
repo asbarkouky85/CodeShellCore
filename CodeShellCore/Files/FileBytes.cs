@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Text;
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,8 @@ namespace CodeShellCore.Files
             
         public void Save(string folder)
         {
+            var path = Path.Combine(folder, FileName);
+            Utils.CreateFolderForFile(path);
             File.WriteAllBytes(Path.Combine(folder, FileName), Bytes);
         }
         public FileBytes() { }

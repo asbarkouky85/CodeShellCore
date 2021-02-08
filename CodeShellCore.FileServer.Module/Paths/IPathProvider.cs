@@ -6,6 +6,6 @@ namespace CodeShellCore.FileServer.Paths
     {
         string TempFolder { get; }
         string RootFolderPath { get; }
-
+        string SelfUrl { get; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.DependencyInjection;
+using CodeShellCore.Files.Uploads;
 using CodeShellCore.FileServer.Business;
 using CodeShellCore.FileServer.Business.Internal;
 using CodeShellCore.FileServer.Data;
@@ -25,6 +26,7 @@ namespace CodeShellCore.FileServer
             coll.AddGenericRepository(typeof(Repository_Int64<,>));
 
             coll.AddTransient<IAttachmentFileService, AttachmentFileService>();
+            coll.AddTransient<IUploadedFilesHandler, AttachmentFileService>();
             coll.AddTransient<IPathProvider, PathProvider>();
         }
     }

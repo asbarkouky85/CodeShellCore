@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Files;
+using CodeShellCore.Files.Uploads;
 using CodeShellCore.FileServer.Business;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
@@ -34,17 +35,23 @@ namespace CodeShellCore.FileServer.Web.Controllers
             }
             return service.Upload(dto);
         }
-        public SubmitResult ValidateFile([FromBody] FileValidationRequest req) => service.ValidateFile(req);
-
-        public FileResult GetFile(long id)
+        public virtual SubmitResult ValidateFile([FromBody] FileValidationRequest req) => service.ValidateFile(req);
+        public FileBytes GetBytesByUrl(string path) => service.GetBytesByUrl(path);
+        public virtual FileResult GetFile(long id)
         {
             var b = service.GetBytes(id);
             return File(b.Bytes, b.MimeType);
         }
 
-        public FileResult GetTempFile(string path)
+        public virtual FileResult GetTempFile(string path)
         {
             var b = service.GetTempBytes(path);
+            return File(b.Bytes, b.MimeType);
+        }
+
+        public virtual FileResult GetByPath(string path)
+        {
+            var b = service.GetBytesByUrl(path);
             return File(b.Bytes, b.MimeType);
         }
     }

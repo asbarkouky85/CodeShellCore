@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Files;
+using CodeShellCore.Files.Uploads;
 using CodeShellCore.Helpers;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,6 @@ namespace CodeShellCore.Data.Attachments
         {
             if (models == null)
                 return;
-            string dir = Path.Combine(Shell.AppRootPath, folder);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
 
             foreach (T item in ChangeSet.Create(models).Added)
             {
