@@ -1,0 +1,21 @@
+@*ID:2000136308002*@
+@model PageDTO
+@{
+    //evnt__ ()
+    //calc__ []
+    //star__ *
+
+    Layout = Html.Config().Layout; ;
+    //Html.HeaderModel().AddButton = Html.Button(title: "Add Page To Nave",icon:"fa fa-plus fa-lg", function: "AddPage()", btn: BtnClass.Success);
+    Html.HeaderModel().ToolsSection = Html.SelectControlGroup(d => d.TenantCode, Lister.Make("tenants", false), "name", "code", inputAttr: new { evnt__change = "tenantChanged()" },nullable:false);
+    Html.HeaderModel().AddButton = Html.GetPartial("NavigationGroups/_NavPageButton");
+}
+<div class="row">
+    <div class="col-md-4">
+        @Html.ComponentSelectorFromOther("NaveList", "NaveList", attr: new { evnt__valueChange = "getPages($event)" })
+    </div>
+    <div class="col-md-8">
+        @*@Html.Button(title: "Save",icon:"fa fa-save fa-lg", function: "save()", btn: BtnClass.Primary)*@
+        @Html.ComponentSelectorFromOther("NavigationPageList", "NavigationPageList")
+    </div>
+</div>

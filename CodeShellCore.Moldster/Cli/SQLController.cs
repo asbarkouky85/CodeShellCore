@@ -1,6 +1,8 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Moldster.Data;
+using CodeShellCore.Data.Helpers;
+using CodeShellCore.Moldster.Db.Data;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +19,26 @@ namespace CodeShellCore.Moldster.Cli
 
         public override Dictionary<int, string> Functions => new Dictionary<int, string>
         {
-            { 1, "CreateTenantDatabase" },
-            { 2, "UpdateDatabase" },
-            { 3, "RunInitiationScripts"},
+            { 1, "RestoreConfigDatabase"},
+            { 2, "RestoreSourceDatabase"},
+            { 3, "CreateTenantDatabase" },
+            { 4, "UpdateDatabase" },
+            { 5, "RunInitiationScripts"},
 
         };
+
+        public void RestoreConfigDatabase()
+        {
+            SelectEnvironment();
+            service.RestoreConfigDatabase();
+        }
+
+        public void RestoreSourceDatabase()
+        {
+            SelectEnvironment();
+            service.RestoreSourceDatabase();
+        }
+
 
 
         MoldsterEnvironment SelectEnvironment()
@@ -79,7 +96,7 @@ namespace CodeShellCore.Moldster.Cli
 
                     Console.Write("Adding tenant to config database...");
 
-                    var res = tenants.Create(new Tenant
+                    var res = tenants.Create(new Db.Tenant
                     {
                         Id = id,
                         Code = code,

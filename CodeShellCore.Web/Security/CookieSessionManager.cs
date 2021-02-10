@@ -10,7 +10,7 @@ namespace CodeShellCore.Web.Security
 {
     public class CookieSessionManager : WebSessionManagerBase, ISessionManager
     {
-        public CookieSessionManager(IServiceProvider prov) : base(prov)
+        public CookieSessionManager(IHttpContextAccessor context) : base(context)
         {
         }
 
@@ -25,9 +25,12 @@ namespace CodeShellCore.Web.Security
 
         }
 
-        public override string GetCurrentUserId()
+        public override object GetCurrentUserId()
         {
-            return _accessor.HttpContext?.User?.Identity.Name;
+            int id = 0;
+
+            int.TryParse(_accessor.HttpContext.User.Identity.Name, out id);
+            return id;
         }
 
         public override bool IsLoggedIn()

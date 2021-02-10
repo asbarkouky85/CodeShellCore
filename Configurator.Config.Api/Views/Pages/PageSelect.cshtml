@@ -1,0 +1,28 @@
+@*ID:2000161391000*@
+
+@model PageListDTO
+@{
+    Layout = Html.Config().Layout;
+}
+
+
+<table class="table" (change)="onTableChange()">
+    <thead>
+        <tr>
+            <th></th>
+            @Html.HeaderCell(d => d.ViewPath)
+            @Html.HeaderCell(d => d.PageType)
+            @Html.HeaderCell(d => d.ResourceName)
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of Source.List;let i=index">
+            @Html.CheckBoxCell("select", "i", "Items", cellAttributes: new { star__ngIf = "Multi" })
+            @Html.RadioBoxCell("select", "i", "Items", cellAttributes: new { star__ngIf = "!Multi" })
+            @Html.TextCell(d => d.ViewPath)
+            @Html.TextCell(d => d.PageType)
+            @Html.TextCell(d => d.ResourceName)
+        </tr>
+    </tbody>
+</table>
+

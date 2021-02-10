@@ -1,6 +1,9 @@
-﻿using CodeShellCore.Moldster.Razor;
+﻿using CodeShellCore.Moldster.Db.Razor;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Db.Dto
 {
     public class CreateModalDTO
     {

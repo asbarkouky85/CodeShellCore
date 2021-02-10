@@ -1,13 +1,15 @@
-﻿using NUnit.Framework;
+﻿using CodeShellCore.Moldster.Db;
+using NUnit.Framework;
 using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.UnitTest.Data;
 using CodeShellCore.Moldster;
 using Microsoft.EntityFrameworkCore;
+using CodeShellCore.Moldster.Db.Data;
 using CodeShellCore.Web.Razor;
 using CodeShellCore.Files;
+using CodeShellCore.Text;
 using Moq;
 using CodeShellCore.Moldster.Configurator.Services;
-using CodeShellCore.Moldster.Data;
 
 namespace CodeShellCore.UnitTest.Moldster
 {
@@ -19,7 +21,7 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             Shell.Start(new UnitTestShell(coll =>
             {
-                coll.AddMoldsterWeb();
+                coll.AddMoldsterWeb(MoldsType.Db);
                 coll.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
                 coll.AddScoped<MoldsterDataInit>();
             }));
@@ -46,11 +48,11 @@ namespace CodeShellCore.UnitTest.Moldster
                 var fileMock = new Mock<IFileHandler>();
                 fileMock.Setup(d => d.Exists(".\\Views\\" + viewPath + ".cshtml")).Returns(true);
                 var unit = sc.GetService<IConfigUnit>();
-                var service = new PageCategoryService(unit, fileMock.Object, new DefaultPathsService());
+                var service = new PageCategoryService(unit, fileMock.Object);
                 var res = service.Create(cat);
 
                 Assert.AreEqual(rows, res.AffectedRows);
-                Assert.AreNotEqual(cat.DomainId, null);
+                Assert.AreNotEqual(cat.DomainId ,null);
                 Assert.That(viewPath.Contains(cat.Domain.Name), "view path doesn't contain domain name");
             });
 

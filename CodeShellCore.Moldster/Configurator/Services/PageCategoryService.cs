@@ -1,13 +1,10 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Files;
-using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster.Db.Data;
 using CodeShellCore.Text;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -17,13 +14,12 @@ namespace CodeShellCore.Moldster.Configurator.Services
     {
         readonly IConfigUnit Unit;
         private readonly IFileHandler fileHandler;
-        private readonly IPathsService conf;
 
-        public PageCategoryService(IConfigUnit unit, IFileHandler fileHandler, IPathsService conf) : base(unit)
+        public PageCategoryService(IConfigUnit unit, IFileHandler fileHandler) : base(unit)
         {
             Unit = unit;
             this.fileHandler = fileHandler;
-            this.conf = conf;
+
         }
 
         public override PageCategory GetSingle(object id)
@@ -42,14 +38,14 @@ namespace CodeShellCore.Moldster.Configurator.Services
             if (string.IsNullOrEmpty(obj.Name))
                 obj.Name = obj.ViewPath?.GetAfterLast("/");
 
-            var domain = Unit.DomainRepository.GetOrCreatePath(obj.ViewPath.GetBeforeLast("/"));
+            var d = Unit.DomainRepository.GetOrCreatePath(obj.ViewPath.GetBeforeLast("/"));
 
             string template = Path.Combine(Shell.AppRootPath, "Views", obj.ViewPath + ".cshtml");
             if (!fileHandler.Exists(template))
                 throw new Exception("No such template : " + template);
 
-            domain.PageCategories.Add(obj);
-            obj.DomainId = domain.Id;
+            d.PageCategories.Add(obj);
+            obj.DomainId = d.Id;
             if (obj.ResourceName != null)
             {
                 string[] sp = obj.ResourceName.Split('/');
@@ -76,62 +72,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
             return base.Create(obj);
         }
 
-        public LoadResult<PageCategoryListDTO> GetAll(LoadOptions opt)
-        {
-            var opts = opt.GetOptionsFor<PageCategoryListDTO>();
-            return Unit.PageCategoryRepository.FindAs(PageCategoryListDTO.Expression, opts);
-        }
 
-        public LoadResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, LoadOptions opt)
-        {
-            return Unit.PageCategoryRepository.GetUnderDomain(domainId, opt);
-        }
-
-        public List<TemplateDTO> GetTemplates()
-        {
-            string configPath = conf.ConfigRoot;
-            var DbTemplateList = Unit.PageCategoryRepository.GetValues(d => d.ViewPath);
-            return GetLocalTemplate(DbTemplateList);
-        }
-
-        public List<TemplateDTO> GetLocalTemplate(IEnumerable<string> files)
-        {
-            var configPath = Path.Combine(conf.ConfigRoot, "Views");
-            List<TemplateDTO> templateList = new List<TemplateDTO>();
-            var templates = Directory.GetFiles(configPath, "*.cshtml", SearchOption.AllDirectories);
-
-            foreach (var temp in templates)
-            {
-                var vPath = temp.Replace(configPath + "\\", "").Replace("\\", "/").Replace(".cshtml", "");
-                var name = vPath.GetAfterLast("/");
-                if (!files.Any(d => d == vPath) && name[0] != '_')
-                {
-                    templateList.Add(new TemplateDTO
-                    {
-                        Name = name,
-                        ViewPath = vPath,
-                        CreatedOn = File.GetCreationTime(temp),
-                        ResourceId = null,
-                        BaseComponent = null
-                    });
-                }
-
-            };
-
-            return templateList.OrderByDescending(d => d.CreatedOn).ToList();
-        }
-
-        public SubmitResult Create(List<PageCategory> list)
-        {
-            List<Domain> doms = new List<Domain>();
-            foreach (var item in list)
-            {
-               
-                var d = Unit.DomainRepository.GetOrCreatePath(item.ViewPath.GetBeforeLast("/"), ref doms);
-                Unit.PageCategoryRepository.Add(item, d);
-            }
-            return Unit.SaveChanges();
-        }
 
     }
 }

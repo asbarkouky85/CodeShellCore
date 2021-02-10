@@ -1,7 +1,11 @@
-﻿using CodeShellCore.Data.Helpers;
+﻿using System;
+using CodeShellCore.Data;
+using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Services;
 
 namespace CodeShellCore.Moldster.Configurator.Services
 {

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 using CodeShellCore.Web.Razor.Elements.Angular;
 using CodeShellCore.Web.Razor.General.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Web.Razor.Validation;
 using System.Collections;
 using System.Collections.Generic;
@@ -81,25 +81,17 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
             return d;
         }
 
-        public override ControlGroupWriter FileGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string formFieldName, string uploadAction, bool required, bool multiple, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses)
+        public override ControlGroupWriter FileGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string formFieldName, string uploadUrl, IValidationCollection coll, int size, string alternateLabel, string placeHolder, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
-            var d = base.FileGroup(helper, exp, formFieldName, uploadAction, required, multiple, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses);
+            var d = base.FileGroup(helper, exp, formFieldName, uploadUrl, coll, size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
             d.Accessibility = proc.Process(helper, exp, InputControls.FileTextBox);
             return d;
         }
 
-        public override ControlGroupWriter RadioGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Dictionary<string, object> options,bool required, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, string template,string readOnlyProp,string readOnlyPipe)
+        public override ControlGroupWriter RadioGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Dictionary<string, object> options, int size, string alternateLabel, object attrs, object inputAttr, string inputClasses, string groupClasses, string template)
         {
-            var d = base.RadioGroup(helper, exp, options, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, template, readOnlyProp,readOnlyPipe);
-            d.Accessibility = proc.Process(helper, exp, InputControls.Radio);
-            if (!d.Accessibility.Write)
-            {
-                if (readOnlyProp != null)
-                {
-                    d.InputModel.NgModelName = (readOnlyPipe == "translate" ? "'Words.'+" : "") + d.InputModel.NgModelName;
-                    d.InputModel.MemberName = readOnlyProp + (readOnlyPipe == null ? "" : " | " + readOnlyPipe);
-                }
-            }
+            var d = base.RadioGroup(helper, exp, options, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, template);
+            d.Accessibility = proc.Process(helper, exp, InputControls.CalendarTextBox);
             return d;
         }
 
@@ -117,14 +109,14 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
         public override ControlGroupWriter TextBoxGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string textType, IValidationCollection coll, int size, string alternateLabel, string placeHolder, bool localizable, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
             var d = base.TextBoxGroup(helper, exp, textType, coll, size, alternateLabel, placeHolder, localizable, attrs, inputAttr, inputClasses, groupClasses);
-            d.Accessibility = proc.Process(helper, exp, InputControls.TextBox);
+            d.Accessibility = proc.Process(helper, exp, InputControls.CalendarTextBox);
             return d;
         }
 
         public override ControlGroupWriter LabelGroup<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, int size, string filter, string alternateLabel, string url, bool blank, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
             var d = base.LabelGroup(helper, exp, size, filter, alternateLabel, url, blank, attrs, inputAttr, inputClasses, groupClasses);
-            d.Accessibility = proc.Process(helper, exp, InputControls.Label);
+            d.Accessibility = proc.Process(helper, exp, InputControls.CalendarTextBox);
             return d;
         }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace CodeShellCore.Moldster
+namespace CodeShellCore.Moldster.Db.Data
 {
     public class MoldsterModelBase : IEditable
     {

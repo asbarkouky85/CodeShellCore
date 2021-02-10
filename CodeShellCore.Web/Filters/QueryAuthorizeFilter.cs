@@ -6,17 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CodeShellCore.Web.Filters
 {
-    /// <summary>
-    /// Uses query parameter "Token" to identify user, makes the call to <see cref="ISessionManager.AuthorizationRequest(string)"/> then calls <see cref="IAuthorizationService.IsAuthorized(AuthorizationRequest)"/> where the <see cref="AuthorizationRequest"/> is filled from the route information and the <see cref="QueryAuthorizeFilter"/> instance itself
-    /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
-    
-    public class QueryAuthorizeFilter : CodeShellAuthorizeAttribute, IAuthorizationFilter
+    public class QueryAuthorizeFilter : Attribute, IAuthorizationFilter
     {
+        public string Resource { get; set; }
+        public string Action { get; set; }
+        public bool AllowAnonymous { get; set; }
+        public bool AllowAll { get; set; }
 
         public QueryAuthorizeFilter()
         {
@@ -27,10 +26,33 @@ namespace CodeShellCore.Web.Filters
         {
             try
             {
-
+                
                 var tok = context.HttpContext.Request.Query["Token"];
-                context.HttpContext.ProcessOnce(tok);
-                Authorize(context);
+                var _manager = context.HttpContext.RequestServices.GetService<ISessionManager>();
+                _manager?.AuthorizationRequest(tok);
+
+                var _authorizationService = context.HttpContext.RequestServices.GetService<IAuthorizationService>();
+                if (_authorizationService == null)
+                    return;
+
+                var _accessControl = (IAccessControlAuthorizationService)_authorizationService;
+
+                if (_accessControl == null || AllowAnonymous)
+                {
+                    return;
+                }
+
+                if (AllowAll && _authorizationService.SessionManager.IsLoggedIn())
+                    return;
+
+                AuthorizationRequest<AuthorizationFilterContext> con = new AuthorizationRequest<AuthorizationFilterContext>(context);
+
+                con.Resource = Resource ?? context.HttpContext.GetController();
+                con.Action = Action ?? context.HttpContext.GetAction();
+
+                if (!_accessControl.IsAuthorized(con))
+                    _accessControl.OnUserIsUnauthorized(con);
+
             }
             catch (Exception ex)
             {

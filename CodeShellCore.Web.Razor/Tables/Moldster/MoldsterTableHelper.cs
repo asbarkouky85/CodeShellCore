@@ -27,28 +27,19 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return wt;
         }
 
-        public CellWriter AutoCompleteSelectCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string displayMember, string valueMember, bool required, bool multi, bool nullable, object cellAttributes, object inputAttr, string classes)
+        public CellWriter AutoCompleteSelectCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string displayMember, string valueMember, MoldsterHtmlContainer parent, bool required, bool multi, bool nullable, object cellAttributes, object inputAttr, string classes)
         {
-            var writer = base.SelectCell(helper, exp, source, displayMember, valueMember, required, multi, cellAttributes, inputAttr, classes, false, null);
+            var writer = base.SelectCell(helper, exp, source, displayMember, valueMember, required, multi, cellAttributes, inputAttr, classes, false,null);
             writer.ColumnModel.Attributes = RazorUtils.ToAttributeString(cellAttributes);
             ((SelectNgInput)writer.InputModel).Nullable = nullable;
-            writer.Accessibility = proc.ProcessCell(helper, exp, InputControls.Select);
+            writer.Accessibility = proc.ProcessCell(helper, exp, InputControls.Select, parent);
             writer.Initialize(null, null, cellAttributes, inputAttr, classes);
             return writer;
         }
 
-        
-
         public override CellWriter CalendarCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, CalendarTypes rangeType, Calendars cals, DateRange range, bool required, object cellAttributes, object inputAttr, string classes)
         {
             var wt = base.CalendarCell(helper, exp, rangeType, cals, range, required, cellAttributes, inputAttr, classes);
-            wt.Accessibility = proc.ProcessCell(helper, exp, InputControls.CalendarTextBox);
-            return wt;
-        }
-
-        public override CellWriter CalendarCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, CalendarTypes rangeType, Calendars cals, DateRange range, bool required, object cellAttributes, object inputAttr, string classes, string rowIndex)
-        {
-            var wt = base.CalendarCell(helper, exp, rangeType, cals, range, required, cellAttributes, inputAttr, classes, rowIndex);
             wt.Accessibility = proc.ProcessCell(helper, exp, InputControls.CalendarTextBox);
             return wt;
         }
@@ -60,7 +51,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return wt;
         }
 
-        public override CellWriter CheckBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string listName, string ngModel, string changeFunction, object cellAttributes, object inputAttr, string listItem, string classes)
+        public override CellWriter CheckBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string listName, string ngModel,string changeFunction, object cellAttributes, object inputAttr, string listItem, string classes)
         {
             var wt = base.CheckBoxCell(helper, field, rowIndex, listName, ngModel, changeFunction, cellAttributes, inputAttr, listItem, classes);
             wt.Accessibility = proc.ProcessCell(helper, field, InputControls.CheckBoxCell);
@@ -79,19 +70,19 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return s;
         }
 
-        public CellWriter HeaderCell<T>(IHtmlHelper<T> helper, string textId, bool isColumn = false, string size = null, object cellAttributes = null, bool ignoreAccessibility = false, bool sorting = true)
+        public CellWriter HeaderCell<T>(IHtmlHelper<T> helper, MoldsterHtmlContainer parent, string textId, bool isColumn = false, string size = null, object cellAttributes = null, bool ignoreAccessibility = false, bool sorting = true)
         {
             var wt = base.HeaderCell(helper, textId, size, isColumn, cellAttributes, sorting);
             if (!ignoreAccessibility)
-                wt.Accessibility = proc.ProcessCell(helper, textId, "Header");
+                wt.Accessibility = proc.ProcessCell(helper, textId, "Header", parent);
             return wt;
         }
 
-        public CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string width, bool ignoreAccessibility, object cellAttributes, bool sorting)
+        public CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, MoldsterHtmlContainer parent, string width, bool ignoreAccessibility, object cellAttributes, bool sorting)
         {
             var wt = base.HeaderCell<T, TValue>(helper, exp, width, cellAttributes, sorting);
             if (!ignoreAccessibility)
-                wt.Accessibility = proc.ProcessCell(helper, exp, "Header");
+                wt.Accessibility = proc.ProcessCell(helper, exp, "Header", parent);
             return wt;
         }
 
@@ -105,9 +96,9 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return base.ListModifiers(helper, idExpression, buttons, detailsFunction, editFunction, deleteFunction, identifier, modifiers, permissionName, classes);
         }
 
-        public override CellWriter RadioBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string property, bool asArray, string changeFunction, object cellAttributes, object inputAttr, string listItem, string classes)
+        public override CellWriter RadioBoxCell<T>(IHtmlHelper<T> helper, string field, string rowIndex, string property, bool asArray,string changeFunction, object cellAttributes, object inputAttr, string listItem, string classes)
         {
-            var wt = base.RadioBoxCell(helper, field, rowIndex, property, asArray, changeFunction, cellAttributes, inputAttr, listItem, classes);
+            var wt = base.RadioBoxCell(helper, field, rowIndex, property, asArray,changeFunction, cellAttributes, inputAttr, listItem, classes);
             wt.Accessibility = proc.ProcessCell(helper, field, InputControls.CheckBoxCell);
 
             return wt;
@@ -141,6 +132,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             Lister source,
             string displayMember,
             string valueMember,
+            MoldsterHtmlContainer parent,
             bool required,
             bool multi,
             bool nullable,
@@ -150,10 +142,10 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string readOnlyProp,
             string rowIndex)
         {
-            var writer = base.SelectCell(helper, exp, source, displayMember, valueMember, required, multi, cellAttributes, inputAttr, classes, nullable, rowIndex);
+            var writer = base.SelectCell(helper, exp, source, displayMember, valueMember, required, multi, cellAttributes, inputAttr, classes, nullable,rowIndex);
             writer.ColumnModel.Attributes = RazorUtils.ToAttributeString(cellAttributes);
             ((SelectNgInput)writer.InputModel).Nullable = nullable;
-            writer.Accessibility = proc.ProcessCell(helper, exp, InputControls.Select);
+            writer.Accessibility = proc.ProcessCell(helper, exp, InputControls.Select, parent);
             writer.Initialize(null, null, cellAttributes, inputAttr, classes);
 
             helper.AddSource(source);
@@ -166,10 +158,10 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return writer;
         }
 
-        public CellWriter TextBoxCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string textBoxType, IValidationCollection coll, object cellAttributes, object inputAttr, string classes, string rowIndex, bool localizable)
+        public CellWriter TextBoxCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, MoldsterHtmlContainer parent, string textBoxType, IValidationCollection coll, object cellAttributes, object inputAttr, string classes, string rowIndex, bool localizable)
         {
             var w = base.TextBoxCell(helper, exp, textBoxType, rowIndex, coll, cellAttributes, inputAttr, classes);
-            w.Accessibility = proc.ProcessCell(helper, exp, InputControls.TextBox);
+            w.Accessibility = proc.ProcessCell(helper, exp, InputControls.TextBox, parent);
             return w;
         }
 
@@ -177,6 +169,15 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
         {
             var w = base.TextBoxCell(helper, exp, textBoxType, rowIndex, coll, cellAttributes, inputAttr, classes);
             w.Accessibility = proc.ProcessCell(helper, exp, InputControls.TextBox);
+            return w;
+        }
+
+
+
+        public CellWriter TextCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, MoldsterHtmlContainer parent, string pipe, object cellAttributes)
+        {
+            var w = base.TextCell(helper, exp, pipe, cellAttributes);
+            w.Accessibility = proc.ProcessCell(helper, exp, InputControls.Label, parent);
             return w;
         }
 

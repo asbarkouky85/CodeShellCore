@@ -8,11 +8,9 @@ namespace CodeShellCore.Security.Authorization
 {
     public interface IUserDataService : IServiceBase
     {
-        Dictionary<string, DataAccessPermission> GetRolesPermissions(IEnumerable<string> lst);
-        IUser GetUserData(string userId);
-        IUser GetUserDataForUI(string userId);
-        void ClearUserData(string id);
-        void Save(string userId, IUser user);
-        void SaveRoleInCache(RoleCacheItem item);
+        Dictionary<string, Permission> GetRolesPermissions(IEnumerable<object> lst);
+        IUser GetUserData(object userId);
+        void ClearUserData(object id);
+        void Save(object userId, IUser user);
     }
 }

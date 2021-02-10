@@ -11,7 +11,7 @@ using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Helpers;
 using CodeShellCore.Text;
 using CodeShellCore.Web.Razor.General.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db.Dto;
 
 namespace CodeShellCore.Web.Razor.Elements.Angular
 {
@@ -96,7 +96,7 @@ namespace CodeShellCore.Web.Razor.Elements.Angular
                 var coll = helper.VCollection().AddCustom("required_modal", helper.Message("value_is_required").ToString());
                 mod.FormFieldName = "field__" + Utils.GenerateID();
                 coll.SetMember("x", mod.FormFieldName);
-                mod.ValidationMessage = coll.GetMessages(helper);
+                mod.ValidationMessage = coll.GetMessages();
             }
 
 

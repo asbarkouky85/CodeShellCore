@@ -10,7 +10,7 @@ namespace CodeShellCore.Web.Filters
 {
     public class HtmlExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        private string GetMessage(Result res)
+        private string GetMessage(HttpResult res)
         {
             var temp = "<p style=\"color:#900\">" + res.Message + " (" + res.ExceptionMessage + ") " + "</p>";
             if (res.InnerResult != null)

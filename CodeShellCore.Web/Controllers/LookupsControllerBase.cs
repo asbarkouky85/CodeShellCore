@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Data.Localization;
-using CodeShellCore.Data.Services;
+﻿using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;

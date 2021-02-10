@@ -1,6 +1,5 @@
 ﻿using CodeShellCore.Files;
 using CodeShellCore.Net;
-using CodeShellCore.Web.Filters;
 using CodeShellCore.Web.Moldster;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,7 +7,7 @@ using System.IO;
 
 namespace CodeShellCore.Web.Controllers
 {
-    [ApiAuthorize(AllowAnonymous = true)]
+    
     public class MoldsterPublisherController : BaseApiController, IPublisherController
     {
         public MoldsterPublisherController()

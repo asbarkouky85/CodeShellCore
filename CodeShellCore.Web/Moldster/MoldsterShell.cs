@@ -23,18 +23,10 @@ namespace CodeShellCore.Web.Moldster
             var hot = getConfig("UseHotUpdate")?.Value == "True";
             if (hot)
             {
-                try
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                    {
-                        HotModuleReplacement = true
-                    });
-                }
-                catch
-                {
-
-                }
-
+                    HotModuleReplacement = true
+                });
             }
             base.ConfigureHttp(app, env);
         }

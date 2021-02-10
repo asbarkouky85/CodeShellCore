@@ -1,0 +1,85 @@
+﻿<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [contentStyle]="{'max-height':'280px'}" height="90vh" [width]="ModalWidth" [modal]="true">
+
+    <p-header>
+        @if (!IsSectionDefined("header"))
+        {
+            @Html.GetPageTitle()
+        }
+        else
+        {
+            @RenderSection("header")
+        }
+
+    </p-header>
+
+    <div class="col-md-12">
+        @if (Html.StartContainer("div", "Tree", new
+        {
+            @class = ((Html.GetAccessibility("Lister").Read) ? "col-md-4" : "col-md-12")
+        }))
+        {
+            @RenderSection("aboveTree", false)
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="tree-selected-path" *ngIf="selectedItem">{{selectedItem.nameChain}}</label>
+                    <label class="tree-selected-path" *ngIf="!selectedItem">@Html.Word("Empty")</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="panel panel-default">
+                    @if (IsSectionDefined("treeButtons"))
+                    {
+                        <div class="panel-heading blueColor">
+                            <div class="btn-toolbar showEdit show-btn-toolbar" role="toolbar">
+                                <div class="btn-group btn-group-justified" role="group">
+                                    @RenderSection("treeButtons", false)
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="panel-body" style="max-height:400px;overflow-y:scroll;">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+
+            @Html.CloseContainer("div")
+        }
+
+
+        @if (Html.StartContainer("div", "Lister", new { @class = "col-md-8" }))
+        {
+            @RenderSection("contents", false)
+            @Html.CloseContainer("div")
+        }
+        else if (IsSectionDefined("contents"))
+        {
+            IgnoreSection("contents");
+        }
+    </div>
+
+    <p-footer>
+        <div class="form-group">
+            <div class="text-center">
+                @if (IsSectionDefined("okButtons"))
+                {
+                    @RenderSection("okButtons",false)
+                }
+                else
+                {
+                    @Html.Button("Cancel", "Cancel()", null, BtnClass.Default)
+                    @Html.Button("OK", "Ok()", null, BtnClass.Primary, attr: new { calc__disabled = "!selectedItem" })
+                }
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>
+
+@{
+    Html.SetNgForm("Form");
+    Html.SetNgModel("model");
+}

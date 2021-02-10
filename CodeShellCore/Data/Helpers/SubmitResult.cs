@@ -9,9 +9,9 @@ namespace CodeShellCore.Data.Helpers
 {
     public class SubmitResult : Result
     {
-
+        
         public int AffectedRows { get; set; }
-
+        
 
         public SubmitResult()
         {
@@ -26,6 +26,6 @@ namespace CodeShellCore.Data.Helpers
             Message = message;
         }
 
-
+        
     }
 }

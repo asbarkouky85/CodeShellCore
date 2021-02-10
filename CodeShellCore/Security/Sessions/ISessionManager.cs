@@ -8,7 +8,7 @@ namespace CodeShellCore.Security.Sessions
         void StartSession(IUser user, TimeSpan? length = null);
         void EndSession();
         bool IsLoggedIn();
-        string GetCurrentUserId();
+        object GetCurrentUserId();
         string GetConnectionId();
         void AuthorizationRequest();
         void AuthorizationRequest(string token);

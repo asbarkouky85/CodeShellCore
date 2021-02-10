@@ -19,8 +19,7 @@ namespace CodeShellCore.Web.Controllers
         public abstract string GetDefaultTitle(string loc);
 
         public virtual IServerConfig ServerConfig { get { return new DefaultServerConfig(); } }
-        public virtual bool RestrictHttps => Shell.GetConfigAs<bool>("RestrictHttps",false);
-        public virtual string HttpsUrl => Shell.GetConfigAs<string>("HttpsUrl", false);
+        public virtual bool RestrictHttps { get; }
         public virtual string[] Domains => Tenants.Select(d => d.Key).ToArray();
         public virtual Func<IndexModel, IActionResult> EmptyUrlHandler { get; }
         public virtual Dictionary<string, TenantInfoItem> Tenants
@@ -46,7 +45,7 @@ namespace CodeShellCore.Web.Controllers
             }
         }
 
-        public virtual string RequestedDomain
+        public virtual string DomainName
         {
             get
             {
@@ -61,15 +60,14 @@ namespace CodeShellCore.Web.Controllers
         }
 
 
-        public virtual IActionResult Index([FromRoute]string id, [FromQuery]LangConfig conf)
+        public IActionResult Index([FromRoute]string id, [FromQuery]LangConfig conf)
         {
             if (!Request.IsHttps && RestrictHttps)
             {
-                string url = (HttpsUrl ?? "https://" + Request.Host) + Request.Path;
-                return Redirect(url);
+                return Redirect("https://" + Request.Host + Request.Path);
             }
 
-            string dom = RequestedDomain;
+            string dom = DomainName;
             bool isDevBuild = JsEnvironment == "dev";
 
             TenantInfoItem info = null;
@@ -120,15 +118,10 @@ namespace CodeShellCore.Web.Controllers
             mod.Config.Hash = isDevBuild ? "" : "~7d078181";
             mod.Chunks = files.Select(d => d.GetAfterLast("\\")).ToArray();
 
-            return IndexPage(mod);
-        }
-
-        protected virtual IActionResult IndexPage(IndexModel mod)
-        {
             return View("~/Pages/Index.cshtml", mod);
         }
 
-        public virtual IActionResult SetLocale(string lang)
+        public IActionResult SetLocale(string lang)
         {
             Response.SetLocaleCookie(lang);
             return Json(new { });

@@ -5,10 +5,10 @@
 <div>
     <div class="wrapper">
         <top-bar #topBar></top-bar>
-        <div class="wrapper-side" *ngIf="IsLoggedIn && ShowNav">
+        <div class="wrapper-side">
             <navigation-side-bar></navigation-side-bar>
         </div>
-        <div class="wrapper-content" [ngClass]="!IsLoggedIn || !ShowNav?'expanded':null">
+        <div class="wrapper-content">
             <router-outlet></router-outlet>
         </div>
     </div>
@@ -19,26 +19,23 @@
 
     <p-dialog #deleteDialog [(visible)]="deleteDialogShow" [modal]="true" width="600">
         <p-header>
-            {{confirmTitle }}
+            {{'Words.Delete' | translate }}
         </p-header>
-        <p>{{confirmMessage }}</p>
+        <p>{{'Messages.delete_confirm_message' | translate }}</p>
         <br />
 
-        <p-footer>
-            <div class="text-center modal-buttons">
-                <button class="btn btn-primary" (click)="OnDeleteConfirm($event)">{{'Words.Yes' | translate}}</button>
-                <button class="btn btn-default" (click)="OnDeleteCancel($event)">{{'Words.No' | translate}}</button>
-            </div>
-        </p-footer>
+        <div class="submit-buttons pull-last">
+            <button class="btn btn-primary" (click)="OnDeleteConfirm($event)">{{'Words.Yes' | translate}}</button>
+            <button class="btn btn-default" (click)="OnDeleteCancel($event)">{{'Words.No' | translate}}</button>
+
+        </div>
     </p-dialog>
 
     <p-dialog #prompt [(visible)]="promptShow" [modal]="true">
         <p [innerHTML]="promptMessage"></p>
         <br />
-        <p-footer>
-            <div class="text-center modal-buttons">
-                <button class="btn btn-primary pull-first" (click)="promptShow=false">{{'OK' | translate}}</button>
-            </div>
-        </p-footer>
+        <div class="submit-buttons">
+            <button class="btn btn-primary pull-first" (click)="promptShow=false">{{'OK' | translate}}</button>
+        </div>
     </p-dialog>
 </div>

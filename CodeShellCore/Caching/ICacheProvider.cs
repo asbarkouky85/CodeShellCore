@@ -8,12 +8,12 @@ namespace CodeShellCore.Caching
 {
     public interface ICacheProvider : IServiceBase
     {
-        T Get<T>(string key) where T : class;
+        T Get<T>(object key) where T : class;
         List<T> GetAll<T>() where T : class;
 
-        void Store<T>(string key, T entity) where T : class;
+        void Store<T>(object key, T entity) where T : class;
 
-        bool Remove<T>(string key) where T : class;
+        bool Remove<T>(object key) where T : class;
         void RemoveAll<T>() where T : class;
 
 

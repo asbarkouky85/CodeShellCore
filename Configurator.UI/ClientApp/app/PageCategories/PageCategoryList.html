@@ -1,0 +1,131 @@
+<div class="page-header" [ngClass]="IsEmbedded?'section-header':'container-fluid'" *ngIf="!HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12" *ngIf="!IsEmbedded">
+            <h2>{{'Pages.PageCategories__PageCategoryList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12" *ngIf="!IsEmbedded">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="IsEmbedded" class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    {{'Pages.PageCategories__PageCategoryList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+
+        <ol class="breadcrumb">
+            <li>
+                <a routerLink="'/'">{{'Words.Main' | translate }}</a>
+            </li>
+            <li>
+                {{'Pages.PageCategories__PageCategoryList' | translate }}
+            </li>
+        </ol>
+    </div>
+</div>
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{totalCount}}</span></span>
+            </div>
+            <div class="col-md-8">
+                <search-group (termChange)="HeaderSearch($event)"></search-group>
+            </div>
+        </div>
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+
+        <div class="table-responsive">
+            
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th  >{{'Columns.PageCategoryListDTO__Name' | translate }}</th>
+            <th  >{{'Columns.PageCategoryListDTO__BaseComponent' | translate }}</th>
+            <th  >{{'Columns.PageCategoryListDTO__DomainName' | translate }}</th>
+            <th  >{{'Columns.PageCategoryListDTO__ResourceName' | translate }}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            <td  >
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        {{model.name}}
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        
+    </div>
+</td>
+            <td  >
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        {{model.baseComponent}}
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        
+    </div>
+</td>
+            <td  >
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        {{model.domainName}}
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        
+    </div>
+</td>
+            <td  >
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        {{model.resourceName}}
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        
+    </div>
+</td>
+            <td>
+                <div class="btn-group btnResponsive ">
+            <a *ngIf="Permission.update" class="btn btn-primary btn-sm" [routerLink]="'/PageCategories/PageCategoryEdit/' +model.id">
+                <i class="fa fa-pen"></i>
+            </a>
+
+
+                <a *ngIf="Permission.delete" class="btn btn-danger btn-sm" (click)="Delete(model,model.id)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+
+</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+        </div>
+
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+    </div>
+
+</div>
+<div style='display:none' #lookupOptionsContainer values=''></div>
+<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":null,"EditUrl":"/PageCategories/PageCategoryEdit","DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{"EditModal":"PageCategories/PageCategoryEdit"}}'></div>

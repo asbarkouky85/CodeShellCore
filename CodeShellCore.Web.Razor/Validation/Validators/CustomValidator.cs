@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CodeShellCore.Web.Razor.Models;
 
 namespace CodeShellCore.Web.Razor.Validation.Validators
 {
@@ -23,10 +22,5 @@ namespace CodeShellCore.Web.Razor.Validation.Validators
         public override string Attribute { get { return Attr; } }
 
         public override string ValidationMessage { get { return MakeMessage(Id, Message); } }
-
-        public override IEnumerable<ValidatorModel> GetMessageModels()
-        {
-            return new[] { MakeModel(Id, Message) };
-        }
     }
 }

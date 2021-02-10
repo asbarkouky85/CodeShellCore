@@ -3,7 +3,7 @@ using CodeShellCore.Text;
 using System;
 using System.Linq.Expressions;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Db.Dto
 {
     public class PageParameterForJson
     {

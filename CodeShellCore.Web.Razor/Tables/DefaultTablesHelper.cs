@@ -11,13 +11,7 @@ namespace CodeShellCore.Web.Razor.Tables
     {
         public virtual CellWriter CalendarCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, CalendarTypes rangeType, Calendars cals, DateRange range, bool required, object cellAttributes, object inputAttr, string classes)
         {
-            var writer = new CellWriter(helper);
-            writer.UseExpression(exp);
-            
-            writer.Initialize(null, null, cellAttributes, inputAttr, classes);
-
-            
-            return writer;
+            throw new NotImplementedException();
         }
 
         public virtual CellWriter DragContentCell<T>(IHtmlHelper<T> helper, string tableName, string modelName, string width, object cellAttributes)

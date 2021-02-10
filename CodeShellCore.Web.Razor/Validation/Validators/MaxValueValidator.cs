@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using CodeShellCore.Text.Localization;
-using CodeShellCore.Web.Razor.Models;
+﻿using CodeShellCore.Text.Localization;
 
 namespace CodeShellCore.Web.Razor.Validation.Validators
 {
@@ -25,16 +23,6 @@ namespace CodeShellCore.Web.Razor.Validation.Validators
                 }
                 return MakeMessage("pattern", Message);
             }
-        }
-
-        public override IEnumerable<ValidatorModel> GetMessageModels()
-        {
-            if (Message == null)
-            {
-                Message = TextProvider.Message(MessageIds.invalid_field, Label);
-            }
-            var n = MakeModel("pattern", Message);
-            return new[] { n };
         }
     }
 }

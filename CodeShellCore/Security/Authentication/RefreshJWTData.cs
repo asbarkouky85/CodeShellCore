@@ -8,6 +8,5 @@ namespace CodeShellCore.Security.Authentication
     {
         public string DeviceId { get; set; }
         public string TokenId { get; set; }
-        public string UserId { get; set; }
     }
 }

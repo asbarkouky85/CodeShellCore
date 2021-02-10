@@ -9,27 +9,30 @@ namespace CodeShellCore.Web.Razor.General
 {
     public class DefaultGeneralHelper : IGeneralHelper
     {
-        public virtual void AddHeaderButton(IHtmlHelper helper, IHtmlContent content = null, string function = null, string url = null, BtnClass btn = BtnClass.Default, string icon = null, string identifier = null, string classes = null, string title = null, object attr = null)
+        public virtual IHtmlContent Button<T>(IHtmlHelper<T> helper, string text, string function, string url, BtnClass btn, string icon, string identifier, IHtmlContent content, string classes, string title, object attr)
         {
-            helper.HeaderModel().AddToButtons(content, function, url, btn, icon, identifier, classes, title, attr);
-        }
-
-        public virtual IHtmlContent Button(IHtmlHelper helper, string text, string function, string url, BtnClass btn, string icon, string identifier, IHtmlContent content, string classes, string title, object attr)
-        {
-            content = content != null ? content : (text == null ? null : helper.Word(text));
-            LinkModel model = LinkModel.Make(content, function, url, btn, icon, identifier, classes, title, attr);
+            LinkModel model = new LinkModel
+            {
+                Text = content != null ? content : (text == null ? null : helper.Word(text)),
+                Function = function,
+                BtnClassEnum = btn,
+                Url = url,
+                IconClass = icon,
+                Attrs = attr,
+                Classes = classes,
+                Title = title
+            };
             return helper.GetComponent("Buttons/Button", model);
         }
 
-        public virtual IHtmlContent TabTitle(IHtmlHelper helper, string containerId, string activationVariable, string textId, IHtmlContent content, object attr)
+        public virtual IHtmlContent TabTitle(IHtmlHelper helper, string containerId, string activationVariable, string textId, object attr)
         {
             var m = new ContainerModel
             {
                 ContainerId = containerId,
                 ActivationProperty = activationVariable,
                 TitleTextId = textId ?? containerId,
-                Attributes = attr,
-                TitleContent = content
+                Attributes = attr
             };
             return helper.GetComponent("Components/TabTitle", m);
         }

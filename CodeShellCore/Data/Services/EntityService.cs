@@ -1,5 +1,4 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.MQ.Events;
@@ -9,7 +8,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq.Expressions;
 
 namespace CodeShellCore.Data.Services
 {
@@ -17,7 +15,6 @@ namespace CodeShellCore.Data.Services
     {
         protected virtual IUnitOfWork UnitOfWork { get; private set; }
         public virtual IRepository<T> Repository { get { return UnitOfWork.GetRepositoryFor<T>(); } }
-        public virtual ICollectionRepository<T> CollectionRepository => UnitOfWork.GetCollectionRepositoryFor<T>();
 
         public EntityService(IUnitOfWork unit)
         {
@@ -146,20 +143,6 @@ namespace CodeShellCore.Data.Services
         {
             var op = opts.GetOptionsFor<TDTO>();
             return Repository.FindAs(ex, op);
-        }
-
-        public virtual LoadResult<T> LoadCollection(string collectionId, LoadOptions opts)
-        {
-            if (string.IsNullOrEmpty(collectionId))
-                return CollectionRepository.Find(opts.GetOptionsFor<T>());
-            return CollectionRepository.LoadCollection(collectionId, opts.GetOptionsFor<T>());
-        }
-
-        public virtual LoadResult<TDto> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, LoadOptions opts) where TDto : class
-        {
-            if (string.IsNullOrEmpty(collectionId))
-                return CollectionRepository.FindAs(ex, opts.GetOptionsFor<TDto>());
-            return CollectionRepository.LoadCollectionAs(collectionId, ex, opts.GetOptionsFor<TDto>());
         }
     }
 }

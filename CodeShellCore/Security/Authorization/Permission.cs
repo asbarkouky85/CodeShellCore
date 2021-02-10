@@ -7,64 +7,12 @@ namespace CodeShellCore.Security.Authorization
 {
     public class Permission
     {
-        public int Privilege { get; set; }
+        protected int Privilege = 0;
         public List<string> Actions { get; set; }
-        public string CollectionId;
 
         public Permission()
         {
 
-        }
-
-        public static int GetInt(IDataPermission p)
-        {
-            var P = 0;
-            P = P.SetBit(0, true);
-            P = P.SetBit(1, p.CanViewDetails);
-            P = P.SetBit(2, p.CanInsert);
-            P = P.SetBit(3, p.CanUpdate);
-            P = P.SetBit(4, p.CanDelete);
-            return P;
-        }
-
-        //public DataAccessPermission ToDataPermission()
-        //{
-        //    return new DataAccessPermission
-        //    {
-        //        Actions = Actions,
-        //        Details = FromBit(1),
-        //        Insert = FromBit(2),
-        //        Update = FromBit(3),
-        //        Delete = FromBit(4),
-        //        CollectionId = CollectionId
-        //    };
-        //}
-
-        public static Dictionary<string, int> CompressResourceData(IEnumerable<ResourceV> items)
-        {
-            Dictionary<string, int> ret = new Dictionary<string, int>();
-            foreach (var d in items)
-            {
-                int perm = 0;
-                ret.TryGetValue(d.Id, out perm);
-                perm = Combine(perm, d);
-                ret[d.Id] = perm;
-            }
-            return ret;
-        }
-
-        public static int Combine(int p1, IDataPermission p2)
-        {
-            var p = new Permission(p1);
-            p.Append(GetInt(p2));
-            return p.Privilege;
-        }
-
-        public static int Combine(int p1, int p2)
-        {
-            var p = new Permission(p1);
-            p.Append(p2);
-            return p.Privilege;
         }
 
         public Permission(int perm, IEnumerable<string> actions = null)
@@ -81,8 +29,9 @@ namespace CodeShellCore.Security.Authorization
         public void Append(int priv)
         {
             Privilege = Privilege | priv;
+            Console.WriteLine(this);
         }
-
+        
         public void Append(string action)
         {
             if (Actions == null)
@@ -106,6 +55,27 @@ namespace CodeShellCore.Security.Authorization
                 return false;
 
             return Actions.Contains(action);
+        }
+
+
+        public bool FromBit(int bitOrder)
+        {
+            int data = (int)Math.Pow(2D, bitOrder);
+            bool val = (((Privilege & data) >> bitOrder) == 1);
+            Console.WriteLine(this.ToString() + " - " + bitOrder + " -> " + val);
+            return val;
+        }
+
+        public void SetBit(int bitOrder, bool value)
+        {
+            int data = (int)Math.Pow(2D, bitOrder);
+
+            if (value == true)
+                Privilege = Privilege | data;
+            else if (Privilege >= data)
+                Privilege = Privilege - data;
+
+            Console.WriteLine(this);
         }
 
         public override string ToString()

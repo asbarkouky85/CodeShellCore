@@ -1,11 +1,6 @@
-﻿using CodeShellCore.Files.Logging;
-using CodeShellCore.Helpers;
-using CodeShellCore.Http;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 
 namespace CodeShellCore.Web
@@ -23,11 +18,9 @@ namespace CodeShellCore.Web
             return subject;
         }
 
-        public static string FillConfigUrlParams(string formattedUrl, HttpRequest Request)
+        public static string FillConfigUrlParams(string formattedUrl,HttpRequest Request)
         {
-            return FillConfigUrlParams(formattedUrl, Request.Host.Host, Request.IsHttps);
+            return FillConfigUrlParams(formattedUrl,Request.Host.Host,Request.IsHttps);
         }
-
-       
     }
 }

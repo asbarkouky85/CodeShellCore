@@ -15,11 +15,9 @@ namespace CodeShellCore.Linq
 {
     public static class Expressions
     {
-        public static MemberExpression GetPropertyExpressionFromExpression(Expression ex, string property)
+        public static MemberExpression FromNavigation(Expression ex, string property)
         {
-            if (ex.Type.GetProperties().Any(d => d.Name == property))
-                return Expression.Property(ex, property);
-            return null;
+            return Expression.Property(ex, property);
         }
 
         public static IEnumerable<Expression<Func<T, bool>>> GetFilters<T>(IEnumerable<PropertyFilter> filters) where T : class
@@ -60,9 +58,6 @@ namespace CodeShellCore.Linq
             ParameterExpression pExp = Expression.Parameter(typeof(T));
             MemberExpression mExp = GetMemberExpression(pExp, propertyName);
 
-            if (mExp == null)
-                return null;
-
             BinaryExpression greaterExp = null;
             BinaryExpression smaller = null;
 
@@ -89,8 +84,6 @@ namespace CodeShellCore.Linq
         {
             ParameterExpression pExp = Expression.Parameter(typeof(T));
             MemberExpression mExp = GetMemberExpression(pExp, propertyName);
-            if (mExp == null)
-                return null;
             BinaryExpression greaterExp = null;
             BinaryExpression smaller = null;
 
@@ -111,43 +104,11 @@ namespace CodeShellCore.Linq
             return Combine<T>(pExp, greaterExp, smaller);
         }
 
-        static object Parse(string t, Type typ)
-        {
-            var nam = typ.RealType().Name;
-            switch (nam)
-            {
-                case "Int32":
-                case "Int64":
-                case "Int16":
-                    return int.Parse(t);
-                case "Boolean":
-                    return bool.Parse(t);
-            }
-            return t;
-        }
-
-        public static Expression<Func<T, bool>> GetEqualsExpression<T>(string propertyName, string value1)
-        {
-            ParameterExpression pExp = Expression.Parameter(typeof(T));
-            MemberExpression mExp = GetMemberExpression(pExp, propertyName);
-            if (mExp == null)
-                return null;
-            var real = mExp.Type.RealType();
-            MethodInfo inf = real.GetMethod("Equals", new[] { real.RealType() });
-            var ob = Parse(value1, mExp.Type);
-            ConstantExpression cExp = Expression.Constant(ob);
-            UnaryExpression uExp = Expression.Convert(cExp, real);
-            MethodCallExpression mcExp = Expression.Call(mExp, inf, uExp);
-
-            return Expression.Lambda<Func<T, bool>>(mcExp, pExp);
-        }
-
         public static Expression<Func<T, bool>> GetStringContainsFilter<T>(string propertyName, string str)
         {
             ParameterExpression pExp = Expression.Parameter(typeof(T));
             MemberExpression mExp = GetMemberExpression(pExp, propertyName);
-            if (mExp == null)
-                return null;
+
             MethodInfo inf = typeof(string).GetMethod("Contains", new[] { typeof(string) });
 
             ConstantExpression cExp = Expression.Constant(str, typeof(string));
@@ -160,8 +121,7 @@ namespace CodeShellCore.Linq
         {
             ParameterExpression pExp = Expression.Parameter(typeof(T));
             MemberExpression mExp = GetMemberExpression(pExp, propertyName);
-            if (mExp == null)
-                return null;
+
             Type method;
             Type typ = null;
             IEnumerable lst;
@@ -199,8 +159,6 @@ namespace CodeShellCore.Linq
         {
             ParameterExpression pExp = Expression.Parameter(typeof(T));
             MemberExpression mExp = GetMemberExpression(pExp, propertyName);
-            if (mExp == null)
-                return null;
             BinaryExpression greaterExp = null;
             BinaryExpression smaller = null;
 
@@ -230,20 +188,15 @@ namespace CodeShellCore.Linq
             if (propertyName.Contains("."))
             {
                 string[] parts = propertyName.Split('.');
-                if (pExp.Type.GetProperties().Any(d => d.Name == propertyName))
+                mExp = Expression.Property(pExp, parts[0]);
+                for (int i = 1; i < parts.Length; i++)
                 {
-                    mExp = Expression.Property(pExp, parts[0]);
-                    for (int i = 1; i < parts.Length; i++)
-                    {
-                        mExp = GetPropertyExpressionFromExpression(mExp, parts[i]);
-                    }
+                    mExp = FromNavigation(mExp, parts[i]);
                 }
-
             }
             else
             {
-                if (pExp.Type.GetProperties().Any(d => d.Name == propertyName))
-                    mExp = Expression.Property(pExp, propertyName);
+                mExp = Expression.Property(pExp, propertyName);
             }
             return mExp;
         }
@@ -252,8 +205,6 @@ namespace CodeShellCore.Linq
         {
             var par = Expression.Parameter(typeof(T));
             var prop = GetMemberExpression(par, property);
-            if (prop == null)
-                return null;
             var propcon = Expression.Convert(prop, typeof(TVal));
             return Expression.Lambda<Func<T, TVal>>(propcon, par);
         }

@@ -55,6 +55,7 @@ namespace CodeShellCore.Cli
         {
             base.RegisterServices(coll);
             coll.AddSingleton<AuthorizationService>();
+            coll.AddTransient<WriterService>();
         }
 
         protected override IConfigurationSection getConfig(string key)

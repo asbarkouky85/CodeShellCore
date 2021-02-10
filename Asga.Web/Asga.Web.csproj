@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2.7.23.0</Version>
+    <AssemblyVersion>2.7.23.0</AssemblyVersion>
+    <FileVersion>2.7.23.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
+    <ProjectReference Include="..\Asga.Common\Asga.Common.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+  </ItemGroup>
+
+</Project>

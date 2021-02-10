@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Dto;
+﻿using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Services.Notifications;
 using System;
 using System.Collections.Generic;

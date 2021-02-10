@@ -7,17 +7,17 @@ namespace CodeShellCore.Web.Controllers
 {
     public abstract class BaseFilesController : BaseApiController
     {
-        protected IFileUploadService Service { get { return GetService<IFileUploadService>(); } }
+        protected FileService Service { get { return GetService<FileService>(); } }
 
         [HttpPost]
-        public virtual IActionResult Upload()
+        public IActionResult Upload()
         {
             Dictionary<string, IFormFile> dictionary = new Dictionary<string, IFormFile>();
             foreach (var f in Request.Form.Files)
             {
                 dictionary[f.Name] = f;
             }
-            return Respond(Service.Upload(dictionary));
+            return Json(Service.Upload(dictionary));
         }
     }
 }

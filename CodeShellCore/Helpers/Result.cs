@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Http;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,6 @@ namespace CodeShellCore.Helpers
         public string ExceptionMessage { get; set; }
         public string[] StackTrace { get; set; }
         public virtual bool IsSuccess { get { return Code == 0; } }
-        public Result InnerResult { get; set; }
 
         protected Exception _exception;
 
@@ -52,54 +50,13 @@ namespace CodeShellCore.Helpers
             return _exception;
         }
 
-        public static MobileResult<T> MakeMobileResult<T>(T data)
-        {
-            var res = new MobileResult<T>();
-            res.Code = 0;
-            res.Message = "Success";
-            res.Data = data;
-            return res;
-        }
-
         public virtual void SetException(Exception e, bool recurse = false)
         {
             _exception = e;
-            if (Code == 200)
-                Code = 500;
-
-            if (_exception is CodeShellHttpException)
-            {
-                var res = (_exception as CodeShellHttpException).HttpResult;
-                if ((_exception as CodeShellHttpException).HttpResult != null)
-                {
-                    Code = res.Code;
-                    Message = res.Message;
-                    ExceptionMessage = res.ExceptionMessage;
-                    StackTrace = res.StackTrace;
-                    return;
-                }
-            }
-
-            if (_exception.InnerException != null && _exception.InnerException is CodeShellHttpException)
-            {
-                try
-                {
-                    InnerResult = ((CodeShellHttpException)_exception.InnerException).HttpResult;
-                    ExceptionMessage = "Check inner result";
-                }
-                catch
-                {
-                    ExceptionMessage = e.GetMessageRecursive();
-                }
-            }
-            else
-            {
-                ExceptionMessage = e.GetMessageRecursive();
-            }
-
-
-            if (e.StackTrace != null)
-                StackTrace = e.GetStackTrace();
+            ExceptionMessage = e.GetMessageRecursive(true);
+            StackTrace = e.GetStackTrace(recurse, true);
+            if (Code == 0)
+                Code = 1;
         }
 
         public T ReadFromDataAs<T>(string index) where T : class
@@ -112,6 +69,4 @@ namespace CodeShellCore.Helpers
             return null;
         }
     }
-
-    
 }

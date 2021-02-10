@@ -10,7 +10,7 @@ import { Login } from "%BaseName%/Main/Login";
 %LocalizationImports%
 
 var routes: Route[] = [
-    { path: 'Login', component: Login, data: { action: 'anonymous', name:"Login" } }
+    { path: 'Login', component: Login, data: { action: 'anonymous' } }
 	%DefaultRoute%,
 %Routes%
     { path: '**', redirectTo: '/' }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using CodeShellCore.Moldster.Db;
+using System;
 using Microsoft.EntityFrameworkCore;
-using CodeShellCore.Moldster;
 
 namespace GenerationTest.Api.Data
 {
@@ -54,6 +55,7 @@ namespace GenerationTest.Api.Data
                 ViewPath = "Test",
                 DomainId = 2,
                 ResourceId = 2,
+                ScriptPath = "ExampleProject/TestBase"
             });
         }
 

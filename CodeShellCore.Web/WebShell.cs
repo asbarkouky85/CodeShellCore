@@ -10,9 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using CodeShellCore.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CodeShellCore.Web
 {
@@ -51,31 +48,10 @@ namespace CodeShellCore.Web
             Configuration = config;
         }
 
-        protected virtual void HandleSystemErrors(HttpContext cont, Exception ex)
-        {
-            var res = cont.HandleRequestError(ex);
-            cont.Response.ContentType = "application/json";
-            cont.Response.WriteAsync(res.ToJson());
-        }
-
         public virtual void ConfigureHttp(IApplicationBuilder app, IHostingEnvironment env)
         {
             _appRoot = env.ContentRootPath;
-
-            app.UseExceptionHandler(new ExceptionHandlerOptions
-            {
-                ExceptionHandler = cont =>
-                {
-                    return Task.Run(() =>
-                    {
-                        var feat = cont.Features.Get<IExceptionHandlerPathFeature>();
-                        HandleSystemErrors(cont, feat.Error);
-                    });
-                }
-            });
-
             app.UseMvc(d => RegisterRoutes(d));
-
             if (UseHealthChecks)
             {
                 app.UseHealthChecks("/hc", new HealthCheckOptions()
@@ -129,7 +105,7 @@ namespace CodeShellCore.Web
             AddMvcFeatures(mvc);
             mvc.AddJsonOptions(e => e.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local);
             coll.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            coll.AddTransient<IFileUploadService,FileService>();
+            coll.AddTransient<FileService>();
         }
 
         protected override IConfigurationSection getConfig(string key)

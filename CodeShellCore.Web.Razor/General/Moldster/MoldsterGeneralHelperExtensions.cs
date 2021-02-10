@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Dto;
+﻿using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Web.Razor.Containers;
 using CodeShellCore.Moldster.Razor;
 using Microsoft.AspNetCore.Html;
@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Text;
 using CodeShellCore.Types;
 using System.Linq;
+using CodeShellCore.Text;
 using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Db.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq.Expressions;
 
@@ -17,7 +20,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
     public static class MoldsterGeneralHelperExtensions
     {
         static IdentifierProcessor proc = new IdentifierProcessor();
-        //static IMoldsterGeneralHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IMoldsterGeneralHelper>(); } }
+        static IMoldsterGeneralHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IMoldsterGeneralHelper>(); } }
 
         /// <summary>
         /// <p>writes the opening tag name and the closing tag name on the end bracket</p>
@@ -45,14 +48,6 @@ namespace CodeShellCore.Web.Razor.General.Moldster
             helper.AddToViewControls(container.Control);
 
             return access;
-        }
-
-
-
-        public static bool ShowContent(this IHtmlHelper helper, string identifier)
-        {
-            var access = proc.Process(helper, identifier.ToLower(), "Container");
-            return access.Read;
         }
 
         public static bool StartContainer(this IHtmlHelper helper, string tag, string identifier, object attrs = null, string tabVariable = null)
@@ -93,18 +88,6 @@ namespace CodeShellCore.Web.Razor.General.Moldster
 
             return helper.Config().GetAccessibility(id.ToLower());
         }
-
-        public static Accessibility GetAccessibility<T, TVal>(this IHtmlHelper<T> helper, Expression<Func<T, TVal>> ex, bool cell = false)
-        {
-            if (helper.CollectingData())
-                return new Accessibility(2);
-
-            var id = RazorUtils.GetColumnId(ex);
-            if (cell)
-                id = "cell__" + id;
-            return helper.Config().GetAccessibility(id.ToLower());
-        }
-
 
         internal static bool CollectingData(this IHtmlHelper helper)
         {
@@ -165,7 +148,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
 
         public static void AddSource(this IHtmlHelper helper, Lister lst, string identifier = null)
         {
-            if (!helper.CollectingData() && lst.IsLookup)
+            if (!helper.CollectingData())
                 helper.Config().Sources.Add(lst);
 
             if (identifier != null)
@@ -197,13 +180,11 @@ namespace CodeShellCore.Web.Razor.General.Moldster
 
         public static IHtmlContent ComponentSelectorFromOther(this IHtmlHelper helper, string id, string def = null, object attr = null)
         {
-            var Provider = helper.GetService<IMoldsterGeneralHelper>();
             return Provider.ComponentSelectorFromOther(helper, id, def, attr);
         }
 
         public static void AddModal(this IHtmlHelper helper, string id, string def = null)
         {
-            var Provider = helper.GetService<IMoldsterGeneralHelper>();
             Provider.AddModal(helper, id, def);
         }
 
@@ -214,7 +195,6 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         /// <param name="def">the default value of the database value is empty</param>
         public static void AddParameter(this IHtmlHelper helper, string id, string def = null)
         {
-            var Provider = helper.GetService<IMoldsterGeneralHelper>();
             Provider.AddParameter(helper, id, def);
         }
 
@@ -239,9 +219,8 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         /// <param name="idProperty">stringified property of that expression will be added after the link and the model name (ex : '/[linkValue]/'+[ngModelName].[idProperty]</param>
         /// <param name="def">The default value for that link filled if the view parameter is empty</param>
         /// <returns></returns>
-        public static string GetLink<T, TValue>(this IHtmlHelper<T> helper, string id, Expression<Func<T, TValue>> idProperty, string def = null)
+        public static string GetLink<T, TValue>(this IHtmlHelper<T> helper, string id, Expression<Func<T, TValue>> idProperty, string def)
         {
-            var Provider = helper.GetService<IMoldsterGeneralHelper>();
             return Provider.GetLink(helper, id, idProperty, def);
         }
 
@@ -255,42 +234,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         /// <returns></returns>
         public static string GetLink(this IHtmlHelper helper, PageLink link)
         {
-            var Provider = helper.GetService<IMoldsterGeneralHelper>();
             return Provider.GetLink(helper, link);
-        }
-
-        public static void AddBreadCrumbMoldster<T, TValue>(this IHtmlHelper<T> helper, string id, Expression<Func<T, TValue>> idProperty, string def = null, IHtmlContent title = null)
-        {
-            var Provider = helper.GetService<IMoldsterGeneralHelper>();
-
-            var lnk = Provider.GetLink(helper, id, idProperty, def);
-            if (lnk != null)
-            {
-                if (title == null)
-                {
-                    var pag = helper.GetViewParams().GetFromOther(id, def);
-                    var pageId = RazorUtils.UrlToPageId(pag);
-                    title = helper.Page(pageId);
-                }
-                helper.HeaderModel().BreadCrums.Add(new Models.BreadCrumbModel { Title = title, Link = "{{" + lnk + "}}" });
-            }
-        }
-
-        public static void AddBreadCrumbMoldster<T>(this IHtmlHelper<T> helper, string identifier, string idExpression = null, string idProperty = null, string def = null, IHtmlContent title = null)
-        {
-            var Provider = helper.GetService<IMoldsterGeneralHelper>();
-
-            var lnk = Provider.GetLink(helper, new PageLink(identifier, def, idExpression, idProperty));
-            if (lnk != null)
-            {
-                if (title == null)
-                {
-                    var pag = helper.GetViewParams().GetFromOther(identifier, def);
-                    var pageId = RazorUtils.UrlToPageId(pag);
-                    title = helper.Page(pageId);
-                }
-                helper.HeaderModel().BreadCrums.Add(new Models.BreadCrumbModel { Title = title, Link = "{{" + lnk + "}}" });
-            }
         }
     }
 }

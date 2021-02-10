@@ -1,9 +1,9 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.Db.Dto;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.Configurator.Services
@@ -16,11 +16,11 @@ namespace CodeShellCore.Moldster.Configurator.Services
         {
             _unit = unit;
         }
-
+        
         public LoadResult<PageControlListDTO> GetControlByPageId(LoadOptions opt)
         {
             var opts = opt.GetOptionsFor<PageControlListDTO>();
-            return (LoadResult<PageControlListDTO>)_unit.PageControlRepository.FindAsSorted(PageControlListDTO.Expression, d => d.Control.Identifier, SortDir.ASC, opts);
+            return _unit.PageControlRepository.FindAs(PageControlListDTO.Expression, opts);
         }
 
         public SubmitResult UpdatePageControls(List<PageControlListDTO> pageControls)

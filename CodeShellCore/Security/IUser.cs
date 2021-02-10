@@ -8,13 +8,8 @@ namespace CodeShellCore.Security
 {
     public interface IUser
     {
-        string UserId { get; }
+        object UserId { get; }
         string Name { get; }
         string LogonName { get; }
-        string App { get; }
-
-
-        long? GetUserIdAsLong();
-        string GetPersonId();
     }
 }

@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 namespace CodeShellCore.Security
 {
     public interface IUserRepository : IRepository
-    {
-        IUser GetByCredentials(string name, string password,bool forUi=true);
-        IUser GetByUserId(string c, bool forUi = true);
-        IUser GetByName(string userName, bool forUi = true);
+    { 
+        IUser GetByCredentials(string name, string password);
+        
+        IUser GetByUserId(object c);
+        IUser GetByName(string userName);
         RegisterResult AddUser(IRegisterModel model);
         bool NameExists(string logonName);
         bool EmailExists(string email);

@@ -22,23 +22,23 @@ namespace CodeShellCore.Security.Authorization
         {
             return new List<RoleCacheItem>();
         }
-
-        protected virtual IUser GetUserFromDataSource(string c)
+        protected virtual IUser GetUserFromDataSource(object c)
         {
             return null;
         }
-
-        public virtual Dictionary<string, DataAccessPermission> GetRolesPermissions(IEnumerable<string> lst)
+        public Dictionary<string, Permission> GetRolesPermissions(IEnumerable<object> lst)
         {
-            var ret = new Dictionary<string, DataAccessPermission>();
-            List<object> unCached = new List<object>();
 
-            foreach (string role in lst)
+            List<ResourceActionV> ras = new List<ResourceActionV>();
+            List<ResourceV> rs = new List<ResourceV>();
+            List<object> unCached = new List<object>();
+            foreach (object role in lst)
             {
-                var roleFromCache = GetRoleFromCache(role);
-                if (roleFromCache != null)
+                var c = GetRoleFromCache(role);
+                if (c != null)
                 {
-                    ret = Append(ret, roleFromCache);
+                    ras.AddRange(c.Actions);
+                    rs.AddRange(c.Resources);
                 }
                 else
                 {
@@ -49,41 +49,24 @@ namespace CodeShellCore.Security.Authorization
             if (unCached.Any())
             {
                 var find = GetRolesFromDataSource(unCached);
-                foreach (var fromSrc in find)
+                foreach (var f in find)
                 {
-                    SaveRoleInCache(fromSrc);
-                    ret = Append(ret, fromSrc);
+                    SaveRoleInCache(f);
+                    ras.AddRange(f.Actions);
+                    rs.AddRange(f.Resources);
                 }
             }
 
-            return ret;
+
+            return AccessibilityPermissions.GetDictionary(rs, ras);
         }
 
-        protected virtual Dictionary<string, DataAccessPermission> Append(Dictionary<string, DataAccessPermission> permissions, RoleCacheItem roleItem)
+        protected virtual void SaveRoleInCache(RoleCacheItem item)
         {
-            foreach (var r in roleItem.Resources)
-            {
-                if (!permissions.TryGetValue(r.Key, out DataAccessPermission perm))
-                    perm = new DataAccessPermission(0);
-                
-                if (roleItem.Collections!=null && roleItem.Collections.TryGetValue(r.Key, out string coll))
-                    perm.CollectionId = coll;
-
-                perm.Append(r.Value);
-                var acs = roleItem.Actions.Where(d => d.Id == r.Key).Select(d => d.Action);
-                foreach (var a in acs)
-                    perm.Append(a);
-                permissions[r.Key] = perm;
-            }
-            return permissions;
+            cache.Store(item.RoleId, item);
         }
 
-        public virtual void SaveRoleInCache(RoleCacheItem item)
-        {
-            cache.Store(item.RoleId.ToString(), item);
-        }
-
-        protected virtual RoleCacheItem GetRoleFromCache(string role)
+        protected virtual RoleCacheItem GetRoleFromCache(object role)
         {
             return cache.Get<RoleCacheItem>(role);
         }
@@ -98,7 +81,7 @@ namespace CodeShellCore.Security.Authorization
             }
         }
 
-        public virtual IUser GetUserData(string userId)
+        public IUser GetUserData(object userId)
         {
             if (userId == null || userId.Equals(0))
                 return null;
@@ -109,29 +92,24 @@ namespace CodeShellCore.Security.Authorization
                 Save(userId, u);
             }
             AppendPermissions(u);
+
             return u;
         }
 
-        public virtual IUser GetUserDataForUI(string userId)
-        {
-            return GetUserData(userId);
-        }
-
-        protected virtual IUser GetUserFromCache(string userId)
+        protected virtual IUser GetUserFromCache(object userId)
         {
             return cache.Get<IUser>(userId);
         }
 
-        public virtual void Save(string userId, IUser user)
+        public virtual void Save(object userId, IUser user)
         {
             cache.Store(userId, user);
         }
 
-        public virtual void ClearUserData(string id)
+        public virtual void ClearUserData(object id)
         {
             cache.Remove<IUser>(id);
         }
-
 
     }
 }

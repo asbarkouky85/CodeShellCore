@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleTest2.Consumers
 {
-    public class TestConsumer : CodeShellCore.MQ.Consumer, IConsumer<SimpleEvent>, INotificationHandler<SimpleEvent>, IConsumer<SimpleEvent2>
+    public class TestConsumer : CodeShellCore.MQ.Consumer, IConsumer<SimpleEvent>, INotificationHandler<SimpleEvent>
     {
         public Task Consume(ConsumeContext<SimpleEvent> context)
         {
@@ -18,15 +18,6 @@ namespace ConsoleTest2.Consumers
             {
                 Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d.Id}] : {d.Message}");
                 return new SubmitResult(0);
-            });
-        }
-
-        public Task Consume(ConsumeContext<SimpleEvent2> context)
-        {
-            return ConsumeEvent(context, d =>
-            {
-                Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d.Id}] : {d.Message}");
-                return new SubmitResult(1);
             });
         }
 

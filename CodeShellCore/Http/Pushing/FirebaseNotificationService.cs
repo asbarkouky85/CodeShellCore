@@ -1,5 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Http;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 
 namespace CodeShellCore.Http.Pushing
 {
@@ -18,56 +24,8 @@ namespace CodeShellCore.Http.Pushing
 
         public FirebasePushResult SendNotification(FirebaseRequest data)
         {
-            FirebasePushResult res = new FirebasePushResult();
-
-            try
-            {
-                res = PostAs<FirebasePushResult>("send", data);
-            }
-            catch (Exception ex)
-            {
-                res.SetException(ex);
-            }
-            return res;
-
+            return PostAs<FirebasePushResult>("send", data);
         }
-
-        public FirebasePushResult SendNotification(FirebaseMessage message, string to = null, string[] topics = null, object data = null)
-        {
-            var req = new FirebaseRequest
-            {
-                notification = message,
-                data = data,
-                to = to
-            };
-
-            if (topics != null)
-            {
-                List<string> conds = new List<string>();
-                foreach (var c in topics)
-                {
-                    conds.Add("'" + c + "' in topics");
-                }
-                req.condition = string.Join("||", conds);
-            }
-
-            FirebasePushResult res = new FirebasePushResult();
-
-            try
-            {
-                res = PostAs<FirebasePushResult>("send", req);
-            }
-            catch (Exception ex)
-            {
-                res.success = 0;
-                res.failure = 1;
-                res.SetException(ex);
-            }
-            return res;
-        }
-
-
-
         public string Lang { get; set; }
 
 

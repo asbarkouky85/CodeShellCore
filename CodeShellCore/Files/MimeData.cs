@@ -614,7 +614,7 @@ namespace CodeShellCore.Files
 
             string mime;
 
-            return Mappings.TryGetValue(extension, out mime) ? mime : "application/octet-stream";
+            return _mappings.TryGetValue(extension, out mime) ? mime : "application/octet-stream";
         }
     }
 }

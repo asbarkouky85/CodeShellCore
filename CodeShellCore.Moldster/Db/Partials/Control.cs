@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace CodeShellCore.Moldster
+namespace CodeShellCore.Moldster.Db
 {
     public partial class Control
     {
         [NotMapped]
-        public ResourceCollection Collection { get; set; }
+        public DomainEntityCollection Collection { get; set; }
         
     }
 }

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using CodeShellCore.Data;
 using CodeShellCore.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Db.Dto
 {
     public class PageDTO : IDTO<Page>
     {
@@ -23,7 +23,41 @@ namespace CodeShellCore.Moldster.Dto
 
         public string ComponentName { get { return Page.ViewPath.GetAfterLast("/"); } }
 
-        
+        public static Expression<Func<Page, PageDTO>> ExpressionForRendering
+        {
+            get
+            {
+                return e => new PageDTO
+                {
+                    TenantCode = e.Tenant.Code,
+                    TenantId = e.TenantId,
+                    Page = e,
+                    BaseScript = e.PageCategory.ScriptPath,
+                    ParentHasResource = e.PageCategory.ResourceId != null,
+                    ResourceName = e.Resource.Name,
+                    DomainName = e.Domain.Name,
+                    CollectionId = e.SourceCollection == null ? null : e.SourceCollection.Name
+                };
+            }
+        }
+
+        public static Expression<Func<Page, PageDTO>> ExpressionForRouting
+        {
+            get
+            {
+                return p => new PageDTO
+                {
+                    DomainName = p.Domain.Name,
+                    TenantCode = p.Tenant.Code,
+                    TenantId = p.TenantId,
+                    Page = p,
+                    BaseScript = p.PageCategory.ScriptPath,
+                    ResourceName = p.Resource.Name,
+                    ActionName = p.ResourceAction == null ? (p.SpecialPermission ?? null) : p.ResourceAction.Name,
+                    PageIdentifier = p.Domain.Name + "__" + p.Name,
+                };
+            }
+        }
 
         public string Registration { get { return "Registry.Register(\"" + Page.ViewPath + "\", " + ComponentName + ");\n"; } }
 

@@ -7,13 +7,13 @@ using System.Reflection;
 using System.Text;
 using System.Diagnostics;
 using CodeShellCore.Helpers;
-using CodeShellCore.Cli;
+using CodeShellCore.CLI;
 
 namespace CodeShellCore.Cli
 {
     public class ConsoleService : ServiceBase
     {
-        protected IOutputWriter Out;
+        protected  IOutputWriter Out;
 
         public ConsoleService(IOutputWriter writer)
         {
@@ -80,7 +80,7 @@ namespace CodeShellCore.Cli
         }
 
 
-        private void WriteResult(Result res)
+        private void WriteResult(HttpResult res)
         {
             WriteException(res.ExceptionMessage, res.Message, res.StackTrace);
             if (res.InnerResult != null)
@@ -140,10 +140,10 @@ namespace CodeShellCore.Cli
             var p = new Process();
             p.StartInfo = inf;
             return p;
-
+            
         }
 
-
+        
 
         public void WriteColored(string text, ConsoleColor color)
         {
@@ -161,37 +161,29 @@ namespace CodeShellCore.Cli
                 return;
             }
 
-            if (ex is CodeShellHttpException)
-            {
-                var csEx = (ex as CodeShellHttpException);
-                if (csEx.HttpResult != null)
-                {
-                    WriteResult(csEx.HttpResult);
-                    return;
-                }
-                else if (ex.Message.TryRead(out HttpResult res))
-                {
-                    WriteResult(res);
-                    return;
-                }
-            }
 
-            string[] lines = ex.StackTrace?.Split(new char[] { '\n' });
-            if (full)
-                WriteException(ex.Message, ex.GetType().Name, lines);
-            else
-                WriteExceptionShort(ex.Message, ex.GetType().Name);
-
-            if (ex.InnerException != null)
+            if (ex is CodeShellHttpException && ex.Message.TryRead(out HttpResult res))
             {
-                Out.WriteLine();
-                WriteException(ex.InnerException, full);
+                WriteResult(res);
             }
             else
             {
-                Out.WriteLine("-----------------------------------");
-            }
+                string[] lines = ex.StackTrace?.Split(new char[] { '\n' });
+                if (full)
+                    WriteException(ex.Message, ex.GetType().Name, lines);
+                else
+                    WriteExceptionShort(ex.Message, ex.GetType().Name);
 
+                if (ex.InnerException != null)
+                {
+                    Out.WriteLine();
+                    WriteException(ex.InnerException, full);
+                }
+                else
+                {
+                    Out.WriteLine("-----------------------------------");
+                }
+            }
 
         }
 

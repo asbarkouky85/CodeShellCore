@@ -2,14 +2,13 @@
 @{
     string buttonsCls = Model.ToolsSection == null ? "col-md-12" : "col-md-4";
 }
-@Html.GetModelTypeName()
-<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+<div class="page-header" [ngClass]="IsEmbedded?'section-header':'container-fluid'" *ngIf="!HideHeader">
     <div class="row">
-        <div class="col-sm-5 col-xs-12">
+        <div class="col-sm-5 col-xs-12" *ngIf="!IsEmbedded">
             <h2>@Model.Title<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
         </div>
 
-        <div class="col-sm-7 col-xs-12">
+        <div class="col-sm-7 col-xs-12" *ngIf="!IsEmbedded">
             <div class="row">
 
                 @if (Model.ToolsSection != null)
@@ -20,40 +19,46 @@
                 }
                 <div class="@buttonsCls col-xs-12 padTop padBottom">
                     <div class="pull-last btn-group">
-
-                        @Model.AddButton
-                        @if (Model.Buttons != null)
+                        @if (Model.IsListPage)
                         {
-                            @foreach (var b in Model.Buttons)
-                            {
-                                @Html.GetComponent("Buttons/Button", b)
-                            }
+                            @Model.AddButton
                         }
+
                         @Html.Button(null, "Refresh()", null, BtnClass.Info, "fa fa-redo", classes: "margin-sides")
                     </div>
                 </div>
             </div>
         </div>
 
-
-    </div>
-    <div class="row" *ngIf="!IsEmbedded">
-        @Html.BreadCrumbs(Model)
-    </div>
-</div>
-
-<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8">
-                @Model.Title<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
-            </div>
-            <div class="col-md-4">
-                @if (Model.EmbeddedAddButton != null)
-                {
-                    @Model.EmbeddedAddButton
-                }
+        <div *ngIf="IsEmbedded" class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    @Model.Title<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+                </div>
+                <div class="col-md-4">
+                    @if (Model.EmbeddedAddButton != null)
+                    {
+                        @Model.EmbeddedAddButton
+                    }
+                </div>
             </div>
         </div>
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+
+        <ol class="breadcrumb">
+            <li>
+                <a routerLink="'/'">@Html.Word("Main")</a>
+            </li>
+            @foreach (var item in Model.BreadCrums)
+            {
+                <li>
+                    <a routerLink="@item.Value">@Html.Page(item.Key)</a>
+                </li>
+            }
+            <li>
+                @Model.Title
+            </li>
+        </ol>
     </div>
 </div>

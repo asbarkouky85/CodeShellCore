@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using CodeShellCore.Moldster.Db.Razor;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Db.Dto
 {
     public class CreatePageDTO
     {

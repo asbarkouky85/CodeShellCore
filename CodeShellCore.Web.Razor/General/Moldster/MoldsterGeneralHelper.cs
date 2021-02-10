@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Text;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,25 +14,14 @@ namespace CodeShellCore.Web.Razor.General.Moldster
     {
         private IdentifierProcessor proc = new IdentifierProcessor();
         private ParameterProcessor par = new ParameterProcessor();
-        public override IHtmlContent TabTitle(IHtmlHelper helper, string containerId, string activationVariable, string textId, IHtmlContent content, object attr)
+        public override IHtmlContent TabTitle(IHtmlHelper helper, string containerId, string activationVariable, string textId, object attr)
         {
             if (!helper.GetAccessibility(containerId).Read)
                 return null;
-            return base.TabTitle(helper, containerId, activationVariable, textId, content, attr);
+            return base.TabTitle(helper, containerId, activationVariable, textId, attr);
         }
 
-        public override void AddHeaderButton(IHtmlHelper helper, IHtmlContent content = null, string function = null, string url = null, BtnClass btn = BtnClass.Default, string icon = null, string identifier = null, string classes = null, string title = null, object attr = null)
-        {
-            if (identifier != null)
-            {
-                var acc = proc.Process(helper, identifier, "HeaderButton");
-                if (!acc.Read)
-                    return;
-            }
-            base.AddHeaderButton(helper, content, function, url, btn, icon, identifier, classes, title, attr);
-        }
-
-        public override IHtmlContent Button(IHtmlHelper helper, string text, string function, string url, BtnClass btn, string icon, string identifier, IHtmlContent content, string classes, string title, object attr)
+        public override IHtmlContent Button<T>(IHtmlHelper<T> helper, string text, string function, string url, BtnClass btn, string icon, string identifier, IHtmlContent content, string classes, string title, object attr)
         {
             if (identifier != null)
             {
@@ -57,10 +46,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         public virtual string GetLink(IHtmlHelper helper, PageLink link)
         {
             par.Process(helper, link);
-            var val = helper.GetViewParams().GetFromOther(link.Name, link.DefaultValue);
-            if (string.IsNullOrEmpty(val))
-                return null;
-            string l = "'/" + val + "/'";
+            string l = "'/" + helper.GetViewParams().GetFromOther(link.Name, link.DefaultValue) + "/'";
             string id = "";
             if (link.IdExpression != null)
                 id = "+" + link.IdExpression;
@@ -93,7 +79,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         public void AddModal(IHtmlHelper helper, string id, string def)
         {
             par.Process(helper, id, PageParameterTypes.Modal, def);
-
+            
         }
 
         public void AddParameter(IHtmlHelper helper, string id, string def)

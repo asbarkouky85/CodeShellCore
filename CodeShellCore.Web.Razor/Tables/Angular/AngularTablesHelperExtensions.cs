@@ -10,7 +10,7 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
 {
     public static class AngularTablesHelperExtensions
     {
-        //static IAngularTablesHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IAngularTablesHelper>(); } }
+        static IAngularTablesHelper Provider { get { return Shell.ScopedInjector.GetRequiredService<IAngularTablesHelper>(); } }
 
         public static IHtmlContent CheckBoxCell<T>(
             this IHtmlHelper<T> helper,
@@ -24,7 +24,6 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             string listItem = "Tag",
             string classes = "")
         {
-            var Provider = helper.GetService<IAngularTablesHelper>();
             CellWriter mod = Provider.CheckBoxCell(helper, field, rowIndex, listName, ngModel,changeFunction, cellAttributes, inputAttr, listItem, classes);
             return mod.Write(InputControls.CheckBoxCell);
         }
@@ -40,7 +39,6 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             string listItem = "Tag",
             string classes = "")
         {
-            var Provider = helper.GetService<IAngularTablesHelper>();
             CellWriter mod = Provider.RadioBoxCell(helper, field, rowIndex, property, asArray,changeFunction, cellAttributes, inputAttr, listItem, classes);
             return mod.Write(InputControls.CheckBoxCell);
         }
@@ -56,7 +54,6 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
         string permissionName = "Permission",
         string classes = "")
         {
-            var Provider = helper.GetService<IAngularTablesHelper>();
             return Provider.ListModifiers<T>(helper, idExpression, buttons, detailsFunction, editFunction, deleteFunction, identifier, modifiers, permissionName, classes);
 
         }
@@ -67,7 +64,6 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             object cellAttributes = null
             )
         {
-            var Provider = helper.GetService<IAngularTablesHelper>();
             var writer = Provider.TextCell(helper, exp, pipe, cellAttributes);
             return writer.WriteCell(CellTypes.LabelCell);
         }

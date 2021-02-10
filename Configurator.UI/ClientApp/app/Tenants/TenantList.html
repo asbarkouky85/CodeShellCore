@@ -1,0 +1,177 @@
+<div class="page-header" [ngClass]="IsEmbedded?'section-header':'container-fluid'" *ngIf="!HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12" *ngIf="!IsEmbedded">
+            <h2>{{'Pages.Tenants__TenantList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12" *ngIf="!IsEmbedded">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+    <a class="btn btn-success"
+       [routerLink]="'/Tenants/TenantCreate'"
+        *ngIf="Permission.insert"
+       >
+        <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Tenant' | translate } }}
+    </a>
+
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="IsEmbedded" class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    {{'Pages.Tenants__TenantList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+                </div>
+                <div class="col-md-4">
+
+    <a class="btn btn-success buttonGra-sm"
+       [routerLink]="'/Tenants/TenantCreate'"
+        *ngIf="Permission.insert"
+       >
+        <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Tenant' | translate } }}
+    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+
+        <ol class="breadcrumb">
+            <li>
+                <a routerLink="'/'">{{'Words.Main' | translate }}</a>
+            </li>
+            <li>
+                {{'Pages.Tenants__TenantList' | translate }}
+            </li>
+        </ol>
+    </div>
+</div>
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{totalCount}}</span></span>
+            </div>
+            <div class="col-md-8">
+                <search-group (termChange)="HeaderSearch($event)"></search-group>
+            </div>
+        </div>
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+
+        <div class="table-responsive">
+            
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style='width:150px' >{{'Columns.Tenant__Code' | translate }}</th>
+            <th  >{{'Columns.Tenant__Name' | translate }}</th>
+            <th  >{{'Columns.Tenant__CreatedOn' | translate }}</th>
+            <th  >{{'Columns.Tenant__Version' | translate }}</th>
+
+            <th style="width:150px"></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            <td  >
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        {{model.code}}
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        
+    </div>
+</td>
+            <td  >
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        {{model.name}}
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        
+    </div>
+</td>
+            <td  >
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        {{model.createdOn | date : &#x27;dd/MM/yyyy hh:mm a&#x27;}}
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        
+    </div>
+</td>
+            <td  >
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        {{model.version}}
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        
+    </div>
+</td>
+            <td>
+                <div class="btn-group btnResponsive ">
+
+            <a *ngIf="Permission.details" class="btn btn-primary btn-sm" [routerLink]="'/Tenants/TenantDetails/' +model.id">
+                <i class="fa fa-copy"></i>
+            </a>
+
+                <a *ngIf="Permission.delete" class="btn btn-danger btn-sm" (click)="Delete(model,model.id)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+
+</div>
+            </td>
+            <td>
+                <div class="btn-group">
+                    
+    <button class="btn btn-info"
+            (click)="StartPreview(model)"
+             *ngIf="current==null"
+            >
+        <i class="fa fa-image"></i> {{'Words.Preview' | translate }}
+    </button>
+
+                    
+    <button class="btn btn-success"
+            (click)="Open()"
+             *ngIf="current==model.code"
+            >
+        <i class="fa fa-image"></i> {{'Words.View' | translate }}
+    </button>
+
+                    
+    <button class="btn btn-danger"
+            (click)="StopPreview()"
+             *ngIf="current==model.code"
+            >
+        <i class="fa fa-square"></i> {{'Words.Stop' | translate }}
+    </button>
+
+
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+        </div>
+
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+    </div>
+
+</div>
+<div style='display:none' #lookupOptionsContainer values=''></div>
+<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":"/Tenants/TenantCreate","EditUrl":null,"DetailsUrl":"/Tenants/TenantDetails","ListUrl":null,"Fields":[],"Other":{"ServerTrace":"Generations/ServerTracerModal"}}'></div>

@@ -8,8 +8,6 @@ namespace CodeShellCore.Security.Authorization
     {
         public object RoleId { get; set; }
         public IEnumerable<ResourceActionV> Actions { get; set; }
-       // public IEnumerable<ResourceV> Resources { get; set; }
-        public Dictionary<string, int> Resources { get; set; }
-        public Dictionary<string, string> Collections { get; set; }
+        public IEnumerable<ResourceV> Resources { get; set; }
     }
 }

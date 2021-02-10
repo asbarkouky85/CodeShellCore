@@ -1,4 +1,6 @@
-﻿using CodeShellCore.Security.Authorization;
+﻿
+using CodeShellCore.Security.Authorization;
+using CodeShellCore.Security.Sessions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -9,13 +11,6 @@ namespace CodeShellCore.Security
         bool dataIsObtained = false;
         object blocker = new object();
         private IUser _user;
-        private readonly IServiceProvider provider;
-
-        public UserAccessor(IServiceProvider provider)
-        {
-            blocker = new object();
-            this.provider = provider;
-        }
         public IUser User
         {
             get
@@ -24,13 +19,11 @@ namespace CodeShellCore.Security
             }
         }
 
-        public string UserId { get; set; }
-
-        public bool IsUser => !string.IsNullOrEmpty(UserId);
-        public bool IsClient => !string.IsNullOrEmpty(ClientId);
-
-        public string ClientId { get; set; }
-
+        public UserAccessor()
+        {
+            blocker = new object();
+        }
+        public object UserId { get; set; }
         public T UserAs<T>() where T : class, IUser
         {
             return (T)User;
@@ -51,10 +44,14 @@ namespace CodeShellCore.Security
 
                 if (UserId != null && _user == null)
                 {
-                    _user = provider.GetService<IUserDataService>().GetUserData(UserId);
+                    IServiceProvider prov = null;
+                    prov = Shell.ScopedInjector ?? Shell.RootInjector;
+                    var ser = prov.GetService<IUserDataService>();
+                    if (ser != null)
+                        _user = ser.GetUserData(UserId);
                 }
                 dataIsObtained = true;
-
+                
             }
             return _user;
         }

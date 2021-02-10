@@ -1,12 +1,13 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Data.Auditing;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster
+namespace CodeShellCore.Moldster.Db.Data
 {
-    public interface IMoldsterModel : IModel<long>, IChangeColumns
+    public interface IMoldsterModel : IModel<long>
     {
+        DateTime? CreatedOn { get; set; }
+        DateTime? UpdatedOn { get; set; }
     }
 }

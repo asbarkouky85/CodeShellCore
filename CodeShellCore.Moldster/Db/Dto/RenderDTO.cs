@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Db.Dto
 {
     public class RenderDTO
     {
@@ -12,6 +12,5 @@ namespace CodeShellCore.Moldster.Dto
 
         public string NameChain { get; set; }
         public long? TenantId { get; set; }
-        public bool? Recursive { get; set; } = true;
     }
 }

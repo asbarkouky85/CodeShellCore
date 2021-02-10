@@ -2,7 +2,7 @@
 @{
     ModalModel MModal = Html.ModalModel();
 }
-<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [modal]="@MModal.IsModalValue" @Html.Raw(MModal.AttrString)>
+<p-dialog [(visible)]="Show" (onHide)="OnModalHide($event)" [modal]="@MModal.IsModalValue" @Html.Raw(MModal.AttrString)>
     <p-header>
         @if (!IsSectionDefined("header"))
         {

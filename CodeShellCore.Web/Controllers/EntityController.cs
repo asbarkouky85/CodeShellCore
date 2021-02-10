@@ -34,7 +34,7 @@ namespace CodeShellCore.Web.Controllers
 
         [HttpDelete]
         [ApiAuthorize(Actions = new[] { DefaultActions.Delete })]
-        public virtual IActionResult Delete(TPrime id)
+        public IActionResult Delete(TPrime id)
         {
             SubmitResult = EntityService.DeleteById(id);
             return Respond();
@@ -57,7 +57,7 @@ namespace CodeShellCore.Web.Controllers
         }
 
         [HttpGet]
-        public virtual bool IsUnique([FromQuery] PropertyUniqueDTO dto)
+        public bool IsUnique([FromQuery] PropertyUniqueDTO dto)
         {
             return EntityService.IsUnique(dto);
         }

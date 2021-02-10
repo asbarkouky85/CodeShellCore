@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Routing;
 using CodeShellCore.Web.Razor.Services;
 using CodeShellCore.Http;
 using System.Collections.Generic;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db.Dto;
 
 namespace CodeShellCore.Moldster.Razor.Services
 {
@@ -44,9 +44,6 @@ namespace CodeShellCore.Moldster.Razor.Services
                     EntityName = null,
                     Controls = new List<ControlDTO>()
                 };
-                viewDictionary["LocalizationDataCollector"] = new LocalizationDataCollector();
-
-
                 if (layout != null)
                 {
                     viewDictionary["PageOptions"] = new PageOptions
@@ -71,13 +68,10 @@ namespace CodeShellCore.Moldster.Razor.Services
                     throw new CodeShellHttpException(t.Result);
                 }
 
-                var data= (TemplateDataCollector)viewContext.ViewData["PageControls"];
-                data.Localization = ((LocalizationDataCollector)viewContext.ViewData["LocalizationDataCollector"]);
-                data.Localization.Unify();
-                return data;
+                return (TemplateDataCollector)viewContext.ViewData["PageControls"];
             }
         }
 
-
+        
     }
 }

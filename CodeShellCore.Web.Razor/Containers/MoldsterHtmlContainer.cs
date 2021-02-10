@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Dto;
+﻿using CodeShellCore.Moldster.Db.Dto;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CodeShellCore.Web.Razor.Containers

@@ -1,16 +1,12 @@
-﻿using CodeShellCore.Cli;
+﻿using CodeShellCore.CLI;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Builder;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Configurator;
 using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Moldster.Definitions;
-using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -32,10 +28,8 @@ namespace CodeShellCore.Web.Razor.Controllers
         IPublisherService pub => GetService<IPublisherService>();
         IPathsService paths => GetService<IPathsService>();
         IDataService data => GetService<IDataService>();
-        ITemplateProcessingService c => GetService<ITemplateProcessingService>();
+        IDbTemplateProcessingService c => GetService<IDbTemplateProcessingService>();
         IPreviewService prev => GetService<IPreviewService>();
-        IScriptGenerationService sc => GetService<IScriptGenerationService>();
-        IScriptModelMappingService map => GetService<IScriptModelMappingService>();
 
         public IActionResult ProcessForPage([FromQuery]MoldsterRequest req)
         {
@@ -48,9 +42,7 @@ namespace CodeShellCore.Web.Razor.Controllers
 
         public IActionResult RenderPage(long id)
         {
-            var dto = new PageRenderDTO { Id = id };
-            molds.RenderPage(null, dto);
-            sc.GenerateModuleDefinitionByPage(dto);
+            molds.RenderPage(null, new CodeShellCore.Moldster.Definitions.PageRenderDTO { Id = id });
             SubmitResult = new Data.Helpers.SubmitResult(0, "success_message");
             return Respond();
         }
@@ -58,7 +50,7 @@ namespace CodeShellCore.Web.Razor.Controllers
         [HttpPost]
         public IActionResult Render([FromBody]RenderDTO dto)
         {
-            SubmitResult = molds.RenderDomainModule(dto);
+            molds.RenderDomainModule(dto.Mod, dto.NameChain, dto.Lazy ?? true);
             return Respond();
         }
 
@@ -93,12 +85,6 @@ namespace CodeShellCore.Web.Razor.Controllers
         public IActionResult ModuleDefinition([FromBody]RenderDTO dto)
         {
             molds.RenderModuleDefinition(dto.Mod, dto.Lazy ?? true);
-            return Respond();
-        }
-
-        public IActionResult Mapping()
-        {
-            map.ScriptMapping();
             return Respond();
         }
 

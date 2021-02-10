@@ -1,20 +1,22 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Http;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Razor.Services;
+using CodeShellCore.Moldster.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CodeShellCore.Web.Razor.Services
 {
-    public class ServerViewsService : MoldsterRazorService, IViewsService
+    public class ServerViewsService : MoldsterRazorService, IDbViewsService
     {
         private readonly IConfigUnit _unit;
         private readonly IDataService data;
@@ -82,7 +84,7 @@ namespace CodeShellCore.Web.Razor.Services
         public string GetPage(PageAcquisitorDTO dto)
         {
             PageOptions p = data.GetPageOptions(dto.ModuleCode, dto.ViewPath);
-            p.Layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, p.Layout);
+            p.Layout = Utils.CombineUrl(RazorConfig.Theme.LayoutBase, p.Layout);
             var html = RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { "PageOptions", p } });
             html += $"\n<div style='display:none' #lookupOptionsContainer values='{p.SourcesString}'></div>";
             html += $"\n<div style='display:none' #viewParamsContainer values='{p.ViewParamsString}'></div>";
@@ -92,7 +94,7 @@ namespace CodeShellCore.Web.Razor.Services
         public string GetPageById(long id)
         {
             PageOptions p = data.GetPageOptionsById(id);
-            p.Layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, p.Layout);
+            p.Layout = Utils.CombineUrl(RazorConfig.Theme.LayoutBase, p.Layout);
             var html = RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { "PageOptions", p } });
             html += $"\n<div style='display:none' #lookupOptionsContainer values='{p.SourcesString}'></div>";
             html += $"\n<div style='display:none' #viewParamsContainer values='{p.ViewParamsString}'></div>";
@@ -105,9 +107,9 @@ namespace CodeShellCore.Web.Razor.Services
 
             string layout = null;
             if (path.Layout != null)
-                layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, "Layout", path.Layout + "Layout.cshtml");
+                layout = Utils.CombineUrl(RazorConfig.Theme.LayoutBase, "Layout", path.Layout + "Layout.cshtml");
             else if ((new string[] { "Edit", "List" }).Contains(path.BaseComponent))
-                layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, "Layout", path.BaseComponent + "Layout.cshtml");
+                layout = Utils.CombineUrl(RazorConfig.Theme.LayoutBase, "Layout", path.BaseComponent + "Layout.cshtml");
             return GetCollector(contextAccessor.HttpContext, path.ViewPath, layout);
         }
     }

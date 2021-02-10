@@ -1,39 +1,33 @@
 ﻿using System;
-using System.Linq;
-using CodeShellCore.Helpers;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Text;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Web.Security
 {
     public class TokenSessionManager : WebSessionManagerBase, ISessionManager
     {
-        protected virtual AppClient[] Clients => new AppClient[0];
-        public TokenSessionManager(IServiceProvider prov) : base(prov)
-        {
-        }
 
         public override TimeSpan DefaultSessionTime { get { return new TimeSpan(24, 0, 0); } }
 
+        public TokenSessionManager(IHttpContextAccessor context) : base(context)
+        {
+        }
 
         public virtual string GetTokenFromHeader()
         {
-            return _accessor.HttpContext?.GetHeader(HttpHeaderKeys.Authorization);
+            if (_accessor.HttpContext == null)
+                return null;
+            return _accessor.HttpContext.GetHeader(HttpHeaderKeys.Authorization);
         }
 
-        public virtual string GetClientTokenFromHeader()
-        {
-            return _accessor.HttpContext?.GetHeader(HttpHeaderKeys.ClientToken);
-        }
-
-        protected virtual string TokenToJWT(string head)
+        protected virtual string GetJWTDataFromHeader()
         {
             _accessor.HttpContext.User = null;
+            string head = GetTokenFromHeader();
+
             if (head != null)
             {
                 string data = Shell.Encryptor.Decrypt(head);
@@ -45,76 +39,81 @@ namespace CodeShellCore.Web.Security
             return null;
         }
 
-        protected virtual bool ValidateClientJWT(string jwt, out ClientJwt clientId)
-        {
-            if (jwt != null && jwt.TryRead(out ClientJwt obj))
-            {
-                var currentHost = _accessor.HttpContext?.Request.GetHostUrl();
-                clientId = obj;
-                return obj.ExpireTime > DateTime.Now && Clients.Any(e => e.ClientId == obj.ClientId) && (string.IsNullOrEmpty(obj.Provider) || obj.Provider.ToLower() == currentHost.ToLower());
-            }
-            clientId = null;
-            return false;
-        }
-
-        protected virtual bool ValidateUserJWT(string jwt, out JWTData userId)
-        {
-            if (jwt != null && jwt.TryRead(out JWTData obj))
-            {
-                var currentHost = _accessor.HttpContext?.Request.GetHostUrl();
-                userId = obj;
-                return obj.ExpireTime > DateTime.Now && (string.IsNullOrEmpty(obj.Provider) || obj.Provider.ToLower() == currentHost.ToLower());
-            }
-            userId = null;
-            return false;
-        }
-
         public override void AuthorizationRequest(string token)
         {
-            string data = TokenToJWT(token);
-            if (ValidateUserJWT(data, out JWTData user))
-                SetIdentity(user);
+            if (IsProccessed(_accessor.HttpContext))
+                return;
+            if (token != null)
+            {
+                string data = Shell.Encryptor.Decrypt(token);
+                if (data != null)
+                {
+                    JWTData jwt = data.FromJson<JWTData>();
+                    var h = _accessor.HttpContext.Request.GetHostUrl();
+                    if (jwt != null && jwt.IsValid(h))
+                    {
+                        SetIdentity(jwt.UserId);
+                    }
+                }
+            }
+            SetProccessed(_accessor.HttpContext);
         }
 
         public override void AuthorizationRequest()
         {
-            string head = GetTokenFromHeader();
-            string cl = GetClientTokenFromHeader();
+            if (IsProccessed(_accessor.HttpContext))
+                return;
 
-            if (!string.IsNullOrEmpty(cl))
+            string data = GetJWTDataFromHeader();
+
+            if (data != null)
             {
-                var clData = TokenToJWT(cl);
-                if (ValidateClientJWT(clData, out ClientJwt clId))
+                JWTData jwt = data.FromJson<JWTData>();
+
+                if (jwt != null && jwt.IsValid(_accessor.HttpContext.Request?.GetHostUrl()))
                 {
-                    SetIdentity(clId);
+                    SetIdentity(jwt.UserId);
                 }
             }
-            else
-            {
-                string data = TokenToJWT(head);
-                if (ValidateUserJWT(data, out JWTData user))
-                    SetIdentity(user);
-            }
-
+            SetProccessed(_accessor.HttpContext);
         }
 
-        public virtual string CheckRefreshToken(string refreshToken)
+        public override object GetCurrentUserId()
+        {
+            long id;
+            if (_accessor.HttpContext == null)
+                return 0;
+            if (_accessor.HttpContext.User != null && long.TryParse(_accessor.HttpContext.User.Identity.Name, out id))
+                return id;
+
+            return 0;
+        }
+
+        public override bool IsLoggedIn()
+        {
+            if (GetCurrentUserId() == null)
+                return false;
+            return !GetCurrentUserId().Equals(0);
+        }
+
+        public object CheckRefreshToken(string refreshToken)
         {
             if (refreshToken != null)
             {
                 var dec = Shell.Encryptor.Decrypt(refreshToken);
-                string devId = _accessor.HttpContext.RequestServices.GetService<ClientData>().DeviceId;
-                if (dec.TryRead(out RefreshJWTData data))
+                var tok = Shell.Encryptor.Decrypt(GetTokenFromHeader());
+                string devId = GetDeviceId();
+                if (dec.TryRead(out RefreshJWTData data) && tok.TryRead(out JWTData tokData))
                 {
-                    if (data.DeviceId == devId)
-                        return data.UserId;
+                    if (data.DeviceId == tokData.DeviceId && data.DeviceId == devId && data.TokenId == tokData.TokenId)
+                        return tokData.UserId;
 
                 }
             }
             return null;
         }
 
-
+        
 
 
     }

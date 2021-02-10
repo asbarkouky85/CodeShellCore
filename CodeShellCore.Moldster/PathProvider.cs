@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Definitions;
+﻿using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster
 {
-    public class DefaultPathsService : IPathsService
+    public class PathProvider : IPathsService
     {
         public virtual string CoreAppName { get; private set; }
         public virtual string LocalizationRoot { get; private set; }
@@ -35,12 +34,7 @@ namespace CodeShellCore.Moldster
 
         }
 
-        public virtual List<LayoutFileDTO> GetLayouts(bool nameOnly = false)
-        {
-            return new List<LayoutFileDTO>();
-        }
-
-        public DefaultPathsService()
+        public PathProvider()
         {
             var sol = Shell.SolutionFolder;
             CoreAppName = Shell.GetConfigAs<string>("Moldster:CoreAppName");

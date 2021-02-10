@@ -4,27 +4,24 @@ using System.IO;
 using System.ComponentModel;
 using CodeShellCore.Helpers;
 using System.Linq;
-using CodeShellCore.Cli;
 
 namespace CodeShellCore.Files.Logging
 {
-    public class Logger : IDisposable, IOutputWriter
+    public class Logger : IDisposable
     {
         public static Logger Default { get; private set; }
         public FileLocation Location { get; private set; }
         public AsyncFileHandler TextWriter { get; private set; }
         public int DaysToKeepFiles { get; set; } = 7;
-        public string ClassName { get; set; }
 
         private TimeSpan DeleteLimit { get { return new TimeSpan(DaysToKeepFiles, 0, 0, 0); } }
-        private bool _dateAdded;
         string CurrentTimeString
         {
             get
             {
                 DateTime now = DateTime.Now;
                 string milli = now.Millisecond.ToString("D3");
-                _dateAdded = true;
+
                 return now.ToString("dd/MM/yyyy HH:mm:ss." + milli);
             }
         }
@@ -69,18 +66,9 @@ namespace CodeShellCore.Files.Logging
 
         public void WriteLogLine(string st)
         {
-            if (!_dateAdded)
-                st = "[" + CurrentTimeString + "]" + (ClassName != null ? $"[{ClassName}]" : "") + " " + st;
-
+            st = "[" + CurrentTimeString + "] " + st;
+            Console.WriteLine(st);
             TextWriter?.WriteLine(st);
-            _dateAdded = false;
-        }
-
-        public void Write(string st, bool replaceLast = false)
-        {
-            if (!_dateAdded)
-                st = "[" + CurrentTimeString + "]" + (ClassName != null ? $"[{ClassName}]" : "") + " " + st;
-            TextWriter?.Write(st);
         }
 
         public void WriteLogException(Exception e, string st = null)
@@ -95,13 +83,13 @@ namespace CodeShellCore.Files.Logging
             if (e is AggregateException && e.InnerException != null)
             {
                 WriteLogLine("Inner Exception " + e.InnerException.GetType().Name);
-                if (!string.IsNullOrEmpty(e.InnerException.StackTrace))
-                    arr = e.InnerException.StackTrace?.Split(new char[] { '\n' });
+                arr = e.InnerException.StackTrace.Split(new char[] { '\n' });
             }
-            else if (!string.IsNullOrEmpty(e.StackTrace))
+            else
             {
                 arr = e.StackTrace.Split(new char[] { '\n' });
             }
+               
 
             foreach (string str in arr)
                 WriteLogLine(str.Replace('\r', ' '));
@@ -143,28 +131,6 @@ namespace CodeShellCore.Files.Logging
         public void Dispose()
         {
             TextWriter?.Dispose();
-        }
-
-        public void WriteLine(bool replaceLast = false)
-        {
-            WriteLogLine("");
-        }
-
-
-
-        public ColorSetter Set(ConsoleColor yellow)
-        {
-            return ColorSetter.Set(yellow);
-        }
-
-        public void WriteLine(string v, bool replaceLast = false)
-        {
-            WriteLogLine(v);
-        }
-
-        public void GotoColumn(int column)
-        {
-            Write("\t");
         }
     }
 }

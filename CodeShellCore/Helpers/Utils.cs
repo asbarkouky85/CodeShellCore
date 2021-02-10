@@ -1,6 +1,4 @@
 ﻿using CodeShellCore.Data.Lookups;
-using CodeShellCore.Security.Authentication;
-using CodeShellCore.Security.Authorization;
 using CodeShellCore.Text;
 using Newtonsoft.Json;
 using System;
@@ -12,11 +10,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace CodeShellCore.Helpers
 {
-    public enum CharType { Capital, Small, Both }
     public static class Utils
     {
         static Random r = new Random();
@@ -54,20 +50,6 @@ namespace CodeShellCore.Helpers
         {
             string ser = JsonConvert.SerializeObject(attr);
             return ser.FromJson<T>();
-        }
-
-        public static string CreateClientToken(AppClient cl, DateTime? expire = null, string provider = null)
-        {
-            expire = expire ?? DateTime.MaxValue;
-            var jw = new ClientJwt
-            {
-                ClientId = cl.ClientId,
-                Secret = cl.Secret,
-                StartTime = DateTime.Now,
-                ExpireTime = expire.Value,
-                Provider = provider
-            };
-            return Shell.Encryptor.Encrypt(jw.ToJson());
         }
 
         public static string CreatePropertyDictionary(Type t, string folderPath, IEnumerable<string> ignore = null)
@@ -131,71 +113,28 @@ namespace CodeShellCore.Helpers
             }
             return st;
         }
-
-        public static string RandomAlphaNumeric(int numOfChars, CharType? type = null)
+        public static string RandomAlphabet(int numOfChars, int CapitalAndSmall = 0) //CapitalAndSmall( 0 = capital and small ,1=capital,2 =small)
         {
-            type = type ?? CharType.Small;
-            string allalpha = "012345689ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            var len = allalpha.Length;
+            string allalpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //26
+            bool Case = CapitalAndSmall == 2 ? false : true;
             string st = "";
 
             for (int i = 0; i < numOfChars; i++)
             {
-                switch (type)
+
+                if (Case && (CapitalAndSmall < 2))//Capital
                 {
-                    case CharType.Capital:
-                        st += allalpha[r.Next(0, len)].ToString();
-                        break;
-                    case CharType.Small:
-                        st += allalpha[r.Next(0, len)].ToString().ToLower();
-                        break;
-                    case CharType.Both:
-                        var n = r.Next(0, 2);
-                        var l = n == 0 ? false : true;
-                        var c = allalpha[r.Next(0, len)].ToString();
-                        if (!l)
-                            c = c.ToLower();
-                        st += c;
-                        break;
+                    st += allalpha[r.Next(0, 25)].ToString().ToUpper();
                 }
+                else  //Small
+                {
+                    st += allalpha[r.Next(0, 25)].ToString().ToLower();
+                }
+                if (CapitalAndSmall == 0)
+                    Case = !Case;
             }
             return st;
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="numOfChars"></param>
-        /// <param name="type">Default small</param>
-        /// <returns></returns>
-        public static string RandomAlphabet(int numOfChars, CharType? type = null)
-        {
-            type = type ?? CharType.Small;
-            string allalpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            var len = allalpha.Length;
-            string st = "";
-
-            for (int i = 0; i < numOfChars; i++)
-            {
-                switch (type)
-                {
-                    case CharType.Capital:
-                        st += allalpha[r.Next(0, len)].ToString();
-                        break;
-                    case CharType.Small:
-                        st += allalpha[r.Next(0, len)].ToString().ToLower();
-                        break;
-                    case CharType.Both:
-                        var n = r.Next(0, 2);
-                        var l = n == 0 ? false : true;
-                        var c = allalpha[r.Next(0, len)].ToString();
-                        if (!l)
-                            c = c.ToLower();
-                        st += c;
-                        break;
-                }
-            }
-            return st;
         }
 
         public static void RunCmdCommand(string command)
@@ -275,27 +214,10 @@ namespace CodeShellCore.Helpers
         {
             try
             {
-                ClearDirectory(path);
-                Directory.Delete(path, true);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-
-        }
-
-        public static bool ClearDirectory(string path)
-        {
-            try
-            {
-                var fls = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+                var fls = Directory.GetFiles(path);
                 foreach (var f in fls)
                     File.Delete(f);
-                var dirs = Directory.GetDirectories(path);
-                foreach (var f in dirs)
-                    Directory.Delete(f, true);
+                Directory.Delete(path, true);
                 return true;
             }
             catch
@@ -309,34 +231,6 @@ namespace CodeShellCore.Helpers
         {
             FileInfo info = new FileInfo(file);
             return info.Directory.FullName;
-        }
-
-        public static int GenerateIntID()
-        {
-            DateTime t = DateTime.Now;
-
-            int thisSec = (int)t.TimeOfDay.TotalSeconds;
-
-            if (thisSec == currentSecond)
-            {
-                Addition++;
-                if (Addition >= 8)
-                    Thread.Sleep(100);
-            }
-            else
-            {
-                Addition = 0;
-            }
-
-
-            currentSecond = thisSec;
-
-            string st = (t.Year - 2000).ToString()
-                + t.DayOfYear.ToString("D3")
-                + currentSecond.ToString("D5")
-                + Addition.ToString();
-
-            return int.Parse(st);
         }
 
 

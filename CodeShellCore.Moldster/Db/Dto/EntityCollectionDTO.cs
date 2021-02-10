@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Db.Dto
 {
     public abstract class EntityCollectionDTOBase
     {

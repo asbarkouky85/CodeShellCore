@@ -3,31 +3,18 @@
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.Builder;
 
 using CodeShellCore.DependencyInjection;
-using CodeShellCore.Cli;
-using CodeShellCore.Security.Sessions;
-using CodeShellCore.Http.Pushing;
-using CodeShellCore.Text.Localization;
-
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Services;
-using CodeShellCore.Moldster.Services.Internal;
-using CodeShellCore.Moldster.Razor.Services;
-using CodeShellCore.Moldster.Configurator;
-using CodeShellCore.Moldster.Configurator.Services;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.CodeGeneration;
-using CodeShellCore.Moldster.CodeGeneration.Internal;
-using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Localization.Internal;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Data.Internal;
-
 using CodeShellCore.Web.Razor.Elements;
 using CodeShellCore.Web.Razor.Tables;
 using CodeShellCore.Web.Razor.Services;
+
+using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster.Services;
+using CodeShellCore.Moldster.Services.Internal;
+
+using CodeShellCore.Moldster.Razor.Services;
 using CodeShellCore.Web.Razor.Elements.Angular;
 using CodeShellCore.Web.Razor.Themes;
 using CodeShellCore.Web.Razor.Validation.Internal;
@@ -37,8 +24,17 @@ using CodeShellCore.Web.Razor.Elements.Moldster;
 using CodeShellCore.Web.Razor.General.Moldster;
 using CodeShellCore.Web.Razor.Tables.Angular;
 using CodeShellCore.Web.Razor.Tables.Moldster;
+using CodeShellCore.Moldster.Configurator;
+using CodeShellCore.Moldster.Configurator.Services;
+using CodeShellCore.CLI;
+using CodeShellCore.Security.Sessions;
 using CodeShellCore.Web.Razor.SignalR;
+using Microsoft.AspNetCore.Builder;
+using CodeShellCore.Moldster.Services.Json;
+using CodeShellCore.Moldster.Services.Db;
+using CodeShellCore.Http.Pushing;
 using CodeShellCore.Web.Razor.Configurator;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 namespace CodeShellCore.Web.Razor
 {
@@ -63,15 +59,14 @@ namespace CodeShellCore.Web.Razor
             });
         }
 
-        public static void AddMoldsterServerGeneration(this IServiceCollection coll)
+        public static void AddMoldsterServerGeneration(this IServiceCollection coll, MoldsType t = MoldsType.Db)
         {
-            coll.AddMoldsterCodeGeneration();
-
+            coll.AddMoldsterCodeGeneration(t);
+            coll.AddTransient<IDbViewsService, ServerViewsService>();
             coll.AddTransient<IViewsService, ServerViewsService>();
-            coll.AddScoped<IOutputWriter, MessagePusherOutputService>();
+            coll.AddTransient<IOutputWriter, MessagePusherOutputService>();
             coll.AddTransient<IPushingSessionManager, ConfigSessionManager>();
             coll.AddTransient<ISessionManager, ConfigSessionManager>();
-            coll.AddTransient<IPathsService, RazorPathsProvider>();
 
             coll.AddSignalR();
             coll.AddSignalRHub<IOutputMessageSender, GenerationHub>();
@@ -91,7 +86,7 @@ namespace CodeShellCore.Web.Razor
             SearchExpressions.RegisterExpressions();
         }
 
-        public static void AddMoldsterWeb(this IServiceCollection coll)
+        public static void AddMoldsterWeb(this IServiceCollection coll, MoldsType t)
         {
             coll.AddMoldsterDbData();
 
@@ -102,14 +97,25 @@ namespace CodeShellCore.Web.Razor
 
             coll.AddTransient<IRazorRenderingService, RazorRenderingService>();
 
-            coll.AddSingleton<DefaultPathsService>();
+            coll.AddSingleton<PathProvider>();
             coll.AddSingleton<IMoldProvider, DefaultMoldProvider>();
 
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
 
-            coll.AddTransient<IDataService, DbDataService>();
-            coll.AddTransient<IMoldsterRazorService, MoldsterRazorService>();
+            switch (t)
+            {
+                case MoldsType.Json:
+                    coll.AddTransient<IJsonConfigProvider, JsonDataService>();
+                    coll.AddTransient<IDataService, JsonDataService>();
+
+                    break;
+                case MoldsType.Db:
+                    coll.AddTransient<IDataService, DbDataService>();
+                    coll.AddTransient<IMoldsterRazorService, MoldsterRazorService>();
+                    break;
+            }
+
         }
 
         public static void AddMvcRazorHelpers(this IServiceCollection coll)
@@ -167,7 +173,7 @@ namespace CodeShellCore.Web.Razor
 
             RazorConfig.FieldErrorMessagesTemplate = "<span>\r{2}</span>";
             RazorConfig.ErrorMessageTemplate = "<small class=\"form-text text-danger\">{3}</small>\r";
-            RazorConfig.LocaleTextProvider = new MvcTextProvider(new Language());
+            RazorConfig.LocaleTextProvider = new MvcTextProvider();
             RazorConfig.ExpressionStringifier = new DefaultExpressionStringifier();
 
             RazorConfig.Theme = theme;

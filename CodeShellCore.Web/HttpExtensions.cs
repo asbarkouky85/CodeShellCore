@@ -1,11 +1,8 @@
 ﻿using CodeShellCore;
 using CodeShellCore.Files;
-using CodeShellCore.Files.Logging;
-using CodeShellCore.Http;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 
 namespace Microsoft.AspNetCore.Mvc
@@ -20,8 +17,6 @@ namespace Microsoft.AspNetCore.Mvc
 
             return loc;
         }
-
-        
 
         public static bool IsProccessed(this HttpContext con)
         {

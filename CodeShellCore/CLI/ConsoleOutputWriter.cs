@@ -3,12 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Cli
+namespace CodeShellCore.CLI
 {
     public class ConsoleOutputWriter : IOutputWriter
     {
-        public bool Suspend { get; set; }
-
         private bool isConsole
         {
             get

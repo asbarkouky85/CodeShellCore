@@ -8,8 +8,8 @@ namespace CodeShellCore.Security
 {
     public interface IResourceRepository : IRepository
     {
+        Dictionary<string, Permission> GetUserPermissions(object userId);
         List<ResourceActionV> GetRoleResourceActions(object roleId);
         List<ResourceV> GetRoleResources(object roleId);
-        string[] GetResourcesWithCollections();
     }
 }

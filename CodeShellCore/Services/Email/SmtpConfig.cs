@@ -8,12 +8,11 @@ namespace CodeShellCore.Services.Email
 {
     public class SmtpConfig
     {
-        public bool SendMails { get; set; }
-        public bool SmtpEnableSSL { get; set; }
-        public int SmtpPort { get; set; }
-        public string SenderName { get; set; }
         public string SmtpHost { get; set; }
-        public string SmtpPassword { get; set; }
+        public int SmtpPort { get; set; }
         public string SmtpUser { get; set; }
+        public string SmtpPassword { get; set; }
+        public bool SmtpEnableSSL { get; set; }
+        public bool SendMails { get; set; }
     }
 }

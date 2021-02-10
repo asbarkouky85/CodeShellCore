@@ -55,14 +55,8 @@ namespace CodeShellCore.Web.Razor
 
     public enum CellTypes
     {
-        /// <summary>
-        /// TableCells/DragCell
-        /// </summary>
-        DragCell,
-        /// <summary>
-        /// TableCells/LabelCell
-        /// </summary>
-        LabelCell,
+        DragCell, //"TableCells/DragCell";
+        LabelCell, //"TableCells/LabelCell";
     }
 
     public enum ElementTypes
@@ -102,11 +96,17 @@ namespace CodeShellCore.Web.Razor
     {
         public const string Identifier = "[_a-zA-Z][_a-zA-Z0-9]{2,30}";
         public const string Code = "[-_a-zA-Z0-9]{2,50}";
-        public const string Email = "[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+        public const string Email = @"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
         public const string Numeric = "[+-]?([0-9]*[.])?[0-9]+";
         public const string UserName = "[_a-zA-Z][_a-zA-Z0-9_.]{2,30}";
-        public const string Url = @"(https?:\/\/[a-zA-Z0-9][a-zA-Z0-9-\./\?=&]+[a-zA-Z0-9])";
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum Btn { Delete, Save }
+    /// <summary>
+    /// 
+    /// </summary>
     public enum BtnClass { Primary, Info, Warning, Danger, Default, Success }
 }

@@ -140,7 +140,7 @@ namespace CodeShellCore.Services
             if (File.Exists(newPath))
                 File.Delete(newPath);
             image.Save(newPath, ImageFormat.Png);
-            string th = FileUtils.GetThumbUrl(filePath, size);
+            string th = FileUtils.GetThumbUrl(filePath,size);
             return th;
         }
 
@@ -152,18 +152,18 @@ namespace CodeShellCore.Services
             Image current = Image.FromFile(filePath);
             Bitmap canvas = ResizeImage(current, maxWidth, maxHeight);
 
-            var bytes = new byte[0];
-
+            FileBytes b = new FileBytes();
 
             using (MemoryStream st = new MemoryStream())
             {
                 canvas.Save(st, current.RawFormat);
-                bytes = st.ToArray();
+                b.Bytes = st.ToArray();
             }
 
             FileInfo inf = new FileInfo(filePath);
-            var FileName = inf.Name.GetBeforeLast(".") + "__" + maxWidth + "x" + maxHeight + inf.Extension;
-            FileBytes b = new FileBytes(FileName, bytes);
+            b.FileName = inf.Name.GetBeforeLast(".") + "__" + maxWidth + "x" + maxHeight + inf.Extension;
+            b.MimeType = MimeData.GetFileMimeType(b.FileName);
+
             return b;
         }
     }

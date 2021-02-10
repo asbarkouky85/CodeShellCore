@@ -45,7 +45,7 @@ namespace CodeShellCore.Web.Razor.Validation.Internal
 
         public override IValidationCollection AddEmail()
         {
-            Validators.Add(new AngularPatternValidator("'" + Patterns.Email + "'"));
+            Validators.Add(new AngularPatternValidator("'"+Patterns.Email+"'"));
             return this;
         }
 
@@ -55,9 +55,9 @@ namespace CodeShellCore.Web.Razor.Validation.Internal
             return base.AddNumeric();
         }
 
-        public override IValidationCollection AddMinMax(string min, string max = null, string message = null)
+        public override IValidationCollection AddMinMax(string min, string max = null)
         {
-            Add(new AngularMinMaxValidator(max, min, message));
+            Add(new AngularMinMaxValidator(max, min));
             return this;
         }
     }

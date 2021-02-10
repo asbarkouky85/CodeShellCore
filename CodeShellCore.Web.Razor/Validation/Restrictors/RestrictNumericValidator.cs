@@ -1,5 +1,4 @@
 ﻿
-using CodeShellCore.Web.Razor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +12,5 @@ namespace CodeShellCore.Web.Razor.Validation.Restrictors
         public override string Attribute { get { return "is-number"; } }
 
         public override string ValidationMessage { get { return ""; } }
-
-        public override IEnumerable<ValidatorModel> GetMessageModels()
-        {
-            return new ValidatorModel[0];
-        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster.Db.Data;
+using CodeShellCore.Moldster.Db.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

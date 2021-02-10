@@ -9,12 +9,12 @@ namespace CodeShellCore.Security.Sessions
 {
     public class TestSessionManager : SessionManagerBase, ISessionManager
     {
-        private string currentUserId;
+        private object currentUserId;
 
         //public TimeSpan DefaultSessionTime => throw new NotImplementedException();
         public TimeSpan DefaultSessionTime { get { return new TimeSpan(1, 0, 0); } set { } }//DefaultSessionTime= value;
 
-        public override string GetCurrentUserId()
+        public override object GetCurrentUserId()
         {
             return currentUserId;
         }
@@ -39,7 +39,7 @@ namespace CodeShellCore.Security.Sessions
             throw new NotImplementedException();
         }
 
-        public TestSessionManager(string userId, IServiceProvider prov) : base(prov)
+        public TestSessionManager(object userId)
         {
             currentUserId = userId;
         }

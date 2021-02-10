@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.IO;
+
+using CodeShellCore.Data;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Text;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db.Dto;
+using CodeShellCore.Moldster.Db.Razor;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Db.Data;
 using System.Collections.Generic;
-using CodeShellCore.Cli;
+using CodeShellCore.CLI;
 using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Db;
+using CodeShellCore.Moldster.Services.Db;
+using CodeShellCore.Moldster.Services;
 
 namespace CodeShellCore.Moldster.Configurator.Services
 {
@@ -318,6 +324,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
                     }
                 }
                 p.ViewParams = vp.ToJson();
+                p.Presistant = true;
             }
 
             return Unit.SaveChanges();
@@ -530,19 +537,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
 
             if (dto.Parameters != null && dto.Parameters.Any())
             {
-                foreach (var par in dto.Parameters)
-                {
-                    if (par.Entity.Id == 0)
-                    {
-                        par.Entity.State = "Added";
-                        par.Entity.PageId = dto.Id;
-                        par.Entity.PageCategoryParameterId = par.Id;
-                    }
-                    else
-                    {
-                        par.Entity.State = par.State;
-                    }
-                }
+                dto.Parameters.ForEach(d => d.Entity.State = d.State);
                 Unit.PageParameterRepository.ApplyChanges(dto.Parameters.Select(d => d.Entity));
             }
             if (dto.Route != null)
@@ -568,12 +563,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
             {
                 var pars = Unit.PageParameterRepository.FindForJsonByPage(dto.Id);
                 var page = Unit.PageRepository.FindSingle(dto.Id);
-                if (page.Layout != dto.Layout)
-                {
-                    page.Layout = dto.Layout;
-                    Unit.PageRepository.Update(page);
-                }
-
+                page.Presistant = dto.Presistant;
 
                 if (dto.Route == null)
                     dto.Route = Unit.PageRouteRepository.FindByPage(dto.Id);
@@ -593,7 +583,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
 
         public PageCustomizationDTO GetCustomizationData(long id)
         {
-            var p = Unit.PageRepository.FindSingleAs(d => new { d.ViewPath, d.Name, d.TenantId, d.Tenant.Code, d.Layout }, id);
+            var p = Unit.PageRepository.FindSingleAs(d => new { d.ViewPath, d.Name, d.TenantId, d.Tenant.Code, d.Presistant }, id);
             if (p == null)
                 return null;
             var dto = new PageCustomizationDTO
@@ -606,7 +596,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
                 Id = id,
                 TenantId = p.TenantId,
                 TenantCode = p.Code,
-                Layout = p.Layout
+                Presistant = p.Presistant
             };
             return dto;
         }
@@ -663,15 +653,6 @@ namespace CodeShellCore.Moldster.Configurator.Services
             return Unit.SaveChanges();
         }
 
-        public override DeleteResult DeleteById(object prime)
-        {
-            var v = Unit.PageRepository.FindSingleAs(d => new { d.ViewPath, d.Tenant.Code }, d => d.Id.Equals(prime));
-            var success = base.DeleteById(prime);
-            if (success.IsSuccess)
-                success.Data["ViewPath"] = new MovePageRequest { TenantCode = v.Code, FromPath = v.ViewPath };
-            return success;
-        }
-
         public SubmitResult UpdatePage(CreatePageDTO dto)
         {
             bool pathChanged = false;
@@ -689,7 +670,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
             page.CanEmbed = dto.Usage.Contains("E");
             if (page.ViewPath != dto.ComponentPath)
             {
-                oldPath = page.ViewPath;
+                oldPath = dto.ComponentPath;
                 page.ViewPath = dto.ComponentPath;
                 pathChanged = true;
             }

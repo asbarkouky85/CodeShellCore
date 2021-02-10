@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -21,7 +20,7 @@ namespace CodeShellCore.Web.Razor.Validation
         IValidationCollection AddEmail();
         IValidationCollection AddDate(CalendarTypes type, DateRange range = null);
         IValidationCollection AddMinMax(float? min, float max = 0);
-        IValidationCollection AddMinMax(string min, string max = null, string message = null);
+        IValidationCollection AddMinMax(string min, string max = null);
 
         IValidationCollection AddArabic();
         IValidationCollection AddPattern(string pattern, string message = null);
@@ -32,7 +31,6 @@ namespace CodeShellCore.Web.Razor.Validation
 
 
         IHtmlContent GetMessages();
-        IHtmlContent GetMessages(IHtmlHelper helper);
         string GetAttributes();
 
         bool HasRequired();

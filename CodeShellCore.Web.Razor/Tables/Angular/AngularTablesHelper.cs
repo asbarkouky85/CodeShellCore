@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Web.Razor.Models;
+﻿using CodeShellCore.Web.Razor.Models;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -19,7 +18,7 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             writer.InputModel = writer.InputModel.GetCheckInput(null, null, false, lItem);
             writer.InputModel.MemberName = helper.GetModelName() + "." + ngModel;
             writer.InputModel.FieldName = "'" + field + "'+" + rowIndex;
-            helper.AddText(StringType.Word, field);
+
             if (changeFunction != null)
                 writer.InputModelExtraAttrs.evnt__change = changeFunction;
             else if (listName != null)
@@ -99,15 +98,6 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
                 writer.InputModel.MemberName += pipe;
                 return writer;
             }
-        }
-
-        public virtual CellWriter CalendarCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, CalendarTypes rangeType, Calendars cals, DateRange range, bool required, object cellAttributes, object inputAttr, string classes,string rowIndex)
-        {
-            var writer= base.CalendarCell(helper, exp, rangeType, cals, range, required, cellAttributes, inputAttr, classes);
-            writer.InputModel.RowIndex = rowIndex;
-            if (required)
-                writer.UseValidation(helper.VCollection().AddRequired(), rowIndex: rowIndex);
-            return writer;
         }
     }
 }

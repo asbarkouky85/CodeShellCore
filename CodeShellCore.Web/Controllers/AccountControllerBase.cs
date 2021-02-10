@@ -1,63 +1,38 @@
 ﻿using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
-using CodeShellCore.Web.Filters;
-using CodeShellCore.Web.Security;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace CodeShellCore.Web.Controllers
 {
-    [ApiAuthorize(AllowAnonymous = true)]
-    public class AccountControllerBase : BaseApiController, IAccountController
+    public class AccountControllerBase : BaseApiController
     {
-        protected IAuthenticationService AuthenticationService => GetService<IAuthenticationService>();
-        protected ISessionManager SessionManager => GetService<ISessionManager>();
-        protected IUserDataService UserDataService => GetService<IUserDataService>();
-
-        public AccountControllerBase()
+        readonly IAuthenticationService _service;
+        readonly ISessionManager _manager;
+        public AccountControllerBase(IAuthenticationService service, ISessionManager manger)
         {
-
+            _service = service;
+            _manager = manger;
         }
 
         [HttpPost]
-        [ApiAuthorize(AllowAnonymous = true)]
-        public virtual IActionResult Login([FromBody]LoginModel model)
+        public IActionResult Login([FromBody]LoginModel model)
         {
-            return Respond(AuthenticationService.Login(model.UserName, model.Password, model.RememberMe ?? false));
+            return Respond(_service.Login(model.UserName, model.Password));
         }
 
-        [ApiAuthorize(AllowAnonymous = true)]
-        public virtual IActionResult RefreshToken([FromBody]RefreshTokenDTO refresh)
+        public IActionResult RefreshToken([FromBody]RefreshTokenDTO refresh)
         {
-            var uid = SessionManager.CheckRefreshTokenWEB(refresh.Token);
+            var uid = _manager.CheckRefreshTokenWEB(refresh.Token);
             LoginResult res = new LoginResult(false, "InvalidToken");
             if (uid != null)
             {
-                res = AuthenticationService.LoginById(uid);
+                res = _service.LoginById(uid);
             }
             return Respond(res);
         }
-
-        [ApiAuthorize(AllowAll = true, AllowAnonymous = false)]
-        public virtual IActionResult GetUserData()
-        {
-            var res = UserDataService.GetUserDataForUI(SessionManager.GetCurrentUserId());
-            return Respond(res);
-        }
-
-        [ApiAuthorize(AllowAll = true, AllowAnonymous = false)]
-        public virtual IActionResult ChangePassword([FromBody]ChangePasswordDTO dto)
-        {
-            SubmitResult = AuthenticationService.ChangePassword(dto);
-            return Respond();
-        }
-
-        [ApiAuthorize(AllowAnonymous = true)]
-        public virtual IActionResult SendResetMail(ResetPasswordDTO email)
-        {
-            SubmitResult = AuthenticationService.RequestPasswordReset(email);
-            return Respond();
-        }
-
     }
 }

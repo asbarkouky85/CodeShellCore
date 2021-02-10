@@ -20,6 +20,8 @@ namespace CodeShellCore.Data.Services
 
     public interface IEntityService<T> : IEntityService where T : class
     {
+        LoadResult<T> Load(LoadOptions opts);
+        LoadResult<TDTO> LoadDTO<TDTO>(Expression<Func<T, TDTO>> ex, LoadOptions opts) where TDTO : class;
         T GetSingle(object id);
         SubmitResult Create(T obj);
         SubmitResult Update(T obj);
@@ -27,10 +29,6 @@ namespace CodeShellCore.Data.Services
         DeleteResult CanDelete(object Id);
         IRepository<T> Repository { get; }
 
-        LoadResult<T> Load(LoadOptions opts);
-        LoadResult<TDTO> LoadDTO<TDTO>(Expression<Func<T, TDTO>> ex, LoadOptions opts) where TDTO : class;
-        LoadResult<T> LoadCollection(string collectionId, LoadOptions opts);
-        LoadResult<TDto> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, LoadOptions opts) where TDto : class;
         bool IsUnique(PropertyUniqueDTO dto);
     }
 }

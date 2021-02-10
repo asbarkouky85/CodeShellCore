@@ -1,4 +1,4 @@
-﻿<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [contentStyle]="{'max-height':'280px'}" height="90vh" [width]="ModalWidth" [modal]="true">
+﻿<p-dialog [(visible)]="Show" (onHide)="OnModalHide($event)" [contentStyle]="{'max-height':'280px'}" height="90vh" [width]="ModalWidth" [modal]="true">
 
     <p-header>
         @if (!IsSectionDefined("header"))
@@ -54,7 +54,6 @@
         @if (Html.StartContainer("div", "Lister", new { @class = "col-md-8" }))
         {
             @RenderSection("contents", false)
-            @Html.CloseContainer("div")
         }
         else if (IsSectionDefined("contents"))
         {
@@ -67,7 +66,7 @@
             <div class="text-center">
                 @if (IsSectionDefined("okButtons"))
                 {
-                    @RenderSection("okButtons",false)
+                    @RenderSection("okButtons")
                 }
                 else
                 {

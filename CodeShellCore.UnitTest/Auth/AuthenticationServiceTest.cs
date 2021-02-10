@@ -56,7 +56,7 @@ namespace CodeShellCore.UnitTest.Auth
                 sess.AuthorizationRequest(token);
 
                 var acc = sc.GetService<IUserAccessor>();
-                Assert.That(acc.User != null && acc.User.UserId.Equals(1.ToString()));
+                Assert.That(acc.User != null && acc.User.UserId.Equals((long)1));
                 Assert.IsInstanceOf<UserDTO>(acc.User, "User is not UserDTO");
                 var dto = (UserDTO)acc.User;
                 Assert.AreEqual(2, dto.Permissions.Count, "Permission count is incorrect");
@@ -74,7 +74,7 @@ namespace CodeShellCore.UnitTest.Auth
             {
                 var auth = sc.GetService<IAuthenticationService>();
                 var res = auth.Login(userName, password);
-                Assert.That(res.IsSuccess == success, () => res.Message);
+                Assert.That(res.Success == success, () => res.Message);
             });
         }
 

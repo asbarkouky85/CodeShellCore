@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Text.Localization;
-using CodeShellCore.Web.Razor.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,20 +25,10 @@ namespace CodeShellCore.Web.Razor.Validation.Restrictors
             {
                 if (Message == null)
                 {
-                    Message = TextProvider.Message(MessageIds.invalid_field, Label);
+                    Message = TextProvider.Message(MessageIds.invalid_field,Label);
                 }
                 return MakeMessage("pattern", Message);
             }
-        }
-
-        public override IEnumerable<ValidatorModel> GetMessageModels()
-        {
-            if (Message == null)
-            {
-                Message = TextProvider.Message(MessageIds.invalid_field, Label);
-            }
-            var m = MakeModel("pattern", Message);
-            return new ValidatorModel[] { m };
         }
     }
 }

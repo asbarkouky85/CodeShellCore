@@ -41,20 +41,5 @@ namespace CodeShellCore.Web.Razor.Models
                 BtnClassEnum = Razor.BtnClass.Info
             };
         }
-
-        public static LinkModel Make(IHtmlContent content = null, string function = null, string url = null, BtnClass btn = CodeShellCore.Web.Razor.BtnClass.Default, string icon = null, string identifier = null, string classes = null, string title = null, object attr = null)
-        {
-            return new LinkModel
-            {
-                Text = content,
-                Function = function,
-                BtnClassEnum = btn,
-                Url = url,
-                IconClass = icon,
-                Attrs = attr,
-                Classes = classes,
-                Title = title
-            };
-        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Db.Dto;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Web.Razor.General.Moldster;
 using Microsoft.AspNetCore.Mvc.Rendering;

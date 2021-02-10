@@ -18,7 +18,7 @@ namespace CodeShellCore.Linq
             PropertyInfo prop = typeof(T).GetProperty(propertyName);
 
             if (prop == null)
-                return q;
+                throw new Exception("no such property " + propertyName + " in class " + typeof(T).Name);
 
             if (prop.PropertyType == typeof(string))
             {
@@ -76,8 +76,6 @@ namespace CodeShellCore.Linq
         public IQueryable<IGrouping<TRet, T>> GroupWith<TRet>(IQueryable<T> q, string propertyName)
         {
             var ex = Expressions.PropertyExpression<T, TRet>(propertyName);
-            if (ex == null)
-                throw new Exception($"Property {propertyName} does not exist in type {typeof(T).GetType().FullName}");
             return q.GroupBy(ex);
         }
 
@@ -87,12 +85,31 @@ namespace CodeShellCore.Linq
             return q.GroupBy(ex);
         }
 
+        public MemberExpression GetMemberExpression(ParameterExpression pExp, string propertyName)
+        {
+            MemberExpression mExp = null;
+            if (propertyName.Contains("."))
+            {
+                string[] parts = propertyName.Split('.');
+                mExp = Expression.Property(pExp, parts[0]);
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    mExp = Expressions.FromNavigation(mExp, parts[i]);
+                }
+            }
+            else
+            {
+                mExp = Expression.Property(pExp, propertyName);
+            }
+            return mExp;
+        }
+
+
+
         public Expression<Func<T, bool>> GetExpression(PropertyFilter f)
         {
             switch (f.FilterType)
             {
-                case "equals":
-                    return Expressions.GetEqualsExpression<T>(f.MemberName, f.Value1);
                 case "string":
                     return Expressions.GetStringContainsFilter<T>(f.MemberName, f.Value1);
                 case "decimal":

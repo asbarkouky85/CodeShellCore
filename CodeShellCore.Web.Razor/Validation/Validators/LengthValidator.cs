@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using CodeShellCore.Text.Localization;
-using CodeShellCore.Web.Razor.Models;
+﻿using CodeShellCore.Text.Localization;
 
 namespace CodeShellCore.Web.Razor.Validation.Validators
 {
@@ -42,8 +40,8 @@ namespace CodeShellCore.Web.Razor.Validation.Validators
                 string messages = "";
                 if (minLength > 0 && maxLength > 0)
                 {
-                    messages = MakeMessage("minlength", TextProvider.Message(MessageIds.invalid_min_and_max_length, maxLength.ToString(), minLength.ToString()));
-                    messages += "\n" + MakeMessage("maxlength", TextProvider.Message(MessageIds.invalid_min_and_max_length, maxLength.ToString(), minLength.ToString()));
+                    messages = MakeMessage("minlength", TextProvider.Message(MessageIds.invalid_min_and_max_length, maxLength.ToString(),minLength.ToString()));
+                    messages +="\n"+MakeMessage("maxlength", TextProvider.Message(MessageIds.invalid_min_and_max_length, maxLength.ToString(), minLength.ToString()));
                 }
                 else if (maxLength > 0)
                 {
@@ -55,26 +53,6 @@ namespace CodeShellCore.Web.Razor.Validation.Validators
                 }
                 return messages;
             }
-        }
-
-        public override IEnumerable<ValidatorModel> GetMessageModels()
-        {
-            List<ValidatorModel> lst = new List<ValidatorModel>();
-
-            if (minLength > 0 && maxLength > 0)
-            {
-                lst.Add(MakeModel("minlength", TextProvider.Message(MessageIds.invalid_min_and_max_length, maxLength.ToString(), minLength.ToString())));
-                lst.Add(MakeModel("maxlength", TextProvider.Message(MessageIds.invalid_min_and_max_length, maxLength.ToString(), minLength.ToString())));
-            }
-            else if (maxLength > 0)
-            {
-                lst.Add(MakeModel("maxlength", TextProvider.Message(MessageIds.invalid_max_length, maxLength.ToString())));
-            }
-            else if (minLength > 0)
-            {
-                lst.Add(MakeModel("minlength", TextProvider.Message(MessageIds.invalid_min_length, minLength.ToString())));
-            }
-            return lst;
         }
     }
 }

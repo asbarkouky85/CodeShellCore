@@ -61,19 +61,6 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import { AccountServiceBase } from &quot;../../codeshell/security&quot;;
-        ///
-        ///export class AccountService extends AccountServiceBase {
-        ///    protected BaseUrl = &quot;/apiAction/Account&quot;;
-        ///}.
-        /// </summary>
-        public static string AccountService_ts {
-            get {
-                return ResourceManager.GetString("AccountService_ts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;div [@loader]=&quot;ShowLoader ? &apos;shown&apos; : &apos;hidden&apos;&quot; class=&quot;loader-overlay&quot;&gt;
         ///    &lt;div class=&quot;loader&quot;&gt;&lt;/div&gt;
         ///&lt;/div&gt;
@@ -81,16 +68,16 @@ namespace CodeShellCore.Moldster.Properties {
         ///&lt;div&gt;
         ///    &lt;div class=&quot;wrapper&quot;&gt;
         ///        &lt;top-bar #topBar&gt;&lt;/top-bar&gt;
-        ///        &lt;div class=&quot;wrapper-side&quot; *ngIf=&quot;IsLoggedIn &amp;&amp; ShowNav&quot;&gt;
+        ///        &lt;div class=&quot;wrapper-side&quot; *ngIf=&quot;IsLoggedIn&quot;&gt;
         ///            &lt;navigation-side-bar&gt;&lt;/navigation-side-bar&gt;
         ///        &lt;/div&gt;
-        ///        &lt;div class=&quot;wrapper-content&quot; [ngClass]=&quot;!IsLoggedIn || !ShowNav?&apos;expanded&apos;:null&quot;&gt;
+        ///        &lt;div class=&quot;wrapper-content&quot; [ngClass]=&quot;!IsLoggedIn?&apos;expanded&apos;:null&quot;&gt;
         ///            &lt;router-outlet&gt;&lt;/router-outlet&gt;
         ///        &lt;/div&gt;
         ///    &lt;/div&gt;
         ///&lt;/div&gt;
         ///
-        ///&lt;div [ngClas [rest of string was truncated]&quot;;.
+        ///&lt;div [ngClass]=&quot;Config.Locale==&apos;ar&apos; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AppComponent_cshtml {
             get {
@@ -109,16 +96,19 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import { ViewChild } from &quot;@angular/core&quot;;
+        ///   Looks up a localized string similar to import { Injector, ViewChild, EventEmitter } from &quot;@angular/core&quot;;
+        ///import { Title } from &quot;@angular/platform-browser&quot;;
+        ///import { ServerConfigBase, Shell } from &quot;codeshell/core&quot;;
         ///import { IAppComponent } from &quot;codeshell/baseComponents&quot;;
         ///import { TestLoader } from &quot;codeshell/core&quot;;
+        ///import { ServerConfig, AppInfo } from &quot;./ServerConfig&quot;;
+        ///import { UserDTO } from &quot;codeshell/security&quot;;
+        ///import { Stored } from &quot;codeshell/helpers&quot;;
+        ///import { UseState } from &quot;./Models&quot;;
         ///
-        ///export class AppComponentBase extends IAppComponent {
         ///
-        ///    @ViewChild(TestLoader)
-        ///    ModalLoader?: TestLoader | undefined;
-        ///    
-        ///}.
+        ///
+        ///export class AppComponentBase exten [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AppComponentBase_ts {
             get {
@@ -128,11 +118,14 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;GoogleKey&quot;: &quot;AIzaSyD2ZSFjCvupPXGlyAKNhK7xcFtAuZQCBCQ&quot;,
         ///  &quot;UseHotUpdate&quot;: true,
-        ///  &quot;env&quot;: &quot;development&quot;
-        ///}
-        ///.
+        ///  &quot;env&quot;: &quot;dev&quot;,
+        ///  &quot;Services&quot;: {
+        ///
+        ///  },
+        ///  &quot;AuthenticationEncKey&quot;: &quot;92929292929292932&quot;,
+        ///  &quot;SuspendSignalR&quot;: &quot;true&quot;
+        ///}.
         /// </summary>
         public static string appsettings_json {
             get {
@@ -201,7 +194,20 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 牣慥整映湵瑣潩⁮摛潢⹝䍛浯慰敲敖獲潩嵮നऊ癀‱慶捲慨⡲〱⤰ബऊ癀′慶捲慨⡲〱⤰਍ഩ爊瑥牵獮椠瑮਍十਍敢楧൮搊捥慬敲䀠敲畳瑬椠瑮഻ഊ †猠汥捥⁴牀獥汵㵴慣敳ഠ †眠敨⁮佃噎剅⡔湩ⱴ䰠䙅⡔癀ⰱ䌠䅈䥒䑎塅✨✮‬癀⤱ㄭ⤩㰠䌠乏䕖呒椨瑮‬䕌呆䀨㉶‬䡃剁义䕄⡘⸧Ⱗ䀠㉶⴩⤱ ///桴湥㈠਍††桷湥䌠乏䕖呒椨瑮‬䕌呆䀨ㅶ‬䡃剁义䕄⡘⸧Ⱗ䀠ㅶ⴩⤱ ///‾佃噎剅⡔湩ⱴ䰠䙅⡔癀ⰲ䌠䅈䥒䑎塅✨✮‬癀⤲ㄭ⤩琠敨⁮റ †眠敨⁮佃噎剅⡔湩ⱴ猠扵瑳楲杮䀨ㅶ‬䡃剁义䕄⡘⸧Ⱗ䀠ㅶ⬩ⰱ䰠久䀨ㅶ⤩ ///‼佃噎剅⡔湩ⱴ猠扵瑳楲杮䀨㉶‬䡃剁义䕄⡘⸧Ⱗ䀠㉶⬩ⰱ䰠久䀨ㅶ⤩ ///桴湥㈠਍††桷湥䌠乏䕖呒椨瑮‬畳獢牴湩⡧癀ⰱ䌠䅈䥒䑎塅✨✮‬癀⤱ㄫ‬䕌⡎癀⤱⤩㸠䌠乏䕖呒椨瑮‬畳獢牴湩⡧癀ⰲ䌠䅈䥒䑎塅✨✮‬癀⤲ㄫ‬䕌⡎癀⤱⤩琠敨⁮റ †攠獬⁥‰湥㭤਍敲畴湲䀠敲畳瑬਍湥㭤਍਍਍਍਍佇਍⨯⨪⨪‪扏敪瑣›唠敳䑲晥湩摥畆据楴湯嬠扤嵯嬮敇敮慲整摉⁝†匠牣灩⁴慄整›〱㠯㈯㈰‰㨹㌰ㄺ‸䵐⨠⨪⨪⼪਍䕓⁔乁䥓也䱕卌传ൎ䜊൏匊呅儠何䕔彄䑉久䥔䥆剅传ൎ䜊൏ഊ䌊䕒呁⁅商䍎䥔乏嬠扤嵯嬮敇敮慲整摉൝⠊਍䀉楴敭䐠瑡瑥浩ⱥ਍䀉潲乷浵椠瑮਍ഩ刊呅剕华戠杩湩൴䄊൓䈊䝅义਍ⴉ‭敄汣牡⁥桴⁥敲畴湲瘠牡慩汢⁥敨敲਍䐉䍅䅌䕒 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 
+        ///create function [dbo].[CompareVersion](
+        ///	@v1 varchar(100),
+        ///	@v2 varchar(100)
+        ///)
+        ///returns int
+        ///AS
+        ///begin
+        ///declare @result int;
+        ///
+        ///    select @result=case 
+        ///    when CONVERT(int, LEFT(@v1, CHARINDEX(&apos;.&apos;, @v1)-1)) &lt; CONVERT(int, LEFT(@v2, CHARINDEX(&apos;.&apos;, @v2)-1)) then 2
+        ///    when CONVERT(int, LEFT(@v1, CHARINDEX(&apos;.&apos;, @v1)-1)) &gt; CONVERT(int, LEFT(@v2, CHARINDEX(&apos;.&apos;, @v2)-1)) then 1
+        ///    when CONVERT(int, substring(@v1, CHARINDEX(&apos;.&apos;, @v1)+1, LEN(@v1))) &lt; CONVERT(int, substring(@v2, CHARINDEX(&apos;.&apos;, @v2)+1, LEN [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Creation {
             get {
@@ -276,7 +282,8 @@ namespace CodeShellCore.Moldster.Properties {
         ///
         ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Armata&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
         ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Tajawal&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
-        ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Titilli [rest of string was truncated]&quot;;.
+        ///
+        ///    &lt;link href=&quot;~/css/plugins/animate.css&quot; rel=&quot;stylesheet&quot; / [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Index_cshtml {
             get {
@@ -305,21 +312,11 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] Localization {
-            get {
-                object obj = ResourceManager.GetObject("Localization", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;div class=&quot;container&quot;&gt;
         ///    &lt;section class=&quot;row&quot;&gt;
         ///        &lt;br /&gt;
         ///        &lt;br /&gt;
-        ///        &lt;div class=&quot;col-md-4 col-md-offset-4 col-sm-12 col-sm-offset-0 content-block animated fadeInDownBig&quot;&gt;
+        ///        &lt;div class=&quot;col-md-4 col-md-offset-4 col-sm-12 col-sm-offset-0 content-block&quot;&gt;
         ///            &lt;br class=&quot;not-mob&quot; /&gt;
         ///            &lt;div class=&quot;title-header text-center page-header&quot;&gt;
         ///                &lt;h2&gt;{{&apos;Words.Log__&apos; | translate}} &lt;span&gt;{{&apos;Words.In__&apos; | translate}}&lt;/span&gt;&lt;/h2&gt;
@@ -327,7 +324,7 @@ namespace CodeShellCore.Moldster.Properties {
         ///
         ///            &lt;form class=&quot;order-price &quot; #Form=&quot;ngForm&quot;&gt;
         ///                &lt;div class=&quot;row&quot;&gt;
-        ///       [rest of string was truncated]&quot;;.
+        ///                    &lt;div clas [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Login_html {
             get {
@@ -337,12 +334,20 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to import { Component } from &apos;@angular/core&apos;;
-        ///import { LoginBase } from &apos;codeshell/baseComponents/loginBase&apos;;
+        ///import { BaseComponent } from &apos;codeshell/baseComponents&apos;;
+        ///import { Shell } from &apos;codeshell/core&apos;;
+        ///import { AccountServiceBase } from &apos;codeshell/security&apos;;
+        ///import { NoteType } from &apos;codeshell/helpers&apos;;
         ///
         ///@Component({ templateUrl: &quot;./Login.html&quot; })
-        ///export class Login extends LoginBase {
-        ///    ForgotPasswordUrl = &quot;/Auth/ForgotPassword&quot;;
-        ///}.
+        ///export class Login extends BaseComponent {
+        ///
+        ///    AccountService: AccountServiceBase = Shell.Injector.get(AccountServiceBase);
+        ///    model: any = {};
+        ///    GetPageId(): number { return 0; }
+        ///
+        ///    Login() {
+        ///        th [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Login_ts {
             get {
@@ -376,7 +381,7 @@ namespace CodeShellCore.Moldster.Properties {
         ///
         ///    &lt;ul class=&quot;nav&quot;&gt;
         ///        &lt;li&gt;
-        ///            &lt;a [routerLink]=&quot;GetMainUrl()&quot;&gt;{{&apos;Words.Main&apos; | translate}}&lt;/a&gt;
+        ///            &lt;a [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;{{&apos;Words.Main&apos; | translate}}&lt;/a&gt;
         ///        &lt;/li&gt;
         ///        &lt;li *ngFor=&quot;let it of navs&quot;&gt;
         ///            &lt;a [routerLink]=&quot;&apos;/&apos;+it.url&quot; routerLinkActive=&quot;active&quot;&gt;{{&apos;Pages.&apos;+it.name | translate}}&lt;/a&gt;
@@ -391,15 +396,12 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import { Component, Injector } from &quot;@angular/core&quot;;
+        ///   Looks up a localized string similar to import { Component } from &quot;@angular/core&quot;;
         ///import { NavigationSideBarBase } from &quot;codeshell/baseComponents/NavigationSideBarBase&quot;;
         ///
         ///@Component({ templateUrl: &quot;./navigationSideBar.html&quot;, selector: &quot;navigation-side-bar&quot; })
         ///export class NavigationSideBar extends NavigationSideBarBase {
         ///
-        ///    constructor(inj:Injector){
-        ///        super(inj);
-        ///    }
         ///}.
         /// </summary>
         public static string navigationSideBar_ts {
@@ -411,20 +413,20 @@ namespace CodeShellCore.Moldster.Properties {
         /// <summary>
         ///   Looks up a localized string similar to {
         ///  &quot;dependencies&quot;: {
-        ///    &quot;@agm/core&quot;: &quot;1.0.0-beta.5&quot;,
-        ///    &quot;@angular/animations&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/cdk&quot;: &quot;6.4.7&quot;,
-        ///    &quot;@angular/common&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/compiler&quot;: &quot;6.1.10&quot;,
         ///    &quot;@angular/core&quot;: &quot;6.1.10&quot;,
         ///    &quot;@angular/forms&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/material&quot;: &quot;6.4.7&quot;,
-        ///    &quot;@angular/material-moment-adapter&quot;: &quot;6.4.7&quot;,
+        ///    &quot;@angular/router&quot;: &quot;6.1.10&quot;,
+        ///    &quot;@angular/animations&quot;: &quot;6.1.10&quot;,
+        ///    &quot;@angular/common&quot;: &quot;6.1.10&quot;,
         ///    &quot;@angular/platform-browser&quot;: &quot;6.1.10&quot;,
         ///    &quot;@angular/platform-browser-dynamic&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/router&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@aspnet/signalr&quot;: &quot;^1.1.4&quot;,
-        ///   [rest of string was truncated]&quot;;.
+        ///    &quot;@angular/cdk&quot;: &quot;6.4.7&quot;,
+        ///    &quot;@angular/material&quot;: &quot;6.4.7&quot;,
+        ///    &quot;@angular/material-moment-adapter&quot;: &quot;6.4.7&quot;,
+        ///    &quot;@ng-select/ng-select&quot;: &quot;2.20.5&quot;,
+        ///    &quot;@ngx-translate/core&quot;: &quot;10.0.2&quot;,
+        ///    &quot;@aspnet/signalr&quot;: &quot;1.1.4&quot;,
+        ///    &quot;angula [rest of string was truncated]&quot;;.
         /// </summary>
         public static string package_json {
             get {
@@ -463,12 +465,10 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import { ServerConfigBase } from &quot;codeshell/core&quot;;
+        ///   Looks up a localized string similar to import { ServerConfigBase } from &quot;CodeShell/core&quot;;
         ///
         ///export class ServerConfig implements ServerConfigBase {
         ///    GoogleKey: string = &quot;&quot;;
-        ///	DefaultLocale: string = &quot;&quot;;
-        ///    Version?: string | null | undefined;
         ///    BaseURL: string = &quot;&quot;;
         ///    Domain: string = &quot;&quot;;
         ///    Locale: string = &quot;&quot;;
@@ -518,29 +518,21 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] ShellComponents {
-            get {
-                object obj = ResourceManager.GetObject("ShellComponents", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;nav class=&quot;top-bar&quot;&gt;
+        ///   Looks up a localized string similar to 
+        ///&lt;nav class=&quot;navbar navbar-static-top top-bar&quot;&gt;
         ///    &lt;div class=&quot;container-fluid&quot;&gt;
-        ///        &lt;div class=&quot;row&quot;&gt;
-        ///            &lt;div class=&quot;pull-first&quot;&gt;
-        ///                &lt;ul class=&quot;nav nav-pills&quot;&gt;
-        ///                    &lt;li&gt;
-        ///                        &lt;a (click)=&quot;Slide()&quot; class=&quot;opt-btn mob&quot;&gt;
-        ///                            &lt;i class=&quot;fa fa-bars&quot;&gt;&lt;/i&gt;
-        ///                        &lt;/a&gt;
-        ///                        &lt;a (click)=&quot;ToggleNav()&quot; class=&quot;opt-btn not-mob&quot;&gt;
-        ///                            &lt;i class=&quot;fa fa-bars&quot;&gt;&lt;/i&gt;
-        ///                        &lt;/a&gt;
-        ///      [rest of string was truncated]&quot;;.
+        ///        &lt;div class=&quot;navbar-brand&quot;&gt;
+        ///            &lt;a (click)=&quot;Slide()&quot; class=&quot;mob&quot;&gt;
+        ///                &lt;i class=&quot;fa fa-bars&quot;&gt;&lt;/i&gt;
+        ///            &lt;/a&gt;
+        ///            &lt;button (click)=&quot;ToggleNav()&quot; class=&quot;btn btn-default not-mob&quot;&gt;
+        ///                &lt;i class=&quot;fa fa-bars&quot;&gt;&lt;/i&gt;
+        ///            &lt;/button&gt;
+        ///        &lt;/div&gt;
+        ///
+        ///        &lt;div class=&quot;pull-last&quot; *ngIf=&quot;isLoggedIn&quot;&gt;
+        ///            &lt;ul class=&quot;nav navbar-nav&quot;&gt;
+        ///                &lt;li style=&quot;p [rest of string was truncated]&quot;;.
         /// </summary>
         public static string topBar_html {
             get {
@@ -550,12 +542,16 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to import { Component } from &quot;@angular/core&quot;;
+        ///import { Shell, ServerConfigBase } from &quot;codeshell/core&quot;;
+        ///
+        ///import { BaseComponent } from &quot;codeshell/baseComponents&quot;;
+        ///import { UserDTO } from &quot;codeshell/security&quot;;
+        ///import { HttpClient } from &quot;@angular/common/http&quot;;
+        ///import { ServerConfig, AppInfo } from &quot;Example/ServerConfig&quot;;
+        ///import { AppComponentBase } from &quot;Example/AppComponentBase&quot;;
+        ///import { Router } from &quot;@angular/router&quot;;
         ///import { TopBarBase } from &quot;codeshell/baseComponents/topBarBase&quot;;
-        ///
-        ///@Component({ templateUrl: &quot;./topBar.html&quot;, selector: &quot;top-bar&quot;, exportAs: &quot;top-bar&quot; })
-        ///export class TopBar extends TopBarBase {
-        ///
-        ///}.
+        ///import { Tasks [rest of string was truncated]&quot;;.
         /// </summary>
         public static string topBar_ts {
             get {
@@ -587,55 +583,61 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to USE [SID.Config]
+        ///   Looks up a localized string similar to alter table Resources alter column DomainId bigint null;
+        ///alter table Resources add ServiceName varchar(50) null;
+        ///alter table PageCategories add DomainId bigint null;
         ///GO
-        ////****** Object:  StoredProcedure [dbo].[SyncAuthDb]    Script Date: 5/4/2020 12:45:22 AM ******/
-        ///SET ANSI_NULLS ON
+        ///alter table Pages drop constraint FK_Pages_TenantDomains;
+        ///alter table Pages add DomainId bigint null;
+        ///alter table Pages add TenantId bigint null;
         ///GO
-        ///SET QUOTED_IDENTIFIER ON
+        ///
+        ///update Pages 
+        ///set
+        ///	DomainId=td.DomainId,
+        ///	TenantId=td.TenantId
+        ///from Pages ps
+        ///	join TenantDomains td on td.Id=ps.TenantDomainId;
+        ///
+        ///drop table TenantDomains;
+        ///
         ///GO
-        ///ALTER PROCEDURE [dbo].[SyncAuthDb](
-        /// @tenantId bigint,
-        /// @dbName nvarchar(100)
-        ///)
-        ///AS
-        ///BEGIN
-        ///	SET NOCOUNT ON;
-        ///
-        ///
-        ///	declare @sql nvarchar(max)=&apos;&apos;;
-        ///
-        ///	set @sql =&apos;insert into [&apos;+@dbName+&apos;].Auth.Domains (Id,Name,CreatedOn,UpdatedOn)
-        ///	select Id,Name,CreatedOn,UpdatedOn
-        ///	from Domains
-        ///	where 
-        ///		ParentId is null AND 
-        ///		Id not in (select [rest of string was truncated]&quot;;.
+        ///alter table Pag [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string update_v2_10_3 {
+        public static string update_v2_1_0 {
             get {
-                return ResourceManager.GetString("update_v2_10_3", resourceCulture);
+                return ResourceManager.GetString("update_v2_1_0", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to exec sp_rename &apos;dbo.DomainEntityCollections&apos;, &apos;ResourceCollections&apos;;
-        ///GO
-        ///exec sp_rename &apos;dbo.TenantApps&apos;,&apos;Apps&apos;;
-        ///GO
-        ///exec sp_rename &apos;dbo.EntityCollectionConditions&apos;,&apos;ResourceCollectionConditions&apos;;
-        ///GO
-        ///
-        ///alter table ResourceCollections drop constraint FK_DomainEntityCollections_DomainEntities;
-        ///alter table ResourceCollections drop column DomainEntityId;
-        ///
-        ///alter table PageCategories drop constraint FK_PageCategories_DomainEntities1;
-        ///alter table PageCategories drop column DomainEntityId;
-        ///alter table Page [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to CREATE TABLE [dbo].[NavigationGroups](
+        ///	[Id] [bigint] NOT NULL,
+        ///	[Name] [nvarchar](150) NULL,
+        ///	[ParentId] [bigint] NULL,
+        ///	[Chain] [nvarchar](max) NULL,
+        ///	[CreatedOn] [datetime] NULL,
+        ///	[CreatedBy] [bigint] NULL,
+        ///	[UpdatedOn] [datetime] NULL,
+        ///	[UpdatedBy] [bigint] NULL,
+        /// CONSTRAINT [PK_NavigationGroups] PRIMARY KEY CLUSTERED 
+        ///(
+        ///	[Id] ASC
+        ///)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+        ///) ON [PRIMARY] TEXTIMAGE_ON  [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string update_v2_15_0 {
+        public static string update_v2_2_0 {
             get {
-                return ResourceManager.GetString("update_v2_15_0", resourceCulture);
+                return ResourceManager.GetString("update_v2_2_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ALTER TABLE Tenants ADD Version VARCHAR(50) NULL;.
+        /// </summary>
+        public static string update_v2_5_0 {
+            get {
+                return ResourceManager.GetString("update_v2_5_0", resourceCulture);
             }
         }
         

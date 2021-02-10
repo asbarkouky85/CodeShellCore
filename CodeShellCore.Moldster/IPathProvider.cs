@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Services;
 
@@ -16,6 +15,5 @@ namespace CodeShellCore.Moldster
         string UIUrl { get; }
 
         List<MoldsterEnvironment> GetEnvironments();
-        List<LayoutFileDTO> GetLayouts(bool nameOnly=false);
     }
 }

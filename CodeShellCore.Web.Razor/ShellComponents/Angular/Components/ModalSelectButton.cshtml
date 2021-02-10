@@ -6,12 +6,11 @@
         cond = " *ngIf=\"" + Model.GroupName + " && " + Model.GroupName + ".Write\"";
     }
 }
-<div class="form-group"
+<div class="row form-group"
      @if (Model.GroupName != null) { @Html.Raw($"id=\"{Model.GroupName}\" bs-group #{Model.GroupName}=\"bsFormGroup\"") }
      @Html.Raw(Model.Attributes)>
-    <label class="control-label">@Model.Text</label>
-
-    <div>
+    <label class="col-sm-3 control-label">@Model.Text</label>
+    <div class="col-sm-9">
         <div class="input-group modal-selector">
             <label class="form-control" @if (Model.Required) { @Html.Raw("[modal-required]=\"" + Html.Raw(Model.ValidationFunction) + "\" fieldName=\"" + Model.FormFieldName + "\"") ; }>
                 @if (Model.Content != null)
@@ -40,13 +39,6 @@
                     <button class="btn" (click)="@Html.Raw(Model.Function)">
                         <i class="fa fa-window-restore"></i>
                     </button>
-                    @if (Model.Buttons != null)
-                    {
-                        foreach (var but in Model.Buttons)
-                        {
-                            @Html.GetComponent("Buttons/Button", but)
-                        }
-                    }
                 </div>
             }
             else
@@ -59,6 +51,4 @@
             }
         </div>
     </div>
-
-
 </div>

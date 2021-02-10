@@ -21,14 +21,14 @@ namespace CodeShellCore.Caching
             }
         }
 
-        public T Get<T>(string key) where T : class
+        public T Get<T>(object key) where T : class
         {
-            if (getList<T>().TryGetValue(key, out object ob))
+            if (getList<T>().TryGetValue(key.ToString(), out object ob))
                 return (T)ob;
 
             return null;
         }
-        public void Store<T>(string key, T entity) where T : class
+        public void Store<T>(object key, T entity) where T : class
         {
             if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
             {
@@ -41,7 +41,7 @@ namespace CodeShellCore.Caching
             }
         }
 
-        public bool Remove<T>(string key) where T : class
+        public bool Remove<T>(object key) where T : class
         {
             if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
             {

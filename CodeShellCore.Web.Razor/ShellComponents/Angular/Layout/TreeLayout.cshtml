@@ -1,8 +1,6 @@
-﻿@if (IsSectionDefined("okButtons"))
-{
+﻿@{
     IgnoreSection("okButtons");
 }
-
 @if (IsSectionDefined("header"))
 {
     @RenderSection("header")
@@ -12,7 +10,7 @@ else
     @Html.PageHeader()
 }
 
-@if (Html.StartContainer("div", "Tree", new { @class = ((Html.GetAccessibility("Lister").Read) ? "col-md-4" : "col-md-12"), calc__ngClass = "HideHeader?null:'padTop'" }))
+@if (Html.StartContainer("div", "Tree", new { @class = ((Html.GetAccessibility("Lister").Read) ? "col-md-4" : "col-md-12") ,calc__ngClass="HideHeader?null:'padTop'"}))
 {
     @RenderSection("aboveTree", false)
 

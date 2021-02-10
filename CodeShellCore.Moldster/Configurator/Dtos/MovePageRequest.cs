@@ -11,6 +11,5 @@ namespace CodeShellCore.Moldster.Configurator.Dtos
         public long PageId { get; set; }
         public long DomainId { get; set; }
         public string TenantCode { get; set; }
-
     }
 }

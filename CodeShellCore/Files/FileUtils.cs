@@ -8,67 +8,12 @@ using CodeShellCore.Services;
 using CodeShellCore.Http;
 using CodeShellCore.Text;
 using System.IO.Compression;
-using CodeShellCore.Files.Uploads;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Files
 {
     public class FileUtils
     {
-        public static string RelativeToAbsolute(string url)
-        {
-            return Path.Combine(Shell.AppRootPath, Shell.PublicRoot, url);
-        }
-
-        public static bool SaveTemp(TmpFileData req, long type, out SavedFileDto dto, bool db = false)
-        {
-            using (var sc = Shell.GetScope())
-            {
-                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
-                return handler.SaveTemp(req, out dto, type, null, db);
-            }
-        }
-
-        public static bool SaveTemp(TmpFileData req, string folder, out SavedFileDto dto)
-        {
-            using (var sc = Shell.GetScope())
-            {
-                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
-                return handler.SaveTemp(req, out dto, null, folder, false);
-            }
-        }
-
-        public static TmpFileData AddToTemp(FileBytes bts,string key)
-        {
-            using(var sc = Shell.GetScope())
-            {
-                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
-                return handler.AddToTemp(bts, key);
-            }
-            
-        }
-
-        public static bool SaveTempInDb(TmpFileData req, out SavedFileDto dto)
-        {
-            var handler = Shell.RootInjector.GetRequiredService<IUploadedFilesHandler>();
-            return handler.SaveTemp(req, out dto, null, null, true);
-        }
-
-        public static void DeleteTmp(TmpFileData tmp)
-        {
-            var handler = Shell.RootInjector.GetRequiredService<IUploadedFilesHandler>();
-            handler.DeleteTmp(tmp);
-        }
-
-        public static string StoreThumb(string path, ThumbSize size, bool relative = true)
-        {
-            using (var s = new ImagesService())
-            {
-                path = relative ? FileUtils.RelativeToAbsolute(path) : path;
-                return s.StoreThumb(path, size);
-            }
-        }
-
+        
         public static string GetThumbString(string path, int maxWidth, int maxHeight)
         {
             if (string.IsNullOrEmpty(path))
@@ -105,29 +50,15 @@ namespace CodeShellCore.Files
             return Utils.CombineUrl(url, inf.Name).Replace("\\", "/");
         }
 
-        public static FileBytes DownloadFile(string url, string logTo = null)
+        public static FileBytes DownloadFile(string url,string logTo=null)
         {
-
+            
             using (HttpService ser = HttpService.GetInstance())
             {
                 if (logTo != null)
                     ser.LogToFile = logTo;
 
                 return ser.DownloadFile(url);
-            }
-        }
-
-        public static bool TryDownloadFile(string url, out FileBytes bytes)
-        {
-            try
-            {
-                bytes = DownloadFile(url);
-                return true;
-            }
-            catch
-            {
-                bytes = null;
-                return false;
             }
         }
 
@@ -149,18 +80,15 @@ namespace CodeShellCore.Files
 
             ZipFile.ExtractToDirectory(file, newDir);
 
-            string[] files = Directory.GetFiles(newDir, "*", SearchOption.AllDirectories);
-            foreach (var f in files)
+            string[] files = Directory.GetFiles(newDir);
+            foreach(var f in files)
             {
-                var relative = f.Replace(newDir + "\\", "");
-                string newFile = Path.Combine(folder, relative);
+                string newFile = Path.Combine(folder, Path.GetFileName(f));
                 if (File.Exists(newFile))
                     File.Delete(newFile);
-                else
-                    Utils.CreateFolderForFile(newFile);
-                File.Move(f, newFile);
+                File.Move(f,newFile);
             }
-            Utils.DeleteDirectory(newDir);
+            Directory.Delete(newDir);
         }
 
     }

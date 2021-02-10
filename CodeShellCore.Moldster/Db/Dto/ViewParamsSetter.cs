@@ -1,7 +1,7 @@
-﻿using CodeShellCore.Moldster.Razor;
+﻿using CodeShellCore.Moldster.Db.Razor;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Db.Dto
 {
     public class ViewParamsSetter
     {

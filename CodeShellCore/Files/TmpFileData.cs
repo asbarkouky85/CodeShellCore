@@ -1,6 +1,4 @@
-﻿using CodeShellCore.Files.Uploads;
-using CodeShellCore.Helpers;
-using CodeShellCore.Text;
+﻿using CodeShellCore.Helpers;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -26,29 +24,38 @@ namespace CodeShellCore.Files
             };
         }
 
-        public TmpFileData()
+        public string SaveFile(string folder, bool publicFolder = true)
         {
+            folder = publicFolder ? Path.Combine(Shell.PublicRoot, folder) : folder;
+            folder = folder.Replace("\\", "/");
+            string dir = Path.Combine(Shell.AppRootPath, folder).Replace("\\", "/");
+            FileBytes bytes = null;
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
-        }
+            string fileName = Utils.GenerateID().ToString() + "_" + Name;
+            string nw = Path.Combine(dir, fileName);
 
-        public TmpFileData(string url)
-        {
-            Url = url;
-            Name = url?.GetAfterLast("/");
-        }
-
-        public void DeleteTmp()
-        {
-            FileUtils.DeleteTmp(this);
-        }
-
-        public virtual string SaveFile(string folder, bool pubFolder = true)
-        {
-            if (FileUtils.SaveTemp(this, folder, out SavedFileDto dto))
+            if (UrlRegex.IsMatch(TmpPath))
             {
-                return dto.Path;
+                bytes = FileUtils.DownloadFile(TmpPath);
+                if (bytes != null)
+                {
+                    fileName = bytes.FileName;
+                    bytes.Save(folder);
+                }
+                else
+                    return TmpPath;
+
             }
-            return null;
+            else
+            {
+                string cur = Path.Combine(Shell.AppRootPath, TmpPath);
+                if (File.Exists(nw))
+                    File.Delete(nw);
+                File.Move(cur, nw);
+            }
+            return Path.Combine(folder, fileName).Replace(Shell.PublicRoot + "/", "");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace CodeShellCore.Caching
 {
     public interface IDbCacheProvider
     {
-        T GetById<T>(string id) where T : class;
+        T GetById<T>(object id) where T : class;
         void Store<T>(T entity) where T : class;
         List<T> GetAllIds<T>(ICollection ids) where T : class;
         void RemoveById<T>(object id) where T : class;

@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Dto;
+﻿using CodeShellCore.Moldster.Db.Dto;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.Razor
@@ -8,6 +8,5 @@ namespace CodeShellCore.Moldster.Razor
         public string EntityName { get; set; }
         public List<ControlDTO> Controls { get; set; } = new List<ControlDTO>();
         public List<PageCategoryParameterDTO> Parameters { get; set; } = new List<PageCategoryParameterDTO>();
-        public LocalizationDataCollector Localization { get; set; }
     }
 }
