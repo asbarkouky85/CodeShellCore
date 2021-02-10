@@ -12,7 +12,7 @@ using System.Text;
 
 namespace CodeShellCore.FileServer.Web.Controllers
 {
-    [ApiAuthorize(AllowAnonymous = true)]
+    [ApiAuthorize]
     public class FileServerController : BaseApiController, IAttachmentFileService
     {
         IAttachmentFileService service => GetService<IAttachmentFileService>();

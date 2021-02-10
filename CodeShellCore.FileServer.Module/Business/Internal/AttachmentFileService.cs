@@ -1,17 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-using System.Linq;
-using CodeShellCore.Services;
-using CodeShellCore.Data.Services;
 using CodeShellCore.FileServer.Data;
 using CodeShellCore.Files;
 using CodeShellCore.Data.Helpers;
-using CodeShellCore.FileServer.Business;
 using CodeShellCore.Helpers;
 using CodeShellCore.FileServer.Paths;
 using CodeShellCore.Linq;
@@ -33,7 +27,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             _paths = paths;
         }
 
-        public IEnumerable<TmpFileData> Upload(UploadRequestDto dto)
+        public virtual IEnumerable<TmpFileData> Upload(UploadRequestDto dto)
         {
             var cat = unit.AttachmentCategoryRepository.FindSingle(dto.AttachmentTypeId);
             ValidateFiles(cat, dto.Files);
@@ -50,7 +44,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return lst;
         }
 
-        void ValidateFiles(AttachmentCategory cat, IEnumerable<IFileInfo> lst)
+        protected virtual void ValidateFiles(AttachmentCategory cat, IEnumerable<IFileInfo> lst)
         {
 
             if (cat == null)
@@ -68,7 +62,7 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         }
 
-        public SubmitResult SaveAttachment(SaveAttachmentRequest req)
+        public virtual SubmitResult SaveAttachment(SaveAttachmentRequest req)
         {
             var cat = unit.AttachmentCategoryRepository.FindSingle(req.AttachmentTypeId);
 
@@ -112,7 +106,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return s;
         }
 
-        public FileBytes GetBytes(long id)
+        public virtual FileBytes GetBytes(long id)
         {
             var att = unit.AttachmentRepository.FindSingle(id);
             if (att == null)
@@ -133,12 +127,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             }
         }
 
-        public IEnumerable<TempFileDto> Upload()
-        {
-            throw new NotImplementedException();
-        }
-
-        public SubmitResult ValidateFile(FileValidationRequest req)
+        public virtual SubmitResult ValidateFile(FileValidationRequest req)
         {
             var res = new SubmitResult();
             var cat = unit.AttachmentCategoryRepository.FindSingle(req.AttachmentType);
@@ -154,7 +143,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return res;
         }
 
-        public string GetFileName(long id)
+        public virtual string GetFileName(long id)
         {
             var name = unit.AttachmentRepository.GetSingleValue(e => e.FileName, e => e.Id == id);
             if (name == null)
@@ -164,7 +153,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return name;
         }
 
-        public FileBytes GetTempBytes(string path)
+        public virtual FileBytes GetTempBytes(string path)
         {
             string filePath = Path.Combine(_paths.TempFolder, path);
             var b = new FileBytes(filePath);
@@ -175,7 +164,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return b;
         }
 
-        public FileBytes GetBytesByUrl(string path)
+        public virtual FileBytes GetBytesByUrl(string path)
         {
             string filePath = Path.Combine(_paths.RootFolderPath, path);
             var b = new FileBytes(filePath);

@@ -73,7 +73,7 @@ namespace CodeShellCore.Files.Uploads
                     string cur = Path.Combine(TempRoot, req.TmpPath);
                     if (File.Exists(dto.Path))
                         File.Delete(dto.Path);
-                    File.Copy(cur, dto.Path);
+                    File.Copy(cur, saveLocation);
                 }
                 return true;
             }
