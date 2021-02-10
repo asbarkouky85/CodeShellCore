@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using CodeShellCore.Data.Lookups;
 
-namespace CodeShellCore.Data.Services
+namespace CodeShellCore.Data.Lookups
 {
     public interface ILookupsService
     {

@@ -8,6 +8,8 @@ using CodeShellCore.Services;
 using CodeShellCore.Http;
 using CodeShellCore.Text;
 using System.IO.Compression;
+using CodeShellCore.Files.Uploads;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Files
 {
@@ -16,6 +18,46 @@ namespace CodeShellCore.Files
         public static string RelativeToAbsolute(string url)
         {
             return Path.Combine(Shell.AppRootPath, Shell.PublicRoot, url);
+        }
+
+        public static bool SaveTemp(TmpFileData req, long type, out SavedFileDto dto, bool db = false)
+        {
+            using (var sc = Shell.GetScope())
+            {
+                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+                return handler.SaveTemp(req, out dto, type, null, db);
+            }
+        }
+
+        public static bool SaveTemp(TmpFileData req, string folder, out SavedFileDto dto)
+        {
+            using (var sc = Shell.GetScope())
+            {
+                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+                return handler.SaveTemp(req, out dto, null, folder, false);
+            }
+        }
+
+        public static TmpFileData AddToTemp(FileBytes bts,string key)
+        {
+            using(var sc = Shell.GetScope())
+            {
+                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+                return handler.AddToTemp(bts, key);
+            }
+            
+        }
+
+        public static bool SaveTempInDb(TmpFileData req, out SavedFileDto dto)
+        {
+            var handler = Shell.RootInjector.GetRequiredService<IUploadedFilesHandler>();
+            return handler.SaveTemp(req, out dto, null, null, true);
+        }
+
+        public static void DeleteTmp(TmpFileData tmp)
+        {
+            var handler = Shell.RootInjector.GetRequiredService<IUploadedFilesHandler>();
+            handler.DeleteTmp(tmp);
         }
 
         public static string StoreThumb(string path, ThumbSize size, bool relative = true)

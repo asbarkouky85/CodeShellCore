@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Data.Services;
+using CodeShellCore.Data.Sql;
 using CodeShellCore.Net;
 using System;
 using System.Collections.Generic;

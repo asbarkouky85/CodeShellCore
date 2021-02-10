@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using CodeShellCore.Files.Reporting;
 using CodeShellCore.MultiTenant;
 using CodeShellCore.Helpers;
+using CodeShellCore.Data.Lookups;
 
 namespace CodeShellCore.DependencyInjection
 {

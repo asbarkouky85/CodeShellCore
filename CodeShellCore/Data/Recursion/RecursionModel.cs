@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeShellCore.Data.Lookups
+namespace CodeShellCore.Data.Recursion
 {
     public class RecursionModel : IRecursiveModel
     {

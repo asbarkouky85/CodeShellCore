@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace CodeShellCore.Data.Services
+namespace CodeShellCore.Data.Sql
 {
     public class SqlService : ConsoleService
     {

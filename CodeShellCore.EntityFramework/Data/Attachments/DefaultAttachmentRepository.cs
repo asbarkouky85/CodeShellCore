@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Data.Helpers;
+using CodeShellCore.Files;
 
 namespace CodeShellCore.Data.Attachments
 {
@@ -28,6 +29,7 @@ namespace CodeShellCore.Data.Attachments
             var s = ChangeSet.Create(lst);
             foreach (var item in s.Added)
             {
+                //if(FileUtils.SaveTemp(item.File,))
                 item.FilePath = item.File?.SaveFile(folder ?? "");
                 item.EntityId = model.Id;
                 item.EntityType = t;
