@@ -1,0 +1,7 @@
+﻿@model NgControlGroup
+<div class="row form-group @Model.GroupCssClass" @Html.Raw(Model.Attributes)>
+    <label class="col-sm-3 control-label">@Html.Raw(Model.Label)</label>
+    <div class="col-sm-9">
+        @Model.InputControl
+    </div>
+</div>

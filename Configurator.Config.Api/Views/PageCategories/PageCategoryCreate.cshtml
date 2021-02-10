@@ -1,0 +1,36 @@
+@*ID:1935838897000*@
+
+@model PageCategory
+@{
+    Layout = Html.Config().Layout;
+
+}
+<form #Form="ngForm">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                @Html.HeaderCell(d => d.CreatedOn)
+                @Html.HeaderCell(d => d.ViewPath)
+                @Html.HeaderCell(d => d.ResourceName)
+                @Html.HeaderCell(d => d.BaseComponent)
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of list;let i=index">
+                @Html.CheckBoxCell("selected", "i", null, "selected", changeFunction: "model.ApplyTo(SelectedItems)", listItem: null)
+                @Html.TextCell(d => d.CreatedOn, pipe: "date : 'MM/dd h:m a'")
+                @Html.TextCell(d => d.ViewPath)
+                @Html.SelectCell(d => d.ResourceId, Lister.Make("Resources", true), "name", "id", nullable: true, rowIndex: "i")
+                @Html.SelectCell(d => d.BaseComponent, Lister.Make("BaseComponent", true), "name", "name", nullable: true, rowIndex: "i")
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+
+@section buttons{
+    <button class="btn @Html.ButtonClass(BtnClass.Primary)" (click)="Ok()" [disabled]="Form.invalid">
+        @Html.Word("Save")
+    </button>
+}

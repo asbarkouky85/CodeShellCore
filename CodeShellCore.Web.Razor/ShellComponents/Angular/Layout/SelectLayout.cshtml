@@ -1,0 +1,33 @@
+﻿@{
+    if (IsSectionDefined("buttons"))
+    {
+        IgnoreSection("buttons");
+    }
+}
+
+@if (IsSectionDefined("header"))
+{
+    @RenderSection("header")
+}
+else
+{
+    @Html.PageHeader()
+}
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'wrapper wrapper-content animated fadeInRight m-t-lgg home'">
+    <div [ngClass]="IsEmbedded?'panel-body':'orderMain table-container'">
+        <div class="row">
+            <div class="col-md-10">
+                <search-group (termChange)="Source.Search($event)"></search-group>
+            </div>
+            <div class="col-md-2">
+                @Html.Word("Count") : <b class="badge">{{Source.TotalCount}}</b>
+            </div>
+
+        </div>
+        <div class="table-responsive selection-container" [ngStyle]="{'height':SelectHeight}">
+            @RenderBody()
+        </div>
+        @Html.Pagination("Source")
+    </div>
+
+</div>

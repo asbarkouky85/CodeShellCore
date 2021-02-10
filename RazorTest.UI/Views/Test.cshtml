@@ -1,0 +1,5 @@
+﻿@using CodeShellCore.Web.Razor.Elements
+@using CodeShellCore.Web.Razor
+@model CodeShellCore.Moldster.Db.Tenant
+
+@Html.ControlGroup(d => d.Name, coll: Html.VCollection().AddRequired())

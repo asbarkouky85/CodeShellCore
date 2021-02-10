@@ -1,0 +1,39 @@
+<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [modal]="true" >
+    <p-header>
+{{'Pages.Generations__ServerTracerModal' | translate }}    </p-header>
+
+    <div class="col-md-12">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6">
+                <div class="btn-group btn-group-sm pull-last padBottom">
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='ar'?'btn-primary':'btn-default'" (click)="CurrentLang='ar'">
+                            {{'Words.ar' | translate }}
+                        </button>
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='en'?'btn-primary':'btn-default'" (click)="CurrentLang='en'">
+                            {{'Words.en' | translate }}
+                        </button>
+                </div>
+            </div>
+
+        </div>
+
+        
+
+
+<div class="output-word-container" #container>
+    <span *ngFor="let model of list"
+          class="output-word"
+          [ngClass]="model.newLine?'new-line':null"
+          [ngStyle]="{'color': model.color}">{{model.payload}}</span>
+</div>
+
+
+
+    </div>
+
+
+    
+
+</p-dialog>
+<div style='display:none' #lookupOptionsContainer values=''></div>
+<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{}}'></div>

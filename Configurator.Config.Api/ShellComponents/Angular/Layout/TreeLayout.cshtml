@@ -1,0 +1,48 @@
+﻿@if (IsSectionDefined("okButtons"))
+{
+    IgnoreSection("okButtons");
+}
+
+@if (IsSectionDefined("header"))
+{
+    @RenderSection("header")
+}
+else
+{
+    @Html.PageHeader()
+}
+
+@if (Html.StartContainer("div", "Tree", new { @class = ((Html.GetAccessibility("Lister").Read) ? "col-md-4" : "col-md-12"), calc__ngClass = "HideHeader?null:'padTop'" }))
+{
+    @RenderSection("aboveTree", false)
+
+    <div class="row">
+        <div class="panel panel-default">
+            @if (IsSectionDefined("treeButtons"))
+            {
+                <div class="panel-heading blueColor">
+                    <div class="btn-toolbar showEdit show-btn-toolbar" role="toolbar">
+                        <div class="btn-group btn-group-justified" role="group">
+                            @RenderSection("treeButtons", false)
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="panel-body" style="min-height:400px;max-height:400px;overflow-y:scroll;">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    @Html.CloseContainer("div")
+}
+
+@if (Html.StartContainer("div", "Lister", new { @class = "col-md-8" }))
+{
+    @RenderSection("contents", false)
+}
+else if (IsSectionDefined("contents"))
+{
+    IgnoreSection("contents");
+}

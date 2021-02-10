@@ -1,0 +1,9 @@
+﻿@model ColumnModel
+<td @Html.Raw(Model.Width) @Html.Raw(Model.Attributes)>
+    <div style="width:calc(100% - 20px);display:inline-block;">
+        @Model.InputControl
+    </div>
+    <div style="width:15px;display:inline-block;vertical-align:top;">
+        @Model.ValidationMessages
+    </div>
+</td>

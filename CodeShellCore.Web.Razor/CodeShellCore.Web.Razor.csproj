@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    
+    <EmbeddedResource Include="ShellComponents\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ShellComponents\Angular\InputControls\RichTextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\RichTextLabel.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.0.1" />
+  </ItemGroup>
+    <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2.9.12.0</Version>
+    <AssemblyVersion>2.9.12.0</AssemblyVersion>
+    <FileVersion>2.9.12.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+</Project>

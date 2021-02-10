@@ -1,0 +1,105 @@
+<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [contentStyle]="{'max-height':'280px'}" height="90vh" [width]="ModalWidth" [modal]="true">
+
+    <p-header>
+{{'Pages.Domains__DomainTreeSelect' | translate }}
+    </p-header>
+
+    <div class="col-md-12">
+<div  class="col-md-12" id="Tree" #Tree>
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="tree-selected-path" *ngIf="selectedItem">{{selectedItem.nameChain}}</label>
+                    <label class="tree-selected-path" *ngIf="!selectedItem">{{'Words.Empty' | translate }}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+
+                    <div class="panel-body" style="max-height:400px;overflow-y:scroll;">
+                        
+<tree-root [nodes]="Tree"
+           [options]="treeOptions"
+           (toggleExpanded)="onExpanded($event)"
+           (moveNode)="onMoveNode($event)">
+
+    <ng-template #treeNodeTemplate let-node let-index="index">
+        <div class="tree-item-container">
+            <div style="display:inline-block">
+                {{ node.data.name }}
+                <span class="label label-info" *ngIf="node.data.contentCount">{{node.data.contentCount}}</span>
+
+            </div>
+
+                <div class="btn-group pull-last" role="group" [show-if]="selectedId==node.data.id" *ngIf="AllowEdit">
+
+                    <button (click)="AddNode(node)" class="btn btn-default btn-sm" title="{{'Words.AddChild' | translate }}">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+
+                    <button (click)="EditNode(node)" class="btn btn-default btn-sm" title="{{'Words.Update' | translate }}">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </button>
+
+                    <button (click)="DeleteNode(node)" class="btn btn-default btn-sm" title="{{'Words.Delete' | translate }}">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+            <div class="btn-group pull-last" *ngIf="isGeneration">
+                
+    <button class="btn btn-primary btn-sm"
+            (click)="render(node.data)"
+            
+             title="{{'Words.Render' | translate }}">
+        <i class="fa fa-image"></i> 
+    </button>
+
+                
+    <button class="btn btn-warning btn-sm"
+            (click)="process(node.data)"
+            
+             title="{{'Words.Process' | translate }}">
+        <i class="fa fa-cog"></i> 
+    </button>
+
+            </div>
+
+        </div>
+
+
+    </ng-template>
+
+</tree-root>
+
+                    </div>
+                </div>
+            </div>
+</div>
+
+    </div>
+
+    <p-footer>
+        <div class="form-group">
+            <div class="text-center">
+
+    <button class="btn btn-default"
+            (click)="Cancel()"
+            
+            >
+        {{'Words.Cancel' | translate }}
+    </button>
+
+    <button class="btn btn-primary"
+            (click)="Ok()"
+             [disabled]="!selectedItem"
+            >
+        {{'Words.OK' | translate }}
+    </button>
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>
+
+
+<div style='display:none' #lookupOptionsContainer values=''></div>
+<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{}}'></div>

@@ -1,0 +1,13 @@
+﻿@model LabelNgInput
+@if (Model.Url == null)
+{
+    <p class="@Model.Classes" @Html.Raw(Model.Attributes)>
+        {{@Html.Raw(Model.NgModelName + "." + Model.MemberName + (Model.Pipe != null ? " | " + Model.Pipe : ""))}}
+    </p>
+}
+else
+{
+    <a class="@Model.Classes" [routerLink]="@Html.Raw(Model.Url)" @if (Model.Blank) { @Html.Raw("target=\"_blank\"") } @Html.Raw(Model.Attributes)>
+        {{@Html.Raw(Model.NgModelName + "." + Model.MemberName + (Model.Pipe != null ? " | " + Model.Pipe : ""))}}
+    </a>
+}

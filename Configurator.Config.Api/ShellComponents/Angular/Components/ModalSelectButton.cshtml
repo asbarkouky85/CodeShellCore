@@ -1,0 +1,64 @@
+﻿@model PopupOpenerModel
+@{
+    string cond = "";
+    if (Model.GroupName != null)
+    {
+        cond = " *ngIf=\"" + Model.GroupName + " && " + Model.GroupName + ".Write\"";
+    }
+}
+<div class="form-group"
+     @if (Model.GroupName != null) { @Html.Raw($"id=\"{Model.GroupName}\" bs-group #{Model.GroupName}=\"bsFormGroup\"") }
+     @Html.Raw(Model.Attributes)>
+    <label class="control-label">@Model.Text</label>
+
+    <div>
+        <div class="input-group modal-selector">
+            <label class="form-control" @if (Model.Required) { @Html.Raw("[modal-required]=\"" + Html.Raw(Model.ValidationFunction) + "\" fieldName=\"" + Model.FormFieldName + "\"") ; }>
+                @if (Model.Content != null)
+                {
+                    @if (Model.Url != null)
+                    {
+                        <a [routerLink]="@Html.Raw(Model.Url)">
+                            @Html.Raw("{{" + Model.Content + "}}")
+                        </a>
+                    }
+                    else
+                    {
+                        @Html.Raw("{{" + Model.Content + "}}")
+                    }
+
+                }
+                else
+                {
+                    @Html.Word("Empty")
+                }
+            </label>
+
+            @if (Model.Function != null)
+            {
+                <div class="input-group-btn" @Html.Raw(cond)>
+                    <button class="btn" (click)="@Html.Raw(Model.Function)">
+                        <i class="fa fa-window-restore"></i>
+                    </button>
+                    @if (Model.Buttons != null)
+                    {
+                        foreach (var but in Model.Buttons)
+                        {
+                            @Html.GetComponent("Buttons/Button", but)
+                        }
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="input-group-btn">
+                    <label class="btn">
+                        <i class="fa fa-info-circle"></i>
+                    </label>
+                </div>
+            }
+        </div>
+    </div>
+
+
+</div>

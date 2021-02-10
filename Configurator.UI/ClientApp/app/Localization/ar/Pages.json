@@ -1,0 +1,23 @@
+{
+  "Domains__DomainTree": "Domain tree",
+  "Domains__DomainTreeSelect": "Domain tree select",
+  "Generations__GenerationInof": "Generation inof",
+  "Generations__GenerationInofList": "Generation inof list",
+  "Generations__GenerationNotification": "Generation notification",
+  "NavigationGroups__NaveList": "Nave list",
+  "NavigationGroups__NavGroupPages": "Nav group pages",
+  "NavigationGroups__NavigationPageCreate": "Navigation page create",
+  "NavigationGroups__NavigationPageList": "Navigation page list",
+  "PageCategories__PageCategoriesTreeList": "Page categories tree list",
+  "PageCategories__PageCategoryCreate": "Page category create",
+  "PageCategories__PageCategoryEdit": "Page category edit",
+  "PageCategories__PageCategoryList": "Page category list",
+  "PageControls__PageControlList": "Page control list",
+  "PageControls__PageCustomization": "Page customization",
+  "Pages__PageCreate": "Page create",
+  "Pages__PageEdit": "Page edit",
+  "Pages__PageList": "Page list",
+  "Pages__PageTreeList": "Page tree list",
+  "Tenants__TenantCreate": "Tenant create",
+  "Tenants__TenantList": "Tenant list"
+}

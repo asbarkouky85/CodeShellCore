@@ -1,0 +1,18 @@
+@*ID:1935659432000*@
+
+@{
+    Html.AddModal("CreateModal", "PageCategories/PageCategoryCreate");
+    Layout = Html.Config().Layout;
+    Html.GetViewParams().AddUrl = "hjh";
+    Html.HeaderModel().AddButton = Html.Button(text: "Add New", function: "AddPageCategory()", url: null, btn: BtnClass.Success);
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            @Html.ComponentSelectorFromOther("DomainTree", "DomainTree")
+        </div>
+        <div class="col-md-9" style="margin-top:11px;padding-left:0px">
+            @Html.ComponentSelectorFromOther("PageCategoryList", "PageCategoryList")
+        </div>
+    </div>
+</div>

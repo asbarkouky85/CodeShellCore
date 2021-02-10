@@ -1,0 +1,9 @@
+﻿import { %Parent% } from "%ParentPath%";
+import { Injectable } from "@angular/core";
+import { %Resource%Service } from "%ServicePath%";
+import { Shell } from "codeshell/core";
+
+@Injectable()
+export abstract class %Name% extends %Parent%{
+	get Service(): %Resource%Service { return Shell.Injector.get(%Resource%Service); }
+}

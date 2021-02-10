@@ -1,0 +1,49 @@
+@*ID:1936058766000*@
+
+@model CreatePageDTO
+@{
+    Layout = Html.Config().Layout;
+    Html.UseSplitTheme();
+    Html.AddModal("DomainModal", "Pages/DomainTreeSelect");
+    Html.GetLink(new PageLink("CustomizeLink", "PageControls/PageCustomization"));
+}
+
+<form #Form="ngForm">
+
+    <div class="row">
+        @Html.SearchableControlGroup(d => d.TemplatePath, Lister.Make<CreatePageDTO>("TemplatePath"), "name", "name", required: true, size: 8)
+
+        @Html.SelectControlGroup(d => d.TenantCode, Lister.Make<CreatePageDTO>("TenantCode"), "name", "code", required: true, size: 4)
+    </div>
+
+    <div class="row">
+        @Html.CustomInputGroup(d => d.ComponentDomain, "TextBoxWithButton", size: 4, required: true, inputAttrs: new { evnt__change = "writePath()", required = "true" })
+        @Html.ControlGroup(d => d.ComponentName, coll: Html.VCollection().AddRequired(), size: 4, inputAttr: new { evnt__change = "writePath()" })
+        @Html.ControlGroup(d => d.RouteParameters, size: 4)
+    </div>
+    <div class="row">
+        @Html.LabelGroup(d => d.ComponentPath, size: 8)
+        @Html.RadioGroup(d => d.Usage, new Dictionary<string, object> { { "Route", "'R'" }, { "Embedded", "'E'" }, { "Both", "'RE'" } }, size: 4)
+
+    </div>
+    <div class="row" *ngIf="model.usage!='E'">
+        @Html.SearchableControlGroup(d => d.Apps, Lister.Make("Apps", true), "name", "name", nullable: true, multi: true)
+        @Html.RadioGroup(d => d.SpecialPermission, new Dictionary<string, object> { { "Anonymous", "'anonymous'" }, { "Allow all", "'allowAll'" }, { "Resource", "null" } }, size: 4, groupClasses: "col-md-offset-2")
+    </div>
+    <div class="row" *ngIf="model.usage!='E'">
+        @Html.SelectControlGroup(d => d.ResourceId, Lister.Make("Resources", true), "name", "id", nullable: true, required: true, attrs: new { star__ngIf = "!model.specialPermission" })
+        @Html.RadioGroup(d => d.ActionType, new Dictionary<string, object> { { "View", "'view'" }, { "Update", "'update'" }, { "Insert", "'insert'" }, { "Details", "'details'" } }, attrs: new { star__ngIf = "!model.specialPermission" })
+    </div>
+    <div class="row">
+        @Html.SelectControlGroup(d => d.Layout, Lister.Make("Layout", true), "name", "name", nullable: true, size: 4)
+        @Html.AutoComplete(d => d.NavigationGroup, Lister.Make("NavigationGroup", true), size: 2, attrs: new { star__ngIf = "model.usage!='E'" })
+        @Html.SelectControlGroup(d => d.CollectionId, Lister.Make("Collection", true), "name", "id", nullable: true, size: 2)
+        @Html.RadioGroup(d => d.DefaultAccessibility, new Dictionary<string, object> { { "Read Only", 1 }, { "Read Write", 2 }, { "Hide", 3 } }, size: 4)
+    </div>
+    <div class="row">
+
+    </div>
+</form>
+@section buttons{
+    @Html.SubmitButton()
+}
