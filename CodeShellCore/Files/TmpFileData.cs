@@ -53,7 +53,7 @@ namespace CodeShellCore.Files
                 string cur = Path.Combine(Shell.AppRootPath, TmpPath);
                 if (File.Exists(nw))
                     File.Delete(nw);
-                File.Move(cur, nw);
+                File.Copy(cur, nw);
             }
             return Path.Combine(folder, fileName).Replace(Shell.PublicRoot + "/", "");
         }
