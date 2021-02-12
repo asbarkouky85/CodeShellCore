@@ -3,16 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CodeShellCore.Data.Helpers;
+using CodeShellCore.Files.Uploads;
+using CodeShellCore.Linq;
 
 namespace Asga.Public.Business.Internal
 {
     public class HomeSlideService : PublicEntityService<HomeSlide>, IHomeSlideService
     {
         protected readonly IPublicUnit unit;
+        private readonly IUploadedFilesHandler uploaded;
 
-        public HomeSlideService(IPublicUnit unit) : base(unit)
+        public HomeSlideService(IPublicUnit unit, IUploadedFilesHandler _uploaded) : base(unit)
         {
             this.unit = unit;
+            uploaded = _uploaded;
+        }
+
+        public override LoadResult LoadObjects(LoadOptions opts)
+        {
+            var data = base.LoadObjects(opts);
+            FixUrls((IEnumerable<HomeSlide>)data.List);
+            return data;
+        }
+
+        protected virtual void FixUrls(IEnumerable<HomeSlide> list)
+        {
+            foreach (HomeSlide item in list)
+            {
+                item.Image = uploaded.GetUrlByPath(item.Image);
+            }
+        }
+
+        public override LoadResult<HomeSlide> LoadCollection(string collectionId, LoadOptions opts)
+        {
+            var res = base.LoadCollection(collectionId, opts);
+            FixUrls(res.ListT);
+            return res;
+        }
+
+        public override HomeSlide GetSingle(object id)
+        {
+            var data = base.GetSingle(id);
+            if (data != null)
+                data.LoadFile(uploaded);
+            return data;
         }
 
         public SubmitResult SetActive(long id, bool state)

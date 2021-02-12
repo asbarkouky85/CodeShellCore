@@ -17,6 +17,7 @@ using Asga.Security;
 using CodeShellCore.Helpers;
 using CodeShellCore.Security.Sessions;
 using Example.UI.Security;
+using CodeShellCore.FileServer;
 
 namespace Example.UI
 {
@@ -35,10 +36,15 @@ namespace Example.UI
             base.RegisterServices(coll);
             coll.AddAuthModule(false);
             coll.AddAsgaWeb();
-
+            coll.AddFileServerModule(Configuration);
             coll.AddTransient<IAuthorizationService, ExampleAuthorizationService>();
             coll.AddTransient<ISessionManager, ExampleSessionManager>();
 
+        }
+
+        public override void AddMvcFeatures(IMvcBuilder mvc)
+        {
+            base.AddMvcFeatures(mvc);
         }
 
         protected override void OnReady()

@@ -13,7 +13,7 @@ using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     [ApiAuthorize(AllowAnonymous = true)]
     public class PagesController : EntityController<Page, long>

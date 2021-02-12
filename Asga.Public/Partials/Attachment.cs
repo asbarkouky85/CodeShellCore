@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.Attachments;
 using CodeShellCore.Files;
+using CodeShellCore.Files.Uploads;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Asga.Public
@@ -9,8 +10,9 @@ namespace Asga.Public
         [NotMapped]
         public TmpFileData File { get; set; }
 
-        public void LoadFile(string serviceUrl)
+        public void LoadFile(IUploadedFilesHandler handl, string serviceUrl = null)
         {
+            FilePath = handl.GetUrlByPath(FilePath);
             File = new TmpFileData(FilePath);
         }
     }

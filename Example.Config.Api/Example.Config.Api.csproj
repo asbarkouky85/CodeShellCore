@@ -22,10 +22,7 @@
     <None Remove="wwwroot\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="appsettings.fms.json" />
-    <Content Remove="appsettings.json" />
-  </ItemGroup>
+
 
   <ItemGroup>
     <None Include="appsettings.fms.json">
@@ -36,11 +33,11 @@
     </None>
   </ItemGroup>
 
+  <!--<ItemGroup>
+    <PackageReference Include="CodeShellCore.Web.Razor" Version="2.16.8" />
+  </ItemGroup>-->
+
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Auth.Molds\Asga.Auth.Molds.csproj" />
-    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
-    <ProjectReference Include="..\Asga.Public.Molds\Asga.Public.Molds.csproj" />
-    <ProjectReference Include="..\Asga.Public\Asga.Public.csproj" />
     <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
 

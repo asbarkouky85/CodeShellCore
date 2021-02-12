@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Data;
+using CodeShellCore.Data.Auditing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

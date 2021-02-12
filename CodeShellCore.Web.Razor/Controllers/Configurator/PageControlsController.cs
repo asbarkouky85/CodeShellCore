@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class PageControlsController : EntityController<PageControl, long>
     {

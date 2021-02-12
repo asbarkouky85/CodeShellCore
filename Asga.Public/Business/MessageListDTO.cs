@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Data;
+using CodeShellCore.Data.Auditing;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;

@@ -5,7 +5,7 @@ using CodeShellCore.Data.EntityFramework;
 
 namespace Asga.Auth.Data
 {
-    public class AuthUnit : UnitOfWork<AuthContext>, IRoleBasedSecurityUnit, IAuthUnit
+    public class AuthUnit : UnitOfWork<AuthContext>, IAuthUnit
     {
         public AuthUnit(IServiceProvider acc) : base(acc)
         {

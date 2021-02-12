@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Moldster", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest1", "ConsoleTest1\ConsoleTest1.csproj", "{31FE60EC-5E7C-44FF-B53D-CB888448DB86}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 Tests", "06 Tests", "{3477FF24-4F33-4EB2-8B09-6AEC871B6752}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07 Tests", "07 Tests", "{3477FF24-4F33-4EB2-8B09-6AEC871B6752}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Asga.Auth", "02 Asga.Auth", "{D064279A-FF5C-450D-B4CE-D96EC6906A53}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Asga.Auth", "03 Asga.Auth", "{D064279A-FF5C-450D-B4CE-D96EC6906A53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth", "Asga.Auth\Asga.Auth.csproj", "{5800310C-9A93-4793-9E80-85D19988C20E}"
 EndProject
@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest2", "ConsoleTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth.Molds", "Asga.Auth.Molds\Asga.Auth.Molds.csproj", "{91ED6472-83EC-4164-8830-67EDBE845D11}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07 Example", "07 Example", "{F834727F-3305-439C-9284-A82B37A4B7C9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "08 Example", "08 Example", "{F834727F-3305-439C-9284-A82B37A4B7C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.csproj", "{D66038E7-662D-4F63-9571-601D6AFF1AF4}"
 EndProject
@@ -68,9 +68,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Mobile.Module", "Asga.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Asga.Mobile", "04 Asga.Mobile", "{E04C8BE8-91B8-45BE-AFE9-F7A0120A21F5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Asga.Public", "03 Asga.Public", "{44CDD569-EE2A-40F2-B417-79BC4F2D4D55}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Asga.Public", "05 Asga.Public", "{44CDD569-EE2A-40F2-B417-79BC4F2D4D55}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Asga.Dashboard", "05 Asga.Dashboard", "{205C1F71-1A28-4E4B-8C0C-1BFE73421C65}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 Asga.Dashboard", "06 Asga.Dashboard", "{205C1F71-1A28-4E4B-8C0C-1BFE73421C65}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Dashboard", "Asga.Dashboard\Asga.Dashboard.csproj", "{70A13D0A-6247-4EB1-B85F-9FA26E55799F}"
 EndProject
@@ -84,7 +84,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerationTest.Api", "Gener
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Public.Molds", "Asga.Public.Molds\Asga.Public.Molds.csproj", "{590C44B2-F8C9-469B-ADC2-5A1E5356E819}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShellCore.EntityFramework", "CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj", "{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.EntityFramework", "CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj", "{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.FileServer", "CodeShellCore.FileServer\CodeShellCore.FileServer.csproj", "{57C9A4E1-7B8B-44D0-8306-440BC3A3C126}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 FileServer", "02 FileServer", "{ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.FileServer.Module", "CodeShellCore.FileServer.Module\CodeShellCore.FileServer.Module.csproj", "{F18FFB30-BD7B-4D54-BC13-538D7138A6B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.FileServer.Web", "CodeShellCore.FileServer.Web\CodeShellCore.FileServer.Web.csproj", "{8CF6FACF-26AE-4E38-B256-1F0E304A6C50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -204,6 +212,18 @@ Global
 		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57C9A4E1-7B8B-44D0-8306-440BC3A3C126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57C9A4E1-7B8B-44D0-8306-440BC3A3C126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57C9A4E1-7B8B-44D0-8306-440BC3A3C126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57C9A4E1-7B8B-44D0-8306-440BC3A3C126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F18FFB30-BD7B-4D54-BC13-538D7138A6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F18FFB30-BD7B-4D54-BC13-538D7138A6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F18FFB30-BD7B-4D54-BC13-538D7138A6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F18FFB30-BD7B-4D54-BC13-538D7138A6B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CF6FACF-26AE-4E38-B256-1F0E304A6C50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CF6FACF-26AE-4E38-B256-1F0E304A6C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CF6FACF-26AE-4E38-B256-1F0E304A6C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CF6FACF-26AE-4E38-B256-1F0E304A6C50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -237,6 +257,9 @@ Global
 		{483F6129-46C7-49B0-8721-2BD0449E59A1} = {3477FF24-4F33-4EB2-8B09-6AEC871B6752}
 		{590C44B2-F8C9-469B-ADC2-5A1E5356E819} = {44CDD569-EE2A-40F2-B417-79BC4F2D4D55}
 		{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
+		{57C9A4E1-7B8B-44D0-8306-440BC3A3C126} = {ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}
+		{F18FFB30-BD7B-4D54-BC13-538D7138A6B3} = {ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}
+		{8CF6FACF-26AE-4E38-B256-1F0E304A6C50} = {ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C8836DA-E4F6-4A43-9CC5-7D0388147EFD}

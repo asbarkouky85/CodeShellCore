@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using CodeShellCore.Security.Authorization;
 
 namespace Asga.Auth.Services
 {
@@ -128,6 +129,10 @@ namespace Asga.Auth.Services
             if (ch.Code == 0)
             {
                 cache.Remove<IUser>(obj.Id.ToString());
+                if (obj.Role?.Id != null)
+                {
+                    cache.Remove<RoleCacheItem>(obj.Role.Id.ToString());
+                }
                 obj.PhotoFile?.DeleteTmp();
             }
             return ch;
