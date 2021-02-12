@@ -14,7 +14,7 @@ namespace Asga.Mobile.Data.Internal
         {
         }
 
-        public IEnumerable<CountByUser> CountByUsers(IEnumerable<long> userIds, Expression<Func<UserNotification, bool>> ex = null)
+        public virtual IEnumerable<CountByUser> CountByUsers(IEnumerable<long> userIds, Expression<Func<UserNotification, bool>> ex = null)
         {
             var q = Loader;
             if (ex != null)

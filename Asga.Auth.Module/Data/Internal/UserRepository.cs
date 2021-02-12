@@ -6,6 +6,9 @@ using CodeShellCore.Security.Authentication;
 
 using Asga.Security;
 using CodeShellCore.Data.ConfiguredCollections;
+using CodeShellCore.Files;
+using Asga.Auth.Dto;
+using CodeShellCore.Linq;
 
 namespace Asga.Auth.Data
 {
@@ -15,7 +18,27 @@ namespace Asga.Auth.Data
         {
         }
 
-        internal protected virtual IQueryable<UserDTO> QueryUserDTO(IQueryable<User> q = null)
+        protected virtual IQueryable<UserListDTO> QueryUserListDTO(IQueryable<User> q = null)
+        {
+            q = q ?? Loader;
+            return q.Select(d => new UserListDTO
+            {
+                Id = d.Id,
+                Name = d.Name,
+                LogonName = d.LogonName,
+                AppName = d.AppId.HasValue ? d.App.Name : null,
+                CreatedBy = d.CreatedBy,
+                CreatedOn = d.CreatedOn,
+                Email = d.Email,
+                PersonId = d.PersonId,
+                Mobile = d.Mobile,
+                TenantName = d.Tenant.Name,
+                GenderName = d.Gender.HasValue ? (d.Gender.Value ? "Male" : "Female") : null,
+                BirthDate = d.BirthDate
+            });
+        }
+
+        protected virtual IQueryable<UserDTO> QueryUserDTO(IQueryable<User> q = null)
         {
             q = q ?? Loader;
             string code = "";
@@ -49,12 +72,15 @@ namespace Asga.Auth.Data
             if (c is string)
                 long.TryParse(c as string, out id);
 
-            return QueryUserDTO(Loader.Where(d => d.Id == id)).FirstOrDefault();
+            var dto = QueryUserDTO(Loader.Where(d => d.Id == id)).FirstOrDefault();
+            
+            return dto;
         }
 
         public virtual IUser GetByName(string userName, bool forUi = true)
         {
-            return QueryUserDTO(Loader.Where(d => d.LogonName == userName && (!d.IsDeleted))).FirstOrDefault();
+            var dto = QueryUserDTO(Loader.Where(d => d.LogonName == userName && (!d.IsDeleted))).FirstOrDefault();
+            return dto;
         }
 
         public virtual RegisterResult AddUser(IRegisterModel model)
@@ -101,6 +127,12 @@ namespace Asga.Auth.Data
                 Update(u);
             }
 
+        }
+
+        public virtual LoadResult<UserListDTO> GetUserListDTOs(LoadOptions opt, string collectionId = null)
+        {
+            var q = collectionId == null ? Loader : QueryCollection(collectionId);
+            return QueryUserListDTO(q).LoadWith(opt.GetOptionsFor<UserListDTO>());
         }
     }
 }

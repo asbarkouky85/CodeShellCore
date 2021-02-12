@@ -14,13 +14,13 @@ namespace Asga.Public.Web.Controllers
             this.Service = service;
         }
 
-        public IActionResult GetByCode(string code, string lang)
+        public virtual IActionResult GetByCode(string code, string lang)
         {
             var dto = Service.GetByCode(code, lang);
             return Respond(dto);
         }
 
-        public IActionResult GetContent(string id)
+        public virtual IActionResult GetContent(string id)
         {
             var content = Service.GetContentPage(id);
             if (ClientData.IsMobile)
@@ -33,12 +33,12 @@ namespace Asga.Public.Web.Controllers
             }
         }
 
-        public IActionResult Post([FromBody] PublicContent obj)
+        public virtual IActionResult Post([FromBody] PublicContent obj)
         {
             return DefaultPost(obj);
         }
 
-        public IActionResult Put([FromBody] PublicContent obj)
+        public virtual IActionResult Put([FromBody] PublicContent obj)
         {
             return DefaultPut(obj);
         }

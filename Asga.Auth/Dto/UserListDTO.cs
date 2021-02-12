@@ -17,23 +17,7 @@ namespace Asga.Auth.Dto
         public string TenantName { get; set; }
         public string GenderName { get; set; }
         public DateTime? BirthDate { get; set; }
-
-        public static Expression<Func<User, UserListDTO>> Expression =>
-            d => new UserListDTO
-            {
-                Id = d.Id,
-                Name = d.Name,
-                LogonName = d.LogonName,
-                AppName = d.AppId.HasValue ? d.App.Name : null,
-                CreatedBy = d.CreatedBy,
-                CreatedOn = d.CreatedOn,
-                Email = d.Email,
-                PersonId = d.PersonId,
-                Mobile = d.Mobile,
-                TenantName = d.Tenant.Name,
-                GenderName = d.Gender.HasValue ? (d.Gender.Value ? "Male" : "Female") : null,
-                BirthDate = d.BirthDate
-            };
+            
 
     }
 }

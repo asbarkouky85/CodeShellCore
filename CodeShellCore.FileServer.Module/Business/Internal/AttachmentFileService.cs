@@ -26,6 +26,7 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         protected override string SaveRoot => _paths.RootFolderPath;
         protected override string TempRoot => _paths.TempFolder;
+        protected virtual int DefaultAttachmentType => 1;
 
         public AttachmentFileService(IFileServerUnit unit, IPathProvider paths)
         {
@@ -33,8 +34,9 @@ namespace CodeShellCore.FileServer.Business.Internal
             _paths = paths;
         }
 
-        public IEnumerable<TmpFileData> Upload(UploadRequestDto dto)
+        public virtual IEnumerable<TmpFileData> Upload(UploadRequestDto dto)
         {
+            dto.AttachmentTypeId = dto.AttachmentTypeId == 0 ? DefaultAttachmentType : dto.AttachmentTypeId;
             var cat = unit.AttachmentCategoryRepository.FindSingle(dto.AttachmentTypeId);
             ValidateFiles(cat, dto.Files);
 
@@ -50,7 +52,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return lst;
         }
 
-        void ValidateFiles(AttachmentCategory cat, IEnumerable<IFileInfo> lst)
+        protected virtual void ValidateFiles(AttachmentCategory cat, IEnumerable<IFileInfo> lst)
         {
 
             if (cat == null)
@@ -68,8 +70,9 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         }
 
-        public SubmitResult SaveAttachment(SaveAttachmentRequest req)
+        public virtual SubmitResult SaveAttachment(SaveAttachmentRequest req)
         {
+            req.AttachmentTypeId = req.AttachmentTypeId == 0 ? DefaultAttachmentType : req.AttachmentTypeId;
             var cat = unit.AttachmentCategoryRepository.FindSingle(req.AttachmentTypeId);
 
             var path = Path.Combine(_paths.TempFolder, req.TmpPath);
@@ -112,7 +115,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return s;
         }
 
-        public FileBytes GetBytes(long id)
+        public virtual FileBytes GetBytes(long id)
         {
             var att = unit.AttachmentRepository.FindSingle(id);
             if (att == null)
@@ -133,12 +136,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             }
         }
 
-        public IEnumerable<TempFileDto> Upload()
-        {
-            throw new NotImplementedException();
-        }
-
-        public SubmitResult ValidateFile(FileValidationRequest req)
+        public virtual SubmitResult ValidateFile(FileValidationRequest req)
         {
             var res = new SubmitResult();
             var cat = unit.AttachmentCategoryRepository.FindSingle(req.AttachmentType);
@@ -154,7 +152,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return res;
         }
 
-        public string GetFileName(long id)
+        public virtual string GetFileName(long id)
         {
             var name = unit.AttachmentRepository.GetSingleValue(e => e.FileName, e => e.Id == id);
             if (name == null)
@@ -164,7 +162,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return name;
         }
 
-        public FileBytes GetTempBytes(string path)
+        public virtual FileBytes GetTempBytes(string path)
         {
             string filePath = Path.Combine(_paths.TempFolder, path);
             var b = new FileBytes(filePath);
@@ -175,7 +173,7 @@ namespace CodeShellCore.FileServer.Business.Internal
             return b;
         }
 
-        public FileBytes GetBytesByUrl(string path)
+        public virtual FileBytes GetBytesByUrl(string path)
         {
             string filePath = Path.Combine(_paths.RootFolderPath, path);
             var b = new FileBytes(filePath);
@@ -216,11 +214,15 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         public override string GetUrlById(string id)
         {
+            if (id == null)
+                return null;
             return Utils.CombineUrl("fileserver/getfile/" + id);
         }
 
         public override string GetUrlByPath(string path)
         {
+            if (path == null)
+                return null;
             return Utils.CombineUrl("fileserver/getbypath?path=" + path);
         }
 

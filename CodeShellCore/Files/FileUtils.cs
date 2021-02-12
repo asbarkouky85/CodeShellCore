@@ -15,6 +15,13 @@ namespace CodeShellCore.Files
 {
     public class FileUtils
     {
+        static IUploadedFilesHandler _uploadHandler;
+
+        static FileUtils()
+        {
+            _uploadHandler = Shell.RootInjector.GetRequiredService<IUploadedFilesHandler>();
+        }
+
         public static string RelativeToAbsolute(string url)
         {
             return Path.Combine(Shell.AppRootPath, Shell.PublicRoot, url);
@@ -22,36 +29,28 @@ namespace CodeShellCore.Files
 
         public static bool SaveTemp(TmpFileData req, long type, out SavedFileDto dto, bool db = false)
         {
-            using (var sc = Shell.GetScope())
-            {
-                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
-                return handler.SaveTemp(req, out dto, type, null, db);
-            }
+            return _uploadHandler.SaveTemp(req, out dto, type, null, db);
         }
 
         public static bool SaveTemp(TmpFileData req, string folder, out SavedFileDto dto)
         {
-            using (var sc = Shell.GetScope())
-            {
-                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
-                return handler.SaveTemp(req, out dto, null, folder, false);
-            }
+            return _uploadHandler.SaveTemp(req, out dto, null, folder, false);
         }
 
-        public static TmpFileData AddToTemp(FileBytes bts,string key)
+        public static TmpFileData AddToTemp(FileBytes bts, string key)
         {
-            using(var sc = Shell.GetScope())
-            {
-                var handler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
-                return handler.AddToTemp(bts, key);
-            }
-            
+            return _uploadHandler.AddToTemp(bts, key);
+
         }
 
         public static bool SaveTempInDb(TmpFileData req, out SavedFileDto dto)
         {
-            var handler = Shell.RootInjector.GetRequiredService<IUploadedFilesHandler>();
-            return handler.SaveTemp(req, out dto, null, null, true);
+            return _uploadHandler.SaveTemp(req, out dto, null, null, true);
+        }
+
+        public static string GetUploadedFileUrl(string url)
+        {
+            return _uploadHandler.GetUrlByPath(url);
         }
 
         public static void DeleteTmp(TmpFileData tmp)
