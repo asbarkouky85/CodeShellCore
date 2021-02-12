@@ -7,6 +7,5 @@ namespace CodeShellCore.Web.Features
         void BlockAll();
         void BlockDomains(string[] domains);
         void BlockServices(string[] services);
-        void BlockController<T>() where T : Controller;
     }
 }

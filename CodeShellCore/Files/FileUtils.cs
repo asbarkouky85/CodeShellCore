@@ -15,11 +15,11 @@ namespace CodeShellCore.Files
 {
     public class FileUtils
     {
-        static IUploadedFilesHandler _uploadHandler;
+
 
         static FileUtils()
         {
-            _uploadHandler = Shell.RootInjector.GetRequiredService<IUploadedFilesHandler>();
+
         }
 
         public static string RelativeToAbsolute(string url)
@@ -29,34 +29,59 @@ namespace CodeShellCore.Files
 
         public static bool SaveTemp(TmpFileData req, long type, out SavedFileDto dto, bool db = false)
         {
-            return _uploadHandler.SaveTemp(req, out dto, type, null, db);
+            using (var sc = Shell.GetScope())
+            {
+                var _uploadHandler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+                return _uploadHandler.SaveTemp(req, out dto, type, null, db);
+            }
+
         }
 
         public static bool SaveTemp(TmpFileData req, string folder, out SavedFileDto dto)
         {
-            return _uploadHandler.SaveTemp(req, out dto, null, folder, false);
+            using (var sc = Shell.GetScope())
+            {
+                var _uploadHandler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+                return _uploadHandler.SaveTemp(req, out dto, null, folder, false);
+            }
         }
 
         public static TmpFileData AddToTemp(FileBytes bts, string key)
         {
-            return _uploadHandler.AddToTemp(bts, key);
+            using (var sc = Shell.GetScope())
+            {
+                var _uploadHandler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+                return _uploadHandler.AddToTemp(bts, key);
+            }
 
         }
 
         public static bool SaveTempInDb(TmpFileData req, out SavedFileDto dto)
         {
-            return _uploadHandler.SaveTemp(req, out dto, null, null, true);
+            using (var sc = Shell.GetScope())
+            {
+                var _uploadHandler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+                return _uploadHandler.SaveTemp(req, out dto, null, null, true);
+            }
         }
 
         public static string GetUploadedFileUrl(string url)
         {
-            return _uploadHandler.GetUrlByPath(url);
+            using (var sc = Shell.GetScope())
+            {
+                var _uploadHandler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+                return _uploadHandler.GetUrlByPath(url);
+            }
         }
 
         public static void DeleteTmp(TmpFileData tmp)
         {
-            var handler = Shell.RootInjector.GetRequiredService<IUploadedFilesHandler>();
-            handler.DeleteTmp(tmp);
+            using (var sc = Shell.GetScope())
+            {
+                var _uploadHandler = sc.ServiceProvider.GetRequiredService<IUploadedFilesHandler>();
+
+                _uploadHandler.DeleteTmp(tmp);
+            }
         }
 
         public static string StoreThumb(string path, ThumbSize size, bool relative = true)

@@ -43,12 +43,7 @@ namespace CodeShellCore.Web.Features
                     feature.Controllers.Remove(c);
             }
 
-            foreach (var item in config.Controllers)
-            {
-                var cs = feature.Controllers.Where(d => d.FullName == item.FullName).ToList();
-                foreach (var c in cs)
-                    feature.Controllers.Remove(c);
-            }
+            
 
 
         }

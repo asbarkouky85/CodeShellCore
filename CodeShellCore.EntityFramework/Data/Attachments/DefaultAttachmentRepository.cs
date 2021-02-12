@@ -19,7 +19,11 @@ namespace CodeShellCore.Data.Attachments
             string t = typeof(TParent).Name;
             var lst = Loader.Where(d => d.EntityId == model.Id && d.EntityType == t).ToList();
             foreach (var item in lst)
+            {
                 item.LoadFile(serviceUrl);
+                item.FilePath = item.File?.Url;
+            }
+                
             return lst;
         }
 
