@@ -2,7 +2,7 @@
 using CodeShellCore.Web.Razor.Controllers;
 using CodeShellCore.Web.Razor.Services;
 
-namespace Example.Config.Api.Controllers
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class ViewsController : DbViewsControllerBase
     {

@@ -1,15 +1,10 @@
 ﻿using CodeShellCore.Moldster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Razor
 {
@@ -19,6 +14,7 @@ namespace CodeShellCore.Web.Razor
         {
         }
 
+        protected virtual bool MigrateOnStartup => true;
         protected override bool useLocalization => false;
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");
@@ -27,6 +23,7 @@ namespace CodeShellCore.Web.Razor
         {
             base.RegisterServices(coll);
 
+            coll.AddMoldsterDbData(Configuration);
             coll.AddMoldsterWeb();
             coll.AddMoldsterConfigurator();
             coll.AddMoldsterServerGeneration();
@@ -53,6 +50,15 @@ namespace CodeShellCore.Web.Razor
         {
             base.OnReady();
             this.ConfigureAngular2Razor();
+
+            if (MigrateOnStartup)
+            {
+                using (var sc = GetScope())
+                {
+                    var molds = sc.ServiceProvider.GetRequiredService<MoldsterContext>();
+                    molds.Database.Migrate();
+                }
+            }
 
         }
     }

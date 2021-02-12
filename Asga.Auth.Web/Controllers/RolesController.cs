@@ -9,12 +9,12 @@ using System.Text;
 
 namespace Asga.Auth.Web.Controllers
 {
-    public class RolesControllerBase : MoldsterEntityController<Role, long>
+    public class RolesController : MoldsterEntityController<Role, long>
     {
         private readonly IRolesService service;
         private readonly IAuthLookupService lookups;
 
-        public RolesControllerBase(IRolesService service, IAuthLookupService lookups) : base(service)
+        public RolesController(IRolesService service, IAuthLookupService lookups) : base(service)
         {
             this.service = service;
             this.lookups = lookups;

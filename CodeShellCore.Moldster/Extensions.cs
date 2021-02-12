@@ -20,6 +20,8 @@ using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Razor.Internal;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Caching;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodeShellCore.Moldster
 {
@@ -27,10 +29,12 @@ namespace CodeShellCore.Moldster
     public static class Extensions
     {
 
-        public static void AddMoldsterDbData(this IServiceCollection coll)
+        public static void AddMoldsterDbData(this IServiceCollection coll, IConfiguration config)
         {
-
-            coll.AddContext<MoldsterContext>();
+            var conn = config.GetConnectionString("Moldster") ?? config.GetConnectionString("Default");
+            if (string.IsNullOrEmpty(conn))
+                throw new Exception("Moldster Connection string is not found in appsettings");
+            coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(conn));
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));
 
@@ -76,7 +80,6 @@ namespace CodeShellCore.Moldster
         {
             coll.AddMoldsterCodeGeneration();
 
-            coll.AddMoldsterDbData();
             coll.AddTransient<ConfiguratorLookupService>();
 
 
@@ -111,7 +114,6 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IPreviewService, PreviewService>();
             coll.AddTransient<IModulesService, ModulesService>();
 
-            coll.AddMoldsterDbData();
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IDataService, DbDataService>();
 

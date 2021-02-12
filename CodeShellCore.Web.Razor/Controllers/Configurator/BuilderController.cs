@@ -7,7 +7,7 @@ using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class BuilderController : BaseApiController
     {
@@ -47,7 +47,7 @@ namespace CodeShellCore.Web.Razor.Configurator
         }
         public IActionResult WriteWebPackFiles()
         {
-            
+
             return Respond();
         }
 
@@ -57,7 +57,7 @@ namespace CodeShellCore.Web.Razor.Configurator
             return Respond();
         }
 
-        public IActionResult ClearOlderBundles([FromBody]DbCreationRequest req)
+        public IActionResult ClearOlderBundles([FromBody] DbCreationRequest req)
         {
 
             var envs = paths.GetEnvironments();

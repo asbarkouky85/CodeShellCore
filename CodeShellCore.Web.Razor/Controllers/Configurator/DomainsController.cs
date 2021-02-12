@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using CodeShellCore.Moldster.Data;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class DomainsController : EntityController<Domain, long>, ILookupLoaderController
     {

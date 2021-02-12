@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Example.Config.Api.Controllers
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class GenerationController : GenerationControllerBase
     {

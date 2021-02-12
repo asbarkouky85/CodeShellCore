@@ -5,6 +5,7 @@ using System.Linq;
 using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Files;
+using CodeShellCore.Files.Uploads;
 
 namespace CodeShellCore.Data.Attachments
 {
@@ -12,14 +13,19 @@ namespace CodeShellCore.Data.Attachments
         where T : class, IAttachmentModel, IModel<long>
         where TContext : DbContext
     {
-        public DefaultAttachmentRepository(TContext con) : base(con) { }
+        private readonly IUploadedFilesHandler uploaded;
+
+        public DefaultAttachmentRepository(TContext con, IUploadedFilesHandler _uploaded) : base(con)
+        {
+            uploaded = _uploaded;
+        }
 
         public IEnumerable<T> GetFor<TParent>(TParent model, string serviceUrl = "") where TParent : class, IModel<long>
         {
             string t = typeof(TParent).Name;
             var lst = Loader.Where(d => d.EntityId == model.Id && d.EntityType == t).ToList();
             foreach (var item in lst)
-                item.LoadFile(serviceUrl);
+                item.LoadFile(uploaded, serviceUrl);
             return lst;
         }
 

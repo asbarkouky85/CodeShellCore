@@ -205,12 +205,12 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         public override string GetUrlById(string id)
         {
-            return Utils.CombineUrl("fileserver/getfile/" + id);
+            return string.IsNullOrEmpty(id) ? null : Utils.CombineUrl("fileserver/getfile/" + id);
         }
 
         public override string GetUrlByPath(string path)
         {
-            return Utils.CombineUrl("fileserver/getbypath?path=" + path);
+            return string.IsNullOrEmpty(path) ? null : Utils.CombineUrl("fileserver/getbypath?path=" + path);
         }
 
         public override void DeleteTmp(TmpFileData tmp)

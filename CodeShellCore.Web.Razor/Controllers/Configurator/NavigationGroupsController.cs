@@ -6,7 +6,7 @@ using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class NavigationGroupsController : EntityController<NavigationGroup, long>
     {
@@ -26,7 +26,7 @@ namespace CodeShellCore.Web.Razor.Configurator
             var x = _service.GetPageToAdd(opt);
             return Respond(x);
         }
-        public IActionResult GetPagesByNav([FromQuery]LoadOptions opts, [FromQuery] long naveId)
+        public IActionResult GetPagesByNav([FromQuery] LoadOptions opts, [FromQuery] long naveId)
         {
             var ps = _service.GetPagesByNav(naveId, opts);
             return Respond(ps);
@@ -42,7 +42,7 @@ namespace CodeShellCore.Web.Razor.Configurator
             return Respond(_service.Create(NavigationPageListDTO));
         }
 
-        public IActionResult SetApplyOrder([FromBody]ApplyOrderDTO dto)
+        public IActionResult SetApplyOrder([FromBody] ApplyOrderDTO dto)
         {
             return Respond(_service.SetApplyOrder(dto));
         }

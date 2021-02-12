@@ -42,6 +42,11 @@ namespace Example.UI
 
         }
 
+        public override void AddMvcFeatures(IMvcBuilder mvc)
+        {
+            base.AddMvcFeatures(mvc);
+        }
+
         protected override void OnReady()
         {
             base.OnReady();

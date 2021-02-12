@@ -14,12 +14,12 @@ using CodeShellCore.Linq;
 namespace Asga.Auth.Web.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
-    public class UsersControllerBase : MoldsterEntityController<User, long>
+    public class UsersController : MoldsterEntityController<User, long>
     {
         protected readonly IUsersService service;
         protected readonly IAuthLookupService lookups;
 
-        public UsersControllerBase(IUsersService service, IAuthLookupService lookups) : base(service)
+        public UsersController(IUsersService service, IAuthLookupService lookups) : base(service)
         {
             this.service = service;
             this.lookups = lookups;

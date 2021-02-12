@@ -22,5 +22,6 @@ namespace CodeShellCore.Data.Attachments
                 item.FilePath = item.File.SaveFile(folder, publicFolder);
             }
         }
+
     }
 }
