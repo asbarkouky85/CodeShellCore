@@ -7,7 +7,8 @@ module.exports = (env) => {
 
     var config = merge(sharedConfig, {
         entry: {
-            "ClientApp" : "./ClientApp/boot.ts",
+            "Admin" : "./Admin/boot.ts",
+
         }
     })
     return config;

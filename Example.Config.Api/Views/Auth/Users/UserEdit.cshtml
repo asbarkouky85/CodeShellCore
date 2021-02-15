@@ -1,5 +1,5 @@
 @*ID:4*@
-@model EditingDTO<User>
+@model EditingDTO<Asga.Auth.User>
 @{
     Layout = Html.Config().Layout;
     Html.AddParameter("EditProfile", "false");
@@ -23,7 +23,7 @@
         @Html.FileGroup(d => d.Entity.PhotoFile, "photo", "Upload")
     </div>
     <div class="row">
-        @Html.CalendarGroup(d => d.Entity.BirthDate, CalendarTypes.Custom, new DateRange("'1/10/2000'", "'1/10/2020'"))
+        @Html.CalendarGroup(d => d.Entity.BirthDate, cals: Calendars.Hijri)
         @Html.ControlGroup(d => d.Entity.Mobile, coll: Html.VCollection().AddNumeric(), size: 3)
         @Html.RadioGroup(d => d.Entity.Gender, new Dictionary<string, object> { { "Female", 0 }, { "Male", 1 } }, size: 3)
     </div>

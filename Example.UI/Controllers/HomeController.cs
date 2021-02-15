@@ -8,7 +8,7 @@ namespace Example.UI.Controllers
 {
     public class HomeController : MoldsterUIController
     {
-        public override string DefaultDomain => "ClientApp";
+        public override string DefaultDomain => "Admin";
 
         public override string GetDefaultTitle(string loc)
         {

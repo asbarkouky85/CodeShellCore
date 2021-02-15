@@ -19,14 +19,14 @@ toolset -p Asga.Dashboard 					2.16.11 -d %cd%
 toolset -p CodeShellCore.EntityFramework	2.16.12 -d %cd%
 
 toolset -p CodeShellCore.FileServer.Module 	2.16.12 -d %cd%
-toolset -p CodeShellCore.Moldster 			2.16.12.0 -d %cd%
+toolset -p CodeShellCore.Moldster 			2.16.13.0 -d %cd%
 toolset -p Asga.Auth.Module 				2.16.12 -d %cd%
 toolset -p Asga.Public.Module 				2.16.12 -d %cd%
 toolset -p Asga.Mobile.Module 				2.16.12 -d %cd%
 
 toolset -p CodeShellCore.Web 				2.16.11 -d %cd%
 
-toolset -p CodeShellCore.Web.Razor 			2.16.12.0 -d %cd%
+toolset -p CodeShellCore.Web.Razor 			2.16.13.0 -d %cd%
 toolset -p CodeShellCore.FileServer.Web		2.16.12 -d %cd%
 toolset -p Asga.Auth.Web 					2.16.12 -d %cd%
 toolset -p Asga.Public.Web 					2.16.12 -d %cd%

@@ -9,6 +9,7 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { QuillModule } from "ngx-quill";
 
 import { AngularDateTimePickerModule } from "angular2-datetimepicker";
+import { NgbCalendar, NgbCalendarIslamicUmalqura, NgbDatepickerI18n, NgbDatepickerModule } from "@ng-bootstrap/ng-bootstrap";
 import { CalendarModule } from "primeng/calendar";
 import { DialogModule } from "primeng/dialog";
 import { NgSelectModule } from "@ng-select/ng-select";
@@ -29,9 +30,10 @@ import { FileUploader } from "./directives/fileUploader";
 import { TokenStorage } from "./security/tokenStorage";
 import { AbsoluteUrl } from "./pipes/absoluteUrl";
 import { NumberRangeValidator } from "./validators/rangeValidator";
+import { IslamicI18n } from "./localization/islamicI18n";
 
 @NgModule({
-    
+
     imports: [
         CommonModule,
         FormsModule,
@@ -42,6 +44,7 @@ import { NumberRangeValidator } from "./validators/rangeValidator";
         MatDatepickerModule,
         MatNativeDateModule,
         MatMomentDateModule,
+        NgbDatepickerModule,
         QuillModule,
         AngularDateTimePickerModule,
         DialogModule,
@@ -63,6 +66,7 @@ import { NumberRangeValidator } from "./validators/rangeValidator";
         HttpClientModule,
         RouterModule,
         NgSelectModule,
+        NgbDatepickerModule,
         CalendarModule,
         MatDatepickerModule,
         MatNativeDateModule,
@@ -88,6 +92,8 @@ export class CodeShellModule {
             providers: [
                 AuthFilter,
                 { provide: TranslationService, useClass: NgxTranslationService },
+                { provide: NgbCalendar, useClass: NgbCalendarIslamicUmalqura },
+                { provide: NgbDatepickerI18n, useClass: IslamicI18n },
                 AuthorizationServiceBase,
                 TokenStorage
             ]
