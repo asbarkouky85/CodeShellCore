@@ -27,10 +27,12 @@ namespace CodeShellCore.Web.Razor
         {
             base.RegisterServices(coll);
 
+            coll.AddMoldsterDbData(Configuration);
             coll.AddMoldsterWeb();
             coll.AddMoldsterConfigurator();
             coll.AddMoldsterServerGeneration();
             coll.AddMoldsterRazorHelpers();
+
             coll.Configure<MoldsterModuleOptions>(e =>
             {
                 e.ReplaceComponentHtml = true;

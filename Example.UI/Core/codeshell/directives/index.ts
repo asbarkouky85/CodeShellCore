@@ -2,7 +2,7 @@ export * from "./image-preLoad.directive";
 export * from "./on-enter.directive";
 export * from "./show-if.directive";
 export * from "./slim-scroll.directive";
-export * from "./test-loader.directive";
+export * from "./component-loader.directive";
 export * from "./control-group.directive";
 export * from "./list-item-watcher.directive";
 export * from "./radio.directive";

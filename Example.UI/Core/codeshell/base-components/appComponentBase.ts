@@ -1,4 +1,4 @@
-﻿import { Injector, ComponentFactoryResolver, ComponentRef, EventEmitter, ViewChild } from "@angular/core";
+﻿import { Injector, ComponentFactoryResolver, ComponentRef, EventEmitter, ViewChild, Component } from "@angular/core";
 import { Router, RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
@@ -12,8 +12,9 @@ import { Registry } from "../utilities/registry";
 import { TopBarBase } from "./topBarBase";
 import { UserDTO } from "codeshell/security";
 import { HttpClient } from "@angular/common/http";
-import { TestLoader } from "codeshell/directives";
+import { ComponentLoader } from "codeshell/directives";
 
+@Component({ template: '' })
 export abstract class IAppComponent {
 
     private _loaderTimeout: any = null;
@@ -40,9 +41,9 @@ export abstract class IAppComponent {
     OnDeleteConfirm: (e: Event) => void = e => { };
     OnDeleteCancel: (e: Event) => void = e => { };
 
-    protected Toaster: ToastrService;
+    //protected Toaster: ToastrService;
     protected RedirectToLogin: boolean = true;
-    abstract ModalLoader?: TestLoader;
+    abstract ModalLoader?: ComponentLoader;
 
     @ViewChild("topBar") topBar?: TopBarBase;
 
@@ -75,7 +76,7 @@ export abstract class IAppComponent {
         Shell.Session.OnUserDataFailed.subscribe((error: SubmitResult) => {
             this.ShowPromptTranslate(error.message);
         })
-        this.Toaster = inj.get(ToastrService);
+        //this.Toaster = inj.get(ToastrService);
     }
 
     ngOnInit() {
@@ -230,24 +231,24 @@ export abstract class IAppComponent {
     }
 
     private ShowMessage(type: NoteType, e: string, title?: string) {
-        switch (type) {
-            case NoteType.Error:
-                this.Toaster.error(e, title, {
-                    positionClass: "toast-top-left"
-                });
-                break;
-            case NoteType.Success:
-                this.Toaster.success(e, title, {
-                    positionClass: "toast-top-left"
-                });
-                break;
-            case NoteType.Warning:
-                this.Toaster.warning(e, title, {
-                    positionClass: "toast-top-left"
-                });
-                break;
+        // switch (type) {
+        //     case NoteType.Error:
+        //         this.Toaster.error(e, title, {
+        //             positionClass: "toast-top-left"
+        //         });
+        //         break;
+        //     case NoteType.Success:
+        //         this.Toaster.success(e, title, {
+        //             positionClass: "toast-top-left"
+        //         });
+        //         break;
+        //     case NoteType.Warning:
+        //         this.Toaster.warning(e, title, {
+        //             positionClass: "toast-top-left"
+        //         });
+        //         break;
 
-        }
+        // }
     }
 
 }

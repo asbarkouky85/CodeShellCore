@@ -36,26 +36,25 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public string GetComponentFilePath(string module, string viewFilePath)
         {
-            var path = "";
+            string url;
             if (viewFilePath == "app")
             {
-                path = Utils.CombineUrl(_paths.UIRoot, "src", module, viewFilePath);
+                url = Utils.CombineUrl(module, viewFilePath);
             }
             else
             {
                 var folder = viewFilePath.GetBeforeLast("/");
                 var name = viewFilePath.GetAfterLast("/");
-                path = Utils.CombineUrl(_paths.UIRoot, "src", module, folder, "components", name);
-
+                url = Utils.CombineUrl(module, folder, "components", name);
             }
 
-            return ApplyConvension(path, AppParts.Component);
+            return Utils.CombineUrl(_paths.UIRoot, "src", ApplyConvension(url, AppParts.Component));
         }
 
         public string GetDomainLazyLoadingRoute(string domain)
         {
             var path = ApplyConvension(domain, AppParts.Route);
-            return 
+            return
 @"    { 
         path: '" + path + @"', 
         loadChildren: () => import('./" + path + "/" + ApplyConvension(domain, AppParts.Module) + "').then(m => m." + domain + @"Module) 

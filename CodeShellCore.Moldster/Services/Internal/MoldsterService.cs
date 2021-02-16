@@ -41,7 +41,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             _ts.GenerateRoutes(modCode);
             _ts.GenerateAppModule(modCode);
             _ts.GenerateMainFile(modCode);
-            
+
 
             _loc.GenerateJsonFiles(modCode);
 
@@ -61,8 +61,8 @@ namespace CodeShellCore.Moldster.Services.Internal
         {
             _output.Write("Writing Component \"" + dto.ViewPath + "\" : ");
             _output.GotoColumn(9);
-            _html.GenerateComponentTemplate(moduleName, dto);
-            _ts.GenerateComponent(moduleName, dto);
+            var data = _html.GenerateComponentTemplate(moduleName, dto);
+            _ts.GenerateComponent(moduleName, dto, data);
 
             _output.WriteLine();
         }

@@ -9,8 +9,8 @@ namespace CodeShellCore.Moldster.Razor
     public interface IViewsService
     {
         TemplateDataCollector GetTemplateData(long id);
-        string GetPage(PageAcquisitorDTO pageAcquisitorDTO);
-        string GetPageById(long id);
+        RenderedPageResult GetPage(PageAcquisitorDTO pageAcquisitorDTO);
+        RenderedPageResult GetPageById(long id);
         string GetMainComponent(string baseComponent);
         string GetGuide(string moduleCode);
         bool CheckServer(out HttpResult res);

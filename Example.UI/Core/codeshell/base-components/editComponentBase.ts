@@ -3,17 +3,20 @@ import { EntityHttpService } from "../http";
 import { NoteType, SubmitResult, Result } from "../helpers";
 import { Shell } from "../shell";
 import { Router } from "@angular/router";
-import { ViewChild, EventEmitter } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { ViewChild, EventEmitter, Injectable, Component } from "@angular/core";
+import { FormGroup, NgForm } from "@angular/forms";
 import { LocalizablesDTO } from "../helpers/localizablesDTO";
 import { Utils } from "codeshell/utilities/utils";
 import { Output } from "@angular/core";
 import { Observable } from "rxjs";
 
+
+@Component({template:''})
 export abstract class EditComponentBase extends BaseComponent {
 
     model: any = {};
-    @ViewChild("Form") Form?: NgForm;
+    Form?: NgForm;
+    FormGroup?: FormGroup;
     CurrentLang: string = "ar";
 
     UI_Lang: string = "ar";
@@ -35,6 +38,7 @@ export abstract class EditComponentBase extends BaseComponent {
     LoadLookups: boolean = false;
     IsNew: boolean = true;
     FormIsValid: boolean = true;
+    SubmitClicked: boolean = false;
     modelId?: number;
     file_field?: string;
 
@@ -61,7 +65,7 @@ export abstract class EditComponentBase extends BaseComponent {
     abstract get Service(): EntityHttpService;
 
     ngOnInit() {
-
+        super.ngOnInit();
         this.model = this._bound ? this._bound : this.DefaultModel();
 
         let lookupOpts = this.GetLookupOptions();
@@ -77,7 +81,7 @@ export abstract class EditComponentBase extends BaseComponent {
             }
         }
 
-        this.UI_Lang = Shell.Main.Config.DefaultLocale;
+        this.UI_Lang = "en";
         this.CurrentLang = Shell.Main.Config.DefaultLocale == "ar" ? "en" : "ar";
 
         if (this.Form && this.Form.statusChanges) {
@@ -87,7 +91,7 @@ export abstract class EditComponentBase extends BaseComponent {
                     this.OnFormValidityChange(this.FormIsValid);
                     this.EmitValidity();
                 }
-                
+
                 this._formState = d;
             });
             setTimeout(() => this.EmitValidity(), 200);
@@ -95,7 +99,17 @@ export abstract class EditComponentBase extends BaseComponent {
     }
 
 
-
+    IsValid(): boolean {
+        let valid = true;
+        debugger;
+        if (this.Form) {
+            valid = valid && !this.Form.invalid;
+        }
+        if (this.FormGroup) {
+            valid = valid && this.FormGroup.invalid;
+        }
+        return valid;
+    }
 
     get ModelId(): number { return this.model.id; }
     set ModelId(val: number) { this.model.id = val; }
@@ -294,7 +308,10 @@ export abstract class EditComponentBase extends BaseComponent {
     }
 
     Submit() {
-
+        if (!this.IsValid()) {
+            this.SubmitClicked = true;
+            return;
+        }
         this.SubmitAsync().then(e => {
             this.OnSubmitSuccess(e);
             if (this.DataSubmitted)

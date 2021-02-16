@@ -1,8 +1,10 @@
 ﻿import { BaseComponent } from "./baseComponent";
 import { AccountServiceBase } from "codeshell/security";
-import { Shell } from "codeshell/";
-import { Utils } from "codeshell/helpers";
+import { Shell,Utils } from "codeshell";
+import { Component } from '@angular/core';
 
+
+@Component({ template: '' })
 export class LoginBase extends BaseComponent {
     AccountService: AccountServiceBase = Shell.Injector.get(AccountServiceBase);
     model: any = {};

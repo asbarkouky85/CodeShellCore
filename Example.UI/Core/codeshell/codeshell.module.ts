@@ -5,17 +5,15 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+//import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { QuillModule } from "ngx-quill";
 
-import { AngularDateTimePickerModule } from "angular2-datetimepicker";
-import { CalendarModule } from "primeng/calendar";
-import { DialogModule } from "primeng/dialog";
+//import { AngularDateTimePickerModule } from "angular2-datetimepicker";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { TreeModule } from "angular-tree-component";
 
 import {
-    BsFormGroup, ShowIf, OnEnter, SlimScroll, TestLoader, ImagePreLoad,
+    BsFormGroup, ShowIf, OnEnter, SlimScroll, ComponentLoader, ImagePreLoad,
     ListItemWatcher, Editable, Radio, DirctionFix, FixDateTime, FixDate,
     Selectable, FileUploader
 } from "./directives";
@@ -42,14 +40,13 @@ import { MatNativeDateModule } from "@angular/material/core";
         MatDatepickerModule,
         MatNativeDateModule,
         MatMomentDateModule,
-        QuillModule,
-        AngularDateTimePickerModule,
-        DialogModule,
+        QuillModule.forRoot(),
+        //AngularDateTimePickerModule,
         TreeModule.forRoot(),
-        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: Translator } }),
+        // TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: Translator } }),
     ],
     declarations: [
-        BsFormGroup, ShowIf, OnEnter, SlimScroll, TestLoader, ImagePreLoad,
+        BsFormGroup, ShowIf, OnEnter, SlimScroll, ComponentLoader, ImagePreLoad,
         ListItemWatcher, Editable, Radio,
         NumberRangeValidator, IsUnique, ModalValidator,
         Paginate, SearchGroup, DirctionFix,
@@ -63,17 +60,15 @@ import { MatNativeDateModule } from "@angular/material/core";
         HttpClientModule,
         RouterModule,
         NgSelectModule,
-        CalendarModule,
         MatDatepickerModule,
         MatNativeDateModule,
         MatMomentDateModule,
-        AngularDateTimePickerModule,
-        DialogModule,
+        //AngularDateTimePickerModule,
         TreeModule,
-        TranslateModule,
+        //TranslateModule,
         QuillModule,
         FixDate, FixDateTime, DateValidator,
-        BsFormGroup, ShowIf, OnEnter, SlimScroll, TestLoader, ImagePreLoad,
+        BsFormGroup, ShowIf, OnEnter, SlimScroll, ComponentLoader, ImagePreLoad,
         ListItemWatcher, Editable, Radio,
         NumberRangeValidator, IsUnique, ModalValidator,
         Paginate, SearchGroup, DirctionFix,

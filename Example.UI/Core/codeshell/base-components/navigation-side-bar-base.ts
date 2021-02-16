@@ -1,10 +1,12 @@
 ﻿import { UserDTO, AuthorizationServiceBase, DomainDataProvider, RouteData } from "codeshell/security";
 import { FunctionItem } from "codeshell/security/navs";
 import { Shell } from "codeshell/main";
-import { Injector } from "@angular/core";
+import { Component, Injector } from "@angular/core";
 import { Router } from "@angular/router";
 import { absUrl } from "codeshell/utilities/utils";
 
+
+@Component({ template: '' })
 export class NavigationSideBarBase {
     user?: UserDTO;
     isLoggedIn: boolean = false;

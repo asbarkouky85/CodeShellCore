@@ -38,13 +38,18 @@ namespace CodeShellCore.Moldster.Razor
         {
             get
             {
-                Dictionary<string, string> items = new Dictionary<string, string>();
-                if (Sources.Count == 0)
-                    return null;
-                foreach (Lister l in Sources)
-                    items[l.ListName] = l.CollecionName;
-                return items.ToJson();
+                return GetSourcesString()?.ToJson();
             }
+        }
+
+        public Dictionary<string,string> GetSourcesString()
+        {
+            Dictionary<string, string> items = new Dictionary<string, string>();
+            if (Sources.Count == 0)
+                return null;
+            foreach (Lister l in Sources)
+                items[l.ListName] = l.CollecionName;
+            return items;
         }
 
         public Accessibility GetAccessibility(string name)

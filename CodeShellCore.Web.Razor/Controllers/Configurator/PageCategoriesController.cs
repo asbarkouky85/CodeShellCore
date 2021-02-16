@@ -5,10 +5,10 @@ using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
 
-    public class PageCategoriesController : EntityController<PageCategory, long>, IEntityController<PageCategory, long>,ILookupLoaderController
+    public class PageCategoriesController : EntityController<PageCategory, long>, IEntityController<PageCategory, long>, ILookupLoaderController
     {
         PageCategoryService _service;
         ConfiguratorLookupService Lookups => GetService<ConfiguratorLookupService>();
@@ -26,14 +26,14 @@ namespace CodeShellCore.Web.Razor.Configurator
         {
             return DefaultPut(obj);
         }
-        
+
 
         public override IActionResult Get([FromQuery] LoadOptions opt)
         {
             return Respond(_service.GetAll(opt));
         }
 
-        public IActionResult GetPagesCategoryByDomain([FromQuery]LoadOptions opts, [FromQuery] long domainId)
+        public IActionResult GetPagesCategoryByDomain([FromQuery] LoadOptions opts, [FromQuery] long domainId)
         {
             return Respond(_service.GetPagesCategoryByDomain(domainId, opts));
         }

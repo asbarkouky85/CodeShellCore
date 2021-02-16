@@ -9,7 +9,7 @@ namespace CodeShellCore.Web.Razor.Text
 {
     public class AngularExpressionStringifier : IExpressionStringifier
     {
-        public string GetColumnId(MemberExpression exp, string memberName = null)
+        public virtual string GetColumnId(MemberExpression exp, string memberName = null)
         {
             if (exp.Expression is MemberExpression)
             {
@@ -23,7 +23,7 @@ namespace CodeShellCore.Web.Razor.Text
             }
         }
 
-        public string GetMemberName(MemberExpression exp)
+        public virtual string GetMemberName(MemberExpression exp)
         {
             if (exp.Expression is MemberExpression)
             {

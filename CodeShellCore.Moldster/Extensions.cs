@@ -20,6 +20,8 @@ using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Razor.Internal;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Caching;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CodeShellCore.Moldster
 {
@@ -27,10 +29,13 @@ namespace CodeShellCore.Moldster
     public static class Extensions
     {
 
-        public static void AddMoldsterDbData(this IServiceCollection coll)
+        public static void AddMoldsterDbData(this IServiceCollection coll, IConfiguration conf)
         {
+            var conn = conf.GetConnectionString("Moldster");
+            if (conn == null)
+                conn = conf.GetConnectionString("Default");
 
-            coll.AddContext<MoldsterContext>();
+            coll.AddDbContext<MoldsterContext>(opt => opt.UseSqlServer(conn));
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));
 
@@ -76,9 +81,7 @@ namespace CodeShellCore.Moldster
         {
             coll.AddMoldsterCodeGeneration();
 
-            coll.AddMoldsterDbData();
             coll.AddTransient<ConfiguratorLookupService>();
-
 
             coll.AddServiceFor<Domain, DomainService>();
             coll.AddServiceFor<PageCategory, PageCategoryService>();
@@ -89,7 +92,7 @@ namespace CodeShellCore.Moldster
             coll.AddServiceFor<Tenant, TenantsService>();
 
             coll.AddTransient<IUserDataService, UserDataService>();
-            coll.AddTransient<ICacheProvider, CodeShellCore.Caching.MemoryCacheProvider>();
+            coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
         }
 
         public static void AddMoldsterCodeGeneration(this IServiceCollection coll)
@@ -111,7 +114,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IPreviewService, PreviewService>();
             coll.AddTransient<IModulesService, ModulesService>();
 
-            coll.AddMoldsterDbData();
+            
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IDataService, DbDataService>();
 

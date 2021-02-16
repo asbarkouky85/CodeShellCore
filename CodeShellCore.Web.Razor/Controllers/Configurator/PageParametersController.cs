@@ -4,13 +4,13 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class PageParametersController : BaseApiController
     {
         private readonly IPageParameterDataService service;
 
-        public PageParametersController(IPageParameterDataService service) 
+        public PageParametersController(IPageParameterDataService service)
         {
             this.service = service;
         }

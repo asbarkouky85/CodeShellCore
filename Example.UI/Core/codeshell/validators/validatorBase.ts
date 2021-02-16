@@ -1,7 +1,7 @@
-import { HostListener, ElementRef, SimpleChange, SimpleChanges } from "@angular/core";
+import { HostListener, ElementRef, SimpleChange, SimpleChanges, Injectable } from "@angular/core";
 import { NgModel } from "@angular/forms";
-import { e } from "@angular/core/src/render3";
 
+@Injectable()
 export abstract class ValidatorBase {
 
     @HostListener("blur", ["$event"])

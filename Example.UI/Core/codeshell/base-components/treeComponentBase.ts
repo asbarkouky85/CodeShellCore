@@ -1,8 +1,8 @@
-﻿import { BaseComponent } from ".";
+﻿import { BaseComponent } from "./baseComponent";
 import { RecursionModel } from "codeshell/helpers";
 import { EntityHttpService } from "codeshell/http";
 import { Stored, ComponentRequest, SubmitResult, DeleteResult } from "codeshell/helpers";
-import { ViewChild, EventEmitter, Input } from "@angular/core";
+import { ViewChild, EventEmitter, Input, Component } from "@angular/core";
 import { TreeComponent, ITreeOptions, TreeNode } from "angular-tree-component";
 import { Shell } from "../shell";
 import { NgForm } from "@angular/forms";
@@ -15,10 +15,11 @@ export class ExpandedItems {
     Items: number[] = [];
 }
 
+@Component({ template: '' })
 export abstract class TreeComponentBase extends BaseComponent {
 
-    @ViewChild(TreeComponent) treeComponent?: TreeComponent;
-    @ViewChild("Form") form?: NgForm;
+    abstract treeComponent?: TreeComponent;
+    Form?: NgForm;
 
     @Input()
     LoadOnStart: boolean = true;
@@ -85,6 +86,7 @@ export abstract class TreeComponentBase extends BaseComponent {
     };
 
     ngOnInit(): void {
+        super.ngOnInit();
         let opts = this.GetLookupOptions();
 
         if (this.treeComponent)
@@ -159,7 +161,7 @@ export abstract class TreeComponentBase extends BaseComponent {
         this.List = [];
         if (this.Loader)
             return this.Loader();
-        return this.Service.Get("GetTree");
+        return this.Service.Get("tree");
     }
 
     ContentCountAsync(): Promise<{ [key: number]: number }> {

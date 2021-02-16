@@ -4,10 +4,12 @@ import { HttpClient } from "@angular/common/http";
 import { UserDTO } from "codeshell/security";
 import { BaseComponent } from "./baseComponent";
 import { EditComponentBase } from "./editComponentBase";
-import { ComponentRef } from "@angular/core";
+import { Component, ComponentRef } from "@angular/core";
 import { NotificationListenerBase } from "codeshell/http/notificationListenerBase";
 import { NotificationServiceBase } from "codeshell/http/notificationServiceBase";
 
+
+@Component({ template: '' })
 export class TopBarBase {
     isLoggedIn: boolean = false;
     navState: boolean = true;
@@ -63,7 +65,7 @@ export class TopBarBase {
             this._onUser(u);
         });
         Shell.ViewLoaded.subscribe((d: any) => {
-            $(".wrapper-side").removeClass("expanded");
+            //$(".wrapper-side").removeClass("expanded");
         });
 
         var conf: ServerConfigBase = Shell.Injector.get(ServerConfigBase);
@@ -116,7 +118,7 @@ export class TopBarBase {
     Slide() {
         if (!Shell.Main.ShowNav)
             return;
-        $(".wrapper-side").toggleClass("expanded");
+        //$(".wrapper-side").toggleClass("expanded");
     }
 
     ToggleNav() {
@@ -128,11 +130,11 @@ export class TopBarBase {
     setSideBarState(state: boolean) {
         this.navState = state;
         if (!state) {
-            $(".wrapper-side").addClass("compressed");
-            $(".wrapper-content").addClass("expanded");
+            //$(".wrapper-side").addClass("compressed");
+           // $(".wrapper-content").addClass("expanded");
         } else {
-            $(".wrapper-side").removeClass("compressed");
-            $(".wrapper-content").removeClass("expanded");
+            //$(".wrapper-side").removeClass("compressed");
+            //$(".wrapper-content").removeClass("expanded");
         }
     }
 

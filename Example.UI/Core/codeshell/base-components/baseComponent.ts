@@ -1,4 +1,4 @@
-﻿import { Injectable, OnInit, ViewChild, ElementRef, Input, ComponentRef, OnDestroy, ComponentFactoryResolver, ComponentFactory, Injector } from "@angular/core";
+﻿import { Injectable, OnInit, ViewChild, ElementRef, Input, ComponentRef, OnDestroy, ComponentFactoryResolver, ComponentFactory, Injector, Component } from "@angular/core";
 import { ActivatedRoute, Route, Router, NavigationExtras } from "@angular/router";
 import { Location } from "@angular/common";
 
@@ -7,80 +7,72 @@ import { Permission, RouteData } from "../security/models";
 import { NoteType, ViewParams, DeleteResult, ComponentRequest, LocalizablesDTO } from "../helpers";
 import { Registry } from "codeshell/main";
 
-@Injectable()
+
+@Component({ template: '' })
 export abstract class BaseComponent implements OnInit, OnDestroy {
 
-    UseLocalization: boolean = false;
-    get Loc(): LocalizablesDTO { return new LocalizablesDTO() };
+
+    @Input("IsEmbedded") IsEmbedded: boolean = false;
+
     private _subs: { [key: string]: any } = {};
-    private _viewParams?: ViewParams;
     private _modalOk = false;
     private _modalCancel = false;
 
     protected Route: ActivatedRoute;
     protected Injector: Injector;
-    protected get Resolver(): ComponentFactoryResolver { return this.Injector.get(ComponentFactoryResolver); };
-    protected RouteData: RouteData = new RouteData;
+    protected RouteData: RouteData = new RouteData();
+    protected LookupOptions: any | null;
+    protected ComponentRouteData: any | null;
 
-    EmbeddedInit?: () => void;
-
-    onlyNumber(evt: any) {
-        evt = (evt) ? evt : window.event;
-        var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-        return true;
-    }
-    get Navigation(): Location { return Shell.Injector.get(Location); }
     Lookups: { [key: string]: any[] } = {};
+    ViewParams: ViewParams = new ViewParams();
 
+    UseLocalization: boolean = false;
     Debug: boolean = true;
     Permission: Permission = Permission.Anonymous;
     ScreenHeight = window.innerHeight + 'px';
     Title: string = "";
     HeaderExtra?: string;
-
     IsInitialized: boolean = false;
     Show: boolean = false;
     ShowOnReady: boolean = false;
-
     HideHeader: boolean = false;
+    SubmitClicked: boolean = false;
     IsChild = false;
     ModalWidth: any = 768;
 
-
-    @Input("IsEmbedded") IsEmbedded: boolean = false;
-    @ViewChild("viewParamsContainer") paramsContainer?: ElementRef;
-    @ViewChild("lookupOptionsContainer") lookupsContainer?: ElementRef;
+    get Navigation(): Location { return Shell.Injector.get(Location); }
+    get Loc(): LocalizablesDTO { return new LocalizablesDTO() };
+    get ComponentName(): string { return (this as any).constructor.name; }
+    get Router(): Router { return Shell.Injector.get(Router); }
+    protected get Resolver(): ComponentFactoryResolver { return this.Injector.get(ComponentFactoryResolver); };
 
     OnOk: (sender: any) => Promise<boolean> = e => Promise.resolve(true);
     OnCancel: (sender: any) => Promise<boolean> = e => Promise.resolve(true);
-
-    get ViewParams(): ViewParams {
-
-        if (!this._viewParams) {
-            this._viewParams = this.LoadViewParams();
-        }
-        return this._viewParams;
-    }
-
-    get ComponentName(): string {
-        return (this as any).constructor.name;
-    }
-
-    get Router(): Router {
-        return Shell.Injector.get(Router);
-    }
+    EmbeddedInit?: () => void;
 
     constructor(route: ActivatedRoute, inj: Injector) {
         this.Route = route;
         this.Injector = inj;
-        let conf = route.routeConfig as Route;
+    }
+
+    ngOnInit(): void {
+        this.construct();
+    }
+
+    protected construct() {
+        let conf = this.Route.routeConfig as Route;
 
         if (conf) {
 
-            this.RouteData = Object.assign(new RouteData, conf.data);
+            if (conf.data) {
+                this.RouteData = Object.assign(new RouteData, conf.data);
+            } else if (this.ComponentRouteData) {
+                this.RouteData = Object.assign(new RouteData(), this.ComponentRouteData);
+            } else {
+                this.RouteData = Object.assign(new RouteData(), { action: "anonymous" })
+            }
+
             Shell.Main.SetTitle(this.RouteData.name);
 
             if (this.RouteData.IsAnonymous) {
@@ -97,11 +89,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         } else {
             this.IsEmbedded = true;
         }
-
-
     }
-
-    GetPageId(): number { return 0; }
 
     GetMainUrl(): string {
         return Shell.Main.GetMainUrl();
@@ -120,15 +108,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     SortBy(prop: string) { }
 
     GetHeaderClass(prop: string): string | null { return null; }
-
-    private LoadViewParams(): ViewParams {
-        if (this.paramsContainer) {
-            var s = this.GetObjectFromHtmlAs(this.paramsContainer, ViewParams);
-            if (s != null)
-                return s;
-        }
-        return new ViewParams;
-    }
 
     GetObjectFromHtml(ref: ElementRef): any | null {
         let el = ref.nativeElement as HTMLElement;
@@ -225,17 +204,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     public ModalSearch(modelId: string, term: string) { }
 
     protected GetLookupOptions(): any | null {
-        if (this.lookupsContainer) {
-            var s = this.GetObjectFromHtml(this.lookupsContainer);
-
-            return s;
-        }
-        return null;
+        return this.LookupOptions;
     }
 
-    ngOnInit(): void {
 
-    }
 
     Refresh() {
         this.ngOnInit();
@@ -274,7 +246,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         let tableName = ""
         if (res.tableName)
             tableName = Shell.Word(res.tableName);
-        let mess = Shell.Message("entity_has_children", { "p0": tableName || "Unknown" });
+        let mess = Shell.Message("entity_has_children", tableName || "Unknown");
         this.Notify(mess, NoteType.Error, undefined);
     }
 

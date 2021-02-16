@@ -1,8 +1,0 @@
-{
-  "delete_confirm_message": "Are you sure you want to delete this record ?",
-  "field_required": "{{p0}} is required",
-  "operation_unavailable": "Service is unavailable or not found",
-  "test_message": "Test {0} and {1}",
-  "unauthorized_operation": "You are not authorized to access this data",
-  "unexpected_error": "Unexpected Error Occured"
-}

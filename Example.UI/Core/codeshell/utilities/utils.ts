@@ -1,6 +1,6 @@
 ﻿import * as Moment from "moment";
 import { RecursionModel } from "../helpers/recursionModel";
-import { TreeNode } from "codeshell/base-components/node_modules/angular-tree-component"
+import { TreeNode } from "angular-tree-component"
 import { Shell } from "../shell";
 import { KeyValue } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -149,13 +149,13 @@ export class Utils {
     private static lastSec: number;
 
     static GetQueryString(obj: any) {
-		var str = [];
-		for (var p in obj)
-			if (obj.hasOwnProperty(p)) {
-				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-			}
-		return str.join("&");
-	}
+        var str = [];
+        for (var p in obj)
+            if (obj.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
+        return str.join("&");
+    }
 
     static GetIdString(): string {
         let sec = new Date().getTime();
@@ -184,7 +184,7 @@ export class Utils {
                 var del: DeleteResult = Object.assign(new DeleteResult, res);
                 res = del;
                 if (del.tableName) {
-                    var message = Shell.Message("delete_error_message", { p0: Shell.Word(del.tableName) })
+                    var message = Shell.Message("delete_error_message", Shell.Word(del.tableName))
                     Shell.Main.Notify(message, NoteType.Error);
                 } else {
                     Shell.Main.NotifyTranslate(res.message ? res.message : "error_message", NoteType.Error);

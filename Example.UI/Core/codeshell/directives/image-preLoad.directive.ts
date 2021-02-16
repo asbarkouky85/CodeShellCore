@@ -22,13 +22,13 @@ export class ImagePreLoad {
                 this.awaiterDiv.classList.add(x);
         }
 
-        $(ht).parent().append(this.awaiterDiv);
-        $(ht).hide();
+        //$(ht).parent().append(this.awaiterDiv);
+        //$(ht).hide();
         ht.addEventListener("load", (e) => {
 
             if (ht.complete && ht.naturalWidth!==0) {
-                $(ht).fadeIn(500);
-                $(this.awaiterDiv).remove();
+                //$(ht).fadeIn(500);
+                //$(this.awaiterDiv).remove();
                 this.isLoaded = true;
                 return {};
             }
@@ -37,9 +37,9 @@ export class ImagePreLoad {
 
         setTimeout(() => {
             if (!this.isLoaded) {
-                $(ht).fadeIn(500);
+                //$(ht).fadeIn(500);
                 ht.style.height = this.getClosestWidth(ht) + "px";
-                $(this.awaiterDiv).remove();
+               // $(this.awaiterDiv).remove();
                 this.isLoaded = true;
             }
         }, 2000);

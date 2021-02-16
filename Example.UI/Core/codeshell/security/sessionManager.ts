@@ -1,10 +1,9 @@
 ﻿import { LoginResult, UserDTO, TokenData, Permission, RouteData } from "../security/models";
 import { Injectable, EventEmitter } from "@angular/core";
 import { Stored, SubmitResult } from "../helpers";
-import { Registry } from "../utilities/registry";
 import * as Cookies from "js-cookie";
 import { String_GetAfterLast } from "../utilities/utils";
-import { Shell } from "../main";
+import { Shell } from "../shell";
 import { AccountServiceBase } from "./accountServiceBase";
 import { TokenStorage } from "./tokenStorage";
 

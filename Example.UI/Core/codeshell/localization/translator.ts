@@ -1,8 +1,8 @@
-﻿import { TranslateLoader } from "@ngx-translate/core";
+﻿//import { TranslateLoader } from "@ngx-translate/core";
 import { LocaleLoader } from "./localeLoader";
-import { Observable,of } from "rxjs";
+import { Observable, of } from "rxjs";
 
-export class Translator extends TranslateLoader {
+export class Translator /* extends TranslateLoader*/ {
 
     private static Loaders: { [id: string]: LocaleLoader } = {};
 
@@ -12,7 +12,7 @@ export class Translator extends TranslateLoader {
 
     getTranslation(lang: string): Observable<any> {
         let res: any = {};
-        
+
         if (Translator.Loaders[lang] != undefined) {
             res = Translator.Loaders[lang].Load();
         } else {

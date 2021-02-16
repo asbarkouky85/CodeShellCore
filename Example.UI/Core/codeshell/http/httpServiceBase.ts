@@ -6,32 +6,35 @@ import { HttpRequest, Methods } from "./httpRequest";
 import { TokenData } from "../security/Models";
 import { SubmitResult } from "codeshell/helpers";
 import { Utils } from "../utilities/utils";
+import { EnvironmentService } from '@abp/ng.core';
 
 export abstract class HttpServiceBase {
     protected abstract get BaseUrl(): string;
     protected Sessions: SessionManager;
     protected Client: HttpClient;
     protected Server: ServerConfigBase;
-    
+    protected Env: EnvironmentService;
+
     Silent: boolean = false;
     SignalRConnctionId?: string;
 
     public get Headers(): any {
-        let head: any = {
-            "tenant-code": this.Server.Domain,
-            "locale": this.Server.Locale,
-            "ui-version": this.Server.Version
-        };
-        this.Sessions.CheckToken();
-        let tok: TokenData | null = this.Sessions.GetToken();
+        // let head: any = {
+        //     "tenant-code": this.Server.Domain,
+        //     "locale": this.Server.Locale,
+        //     "ui-version": this.Server.Version
+        // };
+        // this.Sessions.CheckToken();
+        // let tok: TokenData | null = this.Sessions.GetToken();
 
-        if (tok != null)
-            head["auth-token"] = tok.Token;
-        if (this.SignalRConnctionId)
-            head["connection-id"] = this.SignalRConnctionId;
+        // if (tok != null)
+        //     head["auth-token"] = tok.Token;
+        // if (this.SignalRConnctionId)
+        //     head["connection-id"] = this.SignalRConnctionId;
 
-        this.AddCustomHeaders(head);
-        return head;
+        // this.AddCustomHeaders(head);
+        // return head;
+        return {};
     }
 
     protected AddCustomHeaders(data: { [key: string]: string }) { }
@@ -40,6 +43,7 @@ export abstract class HttpServiceBase {
         this.Client = Shell.Injector.get(HttpClient);
         this.Sessions = SessionManager.Current();
         this.Server = Shell.Main.Config;
+        this.Env = Shell.Injector.get(EnvironmentService);
     }
 
     public Get(action: string, params?: number | object): Promise<any> {
@@ -82,13 +86,13 @@ export abstract class HttpServiceBase {
 
 
     protected InitializeRequest(action: string, params?: number | object, body?: any): HttpRequest {
-        let url: string = this.BaseUrl + "/" + action;
+        let url: string = this.Env.getApiUrl() + "" + this.BaseUrl + "/" + action;
         let r: HttpRequest = new HttpRequest(url, params, body);
         r.Params.headers = this.Headers;
         return r;
     }
 
-    
+
 
     protected async process(method: Methods, req: HttpRequest): Promise<any> {
         var p = new Promise<any>(() => { });

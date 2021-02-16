@@ -4,7 +4,10 @@ import { IModel, LoadOptions, DeleteResult, PropertyFilter, LoadResult } from ".
 import { Shell } from "../shell";
 import { ListSelectionService } from "codeshell/services/listSelectionService";
 import { Utils } from "codeshell/main";
+import { Component } from '@angular/core';
 
+
+@Component({ template: '' })
 export abstract class ListComponentBase extends BaseComponent {
 
     filter: { [key: string]: PropertyFilter } = {};
@@ -22,7 +25,7 @@ export abstract class ListComponentBase extends BaseComponent {
     Selection: ListSelectionService | null = null;
 
     ngOnInit(): void {
-
+        super.ngOnInit();
         let opts = this.GetLookupOptions();
         if (opts != null) {
             this.LoadLookupsAsync(opts).then(l => {

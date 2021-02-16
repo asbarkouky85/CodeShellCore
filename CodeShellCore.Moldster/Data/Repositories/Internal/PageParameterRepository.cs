@@ -6,13 +6,17 @@ using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.CodeGeneration;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {
     public class PageParameterRepository : MoldsterRepository<PageParameter, MoldsterContext>, IPageParameterRepository
     {
-        public PageParameterRepository(MoldsterContext con) : base(con)
+        private readonly IUIFileNameService names;
+
+        public PageParameterRepository(MoldsterContext con, IUIFileNameService srv) : base(con)
         {
+            this.names = srv;
         }
 
         internal IQueryable<PageReferenceDTO> QueryPageReferenceDTO(IQueryable<PageParameter> q = null)
@@ -48,14 +52,33 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
                        Name = d.PageCategoryParameter.Name,
                        Value = d.PageCategoryParameter.Type == textType ?
                        d.ParameterValue : (d.LinkedPageId.HasValue ?
-                       pages.Where(e => e.Id == d.LinkedPageId).Select(e => e.ViewPath).FirstOrDefault() : null)
+                       pages.Where(e => e.Id == d.LinkedPageId).Select(e => e.ViewPath).FirstOrDefault() : null),
+                       Type = d.PageCategoryParameter.Type
                    };
         }
 
         public IEnumerable<PageParameterForJson> FindForJsonByPage(long pageId)
         {
             var q = Loader.Where(d => d.PageId == pageId);
-            return QueryPageParameterForJson(q).ToList();
+
+            var data = QueryPageParameterForJson(q).ToList();
+            foreach (var item in data)
+            {
+                if (item.Value != null && item.Type != (int)PageParameterTypes.Text)
+                {
+                    switch ((PageParameterTypes)item.Type)
+                    {
+                        case PageParameterTypes.Embedded:
+                            item.Value = names.GetComponentSelector(item.Value);
+                            break;
+                        case PageParameterTypes.PageLink:
+                            item.Value = names.ApplyConvension(item.Value, AppParts.Route);
+                            break;
+                    }
+
+                }
+            }
+            return data;
         }
 
         public IEnumerable<PageParameterForJson> FindForJson(long tenantId, long? pageCategoryId = null)

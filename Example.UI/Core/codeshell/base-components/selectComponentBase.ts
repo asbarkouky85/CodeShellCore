@@ -1,9 +1,11 @@
-﻿import { BaseComponent, ListComponentBase } from ".";
+﻿import { BaseComponent } from "./baseComponent";
 import { LoadResult, ListItem, TaggedArgs, LoadOptions } from "../helpers";
-import { ListSource } from "../data/listSource";
-import { EventEmitter } from "@angular/core";
+import { ListSource } from "../services";
+import { Component, EventEmitter } from "@angular/core";
 import { Tagged } from "codeshell/helpers/tagged";
 
+
+@Component({ template: '' })
 export abstract class SelectComponentBase extends BaseComponent {
 
     protected defaultLoader = (e: LoadOptions) => Promise.resolve(new LoadResult);

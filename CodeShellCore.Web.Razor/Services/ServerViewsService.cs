@@ -79,24 +79,30 @@ namespace CodeShellCore.Web.Razor.Services
             return html;
         }
 
-        public string GetPage(PageAcquisitorDTO dto)
+        public RenderedPageResult GetPage(PageAcquisitorDTO dto)
         {
             PageOptions p = data.GetPageOptions(dto.ModuleCode, dto.ViewPath);
             p.Layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, p.Layout);
             var html = RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { "PageOptions", p } });
-            html += $"\n<div style='display:none' #lookupOptionsContainer values='{p.SourcesString}'></div>";
-            html += $"\n<div style='display:none' #viewParamsContainer values='{p.ViewParamsString}'></div>";
-            return html;
+            return new RenderedPageResult
+            {
+                TemplateContent = html,
+                Sources = p.GetSourcesString(),
+                ViewParams = p.ViewParams
+            };
         }
 
-        public string GetPageById(long id)
+        public RenderedPageResult GetPageById(long id)
         {
             PageOptions p = data.GetPageOptionsById(id);
             p.Layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, p.Layout);
             var html = RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { "PageOptions", p } });
-            html += $"\n<div style='display:none' #lookupOptionsContainer values='{p.SourcesString}'></div>";
-            html += $"\n<div style='display:none' #viewParamsContainer values='{p.ViewParamsString}'></div>";
-            return html;
+            return new RenderedPageResult
+            {
+                TemplateContent = html,
+                Sources = p.GetSourcesString(),
+                ViewParams = p.ViewParams
+            };
         }
 
         public TemplateDataCollector GetTemplateData(long id)

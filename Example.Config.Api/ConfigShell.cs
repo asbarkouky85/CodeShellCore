@@ -22,7 +22,6 @@ namespace Example.Config.Api
         {
             base.RegisterServices(coll);
 
-            coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(Configuration.GetConnectionString("Moldster")));
             coll.AddMoldsterModules(d =>
             {
                 d.Register("Asga.Auth.Molds", "{PARENT}/Asga.Auth.Molds");

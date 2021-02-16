@@ -132,7 +132,7 @@ namespace CodeShellCore.Moldster.Razor.Internal
         }
 
 
-        private string GetPage(long id)
+        private RenderedPageResult GetPage(long id)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace CodeShellCore.Moldster.Razor.Internal
             }
         }
 
-        private string GetPage(string module, string viewPath)
+        private RenderedPageResult GetPage(string module, string viewPath)
         {
             try
             {
@@ -170,10 +170,12 @@ namespace CodeShellCore.Moldster.Razor.Internal
             }
         }
 
-        public bool RenderPage(long id, bool verbose = false)
+        protected bool RenderPage(long id, out RenderedPageResult res)
         {
+
             using (var x = SW.Measure())
             {
+                res = null;
                 using (Out.Set(ConsoleColor.Cyan))
                     Out.Write(" Html: ");
 
@@ -184,8 +186,8 @@ namespace CodeShellCore.Moldster.Razor.Internal
                     WriteColored("Exists", ConsoleColor.Cyan);
                     return true;
                 }
-
-                string template = GetPage(p.Page.Id);
+                res = GetPage(p.Page.Id);
+                string template = res.TemplateContent;
                 if (template == null)
                 {
                     WriteFailed(x.Elapsed);
@@ -219,9 +221,13 @@ namespace CodeShellCore.Moldster.Razor.Internal
 
         }
 
-        public virtual void GenerateComponentTemplate(string moduleName, PageRenderDTO dto)
+        public virtual PageJsonData GenerateComponentTemplate(string moduleName, PageRenderDTO dto)
         {
-            RenderPage(dto.Id);
+            if (RenderPage(dto.Id, out RenderedPageResult res))
+            {
+                return res;
+            }
+            return null;
         }
 
         public virtual void GenerateMainComponentTemplate(string moduleCode)

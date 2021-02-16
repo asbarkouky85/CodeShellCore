@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class ResourcesController : EntityController<Resource, long>, IEntityController<Resource, long>, ILookupLoaderController
     {

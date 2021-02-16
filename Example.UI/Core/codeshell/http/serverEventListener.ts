@@ -15,7 +15,7 @@ export class ServerEventListner {
     /** if keepAlive is true the interval between reconnect attempts */
     RetryTime: number = 30000;
     private _observables: { [key: string]: EventEmitter<any> } = {};
-    private _interval: number | null = null;
+    private _interval: NodeJS.Timeout | null = null;
 
     protected _isStarted: boolean = false;
     constructor(private hubUrl: string) {
@@ -30,7 +30,7 @@ export class ServerEventListner {
                     console.log("Attempting to reconnect");
                     if (!this._isStarted && this.connection.state == HubConnectionState.Disconnected) {
                         this.Start().then(d => {
-                            clearInterval(this._interval as number);
+                            clearInterval(this._interval);
                             (this.Reconnected as EventEmitter<ServerEventListner>).emit(this);
                             this._interval = null;
                         }).catch(d => {
@@ -38,7 +38,7 @@ export class ServerEventListner {
                         })
                     } else if (this._interval) {
                         
-                        clearInterval(this._interval as number);
+                        clearInterval(this._interval);
                         this._interval = null;
                     }
                 }, this.RetryTime)

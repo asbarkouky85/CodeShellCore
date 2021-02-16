@@ -1,6 +1,9 @@
 ﻿import { EditComponentBase } from "./editComponentBase";
 import { DTO, SubmitResult } from "../helpers";
+import { Component } from '@angular/core';
 
+
+@Component({ template: '' })
 export abstract class DTOEditComponentBase extends EditComponentBase {
     model: any = {};
 

@@ -12,7 +12,7 @@ namespace CodeShellCore.Moldster.Data.Repositories
 {
     public interface IPageRepository : IRepository<Page>
     {
-        IEnumerable<PageDTO> GetDomainPagesForRouting(string tenantCode, long domainId);
+        IEnumerable<PageDTO> GetDomainPagesForRouting(string tenantCode, long domainId, bool searchChildren = false);
         string GetHomePagePath(string modCode);
         LoadResult<PageListDTO> GetUnderDomain(long domainId, LoadOptions opt);
         PageAndTypeDTO FindLinkedPage(string paramName, string val, long tenantId, ref List<string> add);

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public static class SearchExpressions
     {
@@ -30,7 +30,7 @@ namespace CodeShellCore.Web.Razor.Configurator
 
             ExpressionStore.RegisterSearchExpression<ResourceListDTO>(term => e => e.Name.Contains(term) || e.Domain.Contains(term));
 
-            ExpressionStore.RegisterSearchExpression<PageReferenceDTO>(term => 
+            ExpressionStore.RegisterSearchExpression<PageReferenceDTO>(term =>
             e => e.PageViewPath.Contains(term) || e.ParameterName.Contains(term) || e.ReferencedPageViewPath.Contains(term) || e.PageCategoryViewPath.Contains(term));
         }
     }

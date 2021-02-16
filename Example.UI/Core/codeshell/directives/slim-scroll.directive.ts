@@ -12,12 +12,12 @@ export class SlimScroll {
     }
 
     ngOnInit() {
-        $(this.el.nativeElement).slimScroll({
-            position: 'left',
-            height: this.height,
-            railColor: "white",
-            railOpacity: 0.5
-        });
+        // $(this.el.nativeElement).slimScroll({
+        //     position: 'left',
+        //     height: this.height,
+        //     railColor: "white",
+        //     railOpacity: 0.5
+        // });
     }
 
     ngOnChanges() {
