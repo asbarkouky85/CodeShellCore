@@ -1,0 +1,23 @@
+﻿@model NgInput
+
+<div class="row" @if (Model.GroupName != null) { @Html.Raw($"*ngIf=\"{Model.GroupName}.Write\"") }>
+    <div class="col-md-9">
+        <input [matDatepicker]="@("picker_" + Model.FieldName)"
+               name="@Html.Raw(Model.FieldName)"
+               class="form-control"
+               [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+               fix-date
+               placeholder="@Html.Raw(Model.PlaceHolder)" @Html.Raw(Model.Attributes) />
+        <mat-datepicker @("#picker_" + Model.FieldName)></mat-datepicker>
+    </div>
+    <div class="col-md-3">
+        <mat-datepicker-toggle [for]="@("picker_" + Model.FieldName)"></mat-datepicker-toggle>
+    </div>
+
+</div>
+
+@if (Model.GroupName != null)
+{
+    <p *ngIf="!@(Model.GroupName + ".Write")">{{@(Model.GroupName + ".Value")}}</p>
+}
+

@@ -1,16 +1,15 @@
 ﻿import { Injector, EventEmitter } from "@angular/core";
 import { SessionManager } from "./security/sessionManager";
-//import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from "@ngx-translate/core";
 import { IAppComponent } from "./base-components/appComponentBase";
 import { ServerConfigBase } from "./serverConfigBase";
-import { LocalizationService } from '@abp/ng.core';
 
 export class Shell {
-    private static _translate: LocalizationService;
+    private static _translate: TranslateService;
     private static _session: SessionManager;
-    public static get Translator(): LocalizationService {
+    public static get Translator(): TranslateService {
         if (Shell._translate == null)
-            Shell._translate = Shell.Injector.get(LocalizationService);
+            Shell._translate = Shell.Injector.get(TranslateService);
         return Shell._translate;
     }
 

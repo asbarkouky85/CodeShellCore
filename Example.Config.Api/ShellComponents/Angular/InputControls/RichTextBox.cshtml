@@ -1,0 +1,6 @@
+﻿@model NgInput
+<quill-editor @if (Model.AngularJsConfig != null) { @Html.Raw($" [modules]=\"{Model.AngularJsConfig}\"") }
+              [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+              name="@Model.FieldName"
+              placeholder="@Html.Raw(Model.PlaceHolder)"
+              @Html.Raw(Model.Attributes)></quill-editor>

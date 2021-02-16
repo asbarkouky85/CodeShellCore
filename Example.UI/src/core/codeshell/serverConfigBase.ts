@@ -1,6 +1,6 @@
 ﻿import { Injectable } from "@angular/core";
 
-@Injectable()
+@Injectable({providedIn:"root"})
 export class ServerConfigBase {
     DefaultLocale: string = "en";
     Locale: string = "en";

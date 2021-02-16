@@ -48,9 +48,7 @@ export abstract class IAppComponent {
     @ViewChild("topBar") topBar?: TopBarBase;
 
     constructor(inj: Injector, private title: Title) {
-
-
-
+        
         Shell.Injector = inj;
         Shell.Start(this);
         Shell.Session.LogStatus.subscribe((d: boolean) => {
@@ -95,7 +93,7 @@ export abstract class IAppComponent {
 
     OnStartupNoSession(response: any) {
         if (this.RedirectToLogin)
-            this.Router.navigateByUrl("/Login");
+            this.Router.navigateByUrl("/login");
     }
 
     OnLogStatusChanged(res: boolean) { }

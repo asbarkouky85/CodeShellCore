@@ -1,4 +1,4 @@
-﻿import { EntityHttpService } from "../http";
+﻿import { EntityHttpService } from "../http/entityHttpService";
 import { LoginResult, UserDTO } from "./models";
 import { SubmitResult } from "codeshell/helpers";
 

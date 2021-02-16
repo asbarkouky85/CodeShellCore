@@ -1,0 +1,17 @@
+﻿@model NgInput
+<div class="input-group modal-selector">
+    <input type="@Model.TextBoxType"
+           class="form-control @Model.Classes"
+           placeholder="@Html.Raw(Model.PlaceHolder)"
+           name="@Html.Raw(Model.FieldName)"
+           [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+           title="@Html.Raw(Model.PlaceHolder)"
+           [li-watch]="@Model.NgModelName"
+           @Html.Raw((Model.NgOptions != null) ? "autocomplete=\"off\" list=\"AC__" + Model.FieldName + "\"" : "")
+           @Html.Raw(Model.Attributes)>
+    <div class="input-group-btn">
+        <button title="Select Domain" class="btn" (click)="TextBoxWithButtonClick('@Model.MemberName')">
+            <i class="fa fa-folder"></i>
+        </button>
+    </div>
+</div>

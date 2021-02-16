@@ -17,10 +17,6 @@ import { ServerConfigBase, Registry } from "codeshell/main";
 })
 export class %Name%Module {
 
-	constructor(trans: TranslateService, conf: ServerConfigBase) {
-        trans.setDefaultLang(conf.Locale);
-        trans.use(conf.Locale);
-    }
 }
 
 %Registrations%

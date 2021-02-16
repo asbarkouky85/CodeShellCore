@@ -1,7 +1,7 @@
 ﻿import { Directive, ViewContainerRef, ComponentFactoryResolver, ComponentRef, Input, Injector } from "@angular/core";
 import { BaseComponent } from "../base-components/baseComponent";
 
-@Directive({ selector: "[acs-component-loader]", exportAs: "componentLoader" })
+@Directive({ selector: "ng-template[acs-component-loader]", exportAs: "componentLoader" })
 export class ComponentLoader {
     constructor(public Container: ViewContainerRef, private inj: Injector, private FactoryResolver: ComponentFactoryResolver) { }
 

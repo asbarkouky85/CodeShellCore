@@ -1,11 +1,11 @@
 ﻿import { NgModule, ModuleWithProviders } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { APP_BASE_HREF, CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
-//import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { QuillModule } from "ngx-quill";
 
 //import { AngularDateTimePickerModule } from "angular2-datetimepicker";
@@ -43,10 +43,11 @@ import { MatNativeDateModule } from "@angular/material/core";
         QuillModule.forRoot(),
         //AngularDateTimePickerModule,
         TreeModule.forRoot(),
-        // TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: Translator } }),
+        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: Translator } }),
     ],
     declarations: [
-        BsFormGroup, ShowIf, OnEnter, SlimScroll, ComponentLoader, ImagePreLoad,
+        BsFormGroup, ShowIf, OnEnter, SlimScroll,
+        ComponentLoader, ImagePreLoad,
         ListItemWatcher, Editable, Radio,
         NumberRangeValidator, IsUnique, ModalValidator,
         Paginate, SearchGroup, DirctionFix,
@@ -65,10 +66,11 @@ import { MatNativeDateModule } from "@angular/material/core";
         MatMomentDateModule,
         //AngularDateTimePickerModule,
         TreeModule,
-        //TranslateModule,
+        TranslateModule,
         QuillModule,
         FixDate, FixDateTime, DateValidator,
-        BsFormGroup, ShowIf, OnEnter, SlimScroll, ComponentLoader, ImagePreLoad,
+        BsFormGroup, ShowIf, OnEnter, SlimScroll,
+        ComponentLoader, ImagePreLoad,
         ListItemWatcher, Editable, Radio,
         NumberRangeValidator, IsUnique, ModalValidator,
         Paginate, SearchGroup, DirctionFix,
@@ -83,6 +85,7 @@ export class CodeShellModule {
             providers: [
                 AuthFilter,
                 { provide: TranslationService, useClass: NgxTranslationService },
+                { provide: APP_BASE_HREF, useValue: "/" },
                 AuthorizationServiceBase,
                 TokenStorage
             ]

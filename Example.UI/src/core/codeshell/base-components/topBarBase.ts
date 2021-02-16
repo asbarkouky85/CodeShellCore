@@ -1,4 +1,5 @@
-﻿import { Shell, ServerConfigBase } from "codeshell/main";
+﻿import { ServerConfigBase } from "codeshell/serverConfigBase";
+import { Shell } from "codeshell/shell";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { UserDTO } from "codeshell/security";
@@ -7,6 +8,7 @@ import { EditComponentBase } from "./editComponentBase";
 import { Component, ComponentRef } from "@angular/core";
 import { NotificationListenerBase } from "codeshell/http/notificationListenerBase";
 import { NotificationServiceBase } from "codeshell/http/notificationServiceBase";
+import { from } from 'rxjs';
 
 
 @Component({ template: '' })
@@ -28,10 +30,10 @@ export class TopBarBase {
     }
 
     constructor() {
-        
+
     }
 
-    private _startListener(){
+    private _startListener() {
         if (this.Listener) {
             this.Listener.NotificationsChanged.subscribe(e => {
                 console.log(e);
@@ -131,7 +133,7 @@ export class TopBarBase {
         this.navState = state;
         if (!state) {
             //$(".wrapper-side").addClass("compressed");
-           // $(".wrapper-content").addClass("expanded");
+            // $(".wrapper-content").addClass("expanded");
         } else {
             //$(".wrapper-side").removeClass("compressed");
             //$(".wrapper-content").removeClass("expanded");

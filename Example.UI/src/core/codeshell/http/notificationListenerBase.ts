@@ -1,5 +1,5 @@
 import { ServerEventListner } from "./serverEventListener";
-import { Shell } from "codeshell";
+import { Shell } from "codeshell/shell";
 import { Observable } from "rxjs";
 
 export class NotificationListenerBase extends ServerEventListner{

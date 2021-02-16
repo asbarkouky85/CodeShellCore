@@ -1,0 +1,26 @@
+﻿
+<section class="section logins register gray-bg">
+    <div class="container">
+        <div class="title-header  text-center">
+            <h1>@Html.GetPageTitle()</h1>
+        </div>
+        <div class="border"></div>
+        <div class="row">
+            <div class="col-md-12 order-price">
+                <form #Form="ngForm">
+                    @RenderBody()
+                </form>
+                @RenderSection("lists", false)
+                <div class="row">
+                    <div class="col-md-12 text-left">
+                        <div class="form-group">
+                            @RenderSection("buttons", false)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</section>

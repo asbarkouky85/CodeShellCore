@@ -1,0 +1,14 @@
+﻿@model ColumnModel
+@if (Model.Sorting)
+{
+    <th class="cursorPointer" [ngClass]="GetHeaderClass('@Model.MemberName')" @Html.Raw(Model.Width) @Html.Raw(Model.Attributes)>
+        @Model.InputControl
+        <i class="fa fa-sort" (click)="SortBy('@Model.MemberName')"></i>
+    </th>
+}
+else
+{
+    <th @Html.Raw(Model.Width) @Html.Raw(Model.Attributes)>
+        @Model.InputControl
+    </th>
+}

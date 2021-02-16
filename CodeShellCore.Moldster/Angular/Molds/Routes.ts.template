@@ -14,7 +14,7 @@ Translator.SetLoaders({
 });
 
 const routes: Routes = [
-    { path: 'Login', component: Login, data: { action: 'anonymous', name:"Login" } },
+    { path: 'login', component: Login, data: { action: 'anonymous', name:"Login" } },
 %Routes%
     %DefaultRoute%
     { path: '**', redirectTo: '/' }
