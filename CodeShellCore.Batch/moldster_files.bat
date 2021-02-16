@@ -2,10 +2,10 @@
 cd..
 
 toolset -z 	%cd%\Example\Localization								%cd%\CodeShellCore.Moldster\Files\Localization.zip
-toolset -z 	%cd%\Example.UI\asset\css 								%cd%\CodeShellCore.Moldster\Files\css.zip
-toolset -z 	%cd%\Example.UI\asset\js 								%cd%\CodeShellCore.Moldster\Files\js.zip
-toolset -z 	%cd%\Example.UI\asset\img 								%cd%\CodeShellCore.Moldster\Files\img.zip
-toolset -z 	%cd%\Example.UI\core\codeshell 							%cd%\CodeShellCore.Moldster\Files\codeshell.zip
+toolset -z 	%cd%\Example.UI\src\asset\css 								%cd%\CodeShellCore.Moldster\Files\css.zip
+toolset -z 	%cd%\Example.UI\src\asset\js 								%cd%\CodeShellCore.Moldster\Files\js.zip
+toolset -z 	%cd%\Example.UI\src\asset\img 								%cd%\CodeShellCore.Moldster\Files\img.zip
+toolset -z 	%cd%\Example.UI\src\core\codeshell 							%cd%\CodeShellCore.Moldster\Files\codeshell.zip
 toolset -z 	%cd%\Example.Config.Api\ShellComponents 				%cd%\CodeShellCore.Moldster\Files\ShellComponents.zip
 
 copy 		Example.Config.Api\Views\AppComponent.cshtml 			CodeShellCore.Moldster\Files\AppComponent_cshtml.txt
