@@ -1,7 +1,6 @@
-﻿import "codeshell/utilities/extensions";
-import { EventEmitter } from "@angular/core";
+﻿import { EventEmitter } from "@angular/core";
 import { Observable } from "rxjs";
-import { List_RemoveItem } from "codeshell/main";
+import { List_RemoveItem } from "codeshell/data";
 
 export class SectionedFormService {
     CurrentIndex: number = 1;

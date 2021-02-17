@@ -1,6 +1,7 @@
 ﻿import { Directive, Input, ElementRef } from "@angular/core";
 import { NgModel } from "@angular/forms";
-import { Date_Get } from "../utilities/utils";
+import { Date_Get } from 'codeshell/utilities';
+
 import * as Moment from "moment";
 
 @Directive({

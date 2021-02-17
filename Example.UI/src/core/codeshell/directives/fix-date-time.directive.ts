@@ -1,7 +1,8 @@
 import { Directive } from "@angular/core";
 import { NgModel } from "@angular/forms";
 import { DatePicker } from "angular2-datetimepicker";
-import { Date_Get } from "../utilities/utils";
+import { Date_Get } from 'codeshell/utilities/functions';
+
 
 
 @Directive({

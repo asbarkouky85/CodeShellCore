@@ -1,6 +1,6 @@
 
-import { ListItem } from "codeshell/helpers/listItem";
-import { List_RemoveItem } from "codeshell/main";
+import { ListItem } from "codeshell/data/list-item";
+import { List_RemoveItem } from "codeshell/data";
 
 export class TableService {
 

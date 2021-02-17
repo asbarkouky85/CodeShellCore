@@ -1,5 +1,5 @@
 import { EntityHttpService } from "./entityHttpService";
-import { LoadResultGen, LoadResult, SubmitResult } from "codeshell/helpers";
+import { LoadResultGen, LoadResult, SubmitResult } from "../results";
 
 export abstract class NotificationServiceBase extends EntityHttpService {
 

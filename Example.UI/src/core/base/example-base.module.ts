@@ -1,12 +1,13 @@
 ﻿import { ModuleWithProviders } from "@angular/compiler/src/core";
 import { NgModule } from "@angular/core";
 import { CodeShellModule } from "codeshell/main";
-import { AccountServiceBase, TokenStorage, SessionTokenData } from "codeshell/security";
+import { TokenStorage, SessionTokenData } from "codeshell/security";
 
 import { AccountService } from "./http/account.service";
 import { Login } from "./main/login.component";
 import { TopBar } from "./main/top-bar.component";
 import { NavigationSideBar } from "./main/navigation-side-bar.component";
+import { AccountServiceBase } from 'codeshell/http';
 
 @NgModule({
     declarations: [Login, TopBar, NavigationSideBar],

@@ -1,35 +1,22 @@
 ﻿import { Injector, EventEmitter } from "@angular/core";
-import { SessionManager } from "./security/sessionManager";
 import { TranslateService } from "@ngx-translate/core";
-import { IAppComponent } from "./base-components/appComponentBase";
+import { AppBaseComponent } from "./base-components/app-base-component";
 import { ServerConfigBase } from "./serverConfigBase";
 
 export class Shell {
     private static _translate: TranslateService;
-    private static _session: SessionManager;
     public static get Translator(): TranslateService {
         if (Shell._translate == null)
             Shell._translate = Shell.Injector.get(TranslateService);
         return Shell._translate;
     }
 
-    public static get Session(): SessionManager {
-        return this._session;
-    }
-
-    public static Start(comp: IAppComponent) {
-        this.Main = comp;
-        this._session = new SessionManager;
-        this._session.GetDeviceId();
-        this._session.CheckToken();
-    }
-
-    public static MainAs<T extends IAppComponent>(): T {
+    public static MainAs<T extends AppBaseComponent>(): T {
         return Shell.Main as T;
     }
 
     public static Injector: Injector;
-    public static Main: IAppComponent;
+    public static Main: AppBaseComponent;
     public static Server: ServerConfigBase;
     public static ViewLoaded: EventEmitter<any> = new EventEmitter<any>();
 

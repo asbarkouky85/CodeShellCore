@@ -1,7 +1,7 @@
 ﻿
 import { Observable } from "rxjs";
 import { EventEmitter } from "@angular/core";
-import { List_RemoveItem } from "codeshell/main";
+import { List_RemoveItem } from '../data/functions';
 
 export class ListSelectionService {
 

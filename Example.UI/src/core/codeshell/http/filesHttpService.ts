@@ -1,7 +1,7 @@
 ﻿import { HttpServiceBase } from "./httpServiceBase";
 import { Utils } from "../utilities/utils";
 import { HttpRequest, Methods } from "./httpRequest";
-import { TmpFileData } from "../helpers";
+import { TmpFileData } from "../results";
 
 
 export class FilesHttpService extends HttpServiceBase {

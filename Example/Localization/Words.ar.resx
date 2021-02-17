@@ -172,6 +172,9 @@
     <value />
   </data>
   <data name="ForgotPassword" xml:space="preserve">
-    <value />
+    <value>نسيت كلمة المرور</value>
+  </data>
+  <data name="KeepMeLoggedIn" xml:space="preserve">
+    <value>تذكرني</value>
   </data>
 </root>

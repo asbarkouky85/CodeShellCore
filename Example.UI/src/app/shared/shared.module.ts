@@ -17,9 +17,5 @@ import { ServerConfigBase, Registry } from "codeshell/main";
 })
 export class SharedModule {
 
-	constructor(trans: TranslateService, conf: ServerConfigBase) {
-        trans.setDefaultLang(conf.Locale);
-        trans.use(conf.Locale);
-    }
 }
 

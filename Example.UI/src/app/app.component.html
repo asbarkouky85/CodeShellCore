@@ -1,8 +1,22 @@
+<ng-container *ngIf="Locale=='ar'">
+    <link href="/bootstrap-rtl.css" rel="stylesheet">
+    <link href="/moldster.css" rel="stylesheet">
+    <link href="/moldster-rtl.css" rel="stylesheet">
+</ng-container>
+
+<ng-container *ngIf="Locale=='en'">
+    <link href="/moldster.css" rel="stylesheet">
+</ng-container>
+
+<div [hidden]="!ShowLoader" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+
 <div>
     <div class="wrapper">
         <app-top-bar #topBar></app-top-bar>
         <div class="wrapper-side" *ngIf="IsLoggedIn && ShowNav">
-            <navigation-side-bar></navigation-side-bar>
+            <app-navigation-side-bar></app-navigation-side-bar>
         </div>
         <div class="wrapper-content" [ngClass]="!IsLoggedIn || !ShowNav?'expanded':null">
             <router-outlet></router-outlet>
@@ -10,6 +24,5 @@
     </div>
 </div>
 
-<div>
-    <ng-template ></ng-template>
-</div>
+<div style='display:none' #lookupOptionsContainer values=''></div>
+<div style='display:none' #viewParamsContainer values=''></div>

@@ -6,3 +6,4 @@ export * from "./notificationListenerBase";
 export * from "./notificationServiceBase";
 export * from "./serverEventListener";
 export * from "./httpServiceBase";
+export * from "./accountServiceBase";

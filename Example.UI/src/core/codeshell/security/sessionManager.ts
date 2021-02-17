@@ -1,18 +1,18 @@
-﻿import { LoginResult, UserDTO, TokenData, Permission, RouteData } from "../security/models";
+﻿import { LoginResult, UserDTO, TokenData } from "../security/models";
 import { Injectable, EventEmitter } from "@angular/core";
-import { Stored, SubmitResult } from "../helpers";
+import {  SubmitResult } from "../results";
 import * as Cookies from "js-cookie";
-import { String_GetAfterLast } from "../utilities/utils";
+import { String_GetAfterLast } from "../utilities/functions";
 import { Shell } from "../shell";
-import { AccountServiceBase } from "./accountServiceBase";
+import { AccountServiceBase } from "../http/accountServiceBase";
 import { TokenStorage } from "./tokenStorage";
+import { Permission } from './permission';
 
 var userData: UserDTO | null = null;
 var loaded: boolean = false;
 
 @Injectable()
 export class SessionManager {
-
 
     private static _instance: SessionManager;
     private static _loadPromise?: Promise<UserDTO>;
@@ -28,6 +28,12 @@ export class SessionManager {
         if (!this._tokenStorage)
             this._tokenStorage = Shell.Injector.get(TokenStorage);
         return this._tokenStorage;
+    }
+
+    static StartApp(){
+        this._instance = new SessionManager;
+        this._instance.GetDeviceId();
+        this._instance.CheckToken();
     }
 
     get User(): UserDTO {
@@ -111,7 +117,7 @@ export class SessionManager {
         }
     }
 
-    public static Current(): SessionManager {
+    public static get Current(): SessionManager {
         if (this._instance == null) {
             this._instance = new SessionManager;
             this._instance.CheckToken();

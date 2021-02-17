@@ -1,4 +1,7 @@
-﻿.pull-last {
+﻿body{
+    font-family: Tajawal;
+}
+.pull-last {
     float: left;
 }
 

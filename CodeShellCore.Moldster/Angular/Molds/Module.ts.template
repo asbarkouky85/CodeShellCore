@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 import { CodeShellModule } from 'codeshell';
-import { DomainDataProvider } from 'codeshell/security';
+import { DomainDataProvider } from 'codeshell/moldster';
 
 import { %BaseAppModuleName% } from '%BaseAppModulePath%';
 

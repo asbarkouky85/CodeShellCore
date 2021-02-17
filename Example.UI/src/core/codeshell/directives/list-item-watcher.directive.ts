@@ -1,5 +1,5 @@
 ﻿import { Directive, Input, ElementRef, HostListener } from "@angular/core";
-import { ListItem } from "../helpers";
+import { ListItem } from "../data";
 
 @Directive({ selector: "[acs-li-watch]", exportAs: "liWatch" })
 export class ListItemWatcher {

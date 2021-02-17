@@ -51,8 +51,10 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public void GenerateMainFile(string moduleCode, bool addStyle = false)
         {
-            string bootPath = _fileNameService.GetMainTsPath("main");
-            string pollyPath = _fileNameService.GetMainTsPath("polyfills");
+            string bootPath = _fileNameService.GetSrcFolderPath("main");
+            string pollyPath = _fileNameService.GetSrcFolderPath("polyfills");
+            string indexPath = _fileNameService.GetSrcFolderPath("index", ".html");
+            string dec = _fileNameService.GetSrcFolderPath("declarations.d");
 
             if (!File.Exists(bootPath))
             {
@@ -73,6 +75,24 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 Out.Write("Generating pollyfills.ts...  \t\t\t");
                 string pollyTemplate = Properties.Resources.pollyfills_ts;
                 File.WriteAllText(pollyPath, pollyTemplate);
+                WriteSuccess();
+                Out.WriteLine();
+            }
+
+            if (!File.Exists(indexPath))
+            {
+                Out.Write("Generating index.html...  \t\t\t");
+                string pollyTemplate = Properties.Resources.index_html;
+                File.WriteAllText(indexPath, pollyTemplate);
+                WriteSuccess();
+                Out.WriteLine();
+            }
+
+            if (!File.Exists(dec))
+            {
+                Out.Write("Generating declarations.d.ts...  \t\t\t");
+                string pollyTemplate = Properties.Resources.declarations_d;
+                File.WriteAllText(dec, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
             }
@@ -506,7 +526,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             if (!_opts.ReplaceDomainRoutes && File.Exists(filePath))
             {
                 WriteColored("Exists", ConsoleColor.Cyan);
-                dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id,true);
+                dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
 
                 if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
                 {
@@ -599,7 +619,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             string[] locales = Shell.SupportedLanguages.ToArray();
             foreach (string loc in locales)
             {
-                mod.LocalizationImports += "import { " + loc + "_Loader } from \"./Localization/" + loc + "/Loader\";\n";
+                mod.LocalizationImports += "import { " + loc + "_Loader } from \"./localization/" + loc + "/loader\";\n";
                 mod.LocalizationLoaders += $"[\"{loc}\"]:new {loc}_Loader, ";
             }
         }

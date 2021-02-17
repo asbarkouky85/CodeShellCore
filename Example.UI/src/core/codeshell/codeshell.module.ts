@@ -85,7 +85,6 @@ export class CodeShellModule {
             providers: [
                 AuthFilter,
                 { provide: TranslationService, useClass: NgxTranslationService },
-                { provide: APP_BASE_HREF, useValue: "/" },
                 AuthorizationServiceBase,
                 TokenStorage
             ]

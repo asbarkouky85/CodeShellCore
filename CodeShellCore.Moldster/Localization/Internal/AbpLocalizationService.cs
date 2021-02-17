@@ -18,9 +18,8 @@ namespace CodeShellCore.Moldster.Localization.Internal
 {
     public class AbpLocalizationService : LocalizationService, ILocalizationService
     {
-        public AbpLocalizationService(IMoldProvider molds, IConfigUnit unit, IPathsService paths, IOutputWriter output) : base(molds, unit, paths, output)
+        public AbpLocalizationService(IMoldProvider molds, IConfigUnit unit, IPathsService paths, IUIFileNameService names, IOutputWriter output) : base(molds, unit, paths, names, output)
         {
-
         }
 
         public override void GenerateJsonFiles(string moduleCode)

@@ -1,5 +1,5 @@
 ﻿import { Directive, Input, ElementRef, Output, EventEmitter, OnChanges, HostListener } from "@angular/core";
-import { TmpFileData } from "codeshell/helpers";
+import { TmpFileData } from "../results";
 
 @Directive({ selector: "[file-uploader]", exportAs: "[file-uploader]" })
 export class FileUploader implements OnChanges {

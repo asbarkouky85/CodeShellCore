@@ -1,6 +1,9 @@
-import { UserDTO, RouteData, Permission } from "./models";
-import { Shell } from "../shell";
+import { UserDTO } from "./models";
+
 import { EventEmitter } from "@angular/core";
+import { SessionManager } from './sessionManager';
+import { RouteData } from './route-data';
+import { Permission } from './permission';
 
 export class AuthorizationError {
     message: string = "";
@@ -44,7 +47,7 @@ export class AuthorizationServiceBase {
         if (data.IsAnonymous)
             return true;
 
-        var user = await Shell.Session.GetUserAsync();
+        var user = await SessionManager.Current.GetUserAsync();
         return this.IsAuthorized(user, data,true);
     }
 

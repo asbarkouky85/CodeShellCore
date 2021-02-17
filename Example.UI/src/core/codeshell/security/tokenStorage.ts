@@ -1,5 +1,6 @@
-﻿import { TokenData } from "./models";
-import { Stored } from "codeshell/helpers";
+﻿import { Stored } from '../services';
+import { TokenData } from "./models";
+
 
 export class TokenStorage {
     SaveToken(data: TokenData) {

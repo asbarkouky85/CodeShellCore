@@ -27,6 +27,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
         protected int resultCol = 8;
         protected readonly WriterService _writer;
         protected readonly IPathsService _paths;
+        private readonly IUIFileNameService names;
         protected readonly IMoldProvider _molds;
         protected readonly IConfigUnit _unit;
 
@@ -34,10 +35,12 @@ namespace CodeShellCore.Moldster.Localization.Internal
             IMoldProvider molds,
             IConfigUnit unit,
             IPathsService paths,
+            IUIFileNameService names,
             IOutputWriter output) : base(output)
         {
             _writer = new WriterService();
             _paths = paths;
+            this.names = names;
             _molds = molds;
             _unit = unit;
         }
@@ -92,7 +95,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
 
             foreach (string loc in locales)
             {
-                string loader = Path.Combine(_paths.UIRoot, moduleCode, "app\\Localization", loc, "Loader.ts");
+                string loader = names.GetLocalizationLoaderPath(moduleCode, loc);
                 string contents = _writer.FillStringParameters(template, new { Locale = loc });
 
                 Utils.CreateFolderForFile(loader);
@@ -102,7 +105,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
                 {
                     string data = _resxToJson(type, loc, ten);
 
-                    string path = Path.Combine(_paths.UIRoot, moduleCode, "app\\Localization", loc, type + ".json");
+                    string path = names.GetLocalizationJsonPath(moduleCode, type, loc);
                     Utils.CreateFolderForFile(path);
                     File.WriteAllText(path, data);
                 }

@@ -44,6 +44,10 @@
                                 "input": "./node_modules/bootstrap3/dist/css/bootstrap.css",
                                 "inject": true,
                                 "bundleName": "bootstrap.min"
+                            },{
+                                "input": "./src/assets/css/plugins/bootstrap.rtl.css",
+                                "inject": false,
+                                "bundleName": "bootstrap-rtl"
                             },
                             {
                                 "input": "./src/assets/css/gif-loader.css",
@@ -52,13 +56,13 @@
                             },
                             {
                                 "input": "./src/assets/css/moldster.css",
-                                "inject": true,
+                                "inject": false,
                                 "bundleName": "moldster"
                             },
                             {
                                 "input": "./src/assets/css/moldster.rtl.css",
                                 "inject": false,
-                                "bundleName": "moldster.rtl"
+                                "bundleName": "moldster-rtl"
                             },
                             {
                                 "input": "./src/assets/css/treeStyle.css",

@@ -1,15 +1,16 @@
-﻿import { SessionManager } from "../security/sessionManager";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http/";
+﻿import { HttpClient, HttpErrorResponse } from "@angular/common/http/";
 import { ServerConfigBase } from "../serverConfigBase";
 import { Shell } from "../shell";
 import { HttpRequest, Methods } from "./httpRequest";
 import { TokenData } from "../security/Models";
-import { SubmitResult } from "codeshell/helpers";
+import { SubmitResult } from "../results";
 import { Utils } from "../utilities/utils";
+import { TokenStorage } from '../security/tokenStorage';
 
 export abstract class HttpServiceBase {
     protected abstract get BaseUrl(): string;
-    protected Sessions: SessionManager;
+
+    protected TokenStorage: TokenStorage;
     protected Client: HttpClient;
     protected Server: ServerConfigBase;
 
@@ -22,8 +23,8 @@ export abstract class HttpServiceBase {
             "locale": this.Server.Locale,
             "ui-version": this.Server.Version
         };
-        this.Sessions.CheckToken();
-        let tok: TokenData | null = this.Sessions.GetToken();
+        
+        let tok: TokenData | null = this.TokenStorage.LoadToken();
 
         if (tok != null)
             head["auth-token"] = tok.Token;
@@ -39,7 +40,8 @@ export abstract class HttpServiceBase {
 
     constructor() {
         this.Client = Shell.Injector.get(HttpClient);
-        this.Sessions = SessionManager.Current();
+        //this.Sessions = SessionManager.Current;
+        this.TokenStorage = Shell.Injector.get(TokenStorage);
         this.Server = Shell.Main.Config;
     }
 
@@ -79,6 +81,11 @@ export abstract class HttpServiceBase {
     public PostAs<T>(action: string, body: any, params?: number | object): Promise<T> {
         let req: HttpRequest = this.InitializeRequest(action, params, body);
         return this.processAs<T>(Methods.Post, req);
+    }
+
+    public Save(action: string, body: any, params?: number | object): Promise<SubmitResult> {
+        let req: HttpRequest = this.InitializeRequest(action, params, body);
+        return this.processAs<SubmitResult>(Methods.Post, req);
     }
 
 

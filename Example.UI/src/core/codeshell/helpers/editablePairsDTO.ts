@@ -1,5 +1,2 @@
-﻿import { ListItem } from "./listItem";
+﻿import { ListItem } from "../data/list-item";
 
-export class EditablePairsDTO extends ListItem {
-    data: any = {};
-}

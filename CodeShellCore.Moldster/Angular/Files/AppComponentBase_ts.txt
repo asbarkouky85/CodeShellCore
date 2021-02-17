@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { IAppComponent } from "codeshell/base-components";
+import { AppBaseComponent } from "codeshell/base-components";
 import { ComponentLoader } from "codeshell/directives";
 
 @Injectable()
-export class AppComponentBase extends IAppComponent {
+export class AppComponentBase extends AppBaseComponent {
     ModalLoader?: ComponentLoader | undefined;    
 }

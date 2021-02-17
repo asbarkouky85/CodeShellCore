@@ -1,6 +1,7 @@
-﻿import { EditComponentBase } from "./editComponentBase";
-import { DTO, SubmitResult } from "../helpers";
+﻿import { EditComponentBase } from "./edit-base-component";
 import { Component } from '@angular/core';
+import { SubmitResult } from '../results';
+import { DTO } from '../data/models';
 
 
 @Component({ template: '' })

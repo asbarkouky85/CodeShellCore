@@ -1,8 +1,11 @@
 ﻿import { Injectable } from "@angular/core";
 import { HttpRequest, Methods } from "./httpRequest";
-import { LoadResult, LoadOptions, SubmitResult, DeleteResult, DTO } from "../helpers";
+import { LoadResult, SubmitResult, DeleteResult } from "../results";
 import { HttpServiceBase } from "./httpServiceBase";
-import { LocalizablesDTO, ListItem } from "../helpers";
+import { ListItem } from "../data/list-item";
+import { DTO } from '../data/models';
+import { LoadOptions } from '../data/listing';
+import { LocalizablesDTO } from '../localization/models';
 
 @Injectable()
 export abstract class EntityHttpService extends HttpServiceBase {
@@ -31,11 +34,6 @@ export abstract class EntityHttpService extends HttpServiceBase {
     public GetPaged(action: string, opts: LoadOptions): Promise<LoadResult> {
         let req: HttpRequest = this.InitializeRequest(action, opts);
         return this.processAs<LoadResult>(Methods.Get, req);
-    }
-
-    public Save(action: string, body: any, params?: number | object): Promise<SubmitResult> {
-        let req: HttpRequest = this.InitializeRequest(action, params, body);
-        return this.processAs<SubmitResult>(Methods.Post, req);
     }
 
     public Update(action: string, body: any, params?: number | object): Promise<SubmitResult> {
