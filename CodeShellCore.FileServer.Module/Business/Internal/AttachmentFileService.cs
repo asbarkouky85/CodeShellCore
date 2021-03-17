@@ -228,9 +228,13 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         public override void DeleteTmp(TmpFileData tmp)
         {
-            var path = Path.Combine(_paths.TempFolder, tmp.TmpPath);
-            if (File.Exists(path))
-                File.Delete(path);
+            if (tmp.TmpPath != null)
+            {
+                var path = Path.Combine(_paths.TempFolder, tmp.TmpPath);
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+            
         }
     }
 }
