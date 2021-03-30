@@ -29,8 +29,8 @@ toolset -p CodeShellCore.Web 				2.16.11 -d %cd%
 toolset -p CodeShellCore.Web.Razor 			2.16.13.0 -d %cd%
 toolset -p CodeShellCore.FileServer.Web		2.16.13 -d %cd%
 toolset -p Asga.Auth.Web 					2.16.12 -d %cd%
-toolset -p Asga.Public.Web 					2.16.12 -d %cd%
-toolset -p Asga.Mobile.Web 					2.16.12 -d %cd%
+toolset -p Asga.Public.Web 					2.16.13 -d %cd%
+toolset -p Asga.Mobile.Web 					2.16.13 -d %cd%
 toolset -p Asga.Dashboard.Web 				2.16.12 -d %cd%
 
 toolset -p Asga.Auth.Molds 					2.14.2 -d %cd%
