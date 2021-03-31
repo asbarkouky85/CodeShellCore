@@ -34,7 +34,7 @@ namespace CodeShellCore.Data.EntityFramework
         protected virtual bool UseChangeColumns { get { return false; } }
         protected virtual bool UseCollectionPermission => false;
 
-        protected TContext DbContext { get; private set; }
+        protected virtual TContext DbContext { get; private set; }
 
         /// <summary>
         /// override to process changes before saving

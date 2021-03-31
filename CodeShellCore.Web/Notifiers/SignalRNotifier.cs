@@ -17,7 +17,7 @@ namespace CodeShellCore.Web.Notifiers
             Context = con;
         }
 
-        public void Publish(Func<TContract, Task> action, string[] only = null, string[] exclude = null)
+        public virtual void Publish(Func<TContract, Task> action, string[] only = null, string[] exclude = null)
         {
             var cl = Context.Clients.All;
 

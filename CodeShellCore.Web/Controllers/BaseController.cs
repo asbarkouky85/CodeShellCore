@@ -58,7 +58,7 @@ namespace CodeShellCore.Web.Controllers
             return Store.GetInstance<T>();
         }
 
-        protected bool ModelIsValid()
+        protected virtual bool ModelIsValid()
         {
             SubmitResult = new SubmitResult(0);
             if (!ModelState.IsValid)
@@ -74,7 +74,7 @@ namespace CodeShellCore.Web.Controllers
             return true;
         }
 
-        protected bool ModelIsValid(out SubmitResult res)
+        protected virtual bool ModelIsValid(out SubmitResult res)
         {
             res = new SubmitResult(0);
             if (!ModelState.IsValid)
