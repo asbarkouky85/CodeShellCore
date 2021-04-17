@@ -61,7 +61,7 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import { AccountServiceBase } from &quot;codeshell/security&quot;;
+        ///   Looks up a localized string similar to import { AccountServiceBase } from &quot;codeshell/http&quot;;
         ///
         ///export class AccountService extends AccountServiceBase {
         ///    protected BaseUrl = &quot;/apiAction/Account&quot;;
@@ -74,20 +74,24 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;div&gt;
-        ///    &lt;div class=&quot;wrapper&quot;&gt;
-        ///        &lt;app-top-bar #topBar&gt;&lt;/app-top-bar&gt;
-        ///        &lt;div class=&quot;wrapper-side&quot; *ngIf=&quot;IsLoggedIn &amp;&amp; ShowNav&quot;&gt;
-        ///            &lt;app-navigation-side-bar&gt;&lt;/app-navigation-side-bar&gt;
-        ///        &lt;/div&gt;
-        ///        &lt;div class=&quot;wrapper-content&quot; [ngClass]=&quot;!IsLoggedIn || !ShowNav?&apos;expanded&apos;:null&quot;&gt;
-        ///            &lt;router-outlet&gt;&lt;/router-outlet&gt;
-        ///        &lt;/div&gt;
-        ///    &lt;/div&gt;
+        ///   Looks up a localized string similar to &lt;ng-container *ngIf=&quot;Locale==&apos;ar&apos;&quot;&gt;
+        ///    &lt;link href=&quot;/bootstrap-rtl.css&quot; rel=&quot;stylesheet&quot;&gt;
+        ///    &lt;link href=&quot;/moldster.css&quot; rel=&quot;stylesheet&quot;&gt;
+        ///    &lt;link href=&quot;/moldster-rtl.css&quot; rel=&quot;stylesheet&quot;&gt;
+        ///&lt;/ng-container&gt;
+        ///
+        ///&lt;ng-container *ngIf=&quot;Locale==&apos;en&apos;&quot;&gt;
+        ///    &lt;link href=&quot;/moldster.css&quot; rel=&quot;stylesheet&quot;&gt;
+        ///&lt;/ng-container&gt;
+        ///
+        ///&lt;div [hidden]=&quot;!ShowLoader&quot; class=&quot;loader-overlay&quot;&gt;
+        ///    &lt;div class=&quot;loader&quot;&gt;&lt;/div&gt;
         ///&lt;/div&gt;
         ///
-        ///&lt;ng-template test-loader&gt;&lt;/ng-template&gt;
-        ///.
+        ///&lt;div&gt;
+        ///    &lt;div class=&quot;wrapper&quot;&gt;
+        ///        &lt;app-top-bar #topBar&gt;&lt;/app-top-bar&gt;
+        ///        &lt;div clas [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AppComponent_cshtml {
             get {
@@ -106,15 +110,13 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import { ViewChild } from &quot;@angular/core&quot;;
-        ///import { IAppComponent } from &quot;codeshell/base-components&quot;;
-        ///import { TestLoader } from &quot;codeshell/directives&quot;;
+        ///   Looks up a localized string similar to import { Injectable } from &quot;@angular/core&quot;;
+        ///import { AppBaseComponent } from &quot;codeshell/base-components&quot;;
+        ///import { ComponentLoader } from &quot;codeshell/directives&quot;;
         ///
-        ///export class AppComponentBase extends IAppComponent {
-        ///
-        ///    @ViewChild(TestLoader)
-        ///    ModalLoader?: TestLoader | undefined;
-        ///    
+        ///@Injectable()
+        ///export class AppComponentBase extends AppBaseComponent {
+        ///    ModalLoader?: ComponentLoader | undefined;    
         ///}.
         /// </summary>
         public static string AppComponentBase_ts {
@@ -125,7 +127,9 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  
+        ///  &quot;GoogleKey&quot;: &quot;AIzaSyD2ZSFjCvupPXGlyAKNhK7xcFtAuZQCBCQ&quot;,
+        ///  &quot;UseHotUpdate&quot;: true,
+        ///  &quot;env&quot;: &quot;development&quot;
         ///}
         ///.
         /// </summary>
@@ -270,6 +274,29 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;html&gt;
+        ///
+        ///&lt;head&gt;
+        ///    &lt;base href=&quot;/&quot;&gt;
+        ///    &lt;link href=&quot;/assets/plugins/animate.css&quot; type=&quot;application/css&quot; rel=&quot;stylesheet&quot; /&gt;
+        ///    
+        ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Armata&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+        ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Tajawal&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+        ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+        ///&lt;/head&gt;
+        ///
+        ///&lt;body&gt;
+        ///    &lt;app&gt;
+        ///        &lt;div class=&quot;loader&quot;&gt;&lt;/div&gt;        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string index_html {
+            get {
+                return ResourceManager.GetString("index_html", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] js {
@@ -395,21 +422,25 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
+        ///  &quot;name&quot;: &quot;example&quot;,
+        ///  &quot;version&quot;: &quot;0.0.0&quot;,
+        ///  &quot;scripts&quot;: {
+        ///    &quot;ng&quot;: &quot;ng&quot;,
+        ///    &quot;start&quot;: &quot;ng serve --open&quot;,
+        ///    &quot;build&quot;: &quot;ng build&quot;,
+        ///    &quot;build:prod&quot;: &quot;ng build --configuration production&quot;,
+        ///    &quot;test&quot;: &quot;ng test&quot;,
+        ///    &quot;lint&quot;: &quot;ng lint&quot;,
+        ///    &quot;e2e&quot;: &quot;ng e2e&quot;
+        ///  },
+        ///  &quot;private&quot;: true,
         ///  &quot;dependencies&quot;: {
-        ///    &quot;@agm/core&quot;: &quot;1.0.0-beta.5&quot;,
-        ///    &quot;@angular/animations&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/cdk&quot;: &quot;6.4.7&quot;,
-        ///    &quot;@angular/common&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/compiler&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/core&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/forms&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/material&quot;: &quot;6.4.7&quot;,
-        ///    &quot;@angular/material-moment-adapter&quot;: &quot;6.4.7&quot;,
-        ///    &quot;@angular/platform-browser&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/platform-browser-dynamic&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@angular/router&quot;: &quot;6.1.10&quot;,
-        ///    &quot;@aspnet/signalr&quot;: &quot;^1.1.4&quot;,
-        ///   [rest of string was truncated]&quot;;.
+        ///    &quot;@angular/animations&quot;: &quot;~11.0.0&quot;,
+        ///    &quot;@angular/localize&quot;: &quot;~11.1.1&quot;,
+        ///    &quot;@angular/common&quot;: &quot;~11.0.0&quot;,
+        ///    &quot;@angular/compiler&quot;: &quot;~11.0.0&quot;,
+        ///    &quot;@angular/core&quot;: &quot;~11.0.0&quot;,
+        ///    &quot;@angular/for [rest of string was truncated]&quot;;.
         /// </summary>
         public static string package_json {
             get {
@@ -462,31 +493,6 @@ namespace CodeShellCore.Moldster.Properties {
             get {
                 object obj = ResourceManager.GetObject("Routes_ts", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to import { ServerConfigBase } from &quot;codeshell/core&quot;;
-        ///
-        ///export class ServerConfig implements ServerConfigBase {
-        ///    GoogleKey: string = &quot;&quot;;
-        ///	DefaultLocale: string = &quot;&quot;;
-        ///    Version?: string | null | undefined;
-        ///    BaseURL: string = &quot;&quot;;
-        ///    Domain: string = &quot;&quot;;
-        ///    Locale: string = &quot;&quot;;
-        ///	Urls : any = {};
-        ///
-        ///    constructor() {
-        ///        let item: HTMLElement = document.getElementById(&quot;view-data&quot;) as HTMLElement;
-        ///        if (item)
-        ///            Object.assign(this, JSON.parse(item.innerHTML));
-        ///    }
-        ///}.
-        /// </summary>
-        public static string ServerConfig_ts {
-            get {
-                return ResourceManager.GetString("ServerConfig_ts", resourceCulture);
             }
         }
         
@@ -568,20 +574,23 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
+        ///  &quot;compileOnSave&quot;: false,
         ///  &quot;compilerOptions&quot;: {
-        ///    &quot;module&quot;: &quot;es2015&quot;,
-        ///    &quot;moduleResolution&quot;: &quot;node&quot;,
-        ///    &quot;target&quot;: &quot;es5&quot;,
-        ///    &quot;sourceMap&quot;: true,    
+        ///    &quot;baseUrl&quot;: &quot;./&quot;,
+        ///    &quot;outDir&quot;: &quot;./dist/out-tsc&quot;,
+        ///    &quot;sourceMap&quot;: true,
+        ///    &quot;declaration&quot;: false,
+        ///    &quot;downlevelIteration&quot;: true,
         ///    &quot;experimentalDecorators&quot;: true,
-        ///    &quot;strictNullChecks&quot;: true,
-        ///    &quot;emitDecoratorMetadata&quot;: true,
-        ///    &quot;skipDefaultLibCheck&quot;: true,
-        ///    &quot;skipLibCheck&quot;: true, // Workaround for https://github.com/angular/angular/issues/17863. Remove this if you upgrade to a fixed version of Angular.
-        ///    &quot;strict&quot;: true,
-        ///    &quot;lib&quot;: [ &quot;es6&quot;, &quot;dom&quot; ],
-        ///    &quot;types&quot;: [ &quot;webpack-env&quot; ],
-        ///    [rest of string was truncated]&quot;;.
+        ///    &quot;module&quot;: &quot;esnext&quot;,
+        ///    &quot;moduleResolution&quot;: &quot;node&quot;,
+        ///    &quot;importHelpers&quot;: true,
+        ///    &quot;target&quot;: &quot;es2015&quot;,
+        ///    &quot;typeRoots&quot;: [&quot;node_modules/@types&quot;],
+        ///    &quot;lib&quot;: [&quot;es2018&quot;, &quot;dom&quot;],
+        ///    &quot;paths&quot;: {
+        ///      &quot;@proxy&quot;: [&quot;src/app/proxy/index.ts&quot;],
+        ///      &quot;@proxy/*&quot;: [&quot;src/app/proxy/*&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string tsconfig_json {
             get {
@@ -702,33 +711,6 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to const path = require(&apos;path&apos;);
-        ///const webpack = require(&apos;webpack&apos;);
-        ///const ExtractTextPlugin = require(&apos;extract-text-webpack-plugin&apos;);
-        ///const UglifyJsPlugin = require(&apos;uglifyjs-webpack-plugin&apos;);
-        ///
-        ///const treeShakableModules = [
-        ///
-        ///    &apos;@angular/common&apos;,
-        ///    &apos;@angular/forms&apos;,
-        ///    &apos;@angular/animations&apos;,
-        ///    &apos;@angular/platform-browser&apos;,
-        ///    &quot;@angular/platform-browser/animations&quot;,
-        ///    &apos;@angular/platform-browser-dynamic&apos;,
-        ///    &apos;@angular/router&apos;,
-        ///
-        ///    &apos;@angular/compiler&apos;,
-        ///
-        ///    &apos;@angular/material&apos;,
-        ///    &quot;@ [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string webpack_config_vendor_js {
-            get {
-                return ResourceManager.GetString("webpack_config_vendor_js", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] webpack_tenant_js {
@@ -755,26 +737,6 @@ namespace CodeShellCore.Moldster.Properties {
             get {
                 object obj = ResourceManager.GetObject("webpack_tenant_js_json", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to const path = require(&apos;path&apos;);
-        ///const webpack = require(&apos;webpack&apos;);
-        ///const CheckerPlugin = require(&apos;awesome-typescript-loader&apos;).CheckerPlugin;
-        ///const ExtractTextPlugin = require(&apos;extract-text-webpack-plugin&apos;);
-        ///
-        ///module.exports = function WebpackSharedConfig(env) {
-        ///    const isDevBuild = !(env &amp;&amp; env.prod);
-        ///    const app = env.app ? env.app + &quot;-&quot; : &quot;&quot;;
-        ///    const version = isDevBuild ? &quot;dev&quot; : &quot;v&quot; + (env.version ? env.version : &quot;1.0.0.0&quot;)
-        ///    const clientBundleOutputDir = &apos;./wwwroot/dist&apos;;
-        ///    return {
-        /// [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string WebPackSharedConfig_js {
-            get {
-                return ResourceManager.GetString("WebPackSharedConfig_js", resourceCulture);
             }
         }
     }

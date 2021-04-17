@@ -52,7 +52,6 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
-**/Properties/launchSettings.json
 
 # StyleCop
 StyleCopReport.xml
@@ -330,3 +329,4 @@ ASALocalRun/
 .mfractor/
 
 ExampleProject.UI/wwwroot/dist
+/CodeShellCore_v2.16.sln

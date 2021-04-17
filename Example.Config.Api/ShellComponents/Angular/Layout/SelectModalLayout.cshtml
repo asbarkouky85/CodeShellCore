@@ -1,0 +1,56 @@
+﻿@using CodeShellCore.Web.Razor.Models;
+@{
+    ModalModel MModal = Html.ModalModel();
+}
+    <p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [modal]="@MModal.IsModalValue" @Html.Raw(MModal.AttrString)>
+
+        <p-header *ngIf="!HideHeader">
+            @if (!IsSectionDefined("header"))
+            {
+                @Html.GetPageTitle()
+            }
+            else
+            {
+                @RenderSection("header")
+            }
+        </p-header>
+
+        @if (MModal.UseSearch)
+        {
+
+            <div style="max-width:500px">
+                <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                    <span><b>@Html.Word("Count")</b> : <span style="color:#9B9B9B">{{Source.TotalCount}}</span></span>
+                </div>
+                <div class="col-md-8">
+                    <search-group (termChange)="Source.Search($event)"></search-group>
+                </div>
+            </div>
+
+
+
+        }
+
+        <div class="col-md-12">
+            @RenderBody()
+
+        </div>
+        @Html.Pagination("Source")
+
+        @if (IsSectionDefined("buttons"))
+        {
+            @RenderSection("buttons")
+        }
+        else
+        {
+            <p-footer>
+                <div class="form-group">
+                    <div class="text-center modal-buttons">
+                        @Html.Button("Cancel", "Cancel()", null, BtnClass.Default, "fa fa-window-close")
+                        @Html.Button("OK", "Ok()", null, BtnClass.Warning, "fa fa-check")
+                    </div>
+                </div>
+            </p-footer>
+        }
+
+    </p-dialog>

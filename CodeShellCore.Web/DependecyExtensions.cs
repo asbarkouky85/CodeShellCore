@@ -84,5 +84,15 @@ namespace CodeShellCore.Web
             });
         }
 
+        public static void ConfigureBlockedControllers(this IMvcBuilder mvc, Action<ControllerBlockerOptions> configure)
+        {
+            var conf = new ControllerBlockerOptions();
+            configure.Invoke(conf);
+
+            mvc.ConfigureApplicationPartManager(d =>
+            {
+                d.FeatureProviders.Add(new ControllerBlockerFeatureProvider(conf));
+            });
+        }
     }
 }

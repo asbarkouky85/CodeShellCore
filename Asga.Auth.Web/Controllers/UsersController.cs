@@ -18,7 +18,7 @@ namespace Asga.Auth.Web.Controllers
     {
         protected readonly IUsersService service;
         protected readonly IAuthLookupService lookups;
-
+        IAuthUnit unit => GetService<IAuthUnit>();
         public UsersController(IUsersService service, IAuthLookupService lookups) : base(service)
         {
             this.service = service;
@@ -27,12 +27,14 @@ namespace Asga.Auth.Web.Controllers
 
         public override IActionResult Get([FromQuery] LoadOptions opt)
         {
-            return Respond(service.LoadDTO(UserListDTO.Expression, opt));
+            LoadResult<UserListDTO> lst = unit.AuthUserRepository.GetUserListDTOs(opt);
+            return Respond(lst);
         }
 
         public override IActionResult GetCollection(string id, [FromQuery] LoadOptions opts)
         {
-            return Respond(service.LoadCollectionAs(id, UserListDTO.Expression, opts));
+            LoadResult<UserListDTO> lst = unit.AuthUserRepository.GetUserListDTOs(opts, id);
+            return Respond(lst);
         }
 
         [ApiAuthorize(AllowAnonymous = false)]
@@ -42,7 +44,7 @@ namespace Asga.Auth.Web.Controllers
         }
 
         [ApiAuthorize(AllowAll = true, AllowAnonymous = false)]
-        public virtual IActionResult ChangePassword([FromBody]CodeShellCore.Security.Authentication.ChangePasswordDTO dto)
+        public virtual IActionResult ChangePassword([FromBody] CodeShellCore.Security.Authentication.ChangePasswordDTO dto)
         {
             SubmitResult = service.ChangePassword(dto);
             return Respond();

@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System;
+using CodeShellCore.Moldster.Razor;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Internal
 {
@@ -50,8 +51,10 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public void GenerateMainFile(string moduleCode, bool addStyle = false)
         {
-            string bootPath = _fileNameService.GetMainTsPath("main");
-            string pollyPath = _fileNameService.GetMainTsPath("pollyfills");
+            string bootPath = _fileNameService.GetSrcFolderPath("main");
+            string pollyPath = _fileNameService.GetSrcFolderPath("polyfills");
+            string indexPath = _fileNameService.GetSrcFolderPath("index", ".html");
+            string dec = _fileNameService.GetSrcFolderPath("declarations.d");
 
             if (!File.Exists(bootPath))
             {
@@ -72,6 +75,24 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 Out.Write("Generating pollyfills.ts...  \t\t\t");
                 string pollyTemplate = Properties.Resources.pollyfills_ts;
                 File.WriteAllText(pollyPath, pollyTemplate);
+                WriteSuccess();
+                Out.WriteLine();
+            }
+
+            if (!File.Exists(indexPath))
+            {
+                Out.Write("Generating index.html...  \t\t\t");
+                string pollyTemplate = Properties.Resources.index_html;
+                File.WriteAllText(indexPath, pollyTemplate);
+                WriteSuccess();
+                Out.WriteLine();
+            }
+
+            if (!File.Exists(dec))
+            {
+                Out.Write("Generating declarations.d.ts...  \t\t\t");
+                string pollyTemplate = Properties.Resources.declarations_d;
+                File.WriteAllText(dec, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
             }
@@ -125,7 +146,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             }
         }
 
-        public virtual void GenerateComponent(string module, PageRenderDTO viewPath)
+        public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
         {
             PageDTO p = _unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
             string scriptPath = _fileNameService.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".ts";
@@ -163,11 +184,12 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 BaseClass = p.BaseViewPath.GetAfterLast("/") + "Base",
                 ComponentName = p.Page.Name,
                 TemplateName = _fileNameService.ApplyConvension(p.Page.Name, AppParts.Component),
-                PageId = p.Page.Id,
+
                 Domain = p.DomainName,
                 Resource = p.ResourceName,
                 Selector = _fileNameService.GetComponentSelector(p.Page.Name),
-
+                ViewParams = data.ViewParams.ToJson(new Newtonsoft.Json.JsonSerializerSettings { StringEscapeHandling = Newtonsoft.Json.StringEscapeHandling.EscapeHtml }),
+                Sources = data.Sources.ToJsonIndent(),
                 CollectionId = p.CollectionId == null ? "null" : "'" + p.CollectionId + "'"
             });
 
@@ -504,6 +526,14 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             if (!_opts.ReplaceDomainRoutes && File.Exists(filePath))
             {
                 WriteColored("Exists", ConsoleColor.Cyan);
+                dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
+
+                if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
+                {
+                    var pages = dom.Pages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
+                    if (dom.Pages.Any())
+                        _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
+                }
                 Out.WriteLine();
                 return;
             }
@@ -589,7 +619,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             string[] locales = Shell.SupportedLanguages.ToArray();
             foreach (string loc in locales)
             {
-                mod.LocalizationImports += "import { " + loc + "_Loader } from \"./Localization/" + loc + "/Loader\";\n";
+                mod.LocalizationImports += "import { " + loc + "_Loader } from \"./localization/" + loc + "/loader\";\n";
                 mod.LocalizationLoaders += $"[\"{loc}\"]:new {loc}_Loader, ";
             }
         }

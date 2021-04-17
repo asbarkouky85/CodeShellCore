@@ -15,6 +15,7 @@ namespace CodeShellCore.Moldster.Models
         public string Resource { get; set; }
         public string Domain { get; set; }
         public string CollectionId { get; set; }
-        
+        public string ViewParams { get; set; }
+        public string Sources { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace CodeShellCore.Data.CustomFields
         {
 
         }
-        public Dictionary<string, string> LoadFor<T1>(long id)
+        public virtual Dictionary<string, string> LoadFor<T1>(long id)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             string type = typeof(T1).Name;
@@ -29,14 +29,14 @@ namespace CodeShellCore.Data.CustomFields
             return result;
         }
 
-        public void ReplaceFor<T1>(long id, Dictionary<string, string> data)
+        public virtual void ReplaceFor<T1>(long id, Dictionary<string, string> data)
         {
             string t = typeof(T1).Name;
             Delete(d => d.EntityId == id && d.EntityType == t);
             SaveFor<T1>(id, data);
         }
 
-        public void SaveFor<T1>(long id, Dictionary<string, string> dic)
+        public virtual void SaveFor<T1>(long id, Dictionary<string, string> dic)
         {
             string type = typeof(T1).Name;
             foreach (KeyValuePair<string, string> entry in dic)

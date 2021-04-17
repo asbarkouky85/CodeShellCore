@@ -1,0 +1,15 @@
+﻿@model NgInput
+
+<div class="input-group input-append" @Html.Raw(Model.CalendarOptions)>
+    <input type="@Model.TextBoxType"
+           class="form-control @Model.Classes"
+           placeholder="@Model.PlaceHolder"
+           name="@Html.Raw(Model.FieldName)"
+           ngbDatepicker
+           @(Html.Raw("#"+Model.FieldName))="ngbDatepicker"
+           [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+           @Html.Raw(Model.Attributes)>
+    <span class="input-group-addon add-on" (click)="@(Html.Raw(Model.FieldName)).toggle()">
+        <span class="fa fa-calendar"></span>
+    </span>
+</div>

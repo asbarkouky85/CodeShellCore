@@ -9,7 +9,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
         string CoreFolder { get; }
         string BaseFolder { get; }
         string GetHttpServiceFolder(string domainPath = null, bool import = false);
-        string GetMainTsPath(string moduleCode);
+        string GetSrcFolderPath(string type, string extension = ".ts");
         string GetDomainLazyLoadingRoute(string domain);
         string GetComponentFilePath(string module, string viewFilePath);
         string GetBaseComponentFilePath(string viewFilePath, bool import = false);
@@ -18,5 +18,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
         string GetModuleFilePath(string tenantCode, string domainName, string parentDomain = null, bool createFolder = true);
         string GetBaseModuleFilePath(bool import);
         string GetComponentImportPath(string name, string basePath = "./", bool fromDomain = true);
+        string GetLocalizationJsonPath(string moduleCode, string type, string loc);
+        string GetLocalizationLoaderPath(string moduleCode, string loc);
     }
 }

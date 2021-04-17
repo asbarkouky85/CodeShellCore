@@ -1,0 +1,55 @@
+﻿@using CodeShellCore.Web.Razor.Models;
+@{
+    ModalModel MModal = Html.ModalModel();
+}
+<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [modal]="@MModal.IsModalValue" @Html.Raw(MModal.AttrString)>
+    <p-header>
+        @if (!IsSectionDefined("header"))
+        {
+            @Html.GetPageTitle()
+        }
+        else
+        {
+            @RenderSection("header")
+        }
+    </p-header>
+
+    <div class="col-md-12">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6">
+                <div class="btn-group btn-group-sm pull-last padBottom">
+                    @foreach (var s in CodeShellCore.Shell.SupportedLanguages)
+                    {
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='@s'?'btn-primary':'btn-default'" (click)="CurrentLang='@s'">
+                            @Html.Word(s)
+                        </button>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+        @RenderBody()
+    </div>
+
+
+    @RenderSection("lists", false)
+
+    @if (IsSectionDefined("okButtons"))
+    {
+        IgnoreSection("buttons");
+        <p-footer>
+            <div class="text-center modal-buttons">
+                @RenderSection("okButtons")
+            </div>
+        </p-footer>
+    }
+    else if (IsSectionDefined("buttons"))
+    {
+        <p-footer>
+            <div class="text-center modal-buttons">
+                @RenderSection("buttons")
+            </div>
+        </p-footer>
+    }
+</p-dialog>

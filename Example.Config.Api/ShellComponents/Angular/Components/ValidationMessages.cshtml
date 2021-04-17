@@ -1,0 +1,10 @@
+﻿@model ValidationMessagesModel
+@{
+    var control = Html.Raw($"{Model.FormName}.controls['{Model.FieldName}']");
+}
+<span *ngIf="@control && @(control).invalid">
+    @foreach (var v in Model.List)
+    {
+        <small *ngIf="@(control).errors!.@v.Index" class="form-text text-danger">@Html.Raw(v.Text)</small>
+    }
+</span>

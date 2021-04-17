@@ -17,7 +17,7 @@ namespace CodeShellCore.Web.Controllers
         }
         [HttpPost]
         [Route("HandleRequest")]
-        public IActionResult HandleRequest([FromBody]PublisherRequest req)
+        public virtual IActionResult HandleRequest([FromBody]PublisherRequest req)
         {
             var res = new PublisherResult
             {

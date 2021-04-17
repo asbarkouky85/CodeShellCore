@@ -184,17 +184,8 @@
   <data name="package_json" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Angular\Files\package_json.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="ServerConfig_ts" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Angular\Files\ServerConfig_ts.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="tsconfig_json" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Angular\Files\tsconfig_json.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="WebPackSharedConfig_js" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Angular\Files\WebPackSharedConfig_js.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="webpack_config_vendor_js" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Angular\Files\webpack_config_vendor_js.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="Creation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\SQL\Creation.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
@@ -264,5 +255,8 @@
   </data>
   <data name="pollyfills_ts" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Angular\Files\pollyfills_ts.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="index_html" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Angular\Files\index_html.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

@@ -37,7 +37,7 @@ namespace Asga.Public.Web.Controllers
         }
 
 
-        public IActionResult Put([FromBody] Message obj)
+        public virtual IActionResult Put([FromBody] Message obj)
         {
             return DefaultPut(obj);
         }

@@ -79,9 +79,13 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
             return qq;
         }
 
-        public IEnumerable<PageDTO> GetDomainPagesForRouting(string tenantCode, long domainId)
+        public IEnumerable<PageDTO> GetDomainPagesForRouting(string tenantCode, long domainId, bool chldren = false)
         {
             var q = Loader.Where(d => d.Tenant.Code == tenantCode && d.DomainId == domainId && d.IsHomePage != true);
+            if (chldren)
+            {
+                q = Loader.Where(d => d.Tenant.Code == tenantCode && d.Domain.Chain.Contains("|" + domainId + "|") && d.IsHomePage != true);
+            }
             return QueryPageDTOForRouting(q).ToList();
         }
 

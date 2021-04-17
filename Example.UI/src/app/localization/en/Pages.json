@@ -1,0 +1,10 @@
+{
+  "Users__UserCreate": "User create",
+  "Users__EditProfile": "Edit profile",
+  "Shared__ChangePassword": "Change password",
+  "Users__UserList": "User list",
+  "Roles__RoleList": "Role list",
+  "Roles__RoleEdit": "Role edit",
+  "Users__UserEdit": "User edit",
+  "Public__ForgotPassword": "Forgot password"
+}

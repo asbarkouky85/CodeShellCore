@@ -1,0 +1,17 @@
+﻿@model SelectNgInput
+<ng-select [items]="@Model.ListName"
+               name="@Html.Raw(Model.FieldName)"
+               bindLabel="@Model.Display"
+               @Html.Raw(Model.ValueMember != null ? "bindValue=\""+Model.ValueMember+"\"" : "")
+               [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+               @Html.Raw(Model.Attributes)
+               [multiple]="@Model.Multi.ToString().ToLower()"></ng-select>
+    @if (Model.GroupName != null)
+    {
+        <p *ngIf="!@(Model.GroupName + ".Write")">{{@(Model.GroupName + ".Value")}}</p>
+    }
+
+@if (Model.GroupName != null)
+{
+    <p *ngIf="!@(Model.GroupName + ".Write")">{{@(Model.GroupName + ".Value")}}</p>
+}

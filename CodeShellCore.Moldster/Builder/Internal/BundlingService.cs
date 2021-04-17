@@ -97,8 +97,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
             AddToBaseFolder(_names.ApplyConvension(_paths.CoreAppName + "BaseModule", AppParts.Module) + ".ts", content, true, replace);
             AddToBaseFolder(_names.ApplyConvension("AppComponent", AppParts.BaseComponent) + ".ts", Properties.Resources.AppComponentBase_ts, true, replace);
-            // AddToBaseFolder("ServerConfig.ts", Properties.Resources.ServerConfig_ts, replace);
-
+            
             AddToBaseFolder(_names.ApplyConvension("Main/Login", AppParts.Component) + ".html", Properties.Resources.Login_html, true, replace);
             AddToBaseFolder(_names.ApplyConvension("Main/Login", AppParts.Component) + ".ts", Properties.Resources.Login_ts, false, replace);
             AddToBaseFolder(_names.ApplyConvension("Main/topBar", AppParts.Component) + ".html", Properties.Resources.topBar_html, false, replace);

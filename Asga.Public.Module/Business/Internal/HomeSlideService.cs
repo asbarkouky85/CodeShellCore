@@ -49,7 +49,7 @@ namespace Asga.Public.Business.Internal
             return data;
         }
 
-        public SubmitResult SetActive(long id, bool state)
+        public virtual SubmitResult SetActive(long id, bool state)
         {
             var m = Repository.FindSingle(id);
             m.IsActive = state;
@@ -57,7 +57,7 @@ namespace Asga.Public.Business.Internal
             return unit.SaveChanges();
         }
 
-        public SubmitResult SetSorting(IEnumerable<long> ids)
+        public virtual SubmitResult SetSorting(IEnumerable<long> ids)
         {
             var all = Repository.Find(d => true);
             int i = 1;

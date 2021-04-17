@@ -13,5 +13,7 @@ namespace CodeShellCore.Data.Attachments
         string EntityType { get; set; }
         long EntityId { get; set; }
         string FilePath { get; set; }
+
+
     }
 }

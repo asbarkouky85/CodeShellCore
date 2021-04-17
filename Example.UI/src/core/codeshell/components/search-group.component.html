@@ -1,0 +1,10 @@
+﻿<div class="col-sm-12">
+    <div class="input-group">
+        <input type="text" [(ngModel)]="SearchTerm" [ngModelOptions]="{standalone: true}" (keydown.enter)="OnSearch()" class="form-control" placeholder="{{'Words.Search'}}">
+        <span class="input-group-btn">
+            <button class="btn btn-default" (click)="OnSearch()">
+                <i class="fa fa-search"></i>
+            </button>
+        </span>
+    </div>
+</div>

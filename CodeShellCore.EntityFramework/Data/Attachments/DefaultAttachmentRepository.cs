@@ -20,7 +20,7 @@ namespace CodeShellCore.Data.Attachments
             uploaded = _uploaded;
         }
 
-        public IEnumerable<T> GetFor<TParent>(TParent model, string serviceUrl = "") where TParent : class, IModel<long>
+        public virtual IEnumerable<T> GetFor<TParent>(TParent model, string serviceUrl = "") where TParent : class, IModel<long>
         {
             string t = typeof(TParent).Name;
             var lst = Loader.Where(d => d.EntityId == model.Id && d.EntityType == t).ToList();

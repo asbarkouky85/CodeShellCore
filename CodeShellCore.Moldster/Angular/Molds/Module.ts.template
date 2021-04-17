@@ -4,8 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
-import { CodeShellModule, BaseModule } from 'codeshell/main';
-import { DomainDataProvider } from 'codeshell/security';
+import { CodeShellModule } from 'codeshell';
+import { DomainDataProvider } from 'codeshell/moldster';
 
 import { %BaseAppModuleName% } from '%BaseAppModulePath%';
 
@@ -30,7 +30,7 @@ import { AppRoutingModule, GetDomainsData } from '%RoutesModulePath%';
         { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) }
     ]
 })
-export class %Code%Module extends BaseModule {
+export class %Code%Module {
 	
 }
 

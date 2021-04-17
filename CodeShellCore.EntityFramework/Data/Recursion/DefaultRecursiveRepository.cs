@@ -43,7 +43,7 @@ namespace CodeShellCore.Data.Recursion
             }
         }
 
-        public void DeleteAllSubs(object prime)
+        public virtual void DeleteAllSubs(object prime)
         {
             var del = Loader.Where(d => d.Chain.Contains("|" + prime + "|") && d.Id != (long)prime).ToList();
             foreach (var it in del)

@@ -16,7 +16,7 @@ namespace CodeShellCore.Security.Authentication.Internal
             Writer = new WriterService();
         }
         public abstract string ResetPasswordHTMLTemplate { get; }
-        public Result SendResetEmail(ResetPasswordDTO dto)
+        public virtual Result SendResetEmail(ResetPasswordDTO dto)
         {
             var body = Writer.FillStringParameters(ResetPasswordHTMLTemplate, dto);
             var c = CreateClient();

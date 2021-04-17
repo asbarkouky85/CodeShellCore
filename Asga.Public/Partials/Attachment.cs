@@ -12,8 +12,7 @@ namespace Asga.Public
 
         public void LoadFile(IUploadedFilesHandler handl, string serviceUrl = null)
         {
-            FilePath = handl.GetUrlByPath(FilePath);
-            File = new TmpFileData(FilePath);
+            File = new TmpFileData(FileUtils.GetUploadedFileUrl(FilePath));
         }
     }
 }

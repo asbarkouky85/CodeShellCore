@@ -1,0 +1,7 @@
+﻿@model LinkModel
+<a class="buttonGra @Model.BtnClass"
+   @if (Model.Url != null) { @Html.Raw("[routerLink]=\"" + Model.Url + "\"") }
+   @if (Model.Function != null) { @Html.Raw("(click)=\"" + Model.Function + "\"") }
+   @Html.Raw(Model.Attributes)>
+    @Html.Raw(Model.Icon)@Model.Text
+</a>

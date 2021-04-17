@@ -12,7 +12,7 @@ namespace CodeShellCore.Moldster.Razor
         void UpdateTemplatePages(long id, long tenantId);
         void MoveHtmlTemplate(MovePageRequest r);
         void DeleteHtmlTemplate(string tenantCode, string fromPath);
-        void GenerateComponentTemplate(string moduleName, PageRenderDTO dto);
+        PageJsonData GenerateComponentTemplate(string moduleName, PageRenderDTO dto);
         void GenerateMainComponentTemplate(string moduleCode);
         void GenerateGuidTemplate(string moduleCode);
     }

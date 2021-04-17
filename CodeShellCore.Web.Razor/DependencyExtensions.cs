@@ -58,7 +58,7 @@ namespace CodeShellCore.Web.Razor
                 .AllowCredentials());
             app.UseEndpoints(d =>
             {
-                
+
                 d.MapHub<GenerationHub>("/generationHub");
                 d.MapHub<TasksHub>("/tasksHub");
             });
@@ -130,6 +130,12 @@ namespace CodeShellCore.Web.Razor
             coll.AddScoped<IGeneralHelper, DefaultGeneralHelper>();
         }
 
+        public static void AddAbpCustomization(this IServiceCollection coll)
+        {
+            coll.AddSingleton<IRazorLocaleTextProvider, AbpTextProvider>();
+            coll.AddTransient<ILocalizationService, AbpLocalizationService>();
+        }
+
         public static void AddMoldsterRazorHelpers(this IServiceCollection coll)
         {
             coll.AddSingleton<IRazorLocaleTextProvider, AngularTextProvider>();
@@ -154,6 +160,18 @@ namespace CodeShellCore.Web.Razor
             RazorConfig.FieldErrorMessagesTemplate = "<span *ngIf=\"{0}.controls['{1}'] && {0}.controls['{1}'].invalid && ({0}.controls['{1}'].dirty || {0}.controls['{1}'].touched)\">\r{2}</span>";
             RazorConfig.ErrorMessageTemplate = "<small *ngIf=\"{0}.controls['{1}'].errors!.{2}\" class=\"form-text text-danger\">{3}</small>\r";
             RazorConfig.LocaleTextProvider = new AngularTextProvider();
+            RazorConfig.ExpressionStringifier = new AngularExpressionStringifier();
+
+            RazorConfig.Theme = theme;
+        }
+
+        public static void ConfigureAngularApbRazor(this Shell shell, IRazorTheme theme = null)
+        {
+            theme = theme ?? new AbpLeptonTheme();
+
+            RazorConfig.SetCollectionType<AngularValidationCollection>();
+
+            RazorConfig.LocaleTextProvider = new AbpTextProvider();
             RazorConfig.ExpressionStringifier = new AngularExpressionStringifier();
 
             RazorConfig.Theme = theme;

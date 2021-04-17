@@ -26,10 +26,10 @@ namespace CodeShellCore.Moldster.Razor.Internal
             return data.FromJson<TemplateDataCollector>() ?? new TemplateDataCollector { Controls = new List<ControlDTO>() };
         }
 
-        public string GetPage(PageAcquisitorDTO pageAcquisitorDTO)
+        public RenderedPageResult GetPage(PageAcquisitorDTO pageAcquisitorDTO)
         {
             var s = Get("GetPage", pageAcquisitorDTO);
-            return s.Content.ReadAsStringAsync().GetTaskResult();
+            return new RenderedPageResult { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
         }
 
         public string GetPage(string viewPath)
@@ -50,10 +50,10 @@ namespace CodeShellCore.Moldster.Razor.Internal
             return s.Content.ReadAsStringAsync().GetTaskResult();
         }
 
-        public string GetPageById(long id)
+        public RenderedPageResult GetPageById(long id)
         {
             var s = Get("GetPageById/" + id);
-            return s.Content.ReadAsStringAsync().GetTaskResult();
+            return new RenderedPageResult { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
         }
 
         public virtual bool CheckServer(out HttpResult res)

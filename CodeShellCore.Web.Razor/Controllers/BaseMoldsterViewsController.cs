@@ -27,13 +27,13 @@ namespace CodeShellCore.Web.Razor.Controllers
         public virtual IActionResult GetPage([FromQuery]PageAcquisitorDTO dto)
         {
             var html = views.GetPage(dto);
-            return Content(html);
+            return Content(html.TemplateContent);
         }
 
         public virtual IActionResult GetPageById(long id)
         {
             var html = views.GetPageById(id);
-            return Content(html);
+            return Content(html.TemplateContent);
         }
 
         public virtual IActionResult GetMainComponent([FromQuery]PageAcquisitorDTO dto)

@@ -28,6 +28,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddMoldsterConfigurator();
             coll.AddMoldsterServerGeneration();
             coll.AddMoldsterRazorHelpers();
+
             coll.Configure<MoldsterModuleOptions>(e =>
             {
                 e.ReplaceComponentHtml = true;

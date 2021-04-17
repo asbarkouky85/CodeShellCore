@@ -36,26 +36,25 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public string GetComponentFilePath(string module, string viewFilePath)
         {
-            var path = "";
+            string url;
             if (viewFilePath == "app")
             {
-                path = Utils.CombineUrl(_paths.UIRoot, "src", module, viewFilePath);
+                url = Utils.CombineUrl(module, viewFilePath);
             }
             else
             {
                 var folder = viewFilePath.GetBeforeLast("/");
                 var name = viewFilePath.GetAfterLast("/");
-                path = Utils.CombineUrl(_paths.UIRoot, "src", module, folder, "components", name);
-
+                url = Utils.CombineUrl(module, folder, "components", name);
             }
 
-            return ApplyConvension(path, AppParts.Component);
+            return Utils.CombineUrl(_paths.UIRoot, "src", ApplyConvension(url, AppParts.Component));
         }
 
         public string GetDomainLazyLoadingRoute(string domain)
         {
             var path = ApplyConvension(domain, AppParts.Route);
-            return 
+            return
 @"    { 
         path: '" + path + @"', 
         loadChildren: () => import('./" + path + "/" + ApplyConvension(domain, AppParts.Module) + "').then(m => m." + domain + @"Module) 
@@ -70,9 +69,9 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath));
         }
 
-        public string GetMainTsPath(string type)
+        public string GetSrcFolderPath(string type, string extension = ".ts")
         {
-            return Utils.CombineUrl(_paths.UIRoot, "src", type.ToLower() + ".ts");
+            return Utils.CombineUrl(_paths.UIRoot, "src", type.ToLower() + extension);
         }
 
         public string GetBaseComponentFilePath(string viewFilePath, bool import = false)
@@ -140,6 +139,16 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 name = "components/" + name.GetAfterLast("/");
             }
             return ApplyConvension(Utils.CombineUrl(basePath, name), AppParts.Component);
+        }
+
+        public string GetLocalizationJsonPath(string moduleCode, string type, string loc)
+        {
+            return Path.Combine(_paths.UIRoot, "src", moduleCode, "localization", loc, type + ".json");
+        }
+
+        public string GetLocalizationLoaderPath(string moduleCode, string loc)
+        {
+            return Path.Combine(_paths.UIRoot, "src", moduleCode, "localization", loc, "loader.ts");
         }
     }
 }

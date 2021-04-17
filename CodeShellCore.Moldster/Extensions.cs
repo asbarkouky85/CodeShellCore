@@ -82,7 +82,6 @@ namespace CodeShellCore.Moldster
 
             coll.AddTransient<ConfiguratorLookupService>();
 
-
             coll.AddServiceFor<Domain, DomainService>();
             coll.AddServiceFor<PageCategory, PageCategoryService>();
             coll.AddServiceFor<Page, PagesService>();
@@ -92,7 +91,7 @@ namespace CodeShellCore.Moldster
             coll.AddServiceFor<Tenant, TenantsService>();
 
             coll.AddTransient<IUserDataService, UserDataService>();
-            coll.AddTransient<ICacheProvider, CodeShellCore.Caching.MemoryCacheProvider>();
+            coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
         }
 
         public static void AddMoldsterCodeGeneration(this IServiceCollection coll)

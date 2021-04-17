@@ -1,0 +1,15 @@
+﻿@model NgInput
+
+<div class="row">
+    <div class="col-md-9">
+        <angular2-date-picker name="@Html.Raw(Model.FieldName)"
+                              [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+                              fix-date-time
+                              @Html.Raw(Model.Attributes)></angular2-date-picker>
+        @if (Model.GroupName != null)
+        {
+            <p *ngIf="!@(Model.GroupName+".Write")" class="date-display">{{@(Model.NgModelName + "." + Model.MemberName) | date : 'yyyy-MM-dd hh:mm a'}}</p>
+        }
+
+    </div>
+</div>

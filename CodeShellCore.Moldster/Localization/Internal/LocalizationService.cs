@@ -25,19 +25,22 @@ namespace CodeShellCore.Moldster.Localization.Internal
     {
         public bool SuspendOut { get; set; }
         protected int resultCol = 8;
-        readonly WriterService _writer;
-        readonly IPathsService _paths;
-        readonly IMoldProvider _molds;
-        readonly IConfigUnit _unit;
+        protected readonly WriterService _writer;
+        protected readonly IPathsService _paths;
+        private readonly IUIFileNameService names;
+        protected readonly IMoldProvider _molds;
+        protected readonly IConfigUnit _unit;
 
         public LocalizationService(
             IMoldProvider molds,
             IConfigUnit unit,
             IPathsService paths,
+            IUIFileNameService names,
             IOutputWriter output) : base(output)
         {
             _writer = new WriterService();
             _paths = paths;
+            this.names = names;
             _molds = molds;
             _unit = unit;
         }
@@ -78,7 +81,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             return dic.ToJson(Formatting.Indented);
         }
 
-        public void GenerateJsonFiles(string moduleCode)
+        public virtual void GenerateJsonFiles(string moduleCode)
         {
             if (string.IsNullOrEmpty(_paths.LocalizationRoot))
                 return;
@@ -92,7 +95,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
 
             foreach (string loc in locales)
             {
-                string loader = Path.Combine(_paths.UIRoot, moduleCode, "app\\Localization", loc, "Loader.ts");
+                string loader = names.GetLocalizationLoaderPath(moduleCode, loc);
                 string contents = _writer.FillStringParameters(template, new { Locale = loc });
 
                 Utils.CreateFolderForFile(loader);
@@ -102,7 +105,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
                 {
                     string data = _resxToJson(type, loc, ten);
 
-                    string path = Path.Combine(_paths.UIRoot, moduleCode, "app\\Localization", loc, type + ".json");
+                    string path = names.GetLocalizationJsonPath(moduleCode, type, loc);
                     Utils.CreateFolderForFile(path);
                     File.WriteAllText(path, data);
                 }
@@ -149,12 +152,12 @@ namespace CodeShellCore.Moldster.Localization.Internal
             }
         }
 
-        public void AddLocalizationFiles()
+        public virtual void AddLocalizationFiles()
         {
             UnZip(Properties.Resources.Localization, _paths.LocalizationRoot, "Localization");
         }
 
-        public void InitializeResxFiles()
+        public virtual void InitializeResxFiles()
         {
 
             using (var x = SW.Measure())
@@ -181,7 +184,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             }
         }
 
-        public void SyncAllLanguages()
+        public virtual void SyncAllLanguages()
         {
             var doneLangs = new List<string>();
             foreach (var s in Shell.SupportedLanguages)
@@ -195,7 +198,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             }
         }
 
-        public LoadResult<CustomText> LoadForTenant(CustomTextRequest req, LoadOptions opts)
+        public virtual LoadResult<CustomText> LoadForTenant(CustomTextRequest req, LoadOptions opts)
         {
             string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", ((TextTypes)req.Type).ToString() + "." + req.Locale + ".resx");
 
@@ -238,7 +241,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
 
         }
 
-        public void Import(string type, string lang, List<DataItem> strs, bool suspendOut = false)
+        public virtual void Import(string type, string lang, List<DataItem> strs, bool suspendOut = false)
         {
             string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang + ".resx");
 
@@ -281,7 +284,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             reader.Save(resLang1, new ResourceContainer { DataItems = data1.ToArray(), Headers = headers1 });
         }
 
-        void _saveData(string type, string lang, DataItem[] lst)
+        protected void SaveFile(string type, string lang, DataItem[] lst)
         {
             string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang + ".resx");
             ResxXmlReader reader = new ResxXmlReader();
@@ -293,7 +296,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             reader.Save(resLang1, new ResourceContainer { DataItems = lst, Headers = headers1 });
         }
 
-        public void SyncLanguages(string lang1, string lang2)
+        public virtual void SyncLanguages(string lang1, string lang2)
         {
             using (var x = SW.Measure())
             {
@@ -373,7 +376,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             }
         }
 
-        public void UpdateFiles(LocalizationDataCollector localization)
+        public virtual void UpdateFiles(LocalizationDataCollector localization)
         {
             var items = new List<DataItem>();
             string loc = Shell.DefaultCulture.TwoLetterISOLanguageName;
@@ -405,7 +408,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             Import("Pages", loc, items, true);
         }
 
-        public void FixPages(string tenantCode)
+        public virtual void FixPages(string tenantCode)
         {
             foreach (var loc in Shell.SupportedLanguages)
             {
@@ -458,7 +461,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
                         newList.Add(new DataItem { Name = key, Value = "", Space = "preserve" });
                     }
                 }
-                _saveData("Pages", loc, newList.ToArray());
+                SaveFile("Pages", loc, newList.ToArray());
                 WriteColored("Success [Added : " + newItems + "]", ConsoleColor.Green);
                 Out.WriteLine();
             }

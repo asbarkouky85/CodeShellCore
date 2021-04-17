@@ -1,0 +1,44 @@
+﻿@model NgControlGroup
+
+<div class="row form-group @Model.GroupCssClass"
+     id="@Model.Name"
+     @Html.Raw($"#{Model.Name}=\"bsFormGroup\" bs-group")
+     @Html.Raw(Model.Attributes)>
+    <label class="col-sm-3 control-label">
+        @Html.Raw(Model.Label + " ({{UI_Lang}})")
+        @if (Model.IsRequired)
+        {<span style="color:red" @Html.Raw(Model.RequiredCondition == null ? "" : "*ngIf=\"" + Model.RequiredCondition + "\"")> * </span>}
+    </label>
+    <div class="col-sm-9 row">
+        <div class="col-sm-6">
+            @Model.InputControl
+            @Model.ValidationMessages
+        </div>
+        <div class="col-sm-6">
+            @{ if (Model.IsTextArea)
+                {
+                    <textarea class="form-control" 
+                              name="@(Model.PropertyName)_Loc" 
+                              [ngClass]="CurrentLang=='ar'?'dir-rtl':'dir-ltr'"
+                              placeholder="@(Model.Label+" ({{'Words.'+CurrentLang | translate}})")"
+                              [(ngModel)]="Loc.data.@Model.PropertyName"
+                              (change)="Loc.AddToChangeList()"
+                              ></textarea>
+                }
+                else
+                {
+                    <input name="@(Model.PropertyName)_Loc"
+                           placeholder="@(Model.Label+" ({{'Words.'+CurrentLang | translate}})")"
+                          [ngClass]="CurrentLang=='ar'?'dir-rtl':'dir-ltr'"
+                           type="text" 
+                           [(ngModel)]="Loc.data.@Model.PropertyName"
+                           (change)="Loc.AddToChangeList()"
+                           class="form-control" />
+                }
+            }
+
+
+        </div>
+
+    </div>
+</div>

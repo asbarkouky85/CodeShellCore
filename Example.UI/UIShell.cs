@@ -1,23 +1,14 @@
-﻿using CodeShellCore.Security;
-using CodeShellCore.Security.Authentication;
-using CodeShellCore.Web;
-using CodeShellCore.Web.Moldster;
+﻿using CodeShellCore.Web.Moldster;
 using Asga.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using Asga.Web;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Data.ConfiguredCollections;
 using Asga.Security;
 using CodeShellCore.Helpers;
-using CodeShellCore.Security.Sessions;
-using Example.UI.Security;
-using CodeShellCore.FileServer;
 
 namespace Example.UI
 {
