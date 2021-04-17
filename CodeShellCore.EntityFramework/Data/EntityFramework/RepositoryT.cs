@@ -126,13 +126,13 @@ namespace CodeShellCore.Data.EntityFramework
         /// to retrieve all records from the data source with the repository entity
         /// </summary>
         /// <returns>should not be a queryable object</returns>
-        public IEnumerable All()
+        public virtual IEnumerable All()
         {
             return Loader.ToList();
         }
 
 
-        public List<T> GetList()
+        public virtual List<T> GetList()
         {
             return Loader.ToList();
         }
@@ -151,7 +151,7 @@ namespace CodeShellCore.Data.EntityFramework
             Saver.Add(obj);
         }
 
-        public void InsertObject(object ob)
+        public virtual void InsertObject(object ob)
         {
             Add((T)ob);
         }
@@ -371,7 +371,7 @@ namespace CodeShellCore.Data.EntityFramework
 
         public abstract IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex);
 
-        public bool FindSingleOrAdd(Expression<Func<T, bool>> ex, T obj, out T existing)
+        public virtual bool FindSingleOrAdd(Expression<Func<T, bool>> ex, T obj, out T existing)
         {
             var item = FindSingle(ex);
             if (item != null)

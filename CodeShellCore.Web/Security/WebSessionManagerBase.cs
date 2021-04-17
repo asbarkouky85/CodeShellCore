@@ -40,12 +40,12 @@ namespace CodeShellCore.Web.Security
             provider.SetCurrentUserId(jwt.ClientId, true);
         }
 
-        public void SetContextItem(string index, object value)
+        public virtual void SetContextItem(string index, object value)
         {
             _accessor.HttpContext.Items[index] = value;
         }
 
-        public object GetContextItem(string index)
+        public virtual object GetContextItem(string index)
         {
             object item;
             if (_accessor.HttpContext.Items.TryGetValue(index, out item))

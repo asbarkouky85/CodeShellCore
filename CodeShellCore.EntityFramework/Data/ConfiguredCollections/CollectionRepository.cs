@@ -38,7 +38,7 @@ namespace CodeShellCore.Data.ConfiguredCollections
 
         }
 
-        protected IQueryable<T> QueryCollection(string collectionId)
+        protected virtual IQueryable<T> QueryCollection(string collectionId)
         {
             var exp = _service.GetCollectionExpression<T>(collectionId, UserAccessor);
             if (exp == null)
@@ -46,22 +46,22 @@ namespace CodeShellCore.Data.ConfiguredCollections
             return Loader.Where(exp);
         }
 
-        public IEnumerable<T> GetCollectionList(string collectionId)
+        public virtual IEnumerable<T> GetCollectionList(string collectionId)
         {
             return QueryCollection(collectionId).ToList();
         }
 
-        public IEnumerable<TObject> GetCollectionListAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp)
+        public virtual IEnumerable<TObject> GetCollectionListAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp)
         {
             return QueryCollection(collectionId).Select(exp).ToList();
         }
 
-        public LoadResult<T> LoadCollection(string collectionId, ListOptions<T> opts)
+        public virtual LoadResult<T> LoadCollection(string collectionId, ListOptions<T> opts)
         {
             return QueryCollection(collectionId).LoadWith(opts);
         }
 
-        public LoadResult<TObject> LoadCollectionAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp, ListOptions<TObject> opts) where TObject : class
+        public virtual LoadResult<TObject> LoadCollectionAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp, ListOptions<TObject> opts) where TObject : class
         {
 
             return QueryCollection(collectionId).Select(exp).LoadWith(opts);

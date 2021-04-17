@@ -36,7 +36,7 @@ namespace CodeShellCore.FileServer.Web.Controllers
             return service.Upload(dto);
         }
         public virtual SubmitResult ValidateFile([FromBody] FileValidationRequest req) => service.ValidateFile(req);
-        public FileBytes GetBytesByUrl(string path) => service.GetBytesByUrl(path);
+        public virtual FileBytes GetBytesByUrl(string path) => service.GetBytesByUrl(path);
         public virtual FileResult GetFile(long id)
         {
             var b = service.GetBytes(id);

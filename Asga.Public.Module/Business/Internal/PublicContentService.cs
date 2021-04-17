@@ -18,13 +18,13 @@ namespace Asga.Public.Business.Internal
             this.lang = lang;
         }
 
-        public string GetContentPage(string id)
+        public virtual string GetContentPage(string id)
         {
             var l = lang.Culture.TwoLetterISOLanguageName.ToLower();
             return _unit.PublicContentRepository.GetSingleValue(d => d.Content, d => d.Code == id && (d.Locale == l || d.Locale == null));
         }
 
-        public PublicContent GetByCode(string code, string lang)
+        public virtual PublicContent GetByCode(string code, string lang)
         {
             var s = Repository.FindSingle(d => d.Code == code && d.Locale == lang);
             if (s == null)

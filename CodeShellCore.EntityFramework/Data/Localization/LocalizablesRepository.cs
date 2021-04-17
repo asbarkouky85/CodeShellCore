@@ -18,7 +18,7 @@ namespace CodeShellCore.Data.Localization
         {
         }
 
-        public void Apply(string type, object id, int langId, IEnumerable<T> data)
+        public virtual void Apply(string type, object id, int langId, IEnumerable<T> data)
         {
             var res = Loader.Where(d => d.EntityId.Equals(id) && d.EntityType == type && d.LocaleId == langId).ToList();
             foreach (var item in res)
@@ -35,7 +35,7 @@ namespace CodeShellCore.Data.Localization
             }
         }
 
-        public IEnumerable<LocalizablesLoader> Get(string type, object id, IEnumerable<int> langs)
+        public virtual IEnumerable<LocalizablesLoader> Get(string type, object id, IEnumerable<int> langs)
         {
 
             return Loader.Where(d => langs.Contains(d.LocaleId) && d.EntityId.Equals(id) && d.EntityType == type)

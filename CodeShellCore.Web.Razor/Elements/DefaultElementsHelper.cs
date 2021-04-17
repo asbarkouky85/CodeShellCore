@@ -38,7 +38,6 @@ namespace CodeShellCore.Web.Razor.Elements
             var mod = GetNewWriter(helper);
             mod.UseExpression(exp);
             mod.SetOptions(size, alternateLabel, null, attrs, inputAttr, inputClasses, groupClasses);
-
             IValidationCollection coll = helper.GetDateValidators(type, required, range, mod.InputModel.MemberName, alternateLabel);
             mod.UseValidation(coll, mod.InputModel.FieldName, alternateLabel);
 

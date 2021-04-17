@@ -20,6 +20,7 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         protected override string SaveRoot => _paths.RootFolderPath;
         protected override string TempRoot => _paths.TempFolder;
+        protected virtual int DefaultAttachmentType => 1;
 
         public AttachmentFileService(IFileServerUnit unit, IPathProvider paths)
         {
@@ -29,6 +30,7 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         public virtual IEnumerable<TmpFileData> Upload(UploadRequestDto dto)
         {
+            dto.AttachmentTypeId = dto.AttachmentTypeId == 0 ? DefaultAttachmentType : dto.AttachmentTypeId;
             var cat = unit.AttachmentCategoryRepository.FindSingle(dto.AttachmentTypeId);
             ValidateFiles(cat, dto.Files);
 
@@ -64,6 +66,7 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         public virtual SubmitResult SaveAttachment(SaveAttachmentRequest req)
         {
+            req.AttachmentTypeId = req.AttachmentTypeId == 0 ? DefaultAttachmentType : req.AttachmentTypeId;
             var cat = unit.AttachmentCategoryRepository.FindSingle(req.AttachmentTypeId);
 
             var path = Path.Combine(_paths.TempFolder, req.TmpPath);
@@ -205,19 +208,27 @@ namespace CodeShellCore.FileServer.Business.Internal
 
         public override string GetUrlById(string id)
         {
+            if (id == null)
+                return null;
             return Utils.CombineUrl("fileserver/getfile/" + id);
         }
 
         public override string GetUrlByPath(string path)
         {
+            if (path == null)
+                return null;
             return Utils.CombineUrl("fileserver/getbypath?path=" + path);
         }
 
         public override void DeleteTmp(TmpFileData tmp)
         {
-            var path = Path.Combine(_paths.TempFolder, tmp.TmpPath);
-            if (File.Exists(path))
-                File.Delete(path);
+            if (tmp.TmpPath != null)
+            {
+                var path = Path.Combine(_paths.TempFolder, tmp.TmpPath);
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+            
         }
     }
 }

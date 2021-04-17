@@ -6,13 +6,13 @@ using System.Text;
 
 namespace CodeShellCore.Data.Attachments
 {
-    public interface IAttachmentModel : IEditable
+    public interface IAttachmentModel : IHasUploads, IEditable
     {
         TmpFileData File { get; set; }
         string EntityType { get; set; }
         long EntityId { get; set; }
         string FilePath { get; set; }
 
-        void LoadFile(string serviceUrl);
+
     }
 }

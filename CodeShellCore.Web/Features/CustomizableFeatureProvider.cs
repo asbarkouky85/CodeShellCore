@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace CodeShellCore.Web.Features
@@ -22,7 +23,7 @@ namespace CodeShellCore.Web.Features
 
             if (config.All)
             {
-               var cs= feature.Controllers.Where(d => d.Namespace.StartsWith(controllersNameSpace)).ToList();
+                var cs = feature.Controllers.Where(d => d.Namespace.StartsWith(controllersNameSpace)).ToList();
                 foreach (var item in cs)
                     feature.Controllers.Remove(item);
                 return;
@@ -41,6 +42,8 @@ namespace CodeShellCore.Web.Features
                 foreach (var c in cs)
                     feature.Controllers.Remove(c);
             }
+
+            
 
 
         }
