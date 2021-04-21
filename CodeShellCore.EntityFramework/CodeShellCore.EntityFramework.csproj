@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore\CodeShellCore.csproj" />
   </ItemGroup>
 
 </Project>

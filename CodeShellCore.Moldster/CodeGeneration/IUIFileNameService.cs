@@ -17,7 +17,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
         string GetComponentSelector(string name);
         string GetModuleFilePath(string tenantCode, string domainName, string parentDomain = null, bool createFolder = true);
         string GetBaseModuleFilePath(bool import);
-        string GetComponentImportPath(string name, string basePath = "./", bool fromDomain = true);
+        string GetComponentImportPath(string path, bool fromDomain = true);
         string GetLocalizationJsonPath(string moduleCode, string type, string loc);
         string GetLocalizationLoaderPath(string moduleCode, string loc);
     }

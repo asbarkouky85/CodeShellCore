@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>
@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Mobile\Asga.Mobile.csproj" />
-    <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Mobile\Asga.Mobile.csproj" />
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

@@ -314,22 +314,23 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             var main = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == modCode);
             var tempModel = new ModuleTsModel
             {
-                Code = modCode.UCFirst(),
+                Code = "App",
                 Modules = "",
                 ModuleImports = "",
-                MainComponentName = main,
-                MainComponentPath = _fileNameService.GetComponentImportPath(main, fromDomain: false),
+                MainComponentName = "AppComponent",
+                MainComponentPath = _fileNameService.GetComponentImportPath("app", fromDomain: false),
                 BaseName = _paths.CoreAppName,
                 BaseAppModuleName = _paths.CoreAppName.UCFirst() + "BaseModule",
                 BaseAppModulePath = _fileNameService.GetBaseModuleFilePath(true),
-                RoutesModulePath = "./" + _fileNameService.ApplyConvension(modCode + "Routing", AppParts.Module)
+                RoutesModulePath = "./" + _fileNameService.ApplyConvension("AppRouting", AppParts.Module)
             };
 
             var homePage = _unit.PageRepository.GetHomePagePath(modCode);
             if (homePage != null)
             {
-                tempModel.ModuleImports += _fileNameService.GetComponentImportPath(homePage);
-                tempModel.Declarations += homePage.GetAfterLast("/");
+                var name = homePage.GetAfterLast("/");
+                tempModel.ModuleImports += "import { " + name + " } from '" + _fileNameService.GetComponentImportPath(homePage,false) + "'";
+                tempModel.Declarations += name.GetAfterLast("/");
             }
 
             string moduleTemplate = _molds.AppModuleMold;
@@ -343,7 +344,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public virtual void GenerateRoutes(string modCode)
         {
-            string filePath = _fileNameService.GetModuleFilePath(modCode, modCode + "Routing", createFolder: false) + ".ts";
+            string filePath = _fileNameService.GetModuleFilePath(modCode, "AppRouting", createFolder: false) + ".ts";
             Out.Write($"Generating Routes [{modCode}Routes.ts] : ");
 
             if (!_opts.ReplaceMainRoutes && File.Exists(filePath))
@@ -370,11 +371,12 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 BaseName = _paths.CoreAppName
             };
 
-            string home = _unit.PageRepository.GetHomePagePath(modCode);
-            if (home != null)
+            string homePage = _unit.PageRepository.GetHomePagePath(modCode);
+            if (homePage != null)
             {
-                tempModel.ComponentImports += AngularUtils.ComponentImport(home, out string name);
-                tempModel.Routes += HomeRoute(name);
+                var name = homePage.GetAfterLast("/");
+                tempModel.ComponentImports += "import { " + name + " } from '" + _fileNameService.GetComponentImportPath(homePage, false) + "'";
+                tempModel.Routes += _homeRoute(name);
             }
 
             foreach (var domain in domains)
@@ -385,11 +387,11 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             string sep = "";
             foreach (var nav in navs)
             {
-                tempModel.DomainsData += sep + GetNavigationObject(nav);
+                tempModel.DomainsData += sep + _getNavigationObject(nav);
                 sep = ",\n\t\t\t";
             }
 
-            AppendLocaleLoaders(tempModel);
+            _appendLocaleLoaders(tempModel);
 
             string builder = _writer.FillStringParameters(routesTemplate, tempModel);
             Utils.CreateFolderForFile(filePath);
@@ -484,7 +486,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             }
 
             foreach (var item in newList)
-                GenerateDomainRecursive(item, moduleCode, parent);
+                _generateDomainRecursive(item, moduleCode, parent);
         }
 
         public virtual void GenerateDomainModule(string moduleCode, string domId)
@@ -517,7 +519,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         #region private methods
 
-        protected virtual void GenerateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null)
+        protected virtual void _generateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null)
         {
             string filePath = _fileNameService.GetModuleFilePath(tenantCode, dom.DomainName, parentDomain) + ".ts";
             Out.Write($"Generating {dom.DomainName}Module : ");
@@ -579,22 +581,21 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             {
                 string component = p.ComponentName;
 
-
                 model.Components += p.ComponentName + ",";
-                model.ComponentImports += $"import {{ {p.ComponentName} }} from '{_fileNameService.GetComponentImportPath(p.ComponentName)}'";
+                model.ComponentImports += $"import {{ {p.ComponentName} }} from '{_fileNameService.GetComponentImportPath(p.Page.ViewPath)}';\n";
                 model.Registrations += p.Registration;
 
                 if (p.Page.CanEmbed)
                     model.EmbeddedComponents += p.ComponentName + ", ";
                 else if (p.Page.HasRoute)
-                    model.Routes += "\t\t\t" + ChildRoute(p) + ",\n";
+                    model.Routes += "\t\t\t" + _childRoute(p) + ",\n";
             }
 
             if (dom.SubDomains != null)
             {
                 foreach (DomainWithPagesDTO dp in dom.SubDomains)
                 {
-                    model.Routes += _fileNameService.GetDomainLazyLoadingRoute(dp.DomainName);
+                    model.Routes += _fileNameService.GetDomainLazyLoadingRoute(dp.DomainName)+",";
                 }
             }
 
@@ -608,11 +609,11 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             if (dom.SubDomains != null && dom.SubDomains.Any())
             {
                 foreach (var d in dom.SubDomains)
-                    GenerateDomainRecursive(d, tenantCode, (parentDomain == null ? "" : parentDomain + "\\") + dom.DomainName);
+                    _generateDomainRecursive(d, tenantCode, (parentDomain == null ? "" : parentDomain + "\\") + dom.DomainName);
             }
         }
 
-        private void AppendLocaleLoaders(RoutesTsModel mod)
+        private void _appendLocaleLoaders(RoutesTsModel mod)
         {
             if (string.IsNullOrEmpty(_paths.LocalizationRoot))
                 return;
@@ -624,7 +625,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             }
         }
 
-        private string GetNavigationObject(NavigationGroupDTO dto)
+        private string _getNavigationObject(NavigationGroupDTO dto)
         {
             string children = "";
             foreach (var p in dto.Pages)
@@ -652,12 +653,12 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             return string.Format("{{\n\t\t\t\tname: \"{0}\" ,\n\t\t\t\tchildren: [{1}]\n\t\t\t}}", dto.Name, children);
         }
 
-        private string HomeRoute(string name)
+        private string _homeRoute(string name)
         {
             return $"{{ path: '', component: {name}, data: {{ action: 'anonymous' }} }},\n";
         }
 
-        private string ChildRoute(PageDTO p)
+        private string _childRoute(PageDTO p)
         {
             string routeTemplate = _molds.RouteMold;
             string param = p.Page.RouteParameters ?? "";

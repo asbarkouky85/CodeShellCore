@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   
   <PropertyGroup Label="Globals">
@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
-    <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Auth\Asga.Auth.csproj" />
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>

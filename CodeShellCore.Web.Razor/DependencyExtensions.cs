@@ -1,8 +1,4 @@
-﻿using System.Reflection;
-
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 
 using CodeShellCore.DependencyInjection;
@@ -38,7 +34,6 @@ using CodeShellCore.Web.Razor.General.Moldster;
 using CodeShellCore.Web.Razor.Tables.Angular;
 using CodeShellCore.Web.Razor.Tables.Moldster;
 using CodeShellCore.Web.Razor.SignalR;
-using CodeShellCore.Web.Razor.Configurator;
 using CodeShellCore.Web.Razor.Controllers.Configurator;
 
 namespace CodeShellCore.Web.Razor

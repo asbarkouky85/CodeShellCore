@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>
@@ -16,8 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Public.Module\Asga.Public.Module.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Public.Module\Asga.Public.Module.csproj" />
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.Web\CodeShellCore.Web.csproj" />
   </ItemGroup>
 
 </Project>

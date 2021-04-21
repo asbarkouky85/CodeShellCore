@@ -65,8 +65,8 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
         {
             domainPath = domainPath ?? "http";
             if (import)
-                return Utils.CombineUrl("@base", _angular_convesion(domainPath));
-            return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath));
+                return Utils.CombineUrl("@base", _angular_convesion(domainPath), "http");
+            return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath), "http");
         }
 
         public string GetSrcFolderPath(string type, string extension = ".ts")
@@ -132,13 +132,15 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             return Utils.CombineUrl(BaseFolder, path);
         }
 
-        public string GetComponentImportPath(string name, string basePath = "./", bool fromDomain = true)
+        public string GetComponentImportPath(string path, bool fromDomain = true)
         {
-            if (fromDomain)
+            if (path != "app")
             {
-                name = "components/" + name.GetAfterLast("/");
+                var component = path.GetAfterLast("/");
+                var domain = fromDomain ? "" : path.GetBeforeLast("/");
+                path = Utils.CombineUrl(domain, "components", component);
             }
-            return ApplyConvension(Utils.CombineUrl(basePath, name), AppParts.Component);
+            return ApplyConvension(Utils.CombineUrl("./", path), AppParts.Component);
         }
 
         public string GetLocalizationJsonPath(string moduleCode, string type, string loc)

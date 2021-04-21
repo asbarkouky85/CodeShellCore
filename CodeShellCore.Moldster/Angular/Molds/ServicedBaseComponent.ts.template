@@ -1,8 +1,8 @@
 ﻿import { %Parent% } from "%ParentPath%";
-import { Injectable } from "@angular/core";
 import { %Resource%Service } from "%ServicePath%";
+import { Component } from "@angular/core";
 
-@Injectable()
+@Component({ template : "" })
 export abstract class %Name% extends %Parent%{
 	Service = new %Resource%Service();
 }

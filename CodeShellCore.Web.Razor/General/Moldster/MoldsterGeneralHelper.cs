@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Text;
 using Microsoft.AspNetCore.Html;
@@ -78,12 +79,12 @@ namespace CodeShellCore.Web.Razor.General.Moldster
             if (!acc.Read)
                 return null;
             string componentPath = helper.GetViewParams().GetFromOther(id, def);
-
+            var nameService = helper.GetService<IUIFileNameService>();
             id = id != "none" ? "#" + id : null;
 
             if (!string.IsNullOrEmpty(componentPath))
             {
-                componentPath = componentPath.GetAfterLast("/").LCFirst();
+                componentPath = nameService.GetComponentSelector(componentPath.GetAfterLast("/"));
                 string attrString = attr == null ? "" : RazorUtils.ToAttributeString(attr);
                 res = $"<{componentPath} {id} [IsEmbedded]='true'{attrString}></{componentPath}>";
             }

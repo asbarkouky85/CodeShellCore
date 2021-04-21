@@ -252,9 +252,9 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.2" />
   </ItemGroup>
     <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <!--<ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
   </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Update="ShellComponents\Angular\Components\BreadCrumbs.cshtml">
