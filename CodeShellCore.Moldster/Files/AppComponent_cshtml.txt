@@ -1,11 +1,13 @@
 <ng-container *ngIf="Locale=='ar'">
-    <link href="/bootstrap-rtl.css" rel="stylesheet">
-    <link href="/moldster.css" rel="stylesheet">
-    <link href="/moldster-rtl.css" rel="stylesheet">
+    <link href="/assets/moldster/css/plugins/bootstrap.rtl.css" rel="stylesheet" />
+    <link href="/assets/moldster/css/moldster.css" rel="stylesheet" />
+    <link href="/assets/moldster/css/moldster.rtl.css" rel="stylesheet" />
+    <link href="/assets/moldster/css/treeStyle.rtl.css" rel="stylesheet" />
 </ng-container>
 
 <ng-container *ngIf="Locale=='en'">
-    <link href="/moldster.css" rel="stylesheet">
+    <link href="/assets/moldster/css/plugins/bootstrap.css" rel="stylesheet" />
+    <link href="/assets/moldster/css/moldster.css" rel="stylesheet" />
 </ng-container>
 
 <div [hidden]="!ShowLoader" class="loader-overlay">
