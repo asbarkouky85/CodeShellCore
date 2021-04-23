@@ -178,7 +178,7 @@ namespace CodeShellCore.Linq
         public static LoadResult<T> LoadWith<T>(this IQueryable<T> q, ListOptions<T> opts) where T : class
         {
             LoadResult<T> res = new LoadResult<T>();
-            
+
             ExpressionGenerator<T> gen = new ExpressionGenerator<T>();
 
             if (opts == null)
@@ -191,8 +191,8 @@ namespace CodeShellCore.Linq
                     Expression<Func<T, bool>> e = (Expression<Func<T, bool>>)opts.Filters[i];
                     q = q.Where(e);
                 }
-               
-                    res.TotalCount = q.Count(v => true);
+
+                res.TotalCount = q.Count(v => true);
             }
             else
             {

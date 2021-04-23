@@ -23,10 +23,6 @@ import { SharedModule } from "%PathToRoot%shared/shared.module";
 })
 export class %Name%Module {
 
-    constructor(trans: TranslateService, conf: ServerConfigBase) {
-        trans.setDefaultLang(conf.Locale);
-        trans.use(conf.Locale);
-    }
 }
 
 %Registrations%

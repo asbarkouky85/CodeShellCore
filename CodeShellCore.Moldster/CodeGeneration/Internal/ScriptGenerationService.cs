@@ -329,7 +329,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             if (homePage != null)
             {
                 var name = homePage.GetAfterLast("/");
-                tempModel.ModuleImports += "import { " + name + " } from '" + _fileNameService.GetComponentImportPath(homePage,false) + "'";
+                tempModel.ModuleImports += "import { " + name + " } from '" + _fileNameService.GetComponentImportPath(homePage, false) + "'";
                 tempModel.Declarations += name.GetAfterLast("/");
             }
 
@@ -595,7 +595,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             {
                 foreach (DomainWithPagesDTO dp in dom.SubDomains)
                 {
-                    model.Routes += _fileNameService.GetDomainLazyLoadingRoute(dp.DomainName)+",";
+                    model.Routes += _fileNameService.GetDomainLazyLoadingRoute(dp.DomainName) + ",";
                 }
             }
 
@@ -639,7 +639,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                     Navigate = "true",
                     Resource = p.ResourceName,
                     Apps = p.Apps == null ? "null" : "[" + p.Apps + "]",
-                    Url = p.Url
+                    Url = _fileNameService.ApplyConvension(p.Url, AppParts.Route)
                 };
                 var s = "\n\t\t\t\t\t{{ name: \"{0}\", navigate: {1}, resource:\"{2}\", action: {3}, apps: {4} , url: \"{5}\"}},";
                 children += string.Format(s,

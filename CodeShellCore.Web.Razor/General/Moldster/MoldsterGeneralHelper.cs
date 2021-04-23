@@ -15,6 +15,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
     {
         private IdentifierProcessor proc = new IdentifierProcessor();
         private ParameterProcessor par = new ParameterProcessor();
+
         public override IHtmlContent TabTitle(IHtmlHelper helper, string containerId, string activationVariable, string textId, IHtmlContent content, object attr)
         {
             if (!helper.GetAccessibility(containerId).Read)
@@ -59,8 +60,12 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         {
             par.Process(helper, link);
             var val = helper.GetViewParams().GetFromOther(link.Name, link.DefaultValue);
+
             if (string.IsNullOrEmpty(val))
                 return null;
+
+            var nam = helper.GetService<IUIFileNameService>();
+            val = nam.ApplyConvension(val, AppParts.Route);
             string l = "'/" + val + "/'";
             string id = "";
             if (link.IdExpression != null)
