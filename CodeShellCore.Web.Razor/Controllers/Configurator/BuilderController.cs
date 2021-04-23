@@ -30,7 +30,6 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
 
         public IActionResult AddSQLFiles()
         {
-            Bundling.AddSQLFiles();
             return Respond();
         }
 

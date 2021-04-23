@@ -1,7 +1,9 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
+using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Moldster.Configurator.Services
 {
@@ -25,7 +27,13 @@ namespace CodeShellCore.Moldster.Configurator.Services
             {
                 obj.IsActive = true;
             }
-            return base.Create(obj);
+            var res = base.Create(obj);
+            if (res.IsSuccess)
+            {
+                var srv = unit.ServiceProvider.GetService<IBuilderService>();
+                srv?.AddTenantToAngularJson(obj.Code);
+            }
+            return res;
         }
 
         public TenantEditDTO GetSingleDTO(long id)

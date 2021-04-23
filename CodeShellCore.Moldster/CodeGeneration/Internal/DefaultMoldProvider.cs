@@ -11,7 +11,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         private string baseComp;
         private string servicedBaseComp;
-       
+
         private string domModule_lazy;
 
         public DefaultMoldProvider()
@@ -35,6 +35,8 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             MainComponentMold = Encoding.UTF8.GetString(Properties.Resources.AppComponent_ts);
             BasicComponent = Encoding.UTF8.GetString(Properties.Resources.BasicComponent_ts);
             BaseModuleMold = Encoding.UTF8.GetString(Properties.Resources.BaseModule_ts);
+            AngularJson = Encoding.UTF8.GetString(Properties.Resources.angular_json);
+            AngularJsonProject = Encoding.UTF8.GetString(Properties.Resources.angular_json_project);
         }
 
         public virtual string BootMold { get; private set; }
@@ -67,6 +69,10 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
         public virtual string LookupComponent { get; private set; }
 
         public virtual string BaseModuleMold { get; private set; }
+
+        public string AngularJson { get; private set; }
+
+        public string AngularJsonProject { get; private set; }
 
         public virtual string GetBaseComponentMold(bool serviced)
         {

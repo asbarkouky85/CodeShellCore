@@ -1,4 +1,4 @@
-﻿import { ModuleWithPimport { ModuleWithProviders } from "@angular/compiler/src/core";
+﻿import { ModuleWithProviders } from "@angular/compiler/src/core";
 import { NgModule } from "@angular/core";
 import { CodeShellModule } from "codeshell/main";
 import { TokenStorage, SessionTokenData } from "codeshell/security";

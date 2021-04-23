@@ -1,9 +1,4 @@
-{
-    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-    "version": 1,
-    "newProjectRoot": "projects",
-    "projects": {
-    "tenantOne": {
+    "%Name%": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,9 +12,9 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/tenantOne",
+                        "outputPath": "dist/%Name%",
                         "index": "src/index.html",
-                        "main": "src/main-tenantOne.ts",
+                        "main": "src/main-%Name%.ts",
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.json",
                         "aot": true,
@@ -74,25 +69,25 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "tenantOne:build"
+                        "browserTarget": "%Name%:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "tenantOne:build:production"
+                            "browserTarget": "%Name%:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "tenantOne:build"
+                        "browserTarget": "%Name%:build"
                     }
                 },
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
                     "options": {
                         "tsConfig": [
-                            "tsconfig.json",
+                            "tsconfig.app.json",
                             "tsconfig.spec.json",
                             "e2e/tsconfig.json"
                         ],
@@ -103,9 +98,4 @@
                 }
             }
         }
-    },     
-    "defaultProject": "tenantOne",
-    "cli": {
-        "analytics": false
-    }
-}
+    },

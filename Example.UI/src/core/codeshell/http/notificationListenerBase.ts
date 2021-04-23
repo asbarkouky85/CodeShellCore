@@ -2,8 +2,9 @@ import { ServerEventListner } from "./serverEventListener";
 import { Shell } from "codeshell/shell";
 import { Observable } from "rxjs";
 import { SessionManager } from 'codeshell/security';
+import { Culture } from "codeshell/localization/locale-data";
 
-export class NotificationListenerBase extends ServerEventListner{
+export class NotificationListenerBase extends ServerEventListner {
 
     get NotificationsChanged(): Observable<number> {
         return this.Observe<number>("NotificationsChanged");
@@ -13,7 +14,7 @@ export class NotificationListenerBase extends ServerEventListner{
         if (this.IsConnected)
             await this.Stop();
         var deviceId = SessionManager.Current.GetDeviceId();
-        var lng = Shell.Main.Config.Locale;
+        var lng = Culture.Current.Language;
         var s = await this.connection.start();
         this.connectionId = await this.connection.invoke("SetUserConnectionId", userId, deviceId, lng) as string;
         return this.connectionId;

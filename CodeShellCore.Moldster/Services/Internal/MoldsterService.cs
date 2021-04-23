@@ -12,6 +12,7 @@ using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 using CodeShellCore.Text;
+using CodeShellCore.Moldster.Builder;
 
 namespace CodeShellCore.Moldster.Services.Internal
 {
@@ -24,6 +25,7 @@ namespace CodeShellCore.Moldster.Services.Internal
         IPageParameterDataService _pages => GetService<IPageParameterDataService>();
         IScriptGenerationService _ts => GetService<IScriptGenerationService>();
         ITemplateProcessingService _html => GetService<ITemplateProcessingService>();
+        IBuilderService _builder => GetService<IBuilderService>();
 
         public MoldsterService(IServiceProvider provider) : base(provider)
         {
@@ -36,6 +38,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             string st = _data.GetAppStyle(modCode);
 
             RenderMainComponent(modCode);
+            _builder.AddTenantToAngularJson(modCode);
 
             _ts.GenerateDomainModule(modCode, "Shared");
             _ts.GenerateRoutes(modCode);

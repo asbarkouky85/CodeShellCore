@@ -101,17 +101,18 @@ namespace CodeShellCore.Moldster
             coll.AddScoped<IPathsService, DefaultPathsService>();
             coll.AddScoped<EnvironmentAccessor>();
 
-            coll.AddTransient<IUIFileNameService, AngularFileNameService>();
-            coll.AddTransient<ILocalizationService, LocalizationService>();
-            coll.AddTransient<ICustomTextService, CustomTextService>();
-            coll.AddTransient<IMoldsterService, MoldsterService>();
-            coll.AddTransient<IScriptModelMappingService, ScriptModelMappingService>();
-            coll.AddTransient<IPublisherService, PublisherService>();
-            coll.AddTransient<IPublisherHttpService, PublisherHttpService>();
-            coll.AddTransient<ISqlCommandService, SqlCommandService>();
             coll.AddTransient<IBundlingService, BundlingService>();
-            coll.AddTransient<IPreviewService, PreviewService>();
+            coll.AddTransient<IBuilderService, BuilderService>();
+            coll.AddTransient<ICustomTextService, CustomTextService>();
+            coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IModulesService, ModulesService>();
+            coll.AddTransient<IMoldsterService, MoldsterService>();
+            coll.AddTransient<IPreviewService, PreviewService>();
+            coll.AddTransient<IPublisherHttpService, PublisherHttpService>();
+            coll.AddTransient<IPublisherService, PublisherService>();
+            coll.AddTransient<IScriptModelMappingService, ScriptModelMappingService>();
+            coll.AddTransient<ISqlCommandService, SqlCommandService>();
+            coll.AddTransient<IUIFileNameService, AngularFileNameService>();
 
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IDataService, DbDataService>();

@@ -74,6 +74,26 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] angular_json {
+            get {
+                object obj = ResourceManager.GetObject("angular_json", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] angular_json_project {
+            get {
+                object obj = ResourceManager.GetObject("angular_json_project", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;ng-container *ngIf=&quot;Locale==&apos;ar&apos;&quot;&gt;
         ///    &lt;link href=&quot;/bootstrap-rtl.css&quot; rel=&quot;stylesheet&quot;&gt;
         ///    &lt;link href=&quot;/moldster.css&quot; rel=&quot;stylesheet&quot;&gt;
@@ -110,11 +130,11 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import { Injectable } from &quot;@angular/core&quot;;
-        ///import { AppBaseComponent } from &quot;codeshell/base-components&quot;;
+        ///   Looks up a localized string similar to import { AppBaseComponent } from &quot;codeshell/base-components&quot;;
         ///import { ComponentLoader } from &quot;codeshell/directives&quot;;
+        ///import { Component } from &quot;@angular/core&quot;;
         ///
-        ///@Injectable()
+        ///@Component({ template : &quot;&quot; })
         ///export class AppComponentBase extends AppBaseComponent {
         ///    ModalLoader?: ComponentLoader | undefined;    
         ///}.
@@ -436,11 +456,11 @@ namespace CodeShellCore.Moldster.Properties {
         ///  &quot;private&quot;: true,
         ///  &quot;dependencies&quot;: {
         ///    &quot;@angular/animations&quot;: &quot;~11.0.0&quot;,
-        ///    &quot;@angular/localize&quot;: &quot;~11.1.1&quot;,
         ///    &quot;@angular/common&quot;: &quot;~11.0.0&quot;,
         ///    &quot;@angular/compiler&quot;: &quot;~11.0.0&quot;,
         ///    &quot;@angular/core&quot;: &quot;~11.0.0&quot;,
-        ///    &quot;@angular/for [rest of string was truncated]&quot;;.
+        ///    &quot;@angular/forms&quot;: &quot;~11.0.0&quot;,
+        ///    &quot;@angular/locali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string package_json {
             get {
@@ -595,108 +615,6 @@ namespace CodeShellCore.Moldster.Properties {
         public static string tsconfig_json {
             get {
                 return ResourceManager.GetString("tsconfig_json", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to USE [SID.Config]
-        ///GO
-        ////****** Object:  StoredProcedure [dbo].[SyncAuthDb]    Script Date: 5/4/2020 12:45:22 AM ******/
-        ///SET ANSI_NULLS ON
-        ///GO
-        ///SET QUOTED_IDENTIFIER ON
-        ///GO
-        ///ALTER PROCEDURE [dbo].[SyncAuthDb](
-        /// @tenantId bigint,
-        /// @dbName nvarchar(100)
-        ///)
-        ///AS
-        ///BEGIN
-        ///	SET NOCOUNT ON;
-        ///
-        ///
-        ///	declare @sql nvarchar(max)=&apos;&apos;;
-        ///
-        ///	set @sql =&apos;insert into [&apos;+@dbName+&apos;].Auth.Domains (Id,Name,CreatedOn,UpdatedOn)
-        ///	select Id,Name,CreatedOn,UpdatedOn
-        ///	from Domains
-        ///	where 
-        ///		ParentId is null AND 
-        ///		Id not in (select [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string update_v2_10_3 {
-            get {
-                return ResourceManager.GetString("update_v2_10_3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to exec sp_rename &apos;dbo.DomainEntityCollections&apos;, &apos;ResourceCollections&apos;;
-        ///GO
-        ///exec sp_rename &apos;dbo.TenantApps&apos;,&apos;Apps&apos;;
-        ///GO
-        ///exec sp_rename &apos;dbo.EntityCollectionConditions&apos;,&apos;ResourceCollectionConditions&apos;;
-        ///GO
-        ///
-        ///alter table ResourceCollections drop constraint FK_DomainEntityCollections_DomainEntities;
-        ///alter table ResourceCollections drop column DomainEntityId;
-        ///
-        ///alter table PageCategories drop constraint FK_PageCategories_DomainEntities1;
-        ///alter table PageCategories drop column DomainEntityId;
-        ///alter table Page [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string update_v2_15_0 {
-            get {
-                return ResourceManager.GetString("update_v2_15_0", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 
-        ///CREATE TABLE [dbo].[PageCategoryParameters](
-        ///	[Id] [bigint] NOT NULL,
-        ///	[Name] [varchar](50) NULL,
-        ///	[Type] [int] NOT NULL,
-        ///	[DefaultValue] [varchar](max) NULL,
-        ///	[PageCategoryId] [bigint] NOT NULL,
-        ///	[CreatedOn] [datetime] NULL,
-        ///	[CreatedBy] [bigint] NULL,
-        ///	[UpdatedOn] [datetime] NULL,
-        ///	[UpdatedBy] [bigint] NULL,
-        /// CONSTRAINT [PK_PageCategoryParameters] PRIMARY KEY CLUSTERED 
-        ///(
-        ///	[Id] ASC
-        ///)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_L [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string update_v2_6_0 {
-            get {
-                return ResourceManager.GetString("update_v2_6_0", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE [dbo].[CustomFields](
-        ///	[Id] [bigint] NOT NULL,
-        ///	[Name] [varchar](150) NULL,
-        ///	[Type] [varchar](50) NULL,
-        ///	[PageId] [bigint] NOT NULL,
-        ///	[CreatedOn] [datetime] NULL,
-        ///	[CreatedBy] [bigint] NULL,
-        ///	[UpdatedOn] [datetime] NULL,
-        ///	[UpdatedBy] [bigint] NULL,
-        /// CONSTRAINT [PK_CustomFields] PRIMARY KEY CLUSTERED 
-        ///(
-        ///	[Id] ASC
-        ///)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-        ///) ON [PRIMARY]
-        ///
-        ///GO
-        ///
-        ///ALTER TABLE [d [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string update_v2_8_0 {
-            get {
-                return ResourceManager.GetString("update_v2_8_0", resourceCulture);
             }
         }
         

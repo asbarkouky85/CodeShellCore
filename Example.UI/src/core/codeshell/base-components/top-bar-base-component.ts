@@ -10,6 +10,7 @@ import { NotificationListenerBase } from "codeshell/http/notificationListenerBas
 import { NotificationServiceBase } from "codeshell/http/notificationServiceBase";
 import { from } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { Culture } from "codeshell/localization/locale-data";
 
 
 @Component({ template: '' })
@@ -72,7 +73,7 @@ export class TopBarBase {
         });
 
         var conf: ServerConfigBase = Shell.Injector.get(ServerConfigBase);
-        this.Lang = conf.Locale;
+        this.Lang = Culture.Current.Language;
     }
 
     /**

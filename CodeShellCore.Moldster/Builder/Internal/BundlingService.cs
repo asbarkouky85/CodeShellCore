@@ -51,24 +51,6 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         #region environment
 
-        public void AddSQLFiles()
-        {
-            var sql = Properties.Resources.Creation;
-            var folder = Path.Combine(_paths.ConfigRoot, "SQL");
-            var createPath = Path.Combine(folder, "Creation.sql");
-            Utils.CreateFolderForFile(createPath);
-
-            WriteFileOperation("Adding SQL Update files", folder);
-            File.WriteAllText(createPath, sql);
-
-            File.WriteAllText(Path.Combine(folder, "update-v2.6.0.sql"), Properties.Resources.update_v2_6_0);
-            File.WriteAllText(Path.Combine(folder, "update-v2.8.0.sql"), Properties.Resources.update_v2_8_0);
-            File.WriteAllText(Path.Combine(folder, "update-v2.10.3.sql"), Properties.Resources.update_v2_10_3);
-            File.WriteAllText(Path.Combine(folder, "update-v2.15.0.sql"), Properties.Resources.update_v2_15_0);
-
-            Out.WriteLine();
-        }
-
         void AddToBaseFolder(string name, string content, bool checkForFolder = false, bool replace = false)
         {
             var path = Path.Combine(_names.BaseFolder, name);
@@ -117,12 +99,10 @@ namespace CodeShellCore.Moldster.Builder.Internal
         {
             string path = Path.Combine(_paths.UIRoot, "declarations.d.ts");
 
-            AddSQLFiles();
             BaseModuleFiles(replace);
 
-            //AddToUI("package.json", Properties.Resources.package_json, replace);
-            //AddToUI("tsconfig.json", Properties.Resources.tsconfig_json, replace);
-            //AddToUI("declarations.d.ts", Properties.Resources.declarations_d, replace);
+            AddToUI("package.json", Properties.Resources.package_json, replace);
+            AddToUI("tsconfig.json", Properties.Resources.tsconfig_json, replace);
 
             path = Path.Combine(_paths.ConfigRoot, "Views/AppComponent.cshtml");
             if (!File.Exists(path) || replace)
@@ -141,7 +121,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         public virtual void AddStaticFiles(bool replace)
         {
-            string folder = Path.Combine(_paths.UIRoot, "src/assets");
+            string folder = Path.Combine(_paths.UIRoot, "src/assets/moldster");
             UnZip(Properties.Resources.css, folder, "css", replace);
             UnZip(Properties.Resources.img, folder, "img", replace);
             UnZip(Properties.Resources.js, folder, "js", replace);

@@ -69,9 +69,9 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath), "http");
         }
 
-        public string GetSrcFolderPath(string type, string extension = ".ts")
+        public string GetSrcFolderPath(string fileName, string extension = ".ts", bool keepNameformat = false)
         {
-            return Utils.CombineUrl(_paths.UIRoot, "src", type.ToLower() + extension);
+            return Utils.CombineUrl(_paths.UIRoot, "src", (keepNameformat ? fileName : fileName.ToLower()) + extension);
         }
 
         public string GetBaseComponentFilePath(string viewFilePath, bool import = false)
@@ -145,12 +145,12 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public string GetLocalizationJsonPath(string moduleCode, string type, string loc)
         {
-            return Path.Combine(_paths.UIRoot, "src", moduleCode, "localization", loc, type + ".json");
+            return Path.Combine(_paths.UIRoot, "src", _angular_convesion(moduleCode), "localization", loc, type + ".json");
         }
 
         public string GetLocalizationLoaderPath(string moduleCode, string loc)
         {
-            return Path.Combine(_paths.UIRoot, "src", moduleCode, "localization", loc, "loader.ts");
+            return Path.Combine(_paths.UIRoot, "src", _angular_convesion(moduleCode), "localization", loc, "loader.ts");
         }
     }
 }

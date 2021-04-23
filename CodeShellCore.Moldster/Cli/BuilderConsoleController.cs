@@ -28,7 +28,7 @@ namespace CodeShellCore.Moldster.Cli
 
         public void AddSQLFiles()
         {
-            Scripts.AddSQLFiles();
+            
         }
 
         public void AddStaticFiles()

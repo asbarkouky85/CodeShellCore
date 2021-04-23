@@ -21,19 +21,26 @@ export class Shell {
     public static ViewLoaded: EventEmitter<any> = new EventEmitter<any>();
 
     static Word(text: string, ...params: string[]): string {
+        if (!text || text.length == 0)
+            return text;
         return Shell.Translator.instant('Words.' + text, ...params);
     }
 
     static Message(text: string, ...params: string[]): string {
-
+        if (!text || text.length == 0)
+        return text;
         return Shell.Translator.instant(text, ...params);
     }
 
     static Column(text: string): string {
+        if (!text || text.length == 0)
+            return text;
         return Shell.Translator.instant(text);
     }
 
     static Page(text: string): string {
+        if (!text || text.length == 0)
+            return text;
         return Shell.Translator.instant(text);
     }
 

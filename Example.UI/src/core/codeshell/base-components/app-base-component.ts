@@ -14,6 +14,7 @@ import { SessionManager, UserDTO } from "codeshell/security";
 import { HttpClient } from "@angular/common/http";
 import { ComponentLoader } from "codeshell/directives";
 import { TranslationService } from 'codeshell/localization/translationService';
+import { Culture } from "codeshell/localization/locale-data";
 
 @Component({ template: '' })
 export abstract class AppBaseComponent {
@@ -38,7 +39,8 @@ export abstract class AppBaseComponent {
     TokenIsExpired: EventEmitter<void> = new EventEmitter<void>();
     SideBarStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
     get FactoryResolver(): ComponentFactoryResolver { return Shell.Injector.get(ComponentFactoryResolver); }
-    get Config(): ServerConfigBase { return null; }
+    Config: ServerConfigBase;
+
     get Router(): Router { return Shell.Injector.get(Router); }
 
     OnDeleteConfirm: (e: Event) => void = e => { };
@@ -56,7 +58,9 @@ export abstract class AppBaseComponent {
         Shell.Injector = _injecto;
         Shell.Main = this;
 
-        this.ChangeLangAsync(this.Locale);
+        this._translation = _injecto.get(TranslationService);
+        this.Locale = Culture.Current.Language;
+        this.ChangeLangAsync(this.Locale, true);
 
         SessionManager.StartApp();
         SessionManager.Current.LogStatus.subscribe((d: boolean) => {
@@ -82,6 +86,7 @@ export abstract class AppBaseComponent {
         SessionManager.Current.OnUserDataFailed.subscribe((error: SubmitResult) => {
             this.ShowPromptTranslate(error.message);
         })
+        this.Config = Shell.Injector.get(ServerConfigBase);
         //this.Toaster = inj.get(ToastrService);
     }
 
@@ -106,11 +111,15 @@ export abstract class AppBaseComponent {
 
     OnLogStatusChanged(res: boolean) { }
 
-    ChangeLangAsync(code: string): Promise<Object> {
+    ChangeLangAsync(code: string, startup: boolean = false): Promise<Object> {
 
         this._translation = this._injecto.get(TranslationService);
-        var s = this._translation.use(code);
+        this._translation.use(code);
+        this._translation.setDefaultLang("ar");
+        Culture.Current.Language = code;
         this.Locale = code;
+        if (!startup)
+            location.reload();
         return Promise.resolve({});
     }
 

@@ -13,74 +13,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="assets\**" />
     <Compile Remove="Logs\**" />
+    <Content Remove="assets\**" />
     <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="assets\**" />
     <EmbeddedResource Remove="Logs\**" />
+    <None Remove="assets\**" />
     <None Remove="Logs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="assets\css\chiller-check.css" />
-    <Content Include="assets\css\fonts\fa-brands-400.eot" />
-    <Content Include="assets\css\fonts\fa-brands-400.svg" />
-    <Content Include="assets\css\fonts\fa-brands-400.ttf" />
-    <Content Include="assets\css\fonts\fa-brands-400.woff" />
-    <Content Include="assets\css\fonts\fa-brands-400.woff2" />
-    <Content Include="assets\css\fonts\fa-regular-400.eot" />
-    <Content Include="assets\css\fonts\fa-regular-400.svg" />
-    <Content Include="assets\css\fonts\fa-regular-400.ttf" />
-    <Content Include="assets\css\fonts\fa-regular-400.woff" />
-    <Content Include="assets\css\fonts\fa-regular-400.woff2" />
-    <Content Include="assets\css\fonts\fa-solid-900.eot" />
-    <Content Include="assets\css\fonts\fa-solid-900.svg" />
-    <Content Include="assets\css\fonts\fa-solid-900.ttf" />
-    <Content Include="assets\css\fonts\fa-solid-900.woff" />
-    <Content Include="assets\css\fonts\fa-solid-900.woff2" />
-    <Content Include="assets\css\fonts\fontawesome-webfont.eot" />
-    <Content Include="assets\css\fonts\fontawesome-webfont.svg" />
-    <Content Include="assets\css\fonts\fontawesome-webfont.ttf" />
-    <Content Include="assets\css\fonts\fontawesome-webfont.woff" />
-    <Content Include="assets\css\fonts\FontAwesome.otf" />
-    <Content Include="assets\css\gif-loader.css" />
-    <Content Include="assets\css\moldster.css" />
-    <Content Include="assets\css\moldster.rtl.css" />
-    <Content Include="assets\css\plugins\animate.css" />
-    <Content Include="assets\css\plugins\bootstrap.css" />
-    <Content Include="assets\css\plugins\bootstrap.css.map" />
-    <Content Include="assets\css\plugins\bootstrap.rtl.css" />
-    <Content Include="assets\css\plugins\font-awesome4.2.min.css" />
-    <Content Include="assets\css\plugins\fontawesome.css" />
-    <Content Include="assets\css\plugins\fontawesome.min.css" />
-    <Content Include="assets\css\plugins\fonts\primeicons.eot" />
-    <Content Include="assets\css\plugins\fonts\primeicons.svg" />
-    <Content Include="assets\css\plugins\fonts\primeicons.ttf" />
-    <Content Include="assets\css\plugins\fonts\primeicons.woff" />
-    <Content Include="assets\css\plugins\menu.css" />
-    <Content Include="assets\css\plugins\primeicons.css" />
-    <Content Include="assets\css\plugins\primeng.min.css" />
-    <Content Include="assets\css\plugins\quill.bubble.css" />
-    <Content Include="assets\css\plugins\quill.core.css" />
-    <Content Include="assets\css\plugins\quill.snow.css" />
-    <Content Include="assets\css\style.css" />
-    <Content Include="assets\css\style.rtl.css" />
-    <Content Include="assets\css\treeStyle.css" />
-    <Content Include="assets\css\treeStyle.rtl.css" />
-    <Content Include="assets\dist\ClientApp.css" />
-    <Content Include="assets\dist\vendor.css" />
-    <Content Include="assets\dist\vendor.dev.js" />
-    <Content Include="assets\dist\vendor.prod.js" />
-    <Content Include="assets\img\default_user.png" />
-    <Content Include="assets\img\loader.gif" />
-    <Content Include="assets\js\jquery-2.1.1.js" />
-    <Content Include="assets\js\jquery.Jcrop.min.js" />
-    <Content Include="assets\js\jquery.slimscroll.min.js" />
-    <Content Include="assets\Tmp\60cd5599-826b-4ab5-bbcc-600c3640be84.png" />
-    <Content Include="assets\Tmp\file1_logo.png" />
-    <Content Include="assets\Tmp\_logo.png" />
-    <Content Include="assets\Users\2018275346000_logo.png" />
-    <Content Include="assets\Users\2018275867001_logo.png" />
-    <Content Include="assets\Users\2018276251000_default_user.png" />
-    <Content Include="assets\Users\2018276756001_logo.png" />
   </ItemGroup>
 
   <ItemGroup>

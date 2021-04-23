@@ -22,7 +22,7 @@ import { Paginate, SearchGroup, DurationInput } from "./components";
 import { TranslationService, NgxTranslationService, Translator } from "./localization";
 import { AuthFilter } from "./security";
 import { AuthorizationServiceBase } from "./security/authorizationServiceBase";
-
+import { DialogModule } from 'primeng/dialog';
 import { TokenStorage } from "./security/tokenStorage";
 import { AbsoluteUrl } from "./pipes/absoluteUrl";
 
@@ -41,6 +41,7 @@ import { MatNativeDateModule } from "@angular/material/core";
         MatNativeDateModule,
         MatMomentDateModule,
         QuillModule.forRoot(),
+        DialogModule,
         //AngularDateTimePickerModule,
         TreeModule.forRoot(),
         TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: Translator } }),
@@ -64,6 +65,7 @@ import { MatNativeDateModule } from "@angular/material/core";
         MatDatepickerModule,
         MatNativeDateModule,
         MatMomentDateModule,
+        DialogModule,
         //AngularDateTimePickerModule,
         TreeModule,
         TranslateModule,

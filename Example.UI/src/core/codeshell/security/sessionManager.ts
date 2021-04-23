@@ -1,6 +1,6 @@
 ﻿import { LoginResult, UserDTO, TokenData } from "../security/models";
 import { Injectable, EventEmitter } from "@angular/core";
-import {  SubmitResult } from "../results";
+import { SubmitResult } from "../results";
 import * as Cookies from "js-cookie";
 import { String_GetAfterLast } from "../utilities/functions";
 import { Shell } from "../shell";
@@ -18,7 +18,7 @@ export class SessionManager {
     private static _loadPromise?: Promise<UserDTO>;
     private _tokenData: TokenData | null = null;
     private _tokenStorage?: TokenStorage;
-
+    
     IsLoggedIn = false;
     LogStatus: EventEmitter<boolean> = new EventEmitter<boolean>(false);
     OnLogin: EventEmitter<UserDTO> = new EventEmitter<UserDTO>();
@@ -30,7 +30,7 @@ export class SessionManager {
         return this._tokenStorage;
     }
 
-    static StartApp(){
+    static StartApp() {
         this._instance = new SessionManager;
         this._instance.GetDeviceId();
         this._instance.CheckToken();
@@ -188,10 +188,6 @@ export class SessionManager {
             s.view = false;
             return s;
         }
-    }
-
-    get Locale(): string | undefined {
-        return Cookies.get("Locale");
     }
 
 

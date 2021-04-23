@@ -17,7 +17,6 @@ namespace CodeShellCore.Moldster.Builder
         void AddCodeShell(bool replace);
         void AddShellComponents(bool replace);
         void GenerateEnvironment(bool replace);
-        void AddSQLFiles();
         string GetUIVersion();
 
         void PrepEnvironment(bool prod = false);

@@ -6,6 +6,7 @@ import { TokenData } from "../security/Models";
 import { SubmitResult } from "../results";
 import { Utils } from "../utilities/utils";
 import { TokenStorage } from '../security/tokenStorage';
+import { Culture } from "codeshell/localization/locale-data";
 
 export abstract class HttpServiceBase {
     protected abstract get BaseUrl(): string;
@@ -19,11 +20,13 @@ export abstract class HttpServiceBase {
 
     public get Headers(): any {
         let head: any = {
-            "tenant-code": this.Server.Domain,
-            "locale": this.Server.Locale,
+            "locale": Culture.Current.Language,
             "ui-version": this.Server.Version
         };
-        
+        if (this.Server.Domain) {
+            head["tenant-code"] = this.Server.Domain;
+        }
+
         let tok: TokenData | null = this.TokenStorage.LoadToken();
 
         if (tok != null)
@@ -42,7 +45,7 @@ export abstract class HttpServiceBase {
         this.Client = Shell.Injector.get(HttpClient);
         //this.Sessions = SessionManager.Current;
         this.TokenStorage = Shell.Injector.get(TokenStorage);
-        this.Server = Shell.Main.Config;
+        this.Server = Shell.Injector.get(ServerConfigBase);
     }
 
     public Get(action: string, params?: number | object): Promise<any> {

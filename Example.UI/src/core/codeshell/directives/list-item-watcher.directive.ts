@@ -1,10 +1,10 @@
 ﻿import { Directive, Input, ElementRef, HostListener } from "@angular/core";
 import { ListItem } from "../data";
 
-@Directive({ selector: "[acs-li-watch]", exportAs: "liWatch" })
+@Directive({ selector: "[li-watch]", exportAs: "liWatch" })
 export class ListItemWatcher {
     item: ListItem | null = null;
-    @Input("acs-li-watch") mod?: any;
+    @Input("li-watch") mod?: any;
 
     @HostListener("change", ['$event']) Change(ev: any) {
         if (this.item){

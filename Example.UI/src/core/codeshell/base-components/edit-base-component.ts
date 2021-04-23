@@ -11,7 +11,7 @@ import { Output } from "@angular/core";
 import { Observable } from "rxjs";
 
 
-@Component({template:''})
+@Component({ template: '' })
 export abstract class EditComponentBase extends BaseComponent {
 
     model: any = {};
@@ -61,8 +61,7 @@ export abstract class EditComponentBase extends BaseComponent {
 
     private _bound?: any;
 
-
-    abstract get Service(): EntityHttpService;
+    Service: EntityHttpService;
 
     ngOnInit() {
         super.ngOnInit();

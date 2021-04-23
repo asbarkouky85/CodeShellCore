@@ -1,15 +1,18 @@
-﻿@model NgInput
+﻿@model FileNgInput
 
 <div class="input-group input-append" @Html.Raw(Model.CalendarOptions)>
     <input type="@Model.TextBoxType"
+           
            class="form-control @Model.Classes"
            placeholder="@Model.PlaceHolder"
            name="@Html.Raw(Model.FieldName)"
-           ngbDatepicker
-           @(Html.Raw("#"+Model.FieldName))="ngbDatepicker"
-           [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+           submit-required="true"
+           hijri-calendar
+           ng-model="@Model.NgModelName@(".")@Model.MemberName"
+           readonly="readonly"
+
            @Html.Raw(Model.Attributes)>
-    <span class="input-group-addon add-on" (click)="@(Html.Raw(Model.FieldName)).toggle()">
+    <span class="input-group-addon add-on">
         <span class="fa fa-calendar"></span>
     </span>
 </div>
