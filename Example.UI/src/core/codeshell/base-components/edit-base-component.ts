@@ -18,6 +18,7 @@ export abstract class EditComponentBase extends BaseComponent {
     Form?: NgForm;
     FormGroup?: FormGroup;
     CurrentLang: string = "ar";
+    navSection?:any;
 
     UI_Lang: string = "ar";
 
@@ -344,7 +345,7 @@ export abstract class EditComponentBase extends BaseComponent {
         Utils.HandleError(res, true);
     }
 
-    Delete(id: number) {
+    Delete(id: number, id2?: any) {
         Shell.Main.ShowDeleteConfirm().then(e => {
             if (e) {
                 this.Service.Delete("Delete", id).then(e => {

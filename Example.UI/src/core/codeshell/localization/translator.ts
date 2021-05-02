@@ -7,6 +7,7 @@ export class Translator extends TranslateLoader {
     private static Loaders: { [id: string]: LocaleLoader } = {};
 
     static SetLoaders(loaders: { [id: string]: LocaleLoader }) {
+
         Translator.Loaders = loaders;
     }
 

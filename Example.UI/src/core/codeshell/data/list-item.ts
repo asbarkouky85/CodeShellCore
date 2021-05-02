@@ -19,7 +19,7 @@ export class ListItem implements IModel {
         return items.filter(e => e.state != 'Removed' && e.state != 'Detached').length;
     }
 
-    public static GetChangedItems(items: ListItem[]): ListItem[] {
+    public static GetChangedItems<T extends ListItem>(items: T[]): T[] {
 
         return items.filter(e => e.state == "Added" || e.state == "Modified" || e.state == "Removed");
     }

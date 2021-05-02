@@ -17,12 +17,18 @@ export abstract class HttpServiceBase {
 
     Silent: boolean = false;
     SignalRConnctionId?: string;
+    ServiceKey?: string;
+
+    private _baseUrl?: string;
 
     public get Headers(): any {
         let head: any = {
             "locale": Culture.Current.Language,
-            "ui-version": this.Server.Version
         };
+        if (this.Server.Version) {
+            head['ui-version'] = this.Server.Version;
+        }
+
         if (this.Server.Domain) {
             head["tenant-code"] = this.Server.Domain;
         }
@@ -46,6 +52,19 @@ export abstract class HttpServiceBase {
         //this.Sessions = SessionManager.Current;
         this.TokenStorage = Shell.Injector.get(TokenStorage);
         this.Server = Shell.Injector.get(ServerConfigBase);
+
+    }
+
+    private get _base() {
+        if (!this._baseUrl) {
+            this._baseUrl = "";
+            if (this.ServiceKey && this.Server.Urls[this.ServiceKey]) {
+                this._baseUrl = this.Server.Urls[this.ServiceKey];
+            } else if (this.Server.ApiUrl) {
+                this._baseUrl = this.Server.ApiUrl;
+            }
+        }
+        return this._baseUrl;
     }
 
     public Get(action: string, params?: number | object): Promise<any> {
@@ -93,7 +112,7 @@ export abstract class HttpServiceBase {
 
 
     protected InitializeRequest(action: string, params?: number | object, body?: any): HttpRequest {
-        let url: string = this.BaseUrl + "/" + action;
+        let url: string = this._base + this.BaseUrl + "/" + action;
         let r: HttpRequest = new HttpRequest(url, params, body);
         r.Params.headers = this.Headers;
         return r;

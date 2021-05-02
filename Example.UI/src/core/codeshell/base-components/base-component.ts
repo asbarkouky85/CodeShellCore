@@ -44,6 +44,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     SubmitClicked: boolean = false;
     IsChild = false;
     ModalWidth: any = 768;
+    navSection?:any;
 
     get Navigation(): Location { return Shell.Injector.get(Location); }
     get Loc(): LocalizablesDTO { return new LocalizablesDTO() };

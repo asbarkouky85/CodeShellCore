@@ -74,11 +74,10 @@ export abstract class ListComponentBase extends BaseComponent {
         this.LoadData();
     }
 
-    protected Delete(item: any) {
-
+    Delete(id: any) {
         if (this.Debug)
-            console.log("Deleting", item)
-        this.DeleteAsync(item).then(d => {
+            console.log("Deleting", id)
+        this.DeleteAsync(id).then(d => {
             if (d.canDelete) {
                 this.NotifyTranslate("delete_success");
                 this.LoadData();
@@ -92,19 +91,15 @@ export abstract class ListComponentBase extends BaseComponent {
         });
     }
 
-    async DeleteAsync(item: any): Promise<DeleteResult> {
+    async DeleteAsync(id: any): Promise<DeleteResult> {
         var c = await Shell.Main.ShowDeleteConfirm();
         if (!c) {
             return Promise.reject("cancelled");
         }
-        return await this.Service.AttemptDelete(item);
+        return await this.Service.AttemptDelete(id);
     }
 
-    protected async AttemptDelete(item: any): Promise<DeleteResult> {
-        let id = item.id;
-        if (id == undefined) {
-            id = item.entity.id;
-        }
+    protected async AttemptDelete(id: any): Promise<DeleteResult> {
         var s = await this.Service.AttemptDelete(id);
 
         if (s.canDelete) {

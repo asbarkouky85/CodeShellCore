@@ -6,6 +6,7 @@ import { CodeShellModule, Registry, ServerConfigBase } from "codeshell/main";
 import { AuthFilter, ResourceActions } from "codeshell/security";
 
 import { SharedModule } from "%PathToRoot%shared/shared.module";
+import { Culture } from "codeshell/localization/locale-data";
 
 %ComponentImports%
 
@@ -22,7 +23,10 @@ import { SharedModule } from "%PathToRoot%shared/shared.module";
 	entryComponents:[%EmbeddedComponents%]
 })
 export class %Name%Module {
-
+	constructor(srv: TranslateService) {
+		srv.use(Culture.Current.Language);
+		srv.setDefaultLang(Culture.Current.Language);
+	}
 }
 
 %Registrations%
