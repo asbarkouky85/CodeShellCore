@@ -6,6 +6,11 @@ export class PropertyFilter {
     Ids: any[] = [];
 }
 
+export class StoredLoadOptions {
+    route: string = "";
+    options: LoadOptions = new LoadOptions();
+}
+
 export class LoadOptions {
     Showing: number = 0;
     Skip: number = 0;

@@ -17,8 +17,4 @@
     <RootNamespace>Asga.Auth</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore\CodeShellCore.csproj" />
-  </ItemGroup>
-
 </Project>

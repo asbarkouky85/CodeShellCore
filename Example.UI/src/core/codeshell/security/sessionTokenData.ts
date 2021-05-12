@@ -1,22 +1,21 @@
 ﻿import { TokenStorage } from "./tokenStorage";
 import { TokenData } from "./models";
-import * as Cookies from "js-cookie";
-import { Stored } from "codeshell/services/stored";
+import { StorageType, Stored } from "codeshell/services";
 
 export class SessionTokenData extends TokenStorage {
 
     LoadToken(): TokenData | null {
-        
-        return Stored.Get_SS("TokenData", TokenData);
+
+        return Stored.Get("TokenData", TokenData, StorageType.Session);
     }
 
     SaveToken(data: TokenData) {
-       
-        Stored.Set_SS("TokenData", data);
+
+        Stored.Set("TokenData", data, StorageType.Session);
     }
 
     Clear() {
-        Stored.Clear_SS("TokenData");
+        Stored.Clear("TokenData", StorageType.Session);
         localStorage.removeItem("refresh");
     }
 }

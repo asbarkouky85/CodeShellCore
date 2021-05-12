@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Dashboard\Asga.Dashboard.csproj" />
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.Web\CodeShellCore.Web.csproj" />
   </ItemGroup>
 
 </Project>

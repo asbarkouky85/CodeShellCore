@@ -15,13 +15,13 @@ export class Utils {
     private static lastSec: number;
 
     static GetQueryString(obj: any) {
-        var str = [];
-        for (var p in obj)
-            if (obj.hasOwnProperty(p)) {
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            }
-        return str.join("&");
-    }
+		var str = [];
+		for (var p in obj)
+			if (obj[p]) {
+				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+			}
+		return str.join("&");
+	}
 
     static GetIdString(): string {
         let sec = new Date().getTime();

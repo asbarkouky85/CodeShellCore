@@ -5,7 +5,8 @@ import { Shell } from "../shell";
 import { ListSelectionService } from "codeshell/services/listSelectionService";
 import { Utils } from "codeshell/main";
 import { Component } from '@angular/core';
-import { LoadOptions, PropertyFilter } from '../data/listing';
+import { LoadOptions, PropertyFilter, StoredLoadOptions } from '../data/listing';
+import { StorageType, Stored } from "codeshell/services";
 
 
 @Component({ template: '' })
@@ -18,7 +19,7 @@ export abstract class ListComponentBase extends BaseComponent {
     totalCount: number = 0;
     pageIndex: number = 0;
     options: LoadOptions = { Showing: 10, Skip: 0 };
-
+    storeLoadOptions = true;
     Loader?: (opts: LoadOptions) => Promise<LoadResult>;
     private _sortingClass: string | null = null;
 
@@ -27,6 +28,15 @@ export abstract class ListComponentBase extends BaseComponent {
 
     ngOnInit(): void {
         super.ngOnInit();
+
+        var strd = Stored.Get("load_options", StoredLoadOptions, StorageType.Session);
+        if (strd) {
+            if (this.RouteData.name == strd.route) {
+                this.options = strd.options;
+                this.pageIndex = this.options.Skip / this.options.Showing;
+            }
+        }
+        
         let opts = this.GetLookupOptions();
         if (opts != null) {
             this.LoadLookupsAsync(opts).then(l => {
@@ -130,6 +140,11 @@ export abstract class ListComponentBase extends BaseComponent {
 
         let prom = this.LoadDataPromise();
         prom.then(e => {
+            if (this.storeLoadOptions) {
+                var opt = Object.assign(new LoadOptions(), this.options);
+                var stord: StoredLoadOptions = { route: this.RouteData.name, options: opt }
+                Stored.Set("load_options", stord, StorageType.Session);
+            }
             this.ProcessResponse(e);
             this.list = e.list;
             this.totalCount = e.totalCount;

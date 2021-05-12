@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Public\Asga.Public.csproj" />
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

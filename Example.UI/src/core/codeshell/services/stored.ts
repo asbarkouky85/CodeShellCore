@@ -1,26 +1,32 @@
-﻿export class Stored {
+﻿export enum StorageType { Local, Session }
+export class Stored {
 
-    public static Set<T>(index: string, item: T) {
+    public static Set<T>(index: string, item: T, type: StorageType = StorageType.Local) {
         let s = JSON.stringify(item);
-        localStorage.setItem(index, s);
+        switch (type) {
+            case StorageType.Local:
+                localStorage.setItem(index, s);
+                break;
+            case StorageType.Session:
+                sessionStorage.setItem(index, s);
+                break;
+        }
+
     }
 
-    public static Set_SS<T>(index: string, item: T) {
-        let s = JSON.stringify(item);
-        sessionStorage.setItem(index, s);
+    public static Clear(index: string, type: StorageType = StorageType.Local) {
+        switch (type) {
+            case StorageType.Local:
+                localStorage.removeItem(index);
+                break;
+            case StorageType.Session:
+                sessionStorage.removeItem(index);
+                break;
+        }
+
     }
 
-    public static Clear(index: string) {
-        localStorage.removeItem(index);
-    }
-
-    public static Clear_SS(index: string) {
-        sessionStorage.removeItem(index);
-    }
-
-    public static Get<T>(index: string, exp: new () => T): T | null {
-        var item = localStorage.getItem(index);
-
+    private static _toObject<T>(item: string | null, exp: new (...params: any[]) => T): T | null {
         if (item == undefined || item == null)
             return null;
 
@@ -36,21 +42,18 @@
         }
     }
 
-    public static Get_SS<T>(index: string, exp: new () => T): T | null {
-        var item = sessionStorage.getItem(index);
+    public static Get<T>(index: string, exp: new (...params: any[]) => T, type: StorageType = StorageType.Local): T | null {
+        let item = null;
 
-        if (item == undefined || item == null)
-            return null;
-
-        try {
-            let d: T = new exp;
-            let ob = JSON.parse(item);
-            Object.assign(d, ob);
-
-            return d;
-
-        } catch (e) {
-            return null;
+        switch (type) {
+            case StorageType.Local:
+                item = localStorage.getItem(index);
+                break;
+            case StorageType.Session:
+                item = sessionStorage.getItem(index);
+                break;
         }
+
+        return this._toObject(item, exp);
     }
 }
