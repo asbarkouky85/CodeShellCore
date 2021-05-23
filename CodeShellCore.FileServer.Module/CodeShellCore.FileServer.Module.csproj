@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
     <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.FileServer\CodeShellCore.FileServer.csproj" />
   </ItemGroup>
 

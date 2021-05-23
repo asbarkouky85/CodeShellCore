@@ -28,6 +28,7 @@ namespace CodeShellCore.Web
         protected virtual string urlRoot { get { return "~"; } }
         protected override string appRoot { get { return _appRoot; } }
         protected override string publicRelativePath => "wwwroot";
+        protected virtual bool IsSpa => false;
 
         protected IConfiguration Configuration;
 
@@ -74,12 +75,14 @@ namespace CodeShellCore.Web
                     });
                 }
             });
-            
+
             app.UseMvc(d =>
             {
-
                 RegisterRoutes(d);
             });
+
+            if (IsSpa)
+                app.Use(FallbackMiddlewareHandler);
 
             if (UseHealthChecks)
             {
@@ -104,6 +107,13 @@ namespace CodeShellCore.Web
 
         }
 
+        protected virtual async Task FallbackMiddlewareHandler(HttpContext context, Func<Task> next)
+        {
+            var file = System.IO.File.ReadAllText("wwwroot/index.html");
+            context.Response.ContentType = "text/html";
+            await context.Response.WriteAsync(file);
+        }
+
         public virtual void RegisterRoutes(IRouteBuilder routeBuilder)
         {
             routeBuilder.MapRoute(
@@ -126,7 +136,7 @@ namespace CodeShellCore.Web
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
-            
+
             coll.Configure<MvcOptions>(r =>
             {
                 r.EnableEndpointRouting = false;

@@ -15,4 +15,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
+  </ItemGroup>
+
 </Project>

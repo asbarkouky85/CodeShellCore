@@ -9,13 +9,14 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-<Version>5.0.3.0</Version>
-<AssemblyVersion>5.0.3.0</AssemblyVersion>
-<FileVersion>5.0.3.0</FileVersion>
+<Version>5.0.5.0</Version>
+<AssemblyVersion>5.0.5.0</AssemblyVersion>
+<FileVersion>5.0.5.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
     <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Mobile.Module\Asga.Mobile.Module.csproj" />
   </ItemGroup>
 

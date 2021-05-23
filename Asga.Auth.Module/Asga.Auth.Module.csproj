@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
     <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Auth\Asga.Auth.csproj" />
   </ItemGroup>
 
