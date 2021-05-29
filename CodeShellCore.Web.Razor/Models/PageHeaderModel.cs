@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using CodeShellCore.Moldster.CodeGeneration;
+using Microsoft.AspNetCore.Html;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,6 +26,9 @@ namespace CodeShellCore.Web.Razor.Models
 
         public void AddToButtons(IHtmlContent content = null, string function = null, string url = null, BtnClass btn = BtnClass.Default, string icon = null, string identifier = null, string classes = null, string title = null, object attr = null)
         {
+            
+            if (url != null)
+                url = RazorUtils.ApplyConvension(url, AppParts.Route);
             Buttons.Add(LinkModel.Make(content, function, url, btn, icon, identifier, classes, title, attr));
         }
     }

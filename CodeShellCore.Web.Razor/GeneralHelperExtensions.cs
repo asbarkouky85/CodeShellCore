@@ -19,6 +19,7 @@ using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Web.Razor.Validation.Internal;
 using CodeShellCore.Web.Razor.General;
 using Microsoft.Extensions.DependencyInjection;
+using CodeShellCore.Moldster.CodeGeneration;
 
 namespace CodeShellCore.Web.Razor
 {
@@ -152,11 +153,23 @@ namespace CodeShellCore.Web.Razor
         public static PageOptions Config(this IHtmlHelper helper)
         {
             PageOptions conf = helper.GetViewData<PageOptions>();
+
             helper.GetModelTypeName();
             if (conf == null)
             {
                 conf = new PageOptions();
                 helper.SetViewData(conf);
+            }
+            else
+            {
+                if (conf.ViewParams.AddUrl != null)
+                    conf.ViewParams.AddUrl = RazorUtils.ApplyConvension(conf.ViewParams.AddUrl, AppParts.Route);
+                if (conf.ViewParams.EditUrl != null)
+                    conf.ViewParams.EditUrl = RazorUtils.ApplyConvension(conf.ViewParams.EditUrl, AppParts.Route);
+                if (conf.ViewParams.DetailsUrl != null)
+                    conf.ViewParams.DetailsUrl = RazorUtils.ApplyConvension(conf.ViewParams.DetailsUrl, AppParts.Route);
+                if (conf.ViewParams.ListUrl != null)
+                    conf.ViewParams.ListUrl = RazorUtils.ApplyConvension(conf.ViewParams.ListUrl, AppParts.Route);
             }
             return conf;
         }

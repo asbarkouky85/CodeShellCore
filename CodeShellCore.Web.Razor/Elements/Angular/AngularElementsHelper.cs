@@ -12,6 +12,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Text;
 using CodeShellCore.Web.Razor.General.Moldster;
 using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.CodeGeneration;
 
 namespace CodeShellCore.Web.Razor.Elements.Angular
 {

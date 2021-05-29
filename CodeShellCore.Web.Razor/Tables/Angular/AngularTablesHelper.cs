@@ -42,7 +42,7 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
                 Classes = classes,
                 PermissionVariable = permissionName
             };
-            identifier = identifier?.ToLower();
+            _ = identifier?.ToLower();
 
             if (buttons != null)
             {

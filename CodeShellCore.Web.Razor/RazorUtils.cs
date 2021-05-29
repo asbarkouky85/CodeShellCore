@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Linq.Stringifiers;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Text;
 using CodeShellCore.Types;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -98,6 +99,11 @@ namespace CodeShellCore.Web.Razor
         {
             MemberExpression exp = (MemberExpression)expression.Body;
             return (exp.Expression is MemberExpression) ? (MemberExpression)exp.Expression : exp;
+        }
+
+        public static string ApplyConvension(string value, AppParts part)
+        {
+            return RazorConfig.NameService.ApplyConvension(value, part);
         }
 
         public static string GetButtonClass(BtnClass cls)
