@@ -12,7 +12,8 @@ namespace ConsoleTest1
         {
             { 1,"Reporting" },
             { 2,"Localization" },
-            { 3,"Tests" }
+            { 3,"Tests" },
+            { 4,"SendEvent" }
         };
 
         public void Reporting()
@@ -35,7 +36,7 @@ namespace ConsoleTest1
         public void SendEvent()
         {
             Transporter.Publish(new SimpleEvent { Id = 1, Message = "hiiiii" });
-            Transporter.Publish(new SimpleEvent2 { Id = 1, Message = "hiiiii" });
+            Transporter.Publish(new SimpleEvent2 { Id = 2, Message = "hiiiii2" });
         }
     }
 }

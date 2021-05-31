@@ -14,18 +14,19 @@ namespace ConsoleTest2.Consumers
     {
         public Task Consume(ConsumeContext<SimpleEvent> context)
         {
-            return ConsumeEvent(context, d =>
+            return ConsumeEvent<SimpleEvent>(context, d =>
             {
-                Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d.Id}] : {d.Message}");
+                Console.WriteLine();
+                Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d}");
                 return new SubmitResult(0);
             });
         }
 
         public Task Consume(ConsumeContext<SimpleEvent2> context)
         {
-            return ConsumeEvent(context, d =>
+            return ConsumeEvent<SimpleEvent2>(context, d =>
             {
-                Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d.Id}] : {d.Message}");
+                Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d}");
                 return new SubmitResult(1);
             });
         }
