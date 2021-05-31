@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Public.Module\Asga.Public.Module.csproj" />
+    <ProjectReference Include="..\Asga.Public.Module\Asga.Public.Module.csproj" />
   </ItemGroup>
 
 </Project>

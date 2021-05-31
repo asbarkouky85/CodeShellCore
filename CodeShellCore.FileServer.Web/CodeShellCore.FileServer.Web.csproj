@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.FileServer.Module\CodeShellCore.FileServer.Module.csproj" />
+    <ProjectReference Include="..\CodeShellCore.FileServer.Module\CodeShellCore.FileServer.Module.csproj" />
   </ItemGroup>
 
 </Project>

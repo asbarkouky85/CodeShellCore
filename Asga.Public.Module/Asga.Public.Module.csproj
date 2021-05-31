@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Public\Asga.Public.csproj" />
+    <ProjectReference Include="..\Asga.Public\Asga.Public.csproj" />
   </ItemGroup>
 
 </Project>

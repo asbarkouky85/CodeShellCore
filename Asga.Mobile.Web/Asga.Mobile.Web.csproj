@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\Asga.Mobile.Module\Asga.Mobile.Module.csproj" />
+    <ProjectReference Include="..\Asga.Mobile.Module\Asga.Mobile.Module.csproj" />
   </ItemGroup>
 
 </Project>

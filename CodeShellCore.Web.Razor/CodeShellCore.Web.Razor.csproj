@@ -253,9 +253,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
   </ItemGroup>
     <ItemGroup>
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
-    <ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <!--<ProjectReference Include="C:\_git\GitHub\CodeShellCore\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
+    <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
   </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Update="ShellComponents\Angular\Components\BreadCrumbs.cshtml">
