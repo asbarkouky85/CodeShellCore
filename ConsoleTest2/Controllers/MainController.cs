@@ -17,9 +17,10 @@ namespace ConsoleTest2.Controllers
 
         public void Events()
         {
-
-            Transporter.Publish(new SimpleEvent { Id = i, Message = "Message number [" + (i++).ToString("D2") + "]" });
-
+            var ev = new SimpleEvent { Id = i, Message = "Message number [" + (i++).ToString("D2") + "]" };
+            Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Sending [{ev}");
+            Transporter.Publish(ev);
+            
         }
     }
 }

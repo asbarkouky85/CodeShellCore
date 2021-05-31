@@ -12,6 +12,7 @@ namespace ExampleProject.Commander
 {
     public class ConsoleTest1Shell : ConsoleShell
     {
+        protected override bool useTransporter => true;
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
