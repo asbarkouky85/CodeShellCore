@@ -14,7 +14,7 @@ namespace CodeShellCore.Cli
     public class ConsoleService : ServiceBase
     {
         protected IOutputWriter Out;
-
+        protected ConsoleService() { }
         public ConsoleService(IOutputWriter writer)
         {
             Out = writer;

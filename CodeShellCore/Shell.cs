@@ -112,7 +112,7 @@ namespace CodeShellCore
             get
             {
                 if (_rootProvider == null)
-                    _rootProvider = _makeProvider();
+                    _rootProvider = buildRootProvider();
                 return _rootProvider;
             }
         }
@@ -175,7 +175,7 @@ namespace CodeShellCore
             }
         }
 
-        private IServiceProvider _makeProvider()
+        protected virtual IServiceProvider buildRootProvider()
         {
             ServiceCollection collection = new ServiceCollection();
             App.RegisterServices(collection);

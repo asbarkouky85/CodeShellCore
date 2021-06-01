@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Data;
+﻿using CodeShellCore.Cli.Routing;
+using CodeShellCore.Data;
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Services;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Cli
 {
@@ -33,7 +35,7 @@ namespace CodeShellCore.Cli
         public ConsoleShell()
         {
             var conf = new ConfigurationBuilder();
-            
+
             EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             conf.AddJsonFile($"appsettings.json", true, true);
@@ -51,6 +53,7 @@ namespace CodeShellCore.Cli
             cont.IsMain = true;
             cont.Run();
         }
+
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);

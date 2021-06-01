@@ -22,6 +22,8 @@ using CodeShellCore.Security.Authorization;
 using CodeShellCore.Caching;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using CodeShellCore.Cli.Routing;
+using CodeShellCore.Moldster.Cli;
 
 namespace CodeShellCore.Moldster
 {
@@ -133,6 +135,11 @@ namespace CodeShellCore.Moldster
         public static void AddMoldsterCli(this IServiceCollection coll)
         {
             coll.AddMoldsterCodeGeneration();
+        }
+
+        public static void AddMoldsterDispatchers(this ICliDispatcherBuilder b)
+        {
+            b.AddStartupHandler<MoldsterCliHandler>();
         }
     }
 }

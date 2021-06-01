@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
@@ -201,6 +202,22 @@ namespace CodeShellCore.Text
             double value = 0;
             double.TryParse(str, out value);
             return value;
+        }
+
+        public static T ConvertTo<T>(this string str)
+        {
+            if (string.IsNullOrEmpty(str))
+                return default(T);
+            var foo = TypeDescriptor.GetConverter(typeof(T));
+            return (T)foo.ConvertFromInvariantString(str);
+        }
+
+        public static object ConvertTo(this string str, Type t)
+        {
+            if (string.IsNullOrEmpty(str))
+                return null;
+            var foo = TypeDescriptor.GetConverter(t);
+            return foo.ConvertFromInvariantString(str);
         }
 
         public static bool GetPatternContents(this string subject, string pattern, out string[] data)
