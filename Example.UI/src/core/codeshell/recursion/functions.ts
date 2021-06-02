@@ -1,4 +1,5 @@
-import { TreeNode } from 'angular-tree-component';
+
+import { TreeNode } from '@circlon/angular-tree-component';
 import { RecursionModel } from './recursion-model';
 
 export function List_RunRecursively_Nodes(lst: TreeNode[], func: (m: TreeNode) => void) {

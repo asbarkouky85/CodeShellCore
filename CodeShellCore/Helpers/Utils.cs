@@ -271,6 +271,18 @@ namespace CodeShellCore.Helpers
                 Directory.CreateDirectory(info.Directory.FullName);
         }
 
+        public static void DeleteEmptyDirectories(string folder)
+        {
+            var dir = Directory.GetDirectories(folder, "*", SearchOption.AllDirectories);
+            foreach (var d in dir)
+            {
+                if (!Directory.GetFiles(d, "*", SearchOption.AllDirectories).Any())
+                {
+                    DeleteDirectory(d);
+                }
+            }
+        }
+
         public static bool DeleteDirectory(string path)
         {
             try
@@ -350,7 +362,7 @@ namespace CodeShellCore.Helpers
                 Addition++;
             else
                 Addition = 0;
-            
+
             currentSecond = thisSec;
 
             string st = (t.Year - 2000).ToString()

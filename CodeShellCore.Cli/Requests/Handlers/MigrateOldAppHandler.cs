@@ -2,6 +2,7 @@
 using CodeShellCore.Cli.Routing;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.CodeGeneration;
 using System;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace CodeShellCore.Cli.Requests.Handlers
 
         protected override Task<Result> HandleAsync(MigrateOldAppRequest request)
         {
-            var s = GetService<IBuilderService>();
+            var s = GetService<IMigrationService>();
             s.MigrateBaseModule("ClientApp");
             return Task.FromResult(new Result());
         }

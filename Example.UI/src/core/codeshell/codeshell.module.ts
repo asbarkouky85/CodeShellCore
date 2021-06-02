@@ -10,7 +10,7 @@ import { QuillModule } from "ngx-quill";
 
 //import { AngularDateTimePickerModule } from "angular2-datetimepicker";
 import { NgSelectModule } from "@ng-select/ng-select";
-import { TreeModule } from "angular-tree-component";
+import { TreeModule } from '@circlon/angular-tree-component';
 
 import {
     BsFormGroup, ShowIf, OnEnter, SlimScroll, ComponentLoader, ImagePreLoad,
@@ -43,7 +43,7 @@ import { MatNativeDateModule } from "@angular/material/core";
         QuillModule.forRoot(),
         DialogModule,
         //AngularDateTimePickerModule,
-        TreeModule.forRoot(),
+        TreeModule,
         TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: Translator } }),
     ],
     declarations: [

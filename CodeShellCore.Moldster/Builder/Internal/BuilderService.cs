@@ -12,17 +12,15 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Builder.Internal
 {
-    public class BuilderService : ConsoleService, IBuilderService
+    public class BuilderService : StandaloneConsoleService, IBuilderService
     {
-        private readonly IPathsService paths;
-        private readonly IMoldProvider molds;
-        private readonly IUIFileNameService naming;
-        private readonly WriterService writer;
-        public BuilderService(IOutputWriter output, IPathsService _paths, IMoldProvider _molds, IUIFileNameService _naming) : base(output)
+        private IPathsService paths => GetService<IPathsService>();
+        private IMoldProvider molds => GetService<IMoldProvider>();
+        private IUIFileNameService naming => GetService<IUIFileNameService>();
+        private WriterService writer;
+
+        public BuilderService(IServiceProvider provider) : base(provider)
         {
-            paths = _paths;
-            molds = _molds;
-            naming = _naming;
             writer = new WriterService();
         }
 
@@ -41,17 +39,6 @@ namespace CodeShellCore.Moldster.Builder.Internal
             return new Result();
         }
 
-        public Result MigrateBaseModule(string tenant)
-        {
-            var oldBasePath = Path.Combine(paths.UIRoot, "Core", paths.CoreAppName);
-
-            var files = Directory.GetFiles(oldBasePath, "*.ts", SearchOption.AllDirectories);
-            foreach (var f in files)
-            {
-                var viewPath = f.Replace(oldBasePath, "").Replace("\\","/");
-                var newPath = naming.GetBaseComponentFilePath(viewPath);
-            }
-            return new Result();
-        }
+        
     }
 }

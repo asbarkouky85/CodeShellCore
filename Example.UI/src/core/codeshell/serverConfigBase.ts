@@ -7,4 +7,5 @@ export class ServerConfigBase {
     Version?: string | null = null;
     ApiUrl?: string;
     Urls: { [key: string]: string } = {};
+    Production: boolean = false;
 }

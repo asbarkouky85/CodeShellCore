@@ -3,7 +3,7 @@ import { List_FindIdRecusive, List_RunRecursively, RecursionModel } from "../rec
 import { EntityHttpService } from "../http";
 import { SubmitResult, DeleteResult } from "../results";
 import { ViewChild, EventEmitter, Input, Component } from "@angular/core";
-import { TreeComponent, ITreeOptions, TreeNode } from "angular-tree-component";
+
 import { Shell } from "../shell";
 import { NgForm } from "@angular/forms";
 import { Utils } from "../utilities/utils";
@@ -13,6 +13,7 @@ import { EditComponentBase } from "../base-components/edit-base-component";
 import { Stored } from '../services';
 import { ComponentRequest } from '../components';
 import { List_RemoveItem } from 'codeshell/data';
+import { ITreeOptions, TreeComponent, TreeNode } from "@circlon/angular-tree-component";
 
 export class ExpandedItems {
     Items: number[] = [];
@@ -21,7 +22,8 @@ export class ExpandedItems {
 @Component({ template: '' })
 export abstract class TreeComponentBase extends BaseComponent {
 
-    abstract treeComponent?: TreeComponent;
+    @ViewChild(TreeComponent)
+    treeComponent?: TreeComponent;
     Form?: NgForm;
 
     @Input()

@@ -1,4 +1,5 @@
-﻿import { TreeNode } from "angular-tree-component";
+﻿import { TreeNode } from "@circlon/angular-tree-component";
+
 
 export class TreeEventArgs {
     

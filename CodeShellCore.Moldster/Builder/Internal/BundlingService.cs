@@ -17,32 +17,14 @@ using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
+using CodeShellCore.Moldster.Services;
 
 namespace CodeShellCore.Moldster.Builder.Internal
 {
-    public class BundlingService : ConsoleService, IBundlingService
+    public class BundlingService : FileHandlingService, IBundlingService
     {
-        
-        private readonly IPathsService _paths;
-        private readonly WriterService _writer;
-        private readonly IMoldProvider _molds;
-        private readonly IDataService _data;
-        private readonly IUIFileNameService _names;
-
-        public BundlingService(
-            
-            IPathsService paths,
-            IMoldProvider molds,
-            IDataService data,
-            IUIFileNameService names,
-            IOutputWriter output) : base(output)
+        public BundlingService(IServiceProvider provider) : base(provider)
         {
-            
-            _paths = paths;
-            _writer = new WriterService();
-            _molds = molds;
-            _data = data;
-            _names = names;
         }
 
         public virtual bool AddVToVersion { get { return true; } }
@@ -51,60 +33,44 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         #region environment
 
-        void AddToBaseFolder(string name, string content, bool checkForFolder = false, bool replace = false)
+
+
+        protected void BaseModuleFiles(bool replace)
         {
-            var path = Path.Combine(_names.BaseFolder, name);
-            if (checkForFolder)
-                Utils.CreateFolderForFile(path);
-            if (!File.Exists(path) || replace)
-            {
-                WriteFileOperation("Adding", name);
-                File.WriteAllText(path, content);
-            }
-        }
+            string content = Writer.FillStringParameters(Molds.BaseModuleMold, new DomainTsModel { Name = Paths.CoreAppName.UCFirst() + "Base" });
 
-        void AddToUI(string name, string content, bool replace = false)
-        {
-            var path = Path.Combine(_paths.UIRoot, name);
-            if (!File.Exists(path) || replace)
-            {
-                WriteFileOperation("Adding", name);
-                File.WriteAllText(path, content);
-            }
-        }
+            AddToBaseFolder(Names.ApplyConvension(Paths.CoreAppName + "BaseModule", AppParts.Module) + ".ts", content, true, replace);
+            AddToBaseFolder(Names.ApplyConvension("AppComponent", AppParts.BaseComponent) + ".ts", Properties.Resources.AppComponentBase_ts, true, replace);
 
-        void BaseModuleFiles(bool replace)
-        {
-            string content = _writer.FillStringParameters(_molds.BaseModuleMold, new DomainTsModel { Name = _paths.CoreAppName.UCFirst() + "Base" });
+            AddToBaseFolder(Names.ApplyConvension("Main/Login", AppParts.Component) + ".html", Properties.Resources.Login_html, true, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/Login", AppParts.Component) + ".ts", Properties.Resources.Login_ts, false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/topBar", AppParts.Component) + ".html", Properties.Resources.topBar_html, false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/topBar", AppParts.Component) + ".ts", Properties.Resources.topBar_ts, false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".html", Properties.Resources.navigationSideBar_html, false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".ts", Properties.Resources.navigationSideBar_ts, false, replace);
 
-            AddToBaseFolder(_names.ApplyConvension(_paths.CoreAppName + "BaseModule", AppParts.Module) + ".ts", content, true, replace);
-            AddToBaseFolder(_names.ApplyConvension("AppComponent", AppParts.BaseComponent) + ".ts", Properties.Resources.AppComponentBase_ts, true, replace);
-            
-            AddToBaseFolder(_names.ApplyConvension("Main/Login", AppParts.Component) + ".html", Properties.Resources.Login_html, true, replace);
-            AddToBaseFolder(_names.ApplyConvension("Main/Login", AppParts.Component) + ".ts", Properties.Resources.Login_ts, false, replace);
-            AddToBaseFolder(_names.ApplyConvension("Main/topBar", AppParts.Component) + ".html", Properties.Resources.topBar_html, false, replace);
-            AddToBaseFolder(_names.ApplyConvension("Main/topBar", AppParts.Component) + ".ts", Properties.Resources.topBar_ts, false, replace);
-            AddToBaseFolder(_names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".html", Properties.Resources.navigationSideBar_html, false, replace);
-            AddToBaseFolder(_names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".ts", Properties.Resources.navigationSideBar_ts, false, replace);
-
-            AddToBaseFolder(_names.ApplyConvension("http/AccountService", AppParts.Service) + ".ts", Properties.Resources.AccountService_ts, true, replace);
+            AddToBaseFolder(Names.ApplyConvension("http/AccountService", AppParts.Service) + ".ts", Properties.Resources.AccountService_ts, true, replace);
         }
 
         public void AddShellComponents(bool replace)
         {
-            UnZip(Properties.Resources.ShellComponents, _paths.ConfigRoot, "ShellComponents", replace);
+            UnZip(Properties.Resources.ShellComponents, Paths.ConfigRoot, "ShellComponents", replace);
+        }
+
+        public void GenerateTsEnvironment(bool replace)
+        {
+            AddToUI("package.json", Properties.Resources.package_json, replace);
+            AddToUI("tsconfig.json", Properties.Resources.tsconfig_json, replace);
+            AddToUI("src/declarations.d.ts", Properties.Resources.declarations_d, replace);
+            AddToUI("src/pollyfills.ts", Properties.Resources.pollyfills_ts, replace);
+            AddToUI("src/index.html", Properties.Resources.index_html, replace);
         }
 
         public void GenerateEnvironment(bool replace)
         {
-            string path = Path.Combine(_paths.UIRoot, "declarations.d.ts");
-
+            GenerateTsEnvironment(replace);
             BaseModuleFiles(replace);
-
-            AddToUI("package.json", Properties.Resources.package_json, replace);
-            AddToUI("tsconfig.json", Properties.Resources.tsconfig_json, replace);
-
-            path = Path.Combine(_paths.ConfigRoot, "Views/AppComponent.cshtml");
+            string path = Path.Combine(Paths.ConfigRoot, "Views/AppComponent.cshtml");
             if (!File.Exists(path) || replace)
             {
                 Utils.CreateFolderForFile(path);
@@ -116,18 +82,18 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         public void AddCodeShell(bool replace)
         {
-            UnZip(Properties.Resources.codeshell, _names.CoreFolder, "codeshell", replace);
+            UnZip(Properties.Resources.codeshell, Names.CoreFolder, "codeshell", replace);
         }
 
         public virtual void AddStaticFiles(bool replace)
         {
-            string folder = Path.Combine(_paths.UIRoot, "src/assets/moldster");
+            string folder = Path.Combine(Paths.UIRoot, "src/assets/moldster");
             UnZip(Properties.Resources.css, folder, "css", replace);
             UnZip(Properties.Resources.img, folder, "img", replace);
             UnZip(Properties.Resources.js, folder, "js", replace);
         }
 
-        void UnZip(byte[] bytes, string folder, string name, bool overwrite = false)
+        protected void UnZip(byte[] bytes, string folder, string name, bool overwrite = false)
         {
             using (var t = SW.Measure())
             {
@@ -163,7 +129,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         public string GetAppVersion(string code, bool uiIfLager = false)
         {
-            string ver = _data.GetAppVersion(code);
+            string ver = Data.GetAppVersion(code);
             if (string.IsNullOrEmpty(ver))
             {
                 return GetUIVersion();
@@ -231,7 +197,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
         public bool IsBundled(string moduleName, string version)
         {
             string bundleVersion = AddVToVersion ? "v" + version : version;
-            string mainScript = Path.Combine(_paths.UIRoot, "wwwroot\\dist", moduleName + "-" + bundleVersion + ".js");
+            string mainScript = Path.Combine(Paths.UIRoot, "wwwroot\\dist", moduleName + "-" + bundleVersion + ".js");
             if (File.Exists(mainScript))
             {
                 Out.WriteLine($"Version {bundleVersion} is already bundled for {moduleName}");
@@ -252,7 +218,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
             string name = $"webpack.{moduleName}.js";
 
             string args = $"--max_old_space_size=8138 node_modules/webpack/bin/webpack.js --config {name} --env.prod --env.version={version} --debug --progress";
-            var p = GetCommandProcess(_paths.UIRoot, "node", args);
+            var p = GetCommandProcess(Paths.UIRoot, "node", args);
             p.StartInfo.RedirectStandardOutput = trace;
             p.Start();
             if (trace)
@@ -284,7 +250,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
         {
 
             Out.Write("Updating [" + code + "] to version [" + version + "]");
-            var res = _data.SetAppVersion(code, version);
+            var res = Data.SetAppVersion(code, version);
             WriteSuccess();
             Out.WriteLine();
             return res;
@@ -294,7 +260,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         public virtual string GetUIVersion()
         {
-            var files = Directory.GetFiles(_paths.UIRoot, "*.csproj");
+            var files = Directory.GetFiles(Paths.UIRoot, "*.csproj");
             if (files.Length > 0)
             {
                 string contents = File.ReadAllText(files[0]);
@@ -308,7 +274,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
         public virtual void PrepEnvironment(bool prod = false)
         {
             string args = "install";
-            RunCommand(_paths.UIRoot, "npm", args, true);
+            RunCommand(Paths.UIRoot, "npm", args, true);
         }
 
 

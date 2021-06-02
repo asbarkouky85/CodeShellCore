@@ -63,10 +63,19 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public string GetHttpServiceFolder(string domainPath = null, bool import = false)
         {
-            domainPath = domainPath ?? "http";
-            if (import)
-                return Utils.CombineUrl("@base", _angular_convesion(domainPath), "http");
-            return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath), "http");
+            if (domainPath == null)
+            {
+                if (import)
+                    return "@base/http";
+                return Utils.CombineUrl(BaseFolder, "http");
+            }
+            else
+            {
+                if (import)
+                    return Utils.CombineUrl("@base", _angular_convesion(domainPath), "http");
+                return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath), "http");
+            }
+           
         }
 
         public string GetSrcFolderPath(string fileName, string extension = ".ts", bool keepNameformat = false)
