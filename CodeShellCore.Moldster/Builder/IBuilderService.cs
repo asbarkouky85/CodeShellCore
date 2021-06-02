@@ -5,6 +5,6 @@ namespace CodeShellCore.Moldster.Builder
     public interface IBuilderService
     {
         Result AddTenantToAngularJson(string tenant);
-        Result MigrateBaseModule(string uiPath, string baseApp);
+        Result MigrateBaseModule(string tenant);
     }
 }

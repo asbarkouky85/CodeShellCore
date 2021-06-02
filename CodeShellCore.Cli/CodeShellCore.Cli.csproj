@@ -9,8 +9,4 @@
     <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

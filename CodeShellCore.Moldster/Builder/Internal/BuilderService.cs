@@ -18,7 +18,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
         private readonly IMoldProvider molds;
         private readonly IUIFileNameService naming;
         private readonly WriterService writer;
-        public BuilderService(IOutputWriter output, IPathsService _paths, IMoldProvider _molds,IUIFileNameService _naming) : base(output)
+        public BuilderService(IOutputWriter output, IPathsService _paths, IMoldProvider _molds, IUIFileNameService _naming) : base(output)
         {
             paths = _paths;
             molds = _molds;
@@ -41,14 +41,14 @@ namespace CodeShellCore.Moldster.Builder.Internal
             return new Result();
         }
 
-        public Result MigrateBaseModule(string uiPath,string baseApp)
+        public Result MigrateBaseModule(string tenant)
         {
             var oldBasePath = Path.Combine(paths.UIRoot, "Core", paths.CoreAppName);
-            
+
             var files = Directory.GetFiles(oldBasePath, "*.ts", SearchOption.AllDirectories);
-            foreach(var f in files)
+            foreach (var f in files)
             {
-                var viewPath = f.Replace(oldBasePath, "");
+                var viewPath = f.Replace(oldBasePath, "").Replace("\\","/");
                 var newPath = naming.GetBaseComponentFilePath(viewPath);
             }
             return new Result();

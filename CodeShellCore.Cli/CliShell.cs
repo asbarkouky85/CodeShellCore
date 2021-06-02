@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Cli.Requests.Handlers;
 using CodeShellCore.Cli.Routing;
+using CodeShellCore.Cli.Services;
 using CodeShellCore.Moldster;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +18,8 @@ namespace CodeShellCore.Cli
 
             coll.AddMoldsterDbData(Configuration);
             coll.AddMoldsterCli();
+
+            coll.AddTransient<IPathsService, CliPathsService>();
         }
 
         protected override void RegisterHandlers(ICliDispatcherBuilder builder)

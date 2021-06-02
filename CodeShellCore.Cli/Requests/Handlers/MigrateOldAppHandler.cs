@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Cli.Requests;
 using CodeShellCore.Cli.Routing;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.Builder;
 using System;
 using System.Threading.Tasks;
 
@@ -14,11 +15,13 @@ namespace CodeShellCore.Cli.Requests.Handlers
 
         protected override void Build(ICliRequestBuilder<MigrateOldAppRequest> builder)
         {
-            builder.FillProperty(e => e.UIPath, 'u', "uipath", true);
+            
         }
 
         protected override Task<Result> HandleAsync(MigrateOldAppRequest request)
         {
+            var s = GetService<IBuilderService>();
+            s.MigrateBaseModule("ClientApp");
             return Task.FromResult(new Result());
         }
     }
