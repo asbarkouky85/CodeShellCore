@@ -40,24 +40,6 @@ namespace CodeShellCore.Web.Razor
 {
     public static class DependencyExtensions
     {
-        /// <summary>
-        /// adds /generationHub and opens cross origin requests for all
-        /// </summary>
-        /// <param name="app"></param>
-        public static void UseMoldsterServerGeneration(this IApplicationBuilder app)
-        {
-            app.UseRouting();
-            app.UseCors(d => d.WithOrigins("http://localhost:8050", "http://127.0.0.1:8050")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials());
-            app.UseEndpoints(d =>
-            {
-
-                d.MapHub<GenerationHub>("/generationHub");
-                d.MapHub<TasksHub>("/tasksHub");
-            });
-        }
 
         public static void AddMoldsterServerGeneration(this IServiceCollection coll)
         {

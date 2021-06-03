@@ -1,4 +1,6 @@
 ﻿using CodeShellCore.Web.Controllers;
+using CodeShellCore.Web.Filters;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace Example.UI.Controllers
 {
-    public class HomeController : MoldsterUIController
+    [QueryAuthorizeFilter(AllowAnonymous = true)]
+    public class HomeController : BaseMvcController
     {
-        public override string DefaultDomain => "Admin";
 
-        public override string GetDefaultTitle(string loc)
+        public IActionResult Index()
         {
-            return "Example";
+            var file = System.IO.File.ReadAllBytes("wwwroot/index.html");
+            return File(file, "text/html");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Moldster;
+using CodeShellCore.Web.Razor.SignalR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,12 +11,15 @@ namespace CodeShellCore.Web.Razor
 {
     public class MoldsterWebShell : WebShell
     {
+
         public MoldsterWebShell(IConfiguration config) : base(config)
         {
         }
 
+        protected override bool UseCors => true;
         protected virtual bool MigrateOnStartup => true;
         protected override bool useLocalization => false;
+        protected override string DefaultCorsOrigins => "http://localhost:8050,http://localhost:4200,http://127.0.0.1:8050";
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");
 
@@ -41,10 +45,10 @@ namespace CodeShellCore.Web.Razor
             coll.AddOptions<MoldsterModuleOptions>();
         }
 
-        public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
+        public override void RegisterEnpointRoutes(IEndpointRouteBuilder endpoint)
         {
-            app.UseMoldsterServerGeneration();
-            base.ConfigureHttp(app, env);
+            endpoint.MapHub<GenerationHub>("/generationHub");
+            endpoint.MapHub<TasksHub>("/tasksHub");
         }
 
         protected override void OnReady()

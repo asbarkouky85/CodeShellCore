@@ -51,7 +51,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public void GenerateMainFile(string moduleCode, bool addStyle = false)
         {
-            string bootPath = _fileNameService.GetSrcFolderPath("main-" + moduleCode, ".ts", keepNameformat: true);
+            string bootPath = _fileNameService.GetSrcFolderPath("main-" + moduleCode.LCFirst(), ".ts", keepNameformat: true);
             string pollyPath = _fileNameService.GetSrcFolderPath("polyfills");
             string indexPath = _fileNameService.GetSrcFolderPath("index", ".html");
             string dec = _fileNameService.GetSrcFolderPath("declarations.d");

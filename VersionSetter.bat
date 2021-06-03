@@ -24,16 +24,16 @@ toolset -p Asga.Mobile.Module 				5.0.6 -d %cd%
 
 toolset -p Asga.Dashboard 					5.0.6 -d %cd%
 
-toolset -p CodeShellCore.Moldster 			5.0.6.1 -d %cd%
+toolset -p CodeShellCore.Moldster 			5.0.7.0 -d %cd%
 
-toolset -p CodeShellCore.Web 				5.0.6 -d %cd%
-toolset -p CodeShellCore.Web.Razor 			5.0.6.1 -d %cd%
+toolset -p CodeShellCore.Web 				5.0.7 -d %cd%
+toolset -p CodeShellCore.Web.Razor 			5.0.7.0 -d %cd%
 
-toolset -p Asga.Auth.Web 					5.0.6 -d %cd%
-toolset -p Asga.Public.Web 					5.0.6 -d %cd%
-toolset -p Asga.Mobile.Web 					5.0.6 -d %cd%
-toolset -p Asga.Dashboard.Web 				5.0.6 -d %cd%
-toolset -p CodeShellCore.FileServer.Web 	5.0.6 -d %cd%
+toolset -p Asga.Auth.Web 					5.0.7 -d %cd%
+toolset -p Asga.Public.Web 					5.0.7 -d %cd%
+toolset -p Asga.Mobile.Web 					5.0.7 -d %cd%
+toolset -p Asga.Dashboard.Web 				5.0.7 -d %cd%
+toolset -p CodeShellCore.FileServer.Web 	5.0.7 -d %cd%
 
 toolset -p Asga.Auth.Molds 					2.14.2 -d %cd%
 toolset -p Asga.Public.Molds 				2.14.2 -d %cd%

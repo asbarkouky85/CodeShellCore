@@ -12,7 +12,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/%Name%",
+                        "outputPath": "wwwroot/%Name%",
                         "index": "src/index.html",
                         "main": "src/main-%Name%.ts",
                         "polyfills": "src/polyfills.ts",
@@ -32,7 +32,21 @@
                             "src/assets"
                         ],
                         "styles": [
-                            
+                            {
+                                "bundleName": "primeicons",
+                                "input": "node_modules/primeicons/primeicons.css",
+                                "inject": true
+                            },
+                            {
+                                "bundleName": "primeng.min",
+                                "input": "node_modules/primeng/resources/primeng.min.css",
+                                "inject": true
+                            },
+                            {
+                                "bundleName": "primeng.theme",
+                                "input": "node_modules/primeng/resources/themes/saga-blue/theme.css",
+                                "inject": true
+                            }
                         ],
                         "scripts": []
                     },
@@ -40,8 +54,8 @@
                         "production": {
                             "fileReplacements": [
                                 {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
+                                    "replace": "src/base/server-config.ts",
+                                    "with": "src/base/server-config.prod.ts"
                                 }
                             ],
                             "optimization": true,

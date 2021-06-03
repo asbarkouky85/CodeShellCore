@@ -29,6 +29,8 @@ namespace CodeShellCore.Web
         protected override string appRoot { get { return _appRoot; } }
         protected override string publicRelativePath => "wwwroot";
         protected virtual bool IsSpa => false;
+        protected virtual bool UseCors => false;
+        protected virtual string DefaultCorsOrigins => null;
 
         protected IConfiguration Configuration;
 
@@ -76,6 +78,23 @@ namespace CodeShellCore.Web
                 }
             });
 
+            if (UseCors)
+            {
+                var origins = getConfig("AllowedOrigins").Value ?? DefaultCorsOrigins;
+                app.UseRouting();
+                
+                app.UseCors(d => d.WithOrigins(origins.Split(","))
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials());
+                app.UseEndpoints(e => RegisterEnpointRoutes(e));
+            }
+            else
+            {
+                app.UseRouting();
+                app.UseEndpoints(e => RegisterEnpointRoutes(e));
+            }
+
             app.UseMvc(d =>
             {
                 RegisterRoutes(d);
@@ -112,6 +131,11 @@ namespace CodeShellCore.Web
             var file = System.IO.File.ReadAllText("wwwroot/index.html");
             context.Response.ContentType = "text/html";
             await context.Response.WriteAsync(file);
+        }
+
+        public virtual void RegisterEnpointRoutes(IEndpointRouteBuilder routes)
+        {
+
         }
 
         public virtual void RegisterRoutes(IRouteBuilder routeBuilder)
