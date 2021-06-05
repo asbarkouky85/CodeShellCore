@@ -32,7 +32,7 @@
     <Content Remove="Angular\Molds\BaseComponent.ts.template" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>

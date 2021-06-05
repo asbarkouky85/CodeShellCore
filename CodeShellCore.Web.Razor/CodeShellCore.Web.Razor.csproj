@@ -7,7 +7,7 @@
     <FileVersion>5.0.7.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  
+
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>
     <SccProvider>SAK</SccProvider>
@@ -16,7 +16,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
+  </ItemGroup>
+
+  <ItemGroup>
+
     <EmbeddedResource Include="ShellComponents\**" />
   </ItemGroup>
 
@@ -247,32 +258,25 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
+
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
+    <EmbeddedResource Update="ShellComponents\Angular\Components\BreadCrumbs.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ShellComponents\Angular\Components\SectionHead.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ShellComponents\Angular\Components\ValidationMessages.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
   </ItemGroup>
-    <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
+  <ItemGroup>
+    <EmbeddedResource Update="ShellComponents\Angular\PageHeader.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
   </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Update="ShellComponents\Angular\Components\BreadCrumbs.cshtml">
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Update="ShellComponents\Angular\Components\SectionHead.cshtml">
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Update="ShellComponents\Angular\Components\ValidationMessages.cshtml">
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </EmbeddedResource>
-    </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Update="ShellComponents\Angular\PageHeader.cshtml">
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </EmbeddedResource>
-    </ItemGroup>
-  
+
 
 </Project>

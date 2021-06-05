@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
   </ItemGroup>
 
 </Project>
