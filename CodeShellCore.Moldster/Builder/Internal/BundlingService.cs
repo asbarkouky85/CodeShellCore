@@ -62,7 +62,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
             AddToUI("package.json", Properties.Resources.package_json, replace);
             AddToUI("tsconfig.json", Properties.Resources.tsconfig_json, replace);
             AddToUI("src/declarations.d.ts", Properties.Resources.declarations_d, replace);
-            AddToUI("src/pollyfills.ts", Properties.Resources.pollyfills_ts, replace);
+            AddToUI("src/polyfills.ts", Properties.Resources.pollyfills_ts, replace);
             AddToUI("src/index.html", Properties.Resources.index_html, replace);
         }
 
