@@ -18,7 +18,7 @@ export class SessionManager {
     private static _loadPromise?: Promise<UserDTO>;
     private _tokenData: TokenData | null = null;
     private _tokenStorage?: TokenStorage;
-    
+
     IsLoggedIn = false;
     LogStatus: EventEmitter<boolean> = new EventEmitter<boolean>(false);
     OnLogin: EventEmitter<UserDTO> = new EventEmitter<UserDTO>();
@@ -71,7 +71,6 @@ export class SessionManager {
     }
 
     GetUserAsync(): Promise<UserDTO> {
-
         if (userData) {
             return Promise.resolve(userData);
         }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using CodeShellCore.Web;
 using Asga.Mobile.Business;
+using Microsoft.AspNetCore.Routing;
 
 namespace Asga.Mobile
 {
@@ -17,12 +18,14 @@ namespace Asga.Mobile
             coll.AddSignalR();
             coll.AddSignalRHub<INotificationsPushingContract, NotificationsHub>();
         }
-        public static void UseAsgaMobileSignalR(this IApplicationBuilder app)
+
+        /// <summary>
+        /// .MapHub<NotificationsHub>("/notificationsHub")
+        /// </summary>
+        /// <param name="b"></param>
+        public static void UseAsgaMobileHubs(this IEndpointRouteBuilder b)
         {
-            app.UseEndpoints(d =>
-            {
-                d.MapHub<NotificationsHub>("/notificationsHub");
-            });
+            b.MapHub<NotificationsHub>("/notificationsHub");
         }
     }
 }

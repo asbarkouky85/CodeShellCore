@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Web.Moldster;
-using Asga.Auth;
+﻿using Asga.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -9,14 +8,18 @@ using CodeShellCore.Security.Authorization;
 using CodeShellCore.Data.ConfiguredCollections;
 using Asga.Security;
 using CodeShellCore.Helpers;
+using CodeShellCore.Web;
 using CodeShellCore.FileServer;
+using CodeShellCore.FileServer.Data;
 
 namespace Example.UI
 {
-    public class UIShell : MoldsterShell
+    public class UIShell : WebShell
     {
         protected override bool useLocalization => true;
         protected override string localizationAssembly => "Example";
+        protected override bool IsSpa => true;
+        protected override bool UseCors => true;
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");
         public UIShell(IConfiguration config) : base(config)
@@ -26,14 +29,16 @@ namespace Example.UI
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
-            coll.AddAuthModule(false);
-            coll.AddAsgaWeb();
+            coll.AddAsgaAuthModule(Configuration, false);
+            coll.AddAsgaAuthWeb();
             coll.AddFileServerModule(Configuration);
         }
 
-        public override void AddMvcFeatures(IMvcBuilder mvc)
+        protected override void OnApplicationStarted(IServiceProvider prov)
         {
-            base.AddMvcFeatures(mvc);
+            base.OnApplicationStarted(prov);
+            prov.MigrateAuthDb();
+            prov.MigrateContext<FileServerDbContext>();
         }
 
         protected override void OnReady()
@@ -44,8 +49,8 @@ namespace Example.UI
                 var rols = u.UserAs<UserDTO>().Roles.Select(e => long.Parse(e)).ToList();
                 return d => d.UserRoles.Any(e => rols.Any(f => e.RoleId == f));
             });
-            var tok = Utils.CreateClientToken(new AppClient { ClientId = "Test.App" });
-            Console.WriteLine(tok);
+            //var tok = Utils.CreateClientToken(new AppClient { ClientId = "Test.App" });
+            //Console.WriteLine(tok);
         }
     }
 }

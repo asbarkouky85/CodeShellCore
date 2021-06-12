@@ -166,7 +166,7 @@ export abstract class TreeComponentBase extends BaseComponent {
         this.List = [];
         if (this.Loader)
             return this.Loader();
-        return this.Service.Get("tree");
+        return this.Service.Get("GetTree");
     }
 
     ContentCountAsync(): Promise<{ [key: number]: number }> {

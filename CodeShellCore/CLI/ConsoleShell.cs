@@ -19,7 +19,7 @@ namespace CodeShellCore.Cli
         //private IServiceProvider _serviceProvider;
         private IConfiguration _configRoot;
         protected override CultureInfo defaultCulture { get { return new CultureInfo("en"); } }
-
+        protected override IConfiguration Configuration => _configRoot;
         protected override string appRoot
         {
             get

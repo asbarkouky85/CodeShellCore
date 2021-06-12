@@ -15,7 +15,7 @@ namespace Asga.Public
             if (defaultModule)
             {
                 coll.AddUnitOfWork<PublicUnit>();
-                coll.AddContext<AsgaPublicContext>();
+                coll.AddCodeshellDbContext<AsgaPublicContext>();
             }
             else
             {

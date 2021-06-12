@@ -253,4 +253,7 @@
   <data name="angular_json_project" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Angular\Molds\angular_json_project.template;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="server_config_ts" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Angular\Molds\server-config.ts.template;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

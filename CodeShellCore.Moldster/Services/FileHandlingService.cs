@@ -41,6 +41,7 @@ namespace CodeShellCore.Moldster.Services
             if (!File.Exists(path) || replace)
             {
                 WriteFileOperation("Adding", name);
+                Utils.CreateFolderForFile(path);
                 File.WriteAllText(path, content);
             }
         }

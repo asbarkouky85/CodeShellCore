@@ -60,6 +60,7 @@ export abstract class AppBaseComponent {
 
         this._translation = _injecto.get(TranslationService);
         this.Locale = Culture.Current.Language;
+        
         this.ChangeLangAsync(this.Locale, true);
 
         SessionManager.StartApp();
@@ -150,6 +151,7 @@ export abstract class AppBaseComponent {
     }
 
     GetDialogAs<T extends BaseComponent>(path: string): ComponentRef<T> | null {
+        
         if (path == null)
             return null;
         let e = Registry.Get(path);

@@ -20,11 +20,11 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             Shell.Start(new UnitTestShell(coll =>
             {
-                coll.AddMoldsterServerGeneration();
-                coll.AddMoldsterWeb();
-                coll.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
-                coll.AddScoped<MoldsterDataInit>();
-                coll.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
+                coll.Services.AddMoldsterServerGeneration();
+                coll.Services.AddMoldsterWeb();
+                coll.Services.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
+                coll.Services.AddScoped<MoldsterDataInit>();
+                coll.Services.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
             }));
             RunOnce(sc =>
             {

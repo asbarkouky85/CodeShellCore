@@ -23,15 +23,15 @@ namespace CodeShellCore.UnitTest.Auth
         [SetUp]
         public void StartUp()
         {
-            Shell.Start(new UnitTestShell(coll =>
+            Shell.Start(new UnitTestShell(context =>
             {
-                coll.AddAuthModule();
-                coll.AddAsgaWeb();
+                context.Services.AddAsgaAuthModule(context.Configuration);
+                context.Services.AddAsgaAuthWeb();
 
-                coll.AddScoped<IHttpContextAccessor>(d => new TestHttpContextAccessor(d));
+                context.Services.AddScoped<IHttpContextAccessor>(d => new TestHttpContextAccessor(d));
 
-                coll.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
-                coll.AddScoped<AuthDataInit>();
+                context.Services.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
+                context.Services.AddScoped<AuthDataInit>();
             }));
             RunScoped(sc => sc.GetService<AuthDataInit>().IntitializeUsersData());
         }

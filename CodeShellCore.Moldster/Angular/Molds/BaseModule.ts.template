@@ -8,6 +8,7 @@ import { AccountService } from "./http/account.service";
 import { Login } from "./main/login.component";
 import { TopBar } from "./main/top-bar.component";
 import { NavigationSideBar } from "./main/navigation-side-bar.component";
+import { ServerConfig } from "./server-config";
 
 @NgModule({
     declarations: [Login, TopBar, NavigationSideBar],
@@ -26,7 +27,8 @@ export class %Name%Module {
             ngModule: %Name%Module,
             providers: [
                 { provide: AccountServiceBase, useClass: AccountService },
-                { provide: TokenStorage, useClass: SessionTokenData }
+                { provide: TokenStorage, useClass: SessionTokenData },
+                { provide: ServerConfigBase, useClass: ServerConfig }
             ]
         }
     }

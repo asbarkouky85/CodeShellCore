@@ -16,7 +16,7 @@ namespace Asga.Auth
 {
    public static class DependencyInjectionExtensions
     {
-        public static void AddAsgaWeb(this IServiceCollection coll)
+        public static void AddAsgaAuthWeb(this IServiceCollection coll)
         {
             coll.AddTokenSecurity<AuthUnit>();
             coll.AddTransient<IAuthorizationService, AsgaAuthorizationService>();

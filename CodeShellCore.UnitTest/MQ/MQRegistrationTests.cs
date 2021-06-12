@@ -24,13 +24,13 @@ namespace CodeShellCore.UnitTest.MQ
             long addedUserId = 0;
             Shell.Start(new UnitTestShell(coll =>
             {
-                coll.AddDefaultServiceBus(d =>
+                coll.Services.AddDefaultServiceBus(d =>
                 {
                     d.AddConsumer<UsersConsumer>();
                 });
                 Mock<ITestUserService> mock = new Mock<ITestUserService>();
                 mock.Setup(d => d.UserIsAdded(It.IsAny<UserAdded>())).Callback<UserAdded>(d => { addedUserId = d.Id; });
-                coll.AddSingleton<ITestUserService>(mock.Object);
+                coll.Services.AddSingleton<ITestUserService>(mock.Object);
             }));
 
             Transporter.Publish(new UserAdded { Id = 254 });

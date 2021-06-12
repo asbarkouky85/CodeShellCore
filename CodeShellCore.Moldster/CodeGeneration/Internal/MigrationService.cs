@@ -19,7 +19,6 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         IBundlingService Bundling => GetService<IBundlingService>();
         IBuilderService Builder => GetService<IBuilderService>();
-        IMoldProvider Molds => GetService<IMoldProvider>();
         public MigrationService(IServiceProvider provider) : base(provider)
         {
         }

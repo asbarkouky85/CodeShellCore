@@ -58,7 +58,7 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<IT, T>();
         }
 
-        
+
 
         public static void AddRepositoryFor<T, TRepo, ITRepo>(this IServiceCollection coll)
             where T : class
@@ -77,9 +77,9 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<IRepository<T>, TRepo>();
         }
 
-        
 
-        
+
+
 
         public static T GetCurrentUserAs<T>(this IServiceProvider prov) where T : class, IUser
         {
@@ -89,17 +89,20 @@ namespace CodeShellCore.DependencyInjection
             return (T)user;
         }
 
-        public static void AddUnitOfWork<T, IT>(this IServiceCollection coll) where T : class, IUnitOfWork, IT where IT : class
+        public static void AddUnitOfWork<T, IT>(this IServiceCollection coll, bool setAsDefault = true) where T : class, IUnitOfWork, IT where IT : class
         {
             coll.AddScoped<T>();
-            coll.AddScoped<IUnitOfWork>(d => d.GetRequiredService<T>());
             coll.AddScoped<IT>(d => d.GetRequiredService<T>());
+
+            if (setAsDefault)
+                coll.AddScoped<IUnitOfWork>(d => d.GetRequiredService<T>());
         }
 
-        public static void AddUnitOfWork<T>(this IServiceCollection coll) where T : class, IUnitOfWork
+        public static void AddUnitOfWork<T>(this IServiceCollection coll, bool setAsDefault = true) where T : class, IUnitOfWork
         {
-            coll.AddScoped<IUnitOfWork, T>();
-            coll.AddScoped(typeof(T), d => (T)d.GetRequiredService<IUnitOfWork>());
+            coll.AddScoped<T>();
+            if (setAsDefault)
+                coll.AddScoped<IUnitOfWork>(e => e.GetRequiredService<T>());
         }
 
         public static bool TryGetService<T>(this IServiceProvider provider, out T service)
@@ -130,7 +133,7 @@ namespace CodeShellCore.DependencyInjection
                 acc.ClientId = id;
                 provider.GetService<ClientData>().ClientId = id;
             }
-                
+
         }
 
         public static IUser GetCurrentUser(this IServiceProvider provider)

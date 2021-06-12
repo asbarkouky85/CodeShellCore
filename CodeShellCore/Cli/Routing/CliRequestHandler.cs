@@ -13,7 +13,6 @@ namespace CodeShellCore.Cli.Routing
 {
     public abstract class CliRequestHandler<T> : ConsoleService, ICliRequestHandler where T : class
     {
-        IEnumerable<ArgumentItem<T>> _keyList;
         private InstanceStore<object> _store;
 
         protected CliRequestHandler(IServiceProvider provider)

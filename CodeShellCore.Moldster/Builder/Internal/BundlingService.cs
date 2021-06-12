@@ -18,6 +18,7 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
 using CodeShellCore.Moldster.Services;
+using CodeShellCore.Moldster.Angular.Models;
 
 namespace CodeShellCore.Moldster.Builder.Internal
 {
@@ -37,9 +38,24 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
         protected void BaseModuleFiles(bool replace)
         {
-            string content = Writer.FillStringParameters(Molds.BaseModuleMold, new DomainTsModel { Name = Paths.CoreAppName.UCFirst() + "Base" });
+            string serverConfig = Writer.FillStringParameters(Molds.ServerConfigMold, new ServerConfigTsModel
+            {
+                ApiUrl = "http://localhost",
+                Production = "false",
+                DefaultLocale = Shell.DefaultCulture.TwoLetterISOLanguageName
+            });
+            AddToBaseFolder(Names.ApplyConvension("ServerConfig", AppParts.Route) + ".ts", serverConfig, true, replace);
 
-            AddToBaseFolder(Names.ApplyConvension(Paths.CoreAppName + "BaseModule", AppParts.Module) + ".ts", content, true, replace);
+            string serverConfigProd = Writer.FillStringParameters(Molds.ServerConfigMold, new ServerConfigTsModel
+            {
+                ApiUrl = "",
+                Production = "true",
+                DefaultLocale = Shell.DefaultCulture.TwoLetterISOLanguageName
+            });
+            AddToBaseFolder(Names.ApplyConvension("ServerConfig.prod", AppParts.Route) + ".ts", serverConfigProd, true, replace);
+
+            string baseModuleContent = Writer.FillStringParameters(Molds.BaseModuleMold, new DomainTsModel { Name = Paths.CoreAppName.UCFirst() + "Base" });
+            AddToBaseFolder(Names.ApplyConvension(Paths.CoreAppName + "BaseModule", AppParts.Module) + ".ts", baseModuleContent, true, replace);
             AddToBaseFolder(Names.ApplyConvension("AppComponent", AppParts.BaseComponent) + ".ts", Properties.Resources.AppComponentBase_ts, true, replace);
 
             AddToBaseFolder(Names.ApplyConvension("Main/Login", AppParts.Component) + ".html", Properties.Resources.Login_html, true, replace);

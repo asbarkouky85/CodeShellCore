@@ -18,11 +18,9 @@ namespace CodeShellCore.FileServer
     {
         public static void AddFileServerModule(this IServiceCollection coll, IConfiguration conf)
         {
-            var conn = conf.GetConnectionString("FileServer");
-            if (string.IsNullOrWhiteSpace(conn))
-                conn = conf.GetConnectionString("Default");
-            coll.AddDbContext<FileServerDbContext>(e => e.UseSqlServer(conn));
+            coll.AddCodeshellDbContext<FileServerDbContext>(false, conf, "FileServer");
             coll.AddUnitOfWork<FileServerUnit, IFileServerUnit>();
+
             coll.AddGenericRepository(typeof(Repository_Int64<,>));
 
             coll.AddTransient<IAttachmentFileService, AttachmentFileService>();

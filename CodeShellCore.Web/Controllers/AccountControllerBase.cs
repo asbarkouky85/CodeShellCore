@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CodeShellCore.Web.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
-    public class AccountControllerBase : BaseApiController, IAccountController
+    public abstract class AccountControllerBase : BaseApiController, IAccountController
     {
         protected IAuthenticationService AuthenticationService => GetService<IAuthenticationService>();
         protected ISessionManager SessionManager => GetService<ISessionManager>();

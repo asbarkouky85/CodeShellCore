@@ -25,14 +25,28 @@ namespace CodeShellCore.Web
         public static string AppRootUrl { get { return ((WebShell)App).urlRoot; } }
 
         protected virtual bool UseHealthChecks => false;
+        /// <summary>
+        /// (Default : "~")
+        /// </summary>
         protected virtual string urlRoot { get { return "~"; } }
         protected override string appRoot { get { return _appRoot; } }
+        /// <summary>
+        /// public folder (Default : 'wwwroot')
+        /// </summary>
         protected override string publicRelativePath => "wwwroot";
+        /// <summary>
+        /// Adds a fallback middleware that uses <see cref="ISpaFallbackHandler.HandleRequestAsync(HttpContext)"/>
+        /// </summary>
         protected virtual bool IsSpa => false;
         protected virtual bool UseCors => false;
-        protected virtual string DefaultCorsOrigins => null;
+        /// <summary>
+        /// If AllowedOrigins not found in appsettings this will be used
+        /// Default is : http://localhost,http://localhost:4200
+        /// </summary>
+        protected virtual string DefaultCorsOrigins => "http://localhost,http://localhost:4200";
 
-        protected IConfiguration Configuration;
+        private IConfiguration _config;
+        protected override IConfiguration Configuration => _config;
 
         protected override IServiceProvider _scopedProvider
         {
@@ -47,12 +61,15 @@ namespace CodeShellCore.Web
             }
         }
 
+        /// <summary>
+        /// Service provider created on <see cref="IConfigurationBuilder.Build"/>
+        /// </summary>
         protected override IServiceProvider rootProvider { get { return _appProvider; } }
 
 
         public WebShell(IConfiguration config)
         {
-            Configuration = config;
+            _config = config;
         }
 
         protected virtual void HandleSystemErrors(HttpContext cont, Exception ex)
@@ -82,17 +99,17 @@ namespace CodeShellCore.Web
             {
                 var origins = getConfig("AllowedOrigins").Value ?? DefaultCorsOrigins;
                 app.UseRouting();
-                
+
                 app.UseCors(d => d.WithOrigins(origins.Split(","))
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
-                app.UseEndpoints(e => RegisterEnpointRoutes(e));
+                app.UseEndpoints(e => RegisterEndpointRoutes(e));
             }
             else
             {
                 app.UseRouting();
-                app.UseEndpoints(e => RegisterEnpointRoutes(e));
+                app.UseEndpoints(e => RegisterEndpointRoutes(e));
             }
 
             app.UseMvc(d =>
@@ -126,14 +143,15 @@ namespace CodeShellCore.Web
 
         }
 
+
+
         protected virtual async Task FallbackMiddlewareHandler(HttpContext context, Func<Task> next)
         {
-            var file = System.IO.File.ReadAllText("wwwroot/index.html");
-            context.Response.ContentType = "text/html";
-            await context.Response.WriteAsync(file);
+            var s = context.RequestServices.GetRequiredService<ISpaFallbackHandler>();
+            await s.HandleRequestAsync(context);
         }
 
-        public virtual void RegisterEnpointRoutes(IEndpointRouteBuilder routes)
+        public virtual void RegisterEndpointRoutes(IEndpointRouteBuilder routes)
         {
 
         }
@@ -173,6 +191,7 @@ namespace CodeShellCore.Web
             AddMvcFeatures(mvc);
             mvc.AddNewtonsoftJson(e => e.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local);
             coll.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            coll.AddTransient<ISpaFallbackHandler, SpaFallbackHandler>();
             coll.AddTransient<IFileUploadService, FileService>();
         }
 
