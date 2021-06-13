@@ -2,6 +2,7 @@
 using CodeShellCore.Linq.Stringifiers;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Text;
+using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
@@ -128,8 +129,9 @@ namespace CodeShellCore.Web.Razor
                 url = url.Substring(1);
             string[] spl = url.Split('/');
             var len = spl.Length;
+
             if (spl.Length >= 2)
-                return spl[len - 2] + "__" + spl[len - 1];
+                return RazorConfig.NameService.ReverseConvention(spl[len - 2]) + "__" + RazorConfig.NameService.ReverseConvention(spl[len - 1]);
             else
                 return url;
 

@@ -35,8 +35,14 @@ namespace CodeShellCore.Moldster
         {
             var conn = config.GetConnectionString("Moldster") ?? config.GetConnectionString("Default");
             if (string.IsNullOrEmpty(conn))
+            {
                 throw new Exception("Moldster Connection string is not found in appsettings");
-            coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(conn));
+            }
+            else if (conn != "TEST")
+            {
+                coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(conn));
+            }
+
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));
 

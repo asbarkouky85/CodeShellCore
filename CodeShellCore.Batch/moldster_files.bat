@@ -5,7 +5,7 @@ toolset -z 	%cd%\Example\Localization										%cd%\CodeShellCore.Moldster\Files
 toolset -z 	%cd%\Example.UI\src\assets\moldster\css 						%cd%\CodeShellCore.Moldster\Files\css.zip
 toolset -z 	%cd%\Example.UI\src\assets\moldster\js 							%cd%\CodeShellCore.Moldster\Files\js.zip
 toolset -z 	%cd%\Example.UI\src\assets\moldster\img 						%cd%\CodeShellCore.Moldster\Files\img.zip
-toolset -z 	%cd%\Example.UI\src\core\codeshell 								%cd%\CodeShellCore.Moldster\Files\codeshell.zip
+toolset -z 	%cd%\Example.UI\src\core\codeshell								%cd%\CodeShellCore.Moldster\Files\codeshell.zip
 toolset -z 	%cd%\Example.Config.Api\ShellComponents 						%cd%\CodeShellCore.Moldster\Files\ShellComponents.zip
 
 copy 		Example.Config.Api\Views\AppComponent.cshtml 					CodeShellCore.Moldster\Files\AppComponent_cshtml.txt
@@ -20,5 +20,5 @@ copy 		Example.UI\src\core\base\main\navigation-side-bar.component.ts 		CodeShel
 copy 		Example.UI\src\core\base\main\top-bar.component.html				CodeShellCore.Moldster\Angular\Files\topBar_html.txt
 copy 		Example.UI\src\core\base\main\top-bar.component.ts 					CodeShellCore.Moldster\Angular\Files\topBar_ts.txt
 
-timeout 100
+timeout 20
 exit

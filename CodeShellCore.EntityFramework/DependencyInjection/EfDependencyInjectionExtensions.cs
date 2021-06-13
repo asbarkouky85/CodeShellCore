@@ -43,15 +43,16 @@ namespace CodeShellCore.DependencyInjection
                 coll.AddTransient(t);
         }
 
-        public static void AddLocalizableData<TContext>(this IServiceCollection coll) where TContext : DbContext, ILocalizableDbContext
+        public static void AddLocalizableData<TContext>(this IServiceCollection coll) where TContext : DbContext, IHasLocalizablesDbContext
         {
             coll.AddScoped<ILocalizablesUnitOfWork, LocalizablesUnitOfWork<TContext>>();
             coll.AddTransient<ILocalizationDataService, LocalizationDataService<Localizable>>();
             coll.AddTransient<ILocalizablesRepository<Localizable>, LocalizableRepository<Localizable, TContext>>();
         }
 
-        public static void AddLocalizableData<T, TContext>(this IServiceCollection coll) where T : class, ILocalizable where TContext : DbContext
+        public static void AddLocalizableData<T, TContext>(this IServiceCollection coll) where T : class, ILocalizable where TContext : DbContext, IGetLocalizedDbContext
         {
+            coll.AddScoped<ILocalizablesUnitOfWork, LocalizablesUnitOfWork<TContext>>();
             coll.AddTransient<ILocalizationDataService, LocalizationDataService<T>>();
             coll.AddTransient<ILocalizablesRepository<T>, LocalizableRepository<T, TContext>>();
         }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Asga.Public
 {
-    public partial class AsgaPublicContext : ILocalizableDbContext
+    public partial class AsgaPublicContext : IHasLocalizablesDbContext
     {
         public DbSet<Localizable> Localizables { get; set; }
 

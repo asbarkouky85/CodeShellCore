@@ -1,0 +1,39 @@
+﻿@if (IsSectionDefined("okButtons")) {
+    IgnoreSection("okButtons");
+}
+@if (IsSectionDefined("header"))
+{
+    @RenderSection("header", false)
+}
+else
+{
+    @Html.PageHeader()
+}
+<div [ngClass]="IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'">
+
+    <div [ngClass]="IsEmbedded?'panel-body':'content-block'">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
+                <div class="btn-group btn-group-sm pull-last">
+                    @foreach (var s in CodeShellCore.Shell.SupportedLanguages)
+                    {
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='@s'?'btn-primary':'btn-default'" (click)="CurrentLang='@s'">
+                            @Html.Word(s)
+                        </button>
+                    }
+                </div>
+            </div>
+
+        </div>
+        @RenderBody()
+
+        @RenderSection("lists", false)
+        <div class="row submit-buttons">
+            <div class="col-md-12">
+                <div class="pull-last">
+                    @RenderSection("buttons", false)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

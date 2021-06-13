@@ -9,6 +9,7 @@ import { LocalizablesDTO } from "../localization/models";
 import { Utils } from "../utilities/utils";
 import { Output } from "@angular/core";
 import { Observable } from "rxjs";
+import { Culture } from '../localization/locale-data';
 
 
 @Component({ template: '' })
@@ -18,7 +19,7 @@ export abstract class EditComponentBase extends BaseComponent {
     Form?: NgForm;
     FormGroup?: FormGroup;
     CurrentLang: string = "ar";
-    navSection?:any;
+    navSection?: any;
 
     UI_Lang: string = "ar";
 
@@ -81,8 +82,8 @@ export abstract class EditComponentBase extends BaseComponent {
             }
         }
 
-        this.UI_Lang = "en";
-        this.CurrentLang = Shell.Main.Config.DefaultLocale == "ar" ? "en" : "ar";
+        this.UI_Lang = Culture.Current.Language;
+        this.CurrentLang = Culture.Current.Language == "ar" ? "en" : "ar";
 
         if (this.Form && this.Form.statusChanges) {
             this.Form.statusChanges.subscribe(d => {

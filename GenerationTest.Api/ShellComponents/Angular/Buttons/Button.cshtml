@@ -1,0 +1,27 @@
+﻿@model LinkModel
+
+@if (Model.Url != null)
+{
+    <a class="btn @Model.BtnClass @Model.Classes"
+       @Html.Raw("[routerLink]=\"" + Model.Url + "\"")
+       @Html.Raw(Model.Attributes)
+       @Html.Raw(Model.Title == null ? "" : " title=\"" + Html.Word(Model.Title) + "\"")>
+        @Html.Raw(Model.Icon)@Model.Text
+    </a>
+}
+else if (Model.Function != null)
+{
+    <button class="btn @Model.BtnClass @Model.Classes"
+            @Html.Raw("(click)=\"" + Model.Function + "\"")
+            @Html.Raw(Model.Attributes)
+            @Html.Raw(Model.Title == null ? "" : " title=\"" + Html.Word(Model.Title) + "\"")>
+        @Html.Raw(Model.Icon)@Model.Text
+    </button>
+}
+else
+{
+    <button class="btn @Model.BtnClass @Model.Classes"
+            @Html.Raw(Model.Attributes)>
+        @Html.Raw(Model.Icon)@Model.Text
+    </button>
+}

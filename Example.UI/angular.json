@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-    "tenant_1": {
+        "tenant_1": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -36,8 +36,7 @@
                             "src/favicon.ico",
                             "src/assets"
                         ],
-                        "styles": [
-                            {
+                        "styles": [{
                                 "bundleName": "primeicons",
                                 "input": "node_modules/primeicons/primeicons.css",
                                 "inject": true
@@ -51,18 +50,21 @@
                                 "bundleName": "primeng.theme",
                                 "input": "node_modules/primeng/resources/themes/saga-blue/theme.css",
                                 "inject": true
+                            },
+                            {
+                                "input": "node_modules/@danielmoncada/angular-datetime-picker/assets/style/picker.min.css",
+                                "bundleName": "angular-datetime.min",
+                                "inject": true
                             }
                         ],
                         "scripts": []
                     },
                     "configurations": {
                         "production": {
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/base/server-config.ts",
-                                    "with": "src/base/server-config.prod.ts"
-                                }
-                            ],
+                            "fileReplacements": [{
+                                "replace": "src/base/server-config.ts",
+                                "with": "src/base/server-config.prod.ts"
+                            }],
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
@@ -70,8 +72,7 @@
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
-                            "budgets": [
-                                {
+                            "budgets": [{
                                     "type": "initial",
                                     "maximumWarning": "2mb",
                                     "maximumError": "5mb"
@@ -117,7 +118,7 @@
                 }
             }
         }
-    },     
+    },
     "defaultProject": "tenant_1",
     "cli": {
         "analytics": false

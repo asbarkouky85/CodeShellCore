@@ -1,0 +1,12 @@
+﻿@using CodeShellCore.Web.Razor.Models
+@model ValidationMessagesModel
+<div class="cell-validation" *ngIf="@Html.Raw(
+                                   Model.FormName+".controls['"+Model.FieldName+"'] && "+
+                                   Model.FormName+".controls['"+Model.FieldName+"'].invalid && "+
+                                   Model.FormName+".controls['"+Model.FieldName+"'].touched"
+                                   )">
+    <i class="fa fa-exclamation-circle redColor"></i>
+    <div class="messages">
+        @Model.Messages
+    </div>
+</div>
