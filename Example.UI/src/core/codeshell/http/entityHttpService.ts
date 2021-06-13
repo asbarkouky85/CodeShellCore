@@ -28,7 +28,7 @@ export abstract class EntityHttpService extends HttpServiceBase {
     }
 
     public GetSingle(id: number): Promise<DTO<any>> {
-        return this.GetAs<DTO<any>>(id.toString());
+        return this.GetAs<DTO<any>>("GetSingle/"+id.toString());
     }
 
     public GetPaged(action: string, opts: LoadOptions): Promise<LoadResult> {

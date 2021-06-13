@@ -4,6 +4,7 @@ using CodeShellCore.Data.CustomFields;
 using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Data.Localization;
 using CodeShellCore.Data.Localization.Internal;
+using CodeShellCore.Localizables;
 using CodeShellCore.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -42,7 +43,12 @@ namespace CodeShellCore.DependencyInjection
                 coll.AddTransient(t);
         }
 
-
+        public static void AddLocalizableData<TContext>(this IServiceCollection coll) where TContext : DbContext, ILocalizableDbContext
+        {
+            coll.AddScoped<ILocalizablesUnitOfWork, LocalizablesUnitOfWork<TContext>>();
+            coll.AddTransient<ILocalizationDataService, LocalizationDataService<Localizable>>();
+            coll.AddTransient<ILocalizablesRepository<Localizable>, LocalizableRepository<Localizable, TContext>>();
+        }
 
         public static void AddLocalizableData<T, TContext>(this IServiceCollection coll) where T : class, ILocalizable where TContext : DbContext
         {

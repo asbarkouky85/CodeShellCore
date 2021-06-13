@@ -11,6 +11,9 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Web;
 using CodeShellCore.FileServer;
 using CodeShellCore.FileServer.Data;
+using Asga.Public;
+using Asga.Auth.Data;
+using CodeShellCore.DependencyInjection;
 
 namespace Example.UI
 {
@@ -30,8 +33,10 @@ namespace Example.UI
         {
             base.RegisterServices(coll);
             coll.AddAsgaAuthModule(Configuration, false);
-            coll.AddAsgaAuthWeb();
+            coll.AddTokenSecurity<AuthUnit>();
+            coll.AddPublicModule(Configuration, false);
             coll.AddFileServerModule(Configuration);
+            
         }
 
         protected override void OnApplicationStarted(IServiceProvider prov)
@@ -39,6 +44,7 @@ namespace Example.UI
             base.OnApplicationStarted(prov);
             prov.MigrateAuthDb();
             prov.MigrateContext<FileServerDbContext>();
+            prov.MigrateContext<AsgaPublicContext>();
         }
 
         protected override void OnReady()

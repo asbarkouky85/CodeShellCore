@@ -2,7 +2,7 @@
 import { ServerConfigBase } from "../serverConfigBase";
 import { Shell } from "../shell";
 import { HttpRequest, Methods } from "./httpRequest";
-import { TokenData } from "../security/models";
+import { TokenData } from "../security/Models";
 import { SubmitResult } from "../results";
 import { Utils } from "../utilities/utils";
 import { TokenStorage } from '../security/tokenStorage';
@@ -19,7 +19,7 @@ export abstract class HttpServiceBase {
     SignalRConnctionId?: string;
     ServiceKey?: string;
 
-    private _hostName?: string;
+    private _baseUrl?: string;
 
     public get Headers(): any {
         let head: any = {
@@ -52,19 +52,19 @@ export abstract class HttpServiceBase {
         //this.Sessions = SessionManager.Current;
         this.TokenStorage = Shell.Injector.get(TokenStorage);
         this.Server = Shell.Injector.get(ServerConfigBase);
-       
+
     }
 
-    protected get hostName() {
-        if (!this._hostName) {
-            this._hostName = "";
+    private get _base() {
+        if (!this._baseUrl) {
+            this._baseUrl = "";
             if (this.ServiceKey && this.Server.Urls[this.ServiceKey]) {
-                this._hostName = this.Server.Urls[this.ServiceKey];
+                this._baseUrl = this.Server.Urls[this.ServiceKey];
             } else if (this.Server.ApiUrl) {
-                this._hostName = this.Server.ApiUrl;
+                this._baseUrl = this.Server.ApiUrl;
             }
         }
-        return this._hostName;
+        return this._baseUrl;
     }
 
     public Get(action: string, params?: number | object): Promise<any> {
@@ -112,7 +112,7 @@ export abstract class HttpServiceBase {
 
 
     protected InitializeRequest(action: string, params?: number | object, body?: any): HttpRequest {
-        let url: string = Utils.Combine(this.hostName, this.BaseUrl, action);
+        let url: string = this._base + this.BaseUrl + "/" + action;
         let r: HttpRequest = new HttpRequest(url, params, body);
         r.Params.headers = this.Headers;
         return r;

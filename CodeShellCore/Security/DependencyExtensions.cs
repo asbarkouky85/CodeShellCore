@@ -14,21 +14,32 @@ namespace CodeShellCore.Security
         /// </summary>
         /// <param name="coll"></param>
         /// <param name="authenticatedOnly">if false all users are allowed to all apis, true means that all logged in users will be allowed to pass</param>
-        public static void AddCodeShellSecurity(this IServiceCollection coll, bool authenticatedOnly = false)
+        public static void AddCodeShellSecurity(this IServiceCollection coll, AuthorizationType type = AuthorizationType.AuthorizeAuthenticated)
         {
             coll.AddTransient<IUserDataService, UserDataService>();
             coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
-            if (!authenticatedOnly)
-                coll.AddTransient<IAuthorizationService, AuthorizationService>();
-            else
-                coll.AddTransient<IAuthorizationService, AuthenticatedOnlyAuthorizationService>();
+            switch (type)
+            {
+                case AuthorizationType.AuthorizeAll:
+                    coll.AddTransient<IAuthorizationService, AuthorizationService>();
+                    break;
+                case AuthorizationType.AuthorizeAuthenticated:
+                case AuthorizationType.AuthorizeWithApp:                   
+                case AuthorizationType.AuthorizeWithResource:
+                    coll.AddTransient<IAuthorizationService, AuthenticatedOnlyAuthorizationService>();
+                    break;
+                default:
+                    coll.AddTransient<IAuthorizationService, AuthenticatedOnlyAuthorizationService>();
+                    break;
+            }   
 
             coll.AddTransient<IAuthenticationService, PermissableAuthenticationService>();
         }
 
-        public static void AddCodeShellSecurity<TUnit, TSession>(this IServiceCollection coll) where TUnit : class, ISecurityUnit where TSession : class, ISessionManager
+        public static void AddCodeShellSecurity<TUnit, TSession>(this IServiceCollection coll, AuthorizationType type = AuthorizationType.AuthorizeAuthenticated) where TUnit : class, ISecurityUnit where TSession : class, ISessionManager
+
         {
-            coll.AddCodeShellSecurity();
+            coll.AddCodeShellSecurity(type);
             coll.AddTransient<IUserDataService, DbUserDataService>();
             coll.AddTransient<ISessionManager, TSession>();
             coll.AddScoped<ISecurityUnit, TUnit>();

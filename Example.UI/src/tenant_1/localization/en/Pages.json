@@ -6,5 +6,8 @@
   "Roles__RoleList": "Role list",
   "Roles__RoleEdit": "Role edit",
   "Users__UserEdit": "User edit",
-  "Public__ForgotPassword": "Forgot password"
+  "Public__ForgotPassword": "Forgot password",
+  "HomeSlides__HomeSlideList": "Home slide list",
+  "HomeSlides__HomeSlideCreate": "Home slide create",
+  "HomeSlides__HomeSlideEdit": "Home slide edit"
 }

@@ -276,7 +276,7 @@ namespace CodeShellCore.Helpers
             var dir = Directory.GetDirectories(folder, "*", SearchOption.AllDirectories);
             foreach (var d in dir)
             {
-                if (!Directory.GetFiles(d, "*", SearchOption.AllDirectories).Any())
+                if (Directory.Exists(d) && !Directory.GetFiles(d, "*", SearchOption.AllDirectories).Any())
                 {
                     DeleteDirectory(d);
                 }

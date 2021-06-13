@@ -36,4 +36,13 @@
   <data name="Public__ForgotPassword" xml:space="preserve">
     <value />
   </data>
+  <data name="HomeSlides__HomeSlideList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HomeSlides__HomeSlideCreate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HomeSlides__HomeSlideEdit" xml:space="preserve">
+    <value />
+  </data>
 </root>

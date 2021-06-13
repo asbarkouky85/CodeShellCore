@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CodeShellCore.Localizables;
 using Microsoft.EntityFrameworkCore;
 
 namespace Asga.Public
 {
-    public partial class AsgaPublicContext
+    public partial class AsgaPublicContext : ILocalizableDbContext
     {
+        public DbSet<Localizable> Localizables { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

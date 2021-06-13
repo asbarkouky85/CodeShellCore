@@ -55,7 +55,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
             mod.Categories = mod.Categories ?? new List<ModuleCategoryDTO>();
             mod.Resources = mod.Resources ?? new string[0];
-            toPath = toPath ?? mod.InstallPath;
+            toPath = (toPath ?? mod.InstallPath).ToLower();
 
             List<string> resNames = new List<string>();
             resNames.AddRange(mod.Resources);
@@ -137,7 +137,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
             foreach (var s in scripts)
             {
                 string scriptName = s.Replace(scrPath + "\\", "");
-                string scriptPath = Path.Combine(Paths.UIRoot, "Core", Paths.CoreAppName, toPath, scriptName);
+                string scriptPath = Path.Combine(Names.BaseFolder, toPath, scriptName);
                 files.Add(new Tuple<string, string>(s, scriptPath));
             }
 
@@ -224,7 +224,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
             Out.WriteLine($"Updating module {mod.Name}");
             Utils.ClearDirectory(tmpLocation);
 
-            var scripts = Path.Combine(Paths.UIRoot, "Core", Paths.CoreAppName, mod.InstallPath);
+            var scripts = Path.Combine(Names.BaseFolder, mod.InstallPath);
             WriteFileOperation("Updating from", scripts);
             if (Directory.Exists(scripts))
             {

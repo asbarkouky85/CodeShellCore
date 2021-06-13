@@ -101,7 +101,6 @@ export abstract class EditComponentBase extends BaseComponent {
 
     IsValid(): boolean {
         let valid = true;
-        debugger;
         if (this.Form) {
             valid = valid && !this.Form.invalid;
         }
@@ -262,6 +261,7 @@ export abstract class EditComponentBase extends BaseComponent {
     protected OnReady(): void { };
 
     async SubmitLocalizablesAsync(): Promise<void> {
+        debugger;
         var s: { [key: string]: LocalizablesDTO } = {};
         let submit: boolean = false;
         for (var i in this.Localizables) {
@@ -293,7 +293,6 @@ export abstract class EditComponentBase extends BaseComponent {
 
         if (this.IsNew) {
             prom = await this.SubmitNewAsync();
-
             if (prom.data.Id) {
                 this.ModelId = prom.data.Id;
                 await this.SubmitLocalizablesAsync();

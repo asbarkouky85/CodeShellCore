@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Component, Injectable } from "@angular/core";
 import { DTOEditComponentBase } from "codeshell/base-components";
 import { ListItem } from "codeshell/data";
 import { RolesService } from "../http";
@@ -6,7 +6,7 @@ import { Perm } from "../models";
 import { PrivilegeService } from "../services/privilege.service";
 
 
-@Injectable()
+@Component({template:''})
 export abstract class RoleEditBase extends DTOEditComponentBase {
 
     Service = new RolesService();

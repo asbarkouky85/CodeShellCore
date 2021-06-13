@@ -18,7 +18,10 @@ Translator.SetLoaders({
 
 const routes: Routes = [
     { path: 'login', component: Login, data: { action: 'anonymous', name:"Login" } },
-
+    { 
+        path: 'public', 
+        loadChildren: () => import('./public/public.module').then(m => m.publicModule) 
+    },
     
     { path: '**', redirectTo: '/' }
 
@@ -35,7 +38,11 @@ let data: DomainData[] | null = null;
 export function GetDomainsData(): DomainData[] {
     if (!data) {
         data = [
-			
+			{
+				name: "Main" ,
+				children: [
+					{ name: "HomeSlides__HomeSlideList", navigate: true, resource:"", action: "allowAll", apps: null , url: "public/home-slides/home-slide-list"},]
+			}
 		];
     }
     return data;

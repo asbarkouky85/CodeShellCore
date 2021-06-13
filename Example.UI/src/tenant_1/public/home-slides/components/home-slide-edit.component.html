@@ -1,0 +1,258 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.HomeSlides__HomeSlideEdit' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.HomeSlides__HomeSlideEdit' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.HomeSlides__HomeSlideEdit' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div><div [ngClass]="IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'">
+
+    <div [ngClass]="IsEmbedded?'panel-body':'content-block'">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
+                <div class="btn-group btn-group-sm pull-last">
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='ar'?'btn-primary':'btn-default'" (click)="CurrentLang='ar'">
+                            {{'Words.ar' | translate }}
+                        </button>
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='en'?'btn-primary':'btn-default'" (click)="CurrentLang='en'">
+                            {{'Words.en' | translate }}
+                        </button>
+                </div>
+            </div>
+
+        </div>
+        
+<form #Form="ngForm" >
+
+<div class="row form-group "
+     id="FG_imageFile"
+     #FG_imageFile="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.HomeSlide__ImageFile' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        
+<div class="input-group">
+    <label class="form-control">
+        <a *ngIf="model.imageFile"
+           class="file-link"
+           target="_blank"
+           [routerLink]="'/'+model.imageFile.url">
+            {{model.imageFile.name}}
+        </a>
+    </label>
+
+            <div class="input-group-btn">
+                <label class="btn btn-primary">
+                    <input name="image_f"
+                           type="file"
+                           [(ngModel)]="image_f"
+                           [file-uploader]="Upload"
+                           [(fileData)]="model.imageFile"
+                           required  
+                           style="display:none">
+                    <i class="fa fa-upload"></i>
+                </label>
+            </div>
+</div>
+
+        <span *ngIf="Form.controls['image_f'] && Form.controls['image_f'].invalid">
+        <small *ngIf="Form.controls['image_f'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__ImageFile' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+<div class="row form-group "
+     id="FG_title"
+     #FG_title="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.HomeSlide__Title' | translate }} ({{UI_Lang}})
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9 row">
+        <div class="col-sm-6">
+            <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.HomeSlide__Title' | translate }}"
+       name="Form__title"
+       [(ngModel)]="model.title"
+       title="{{'Columns.HomeSlide__Title' | translate }}"
+       [li-watch]="model"
+
+       
+       required  >
+    <p *ngIf="!FG_title.Write">{{FG_title.Value}}</p>
+
+
+            <span *ngIf="Form.controls['Form__title'] && Form.controls['Form__title'].invalid">
+        <small *ngIf="Form.controls['Form__title'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__Title' | translate } }}</small>
+</span>
+        </div>
+        <div class="col-sm-6">
+                    <input name="Title_Loc"
+                           placeholder="{{&#x27;Columns.HomeSlide__Title&#x27; | translate }} ({{&#x27;Words.&#x27;&#x2B;CurrentLang | translate}})"
+                          [ngClass]="CurrentLang=='ar'?'dir-rtl':'dir-ltr'"
+                           type="text" 
+                           [(ngModel)]="Loc.data.Title"
+                           (change)="Loc.AddToChangeList()"
+                           class="form-control" />
+
+
+        </div>
+
+    </div>
+</div>
+<div class="row form-group "
+     id="FG_text"
+     #FG_text="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.HomeSlide__Text' | translate }} ({{UI_Lang}})
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9 row">
+        <div class="col-sm-6">
+            
+<textarea class="form-control "
+          placeholder="{{'Columns.HomeSlide__Text' | translate }}"
+          name="Form__text"
+          [(ngModel)]="model.text"
+          required  ></textarea>
+
+            <span *ngIf="Form.controls['Form__text'] && Form.controls['Form__text'].invalid">
+        <small *ngIf="Form.controls['Form__text'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__Text' | translate } }}</small>
+</span>
+        </div>
+        <div class="col-sm-6">
+                    <textarea class="form-control" 
+                              name="Text_Loc" 
+                              [ngClass]="CurrentLang=='ar'?'dir-rtl':'dir-ltr'"
+                              placeholder="{{&#x27;Columns.HomeSlide__Text&#x27; | translate }} ({{&#x27;Words.&#x27;&#x2B;CurrentLang | translate}})"
+                              [(ngModel)]="Loc.data.Text"
+                              (change)="Loc.AddToChangeList()"
+                              ></textarea>
+
+
+        </div>
+
+    </div>
+</div>
+<div class="row form-group "
+     id="FG_url"
+     #FG_url="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.HomeSlide__Url' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.HomeSlide__Url' | translate }}"
+       name="Form__url"
+       [(ngModel)]="model.url"
+       title="{{'Columns.HomeSlide__Url' | translate }}"
+       [li-watch]="model"
+
+       
+       [pattern]="'(https?:\/\/[a-zA-Z0-9][a-zA-Z0-9-\./\?=&]+[a-zA-Z0-9])'"  >
+    <p *ngIf="!FG_url.Write">{{FG_url.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__url'] && Form.controls['Form__url'].invalid">
+        <small *ngIf="Form.controls['Form__url'].errors!.pattern" class="form-text text-danger">{{'Messages.invalid_field' | translate : {p0:'Columns.HomeSlide__Url' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+<div class="row form-group "
+     id="FG_isActive"
+     #FG_isActive="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.HomeSlide__IsActive' | translate }}
+    </label>
+    <div class="col-sm-9">
+        
+<select class="form-control"
+        name="Form__isActive" 
+        [li-watch]="model"
+        [(ngModel)]="model.isActive"
+         >
+    <option *ngFor="let item of isActive" [ngValue]="item.id">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_isActive.Write">{{FG_isActive.Value}}</p>
+
+        
+    </div>
+</div>
+</form>
+
+
+        
+        <div class="row submit-buttons">
+            <div class="col-md-12">
+                <div class="pull-last">
+                    
+        <button class="btn btn-primary"
+            [disabled]="!CanSubmit"
+            (click)="Submit()">
+        {{'Words.Save' | translate }}
+    </button>
+
+    
+    <button class="btn btn-default"
+            (click)="Cancel()"
+            
+            >
+        {{'Words.Cancel' | translate }}
+    </button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
