@@ -21,7 +21,7 @@ namespace ExampleProject.Commander
             coll.AddTransient<InjectionTest>();
             coll.AddScoped<ScopedClass>();
             coll.AddTransient<EmailService>();
-            coll.AddAuthModule(true);
+            coll.AddAsgaAuthModule(Configuration, true);
             coll.AddRabbitMQServiceBus(d =>
             {
 

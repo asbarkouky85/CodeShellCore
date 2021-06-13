@@ -26,7 +26,7 @@ namespace CodeShellCore.Data.Localization.Internal
             }
         }
         ILocalizablesRepository<T> _Loc { get { return UnitOfWork.GetRepository<ILocalizablesRepository<T>>(); } }
-        public LocalizationDataService(IUnitOfWork unit, Language lang) : base(unit)
+        public LocalizationDataService(ILocalizablesUnitOfWork unit, Language lang) : base(unit)
         {
             _lang = lang;
         }

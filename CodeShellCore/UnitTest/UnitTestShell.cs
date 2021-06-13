@@ -15,7 +15,9 @@ namespace CodeShellCore.UnitTest
         protected override IServiceProvider _scopedProvider => CurrentScope?.ServiceProvider;
         protected override IServiceProvider rootProvider => _rootProv;
 
-        private readonly Action<IServiceCollection> _otherRegistration;
+        protected override IConfiguration Configuration => _configRoot;
+
+        private readonly Action<CodeshellAppContext> _otherRegistration;
 
         public static IServiceScope CurrentScope;
 
@@ -27,7 +29,7 @@ namespace CodeShellCore.UnitTest
             _configRoot = c.Build();
         }
 
-        public UnitTestShell(Action<IServiceCollection> action = null)
+        public UnitTestShell(Action<CodeshellAppContext> action = null)
         {
             var coll = new ServiceCollection();
 
@@ -48,7 +50,7 @@ namespace CodeShellCore.UnitTest
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
-            _otherRegistration?.Invoke(coll);
+            _otherRegistration?.Invoke(new CodeshellAppContext(coll, _configRoot));
         }
     }
 }

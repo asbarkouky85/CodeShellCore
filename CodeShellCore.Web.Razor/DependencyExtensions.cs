@@ -35,6 +35,7 @@ using CodeShellCore.Web.Razor.Tables.Angular;
 using CodeShellCore.Web.Razor.Tables.Moldster;
 using CodeShellCore.Web.Razor.SignalR;
 using CodeShellCore.Web.Razor.Controllers.Configurator;
+using Microsoft.AspNetCore.Routing;
 
 namespace CodeShellCore.Web.Razor
 {
@@ -111,6 +112,13 @@ namespace CodeShellCore.Web.Razor
         {
             coll.AddSingleton<IRazorLocaleTextProvider, AbpTextProvider>();
             coll.AddTransient<ILocalizationService, AbpLocalizationService>();
+        }
+
+
+        public static void AddMoldsterHubs(this IEndpointRouteBuilder builder)
+        {
+            builder.MapHub<GenerationHub>("/generationHub");
+            builder.MapHub<TasksHub>("/tasksHub");
         }
 
         public static void AddMoldsterRazorHelpers(this IServiceCollection coll)

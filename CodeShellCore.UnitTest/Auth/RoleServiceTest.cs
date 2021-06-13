@@ -19,15 +19,16 @@ namespace CodeShellCore.UnitTest.Auth
         [SetUp]
         public void SetUp()
         {
-            var sd = new UnitTestShell(coll =>
+            var sd = new UnitTestShell(context =>
             {
-                coll.AddAuthModule(false);
-                coll.AddAsgaWeb();
-                coll.AddTransient<AuthDataInit>();
-                coll.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
+                context.Services.AddAsgaAuthModule(context.Configuration, false);
+                context.Services.AddAsgaAuthWeb();
+                context.Services.AddTransient<AuthDataInit>();
+                context.Services.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
             });
             Shell.Start(sd);
-            RunScoped(prov => {
+            RunScoped(prov =>
+            {
                 prov.GetService<AuthDataInit>().InitializeForRoles();
             });
 

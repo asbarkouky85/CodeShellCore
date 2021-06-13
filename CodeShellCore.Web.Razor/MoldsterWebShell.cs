@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Globalization;
 
 namespace CodeShellCore.Web.Razor
@@ -45,26 +46,23 @@ namespace CodeShellCore.Web.Razor
             coll.AddOptions<MoldsterModuleOptions>();
         }
 
-        public override void RegisterEnpointRoutes(IEndpointRouteBuilder endpoint)
+        public override void RegisterEndpointRoutes(IEndpointRouteBuilder endpoint)
         {
-            endpoint.MapHub<GenerationHub>("/generationHub");
-            endpoint.MapHub<TasksHub>("/tasksHub");
+            base.RegisterEndpointRoutes(endpoint);
+            endpoint.AddMoldsterHubs();
         }
 
         protected override void OnReady()
         {
             base.OnReady();
             this.ConfigureAngular2Razor();
+        }
 
+        protected override void OnApplicationStarted(IServiceProvider prov)
+        {
+            base.OnApplicationStarted(prov);
             if (MigrateOnStartup)
-            {
-                using (var sc = GetScope())
-                {
-                    var molds = sc.ServiceProvider.GetRequiredService<MoldsterContext>();
-                    molds.Database.Migrate();
-                }
-            }
-
+                prov.MigrateContext<MoldsterContext>();
         }
     }
 }

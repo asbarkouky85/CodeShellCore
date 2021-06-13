@@ -107,6 +107,8 @@ namespace CodeShellCore
                 return _reportRoot;
             }
         }
+
+        protected abstract IConfiguration Configuration { get; }
         protected virtual IServiceProvider rootProvider
         {
             get
@@ -182,6 +184,15 @@ namespace CodeShellCore
             return collection.BuildServiceProvider();
         }
 
+        /// <summary>
+        /// Gets a Scoped <see cref="IServiceProvider"/> and runs on startup after all registration is done (Use for migrations and seeding)
+        /// </summary>
+        /// <param name="prov"></param>
+        protected virtual void OnApplicationStarted(IServiceProvider prov)
+        {
+
+        }
+
         #endregion
 
         #region Static Methods
@@ -204,7 +215,10 @@ namespace CodeShellCore
             if (App.useTimedJobs)
                 App.StartJobs();
             cont.OnReady();
-
+            using (var sc = GetScope())
+            {
+                cont.OnApplicationStarted(sc.ServiceProvider);
+            }
         }
 
         public static void Exit()

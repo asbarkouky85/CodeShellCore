@@ -71,6 +71,7 @@ namespace CodeShellCore.Moldster
             ScriptMapSettings.Add(mapp);
         }
 
+
         public static void AddMoldsterModules(this IServiceCollection coll, Action<MoldsterModulesConfig> modules)
         {
 

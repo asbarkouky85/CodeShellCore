@@ -1,0 +1,206 @@
+﻿@model CodeShellCore.Moldster.Dto.TenantPageGuideDTO
+
+@{
+    Layout = Html.Config().Layout;
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    {{'Columns.Domain__Name' | translate}}
+                </th>
+                <th>
+                    {{'Columns.Resource__Name' | translate}}
+
+                </th>
+                <th>
+                    {{'Columns.Page__PrivilegeName' | translate}}
+
+                </th>
+                <th>#</th>
+                <th>
+                    {{'Columns.Page__Name' | translate}}
+
+                </th>
+                <th>
+                    {{'Columns.Page__Apps' | translate}}
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{var i = 1;}
+            @foreach (var dom in Model.Domains)
+            {
+                var domCol = false;
+
+                foreach (var res in dom.Resources)
+                {
+                    var typeCol = false;
+                    var resCol = false;
+                    foreach (var p in res.ViewPages)
+                    {
+
+                        <tr>
+                            @if (!domCol)
+                            {
+                                <td rowspan="@dom.Resources.Sum(d=>d.PageCount)">@Html.Word(dom.Name)</td>
+                                domCol = true;
+                            }
+                            @if (!resCol)
+                            {
+                                <td rowspan="@res.PageCount">@Html.Word(res.Name)</td>
+                                resCol = true;
+                            }
+                            @if (!typeCol)
+                            {
+                                <td rowspan="@res.ViewPages.Count()">@Html.Word("View")</td>
+                                typeCol = true;
+                            }
+                                <td>@(i++)</td>
+                            <td>@Html.Page(p.Name)</td>
+                            <td>
+                                @foreach (var a in p.Apps)
+                                {
+                                    <div>@a</div>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                    typeCol = false;
+                    foreach (var p in res.DetailsPages)
+                    {
+
+                        <tr>
+                            @if (!domCol)
+                            {
+                                <td rowspan="@dom.Resources.Sum(d=>d.PageCount)">@Html.Word(dom.Name)</td>
+                                domCol = true;
+                            }
+                            @if (!resCol)
+                            {
+                                <td rowspan="@res.PageCount">@Html.Word(res.Name)</td>
+                                resCol = true;
+                            }
+                            @if (!typeCol)
+                            {
+                                <td rowspan="@res.DetailsPages.Count()">@Html.Word("Details")</td>
+                                typeCol = true;
+                            }
+                                <td>@(i++)</td>
+                            <td>@Html.Page(p.Name)</td>
+                            <td>
+                                @foreach (var a in p.Apps)
+                                {
+                                    <div>@a</div>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                    typeCol = false;
+                    foreach (var p in res.UpdatePages)
+                    {
+
+                        <tr>
+                            @if (!domCol)
+                            {
+                                <td rowspan="@dom.Resources.Sum(d=>d.PageCount)">@Html.Word(dom.Name)</td>
+                                domCol = true;
+                            }
+                            @if (!resCol)
+                            {
+                                <td rowspan="@res.PageCount">@Html.Word(res.Name)</td>
+                                resCol = true;
+                            }
+                            @if (!typeCol)
+                            {
+                                <td rowspan="@res.UpdatePages.Count()">@Html.Word("Update")</td>
+                                typeCol = true;
+                            }
+                                <td>@(i++)</td>
+                            <td>@Html.Page(p.Name)</td>
+                            <td>
+                                @foreach (var a in p.Apps)
+                                {
+                                    <div>@a</div>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                    typeCol = false;
+                    foreach (var p in res.InsertPages)
+                    {
+
+                        <tr>
+                            @if (!domCol)
+                            {
+                                <td rowspan="@dom.Resources.Sum(d=>d.PageCount)">@Html.Word(dom.Name)</td>
+                                domCol = true;
+                            }
+                            @if (!resCol)
+                            {
+                                <td rowspan="@res.PageCount">@Html.Word(res.Name)</td>
+                                resCol = true;
+                            }
+                            @if (!typeCol)
+                            {
+                                <td rowspan="@res.InsertPages.Count()">@Html.Word("Insert")</td>
+                                typeCol = true;
+                            }
+                                <td>@(i++)</td>
+                            <td>@Html.Page(p.Name)</td>
+                            <td>
+                                @foreach (var a in p.Apps)
+                                {
+                                    <div>@a</div>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                    foreach (var o in res.OtherPages)
+                    {
+                        typeCol = false;
+                        foreach (var p in o.Value)
+                        {
+
+                        <tr>
+                            @if (!domCol)
+                            {
+                                <td rowspan="@dom.Resources.Sum(d=>d.PageCount)">@Html.Word(dom.Name)</td>
+                                domCol = true;
+                            }
+                            @if (!resCol)
+                            {
+                                <td rowspan="@res.PageCount">@Html.Word(res.Name)</td>
+                                resCol = true;
+                            }
+                            @if (!typeCol)
+                            {
+                                <td rowspan="@o.Value.Count">@Html.Word(o.Key)</td>
+                                typeCol = true;
+                            }
+                            <td>@(i++)</td>
+                            <td>@Html.Page(p.Name)</td>
+                            <td>
+                                @foreach (var a in p.Apps)
+                                {
+                                    <div>@a</div>
+                                }
+
+                            </td>
+                        </tr>
+                        }
+                    }
+
+                }
+            }
+        </tbody>
+
+    </table>
+</div>

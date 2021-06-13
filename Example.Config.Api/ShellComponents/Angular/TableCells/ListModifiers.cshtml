@@ -49,7 +49,7 @@
         }
         else
         {
-            <a *ngIf="@(Model.PermissionVariable).delete" class="btn btn-danger btn-sm" (click)="Delete(@Model.ModelExpression,@Model.IdExpression)">
+            <a *ngIf="@(Model.PermissionVariable).delete" class="btn btn-danger btn-sm" (click)="Delete(@Model.IdExpression)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </a>
         }

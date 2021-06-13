@@ -29,16 +29,16 @@ namespace CodeShellCore.Web
             coll.AddTransient<IMessagePusher<TContract>, SignalRNotifier<THub, TContract>>();
         }
 
-        public static void AddTokenSecurity(this IServiceCollection coll, bool authenticatedOnly)
+        public static void AddTokenSecurity(this IServiceCollection coll, AuthorizationType type)
         {
-            coll.AddCodeShellSecurity(authenticatedOnly);
+            coll.AddCodeShellSecurity(type);
             coll.AddTransient<ISessionManager, TokenSessionManager>();
             coll.AddTransient<IAuthenticationService, TokenAuthenticationService>();
         }
 
-        public static void AddTokenSecurity<TUnit>(this IServiceCollection coll) where TUnit : class, ISecurityUnit
+        public static void AddTokenSecurity<TUnit>(this IServiceCollection coll, AuthorizationType type = AuthorizationType.AuthorizeAuthenticated) where TUnit : class, ISecurityUnit
         {
-            coll.AddCodeShellSecurity<TUnit, TokenSessionManager>();
+            coll.AddCodeShellSecurity<TUnit, TokenSessionManager>(type);
             coll.AddTransient<IAuthenticationService, TokenAuthenticationService>();
         }
 

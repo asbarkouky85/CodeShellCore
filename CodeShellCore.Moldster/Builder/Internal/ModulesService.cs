@@ -4,6 +4,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,10 @@ using System.Resources;
 
 namespace CodeShellCore.Moldster.Builder.Internal
 {
-    public class ModulesService : ConsoleService, IModulesService
+    public class ModulesService : FileHandlingService, IModulesService
     {
-
         static string tmpLocation;
-        private readonly IPathsService paths;
-        private readonly IConfigUnit unit;
+        private IConfigUnit unit => GetService<IConfigUnit>();
 
         static ModulesService()
         {
@@ -28,10 +27,8 @@ namespace CodeShellCore.Moldster.Builder.Internal
             if (!Directory.Exists(tmpLocation))
                 Directory.CreateDirectory(tmpLocation);
         }
-        public ModulesService(IOutputWriter writer, IPathsService paths, IConfigUnit unit) : base(writer)
+        public ModulesService(IServiceProvider prov) : base(prov)
         {
-            this.paths = paths;
-            this.unit = unit;
         }
 
         public byte[] GetHtmlArchive(string assemblyName)
@@ -58,7 +55,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
 
             mod.Categories = mod.Categories ?? new List<ModuleCategoryDTO>();
             mod.Resources = mod.Resources ?? new string[0];
-            toPath = toPath ?? mod.InstallPath;
+            toPath = (toPath ?? mod.InstallPath).ToLower();
 
             List<string> resNames = new List<string>();
             resNames.AddRange(mod.Resources);
@@ -133,14 +130,14 @@ namespace CodeShellCore.Moldster.Builder.Internal
                     Out.WriteLine();
                 }
 
-                string htmlPath = Path.Combine(paths.ConfigRoot, "Views", toPath, viewPath + ".cshtml");
+                string htmlPath = Path.Combine(Paths.ConfigRoot, "Views", toPath, viewPath + ".cshtml");
                 files.Add(new Tuple<string, string>(view, htmlPath));
             }
 
             foreach (var s in scripts)
             {
                 string scriptName = s.Replace(scrPath + "\\", "");
-                string scriptPath = Path.Combine(paths.UIRoot, "Core", paths.CoreAppName, toPath, scriptName);
+                string scriptPath = Path.Combine(Names.BaseFolder, toPath, scriptName);
                 files.Add(new Tuple<string, string>(s, scriptPath));
             }
 
@@ -206,7 +203,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
         protected virtual void ArchiveViews(MoldsterModule mod, string projectPath)
         {
 
-            var vws = Path.Combine(paths.ConfigRoot, "Views", mod.InstallPath);
+            var vws = Path.Combine(Paths.ConfigRoot, "Views", mod.InstallPath);
             WriteFileOperation("Updating from", vws);
             if (Directory.Exists(vws))
             {
@@ -227,7 +224,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
             Out.WriteLine($"Updating module {mod.Name}");
             Utils.ClearDirectory(tmpLocation);
 
-            var scripts = Path.Combine(paths.UIRoot, "Core", paths.CoreAppName, mod.InstallPath);
+            var scripts = Path.Combine(Names.BaseFolder, mod.InstallPath);
             WriteFileOperation("Updating from", scripts);
             if (Directory.Exists(scripts))
             {

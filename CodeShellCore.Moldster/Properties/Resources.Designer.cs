@@ -95,23 +95,15 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;ng-container *ngIf=&quot;Locale==&apos;ar&apos;&quot;&gt;
-        ///    &lt;link href=&quot;/bootstrap-rtl.css&quot; rel=&quot;stylesheet&quot;&gt;
-        ///    &lt;link href=&quot;/moldster.css&quot; rel=&quot;stylesheet&quot;&gt;
-        ///    &lt;link href=&quot;/moldster-rtl.css&quot; rel=&quot;stylesheet&quot;&gt;
+        ///    &lt;link href=&quot;/assets/moldster/css/plugins/bootstrap.rtl.css&quot; rel=&quot;stylesheet&quot; /&gt;
+        ///    &lt;link href=&quot;/assets/moldster/css/moldster.css&quot; rel=&quot;stylesheet&quot; /&gt;
+        ///    &lt;link href=&quot;/assets/moldster/css/moldster.rtl.css&quot; rel=&quot;stylesheet&quot; /&gt;
+        ///    &lt;link href=&quot;/assets/moldster/css/treeStyle.rtl.css&quot; rel=&quot;stylesheet&quot; /&gt;
         ///&lt;/ng-container&gt;
         ///
         ///&lt;ng-container *ngIf=&quot;Locale==&apos;en&apos;&quot;&gt;
-        ///    &lt;link href=&quot;/moldster.css&quot; rel=&quot;stylesheet&quot;&gt;
-        ///&lt;/ng-container&gt;
-        ///
-        ///&lt;div [hidden]=&quot;!ShowLoader&quot; class=&quot;loader-overlay&quot;&gt;
-        ///    &lt;div class=&quot;loader&quot;&gt;&lt;/div&gt;
-        ///&lt;/div&gt;
-        ///
-        ///&lt;div&gt;
-        ///    &lt;div class=&quot;wrapper&quot;&gt;
-        ///        &lt;app-top-bar #topBar&gt;&lt;/app-top-bar&gt;
-        ///        &lt;div clas [rest of string was truncated]&quot;;.
+        ///    &lt;link href=&quot;/assets/moldster/css/plugins/bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
+        ///    &lt;link href=&quot;/assets/mold [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AppComponent_cshtml {
             get {
@@ -303,17 +295,13 @@ namespace CodeShellCore.Moldster.Properties {
         ///
         ///&lt;head&gt;
         ///    &lt;base href=&quot;/&quot;&gt;
-        ///    &lt;link href=&quot;/assets/plugins/animate.css&quot; type=&quot;application/css&quot; rel=&quot;stylesheet&quot; /&gt;
         ///    
         ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Armata&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
         ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Tajawal&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
         ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
-        ///&lt;/head&gt;
         ///
-        ///&lt;body&gt;
-        ///    &lt;app&gt;
-        ///        &lt;div class=&quot;loader&quot;&gt;&lt;/div&gt;
-        /// [rest of string was truncated]&quot;;.
+        ///    &lt;link href=&quot;assets/moldster/css/plugins/animate.css&quot; rel=&quot;stylesheet&quot; /&gt;
+        ///    &lt;link href=&quot;assets/moldster/css/plugins/font-awesome4.2.min.css&quot; rel=&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string index_html {
             get {
@@ -517,6 +505,16 @@ namespace CodeShellCore.Moldster.Properties {
         public static byte[] Routes_ts {
             get {
                 object obj = ResourceManager.GetObject("Routes_ts", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] server_config_ts {
+            get {
+                object obj = ResourceManager.GetObject("server_config_ts", resourceCulture);
                 return ((byte[])(obj));
             }
         }

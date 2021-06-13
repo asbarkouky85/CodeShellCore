@@ -37,6 +37,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             BaseModuleMold = Encoding.UTF8.GetString(Properties.Resources.BaseModule_ts);
             AngularJson = Encoding.UTF8.GetString(Properties.Resources.angular_json);
             AngularJsonProject = Encoding.UTF8.GetString(Properties.Resources.angular_json_project);
+            ServerConfigMold = Encoding.UTF8.GetString(Properties.Resources.server_config_ts);
         }
 
         public virtual string BootMold { get; private set; }
@@ -73,6 +74,8 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
         public string AngularJson { get; private set; }
 
         public string AngularJsonProject { get; private set; }
+
+        public string ServerConfigMold { get; private set; }
 
         public virtual string GetBaseComponentMold(bool serviced)
         {
