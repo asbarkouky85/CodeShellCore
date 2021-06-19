@@ -11,6 +11,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
         string GetDomainModuleMold();
         string AppModuleMold { get; }
         string BaseModuleMold { get; }
+        string ServerConfigMold { get; }
         string BasicComponent { get; }
         string BootMold { get; }
         string ComponentMold { get; }

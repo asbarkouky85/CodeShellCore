@@ -1,6 +1,7 @@
 ﻿using Asga.Auth;
 using Asga.Auth.Data;
 using Asga.Web.Security;
+using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
@@ -14,11 +15,11 @@ using System.Text;
 
 namespace Asga.Auth
 {
-   public static class DependencyInjectionExtensions
+    public static class DependencyInjectionExtensions
     {
-        public static void AddAsgaWeb(this IServiceCollection coll)
+        public static void AddAsgaAuthWeb(this IServiceCollection coll)
         {
-            coll.AddTokenSecurity<AuthUnit>();
+            coll.AddTokenSecurity<AuthUnit>(AuthorizationType.AuthorizeAuthenticated);
             coll.AddTransient<IAuthorizationService, AsgaAuthorizationService>();
             coll.AddTransient<IAuthenticationService, AsgaAuthenticationService>();
         }

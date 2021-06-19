@@ -26,8 +26,8 @@ namespace CodeShellCore.UnitTest.Razor
         {
             var shell = new UnitTestShell(coll =>
              {
-                 coll.AddAngularRazorHelpers();
-                 coll.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
+                 coll.Services.AddAngularRazorHelpers();
+                 coll.Services.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
              });
             Shell.Start(shell);
             shell.ConfigureAngular2Razor();

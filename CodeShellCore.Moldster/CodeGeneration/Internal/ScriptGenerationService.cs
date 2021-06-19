@@ -72,7 +72,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
             if (!File.Exists(pollyPath))
             {
-                Out.Write("Generating pollyfills.ts...  \t\t\t");
+                Out.Write("Generating polyfills.ts...  \t\t\t");
                 string pollyTemplate = Properties.Resources.pollyfills_ts;
                 File.WriteAllText(pollyPath, pollyTemplate);
                 WriteSuccess();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using CodeShellCore.Moldster;
+using System;
 
 namespace GenerationTest.Api.Data
 {
@@ -8,22 +9,22 @@ namespace GenerationTest.Api.Data
     {
         public static void AddTestConfigDB(this IServiceCollection coll)
         {
+            coll.Remove(new ServiceDescriptor(typeof(MoldsterContext), typeof(MoldsterContext), ServiceLifetime.Scoped));
             coll.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("m"));
         }
 
-        public static void Initialize()
+        public static void Initialize(IServiceProvider prov)
         {
-            using (var sc = CodeShellCore.Shell.GetScope())
-            {
-                MoldsterContext cont = sc.ServiceProvider.GetService<MoldsterContext>();
 
-                Domains(cont);
-                Tenants(cont);
-                Resources(cont);
-                PageCategories(cont);
-                Pages(cont);
-                cont.SaveChanges();
-            }
+            MoldsterContext cont = prov.GetService<MoldsterContext>();
+
+            Domains(cont);
+            Tenants(cont);
+            Resources(cont);
+            PageCategories(cont);
+            Pages(cont);
+            cont.SaveChanges();
+
         }
 
         private static void Tenants(MoldsterContext cont)
@@ -45,7 +46,7 @@ namespace GenerationTest.Api.Data
 
         public static void PageCategories(MoldsterContext cont)
         {
-            
+
             cont.PageCategories.Add(new PageCategory
             {
                 Id = 1,
@@ -73,7 +74,7 @@ namespace GenerationTest.Api.Data
                 HasRoute = true,
                 IsHomePage = true
             });
-            
+
 
         }
 

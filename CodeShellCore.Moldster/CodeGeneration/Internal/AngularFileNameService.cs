@@ -34,6 +34,8 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             return string.Join("/", parts);
         }
 
+        
+
         public string GetComponentFilePath(string module, string viewFilePath)
         {
             string url;
@@ -160,6 +162,11 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
         public string GetLocalizationLoaderPath(string moduleCode, string loc)
         {
             return Path.Combine(_paths.UIRoot, "src", _angular_convesion(moduleCode), "localization", loc, "loader.ts");
+        }
+
+        public string ReverseConvention(string v)
+        {
+            return LangUtils.WordsToCamelCase(v, "-");
         }
     }
 }

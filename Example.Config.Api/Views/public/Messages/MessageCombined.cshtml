@@ -1,0 +1,13 @@
+﻿@{
+    Layout = Html.Config().Layout;
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-7">
+            @Html.ComponentSelectorFromOther("list_component")
+        </div>
+        <div class="col-md-5" [show-if]="list_component.Selection.itemsSelected">
+            @Html.ComponentSelectorFromOther("edit_component")
+        </div>
+    </div>
+</div>

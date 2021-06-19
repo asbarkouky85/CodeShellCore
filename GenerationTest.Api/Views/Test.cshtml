@@ -1,6 +1,9 @@
-﻿@model Asga.Auth.User
+﻿@using CodeShellCore.Text.Localization;
+@model Asga.Auth.User
 
 @{
+    var l = LangUtils.WordsToCamelCase("user-name-list-3-with-whatever", "-");
+
     Layout = "~/ShellComponents/Angular/Layout/EditLayout.cshtml";
 
     Html.Config().Controls["user__name"] = new ControlDTO { Accessibilty = 2 };

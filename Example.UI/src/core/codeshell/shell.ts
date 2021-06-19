@@ -41,7 +41,7 @@ export class Shell {
     static Page(text: string): string {
         if (!text || text.length == 0)
             return text;
-        return Shell.Translator.instant(text);
+        return Shell.Translator.instant('Pages.'+text);
     }
 
     static Translate(...params: string[]): string[] {

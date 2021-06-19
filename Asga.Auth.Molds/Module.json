@@ -19,6 +19,11 @@
       "Resource": "Users"
     },
     {
+      "Path": "Users/ForgotPassword",
+      "Base": "Edit",
+      "Resource": "Users"
+    },
+    {
       "Path": "Users/UserEdit",
       "Base": "Edit",
       "Resource": "Users"
@@ -26,11 +31,6 @@
     {
       "Path": "Users/UserList",
       "Base": "List",
-      "Resource": "Users"
-    },
-    {
-      "Path": "Users/ForgotPassword",
-      "Base": "Edit",
       "Resource": "Users"
     }
   ],

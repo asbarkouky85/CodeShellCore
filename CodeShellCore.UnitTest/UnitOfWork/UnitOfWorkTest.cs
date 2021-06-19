@@ -15,10 +15,10 @@ namespace CodeShellCore.UnitTest.UnitOfWork
         {
             Shell.Start(new UnitTestShell(coll =>
             {
-                coll.AddScoped<TestUnit>();
-                coll.AddTransient(typeof(TestRepository<,>));
-                coll.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
-                coll.AddGenericRepository(typeof(Repository_Int64<,>));
+                coll.Services.AddScoped<TestUnit>();
+                coll.Services.AddTransient(typeof(TestRepository<,>));
+                coll.Services.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
+                coll.Services.AddGenericRepository(typeof(Repository_Int64<,>));
             }));
         }
 

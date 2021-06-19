@@ -19,9 +19,9 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             Shell.Start(new UnitTestShell(coll =>
             {
-                coll.AddMoldsterWeb();
-                coll.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
-                coll.AddScoped<MoldsterDataInit>();
+                coll.Services.AddMoldsterWeb();
+                coll.Services.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
+                coll.Services.AddScoped<MoldsterDataInit>();
             }));
             RunOnce(sc => sc.GetService<MoldsterDataInit>().InitilizeDomains());
         }

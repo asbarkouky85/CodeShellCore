@@ -20,5 +20,6 @@ namespace CodeShellCore.Moldster.CodeGeneration
         string GetComponentImportPath(string path, bool fromDomain = true);
         string GetLocalizationJsonPath(string moduleCode, string type, string loc);
         string GetLocalizationLoaderPath(string moduleCode, string loc);
+        string ReverseConvention(string v);
     }
 }

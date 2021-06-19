@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-    "tenantOne": {
+        "tenant_1": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,9 +17,9 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/tenantOne",
+                        "outputPath": "wwwroot/tenant_1",
                         "index": "src/index.html",
-                        "main": "src/main-tenantOne.ts",
+                        "main": "src/main-tenant_1.ts",
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.json",
                         "aot": true,
@@ -36,19 +36,35 @@
                             "src/favicon.ico",
                             "src/assets"
                         ],
-                        "styles": [
-                            
+                        "styles": [{
+                                "bundleName": "primeicons",
+                                "input": "node_modules/primeicons/primeicons.css",
+                                "inject": true
+                            },
+                            {
+                                "bundleName": "primeng.min",
+                                "input": "node_modules/primeng/resources/primeng.min.css",
+                                "inject": true
+                            },
+                            {
+                                "bundleName": "primeng.theme",
+                                "input": "node_modules/primeng/resources/themes/saga-blue/theme.css",
+                                "inject": true
+                            },
+                            {
+                                "input": "node_modules/@danielmoncada/angular-datetime-picker/assets/style/picker.min.css",
+                                "bundleName": "angular-datetime.min",
+                                "inject": true
+                            }
                         ],
                         "scripts": []
                     },
                     "configurations": {
                         "production": {
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
-                                }
-                            ],
+                            "fileReplacements": [{
+                                "replace": "src/base/server-config.ts",
+                                "with": "src/base/server-config.prod.ts"
+                            }],
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
@@ -56,8 +72,7 @@
                             "extractLicenses": true,
                             "vendorChunk": false,
                             "buildOptimizer": true,
-                            "budgets": [
-                                {
+                            "budgets": [{
                                     "type": "initial",
                                     "maximumWarning": "2mb",
                                     "maximumError": "5mb"
@@ -74,25 +89,25 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "tenantOne:build"
+                        "browserTarget": "tenant_1:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "tenantOne:build:production"
+                            "browserTarget": "tenant_1:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "tenantOne:build"
+                        "browserTarget": "tenant_1:build"
                     }
                 },
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
                     "options": {
                         "tsConfig": [
-                            "tsconfig.json",
+                            "tsconfig.app.json",
                             "tsconfig.spec.json",
                             "e2e/tsconfig.json"
                         ],
@@ -103,8 +118,8 @@
                 }
             }
         }
-    },     
-    "defaultProject": "tenantOne",
+    },
+    "defaultProject": "tenant_1",
     "cli": {
         "analytics": false
     }

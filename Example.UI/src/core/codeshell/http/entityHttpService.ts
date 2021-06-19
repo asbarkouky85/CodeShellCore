@@ -16,11 +16,11 @@ export abstract class EntityHttpService extends HttpServiceBase {
     }
 
     public GetEditLookups(opt: any): Promise<{ [key: string]: any[] }> {
-        return this.Get("edit-lookups", opt);
+        return this.Get("GetEditLookups", opt);
     }
 
     public GetListLookups(opt: any): Promise<{ [key: string]: any[] }> {
-        return this.Get("list-lookups", opt);
+        return this.Get("GetListLookups", opt);
     }
 
     SetActive(id: number, state: boolean): Promise<SubmitResult> {
@@ -28,7 +28,7 @@ export abstract class EntityHttpService extends HttpServiceBase {
     }
 
     public GetSingle(id: number): Promise<DTO<any>> {
-        return this.GetAs<DTO<any>>(id.toString());
+        return this.GetAs<DTO<any>>("GetSingle/"+ id.toString());
     }
 
     public GetPaged(action: string, opts: LoadOptions): Promise<LoadResult> {

@@ -33,7 +33,7 @@ namespace CodeShellCore.Cli.Routing
         protected override string appRoot => ".";
         protected override CultureInfo defaultCulture => new CultureInfo("en");
         protected override IServiceProvider _scopedProvider => __scoped;
-        protected IConfiguration Configuration => _configRoot;
+        protected override IConfiguration Configuration => _configRoot;
 
         protected override IServiceProvider buildRootProvider()
         {

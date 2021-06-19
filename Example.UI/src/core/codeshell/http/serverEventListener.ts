@@ -1,6 +1,9 @@
-﻿import { HubConnection, HubConnectionBuilder, HubConnectionState } from "@aspnet/signalr";
+﻿import { HubConnection, HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
 import { Observable } from "rxjs";
 import { EventEmitter } from "@angular/core";
+import { Shell } from "codeshell/shell";
+import { ServerConfigBase } from "codeshell/serverConfigBase";
+import { Utils } from "codeshell/utilities";
 
 
 export class ServerEventListner {
@@ -19,7 +22,9 @@ export class ServerEventListner {
 
     protected _isStarted: boolean = false;
     constructor(private hubUrl: string) {
-        this.connection = new HubConnectionBuilder().withUrl(this.hubUrl).build();
+        let conf = Shell.Injector.get<ServerConfigBase>(ServerConfigBase);
+        let url = Utils.Combine(conf.ApiUrl, hubUrl);
+        this.connection = new HubConnectionBuilder().withUrl(url).build();
         this.connection.serverTimeoutInMilliseconds = 12000000;
         this.connection.onclose(d => {
             this._isStarted = false;
@@ -37,7 +42,7 @@ export class ServerEventListner {
                             console.log("Failed to reconnect")
                         })
                     } else if (this._interval) {
-                        
+
                         clearInterval(this._interval);
                         this._interval = null;
                     }

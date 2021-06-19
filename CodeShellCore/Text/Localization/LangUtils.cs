@@ -62,7 +62,7 @@ namespace CodeShellCore.Text.Localization
                         dic[s.Name] = s.Value;
                     }
                 }
-                
+
             }
             return DictionaryToJson(dic);
         }
@@ -91,6 +91,27 @@ namespace CodeShellCore.Text.Localization
                 Console.WriteLine(ex);
             }
             return dic;
+        }
+
+        public static string WordsToCamelCase(string id, params string[] separators)
+        {
+            foreach (var sep in separators)
+            {
+                Regex r = new Regex(@"" + sep + @"(\w)");
+                MatchCollection col = r.Matches(id);
+                int i = 0;
+                id = id.Substring(0, 1).ToUpper() + id.Substring(1);
+                foreach (Match d in col)
+                {
+                    if (d.Index != 0)
+                    {
+                        var ind = d.Index - (i++);
+                        id = id.Substring(0, ind) + id.Substring(ind + 1, 1).ToUpper() + id.Substring(ind + 2);
+                    }
+                }
+
+            }
+            return id;
         }
 
         public static string CamelCaseToWords(string id, string separator)

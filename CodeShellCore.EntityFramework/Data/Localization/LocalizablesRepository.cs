@@ -9,7 +9,7 @@ using CodeShellCore.Data.EntityFramework;
 
 namespace CodeShellCore.Data.Localization
 {
-    public class LocalizableRepository<T, TContext> : 
+    public class LocalizableRepository<T, TContext> :
         Repository_Int64<T, TContext>,
         ILocalizablesRepository<T> where T : class,
         ILocalizable where TContext : DbContext
@@ -30,7 +30,6 @@ namespace CodeShellCore.Data.Localization
                 ob.EntityId = (long)id;
                 ob.LocaleId = langId;
                 ob.EntityType = type;
-                ob.Id= Utils.GenerateID();
                 Add(ob);
             }
         }
@@ -38,12 +37,13 @@ namespace CodeShellCore.Data.Localization
         public virtual IEnumerable<LocalizablesLoader> Get(string type, object id, IEnumerable<int> langs)
         {
 
-            return Loader.Where(d => langs.Contains(d.LocaleId) && d.EntityId.Equals(id) && d.EntityType == type)
-                     .GroupBy(s => s.LocaleId, (q, b) => new LocalizablesLoader
-                     {
-                         LocaleId = q,
-                         Items = b.Select(l => new LocalizableItem { ColumnName = l.ColumnName, Value = l.Value })
-                     }).ToList();
+            var data = Loader.Where(d => langs.Contains(d.LocaleId) && d.EntityId.Equals(id) && d.EntityType == type).ToList();
+
+            return data.GroupBy(s => s.LocaleId, (q, b) => new LocalizablesLoader
+            {
+                LocaleId = q,
+                Items = b.Select(l => new LocalizableItem { ColumnName = l.ColumnName, Value = l.Value })
+            }).ToList();
 
             //return Loader.Where(d => langs.Contains(d.LocaleId) && d.EntityId == id && d.EntityType == type).Select(d => new LocalizablesLoader
             //{

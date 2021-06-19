@@ -11,24 +11,20 @@ using Asga.Auth.Services;
 using Asga.Security;
 using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Security.Authentication;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using System;
+using Asga.Auth.Seeding;
 
 namespace Asga.Auth
 {
     public static class AsgaAuthModule
     {
-        public static void AddAuthData(this IServiceCollection coll, bool asDefaultModule)
+        public static void AddAuthData(this IServiceCollection coll, bool asDefaultModule, IConfiguration config = null)
         {
-            if (asDefaultModule)
-            {
-                coll.AddUnitOfWork<AuthUnit, IAuthUnit>();
-                coll.AddContext<AuthContext>();
-            }
-            else
-            {
-                coll.AddScoped<AuthUnit>();
-                coll.AddScoped<AuthContext>();
-                coll.AddScoped<IAuthUnit>(s => s.GetService<AuthUnit>());
-            }
+
+            coll.AddCodeshellDbContext<AuthContext>(asDefaultModule, config, "Auth");
+            coll.AddUnitOfWork<AuthUnit, IAuthUnit>(asDefaultModule);
 
             coll.AddScoped<ISecurityUnit>(d => d.GetService<AuthUnit>());
 
@@ -54,15 +50,25 @@ namespace Asga.Auth
 
         }
 
-        public static void AddAuthModule(this IServiceCollection coll, bool defaultModule = true)
+        public static void AddAsgaAuthModule(this IServiceCollection coll, IConfiguration config, bool defaultModule = true)
         {
-
-            coll.AddAuthData(defaultModule);
+            coll.AddAuthData(defaultModule, config);
             coll.AddTransient<IAuthLookupService, AuthLookupService>();
             coll.AddTransient<IAuthenticationMailService, AsgaAuthMailService>();
             coll.AddTransient<AuthorizationService>();
             coll.AddServiceFor<Role, RolesService, IRolesService>();
             coll.AddServiceFor<User, UsersService, IUsersService>();
+
+            coll.AddDataSeeders<AuthContext>(e =>
+            {
+                e.AddSeeder<AuthDataSeeder>();
+            });
+        }
+
+        public static void MigrateAuthDb(this IServiceProvider prov,bool seed=true)
+        {
+            prov.MigrateContext<AuthContext>(seed);
+            
         }
     }
 }

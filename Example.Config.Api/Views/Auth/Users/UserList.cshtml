@@ -1,0 +1,33 @@
+@*ID:3*@
+@model UserListDTO
+
+@{ Layout = Html.Config().Layout; }
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @Html.HeaderCell(d => d.Name)
+            @Html.HeaderCell(d => d.LogonName)
+            @Html.HeaderCell(d => d.BirthDate)
+            @Html.HeaderCell(d => d.Email)
+            @Html.HeaderCell(d => d.Mobile)
+            @Html.HeaderCell(d => d.AppName)
+            @Html.HeaderCell(d => d.CreatedOn)
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            @Html.TextCell(d => d.Name)
+            @Html.TextCell(d => d.LogonName)
+            @Html.TextCell(d => d.BirthDate, pipe: "date : 'dd/MM/yyyy'")
+            @Html.TextCell(d => d.Email)
+            @Html.TextCell(d => d.Mobile)
+            @Html.TextCell(d => d.AppName)
+            @Html.TextCell(d => d.CreatedOn)
+            <td>
+                @Html.ListModifiers()
+            </td>
+        </tr>
+    </tbody>
+</table>

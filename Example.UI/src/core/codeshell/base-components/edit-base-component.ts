@@ -9,6 +9,7 @@ import { LocalizablesDTO } from "../localization/models";
 import { Utils } from "../utilities/utils";
 import { Output } from "@angular/core";
 import { Observable } from "rxjs";
+import { Culture } from '../localization/locale-data';
 
 
 @Component({ template: '' })
@@ -18,7 +19,7 @@ export abstract class EditComponentBase extends BaseComponent {
     Form?: NgForm;
     FormGroup?: FormGroup;
     CurrentLang: string = "ar";
-    navSection?:any;
+    navSection?: any;
 
     UI_Lang: string = "ar";
 
@@ -81,8 +82,8 @@ export abstract class EditComponentBase extends BaseComponent {
             }
         }
 
-        this.UI_Lang = "en";
-        this.CurrentLang = Shell.Main.Config.DefaultLocale == "ar" ? "en" : "ar";
+        this.UI_Lang = Culture.Current.Language;
+        this.CurrentLang = Culture.Current.Language == "ar" ? "en" : "ar";
 
         if (this.Form && this.Form.statusChanges) {
             this.Form.statusChanges.subscribe(d => {
@@ -101,7 +102,6 @@ export abstract class EditComponentBase extends BaseComponent {
 
     IsValid(): boolean {
         let valid = true;
-        debugger;
         if (this.Form) {
             valid = valid && !this.Form.invalid;
         }
@@ -262,6 +262,7 @@ export abstract class EditComponentBase extends BaseComponent {
     protected OnReady(): void { };
 
     async SubmitLocalizablesAsync(): Promise<void> {
+        debugger;
         var s: { [key: string]: LocalizablesDTO } = {};
         let submit: boolean = false;
         for (var i in this.Localizables) {
@@ -293,7 +294,6 @@ export abstract class EditComponentBase extends BaseComponent {
 
         if (this.IsNew) {
             prom = await this.SubmitNewAsync();
-
             if (prom.data.Id) {
                 this.ModelId = prom.data.Id;
                 await this.SubmitLocalizablesAsync();

@@ -17,7 +17,7 @@ namespace Asga.Mobile
             if (asDefaultModule)
             {
                 coll.AddUnitOfWork<AsgaMobileUnit, IAsgaMobileUnit>();
-                coll.AddContext<AsgaMobileContext>();
+                coll.AddCodeshellDbContext<AsgaMobileContext>();
             }
             else
             {

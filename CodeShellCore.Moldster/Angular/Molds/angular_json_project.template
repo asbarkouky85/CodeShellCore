@@ -46,6 +46,11 @@
                                 "bundleName": "primeng.theme",
                                 "input": "node_modules/primeng/resources/themes/saga-blue/theme.css",
                                 "inject": true
+                            },
+                            {
+                                "input": "node_modules/@danielmoncada/angular-datetime-picker/assets/style/picker.min.css",
+                                "bundleName": "angular-datetime.min",
+                                "inject": true
                             }
                         ],
                         "scripts": []
