@@ -17,14 +17,12 @@ using CodeShellCore.DependencyInjection;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Files;
 using CodeShellCore.Text.TextProviders;
-using CodeShellCore.Data.Services;
-using CodeShellCore.Tasks;
 using CodeShellCore.Text;
 using CodeShellCore.Helpers;
 using CodeShellCore.Cli;
 using CodeShellCore.MQ;
-using CodeShellCore.Data;
 using CodeShellCore.Files.Uploads;
+using CodeShellCore.Tasks;
 
 namespace CodeShellCore
 {
@@ -137,13 +135,12 @@ namespace CodeShellCore
             coll.AddLogging();
             coll.AddSingleton<IFileHandler, FileSystemHandler>();
             coll.AddTransient<ILocaleTextProvider, ResxTextProvider>();
-            coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
+            
             coll.AddTransient<IOutputWriter, ConsoleOutputWriter>();
-            coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
+            
             coll.AddTransient<IUploadedFilesHandler, UploadedFileHandler>();
             coll.AddScoped<Language>();
-            coll.AddScoped<IUserAccessor, UserAccessor>();
-            coll.AddScoped<UserAccessor>();
+            
             coll.AddScoped<ClientData>();
 
         }

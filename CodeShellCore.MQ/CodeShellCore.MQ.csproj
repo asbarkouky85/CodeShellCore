@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore\CodeShellCore.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
