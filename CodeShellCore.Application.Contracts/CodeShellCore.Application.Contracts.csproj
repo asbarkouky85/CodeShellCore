@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>CodeShellCore</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Localization\" />
+    <Folder Include="Tasks\" />
   </ItemGroup>
 
 </Project>

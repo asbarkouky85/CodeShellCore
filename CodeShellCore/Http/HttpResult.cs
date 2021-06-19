@@ -1,11 +1,5 @@
-﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.Helpers;
-using CodeShellCore.Text;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using CodeShellCore.Helpers;
 using System.Net;
-using System.Text;
 
 namespace CodeShellCore.Http
 {

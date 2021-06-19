@@ -1,12 +1,9 @@
-﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.Helpers;
+﻿using CodeShellCore.Helpers;
 using CodeShellCore.Tasks;
 using CodeShellCore.Text;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 
 namespace CodeShellCore.Http
 {

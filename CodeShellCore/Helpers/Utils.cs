@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Data.Lookups;
-using CodeShellCore.Security.Authentication;
+﻿using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Text;
 using Newtonsoft.Json;
@@ -8,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -100,19 +98,7 @@ namespace CodeShellCore.Helpers
             return st?.Replace("{PARENT}", sol);
         }
 
-        public static List<Named<int>> GetNamedList<T>(string prefix = "")
-        {
-            var lst = new List<Named<int>>();
-            foreach (Enum cond in Enum.GetValues(typeof(T)))
-            {
-                lst.Add(new Named<int>
-                {
-                    Id = Convert.ToInt32(cond),
-                    Name = prefix + EnumExtensions.GetString(cond)
-                });
-            }
-            return lst;
-        }
+        
 
         public static void CopyStringToClipBoard(string st)
         {

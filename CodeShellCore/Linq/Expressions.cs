@@ -1,15 +1,11 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Helpers;
-using CodeShellCore.Linq.Filtering;
+﻿using CodeShellCore.Helpers;
 using CodeShellCore.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace CodeShellCore.Linq
 {
@@ -22,10 +18,7 @@ namespace CodeShellCore.Linq
             return null;
         }
 
-        public static IEnumerable<Expression<Func<T, bool>>> GetFilters<T>(IEnumerable<PropertyFilter> filters) where T : class
-        {
-            return new ExpressionGenerator<T>().ToStrongExpressions(filters);
-        }
+        
 
         public static Expression<Func<T, object>> Property<T>(string property) where T : class
         {
@@ -275,12 +268,12 @@ namespace CodeShellCore.Linq
             return Expression.Lambda<Func<T, TVal>>(ass, inp);
         }
 
-        public static Expression<Func<T, bool>> StringContains<T>(string property, string value) where T : IModel
+        public static Expression<Func<T, bool>> StringContains<T>(string property, string value)
         {
             return StringMethod<T>("Contains", property, value);
         }
 
-        public static Expression<Func<T, bool>> StringMethod<T>(string methodName, string property, string value) where T : IModel
+        public static Expression<Func<T, bool>> StringMethod<T>(string methodName, string property, string value)
         {
             var method = typeof(string).GetMethod(methodName, new[] { typeof(string) });
             if (method != null)
