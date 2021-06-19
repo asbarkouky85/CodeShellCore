@@ -7,7 +7,7 @@
     <FileVersion>5.1.2.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  
+
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>
     <SccProvider>SAK</SccProvider>
@@ -19,11 +19,13 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
   </ItemGroup>
-    <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+  
+  <ItemGroup>
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
     <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
   </ItemGroup>
-  
+
+
 
 </Project>

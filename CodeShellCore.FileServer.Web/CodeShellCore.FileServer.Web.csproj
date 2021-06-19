@@ -16,8 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <ProjectReference Include="..\CodeShellCore.FileServer.Module\CodeShellCore.FileServer.Module.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.FileServer.Module\CodeShellCore.FileServer.Module.csproj" />
   </ItemGroup>
 
 </Project>
