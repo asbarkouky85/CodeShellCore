@@ -1,12 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup Label="Globals">
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
-  </PropertyGroup>
-
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Version>5.1.3.0</Version>
@@ -18,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
   </ItemGroup>
 
 </Project>

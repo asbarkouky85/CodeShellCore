@@ -98,15 +98,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Moldster", "03 Moldster"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Cli", "CodeShellCore.Cli\CodeShellCore.Cli.csproj", "{84B37E04-C5D7-4DFB-9D5A-B9F8EE8E89D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShellCore.Application", "CodeShellCore.Application\CodeShellCore.Application.csproj", "{C890E91B-1E28-4E8A-8390-9179F2241081}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Application", "CodeShellCore.Application\CodeShellCore.Application.csproj", "{C890E91B-1E28-4E8A-8390-9179F2241081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShellCore.Domain", "CodeShellCore.Domain\CodeShellCore.Domain.csproj", "{7CCB2749-FBC6-4A39-AEF4-48BD476A3A38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Domain", "CodeShellCore.Domain\CodeShellCore.Domain.csproj", "{7CCB2749-FBC6-4A39-AEF4-48BD476A3A38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShellCore.Application.Contracts", "CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj", "{7D9A5F33-E793-4F49-80DF-555E3964F692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Application.Contracts", "CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj", "{7D9A5F33-E793-4F49-80DF-555E3964F692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeShellCore.Domain.Shared", "CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj", "{F3B7138D-00D9-46CA-85EE-DB7B492D22EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Domain.Shared", "CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj", "{F3B7138D-00D9-46CA-85EE-DB7B492D22EB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Helpers", "02 Helpers", "{F23398E3-4A1C-4F6D-ACBD-F4CE5F884B10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asga.Auth.Module.Contracts", "Asga.Auth.Module.Contracts\Asga.Auth.Module.Contracts.csproj", "{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -258,6 +260,10 @@ Global
 		{F3B7138D-00D9-46CA-85EE-DB7B492D22EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3B7138D-00D9-46CA-85EE-DB7B492D22EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3B7138D-00D9-46CA-85EE-DB7B492D22EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -299,6 +305,7 @@ Global
 		{7CCB2749-FBC6-4A39-AEF4-48BD476A3A38} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
 		{7D9A5F33-E793-4F49-80DF-555E3964F692} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
 		{F3B7138D-00D9-46CA-85EE-DB7B492D22EB} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
+		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3} = {D064279A-FF5C-450D-B4CE-D96EC6906A53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C8836DA-E4F6-4A43-9CC5-7D0388147EFD}
