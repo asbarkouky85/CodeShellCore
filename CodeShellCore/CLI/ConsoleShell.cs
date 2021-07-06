@@ -6,7 +6,8 @@ using CodeShellCore.Services;
 using CodeShellCore.Types;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Globalization;
 using System.IO;
@@ -30,7 +31,7 @@ namespace CodeShellCore.Cli
         }
 
         protected override bool useLocalization { get { return false; } }
-
+        protected virtual JsonSerializerSettings JsonSerializerSettings => _getJsonSettings();
 
         public ConsoleShell()
         {
@@ -46,9 +47,18 @@ namespace CodeShellCore.Cli
 
         }
 
+        private JsonSerializerSettings _getJsonSettings()
+        {
+            return new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+        }
         public static void Start<T>(Shell shell) where T : ConsoleController
         {
             Start(shell);
+            JsonConvert.DefaultSettings = () => ((ConsoleShell)App).JsonSerializerSettings;
+
             T cont = Activator.CreateInstance<T>();
             cont.IsMain = true;
             cont.Run();

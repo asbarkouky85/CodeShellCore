@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Services
 {
-    public class FileHandlingService : StandaloneConsoleService
+    public class MoldsterFileHandlingService : StandaloneConsoleService
     {
         protected IPathsService Paths => GetService<IPathsService>();
         protected WriterService Writer { get; private set; }
@@ -18,7 +18,7 @@ namespace CodeShellCore.Moldster.Services
         protected IDataService Data => GetService<IDataService>();
         protected IUIFileNameService Names => GetService<IUIFileNameService>();
 
-        public FileHandlingService(IServiceProvider provider) : base(provider)
+        public MoldsterFileHandlingService(IServiceProvider provider) : base(provider)
         {
             Writer = new WriterService();
         }

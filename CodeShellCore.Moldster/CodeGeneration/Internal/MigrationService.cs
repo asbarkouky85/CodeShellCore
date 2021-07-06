@@ -12,7 +12,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Internal
 {
-    public class MigrationService : FileHandlingService, IMigrationService
+    public class MigrationService : MoldsterFileHandlingService, IMigrationService
     {
         IConfigUnit unit => GetService<IConfigUnit>();
         IScriptGenerationService script => GetService<IScriptGenerationService>();

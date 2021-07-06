@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Helpers;
+using CodeShellCore.Web.Moldster;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,9 @@ namespace CodeShellCore.Web.Services
 </body>
 </html>
 ";
+        protected virtual TenantInfoItem[] Tenants { get; }
+        protected virtual string DefaultTenant { get; }
+
         /// <summary>
         /// Default is 'wwwroot/index.html'
         /// </summary>
@@ -29,6 +33,18 @@ namespace CodeShellCore.Web.Services
         /// <returns></returns>
         protected virtual string GetIndexFilePath(HttpRequest req)
         {
+            if (Tenants != null)
+            {
+                foreach (var t in Tenants)
+                {
+                    if (req.Path.Value.StartsWith("/"+t.Code.ToLower()))
+                    {
+                        return "wwwroot/" + t.Code.ToLower() + "/index.html";
+                    }
+                }
+            }
+            if(!string.IsNullOrEmpty(DefaultTenant))
+                return "wwwroot/" + DefaultTenant.ToLower() + "/index.html";
             return "wwwroot/index.html";
         }
         public virtual async Task HandleRequestAsync(HttpContext con)

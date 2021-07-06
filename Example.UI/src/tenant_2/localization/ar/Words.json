@@ -1,0 +1,22 @@
+{
+  "Lang": "EN",
+  "Login": "تسجيل الدخول",
+  "Main": "الرئيسية",
+  "In__": "الدخول",
+  "Log__": "تسجيل",
+  "Password": "كلمة المرور",
+  "UserName": "أسم المستخدم",
+  "Error": "Error",
+  "Logout": "Logout",
+  "Cancel": "Cancel",
+  "No": "No",
+  "OK": "Ok",
+  "Yes": "Yes",
+  "Delete": "Delete",
+  "AddEntity": "Add entity",
+  "Count": "Count",
+  "Search": "Search",
+  "Save": "Save",
+  "ForgotPassword": "نسيت كلمة المرور",
+  "KeepMeLoggedIn": "تذكرني"
+}

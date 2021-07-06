@@ -43,7 +43,7 @@
 <div class="row form-group">
     @if (Html.StartContainer("div", "UserPrivileges", attrs: new { @class = "col-md-12" }))
     {
-        @Html.Partial("~/Views/Auth/Components/_DomainResources.cshtml")
+        @Html.GetPartial("Auth/Components/_DomainResources")
         @Html.CloseContainer("div")
     }
 </div>

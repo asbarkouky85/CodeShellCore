@@ -22,7 +22,7 @@ using CodeShellCore.Moldster.Angular.Models;
 
 namespace CodeShellCore.Moldster.Builder.Internal
 {
-    public class BundlingService : FileHandlingService, IBundlingService
+    public class BundlingService : MoldsterFileHandlingService, IBundlingService
     {
         public BundlingService(IServiceProvider provider) : base(provider)
         {
