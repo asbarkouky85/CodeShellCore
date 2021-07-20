@@ -13,7 +13,7 @@ namespace CodeShellCore.Moldster.Razor.Internal
     public class DefaultViewsService : HttpService, IViewsService
     {
         readonly IPathsService Paths;
-        protected override string BaseUrl { get { return Utils.CombineUrl(Paths.ConfigUrl, "Views"); } }
+        protected override string BaseUrl { get { return "/Views"; } }
 
         public DefaultViewsService(IPathsService paths)
         {
@@ -54,30 +54,6 @@ namespace CodeShellCore.Moldster.Razor.Internal
         {
             var s = Get("GetPageById/" + id);
             return new RenderedPageResult { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
-        }
-
-        public virtual bool CheckServer(out HttpResult res)
-        {
-
-            try
-            {
-                var x = new DefaultHttpService(Paths.ConfigUrl);
-                var result = x.Get("");
-                res = new HttpResult(result.StatusCode);
-                return result.StatusCode == HttpStatusCode.OK;
-            }
-            catch (CodeShellHttpException ex)
-            {
-                res = new HttpResult(ex.Status, ex.Message);
-                res.SetException(ex);
-                return false;
-            }
-            catch (Exception exx)
-            {
-                res = new HttpResult(HttpStatusCode.NotFound, exx.Message);
-                res.SetException(exx);
-                return false;
-            }
         }
 
     }

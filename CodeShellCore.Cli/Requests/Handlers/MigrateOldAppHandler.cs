@@ -16,13 +16,13 @@ namespace CodeShellCore.Cli.Requests.Handlers
 
         protected override void Build(ICliRequestBuilder<MigrateOldAppRequest> builder)
         {
-            
+            builder.FillProperty(e => e.TenantCode, 't', "tenant", true);
         }
 
         protected override Task<Result> HandleAsync(MigrateOldAppRequest request)
         {
             var s = GetService<IMigrationService>();
-            s.MigrateBaseModule("ClientApp");
+            s.MigrateBaseModule(request.TenantCode);
             return Task.FromResult(new Result());
         }
     }

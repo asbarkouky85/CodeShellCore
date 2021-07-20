@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { APP_BASE_HREF } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -27,7 +27,8 @@ import { AppRoutingModule, GetDomainsData } from './app-routing.module';
         AppRoutingModule
     ],
     providers: [
-        { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) }
+        { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) },
+        { provide: APP_BASE_HREF, useValue: '/tenant_1'}
     ]
 })
 export class AppModule {

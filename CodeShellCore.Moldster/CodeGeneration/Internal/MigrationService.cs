@@ -12,7 +12,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Internal
 {
-    public class MigrationService : FileHandlingService, IMigrationService
+    public class MigrationService : MoldsterFileHandlingService, IMigrationService
     {
         IConfigUnit unit => GetService<IConfigUnit>();
         IScriptGenerationService script => GetService<IScriptGenerationService>();
@@ -152,7 +152,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 }
             }
 
-            
+
             Utils.DeleteEmptyDirectories(oldAssetsPath);
 
             var packing = Directory.GetFiles(Paths.UIRoot, "*webpack*");
@@ -167,8 +167,9 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             string bootTemplate = Molds.BootMold;
             string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel
             {
-                Code = tenant.UCFirst(),
-                ModulePath = Names.ApplyConvension(tenant + "/app", AppParts.Module)
+                Code = Names.ApplyConvension(tenant, AppParts.Route),
+                ModulePath = Names.ApplyConvension(tenant + "/app", AppParts.Module),
+                OtherTenants = unit.TenantRepository.Exist(e => e.Code != tenant)
             });
             string bootPath = Names.GetSrcFolderPath("main-" + tenant, ".ts", keepNameformat: true);
             File.WriteAllText(bootPath, boot);

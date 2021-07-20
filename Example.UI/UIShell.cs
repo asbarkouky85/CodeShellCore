@@ -14,6 +14,10 @@ using CodeShellCore.FileServer.Data;
 using Asga.Public;
 using Asga.Auth.Data;
 using CodeShellCore.DependencyInjection;
+using CodeShellCore.Web.Services;
+using Example.UI.Handlers;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Example.UI
 {
@@ -32,10 +36,19 @@ namespace Example.UI
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
+            
             coll.AddAsgaAuthModule(Configuration, false);
             coll.AddTokenSecurity<AuthUnit>();
             coll.AddPublicModule(Configuration, false);
             coll.AddFileServerModule(Configuration);
+            coll.AddTransient<ISpaFallbackHandler, ExampleFallBackHandler>();
+            
+        }
+
+        public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseStaticFiles();
+            base.ConfigureHttp(app, env);
             
         }
 
