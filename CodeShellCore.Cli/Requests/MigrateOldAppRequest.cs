@@ -9,5 +9,6 @@ namespace CodeShellCore.Cli.Requests
     public class MigrateOldAppRequest
     {
         public string UIPath { get; set; }
+        public string TenantCode { get; set; }
     }
 }

@@ -3,10 +3,14 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './tenant_2/app.module';
 import { ServerConfig } from '@base/server-config';
+import { initializeShell } from 'codeshell';
 
-if ((new ServerConfig()).Production) {
+var prod=(new ServerConfig()).Production;
+if (prod) {
   enableProdMode();
 }
+
+initializeShell();
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));

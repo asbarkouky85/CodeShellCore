@@ -38,7 +38,11 @@ let data: DomainData[] | null = null;
 export function GetDomainsData(): DomainData[] {
     if (!data) {
         data = [
-			
+			{
+				name: "Main" ,
+				children: [
+					{ name: "Users__UserList", navigate: true, resource:"", action: "anonymous", apps: null , url: "auth/users/user-list"},]
+			}
 		];
     }
     return data;

@@ -20,7 +20,7 @@ const routes: Routes = [
     { path: 'login', component: Login, data: { action: 'anonymous', name:"Login" } },
     { 
         path: 'public', 
-        loadChildren: () => import('./public/public.module').then(m => m.publicModule) 
+        loadChildren: () => import('./public/public.module').then(m => m.PublicModule) 
     },
     
     { path: '**', redirectTo: '/' }

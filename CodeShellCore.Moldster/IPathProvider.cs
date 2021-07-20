@@ -8,7 +8,6 @@ namespace CodeShellCore.Moldster
     public interface IPathsService : IServiceBase
     {
         string ConfigRoot { get; }
-        string ConfigUrl { get; }
         string CoreAppName { get; }
         string LocalizationRoot { get; }
         string UIRoot { get; }
