@@ -62,8 +62,9 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 string bootTemplate = _molds.BootMold;
                 string boot = _writer.FillStringParameters(bootTemplate, new BootTsModel
                 {
-                    Code = moduleCode.UCFirst(),
-                    ModulePath = _fileNameService.ApplyConvension(moduleCode + "/app", AppParts.Module)
+                    Code = _fileNameService.ApplyConvension(moduleCode, AppParts.Route),
+                    ModulePath = _fileNameService.ApplyConvension(moduleCode + "/app", AppParts.Module),
+                    OtherTenants = _unit.TenantRepository.Exist(e => e.Code != moduleCode)
                 });
                 File.WriteAllText(bootPath, boot);
                 WriteSuccess();
@@ -312,6 +313,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
 
             var main = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == modCode);
+            var otherTen = _unit.TenantRepository.Exist(e => e.Code != modCode);
             var tempModel = new ModuleTsModel
             {
                 Code = "App",
@@ -322,7 +324,8 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 BaseName = _paths.CoreAppName,
                 BaseAppModuleName = _paths.CoreAppName.UCFirst() + "BaseModule",
                 BaseAppModulePath = _fileNameService.GetBaseModuleFilePath(true),
-                RoutesModulePath = "./" + _fileNameService.ApplyConvension("AppRouting", AppParts.Module)
+                RoutesModulePath = "./" + _fileNameService.ApplyConvension("AppRouting", AppParts.Module),
+                BaseHref = otherTen ? "{ provide: APP_BASE_HREF, useValue: '/" + _fileNameService.ApplyConvension(modCode, AppParts.Route) + "'}" : ""
             };
 
             var homePage = _unit.PageRepository.GetHomePagePath(modCode);

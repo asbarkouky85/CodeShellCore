@@ -25,7 +25,7 @@ import { Culture } from "codeshell/localization/locale-data";
     ],
 	entryComponents:[]
 })
-export class publicModule {
+export class PublicModule {
 	constructor(srv: TranslateService) {
 		srv.use(Culture.Current.Language);
 		srv.setDefaultLang(Culture.Current.Language);

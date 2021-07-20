@@ -8,7 +8,7 @@ import { AuthFilter, ResourceActions } from "codeshell/security";
 import { SharedModule } from "../../shared/shared.module";
 import { Culture } from "codeshell/localization/locale-data";
 
-import { publicModule } from "../public.module";
+import { PublicModule } from "../public.module";
 import { HomeSlideList } from './components/home-slide-list.component';
 import { HomeSlideCreate } from './components/home-slide-create.component';
 import { HomeSlideEdit } from './components/home-slide-edit.component';
@@ -19,7 +19,7 @@ import { HomeSlideEdit } from './components/home-slide-edit.component';
     exports: [HomeSlideList,HomeSlideCreate,HomeSlideEdit,],
     imports: [
 		SharedModule,
-		publicModule,
+		PublicModule,
         RouterModule.forChild([
 			﻿{ path : "home-slide-list", component : HomeSlideList, canActivate: [AuthFilter], data: { name : "HomeSlides__HomeSlideList", navigate: false, resource:"", action: "allowAll", apps:null }},
 			﻿{ path : "home-slide-create", component : HomeSlideCreate, canActivate: [AuthFilter], data: { name : "HomeSlides__HomeSlideCreate", navigate: false, resource:"", action: "allowAll", apps:null }},

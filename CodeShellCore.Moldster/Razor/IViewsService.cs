@@ -13,6 +13,5 @@ namespace CodeShellCore.Moldster.Razor
         RenderedPageResult GetPageById(long id);
         string GetMainComponent(string baseComponent);
         string GetGuide(string moduleCode);
-        bool CheckServer(out HttpResult res);
     }
 }

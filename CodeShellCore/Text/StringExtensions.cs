@@ -151,7 +151,7 @@ namespace CodeShellCore.Text
         public static string GetBeforeLast(this string subject, string str)
         {
             int ind = subject.LastIndexOf(str);
-            if (ind != 0)
+            if (ind > 0)
                 return subject.Substring(0, ind);
             else
                 return subject;

@@ -26,7 +26,7 @@ namespace ExampleProject.Commander
             {
 
             });
-
+            coll.AddMoldsterDbData(Configuration);
             coll.AddMoldsterCli();
         }
 

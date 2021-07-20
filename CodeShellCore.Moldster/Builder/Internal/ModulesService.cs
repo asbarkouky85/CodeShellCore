@@ -15,7 +15,7 @@ using System.Resources;
 
 namespace CodeShellCore.Moldster.Builder.Internal
 {
-    public class ModulesService : FileHandlingService, IModulesService
+    public class ModulesService : MoldsterFileHandlingService, IModulesService
     {
         static string tmpLocation;
         private IConfigUnit unit => GetService<IConfigUnit>();
