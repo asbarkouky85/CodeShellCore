@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Asga.Auth.Dto
 {
-    public class UserListDTO : CodeShellCore.Data.Helpers.BaseDTO<long>, IDTO<User>
+    public class UserListDTO : CodeShellCore.Data.Helpers.BaseDTO<long>//, IDTO<User>
     {
         public string Name { get; set; }
         public string LogonName { get; set; }
