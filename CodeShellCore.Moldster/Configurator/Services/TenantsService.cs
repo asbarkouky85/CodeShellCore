@@ -1,9 +1,11 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
+using CodeShellCore.MQ;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 
 namespace CodeShellCore.Moldster.Configurator.Services
 {
@@ -16,6 +18,13 @@ namespace CodeShellCore.Moldster.Configurator.Services
             this.unit = unit;
         }
 
+        public override Tenant GetSingle(object id)
+        {
+            var t = base.GetSingle(id);
+            t.LogoFile = new Files.TmpFileData(t.Logo);
+            return t;
+        }
+
         public override SubmitResult Create(Tenant obj)
         {
             if (obj.Id == 0)
@@ -23,17 +32,44 @@ namespace CodeShellCore.Moldster.Configurator.Services
                 long id = unit.TenantRepository.GetMax(d => d.Id);
                 obj.Id = id + 1;
             }
+            if (obj.LogoFile?.TmpPath != null)
+            {
+                obj.Logo = "logos/" + obj.LogoFile.Name;
+            }
             if (!unit.TenantRepository.Exist(d => true))
             {
                 obj.IsActive = true;
             }
-            var res = base.Create(obj);
-            if (res.IsSuccess)
+            var c = base.Create(obj);
+            if (c.IsSuccess)
             {
-                var srv = unit.ServiceProvider.GetService<IBuilderService>();
-                srv?.AddTenantToAngularJson(obj.Code);
+                IPathsService paths = unit.ServiceProvider.GetService<IPathsService>();
+                if (paths != null && obj.LogoFile?.TmpPath != null)
+                {
+                    var newFilePath = Path.Combine(paths.UIRoot, "wwwroot\\logos", obj.LogoFile.Name);
+                    File.Move(obj.LogoFile.TmpPath, newFilePath);
+                }
             }
-            return res;
+            return c;
+        }
+
+        public override SubmitResult Update(Tenant obj)
+        {
+            if (obj.LogoFile?.TmpPath != null)
+            {
+                obj.Logo = "logos/" + obj.LogoFile.Name;
+            }
+            var c = base.Update(obj);
+            if (c.IsSuccess)
+            {
+                IPathsService paths = unit.ServiceProvider.GetService<IPathsService>();
+                if (paths != null && obj.LogoFile?.TmpPath != null)
+                {
+                    var newFilePath = Path.Combine(paths.UIRoot, "wwwroot\\logos", obj.LogoFile.Name);
+                    File.Move(obj.LogoFile.TmpPath, newFilePath);
+                }
+            }
+            return c;
         }
 
         public TenantEditDTO GetSingleDTO(long id)
