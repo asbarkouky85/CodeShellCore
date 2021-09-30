@@ -7,6 +7,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Definitions;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace CodeShellCore.Moldster.Data.Internal
 {
@@ -161,7 +162,7 @@ namespace CodeShellCore.Moldster.Data.Internal
                     else
                         res.Data["UpdateStructureRes"] = r2;
                 }
-                
+
                 if (id == 0)
                     id = GetNewTenantId();
                 AfterComparisonInitiation(id, code, dbName);
@@ -241,6 +242,11 @@ namespace CodeShellCore.Moldster.Data.Internal
 
             Out.WriteLine();
             return res;
+        }
+
+        public string[] GetDatabaseList()
+        {
+            return GetDataAs<string>("select name from master.sys.databases where owner_sid !=0x01").ToArray();
         }
     }
 }

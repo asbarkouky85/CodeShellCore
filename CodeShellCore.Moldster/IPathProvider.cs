@@ -15,6 +15,7 @@ namespace CodeShellCore.Moldster
         string UIUrl { get; }
 
         List<MoldsterEnvironment> GetEnvironments();
-        List<LayoutFileDTO> GetLayouts(bool nameOnly=false);
+        List<MoldsterEnvironment> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs);
+        List<LayoutFileDTO> GetLayouts(bool nameOnly = false);
     }
 }

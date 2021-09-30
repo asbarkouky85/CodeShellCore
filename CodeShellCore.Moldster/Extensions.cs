@@ -124,6 +124,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IUIFileNameService, AngularFileNameService>();
             coll.AddTransient<IMigrationService, MigrationService>();
             coll.AddTransient<IAngularJsonService, AngularJsonService>();
+            coll.AddTransient<IEnvironmentsService, EnvironmentService>();
 
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IDataService, DbDataService>();
