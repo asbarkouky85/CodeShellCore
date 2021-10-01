@@ -108,7 +108,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Domain.Shared
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Helpers", "02 Helpers", "{F23398E3-4A1C-4F6D-ACBD-F4CE5F884B10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asga.Auth.Module.Contracts", "Asga.Auth.Module.Contracts\Asga.Auth.Module.Contracts.csproj", "{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth.Module.Contracts", "Asga.Auth.Module.Contracts\Asga.Auth.Module.Contracts.csproj", "{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Api", "Example.Api\Example.Api.csproj", "{F2867446-0360-4EF9-AD32-7E8E88D0CE95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -264,6 +266,10 @@ Global
 		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2867446-0360-4EF9-AD32-7E8E88D0CE95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2867446-0360-4EF9-AD32-7E8E88D0CE95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2867446-0360-4EF9-AD32-7E8E88D0CE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2867446-0360-4EF9-AD32-7E8E88D0CE95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -306,6 +312,7 @@ Global
 		{7D9A5F33-E793-4F49-80DF-555E3964F692} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
 		{F3B7138D-00D9-46CA-85EE-DB7B492D22EB} = {DB406CC9-6F92-4DE8-96C2-93A245CA6DE8}
 		{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3} = {D064279A-FF5C-450D-B4CE-D96EC6906A53}
+		{F2867446-0360-4EF9-AD32-7E8E88D0CE95} = {F834727F-3305-439C-9284-A82B37A4B7C9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C8836DA-E4F6-4A43-9CC5-7D0388147EFD}

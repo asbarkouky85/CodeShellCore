@@ -8,6 +8,6 @@ namespace CodeShellCore.Web.Moldster
 {
     public interface IPublisherController
     {
-        IActionResult HandleRequest(PublisherRequest req);
+        PublisherResult HandleRequest(PublisherRequest req);
     }
 }

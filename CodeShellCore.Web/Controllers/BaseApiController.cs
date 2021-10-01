@@ -11,9 +11,9 @@ namespace CodeShellCore.Web.Controllers
 {
     [ApiExceptionFilter]
     [ApiAuthorize]
-    public class BaseApiController : BaseController
+    public abstract class BaseApiController : BaseController
     {
-        public virtual IActionResult Respond<T>(LoadResult<T> ob) where T : class
+        protected virtual IActionResult Respond<T>(LoadResult<T> ob) where T : class
         {
             if (ClientData.IsMobile)
             {
@@ -22,7 +22,7 @@ namespace CodeShellCore.Web.Controllers
             return Json(ob);
         }
 
-        public virtual IActionResult Respond(object ob, HttpStatusCode? code = null)
+        protected virtual IActionResult Respond(object ob, HttpStatusCode? code = null)
         {
             if (ClientData.IsMobile)
             {
@@ -39,7 +39,7 @@ namespace CodeShellCore.Web.Controllers
             return Json(ob);
         }
 
-        public virtual IActionResult Respond(LoginResult ob)
+        protected virtual IActionResult Respond(LoginResult ob)
         {
             if (ClientData.IsMobile)
             {
@@ -61,7 +61,7 @@ namespace CodeShellCore.Web.Controllers
             return Json(ob);
         }
 
-        public virtual IActionResult Respond(Result res = null)
+        protected virtual IActionResult Respond(Result res = null)
         {
             if (res == null)
                 res = SubmitResult ?? new SubmitResult();
