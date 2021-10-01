@@ -1,19 +1,19 @@
-﻿using System;
-
+﻿using CodeShellCore.Text;
+using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using CodeShellCore.Web.Services;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using CodeShellCore.Text;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CodeShellCore.Web
 {
@@ -24,6 +24,7 @@ namespace CodeShellCore.Web
 
         public static string AppRootUrl { get { return ((WebShell)App).urlRoot; } }
 
+        protected abstract string ApiPrefix { get; }
         protected virtual bool UseHealthChecks => false;
         /// <summary>
         /// (Default : "~")
@@ -79,9 +80,78 @@ namespace CodeShellCore.Web
             cont.Response.WriteAsync(res.ToJson());
         }
 
+
+
+        public virtual void AddMvcFeatures(IMvcBuilder mvc)
+        {
+
+        }
+
+        protected virtual async Task FallbackMiddlewareHandler(HttpContext context, Func<Task> next)
+        {
+            var s = context.RequestServices.GetRequiredService<ISpaFallbackHandler>();
+            await s.HandleRequestAsync(context);
+        }
+
+
+
+        public virtual void RegisterRoutes(IRouteBuilder routeBuilder)
+        {
+            routeBuilder.MapRoute(
+                name: "api",
+                template: "api/{controller}/{action}/{id?}"
+                );
+
+            routeBuilder.MapRoute(
+                    name: "mvc",
+                    template: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "Home", action = "Index" }
+                    );
+        }
+
+        public override void RegisterServices(IServiceCollection services)
+        {
+            base.RegisterServices(services);
+
+            services.Configure<MvcOptions>(r =>
+            {
+                r.EnableEndpointRouting = false;
+            });
+            var mvc = services.AddControllers();
+
+            services.AddRouting(options =>
+            {
+                options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
+            });
+            services.AddSwaggerGen();
+            services.AddSwaggerGenWithConventionalRoutes(options =>
+            {
+                //options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
+                // options.SkipDefaults = true;
+            });
+
+            if (UseHealthChecks)
+            {
+                services.AddHealthChecks();
+            }
+            
+            AddMvcFeatures(mvc);
+            mvc.AddNewtonsoftJson(e => e.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<ISpaFallbackHandler, SpaFallbackHandler>();
+            services.AddTransient<IFileUploadService, FileService>();
+        }
+
         public virtual void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             _appRoot = env.ContentRootPath;
+            _appProvider = app.ApplicationServices;
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseExceptionHandler(new ExceptionHandlerOptions
             {
@@ -94,28 +164,32 @@ namespace CodeShellCore.Web
                     });
                 }
             });
+            app.UseRouting();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
+
 
             if (UseCors)
             {
                 var origins = getConfig("AllowedOrigins").Value ?? DefaultCorsOrigins;
-                app.UseRouting();
-
                 app.UseCors(d => d.WithOrigins(origins.Split(","))
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
-                app.UseEndpoints(e => RegisterEndpointRoutes(e));
-            }
-            else
-            {
-                app.UseRouting();
-                app.UseEndpoints(e => RegisterEndpointRoutes(e));
             }
 
-            app.UseMvc(d =>
+
+
+            app.UseEndpoints(e =>
             {
-                RegisterRoutes(d);
+                RegisterEndpointRoutes(e);
             });
+
+
 
             if (IsSpa)
                 app.Use(FallbackMiddlewareHandler);
@@ -134,65 +208,16 @@ namespace CodeShellCore.Web
                     }
                 });
             }
-
-            _appProvider = app.ApplicationServices;
         }
 
-        public virtual void AddMvcFeatures(IMvcBuilder mvc)
+        public virtual void RegisterEndpointRoutes(IEndpointRouteBuilder endpoints)
         {
-
-        }
-
-
-
-        protected virtual async Task FallbackMiddlewareHandler(HttpContext context, Func<Task> next)
-        {
-            var s = context.RequestServices.GetRequiredService<ISpaFallbackHandler>();
-            await s.HandleRequestAsync(context);
-        }
-
-        public virtual void RegisterEndpointRoutes(IEndpointRouteBuilder routes)
-        {
-
-        }
-
-        public virtual void RegisterRoutes(IRouteBuilder routeBuilder)
-        {
-            routeBuilder.MapRoute(
-                name: "apiAction",
-                template: "apiAction/{controller}/{action}/{id?}"
-                );
-
-            routeBuilder.MapRoute(
+            endpoints.MapControllers();
+            endpoints.MapControllerRoute(
                 name: "api",
-                template: "api/{controller}/{id?}"
+                pattern: "api/" + ApiPrefix + "/{controller=Home}/{action=Index}/{id?}"
                 );
-
-            routeBuilder.MapRoute(
-                    name: "mvc",
-                    template: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "Home", action = "Index" }
-                    );
-        }
-
-        public override void RegisterServices(IServiceCollection coll)
-        {
-            base.RegisterServices(coll);
-
-            coll.Configure<MvcOptions>(r =>
-            {
-                r.EnableEndpointRouting = false;
-            });
-            var mvc = coll.AddMvc();
-            if (UseHealthChecks)
-            {
-                coll.AddHealthChecks();
-            }
-            AddMvcFeatures(mvc);
-            mvc.AddNewtonsoftJson(e => e.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local);
-            coll.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            coll.AddTransient<ISpaFallbackHandler, SpaFallbackHandler>();
-            coll.AddTransient<IFileUploadService, FileService>();
+            ConventionalRoutingSwaggerGen.UseRoutes(endpoints);
         }
 
         protected override IConfigurationSection getConfig(string key)

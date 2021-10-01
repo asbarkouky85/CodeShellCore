@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Example.UI.Controllers
 {
-    public class FilesController : CodeShellCore.Web.Controllers.BaseFilesController
-    {
-    }
+    //public class FilesController : CodeShellCore.Web.Controllers.BaseFilesController
+    //{
+    //}
 }

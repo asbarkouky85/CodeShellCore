@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CodeShellCore.Web.Controllers
 {
     [Produces("text/html")]
-    public class HomeControllerBase : Controller
+    public abstract class HomeControllerBase : Controller
     {
         public virtual IActionResult Index()
         {
