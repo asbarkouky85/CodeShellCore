@@ -14,8 +14,6 @@ namespace Example.Api
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");
 
-        protected override string ApiPrefix => "app";
-
         public ExampleApiShell(IConfiguration config) : base(config)
         {
         }

@@ -38,6 +38,7 @@
   </ItemGroup>-->
 
   <ItemGroup>
+    <ProjectReference Include="..\Asga.Auth.Module.Contracts\Asga.Auth.Module.Contracts.csproj" />
     <ProjectReference Include="..\Asga.Auth.Molds\Asga.Auth.Molds.csproj" />
     <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
     <ProjectReference Include="..\Asga.Public.Molds\Asga.Public.Molds.csproj" />

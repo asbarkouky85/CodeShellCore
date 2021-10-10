@@ -17,7 +17,6 @@ namespace Example.UI
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");
 
-        protected override string ApiPrefix => "app";
 
         public UIShell(IConfiguration config) : base(config)
         {

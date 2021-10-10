@@ -23,8 +23,6 @@ namespace CodeShellCore.Web
         private IServiceProvider _appProvider;
 
         public static string AppRootUrl { get { return ((WebShell)App).urlRoot; } }
-
-        protected abstract string ApiPrefix { get; }
         protected virtual bool UseHealthChecks => false;
         /// <summary>
         /// (Default : "~")

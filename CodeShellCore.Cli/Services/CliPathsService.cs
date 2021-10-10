@@ -45,6 +45,11 @@ namespace CodeShellCore.Cli.Services
             return new List<LayoutFileDTO>();
         }
 
+        public List<MoldsterEnvironment> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs)
+        {
+            return envs.ToList();
+        }
+
         public CliPathsService()
         {
             var sol = CliDispatchShell.ConfigurationApiPath.Replace("\\", "/").GetBeforeLast("/");
