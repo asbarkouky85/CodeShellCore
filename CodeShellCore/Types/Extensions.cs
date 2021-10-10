@@ -1,11 +1,8 @@
-﻿using CodeShellCore.Data;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeShellCore.Types
 {
@@ -36,17 +33,7 @@ namespace CodeShellCore.Types
             return type;
         }
 
-        public static Type RealModelType(this Type type)
-        {
-            if (type.Implements(typeof(IDTO)))
-            {
-                var ints = type.GetInterfaces();
-                var t = ints.Where(d => d.Name == "IDTO`1").FirstOrDefault();
-                var gens = t.GetGenericArguments();
-                return gens[0];
-            }
-            return type;
-        }
+        
 
         public static IEnumerable<PropertyInfo> GetValueProperties(this Type type, bool ignoreId = true, string[] ignore = null)
         {

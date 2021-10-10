@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Example.UI.Controllers
 {
-    public class AccountController : AccountControllerBase
-    {
-    }
+    //public class AccountController : AccountControllerBase
+    //{
+    //}
 }

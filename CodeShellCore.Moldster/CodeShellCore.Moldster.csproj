@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Application\CodeShellCore.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

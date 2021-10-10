@@ -1,9 +1,4 @@
-﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.MQ.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace CodeShellCore.MQ
 {

@@ -1,23 +1,10 @@
-﻿using Asga.Auth;
+﻿using CodeShellCore.Web;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
-using System.Linq;
-using CodeShellCore.Security.Authorization;
-using CodeShellCore.Data.ConfiguredCollections;
-using Asga.Security;
-using CodeShellCore.Helpers;
-using CodeShellCore.Web;
-using CodeShellCore.FileServer;
-using CodeShellCore.FileServer.Data;
-using Asga.Public;
-using Asga.Auth.Data;
-using CodeShellCore.DependencyInjection;
-using CodeShellCore.Web.Services;
-using Example.UI.Handlers;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Example.UI
 {
@@ -29,47 +16,11 @@ namespace Example.UI
         protected override bool UseCors => true;
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");
+
+        protected override string ApiPrefix => "app";
+
         public UIShell(IConfiguration config) : base(config)
         {
-        }
-
-        public override void RegisterServices(IServiceCollection coll)
-        {
-            base.RegisterServices(coll);
-            
-            coll.AddAsgaAuthModule(Configuration, false);
-            coll.AddTokenSecurity<AuthUnit>();
-            coll.AddPublicModule(Configuration, false);
-            coll.AddFileServerModule(Configuration);
-            coll.AddTransient<ISpaFallbackHandler, ExampleFallBackHandler>();
-            
-        }
-
-        public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseStaticFiles();
-            base.ConfigureHttp(app, env);
-            
-        }
-
-        protected override void OnApplicationStarted(IServiceProvider prov)
-        {
-            base.OnApplicationStarted(prov);
-            prov.MigrateAuthDb();
-            prov.MigrateContext<FileServerDbContext>();
-            prov.MigrateContext<AsgaPublicContext>();
-        }
-
-        protected override void OnReady()
-        {
-            base.OnReady();
-            RootInjector.GetService<ICollectionConfigService>().RegisterCollection<User>("MaleUsers", u =>
-            {
-                var rols = u.UserAs<UserDTO>().Roles.Select(e => long.Parse(e)).ToList();
-                return d => d.UserRoles.Any(e => rols.Any(f => e.RoleId == f));
-            });
-            //var tok = Utils.CreateClientToken(new AppClient { ClientId = "Test.App" });
-            //Console.WriteLine(tok);
         }
     }
 }

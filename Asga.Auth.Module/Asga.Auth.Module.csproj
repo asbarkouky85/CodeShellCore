@@ -25,6 +25,9 @@
   <ItemGroup>
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
     <ProjectReference Include="$(CODESHELL_HOME)\Asga.Auth\Asga.Auth.csproj" />
+    <ProjectReference Include="..\Asga.Auth.Module.Contracts\Asga.Auth.Module.Contracts.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

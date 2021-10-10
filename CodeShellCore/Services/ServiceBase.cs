@@ -1,10 +1,4 @@
-﻿using CodeShellCore.Data;
-using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Types;
-
-namespace CodeShellCore.Services
+﻿namespace CodeShellCore.Services
 {
     public abstract class ServiceBase : IServiceBase
     {

@@ -11,15 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting" Version="4.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore\CodeShellCore.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
   </ItemGroup>
 
 </Project>
