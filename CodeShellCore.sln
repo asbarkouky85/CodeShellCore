@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Moldster", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest1", "ConsoleTest1\ConsoleTest1.csproj", "{31FE60EC-5E7C-44FF-B53D-CB888448DB86}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "09 Tests", "09 Tests", "{3477FF24-4F33-4EB2-8B09-6AEC871B6752}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 Tests", "10 Tests", "{3477FF24-4F33-4EB2-8B09-6AEC871B6752}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Asga.Auth", "04 Asga.Auth", "{D064279A-FF5C-450D-B4CE-D96EC6906A53}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Asga.Auth", "05 Asga.Auth", "{D064279A-FF5C-450D-B4CE-D96EC6906A53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth", "Asga.Auth\Asga.Auth.csproj", "{5800310C-9A93-4793-9E80-85D19988C20E}"
 EndProject
@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest2", "ConsoleTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth.Molds", "Asga.Auth.Molds\Asga.Auth.Molds.csproj", "{91ED6472-83EC-4164-8830-67EDBE845D11}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "08 Example", "08 Example", "{F834727F-3305-439C-9284-A82B37A4B7C9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "09 Example", "09 Example", "{F834727F-3305-439C-9284-A82B37A4B7C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.csproj", "{D66038E7-662D-4F63-9571-601D6AFF1AF4}"
 EndProject
@@ -66,11 +66,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Mobile", "Asga.Mobile\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Mobile.Module", "Asga.Mobile.Module\Asga.Mobile.Module.csproj", "{CA2F7946-5C5C-4913-B3C4-DC0891486BC1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Asga.Mobile", "05 Asga.Mobile", "{E04C8BE8-91B8-45BE-AFE9-F7A0120A21F5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 Asga.Mobile", "06 Asga.Mobile", "{E04C8BE8-91B8-45BE-AFE9-F7A0120A21F5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 Asga.Public", "06 Asga.Public", "{44CDD569-EE2A-40F2-B417-79BC4F2D4D55}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07 Asga.Public", "07 Asga.Public", "{44CDD569-EE2A-40F2-B417-79BC4F2D4D55}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07 Asga.Dashboard", "07 Asga.Dashboard", "{205C1F71-1A28-4E4B-8C0C-1BFE73421C65}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "08 Asga.Dashboard", "08 Asga.Dashboard", "{205C1F71-1A28-4E4B-8C0C-1BFE73421C65}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Dashboard", "Asga.Dashboard\Asga.Dashboard.csproj", "{70A13D0A-6247-4EB1-B85F-9FA26E55799F}"
 EndProject
@@ -88,7 +88,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.EntityFramewo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.FileServer", "CodeShellCore.FileServer\CodeShellCore.FileServer.csproj", "{57C9A4E1-7B8B-44D0-8306-440BC3A3C126}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 FileServer", "03 FileServer", "{ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 FileServer", "04 FileServer", "{ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.FileServer.Module", "CodeShellCore.FileServer.Module\CodeShellCore.FileServer.Module.csproj", "{F18FFB30-BD7B-4D54-BC13-538D7138A6B3}"
 EndProject
@@ -110,7 +110,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Helpers", "02 Helpers", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth.Module.Contracts", "Asga.Auth.Module.Contracts\Asga.Auth.Module.Contracts.csproj", "{6BD6F54B-3026-4F76-9C6E-3471CFEA9BC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Api", "Example.Api\Example.Api.csproj", "{F2867446-0360-4EF9-AD32-7E8E88D0CE95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Api", "Example.Api\Example.Api.csproj", "{F2867446-0360-4EF9-AD32-7E8E88D0CE95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
