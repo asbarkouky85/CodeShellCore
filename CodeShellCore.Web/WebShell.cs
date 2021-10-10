@@ -215,7 +215,7 @@ namespace CodeShellCore.Web
             endpoints.MapControllers();
             endpoints.MapControllerRoute(
                 name: "api",
-                pattern: "api/" + ApiPrefix + "/{controller=Home}/{action=Index}/{id?}"
+                pattern: "api/{area=app}/{controller=Home}/{action=Index}/{id?}"
                 );
             ConventionalRoutingSwaggerGen.UseRoutes(endpoints);
         }

@@ -130,7 +130,7 @@ namespace CodeShellCore.Linq
             return null;
         }
 
-
+        
         public List<Expression> ToFilterExpressions(IEnumerable<PropertyFilter> fs)
         {
             List<Expression> exs = new List<Expression>();

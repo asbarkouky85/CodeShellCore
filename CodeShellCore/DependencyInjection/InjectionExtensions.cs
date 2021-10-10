@@ -1,13 +1,9 @@
-﻿using System;
-
-using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.MQ;
-using CodeShellCore.Security;
-using CodeShellCore.Tasks;
-using System.Collections.Generic;
-using CodeShellCore.Files.Reporting;
-using CodeShellCore.MultiTenant;
+﻿using CodeShellCore.Files.Reporting;
 using CodeShellCore.Helpers;
+using CodeShellCore.MultiTenant;
+using CodeShellCore.Security;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CodeShellCore.DependencyInjection
 {
@@ -26,7 +22,7 @@ namespace CodeShellCore.DependencyInjection
             return (T)user;
         }
 
-        
+
         public static bool TryGetService<T>(this IServiceProvider provider, out T service)
         {
             T ser = provider.GetService<T>();
