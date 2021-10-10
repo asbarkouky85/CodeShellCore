@@ -24,7 +24,6 @@ namespace CodeShellCore.Web
 
         public static string AppRootUrl { get { return ((WebShell)App).urlRoot; } }
 
-        protected abstract string ApiPrefix { get; }
         protected virtual bool UseHealthChecks => false;
         /// <summary>
         /// (Default : "~")
@@ -134,7 +133,7 @@ namespace CodeShellCore.Web
             {
                 services.AddHealthChecks();
             }
-            
+
             AddMvcFeatures(mvc);
             mvc.AddNewtonsoftJson(e => e.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local);
 
@@ -215,7 +214,7 @@ namespace CodeShellCore.Web
             endpoints.MapControllers();
             endpoints.MapControllerRoute(
                 name: "api",
-                pattern: "api/" + ApiPrefix + "/{controller=Home}/{action=Index}/{id?}"
+                pattern: "api/{area=app}/{controller=Home}/{action=Index}/{id?}"
                 );
             ConventionalRoutingSwaggerGen.UseRoutes(endpoints);
         }

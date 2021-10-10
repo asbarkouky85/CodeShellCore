@@ -18,8 +18,6 @@ namespace CodeShellCore.Linq
             return null;
         }
 
-        
-
         public static Expression<Func<T, object>> Property<T>(string property) where T : class
         {
             var par = Expression.Parameter(typeof(T));
