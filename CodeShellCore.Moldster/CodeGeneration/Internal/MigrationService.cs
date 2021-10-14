@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Cli;
+using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
 using CodeShellCore.Moldster.Builder;
@@ -23,14 +24,26 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
         {
         }
 
+        public void AddMigrationsTable()
+        {
+            var sql = GetService<ISqlCommandService>();
+            var env = GetService<EnvironmentAccessor>();
+
+            env.CurrentEnvironment = new Definitions.MoldsterEnvironment
+            {
+                ConnectionParams = new DbConnectionParams(Shell.GetConfigAs<string>("ConnectionStrings:Moldster"))
+            };
+            sql.AddMigrationTable();
+        }
+
         public Result MigrateBaseModule(string tenant)
         {
+            AddMigrationsTable();
             var oldBasePath = Path.Combine(Paths.UIRoot, "Core", Paths.CoreAppName);
 
             if (Directory.Exists(oldBasePath))
             {
                 var bas = unit.PageCategoryRepository.FindAs(e => e.ViewPath);
-
 
                 foreach (var ba in bas)
                 {
@@ -140,18 +153,20 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             var oldAssetsPath = Path.Combine(Paths.UIRoot, "wwwroot");
             Utils.DeleteDirectory(Path.Combine(Paths.UIRoot, "wwwroot/dist"));
 
-            var assets = Directory.GetFiles(oldAssetsPath, "*", SearchOption.AllDirectories);
-            var assetsTar = Path.Combine(Paths.UIRoot, "src/assets");
-            foreach (var fl in assets)
+            if (Directory.Exists(oldAssetsPath))
             {
-                if (!fl.Contains("\\dist\\"))
+                var assets = Directory.GetFiles(oldAssetsPath, "*", SearchOption.AllDirectories);
+                var assetsTar = Path.Combine(Paths.UIRoot, "src/assets");
+                foreach (var fl in assets)
                 {
-                    var newPath = fl.Replace(oldAssetsPath, assetsTar);
-                    Utils.CreateFolderForFile(newPath);
-                    File.Move(fl, newPath);
+                    if (!fl.Contains("\\dist\\"))
+                    {
+                        var newPath = fl.Replace(oldAssetsPath, assetsTar);
+                        Utils.CreateFolderForFile(newPath);
+                        File.Move(fl, newPath);
+                    }
                 }
             }
-
 
             Utils.DeleteEmptyDirectories(oldAssetsPath);
 

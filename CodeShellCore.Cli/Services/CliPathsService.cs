@@ -18,13 +18,12 @@ namespace CodeShellCore.Cli.Services
         public virtual string LocalizationRoot { get; private set; }
         public virtual string ConfigRoot { get; private set; }
         public virtual string UIRoot { get; private set; }
-        public virtual string ConfigUrl { get; private set; }
         public virtual string UIUrl { get; private set; }
         public virtual string UILaunchProfile { get; private set; }
         public virtual List<MoldsterEnvironment> GetEnvironments()
         {
             List<MoldsterEnvironment> _envs = new List<MoldsterEnvironment>();
-            var envPath = Path.Combine(CliDispatchShell.ConfigurationApiPath, "appEnvironments.json");
+            var envPath = Path.Combine(CliShell.ConfigurationApiPath, "appEnvironments.json");
             if (!File.Exists(envPath))
                 throw new Exception("appEnvironments.json is required to use this service");
 
@@ -52,11 +51,10 @@ namespace CodeShellCore.Cli.Services
 
         public CliPathsService()
         {
-            var sol = CliDispatchShell.ConfigurationApiPath.Replace("\\", "/").GetBeforeLast("/");
+            var sol = CliShell.ConfigurationApiPath.Replace("\\", "/").GetBeforeLast("/");
             CoreAppName = Shell.GetConfigAs<string>("Moldster:CoreAppName");
             ConfigRoot = Shell.GetConfigAs<string>("Moldster:ConfigRoot").Replace("{PARENT}", sol);
             UIRoot = Shell.GetConfigAs<string>("Moldster:UIRoot").Replace("{PARENT}", sol);
-            ConfigUrl = Shell.GetConfigAs<string>("Moldster:ConfigUrl");
             UIUrl = Shell.GetConfigAs<string>("Moldster:UIUrl", false);
             LocalizationRoot = Shell.GetConfigAs<string>("Moldster:LocalizationRoot", false)?.Replace("{PARENT}", sol);
             UILaunchProfile = Shell.GetConfigAs<string>("Moldster:UILaunchProfile", false);

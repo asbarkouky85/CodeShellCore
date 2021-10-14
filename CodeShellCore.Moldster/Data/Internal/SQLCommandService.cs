@@ -248,5 +248,22 @@ namespace CodeShellCore.Moldster.Data.Internal
         {
             return GetDataAs<string>("select name from master.sys.databases where owner_sid !=0x01").ToArray();
         }
+
+        public void AddMigrationTable()
+        {
+            RunSql(@"if not exists (select * from sysobjects where name='__EFMigrationsHistory' and xtype='U')
+	begin
+    create table __EFMigrationsHistory (
+        MigrationId nvarchar(150) not null primary key,
+		ProductVersion nvarchar(32) not null
+    )
+	
+	insert into __EFMigrationsHistory (MigrationId,ProductVersion) values
+	('20210215215644_Initial','5.0.2'),
+	('20210215215735_Triggers','5.0.2'),
+	('20210215215859_Procedures','5.0.2')
+	end
+go");
+        }
     }
 }

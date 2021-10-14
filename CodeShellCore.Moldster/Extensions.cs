@@ -30,17 +30,23 @@ namespace CodeShellCore.Moldster
     public enum MoldsType { Json, Db }
     public static class Extensions
     {
-
-        public static void AddMoldsterDbData(this IServiceCollection coll, IConfiguration config)
+        public static void AddMoldsterDbData(this IServiceCollection coll, IConfiguration config = null)
         {
-            var conn = config.GetConnectionString("Moldster") ?? config.GetConnectionString("Default");
-            if (string.IsNullOrEmpty(conn))
+            if (config != null)
             {
-                throw new Exception("Moldster Connection string is not found in appsettings");
+                var conn = config.GetConnectionString("Moldster") ?? config.GetConnectionString("Default");
+                if (string.IsNullOrEmpty(conn))
+                {
+                    throw new Exception("Moldster Connection string is not found in appsettings");
+                }
+                else if (conn != "TEST")
+                {
+                    coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(conn));
+                }
             }
-            else if (conn != "TEST")
+            else
             {
-                coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(conn));
+                coll.AddDbContext<MoldsterContext>();
             }
 
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
@@ -147,9 +153,6 @@ namespace CodeShellCore.Moldster
             coll.AddMoldsterCodeGeneration();
         }
 
-        public static void AddMoldsterDispatchers(this ICliDispatcherBuilder b)
-        {
-            b.AddStartupHandler<MoldsterCliHandler>();
-        }
+
     }
 }

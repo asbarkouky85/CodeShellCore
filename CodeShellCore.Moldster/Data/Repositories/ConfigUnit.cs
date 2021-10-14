@@ -38,6 +38,5 @@ namespace CodeShellCore.Moldster.Data.Repositories
         public IRepository<ResourceCollection> ResourceCollectionRepository => GetRepositoryFor<ResourceCollection>();
         public IRepository<Tenant> TenantRepository { get { return GetRepositoryFor<Tenant>(); } }
 
-        
     }
 }

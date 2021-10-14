@@ -18,5 +18,6 @@ namespace CodeShellCore.Moldster.Data
         void BeforeComparisonInitiation(string db);
         void AfterComparisonInitiation(long id, string code, string db);
         string[] GetDatabaseList();
+        void AddMigrationTable();
     }
 }

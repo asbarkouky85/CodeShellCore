@@ -30,6 +30,8 @@ namespace CodeShellCore.Cli.Routing
             CharacterSymbol = ch;
             _action = t;
             Key = key;
+            IsRequired = required;
+            MemberName = key ?? (t.Body as MemberExpression).Member.Name;
         }
 
         public override void WriteValue(T item, string v)

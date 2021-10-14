@@ -13,27 +13,19 @@ namespace CodeShellCore.Cli.Routing
 {
     public abstract class CliDispatchShell : Shell
     {
-        public static string ConfigurationApiPath
-        {
-            get { return _configurationApiPath; }
-            set
-            {
-                _configurationApiPath = value;
-                //ConfigureCurrent();
-            }
-        }
+
         protected ICliDispatcherBuilder Builder = new CliDispatcherBuilder();
         protected readonly string[] Arguments;
 
-        private static string _configurationApiPath;
+
         private IServiceProvider __scoped;
-        private IConfigurationRoot _configRoot;
+        protected IConfigurationRoot configRoot;
 
         protected override bool useLocalization => false;
         protected override string appRoot => ".";
         protected override CultureInfo defaultCulture => new CultureInfo("en");
         protected override IServiceProvider _scopedProvider => __scoped;
-        protected override IConfiguration Configuration => _configRoot;
+        protected override IConfiguration Configuration => configRoot;
 
         protected override IServiceProvider buildRootProvider()
         {
@@ -53,7 +45,15 @@ namespace CodeShellCore.Cli.Routing
 
         protected override IConfigurationSection getConfig(string key)
         {
-            return _configRoot.GetSection(key);
+            return configRoot.GetSection(key);
+        }
+
+        public static void SetSettingsPath(string path, string environment = null)
+        {
+            if (App is CliDispatchShell)
+            {
+                (App as CliDispatchShell).LoadConfigFrom(path, environment);
+            }
         }
 
         public CliDispatchShell(string[] args)
@@ -64,42 +64,51 @@ namespace CodeShellCore.Cli.Routing
         private static void ConfigureCurrent()
         {
             if (App is CliDispatchShell)
-                (App as CliDispatchShell).BuildConfiguration();
+            {
+                var sh = App as CliDispatchShell;
+                var builder = new ConfigurationBuilder();
+                (App as CliDispatchShell).BuildConfiguration(builder);
+                sh.configRoot = builder.Build();
+            }
+
         }
 
-        protected void BuildConfiguration()
+        protected virtual void BuildConfiguration(ConfigurationBuilder conf)
         {
-            var conf = new ConfigurationBuilder();
-
             EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             conf.AddJsonFile($"appsettings.json", true, true);
             conf.AddJsonFile($"appsettings.{EnvironmentName}.json", true, true);
 
-            if (ConfigurationApiPath != null)
-            {
-                var f1 = Path.Combine(ConfigurationApiPath, "appsettings.json");
-                var f2 = Path.Combine(ConfigurationApiPath, $"appsettings.{EnvironmentName}.json");
-                conf.AddJsonFile(f1, true, true);
-                conf.AddJsonFile(f2, true, true);
-            }
-
             if (EnvironmentName != null)
                 Console.WriteLine("Using environment : " + EnvironmentName);
-            _configRoot = conf.Build();
+        }
 
+
+
+        public virtual void LoadConfigFrom(string path, string environment = null)
+        {
+            var conf = new ConfigurationBuilder();
+            BuildConfiguration(conf);
+            conf.AddJsonFile(Path.Combine(path, $"appsettings.json"), true, true);
+            if (environment != null)
+            {
+                conf.AddJsonFile(Path.Combine(path, $"appsettings.{environment}.json"), true, true);
+            }
+
+            configRoot = conf.Build();
         }
 
         protected abstract void RegisterHandlers(ICliDispatcherBuilder builder);
         public override void RegisterServices(IServiceCollection coll)
         {
-            
+
             foreach (var h in Builder.HandlerTypes)
             {
                 coll.AddTransient(h);
             }
             base.RegisterServices(coll);
-            
+
         }
 
         public virtual async Task DispatchAsync()

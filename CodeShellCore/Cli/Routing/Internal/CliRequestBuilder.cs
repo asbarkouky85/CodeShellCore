@@ -26,7 +26,7 @@ namespace CodeShellCore.Cli.Routing.Internal
             {
                 if (n.IsRequired && !n.IsSet)
                 {
-                    lst.Add(n.MemberName + " is required");
+                    lst.Add("[" + n.MemberName + "] is required (ex: .. -" + n.CharacterSymbol + " [" + n.MemberName + "])");
                     invalid = true;
                 }
             }

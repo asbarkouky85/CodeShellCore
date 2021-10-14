@@ -10,5 +10,7 @@ namespace CodeShellCore.Cli.Requests
     {
         public string UIPath { get; set; }
         public string TenantCode { get; set; }
+        public string ConfigurationApiPath { get; set; }
+        public string Environment { get; set; }
     }
 }

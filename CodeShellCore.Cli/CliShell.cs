@@ -2,12 +2,17 @@
 using CodeShellCore.Cli.Routing;
 using CodeShellCore.Cli.Services;
 using CodeShellCore.Moldster;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.IO;
 
 namespace CodeShellCore.Cli
 {
     public class CliShell : CliDispatchShell
     {
+        
+        public static string ConfigurationApiPath { get; set; }
         public CliShell(string[] args) : base(args)
         {
         }
@@ -16,7 +21,7 @@ namespace CodeShellCore.Cli
         {
             base.RegisterServices(coll);
 
-            coll.AddMoldsterDbData(Configuration);
+            coll.AddMoldsterDbData();
             coll.AddMoldsterCli();
 
             coll.AddTransient<IPathsService, CliPathsService>();
@@ -24,8 +29,9 @@ namespace CodeShellCore.Cli
 
         protected override void RegisterHandlers(ICliDispatcherBuilder builder)
         {
-            builder.AddMoldsterDispatchers();
             builder.AddHandler<MigrateOldAppHandler>("migrate");
         }
+
+        
     }
 }

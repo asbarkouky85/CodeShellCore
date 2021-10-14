@@ -6,6 +6,6 @@ namespace CodeShellCore.Moldster.Cli
 {
     public class MoldsterCliOptions
     {
-        public string ConfigurationApiPath { get; set; }
+        
     }
 }

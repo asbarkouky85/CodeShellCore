@@ -20,6 +20,7 @@ namespace CodeShellCore.Moldster.Data
         INavigationGroupRepository NavigationGroupRepository { get; }
         INavigationPageRepository NavigationPageRepository { get; }
         IPageCategoryParameterRepository PageCategoryParameterRepository { get; }
+
         IPageCategoryRepository PageCategoryRepository { get; }
         IPageControlRepository PageControlRepository { get; }
         IPageRepository PageRepository { get; }
