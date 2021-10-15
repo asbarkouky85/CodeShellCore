@@ -41,6 +41,6 @@ toolset -p CodeShellCore.FileServer.Web 		5.2.0 -d %cd%
 
 toolset -p Asga.Auth.Molds 						5.2.0 -d %cd%
 toolset -p Asga.Public.Molds 					5.2.0 -d %cd%
-toolset -p CodeShellCore.Cli					1.0.3 -d %cd%
+toolset -p CodeShellCore.Cli					1.0.5 -d %cd%
 
 timeout 10

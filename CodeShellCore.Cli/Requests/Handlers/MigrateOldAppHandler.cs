@@ -21,7 +21,9 @@ namespace CodeShellCore.Cli.Requests.Handlers
 
         protected override Task<Result> HandleAsync(MigrateOldAppRequest request)
         {
-            CliDispatchShell.SetSettingsPath(request.ConfigurationApiPath);
+            
+            CliDispatchShell.SetSettingsPath(request.ConfigurationApiPath, request.Environment);
+
             CliShell.ConfigurationApiPath = request.ConfigurationApiPath;
             var s = GetService<IMigrationService>();
             s.MigrateBaseModule(request.TenantCode);

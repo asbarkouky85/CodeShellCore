@@ -33,6 +33,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             {
                 ConnectionParams = new DbConnectionParams(Shell.GetConfigAs<string>("ConnectionStrings:Moldster"))
             };
+            WriteColored("ConnectionString=" + env.CurrentEnvironment.ConnectionParams.ConnectionString, ConsoleColor.Yellow);
             sql.AddMigrationTable();
         }
 

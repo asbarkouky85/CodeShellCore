@@ -20,7 +20,7 @@ namespace CodeShellCore.Web.Razor
         protected override bool UseCors => true;
         protected virtual bool MigrateOnStartup => true;
         protected override bool useLocalization => false;
-        protected override string DefaultCorsOrigins => "http://localhost:8050,http://localhost:4200,http://127.0.0.1:8050";
+        protected override string DefaultCorsOrigins => "http://localhost:8050,http://localhost:4200,http://127.0.0.1:8050,http://127.0.0.1:8051";
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");
 

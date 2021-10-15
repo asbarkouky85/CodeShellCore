@@ -90,6 +90,7 @@ namespace CodeShellCore.Cli.Routing
         {
             var conf = new ConfigurationBuilder();
             BuildConfiguration(conf);
+            Console.WriteLine("Reading config from [" + path + "\\appsettings" + (environment == null ? "" : environment) + ".json");
             conf.AddJsonFile(Path.Combine(path, $"appsettings.json"), true, true);
             if (environment != null)
             {
