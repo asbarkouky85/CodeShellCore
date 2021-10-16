@@ -4,7 +4,7 @@ using CodeShellCore.Web.Razor.Services;
 
 namespace CodeShellCore.Web.Razor.Controllers
 {
-    public class DbViewsControllerBase : BaseMoldsterViewsController
+    public abstract class DbViewsControllerBase : BaseMoldsterViewsController
     {
         private readonly IConfigUnit _unit;
         private readonly ServerViewsService service;

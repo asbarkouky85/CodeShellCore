@@ -94,16 +94,22 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;ng-container *ngIf=&quot;Locale==&apos;ar&apos;&quot;&gt;
-        ///    &lt;link href=&quot;/assets/moldster/css/plugins/bootstrap.rtl.css&quot; rel=&quot;stylesheet&quot; /&gt;
-        ///    &lt;link href=&quot;/assets/moldster/css/moldster.css&quot; rel=&quot;stylesheet&quot; /&gt;
-        ///    &lt;link href=&quot;/assets/moldster/css/moldster.rtl.css&quot; rel=&quot;stylesheet&quot; /&gt;
-        ///    &lt;link href=&quot;/assets/moldster/css/treeStyle.rtl.css&quot; rel=&quot;stylesheet&quot; /&gt;
-        ///&lt;/ng-container&gt;
+        ///   Looks up a localized string similar to &lt;div [hidden]=&quot;!ShowLoader&quot; class=&quot;loader-overlay&quot;&gt;
+        ///    &lt;div class=&quot;loader&quot;&gt;&lt;/div&gt;
+        ///&lt;/div&gt;
         ///
-        ///&lt;ng-container *ngIf=&quot;Locale==&apos;en&apos;&quot;&gt;
-        ///    &lt;link href=&quot;/assets/moldster/css/plugins/bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
-        ///    &lt;link href=&quot;/assets/mold [rest of string was truncated]&quot;;.
+        ///&lt;div&gt;
+        ///    &lt;div class=&quot;wrapper&quot;&gt;
+        ///        &lt;app-top-bar #topBar&gt;&lt;/app-top-bar&gt;
+        ///        &lt;div class=&quot;wrapper-side&quot; *ngIf=&quot;IsLoggedIn &amp;&amp; ShowNav&quot;&gt;
+        ///            &lt;app-navigation-side-bar&gt;&lt;/app-navigation-side-bar&gt;
+        ///        &lt;/div&gt;
+        ///        &lt;div class=&quot;wrapper-content&quot; [ngClass]=&quot;!IsLoggedIn || !ShowNav?&apos;expanded&apos;:null&quot;&gt;
+        ///            &lt;router-outlet&gt;&lt;/router-outlet&gt;
+        ///        &lt;/div&gt;
+        ///    &lt;/div&gt;
+        ///&lt;/div&gt;
+        ///.
         /// </summary>
         public static string AppComponent_cshtml {
             get {
@@ -212,19 +218,6 @@ namespace CodeShellCore.Moldster.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 牣慥整映湵瑣潩⁮摛潢⹝䍛浯慰敲敖獲潩嵮നऊ癀‱慶捲慨⡲〱⤰ബऊ癀′慶捲慨⡲〱⤰਍ഩ爊瑥牵獮椠瑮਍十਍敢楧൮搊捥慬敲䀠敲畳瑬椠瑮഻ഊ †猠汥捥⁴牀獥汵㵴慣敳ഠ †眠敨⁮佃噎剅⡔湩ⱴ䰠䙅⡔癀ⰱ䌠䅈䥒䑎塅✨✮‬癀⤱ㄭ⤩㰠䌠乏䕖呒椨瑮‬䕌呆䀨㉶‬䡃剁义䕄⡘⸧Ⱗ䀠㉶⴩⤱
-///桴湥㈠਍††桷湥䌠乏䕖呒椨瑮‬䕌呆䀨ㅶ‬䡃剁义䕄⡘⸧Ⱗ䀠ㅶ⴩⤱
-///‾佃噎剅⡔湩ⱴ䰠䙅⡔癀ⰲ䌠䅈䥒䑎塅✨✮‬癀⤲ㄭ⤩琠敨⁮റ †眠敨⁮佃噎剅⡔湩ⱴ猠扵瑳楲杮䀨ㅶ‬䡃剁义䕄⡘⸧Ⱗ䀠ㅶ⬩ⰱ䰠久䀨ㅶ⤩
-///‼佃噎剅⡔湩ⱴ猠扵瑳楲杮䀨㉶‬䡃剁义䕄⡘⸧Ⱗ䀠㉶⬩ⰱ䰠久䀨ㅶ⤩
-///桴湥㈠਍††桷湥䌠乏䕖呒椨瑮‬畳獢牴湩⡧癀ⰱ䌠䅈䥒䑎塅✨✮‬癀⤱ㄫ‬䕌⡎癀⤱⤩㸠䌠乏䕖呒椨瑮‬畳獢牴湩⡧癀ⰲ䌠䅈䥒䑎塅✨✮‬癀⤲ㄫ‬䕌⡎癀⤱⤩琠敨⁮റ †攠獬⁥‰湥㭤਍敲畴湲䀠敲畳瑬਍湥㭤਍਍਍਍਍佇਍⨯⨪⨪‪扏敪瑣›唠敳䑲晥湩摥畆据楴湯嬠扤嵯嬮敇敮慲整摉⁝†匠牣灩⁴慄整›〱㠯㈯㈰‰㨹㌰ㄺ‸䵐⨠⨪⨪⼪਍䕓⁔乁䥓也䱕卌传ൎ䜊൏匊呅儠何䕔彄䑉久䥔䥆剅传ൎ䜊൏ഊ䌊䕒呁⁅商䍎䥔乏嬠扤嵯嬮敇敮慲整摉൝⠊਍䀉楴敭䐠瑡瑥浩ⱥ਍䀉潲乷浵椠瑮਍ഩ刊呅剕华戠杩湩൴䄊൓䈊䝅义਍ⴉ‭敄汣牡⁥桴⁥敲畴湲瘠牡慩汢⁥敨敲਍䐉䍅䅌䕒 [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Creation {
-            get {
-                return ResourceManager.GetString("Creation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] css {
@@ -295,13 +288,13 @@ namespace CodeShellCore.Moldster.Properties {
         ///
         ///&lt;head&gt;
         ///    &lt;base href=&quot;/&quot;&gt;
-        ///    
+        ///
         ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Armata&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
         ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Tajawal&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
         ///    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
         ///
         ///    &lt;link href=&quot;assets/moldster/css/plugins/animate.css&quot; rel=&quot;stylesheet&quot; /&gt;
-        ///    &lt;link href=&quot;assets/moldster/css/plugins/font-awesome4.2.min.css&quot; rel=&quot; [rest of string was truncated]&quot;;.
+        ///    &lt;link href=&quot;assets/moldster/css/plugins/font-awesome4.2.min.css&quot; rel=&quot;styl [rest of string was truncated]&quot;;.
         /// </summary>
         public static string index_html {
             get {
@@ -435,25 +428,23 @@ namespace CodeShellCore.Moldster.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;name&quot;: &quot;example&quot;,
-        ///  &quot;version&quot;: &quot;0.0.0&quot;,
-        ///  &quot;scripts&quot;: {
-        ///    &quot;ng&quot;: &quot;ng&quot;,
-        ///    &quot;start&quot;: &quot;ng serve --open&quot;,
-        ///    &quot;build&quot;: &quot;ng build&quot;,
-        ///    &quot;build:prod&quot;: &quot;ng build --configuration production&quot;,
-        ///    &quot;test&quot;: &quot;ng test&quot;,
-        ///    &quot;lint&quot;: &quot;ng lint&quot;,
-        ///    &quot;e2e&quot;: &quot;ng e2e&quot;
-        ///  },
-        ///  &quot;private&quot;: true,
-        ///  &quot;dependencies&quot;: {
-        ///    &quot;@angular/animations&quot;: &quot;~11.0.0&quot;,
-        ///    &quot;@angular/common&quot;: &quot;~11.0.0&quot;,
-        ///    &quot;@angular/compiler&quot;: &quot;~11.0.0&quot;,
-        ///    &quot;@angular/core&quot;: &quot;~11.0.0&quot;,
-        ///    &quot;@angular/forms&quot;: &quot;~11.0.0&quot;,
-        ///    &quot;@angular/locali [rest of string was truncated]&quot;;.
+        ///    &quot;name&quot;: &quot;example&quot;,
+        ///    &quot;version&quot;: &quot;0.0.0&quot;,
+        ///    &quot;scripts&quot;: {
+        ///        &quot;ng&quot;: &quot;ng&quot;,
+        ///        &quot;start&quot;: &quot;ng serve --open&quot;,
+        ///        &quot;build&quot;: &quot;ng build&quot;,
+        ///        &quot;build:prod&quot;: &quot;ng build --configuration production&quot;,
+        ///        &quot;test&quot;: &quot;ng test&quot;,
+        ///        &quot;lint&quot;: &quot;ng lint&quot;,
+        ///        &quot;e2e&quot;: &quot;ng e2e&quot;
+        ///    },
+        ///    &quot;private&quot;: true,
+        ///    &quot;dependencies&quot;: {
+        ///        &quot;@angular/animations&quot;: &quot;~11.0.0&quot;,
+        ///        &quot;@angular/common&quot;: &quot;~11.0.0&quot;,
+        ///        &quot;@angular/compiler&quot;: &quot;~11.0.0&quot;,
+        ///        &quot;@angular/core&quot;: &quot;~11.0.0&quot;, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string package_json {
             get {

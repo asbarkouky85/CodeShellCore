@@ -25,7 +25,7 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<IEntityService<T>, TService>();
         }
 
-        public static void AddCodeShellServices(this IServiceCollection coll)
+        public static void AddCodeShellApplication(this IServiceCollection coll)
         {
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();

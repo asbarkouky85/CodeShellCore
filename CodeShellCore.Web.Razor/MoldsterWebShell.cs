@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Moldster;
 using CodeShellCore.Web.Razor.SignalR;
+using CodeShellCore.Web.Razor.Themes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ namespace CodeShellCore.Web.Razor
 {
     public class MoldsterWebShell : WebShell
     {
-
+        protected virtual IRazorTheme Theme { get; }
         public MoldsterWebShell(IConfiguration config) : base(config)
         {
         }
@@ -49,13 +50,17 @@ namespace CodeShellCore.Web.Razor
         public override void RegisterEndpointRoutes(IEndpointRouteBuilder endpoint)
         {
             base.RegisterEndpointRoutes(endpoint);
+            endpoint.MapControllerRoute(
+                name: "apiArea",
+                pattern: "apiAction/{controller=Home}/{action=Index}/{id?}"
+                );
             endpoint.AddMoldsterHubs();
         }
 
         protected override void OnReady()
         {
             base.OnReady();
-            this.ConfigureAngular2Razor();
+            this.ConfigureAngular2Razor(Theme);
         }
 
         protected override void OnApplicationStarted(IServiceProvider prov)

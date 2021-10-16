@@ -23,7 +23,7 @@ namespace CodeShellCore.Web
 {
     public static class DependecyExtensions
     {
-
+        
         public static void AddSignalRHub<TContract, THub>(this IServiceCollection coll) where THub : Hub<TContract> where TContract : class
         {
             coll.AddTransient<IMessagePusher<TContract>, SignalRNotifier<THub, TContract>>();

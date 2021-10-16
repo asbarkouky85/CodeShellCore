@@ -24,4 +24,8 @@
     <ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modularity\" />
+  </ItemGroup>
+
 </Project>

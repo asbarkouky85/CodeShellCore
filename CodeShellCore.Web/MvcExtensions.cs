@@ -29,7 +29,6 @@ namespace Microsoft.AspNetCore.Mvc
 {
     public static class MvcExtensions
     {
-
         public static FileContentResult ToFileResult(this FileBytes res)
         {
             var x = new FileContentResult(res.Bytes, res.MimeType);

@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Text;
+﻿using CodeShellCore.DependencyInjection;
+using CodeShellCore.Text;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -64,8 +65,6 @@ namespace CodeShellCore.Web
         /// Service provider created on <see cref="IConfigurationBuilder.Build"/>
         /// </summary>
         protected override IServiceProvider rootProvider { get { return _appProvider; } }
-
-
         public WebShell(IConfiguration config)
         {
             _config = config;
@@ -78,8 +77,6 @@ namespace CodeShellCore.Web
             cont.Response.WriteAsync(res.ToJson());
         }
 
-
-
         public virtual void AddMvcFeatures(IMvcBuilder mvc)
         {
 
@@ -90,8 +87,6 @@ namespace CodeShellCore.Web
             var s = context.RequestServices.GetRequiredService<ISpaFallbackHandler>();
             await s.HandleRequestAsync(context);
         }
-
-
 
         public virtual void RegisterRoutes(IRouteBuilder routeBuilder)
         {
@@ -110,11 +105,12 @@ namespace CodeShellCore.Web
         public override void RegisterServices(IServiceCollection services)
         {
             base.RegisterServices(services);
+            services.AddCodeShellApplication();
 
-            services.Configure<MvcOptions>(r =>
-            {
-                r.EnableEndpointRouting = false;
-            });
+            //services.Configure<MvcOptions>(r =>
+            //{
+            //    r.EnableEndpointRouting = false;
+            //});
             var mvc = services.AddControllers();
 
             services.AddRouting(options =>
@@ -132,7 +128,7 @@ namespace CodeShellCore.Web
             {
                 services.AddHealthChecks();
             }
-            
+
             AddMvcFeatures(mvc);
             mvc.AddNewtonsoftJson(e => e.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local);
 
@@ -185,6 +181,7 @@ namespace CodeShellCore.Web
             app.UseEndpoints(e =>
             {
                 RegisterEndpointRoutes(e);
+                ConventionalRoutingSwaggerGen.UseRoutes(e);
             });
 
 
@@ -213,9 +210,16 @@ namespace CodeShellCore.Web
             endpoints.MapControllers();
             endpoints.MapControllerRoute(
                 name: "api",
+                pattern: "api/{controller=Home}/{action=Index}/{id?}"
+                );
+            endpoints.MapControllerRoute(
+                name: "apiArea",
                 pattern: "api/{area=app}/{controller=Home}/{action=Index}/{id?}"
                 );
-            ConventionalRoutingSwaggerGen.UseRoutes(endpoints);
+            endpoints.MapControllerRoute(
+                name: "mvc",
+                pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
         }
 
         protected override IConfigurationSection getConfig(string key)

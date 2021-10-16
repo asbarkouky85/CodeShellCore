@@ -23,6 +23,8 @@ using CodeShellCore.Cli;
 using CodeShellCore.MQ;
 using CodeShellCore.Files.Uploads;
 using CodeShellCore.Tasks;
+using CodeShellCore.Modularity;
+using System.Linq;
 
 namespace CodeShellCore
 {
@@ -132,16 +134,19 @@ namespace CodeShellCore
 
         public virtual void RegisterServices(IServiceCollection coll)
         {
+            
             coll.AddLogging();
             coll.AddSingleton<IFileHandler, FileSystemHandler>();
             coll.AddTransient<ILocaleTextProvider, ResxTextProvider>();
-            
+
             coll.AddTransient<IOutputWriter, ConsoleOutputWriter>();
-            
+
             coll.AddTransient<IUploadedFilesHandler, UploadedFileHandler>();
             coll.AddScoped<Language>();
-            
+
             coll.AddScoped<ClientData>();
+
+            
 
         }
         protected abstract IConfigurationSection getConfig(string key);
@@ -193,9 +198,6 @@ namespace CodeShellCore
         #endregion
 
         #region Static Methods
-
-
-
         public static void Start(Shell cont)
         {
             App = cont;

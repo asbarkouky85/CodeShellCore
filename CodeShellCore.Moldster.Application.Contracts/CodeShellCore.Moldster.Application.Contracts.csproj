@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>CodeShellCore.Moldster</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -15,7 +15,7 @@ using System.Text;
 namespace CodeShellCore.Web.Razor.Controllers
 {
     [ApiExceptionFilter]
-    public class BaseMoldsterViewsController : BaseController
+    public abstract class BaseMoldsterViewsController : BaseController
     {
         private readonly ServerViewsService views;
 
