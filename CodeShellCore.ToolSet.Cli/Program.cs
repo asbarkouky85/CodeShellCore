@@ -13,7 +13,7 @@ namespace CodeShellCore.ToolSet
             {
                 if (Debugger.IsAttached)
                 {
-                    var testing = FunctionTypes.SyncLocAbp;
+                    var testing = FunctionTypes.UploadNuget;
 
                     switch (testing)
                     {
@@ -22,7 +22,7 @@ namespace CodeShellCore.ToolSet
                             break;
                         case FunctionTypes.UploadNuget:
                             args = new[] { "upload-nuget", @"C:\_abdelrahman\Personal\_gitHub\CodeShellCore", @"C:\_abdelrahman\Personal\Nuget" };
-                            args = new[] { "upload-nuget", @"C:\_abdelrahman\Personal\_gitHub\CodeShellCore", @"ftp:genial\ftp_user/Genial963258741@196.202.126.106:21::P::/NugetServer/Packages" };
+                            args = new[] { "upload-nuget", @"C:\_abdelrahman\Personal\_gitHub\CodeShellCore\CodeShellCore.ToolSet.Cli", @"ftp:genial\ftp_user/Genial963258741@196.202.126.106:21::P::/NugetServer/Packages" };
                             break;
                         case FunctionTypes.Zip:
                             args = new[] { "zip", @"C:\_abdelrahman\Work\ziptest", @"C:\_abdelrahman\Work\ziptest.zip" };
@@ -45,12 +45,14 @@ namespace CodeShellCore.ToolSet
                 var sh = new ToolSetShell(args);
                 var t = sh.DispatchAsync();
                 t.Wait();
-
-                using (ColorSetter.Set(ConsoleColor.Green))
+                if (Debugger.IsAttached)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine(" Request Completed");
-                    Console.WriteLine();
+                    using (ColorSetter.Set(ConsoleColor.Green))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(" Request Completed");
+                        Console.WriteLine();
+                    }
                 }
 
 

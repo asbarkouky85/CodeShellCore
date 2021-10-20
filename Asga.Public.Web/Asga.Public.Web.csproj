@@ -10,6 +10,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
 <Version>5.2.0.0</Version>
+    <AssemblyName>Asga.Public.Web</AssemblyName>
 <AssemblyVersion>5.2.0.0</AssemblyVersion>
 <FileVersion>5.2.0.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

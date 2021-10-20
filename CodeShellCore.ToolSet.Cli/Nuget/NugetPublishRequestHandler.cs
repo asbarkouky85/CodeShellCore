@@ -46,26 +46,30 @@ namespace CodeShellCore.ToolSet.Nuget
             foreach (var project in files)
             {
                 ProjectFile f = new ProjectFile(project, new PhysicalFileReader());
+                string assem = f.GetAssemblyName();
                 string version = f.GetVersion(4);
                 string[] nugets = Directory.GetFiles(f.Folder, "*." + version + ".nupkg", SearchOption.AllDirectories);
 
                 if (nugets.Length > 0)
                 {
-                    Console.Write(f.ProjectName + "-v" + version);
+                    Console.Write(assem + "-v" + version);
                     GotoColumn(6);
+                    foreach (var n in nugets)
+                    {
+                        if (handler.UploadPackage(assem, version, n))
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.WriteLine(" Added");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
+                            Console.WriteLine(" Already exists");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                    }
 
-                    if (handler.UploadPackage(f.ProjectName, version, nugets[0]))
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.WriteLine(" Added");
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.WriteLine(" Already exists");
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                    }
                 }
 
             }

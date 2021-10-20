@@ -16,6 +16,7 @@ namespace CodeShellCore.ToolSet
         private readonly IFileReader reader;
         private string _tagPattern;
         private string _tagFormatter;
+        private string _assemblyName;
         public string Folder { get; private set; }
         public string ProjectName { get; private set; }
         public bool IsCore { get; private set; }
@@ -80,7 +81,7 @@ namespace CodeShellCore.ToolSet
 
             string[] vParams = new string[0];
             if (IsCore)
-                vParams = new[] { "Version", "AssemblyVersion", "FileVersion" };
+                vParams = new[] { "Version", "AssemblyName", "AssemblyVersion", "FileVersion" };
             else
                 vParams = new[] { "AssemblyTitle", "AssemblyProduct", "AssemblyVersion", "AssemblyFileVersion" };
 
@@ -101,7 +102,7 @@ namespace CodeShellCore.ToolSet
                         else
                             values[vParams[p]] = pValue;
 
-                        string line = "    "+string.Format(_tagFormatter, pValue.Name, pValue.Value);
+                        string line = "    " + string.Format(_tagFormatter, pValue.Name, pValue.Value);
                         pValue.Index = i + p + 1;
                         nContents.Add(line);
                         added = true;
@@ -126,6 +127,13 @@ namespace CodeShellCore.ToolSet
                 }
             }
             return targ != null;
+        }
+
+        public string GetAssemblyName()
+        {
+            _assemblyName = values["AssemblyName"].Value;
+            _assemblyName = string.IsNullOrEmpty(_assemblyName) ? ProjectName : _assemblyName;
+            return _assemblyName;
         }
 
         public string GetTagContent(string subject, string tag, string usePattern = null)
@@ -175,6 +183,7 @@ namespace CodeShellCore.ToolSet
                 values["Version"].Value = req.GetLongVersionString();
                 values["AssemblyVersion"].Value = req.GetLongVersionString();
                 values["FileVersion"].Value = req.GetLongVersionString();
+                values["AssemblyName"].Value = GetAssemblyName();
             }
             else
             {

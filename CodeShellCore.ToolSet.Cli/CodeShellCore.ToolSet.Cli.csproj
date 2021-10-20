@@ -1,10 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>CodeShellCore.ToolSet</RootNamespace>
-		<AssemblyName>CodeShellCore.ToolSet.Cli</AssemblyName>
 		<TargetFramework>net5.0</TargetFramework>
+    <Version>5.0.2.0</Version>
+		<AssemblyName>ToolSet</AssemblyName>
+    <AssemblyVersion>5.0.2.0</AssemblyVersion>
+    <FileVersion>5.0.2.0</FileVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>toolset</ToolCommandName>
