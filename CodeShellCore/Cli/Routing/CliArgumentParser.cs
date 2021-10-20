@@ -22,27 +22,30 @@ namespace CodeShellCore.Cli.Routing
             {
                 if (valueFor != null)
                 {
-                    valueFor.WriteValue(t, args[i]);
+                    valueFor.SetMemberValue(t, args[i]);
                     valueFor = null;
                 }
                 else if (TryGetArgumentItem(args[i], out ArgumentItem<T> item))
                 {
                     valueFor = item;
                 }
+                else if (TryGetArgumentItem(i, out ArgumentItem<T> itemByOrder))
+                {
+                    itemByOrder.SetMemberValue(t, args[i]);
+                }
             }
 
             if (Builder.IsInvalid(out string[] lst))
             {
-                using (ColorSetter.Set(ConsoleColor.Red))
-                {
-                    foreach (var it in lst)
-                    {
-                        Console.WriteLine(it, ConsoleColor.Red);
-                    }
-                }
-                return null;
+                throw new Exception(lst[0]);
             }
             return t;
+        }
+
+        protected virtual bool TryGetArgumentItem(int order, out ArgumentItem<T> argItem)
+        {
+            argItem = Builder.KeyList.Where(e => e.Order == order).FirstOrDefault();
+            return argItem != null;
         }
 
         protected virtual bool TryGetArgumentItem(string arg, out ArgumentItem<T> argItem)

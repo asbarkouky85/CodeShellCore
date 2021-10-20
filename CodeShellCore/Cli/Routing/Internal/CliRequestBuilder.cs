@@ -12,9 +12,9 @@ namespace CodeShellCore.Cli.Routing.Internal
 
         public IEnumerable<ArgumentItem<T>> KeyList => _keys;
 
-        public void FillProperty<TVal>(Expression<Func<T, TVal>> t, char ch, string key = null, bool isRequired = false)
+        public void FillProperty<TVal>(Expression<Func<T, TVal>> t, string key, char? ch = null, int? order = null, bool isRequired = false)
         {
-            var item = new ArgumentItem<T, TVal>(ch, t, key, isRequired);
+            var item = new ArgumentItem<T, TVal>(t, key, ch, order, isRequired);
             _keys.Add(item);
         }
 

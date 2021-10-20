@@ -34,7 +34,7 @@ namespace CodeShellCore
         public static string GetMessageRecursive(this Exception ex, bool ignorInvocationException = true)
         {
 
-            if (ex is TargetInvocationException && ignorInvocationException)
+            if (((ex is TargetInvocationException) || (ex is AggregateException)) && ignorInvocationException)
             {
                 if (ex.InnerException != null)
                     return ex.InnerException.GetMessageRecursive();
@@ -70,7 +70,7 @@ namespace CodeShellCore
         public static string[] GetStackTrace(this Exception ex, bool recurse = false, bool ignorInvocationException = true)
         {
 
-            if (ex is TargetInvocationException && ignorInvocationException)
+            if (((ex is TargetInvocationException) || (ex is AggregateException)) && ignorInvocationException)
             {
                 if (ex.InnerException != null)
                     return ex.InnerException.GetStackTrace();
@@ -82,8 +82,8 @@ namespace CodeShellCore
                 if (ex.InnerException != null)
                 {
                     var inner = ex.InnerException.GetStackTrace(recurse, ignorInvocationException);
-                    message.Add("");
-                    message.Add("INNER STACK");
+                    
+                    message.Add("-------");
                     message.Add("");
                     message.AddRange(inner);
                 }

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>CodeShellCore.ToolSet</RootNamespace>
+		<AssemblyName>CodeShellCore.ToolSet.Cli</AssemblyName>
+		<TargetFramework>net5.0</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>toolset</ToolCommandName>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore\CodeShellCore.csproj" />
+	</ItemGroup>
+</Project>

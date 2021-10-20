@@ -4,7 +4,7 @@ using CodeShellCore.Moldster.CodeGeneration;
 using System;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Cli.Requests.Handlers
+namespace CodeShellCore.Cli.Requests
 {
     public class MigrateOldAppHandler : CliRequestHandler<MigrateOldAppRequest>
     {
@@ -14,14 +14,14 @@ namespace CodeShellCore.Cli.Requests.Handlers
 
         protected override void Build(ICliRequestBuilder<MigrateOldAppRequest> builder)
         {
-            builder.FillProperty(e => e.TenantCode, 't', "tenant", true);
-            builder.FillProperty(e => e.ConfigurationApiPath, 'p', "project", true);
-            builder.FillProperty(e => e.Environment, 'e', "environment", false);
+            builder.FillProperty(e => e.TenantCode, "tenant", 't', isRequired: true);
+            builder.FillProperty(e => e.ConfigurationApiPath, "project", 'p', isRequired: true);
+            builder.FillProperty(e => e.Environment, "environment", 'e');
         }
 
         protected override Task<Result> HandleAsync(MigrateOldAppRequest request)
         {
-            
+
             CliDispatchShell.SetSettingsPath(request.ConfigurationApiPath, request.Environment);
 
             CliShell.ConfigurationApiPath = request.ConfigurationApiPath;

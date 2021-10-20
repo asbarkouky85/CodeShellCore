@@ -9,6 +9,6 @@ namespace CodeShellCore.Cli.Routing
         IEnumerable<ArgumentItem<T>> KeyList { get; }
 
         bool IsInvalid(out string[] res);
-        void FillProperty<TVal>(Expression<Func<T, TVal>> t, char ch, string key = null, bool isRequired = false);
+        void FillProperty<TVal>(Expression<Func<T, TVal>> t, string key, char? ch = null, int? order = null, bool isRequired = false);
     }
 }

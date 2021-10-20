@@ -15,6 +15,10 @@ namespace CodeShellCore.Data.Sql
         {
             _connectionString = connectionString;
         }
-        public string ConnectionString { get { return _connectionString ?? $"Server={Server};User Id={UserId};Password={Password};" + (Database == null ? "" : $"Database={Database}"); } }
+        public string ConnectionString
+        {
+            get { return _connectionString ?? $"Server={Server};User Id={UserId};Password={Password};" + (Database == null ? "" : $"Database={Database}"); }
+            set { _connectionString = value; }
+        }
     }
 }
