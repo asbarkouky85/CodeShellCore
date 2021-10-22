@@ -1,6 +1,7 @@
-﻿using System;
+﻿using CodeShellCore.Moldster.CodeGeneration.Services;
+using System;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Internal
+namespace CodeShellCore.Moldster.CodeGeneration
 {
     public class ScriptMapping : IScriptMapping
     {
@@ -11,7 +12,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             FileWriter = func;
         }
 
-        
+
 
         public string FilePath { get; set; }
 

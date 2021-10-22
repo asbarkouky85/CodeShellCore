@@ -21,26 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Moldster", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest1", "ConsoleTest1\ConsoleTest1.csproj", "{31FE60EC-5E7C-44FF-B53D-CB888448DB86}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Tests", "05 Tests", "{3477FF24-4F33-4EB2-8B09-6AEC871B6752}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Tests", "04 Tests", "{3477FF24-4F33-4EB2-8B09-6AEC871B6752}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Asga.Auth", "05 Asga.Auth", "{D064279A-FF5C-450D-B4CE-D96EC6906A53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth", "Asga.Auth\Asga.Auth.csproj", "{5800310C-9A93-4793-9E80-85D19988C20E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth.Module", "Asga.Auth.Module\Asga.Auth.Module.csproj", "{29F610F6-1C6B-4488-9593-128EEC750B0F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Batch", "00 Batch", "{3E14368F-52B7-4829-9CA8-DBB03348AA00}"
-	ProjectSection(SolutionItems) = preProject
-		CodeShellCore.Batch\configurator_api.bat = CodeShellCore.Batch\configurator_api.bat
-		CodeShellCore.Batch\configurator_api_fms.bat = CodeShellCore.Batch\configurator_api_fms.bat
-		CodeShellCore.Batch\configurator_api_hp.bat = CodeShellCore.Batch\configurator_api_hp.bat
-		CodeShellCore.Batch\configurator_api_preview.bat = CodeShellCore.Batch\configurator_api_preview.bat
-		CodeShellCore.Batch\db_backup.bat = CodeShellCore.Batch\db_backup.bat
-		CodeShellCore.Batch\db_restore.bat = CodeShellCore.Batch\db_restore.bat
-		CodeShellCore.Batch\example_api.bat = CodeShellCore.Batch\example_api.bat
-		CodeShellCore.Batch\hp_api.bat = CodeShellCore.Batch\hp_api.bat
-		CodeShellCore.Batch\moldster_files.bat = CodeShellCore.Batch\moldster_files.bat
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth.Web", "Asga.Auth.Web\Asga.Auth.Web.csproj", "{7DB40C6E-58D7-47A8-A18B-C348F5C920EE}"
 EndProject
@@ -50,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest2", "ConsoleTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth.Molds", "Asga.Auth.Molds\Asga.Auth.Molds.csproj", "{91ED6472-83EC-4164-8830-67EDBE845D11}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Example", "04 Example", "{F834727F-3305-439C-9284-A82B37A4B7C9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Example", "03 Example", "{F834727F-3305-439C-9284-A82B37A4B7C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.csproj", "{D66038E7-662D-4F63-9571-601D6AFF1AF4}"
 EndProject
@@ -112,7 +99,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asga.Auth.Module.Contracts"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Api", "Example.Api\Example.Api.csproj", "{F2867446-0360-4EF9-AD32-7E8E88D0CE95}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Modules", "03 Modules", "{A6C5E4CD-BAF7-4B6D-B7BA-3F46A85F18E7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Modules", "02 Modules", "{A6C5E4CD-BAF7-4B6D-B7BA-3F46A85F18E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "09 ToolSet", "09 ToolSet", "{9D767BE2-3B5C-4478-80AA-D6629AC33393}"
 EndProject

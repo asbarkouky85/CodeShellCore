@@ -20,6 +20,7 @@ using CodeShellCore.Web.Razor.Validation.Internal;
 using CodeShellCore.Web.Razor.General;
 using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster;
 
 namespace CodeShellCore.Web.Razor
 {

@@ -1,16 +1,12 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Linq.Stringifiers;
-using CodeShellCore.Moldster.CodeGeneration;
+﻿using CodeShellCore.Linq.Stringifiers;
+using CodeShellCore.Moldster;
 using CodeShellCore.Text;
-using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CodeShellCore.Web.Razor

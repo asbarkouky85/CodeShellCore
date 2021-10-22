@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.CodeGeneration
+namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
-    public interface IUIFileNameService
+    public interface INamingConventionService
     {
         string CoreFolder { get; }
         string BaseFolder { get; }

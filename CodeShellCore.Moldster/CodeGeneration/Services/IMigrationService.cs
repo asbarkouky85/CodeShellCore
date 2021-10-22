@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Helpers;
 
-namespace CodeShellCore.Moldster.CodeGeneration
+namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
     public interface IMigrationService
     {

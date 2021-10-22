@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
@@ -16,7 +16,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
     {
         private IPathsService paths => GetService<IPathsService>();
         private IMoldProvider molds => GetService<IMoldProvider>();
-        private IUIFileNameService naming => GetService<IUIFileNameService>();
+        private INamingConventionService naming => GetService<INamingConventionService>();
         private WriterService writer;
 
         public BuilderService(IServiceProvider provider) : base(provider)

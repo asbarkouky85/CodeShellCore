@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Web.Razor.Models;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,7 +14,7 @@ namespace CodeShellCore.Web.Razor.General
         public virtual void AddHeaderButton(IHtmlHelper helper, IHtmlContent content = null, string function = null, string url = null, BtnClass btn = BtnClass.Default, string icon = null, string identifier = null, string classes = null, string title = null, object attr = null)
         {
             if (url != null)
-                url = helper.GetService<IUIFileNameService>().ApplyConvension(url, AppParts.Route);
+                url = helper.GetService<INamingConventionService>().ApplyConvension(url, AppParts.Route);
             helper.HeaderModel().AddToButtons(content, function, url, btn, icon, identifier, classes, title, attr);
         }
 

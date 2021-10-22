@@ -12,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Internal
+namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
     public class ScriptModelMappingService : ConsoleService, IScriptModelMappingService
     {
@@ -33,7 +33,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             _molds = mold;
             _paths = paths;
             this.unit = unit;
-            
+
         }
 
         public string MapEnum<T>()

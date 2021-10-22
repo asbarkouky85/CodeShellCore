@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Razor;
@@ -18,7 +18,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
 {
     public class AbpLocalizationService : LocalizationService, ILocalizationService
     {
-        public AbpLocalizationService(IMoldProvider molds, IConfigUnit unit, IPathsService paths, IUIFileNameService names, IOutputWriter output) : base(molds, unit, paths, names, output)
+        public AbpLocalizationService(IMoldProvider molds, IConfigUnit unit, IPathsService paths, INamingConventionService names, IOutputWriter output) : base(molds, unit, paths, names, output)
         {
         }
 

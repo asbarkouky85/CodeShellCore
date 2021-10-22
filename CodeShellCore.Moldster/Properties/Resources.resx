@@ -160,18 +160,6 @@
   <data name="SharedModule_ts" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Angular\Molds\SharedModule.ts.template;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="webpack_config_js" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Angular\Molds\webpack.config.js.template;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="webpack_tenant_js" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Angular\Molds\webpack.tenant.js.template;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="webpack_tenant_js_bat" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Angular\Molds\webpack.tenant.js.bat.template;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="webpack_tenant_js_json" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Angular\Molds\webpack.tenant.js.json.template;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="AppComponent_ts" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Angular\Molds\AppComponent.ts.template;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

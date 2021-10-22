@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.CodeGeneration
+namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
     public interface IMoldProvider
     {
@@ -15,13 +15,11 @@ namespace CodeShellCore.Moldster.CodeGeneration
         string BasicComponent { get; }
         string BootMold { get; }
         string ComponentMold { get; }
-        string DevWebpackConfigMold { get; }
         string LocaleLoaderMold { get; }
         string LookupComponent { get; }
         string MainComponentMold { get; }
-        string ModuleTsConfigMold { get; }
+        //string ModuleTsConfigMold { get; }
         string ParentRouteMold { get; }
-        string ProWebpackConfigMold { get; }
         string RouteMold { get; }
         string RoutesMold { get; }
         string ServiceMold { get; }

@@ -1,22 +1,20 @@
-﻿using CodeShellCore.Cli;
-using CodeShellCore.Data.Sql;
+﻿using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Resources.Services;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Internal
+namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
     public class MigrationService : MoldsterFileHandlingService, IMigrationService
     {
         IConfigUnit unit => GetService<IConfigUnit>();
-        IScriptGenerationService script => GetService<IScriptGenerationService>();
+        IResourceScriptGenerationService resTs => GetService<IResourceScriptGenerationService>();
 
         IBundlingService Bundling => GetService<IBundlingService>();
         IBuilderService Builder => GetService<IBuilderService>();
@@ -67,7 +65,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                 var srvs = unit.ResourceRepository.FindAs(e => new { e.Name, DomainName = e.Domain.Name });
                 foreach (var srv in srvs)
                 {
-                    script.GenerateHttpService(srv.Name, srv.DomainName);
+                    resTs.GenerateHttpService(srv.Name, srv.DomainName);
 
                     var dom = (srv.DomainName != null ? srv.DomainName + "\\" : "") + "Http";
                     var f = Path.Combine(oldBasePath, dom, srv.Name + "Service.ts");

@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Internal
+namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
     public class DefaultMoldProvider : IMoldProvider
     {
@@ -28,9 +28,6 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             RoutesMold = Encoding.UTF8.GetString(Properties.Resources.Routes_ts);
             ServiceMold = Encoding.UTF8.GetString(Properties.Resources.Service_ts);
             SharedModuleMold = Encoding.UTF8.GetString(Properties.Resources.SharedModule_ts);
-            DevWebpackConfigMold = Encoding.UTF8.GetString(Properties.Resources.webpack_config_js);
-            ProWebpackConfigMold = Encoding.UTF8.GetString(Properties.Resources.webpack_tenant_js);
-            ModuleTsConfigMold = Encoding.UTF8.GetString(Properties.Resources.webpack_tenant_js_json);
             BootMold = Encoding.UTF8.GetString(Properties.Resources.Boot_ts);
             MainComponentMold = Encoding.UTF8.GetString(Properties.Resources.AppComponent_ts);
             BasicComponent = Encoding.UTF8.GetString(Properties.Resources.BasicComponent_ts);
@@ -57,11 +54,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
 
         public virtual string SharedModuleMold { get; private set; }
 
-        public virtual string DevWebpackConfigMold { get; private set; }
-
-        public virtual string ProWebpackConfigMold { get; private set; }
-
-        public virtual string ModuleTsConfigMold { get; private set; }
+        //public virtual string ModuleTsConfigMold { get; private set; }
 
         public virtual string MainComponentMold { get; private set; }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Text;
 using Microsoft.AspNetCore.Html;
@@ -64,7 +64,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
             if (string.IsNullOrEmpty(val))
                 return null;
 
-            var nam = helper.GetService<IUIFileNameService>();
+            var nam = helper.GetService<INamingConventionService>();
             val = nam.ApplyConvension(val, AppParts.Route);
             string l = "'/" + val + "/'";
             string id = "";
@@ -84,7 +84,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
             if (!acc.Read)
                 return null;
             string componentPath = helper.GetViewParams().GetFromOther(id, def);
-            var nameService = helper.GetService<IUIFileNameService>();
+            var nameService = helper.GetService<INamingConventionService>();
             id = id != "none" ? "#" + id : null;
 
             if (!string.IsNullOrEmpty(componentPath))

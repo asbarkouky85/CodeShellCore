@@ -15,6 +15,7 @@ using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.Domains.Services;
 
 namespace CodeShellCore.Moldster.Services.Internal
 {
@@ -25,7 +26,9 @@ namespace CodeShellCore.Moldster.Services.Internal
         ILocalizationService _loc => GetService<ILocalizationService>();
         IOutputWriter _output => GetService<IOutputWriter>();
         IPageParameterDataService _pages => GetService<IPageParameterDataService>();
-        IScriptGenerationService _ts => GetService<IScriptGenerationService>();
+        IDomainScriptGenerationService _domainTs => GetService<IDomainScriptGenerationService>();
+        IPageCategoryScriptGenerationService _catTs => GetService<IPageCategoryScriptGenerationService>();
+        IPageScriptGenerationService _pageTs => GetService<IPageScriptGenerationService>();
         IPageHtmlGenerationService _html => GetService<IPageHtmlGenerationService>();
         IPageCategoryHtmlService _proccess => GetService<IPageCategoryHtmlService>();
         IBuilderService _builder => GetService<IBuilderService>();
@@ -43,10 +46,10 @@ namespace CodeShellCore.Moldster.Services.Internal
             RenderMainComponent(modCode);
             _builder.AddTenantToAngularJson(modCode);
 
-            _ts.GenerateDomainModule(modCode, "Shared");
-            _ts.GenerateRoutes(modCode);
-            _ts.GenerateAppModule(modCode);
-            _ts.GenerateMainFile(modCode);
+            _domainTs.GenerateDomainModule(modCode, "Shared");
+            _domainTs.GenerateRoutes(modCode);
+            _domainTs.GenerateAppModule(modCode);
+            _domainTs.GenerateMainFile(modCode);
 
 
             _loc.GenerateJsonFiles(modCode);
@@ -59,7 +62,7 @@ namespace CodeShellCore.Moldster.Services.Internal
         {
             _output.Write("Writing Main Component for [" + mod + "] : ");
             _html.GenerateMainComponentTemplate(mod);
-            _ts.GenerateAppComponent(mod);
+            _pageTs.GenerateAppComponent(mod);
             _output.WriteLine();
         }
 
@@ -68,7 +71,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             _output.Write("Writing Component \"" + dto.ViewPath + "\" : ");
             _output.GotoColumn(9);
             var data = _html.GenerateComponentTemplate(moduleName, dto);
-            _ts.GenerateComponent(moduleName, dto, data);
+            _pageTs.GenerateComponent(moduleName, dto, data);
 
             _output.WriteLine();
         }
@@ -103,8 +106,8 @@ namespace CodeShellCore.Moldster.Services.Internal
 
             }
             var domToDefine = dto.NameChain.Contains("/") ? dto.NameChain.GetBeforeFirst("/") : dto.Domain;
-            _ts.GenerateDomainModule(dto.Mod, domToDefine);
-            _ts.GenerateRoutes(dto.Mod);
+            _domainTs.GenerateDomainModule(dto.Mod, domToDefine);
+            _domainTs.GenerateRoutes(dto.Mod);
             _loc.GenerateJsonFiles(dto.Mod);
             _output.WriteLine();
             return new SubmitResult();
@@ -206,7 +209,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             foreach (long id in lst)
             {
                 _proccess.ProcessForTenant(id, tenantId);
-                _ts.GeneratePageCategory(id);
+                _catTs.GeneratePageCategory(id);
             }
         }
 
@@ -218,7 +221,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             foreach (long id in lst)
             {
                 _proccess.ProcessForTenant(id, tenantId);
-                _ts.GeneratePageCategory(id);
+                _catTs.GeneratePageCategory(id);
             }
         }
     }

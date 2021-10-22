@@ -7,14 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Internal
+namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
-    public class AngularFileNameService : IUIFileNameService
+    public class AngularNamingConventionService : INamingConventionService
     {
         private readonly IPathsService _paths;
 
 
-        public AngularFileNameService(IPathsService paths)
+        public AngularNamingConventionService(IPathsService paths)
         {
             _paths = paths;
             CoreFolder = Path.Combine(_paths.UIRoot, "src/core");
@@ -34,7 +34,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
             return string.Join("/", parts);
         }
 
-        
+
 
         public string GetComponentFilePath(string module, string viewFilePath)
         {
@@ -77,7 +77,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Internal
                     return Utils.CombineUrl("@base", _angular_convesion(domainPath), "http");
                 return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath), "http");
             }
-           
+
         }
 
         public string GetSrcFolderPath(string fileName, string extension = ".ts", bool keepNameformat = false)

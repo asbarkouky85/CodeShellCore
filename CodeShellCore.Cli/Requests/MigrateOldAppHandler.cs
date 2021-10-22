@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Cli.Routing;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using System;
 using System.Threading.Tasks;
 

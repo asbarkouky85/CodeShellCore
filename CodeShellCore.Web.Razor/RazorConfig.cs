@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.CodeGeneration;
+﻿using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Web.Razor.Text;
 using CodeShellCore.Web.Razor.Themes;
 using CodeShellCore.Web.Razor.Validation;
@@ -20,7 +20,7 @@ namespace CodeShellCore.Web.Razor
         private Type _validatorCollectionType;
         private IRazorLocaleTextProvider _localeTextProvider;
         private IExpressionStringifier _stringifier;
-        private IUIFileNameService _nameService;
+        private INamingConventionService _nameService;
         private IRazorTheme _theme;
         private static RazorConfig Instance
         {
@@ -99,7 +99,7 @@ namespace CodeShellCore.Web.Razor
             set { Instance._stringifier = value; }
         }
 
-        public static IUIFileNameService NameService => Instance._nameService;
+        public static INamingConventionService NameService => Instance._nameService;
 
         private RazorConfig()
         {
@@ -113,7 +113,7 @@ namespace CodeShellCore.Web.Razor
             _localeTextProvider = Shell.RootInjector.GetService<IRazorLocaleTextProvider>();
             _stringifier = new DefaultExpressionStringifier();
             _theme = new DefaultTheme();
-            _nameService = Shell.RootInjector.GetService<IUIFileNameService>();
+            _nameService = Shell.RootInjector.GetService<INamingConventionService>();
         }
     }
 }

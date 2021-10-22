@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Services;
 using System;
@@ -16,7 +16,7 @@ namespace CodeShellCore.Moldster.Services
         protected WriterService Writer { get; private set; }
         protected IMoldProvider Molds => GetService<IMoldProvider>();
         protected IDataService Data => GetService<IDataService>();
-        protected IUIFileNameService Names => GetService<IUIFileNameService>();
+        protected INamingConventionService Names => GetService<INamingConventionService>();
 
         public MoldsterFileHandlingService(IServiceProvider provider) : base(provider)
         {

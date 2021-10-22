@@ -14,8 +14,6 @@ using CodeShellCore.Moldster.Razor.Services;
 using CodeShellCore.Moldster.Configurator;
 using CodeShellCore.Moldster.Configurator.Services;
 using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.CodeGeneration;
-using CodeShellCore.Moldster.CodeGeneration.Internal;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Localization.Internal;
 using CodeShellCore.Moldster.Data;
@@ -38,6 +36,7 @@ using CodeShellCore.Web.Razor.Controllers.Configurator;
 using Microsoft.AspNetCore.Routing;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 
 namespace CodeShellCore.Web.Razor
 {

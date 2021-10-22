@@ -2,7 +2,7 @@
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Angular;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Razor;
@@ -27,7 +27,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
         protected int resultCol = 8;
         protected readonly WriterService _writer;
         protected readonly IPathsService _paths;
-        private readonly IUIFileNameService names;
+        private readonly INamingConventionService names;
         protected readonly IMoldProvider _molds;
         protected readonly IConfigUnit _unit;
 
@@ -35,7 +35,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             IMoldProvider molds,
             IConfigUnit unit,
             IPathsService paths,
-            IUIFileNameService names,
+            INamingConventionService names,
             IOutputWriter output) : base(output)
         {
             _writer = new WriterService();

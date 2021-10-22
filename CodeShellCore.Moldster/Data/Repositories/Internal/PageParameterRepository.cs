@@ -6,15 +6,15 @@ using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {
     public class PageParameterRepository : MoldsterRepository<PageParameter, MoldsterContext>, IPageParameterRepository
     {
-        private readonly IUIFileNameService names;
+        private readonly INamingConventionService names;
 
-        public PageParameterRepository(MoldsterContext con, IUIFileNameService srv) : base(con)
+        public PageParameterRepository(MoldsterContext con, INamingConventionService srv) : base(con)
         {
             this.names = srv;
         }

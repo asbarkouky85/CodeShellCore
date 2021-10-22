@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Internal
+namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
     public class AngularJsonService : MoldsterFileHandlingService, IAngularJsonService
     {

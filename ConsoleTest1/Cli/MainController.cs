@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using CodeShellCore.Cli;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.MQ;
 using CodeShellCore.MQ.Events;
 

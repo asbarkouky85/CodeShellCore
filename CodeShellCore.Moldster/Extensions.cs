@@ -7,10 +7,8 @@ using CodeShellCore.Moldster.Services.Internal;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Configurator.Services;
 using CodeShellCore.Moldster.Definitions;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Builder.Internal;
 using CodeShellCore.Moldster.Builder;
-using CodeShellCore.Moldster.CodeGeneration.Internal;
 using CodeShellCore.Moldster.Data.Internal;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Localization.Internal;
@@ -26,6 +24,10 @@ using CodeShellCore.Cli.Routing;
 using CodeShellCore.Moldster.Cli;
 using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Domains.Services;
+using CodeShellCore.Moldster.Resources.Services;
+using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.CodeGeneration;
 
 namespace CodeShellCore.Moldster
 {
@@ -129,7 +131,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IPublisherService, PublisherService>();
             coll.AddTransient<IScriptModelMappingService, ScriptModelMappingService>();
             coll.AddTransient<ISqlCommandService, SqlCommandService>();
-            coll.AddTransient<IUIFileNameService, AngularFileNameService>();
+            coll.AddTransient<INamingConventionService, AngularNamingConventionService>();
             coll.AddTransient<IMigrationService, MigrationService>();
             coll.AddTransient<IAngularJsonService, AngularJsonService>();
             coll.AddTransient<IEnvironmentsService, EnvironmentService>();
@@ -145,7 +147,11 @@ namespace CodeShellCore.Moldster
 
             coll.AddTransient<IViewsService, DefaultViewsService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
-            coll.AddTransient<IScriptGenerationService, ScriptGenerationService>();
+
+            coll.AddTransient<IPageCategoryScriptGenerationService, PageCategoryScriptGenerationService>();
+            coll.AddTransient<IPageScriptGenerationService, PageScriptGenerationService>();
+            coll.AddTransient<IDomainScriptGenerationService, DomainScriptGenerationService>();
+            coll.AddTransient<IResourceScriptGenerationService, ResourceScriptGenerationService>();
             coll.AddTransient<IPageCategoryHtmlService, PageCategoryHtmlService>();
             coll.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
 

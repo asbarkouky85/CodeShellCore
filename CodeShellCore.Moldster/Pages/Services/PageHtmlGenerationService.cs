@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
-using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Pages.Dtos;
@@ -17,7 +17,7 @@ namespace CodeShellCore.Moldster.Pages.Services
     {
         protected IPathsService _paths => Store.GetInstance<IPathsService>();
         protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
-        private IUIFileNameService _names => Store.GetInstance<IUIFileNameService>();
+        private INamingConventionService _names => Store.GetInstance<INamingConventionService>();
         protected IViewsService _dbViews => Store.GetInstance<IViewsService>();
 
         public PageHtmlGenerationService(IServiceProvider prov, IOptions<MoldsterModuleOptions> opt, IOutputWriter wtt) : base(prov, opt, wtt)

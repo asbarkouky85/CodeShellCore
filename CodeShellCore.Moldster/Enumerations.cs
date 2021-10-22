@@ -4,6 +4,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster
 {
+    public enum AppParts { Module, Component, BaseComponent, Service, Route }
     public enum PageParameterTypes
     {
         Text = 1,

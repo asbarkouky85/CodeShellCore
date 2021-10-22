@@ -611,45 +611,5 @@ namespace CodeShellCore.Moldster.Properties {
                 return ResourceManager.GetString("tsconfig_json", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] webpack_config_js {
-            get {
-                object obj = ResourceManager.GetObject("webpack_config_js", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] webpack_tenant_js {
-            get {
-                object obj = ResourceManager.GetObject("webpack_tenant_js", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] webpack_tenant_js_bat {
-            get {
-                object obj = ResourceManager.GetObject("webpack_tenant_js_bat", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] webpack_tenant_js_json {
-            get {
-                object obj = ResourceManager.GetObject("webpack_tenant_js_json", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Domains.Services;
 
 namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
@@ -26,7 +27,8 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
         IPageCategoryHtmlService process => GetService<IPageCategoryHtmlService>();
         IPageHtmlGenerationService _html => GetService<IPageHtmlGenerationService>();
         ConfiguratorLookupService lookups => GetService<ConfiguratorLookupService>();
-        IScriptGenerationService scr => GetService<IScriptGenerationService>();
+        IPageScriptGenerationService pageTs => GetService<IPageScriptGenerationService>();
+        IDomainScriptGenerationService domainTs => GetService<IDomainScriptGenerationService>();
         IPublisherService pub => GetService<IPublisherService>();
         EnvironmentAccessor acc => GetService<EnvironmentAccessor>();
         IPathsService paths => GetService<IPathsService>();
@@ -118,10 +120,10 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
                 var r = (MovePageRequest)req;
 
                 _html.MoveHtmlTemplate(r);
-                scr.MoveScript(r);
-                scr.GenerateDomainModule(r.TenantCode, r.FromPath.GetBeforeLast("/"));
-                scr.GenerateDomainModule(r.TenantCode, r.ToPath.GetBeforeLast("/"));
-                scr.GenerateRoutes(r.TenantCode);
+                pageTs.MoveScript(r);
+                domainTs.GenerateDomainModule(r.TenantCode, r.FromPath.GetBeforeLast("/"));
+                domainTs.GenerateDomainModule(r.TenantCode, r.ToPath.GetBeforeLast("/"));
+                domainTs.GenerateRoutes(r.TenantCode);
             }
             return Respond();
         }
@@ -133,9 +135,9 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
             {
                 var path = (MovePageRequest)data;
                 _html.DeleteHtmlTemplate(path.TenantCode, path.FromPath);
-                scr.DeleteScript(path.TenantCode, path.FromPath);
-                scr.GenerateDomainModule(path.TenantCode, path.FromPath.GetBeforeLast("/"));
-                scr.GenerateRoutes(path.TenantCode);
+                pageTs.DeleteScript(path.TenantCode, path.FromPath);
+                domainTs.GenerateDomainModule(path.TenantCode, path.FromPath.GetBeforeLast("/"));
+                domainTs.GenerateRoutes(path.TenantCode);
             }
             return Respond();
         }

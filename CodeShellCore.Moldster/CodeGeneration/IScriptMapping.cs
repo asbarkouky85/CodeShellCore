@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeShellCore.Moldster.CodeGeneration.Services;
+using System;
 using System.Collections;
 
 namespace CodeShellCore.Moldster.CodeGeneration
@@ -8,6 +9,6 @@ namespace CodeShellCore.Moldster.CodeGeneration
         bool IsActive { get; }
         string FilePath { get; }
         Func<IScriptModelMappingService, string> FileWriter { get; }
-        
+
     }
 }

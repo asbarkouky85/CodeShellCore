@@ -4,7 +4,6 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Builder;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Configurator;
 using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Moldster.Data;
@@ -18,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.Domains.Services;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 
 namespace CodeShellCore.Web.Razor.Controllers
 {
@@ -32,7 +33,7 @@ namespace CodeShellCore.Web.Razor.Controllers
         IDataService data => GetService<IDataService>();
         IPageCategoryHtmlService c => GetService<IPageCategoryHtmlService>();
         IPreviewService prev => GetService<IPreviewService>();
-        IScriptGenerationService sc => GetService<IScriptGenerationService>();
+        IDomainScriptGenerationService sc => GetService<IDomainScriptGenerationService>();
         IScriptModelMappingService map => GetService<IScriptModelMappingService>();
 
         public IActionResult ProcessForPage([FromQuery]MoldsterRequest req)
