@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Razor;
+﻿using CodeShellCore.Moldster.Localization.Dtos;
 using CodeShellCore.Web.Razor.Models;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;

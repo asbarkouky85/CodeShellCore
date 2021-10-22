@@ -11,6 +11,7 @@ using System.Linq;
 using CodeShellCore.Moldster;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq.Expressions;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 
 namespace CodeShellCore.Web.Razor.General.Moldster
 {

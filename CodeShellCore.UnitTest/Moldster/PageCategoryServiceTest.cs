@@ -8,6 +8,7 @@ using CodeShellCore.Files;
 using Moq;
 using CodeShellCore.Moldster.Configurator.Services;
 using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.PageCategories.Services;
 
 namespace CodeShellCore.UnitTest.Moldster
 {

@@ -1,6 +1,8 @@
 ﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.Builder.Services;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Web.Controllers;
@@ -11,6 +13,7 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     public class BuilderController : BaseApiController
     {
+        IInitializationService Initialize => GetService<IInitializationService>();
         IBundlingService Bundling => GetService<IBundlingService>();
         IPublisherService Publisher => GetService<IPublisherService>();
         IPathsService paths => GetService<IPathsService>();
@@ -18,13 +21,13 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
 
         public IActionResult Init(bool? replace = null)
         {
-            Bundling.GenerateEnvironment(replace == true);
+            Initialize.AddBasicFiles(replace == true);
             return Respond();
         }
 
         public IActionResult AddShellComponents(bool? replace = null)
         {
-            Bundling.AddShellComponents(replace == true);
+            Initialize.AddShellComponents(replace == true);
             return Respond();
         }
 
@@ -35,13 +38,13 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
 
         public IActionResult AddStaticFiles(bool? replace = null)
         {
-            Bundling.AddStaticFiles(replace == true);
+            Initialize.AddStaticFiles(replace == true);
             return Respond();
         }
 
         public IActionResult AddBaseScripts(bool? replace = null)
         {
-            Bundling.AddCodeShell(replace == true);
+            Initialize.AddCodeShell(replace == true);
             return Respond();
         }
         public IActionResult WriteWebPackFiles()

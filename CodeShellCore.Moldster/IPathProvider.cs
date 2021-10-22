@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Services;
+using CodeShellCore.Moldster.Environments;
 
 namespace CodeShellCore.Moldster
 {

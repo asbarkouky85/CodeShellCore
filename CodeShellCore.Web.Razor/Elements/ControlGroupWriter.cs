@@ -11,6 +11,7 @@ using CodeShellCore.Web;
 using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Web.Razor.Validation.Internal;
 using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Localization.Dtos;
 
 namespace CodeShellCore.Web.Razor.Elements
 {

@@ -5,7 +5,7 @@ using CodeShellCore.Moldster.Angular;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Localization.Dtos;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Services;
 using CodeShellCore.Text;

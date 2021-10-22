@@ -12,9 +12,8 @@ using CodeShellCore.Moldster.CodeGeneration.Services;
 
 namespace CodeShellCore.Moldster.CodeGeneration
 {
-    public abstract class ScriptGenerationServiceBase : ConsoleService
+    public abstract class ScriptGenerationServiceBase : StandaloneConsoleService
     {
-        protected InstanceStore<object> Store;
         protected MoldsterModuleOptions Options;
         protected WriterService Writer;
 
@@ -24,8 +23,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
 
         public ScriptGenerationServiceBase(
             IServiceProvider prov,
-            IOptions<MoldsterModuleOptions> opt,
-            IOutputWriter output) : base(output)
+            IOptions<MoldsterModuleOptions> opt) : base(prov)
         {
             Store = new InstanceStore<object>(prov);
             Options = opt.Value;
@@ -63,6 +61,8 @@ namespace CodeShellCore.Moldster.CodeGeneration
             return false;
 
         }
+
+        
 
     }
 }

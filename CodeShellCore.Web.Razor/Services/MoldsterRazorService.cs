@@ -14,6 +14,8 @@ using CodeShellCore.Web.Razor.Services;
 using CodeShellCore.Http;
 using System.Collections.Generic;
 using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Localization.Dtos;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 
 namespace CodeShellCore.Moldster.Razor.Services
 {

@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Localization.Dtos;
 using CodeShellCore.Services;
 using CodeShellCore.Text.ResourceReader;
 using System;

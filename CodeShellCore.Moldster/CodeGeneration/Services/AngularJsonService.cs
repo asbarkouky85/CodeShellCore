@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Json;
 using CodeShellCore.Moldster.Angular.Models;
+using CodeShellCore.Moldster.CodeGeneration.Dtos;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Definitions.AngularJson;
 using CodeShellCore.Moldster.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

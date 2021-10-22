@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Moldster.Services;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace CodeShellCore.Moldster.Cli
     public class BuilderConsoleController : ConsoleController
     {
         IMoldsterService Moldster { get { return GetService<IMoldsterService>(); } }
-        IBundlingService Scripts { get { return GetService<IBundlingService>(); } }
+        IInitializationService Scripts { get { return GetService<IInitializationService>(); } }
 
         public override Dictionary<int, string> Functions => new Dictionary<int, string>
         {
@@ -22,7 +22,7 @@ namespace CodeShellCore.Moldster.Cli
 
         public void Init()
         {
-            Scripts.GenerateEnvironment(false);
+            Scripts.AddBasicFiles(false);
 
         }
 

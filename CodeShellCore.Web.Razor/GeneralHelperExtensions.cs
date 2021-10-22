@@ -21,6 +21,7 @@ using CodeShellCore.Web.Razor.General;
 using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Localization.Dtos;
 
 namespace CodeShellCore.Web.Razor
 {

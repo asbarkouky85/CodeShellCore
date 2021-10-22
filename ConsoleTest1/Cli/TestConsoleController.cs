@@ -21,6 +21,8 @@ using Asga.Auth.Services;
 using Asga.Auth;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Builder.Services;
 
 namespace ConsoleTest1
 {
@@ -48,14 +50,14 @@ namespace ConsoleTest1
         public void TestUtils()
         {
             var acc = new EnvironmentAccessor();
-            acc.CurrentEnvironment = new CodeShellCore.Moldster.Definitions.MoldsterEnvironment
+            acc.CurrentEnvironment = new MoldsterEnvironment
             {
                 Upload = new CodeShellCore.Net.UploadConfig
                 {
                     ServerUrl = "http://i-maher.com:8019"
                 }
             };
-            var ser = new CodeShellCore.Moldster.Builder.Internal.PublisherHttpService(acc);
+            var ser = new PublisherHttpService(acc);
             var res = ser.HandleRequest(new CodeShellCore.Net.PublisherRequest
             {
                 Type = CodeShellCore.Net.ServerRequestTypes.Decompress,

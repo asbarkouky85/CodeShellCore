@@ -14,6 +14,7 @@ using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Security.Authorization;
 using System;
+using CodeShellCore.Moldster.Builder.Dtos;
 
 namespace Configurator.Config.Api
 {

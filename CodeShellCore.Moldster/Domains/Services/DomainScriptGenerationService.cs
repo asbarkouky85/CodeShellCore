@@ -31,8 +31,7 @@ namespace CodeShellCore.Moldster.Domains.Services
         private ILocalizationService _localization => Store.GetInstance<ILocalizationService>();
         public DomainScriptGenerationService(
             IServiceProvider prov,
-            IOptions<MoldsterModuleOptions> opt,
-            IOutputWriter output) : base(prov, opt, output)
+            IOptions<MoldsterModuleOptions> opt) : base(prov, opt)
         {
         }
 

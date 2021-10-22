@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Definitions.AngularJson;
+﻿using CodeShellCore.Moldster.CodeGeneration.Dtos;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Services

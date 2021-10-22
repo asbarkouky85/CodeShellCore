@@ -6,7 +6,6 @@ using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Services.Internal;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Configurator.Services;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Builder.Internal;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Data.Internal;
@@ -15,7 +14,6 @@ using CodeShellCore.Moldster.Localization.Internal;
 using CodeShellCore.Moldster.Data.Repositories;
 using CodeShellCore.Moldster.Data.Repositories.Internal;
 using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Razor.Internal;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Caching;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +26,10 @@ using CodeShellCore.Moldster.Domains.Services;
 using CodeShellCore.Moldster.Resources.Services;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.Builder.Services;
+using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Environments.Services;
+using CodeShellCore.Moldster.Domains;
 
 namespace CodeShellCore.Moldster
 {
@@ -121,7 +123,8 @@ namespace CodeShellCore.Moldster
             coll.AddScoped<EnvironmentAccessor>();
 
             coll.AddTransient<IBundlingService, BundlingService>();
-            coll.AddTransient<IBuilderService, BuilderService>();
+            coll.AddTransient<IInitializationService, InitializationService>();
+            coll.AddTransient<ITenantScriptGenerationService, TenantScriptGenerationService>();
             coll.AddTransient<ICustomTextService, CustomTextService>();
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IModulesService, ModulesService>();

@@ -19,7 +19,7 @@ using System.Text.RegularExpressions;
 
 namespace CodeShellCore.Moldster.PageCategories.Services
 {
-    public class PageCategoryScriptGenerationService : ScriptGenerationServiceBase, IPageCategoryScriptGenerationService
+    public class PageCategoryScriptGenerationService : CodeGeneration.ScriptGenerationServiceBase, IPageCategoryScriptGenerationService
     {
         protected static string[] baseComponents => new[] { "Edit", "List", "Tree", "Select" };
         private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
@@ -28,8 +28,7 @@ namespace CodeShellCore.Moldster.PageCategories.Services
 
         public PageCategoryScriptGenerationService(
             IServiceProvider prov,
-            IOptions<MoldsterModuleOptions> opt,
-            IOutputWriter output) : base(prov, opt, output)
+            IOptions<MoldsterModuleOptions> opt) : base(prov, opt)
         {
         }
 

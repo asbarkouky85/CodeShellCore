@@ -4,7 +4,7 @@ using CodeShellCore.Linq;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Localization.Dtos;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Text.ResourceReader;

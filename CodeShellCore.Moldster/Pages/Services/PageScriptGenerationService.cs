@@ -16,7 +16,7 @@ using System.IO;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {
-    public class PageScriptGenerationService : ScriptGenerationServiceBase, IPageScriptGenerationService
+    public class PageScriptGenerationService : CodeGeneration.ScriptGenerationServiceBase, IPageScriptGenerationService
     {
         private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
         private INamingConventionService _fileNameService => Store.GetInstance<INamingConventionService>();
@@ -25,8 +25,8 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         public PageScriptGenerationService(
             IServiceProvider prov,
-            IOptions<MoldsterModuleOptions> opt,
-            IOutputWriter output) : base(prov, opt, output)
+            IOptions<MoldsterModuleOptions> opt
+            ) : base(prov, opt)
         {
         }
 

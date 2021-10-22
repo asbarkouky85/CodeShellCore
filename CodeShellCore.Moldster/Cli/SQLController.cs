@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Environments;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.Builder.Services;
 using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -107,7 +108,7 @@ namespace CodeShellCore.Moldster.Cli
             while (true)
             {
                 var envs = paths.GetEnvironments();
-                envs.Add(new Definitions.MoldsterEnvironment { Name = "(CurrentMachine)", Upload = new Net.UploadConfig { Type = "DEV" } });
+                envs.Add(new MoldsterEnvironment { Name = "(CurrentMachine)", Upload = new Net.UploadConfig { Type = "DEV" } });
                 string envName = GetSelectionFromUser("Select environment ", envs.Select(d => d.Name).ToArray());
                 if (envName == null)
                     break;

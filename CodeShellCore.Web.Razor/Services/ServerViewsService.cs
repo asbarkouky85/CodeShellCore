@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 
 namespace CodeShellCore.Web.Razor.Services
 {

@@ -15,13 +15,12 @@ using System.Text.RegularExpressions;
 
 namespace CodeShellCore.Moldster.Resources.Services
 {
-    public class ResourceScriptGenerationService : ScriptGenerationServiceBase, IResourceScriptGenerationService
+    public class ResourceScriptGenerationService : CodeGeneration.ScriptGenerationServiceBase, IResourceScriptGenerationService
     {
 
         public ResourceScriptGenerationService(
             IServiceProvider prov,
-            IOptions<MoldsterModuleOptions> opt,
-            IOutputWriter output) : base(prov, opt, output)
+            IOptions<MoldsterModuleOptions> opt) : base(prov, opt)
         {
         }
 
