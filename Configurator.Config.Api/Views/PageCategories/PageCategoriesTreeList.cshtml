@@ -1,0 +1,20 @@
+@*ID:1935659432000*@
+
+@{
+    Html.AddModal("CreateModal");
+    Html.AddModal("ModulesModal");
+    Layout = Html.Config().Layout;
+    Html.HeaderModel().AddToButtons(content: Html.Word("Modules"), function: "OpenModules()", url: null, btn: BtnClass.Primary, icon: "fa fa-list fa-lg", identifier: "modules_button");
+    Html.HeaderModel().AddToButtons(content: Html.Word("AddEntity", "PageCategory"), function: "AddPageCategory()", url: null, btn: BtnClass.Success, icon: "fa fa-plus fa-lg", identifier: "add_button");
+
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            @Html.ComponentSelectorFromOther("DomainTree", "DomainTree")
+        </div>
+        <div class="col-md-9" style="margin-top:11px;padding-left:0px">
+            @Html.ComponentSelectorFromOther("PageCategoryList", "PageCategoryList")
+        </div>
+    </div>
+</div>

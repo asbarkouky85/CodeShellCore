@@ -1,0 +1,53 @@
+﻿@model MoldsterEnvironment
+@{
+    Layout = Html.Config().Layout;
+    var cHelper = Html.For<DbConnectionParams>("model.connectionParams", "Form");
+
+}
+@using (Html.NgForm("Form"))
+{
+    @Html.ControlGroup(d => d.Name, coll: Html.VCollection().AddRequired().AddPattern($"'{Patterns.Identifier}'"), inputAttr: new { calc__disabled = "!IsNew" })
+    @Html.ControlGroup(e => e.SourceDatabase)
+    @Html.SectionHeader("Database_Connection_Parameters")
+    @Html.ControlGroup(e => e.ConnectionParams.Server)
+    @Html.ControlGroup(e => e.ConnectionParams.UserId)
+    @Html.ControlGroup(e => e.ConnectionParams.Password)
+    @Html.SectionHeader("Publish_Parameters")
+    @Html.SelectControlGroup(e => e.Upload.Type, Lister.Make("uploadTypes", false), "name", "id", inputAttr: new { evnt__change = "type_change()" })
+
+    <div *ngIf="@Html.Property(e=>e.Upload) && @Html.Property(e=>e.Upload.Type)=='FTP'">
+        @Html.ControlGroup(e => e.Upload.Server, coll: Html.VCollection().AddRequired())
+        @Html.ControlGroup(e => e.Upload.ServerUrl, coll: Html.VCollection().AddRequired())
+        @Html.ControlGroup(e => e.Upload.UserName, coll: Html.VCollection().AddRequired())
+        @Html.ControlGroup(e => e.Upload.Password, coll: Html.VCollection().AddRequired())
+        @Html.ControlGroup(e => e.Upload.PathOnServer)
+    </div>
+    <div *ngIf="@Html.Property(e=>e.Upload) && @Html.Property(e=>e.Upload.Type)=='FS'">
+
+        @Html.ControlGroup(e => e.Upload.PathOnServer, coll: Html.VCollection().AddRequired())
+    </div>
+}
+
+<div *ngIf="model.connectionParams && model.connectionParams.server && model.databases">
+    @Html.SectionHeader("Databases")
+    <table class="table">
+        <thead>
+            <tr>
+                @Html.HeaderCell("Name")
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of dbs;let i=index">
+                <td><input name="db_{{i}}" class="form-control" [(ngModel)]="item.name" required (onEnter)="dbItem_change(item)" (blur)="dbItem_change(item)" /></td>
+                <td>
+                    @Html.ListModifiers(deleteFunction: "deleteDb(item)")
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section buttons{
+    @Html.SubmitButton()
+}

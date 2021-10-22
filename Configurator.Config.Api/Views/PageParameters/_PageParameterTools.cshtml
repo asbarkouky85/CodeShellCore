@@ -1,0 +1,10 @@
+﻿@model ParameterRequestDTO
+@{ 
+    Html.UseSplitTheme();
+    Html.SetNgModel("filterModel");
+}
+<div class="row text-first">
+
+    @Html.RadioGroup(d => d.ParameterTypeId, Html.EnumDictionary<PageParameterTypes, int>(), size: 7, inputAttr: new { evnt__change = "LoadData()" })
+    @Html.RadioGroup(d => d.Type, Html.EnumDictionary<ParameterRequestTypes, int>(), size: 5, inputAttr: new { evnt__change = "LoadData()" })
+</div>

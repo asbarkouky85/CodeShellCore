@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="already_rendered" xml:space="preserve">
+    <value />
+  </data>
+  <data name="bundling_failed" xml:space="preserve">
+    <value>Bundling failed for tenant {{tenantCode}} version {{version}}</value>
+  </data>
+  <data name="bundling_successful" xml:space="preserve">
+    <value>Bundling succeeded for tenant {{tenantCode}} version {{version}}</value>
+  </data>
+  <data name="delete_confirm_message" xml:space="preserve">
+    <value>Are you sure you want to permenantly delete this item ?</value>
+  </data>
+  <data name="delete_error_message" xml:space="preserve">
+    <value>Can not delete this record as other records in {{p0}} depends on it</value>
+  </data>
+  <data name="delete_success" xml:space="preserve">
+    <value>Deleted Successfully</value>
+  </data>
+  <data name="field_required" xml:space="preserve">
+    <value>{{p0}} is required</value>
+  </data>
+  <data name="invalid_credentials" xml:space="preserve">
+    <value>User name or Password is incorrect</value>
+  </data>
+  <data name="must_select_nav_group" xml:space="preserve">
+    <value>Select navigation group first</value>
+  </data>
+  <data name="must_select_tenant" xml:space="preserve">
+    <value>Opps! select tenant befro render</value>
+  </data>
+  <data name="operation_unavailable" xml:space="preserve">
+    <value>Operation Unavailable</value>
+  </data>
+  <data name="render_tenant_first" xml:space="preserve">
+    <value>Tenant is not rendered, must be rendered first</value>
+  </data>
+  <data name="started_new_task" xml:space="preserve">
+    <value>A server task was created for your request it may take a while, you will be notified when it is done</value>
+  </data>
+  <data name="success_message" xml:space="preserve">
+    <value>Successfull</value>
+  </data>
+  <data name="task_is_already_running" xml:space="preserve">
+    <value>A task is already created for this request, you will be notified when it is done</value>
+  </data>
+  <data name="unauthorized_operation" xml:space="preserve">
+    <value>Unauthorized Operation</value>
+  </data>
+  <data name="unexpected_error" xml:space="preserve">
+    <value>Unexpected Error</value>
+  </data>
+</root>

@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Version>2.15.2.0</Version>
+    <AssemblyVersion>2.15.2.0</AssemblyVersion>
+    <FileVersion>2.15.2.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="moldsterApps.json" />
+    <Content Remove="tenantInfo.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="moldsterApps.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="tenantInfo.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+  </ItemGroup>
+
+</Project>

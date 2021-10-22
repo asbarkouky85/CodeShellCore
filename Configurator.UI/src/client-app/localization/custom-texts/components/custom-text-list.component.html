@@ -1,0 +1,197 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.CustomTexts__CustomTextList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                    <div class="col-md-8 col-xs-12 text-last padTop">
+                        <label class="check-label">
+    <i class="fa fa-lg" [ngClass]="request.modifiedOnly?'fa-toggle-on greenColor':'fa-toggle-off grayColor'"></i>
+
+    
+        <span *ngIf="request.modifiedOnly" class="greenColor">{{'Words.ModifiedOnly' | translate }}</span>
+        <span *ngIf="!request.modifiedOnly" class="grayColor">{{'Words.All' | translate }}</span>
+    
+
+
+    <input name="resType"
+           style="display:none"
+           type="checkbox"
+           (change)="LoadData()"
+           [(ngModel)]="request.modifiedOnly">
+</label>
+
+                    </div>
+                <div class="col-md-4 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+
+    <button class="btn btn-primary"
+            (click)="SaveChanges()"
+            
+            >
+        <i class="fa fa-save fa-lg"></i> 
+    </button>
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.CustomTexts__CustomTextList' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.CustomTexts__CustomTextList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{totalCount}}</span></span>
+            </div>
+            <div class="col-md-8">
+                <search-group (termChange)="HeaderSearch($event)"></search-group>
+            </div>
+        </div>
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+
+        <div class="table-responsive">
+            
+<div class="col-md-3">
+
+    <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <span>AR</span>
+                    </h4>
+                </div>
+                <div id="ar" class="panel-collapse">
+                    <ul class="nav nav-stacked nav-pills">
+                            <li [ngClass]="isActive('ar','Words')?'active':null" >
+                                <a (click)="Load('ar','Words')" style="cursor:pointer">Words</a>
+                            </li>
+                            <li [ngClass]="isActive('ar','Pages')?'active':null" >
+                                <a (click)="Load('ar','Pages')" style="cursor:pointer">Pages</a>
+                            </li>
+                            <li [ngClass]="isActive('ar','Columns')?'active':null" >
+                                <a (click)="Load('ar','Columns')" style="cursor:pointer">Columns</a>
+                            </li>
+                            <li [ngClass]="isActive('ar','Messages')?'active':null" >
+                                <a (click)="Load('ar','Messages')" style="cursor:pointer">Messages</a>
+                            </li>
+
+
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <span>EN</span>
+                    </h4>
+                </div>
+                <div id="en" class="panel-collapse">
+                    <ul class="nav nav-stacked nav-pills">
+                            <li [ngClass]="isActive('en','Words')?'active':null" >
+                                <a (click)="Load('en','Words')" style="cursor:pointer">Words</a>
+                            </li>
+                            <li [ngClass]="isActive('en','Pages')?'active':null" >
+                                <a (click)="Load('en','Pages')" style="cursor:pointer">Pages</a>
+                            </li>
+                            <li [ngClass]="isActive('en','Columns')?'active':null" >
+                                <a (click)="Load('en','Columns')" style="cursor:pointer">Columns</a>
+                            </li>
+                            <li [ngClass]="isActive('en','Messages')?'active':null" >
+                                <a (click)="Load('en','Messages')" style="cursor:pointer">Messages</a>
+                            </li>
+
+
+                    </ul>
+                </div>
+            </div>
+    </div>
+
+</div>
+<div class="col-md-9">
+    <table class="table informative">
+        <thead>
+            <tr>
+                    <th class="cursorPointer" [ngClass]="GetHeaderClass('Code')"  >
+        {{'Columns.CustomText__Code' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('Code')"></i>
+    </th>
+
+                    <th class="cursorPointer" [ngClass]="GetHeaderClass('Value')"  >
+        {{'Columns.CustomText__Value' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('Value')"></i>
+    </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of list;let i=index" [ngClass]="model.state=='Attached'?'success':(model.state=='Added' || model.state=='Modified'?'warning':(model.state=='Removed'?'danger':null))">
+                <td  >
+    {{model.code}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+                <td  >
+    <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.CustomText__Value' | translate }}"
+       name="Form__value{{i}}"
+       [(ngModel)]="model.value"
+       title="{{'Columns.CustomText__Value' | translate }}"
+       [li-watch]="model"
+
+       
+        (change)="text_change(model)" >
+
+
+    <div style="position:relative">
+        
+    </div>
+</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        </div>
+
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+    </div>
+
+</div>

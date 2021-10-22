@@ -1,0 +1,30 @@
+﻿@model PageReferenceDTO
+@{
+    Layout = Html.Config().Layout;
+    Html.HeaderModel().ToolsSection = Html.GetPartial("PageParameters/_PageParameterTools");
+    Html.HeaderModel().AddToButtons(title: "ClearFilter", function: "ClearFilter()", icon: "fa fa-eraser", btn: BtnClass.Default);
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @Html.HeaderCell(d => d.ReferenceTypeId)
+            @Html.HeaderCell(d => d.PageViewPath)
+            @Html.HeaderCell(d => d.ReferencedPageViewPath)
+            @Html.HeaderCell(d => d.ParameterName)
+
+            @Html.HeaderCell(d => d.PageCategoryName)
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            @Html.TextCell(d => d.ReferenceTypeName, pipe: "translate")
+            @Html.TextCell(d => d.PageViewPath)
+            @Html.TextCell(d => d.ReferencedPageViewPath)
+            @Html.TextCell(d => d.ParameterName)
+
+            @Html.TextCell(d => d.PageCategoryName, cellAttributes: new { calc__title = "model.pageCategoryViewPath" })
+
+        </tr>
+    </tbody>
+</table>

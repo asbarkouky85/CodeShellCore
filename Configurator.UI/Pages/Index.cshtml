@@ -1,0 +1,75 @@
+﻿<!DOCTYPE>
+@model CodeShellCore.Web.Moldster.IndexModel
+<html>
+<head>
+    <title>@Model.Title</title>
+    <base href="@Model.Config.BaseURL" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="~/assets/favicon.ico" rel="icon" />
+    <link href="https://fonts.googleapis.com/css?family=Armata&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Tajawal&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+
+    <link href="~/css/plugins/animate.css" rel="stylesheet" />
+    <link href="~/css/plugins/font-awesome4.2.min.css" rel="stylesheet" />
+    <link href="~/css/plugins/fontawesome.min.css" rel="stylesheet" />
+    <link href="~/css/plugins/primeicons.css" rel="stylesheet" />
+    <link href="~/css/plugins/primeng.min.css" rel="stylesheet" />
+    <link href="~/css/plugins/quill.core.css" rel="stylesheet" />
+    <link href="~/css/plugins/quill.snow.css" rel="stylesheet" />
+    <link href="~/css/gif-loader.css" rel="stylesheet" />
+
+    <link href="~/dist/vendor.css" rel="stylesheet" />
+    <link href="~/css/chiller-check.css" rel="stylesheet" />
+    <link href="~/css/treeStyle.css" rel="stylesheet" />
+    @if (Model.Config.Locale == "ar")
+    {
+        <link href="~/css/plugins/bootstrap.rtl.css" rel="stylesheet" />
+        <link href="~/css/moldster.css" rel="stylesheet" />
+        <link href="~/css/moldster.rtl.css" rel="stylesheet" />
+        <link href="~/css/style.css" rel="stylesheet" />
+        <link href="~/css/style.rtl.css" rel="stylesheet" />
+        <link href="~/css/treeStyle.rtl.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/css/plugins/bootstrap.css" rel="stylesheet" />
+        <link href="~/css/moldster.css" rel="stylesheet" />
+        <link href="~/css/style.css" rel="stylesheet" />
+
+    }
+</head>
+<body>
+    <div id="view-data" style="display:none">@Model.ConfigString</div>
+    <app>
+        <div class="loader-overlay">
+            <div class="loader"></div>
+        </div>
+    </app>
+    <div class="footer">
+        <span>
+            @if (Model.Config.Locale == "ar")
+            {
+                @Html.Raw("جميع الحقوق محفوظه 2019 &copy; <em>v" + Model.Config.Version + "</em>")
+            }
+            else
+            {
+                @Html.Raw("All rights reserved &copy; <em>v" + Model.Config.Version + "</em>")
+            }
+        </span>
+    </div>
+    <script src="~/js/jquery-2.1.1.js"></script>
+    <script src="~/js/jquery.slimscroll.min.js"></script>
+    <script src="~/js/jquery.Jcrop.min.js"></script>
+
+    <script src="~/dist/vendor@("."+(Model.Config.Env=="dev"?"dev":"prod")).js"></script>
+    @if (Model.Config.Env != "dev")
+    {
+        <script src="~/dist/@(Model.PackageId)/@(Model.Config.Domain+"-"+Model.PackageId)__vendors.js"></script>
+    }
+
+    <script src="~/dist/@(Model.Config.Domain+"-"+Model.PackageId+".js")"></script>
+</body>
+</html>

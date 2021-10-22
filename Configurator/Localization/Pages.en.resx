@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Generations__GenerationInofList" xml:space="preserve">
+    <value>Server Trace</value>
+  </data>
+  <data name="NavigationPages__NavGroupPages" xml:space="preserve">
+    <value>Navigation Groups</value>
+  </data>
+  <data name="Pages__PageCreate" xml:space="preserve">
+    <value>Page Create</value>
+  </data>
+  <data name="Pages__PageEdit" xml:space="preserve">
+    <value>Page Edit</value>
+  </data>
+  <data name="Pages__PageTreeList" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Tenants__TenantCreate" xml:space="preserve">
+    <value>Tenant Create</value>
+  </data>
+  <data name="Tenants__TenantList" xml:space="preserve">
+    <value>Tenants</value>
+  </data>
+  <data name="PageControls__PageCustomization" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenants__TenantDetails" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resources__ResourceList" xml:space="preserve">
+    <value>Resources</value>
+  </data>
+  <data name="Shared__DomainTree" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="Templates__PageCategoriesTreeList" xml:space="preserve">
+    <value>Page Templates</value>
+  </data>
+  <data name="Shared__DomainTreeSelect" xml:space="preserve">
+    <value>Domain Select</value>
+  </data>
+  <data name="Development__DevelopmentPanel" xml:space="preserve">
+    <value>Development</value>
+  </data>
+  <data name="Generations__PageCategorySelect" xml:space="preserve">
+    <value>Select Main Component</value>
+  </data>
+  <data name="Shared__ServerTracerModal" xml:space="preserve">
+    <value>Server Tracing</value>
+  </data>
+  <data name="Razor__ModuleConfigModal" xml:space="preserve">
+    <value>External Modules</value>
+  </data>
+  <data name="Razor__ServerTracerEmbed" xml:space="preserve">
+    <value>Server Tracer</value>
+  </data>
+  <data name="Razor__PageCategoryCreate" xml:space="preserve">
+    <value>Unregistered razor templates</value>
+  </data>
+  <data name="Templates__PageCategoryEdit" xml:space="preserve">
+    <value>Page Category Edit</value>
+  </data>
+  <data name="Integration__ResourceModal" xml:space="preserve">
+    <value>Add Resource</value>
+  </data>
+  <data name="Integration__ResourceEditModal" xml:space="preserve">
+    <value>Edit Resource</value>
+  </data>
+  <data name="Routing__PageList" xml:space="preserve">
+    <value>Page List</value>
+  </data>
+  <data name="CustomTexts__CustomTextList" xml:space="preserve">
+    <value>UI Labels</value>
+  </data>
+  <data name="Razor__PageCategoryList" xml:space="preserve">
+    <value>Page Category List</value>
+  </data>
+  <data name="Routing__NaveList" xml:space="preserve">
+    <value>Nave List</value>
+  </data>
+  <data name="Routing__NavigationPageList" xml:space="preserve">
+    <value>Navigation Page List</value>
+  </data>
+  <data name="Routing__NavigationPageCreate" xml:space="preserve">
+    <value>Navigation Page Create</value>
+  </data>
+  <data name="Parameters__PageReferenceList" xml:space="preserve">
+    <value>Page References</value>
+  </data>
+  <data name="PageControls__CustomizeAppComponent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Environments__EnvironmentList" xml:space="preserve">
+    <value>Environments</value>
+  </data>
+  <data name="Environments__EnvironmentEditEmbedded" xml:space="preserve">
+    <value />
+  </data>
+</root>

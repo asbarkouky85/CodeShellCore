@@ -1,0 +1,327 @@
+<?xml version="1.0"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Delete" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add New" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add Page To Nave" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Allow all" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Anonymous" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Both" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Edit Nave" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Embedded" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="GetPages" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Insert" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Read Only" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Read Write" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Route" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select Component" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value />
+  </data>
+  <data name="View" xml:space="preserve">
+    <value />
+  </data>
+  <data name="In__" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Log__" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Render" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Controls" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ViewParameters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="None" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource" xml:space="preserve">
+    <value />
+  </data>
+  <data name="All" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameterTypes_Embedded" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameterTypes_PageLink" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddUrl" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DetailsUrl" xml:space="preserve">
+    <value />
+  </data>
+  <data name="EditUrl" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ListUrl" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameterTypes_Modal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SelectPage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ProcessTemplate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameterTypes_Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddEntity" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainComponentBase" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Publish" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RenderAll" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UpdateConfigurations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UpdateDatabase" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Publising" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddResource" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategories" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RenderDefinition" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CustomFields" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Langs" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddBaseScripts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddSQLFiles" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddStaticFiles" xml:space="preserve">
+    <value />
+  </data>
+  <data name="builder_tab" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ClearOlderBundles" xml:space="preserve">
+    <value />
+  </data>
+  <data name="domains_tab" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InitializeApp" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PrepEnvironment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WriteWebPackFiles" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InitializeResx" xml:space="preserve">
+    <value />
+  </data>
+  <data name="localization_tab" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SyncLanguages" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Install" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Modules" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UpdateFiles" xml:space="preserve">
+    <value />
+  </data>
+  <data name="KeepMeLoggedIn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddPagesToGroup" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add Nave" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddShellComponents" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddBasicFiles" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SelectComponent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddChild" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ar" xml:space="preserve">
+    <value />
+  </data>
+  <data name="en" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Publishing" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IncludeSubdomains" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DomainOnly" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Mapping" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ModifiedOnly" xml:space="preserve">
+    <value />
+  </data>
+</root>

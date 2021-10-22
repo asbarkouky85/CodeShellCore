@@ -1,0 +1,28 @@
+@*ID:1935659042002*@
+
+@model PageCategoryListDTO
+@{
+    Layout = Html.Config().Layout;
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @Html.HeaderCell(d => d.Name)
+            @Html.HeaderCell(d => d.BaseComponent)
+            @Html.HeaderCell(d => d.DomainName)
+            @Html.HeaderCell(d => d.ResourceName)
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            @Html.TextCell(d => d.Name)
+            @Html.TextCell(d => d.BaseComponent)
+            @Html.TextCell(d => d.DomainName)
+            @Html.TextCell(d => d.ResourceName)
+            <td>
+                @Html.ListModifiers()
+            </td>
+        </tr>
+    </tbody>
+</table>

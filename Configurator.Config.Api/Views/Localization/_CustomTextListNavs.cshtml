@@ -1,0 +1,15 @@
+﻿<label class="check-label">
+    <i class="fa fa-lg" [ngClass]="request.modifiedOnly?'fa-toggle-on greenColor':'fa-toggle-off grayColor'"></i>
+
+    
+        <span *ngIf="request.modifiedOnly" class="greenColor">@Html.Word("ModifiedOnly")</span>
+        <span *ngIf="!request.modifiedOnly" class="grayColor">@Html.Word("All")</span>
+    
+
+
+    <input name="resType"
+           style="display:none"
+           type="checkbox"
+           (change)="LoadData()"
+           [(ngModel)]="request.modifiedOnly">
+</label>

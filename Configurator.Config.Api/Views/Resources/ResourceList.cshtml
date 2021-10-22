@@ -1,0 +1,26 @@
+﻿@model ResourceListDTO
+@{
+    Layout = Html.Config().Layout;
+    Html.AddModal("AddModal");
+    Html.AddModal("EditModal");
+    Html.HeaderModel().AddButton = Html.Button("AddResource", "Create()", btn: BtnClass.Success, icon: "fa fa-plus");
+}
+<table class="table">
+    <thead>
+        <tr>
+            @Html.HeaderCell(d => d.Name)
+            @Html.HeaderCell(d => d.Domain)
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            @Html.TextCell(d => d.Name)
+            @Html.TextCell(d => d.Domain)
+            <td>
+                @Html.ListModifiers(editFunction: "Edit(model)")
+            </td>
+
+        </tr>
+    </tbody>
+</table>

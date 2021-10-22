@@ -1,0 +1,27 @@
+﻿@model ModuleRequestDTO
+@{
+    Layout = Html.Config().Layout;
+    //Html.ModalModel().Attrs = new { 
+    //    //calc__width = "800"
+    //};
+    Html.UseSplitTheme();
+}
+@using (Html.NgForm("Form"))
+{
+    <div class="container-fluid">
+        <div class="row">
+            @Html.SelectControlGroup(d => d.AssemblyName, Lister.Make("modules"), "name", "assemblyName", required: true, size: 8)
+            @Html.CheckBoxGroup(d => d.Replace,size:4)
+        </div>
+    </div>
+    
+}
+
+
+@Html.ComponentSelectorFromOther("server_tracer")
+
+
+@section buttons{
+    @Html.Button("Install", function: "Install()", btn: BtnClass.Primary, icon: "fa fa-download",attr:new { calc__disabled="Form.invalid"})
+    @Html.Button("UpdateFiles", function: "UpdateFiles()", btn: BtnClass.Info, icon: "fa fa-upload", attr: new { calc__disabled = "Form.invalid" })
+}

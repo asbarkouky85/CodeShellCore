@@ -1,0 +1,257 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Development__DevelopmentPanel' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        <div class="btn-group">
+    
+    <button class="btn btn-primary"
+            (click)="render('all')"
+            
+             title="{{'Words.RenderAll' | translate }}">
+        <i class="fa fa-image fa-lg"></i> 
+    </button>
+
+    
+    <button class="btn btn-warning"
+            (click)="render('definition')"
+            
+             title="{{'Words.RenderDefinition' | translate }}">
+        <i class="fa fa-language fa-lg"></i> 
+    </button>
+
+</div>
+
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.Development__DevelopmentPanel' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Development__DevelopmentPanel' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="nav nav-tabs">
+                <li class="nav-item" [ngClass]="ActiveTab=='domains_tab'?'active':null">
+    <a (click)="ActiveTab='domains_tab'">
+{{'Words.domains_tab' | translate }}
+    </a>
+</li>
+                <li class="nav-item" [ngClass]="ActiveTab=='builder_tab'?'active':null">
+    <a (click)="ActiveTab='builder_tab'">
+{{'Words.builder_tab' | translate }}
+    </a>
+</li>
+                <li class="nav-item" [ngClass]="ActiveTab=='localization_tab'?'active':null">
+    <a (click)="ActiveTab='localization_tab'">
+{{'Words.localization_tab' | translate }}
+    </a>
+</li>
+            </ul>
+<div  id="domains_tab" [show-if]="ActiveTab=='domains_tab'" class="tab-page" #domains_tab>
+
+<div class="form-group col-md-12 "
+     id="FG_recursive"
+     #FG_recursive="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.DbCreationRequest__Recursive' | translate }} </label>
+    
+<label  class="check-label ">
+    <i class="fa fa-lg" [ngClass]="model.recursive?'fa-toggle-on greenColor':'fa-toggle-off grayColor'"></i>
+    
+        <span *ngIf="model.recursive" class="greenColor">{{'Words.IncludeSubdomains' | translate }}</span>
+        <span *ngIf="!model.recursive" class="grayColor">{{'Words.DomainOnly' | translate }}</span>
+
+
+    <input name="__recursive"
+           style="display:none"
+           type="checkbox"
+            
+           
+           [(ngModel)]="model.recursive">
+</label>
+
+
+    
+</div>
+<app-domain-tree #DomainTree [IsEmbedded]='true'></app-domain-tree></div>
+<div  id="builder_tab" [show-if]="ActiveTab=='builder_tab'" class="tab-page" #builder_tab>
+                <div class="row">
+                    
+<div class="form-group col-md-8 "
+     id="FG_environment"
+     #FG_environment="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.DbCreationRequest__Environment' | translate }} </label>
+    
+<select class="form-control"
+        name="Form__environment" 
+        [li-watch]="model"
+        [(ngModel)]="model.environment"
+         >
+        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
+    <option *ngFor="let item of environments" [ngValue]="item.name">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_environment.Write">{{FG_environment.Value}}</p>
+
+    
+</div>
+
+                    
+<div class="form-group col-md-4 "
+     id="FG_replaceExisting"
+     #FG_replaceExisting="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.DbCreationRequest__ReplaceExisting' | translate }} </label>
+    
+<label  class="check-label ">
+    <i class="fa fa-lg" [ngClass]="model.replaceExisting?'fa-toggle-on greenColor':'fa-toggle-off grayColor'"></i>
+    
+        <span *ngIf="model.replaceExisting" class="greenColor">{{'Words.Yes' | translate }}</span>
+        <span *ngIf="!model.replaceExisting" class="grayColor">{{'Words.No' | translate }}</span>
+
+
+    <input name="__replaceExisting"
+           style="display:none"
+           type="checkbox"
+            
+           
+           [(ngModel)]="model.replaceExisting">
+</label>
+
+
+    
+</div>
+
+                </div>
+
+    <button class="btn btn-primary btn-block"
+            (click)="Mapping()"
+            
+            >
+        {{'Words.Mapping' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="InitializeApp()"
+            
+            >
+        {{'Words.AddBasicFiles' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="AddStaticFiles()"
+            
+            >
+        {{'Words.AddStaticFiles' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="AddShellComponents()"
+            
+            >
+        {{'Words.AddShellComponents' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="AddBaseScripts()"
+            
+            >
+        {{'Words.AddBaseScripts' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="WriteWebPackFiles()"
+            
+            >
+        {{'Words.WriteWebPackFiles' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="PrepEnvironment()"
+            
+            >
+        {{'Words.PrepEnvironment' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="ClearOlderBundles()"
+             [disabled]="!model.environment"
+            >
+        {{'Words.ClearOlderBundles' | translate }}
+    </button>
+</div>
+
+<div  id="localization_tab" [show-if]="ActiveTab=='localization_tab'" class="tab-page" #localization_tab>
+
+    <button class="btn btn-primary btn-block"
+            (click)="InitializeResx()"
+            
+            >
+        {{'Words.InitializeResx' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="SyncLanguages()"
+            
+            >
+        {{'Words.SyncLanguages' | translate }}
+    </button>
+
+    <button class="btn btn-primary btn-block"
+            (click)="FixPages()"
+            
+            >
+        {{'Words.FixPages' | translate }}
+    </button>
+</div>        </div>
+        <div class="col-md-8">
+            <app-generation-inof-list #GenerationInofList [IsEmbedded]='true'></app-generation-inof-list>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

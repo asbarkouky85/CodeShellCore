@@ -1,0 +1,118 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Environments__EnvironmentList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+    <button class="btn btn-success"
+            (click)="add()"
+            
+            >
+        <i class="fa fa-plus"></i> {{'Words.Add' | translate }}
+    </button>
+
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.Environments__EnvironmentList' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Environments__EnvironmentList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{totalCount}}</span></span>
+            </div>
+            <div class="col-md-8">
+                <search-group (termChange)="HeaderSearch($event)"></search-group>
+            </div>
+        </div>
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+
+        <div class="table-responsive">
+            <div [ngClass]="showEdit?'col-md-4':'col-md-12'">
+    <table class="table">
+        <thead>
+            <tr>
+                    <th class="cursorPointer" [ngClass]="GetHeaderClass('Name')"  >
+        {{'Columns.MoldsterEnvironment__Name' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('Name')"></i>
+    </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of list">
+                <td  >
+    {{model.name}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+                <td>
+                    <div class="btn-group btnResponsive ">
+            <button *ngIf="Permission.update" class="btn btn-primary btn-sm" (click)="edit(model)">
+                <i class="fa fa-pen"></i>
+            </button>
+
+
+            <button *ngIf="Permission.delete" class="btn btn-danger btn-sm" (click)="deleteEnv(model)">
+                <i class="fa fa-trash"></i>
+            </button>
+
+</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-md-8" [hidden]="!showEdit">
+    <app-environment-edit-embedded #editComponent [IsEmbedded]='true'></app-environment-edit-embedded>
+</div>
+
+        </div>
+
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+    </div>
+
+</div>

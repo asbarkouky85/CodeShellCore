@@ -1,0 +1,15 @@
+﻿@if (IsSectionDefined("header"))
+{
+    @RenderSection("header")
+}
+else
+{
+    @Html.PageHeader()
+}
+<div [ngClass]="IsEmbedded?'panel panel-default embedded':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid'">
+        @RenderBody()
+        @RenderSection("lists", false)
+        @RenderSection("buttons", false)
+    </div>
+</div>

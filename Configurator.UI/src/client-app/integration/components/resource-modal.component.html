@@ -1,0 +1,90 @@
+<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [modal]="true" >
+    <p-header>
+{{'Pages.Integration__ResourceModal' | translate }}    </p-header>
+
+    <div class="col-md-12">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6">
+                <div class="btn-group btn-group-sm pull-last padBottom">
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='ar'?'btn-primary':'btn-default'" (click)="CurrentLang='ar'">
+                            {{'Words.ar' | translate }}
+                        </button>
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='en'?'btn-primary':'btn-default'" (click)="CurrentLang='en'">
+                            {{'Words.en' | translate }}
+                        </button>
+                </div>
+            </div>
+
+        </div>
+
+        <form #Form="ngForm" >
+
+<div class="row form-group "
+     id="FG_name"
+     #FG_name="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.Resource__Name' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.Resource__Name' | translate }}"
+       name="Form__name"
+       [(ngModel)]="model.name"
+       title="{{'Columns.Resource__Name' | translate }}"
+       [li-watch]="model"
+
+       
+       required [pattern]="'[_a-zA-Z][_a-zA-Z0-9]{2,30}'"  >
+    <p *ngIf="!FG_name.Write">{{FG_name.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__name'] && Form.controls['Form__name'].invalid">
+        <small *ngIf="Form.controls['Form__name'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.Resource__Name' | translate } }}</small>
+        <small *ngIf="Form.controls['Form__name'].errors!.pattern" class="form-text text-danger">{{'Messages.invalid_field' | translate : {p0:'Columns.Resource__Name' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+<div class="row form-group "
+     id="FG_domainId"
+     #FG_domainId="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.Resource__DomainId' | translate }}
+    </label>
+    <div class="col-sm-9">
+        
+<select class="form-control"
+        name="Form__domainId" 
+        [li-watch]="model"
+        [(ngModel)]="model.domainId"
+         >
+        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
+    <option *ngFor="let item of Lookups.domains" [ngValue]="item.id">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_domainId.Write">{{FG_domainId.Value}}</p>
+
+        
+    </div>
+</div>
+</form>
+    </div>
+
+
+    
+
+        <p-footer>
+            <div class="text-center modal-buttons">
+                
+        <button class="btn btn-primary"
+            [disabled]="!CanSubmit"
+            (click)="Submit()">
+        {{'Words.Save' | translate }}
+    </button>
+
+
+            </div>
+        </p-footer>
+</p-dialog>

@@ -1,0 +1,36 @@
+[
+  {
+    "Name": "Local",
+    "ConnectionParams": {
+      "UserId": "app",
+      "Password": "123456",
+      "Server": "."
+    },
+    "Upload": {
+      "Type": "FS",
+      "PathOnServer": "C:\\Publish\\Configurator.UI",
+      "ServerUrl": "http://192.168.1.21"
+    },
+    "SourceDatabase": "SurgeryRegister",
+    "Databases": [ "TEST" ],
+    "ConfigDatabase": "Configurator.Config"
+  },
+    {
+        "Name": "Testing",
+        "Upload": {
+            "Type": "FS",
+            "PathOnServer": "\\\\dev-server\\Publish\\TenantConfigurator"
+        }
+    },
+    {
+        "Name": "TestFtp",
+        "Upload": {
+            "Type": "FTP",
+            "Server": "SRV-GENIAL",
+            "ServerUrl": "http://SRV-GENIAL:8050",
+            "Username": "abarkouky",
+            "Password": "Gabr1el2018",
+            "PathOnServer": "Configurator.UI"
+        }
+    }
+]

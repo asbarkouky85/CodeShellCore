@@ -1,0 +1,12 @@
+﻿@model Resource
+@{
+    Layout = Html.Config().Layout;
+}
+@using (Html.NgForm("Form"))
+{
+    @Html.ControlGroup(d => d.Name, coll: Html.VCollection().AddRequired().AddPattern($"'{Patterns.Identifier}'"))
+    @Html.SelectControlGroup(d => d.DomainId, Lister.Make("domains"), "name", "id")
+}
+@section buttons{
+    @Html.SubmitButton()
+}

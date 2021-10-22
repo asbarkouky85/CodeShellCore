@@ -1,0 +1,9 @@
+
+<nav class="navbar-inverse nav-side">
+
+    <ul class="nav">
+        <li *ngFor="let it of navs">
+            <a [routerLink]="'/'+it.url" routerLinkActive="active">{{'Pages.'+it.name | translate}}</a>
+        </li>
+    </ul>
+</nav>

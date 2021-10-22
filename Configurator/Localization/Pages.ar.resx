@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Generations__GenerationInofList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pages__PageCreate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pages__PageEdit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pages__PageTreeList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenants__TenantCreate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenants__TenantList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControls__PageCustomization" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenants__TenantDetails" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resources__ResourceList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NavigationPages__NavGroupPages" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Shared__DomainTree" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Templates__PageCategoriesTreeList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Shared__DomainTreeSelect" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Development__DevelopmentPanel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Generations__PageCategorySelect" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Shared__ServerTracerModal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Razor__ModuleConfigModal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Razor__ServerTracerEmbed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Razor__PageCategoryCreate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Templates__PageCategoryEdit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Integration__ResourceModal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Integration__ResourceEditModal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Routing__PageList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Routing__NaveList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Routing__NavigationPageList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Routing__NavigationPageCreate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Parameters__PageReferenceList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Razor__PageCategoryList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CustomTexts__CustomTextList" xml:space="preserve">
+    <value />
+  </data>
+</root>

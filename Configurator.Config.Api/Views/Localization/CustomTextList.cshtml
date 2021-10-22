@@ -1,0 +1,52 @@
+﻿@model CustomText
+@{
+    Layout = Html.Config().Layout;
+    var items = new[] { "Words", "Pages", "Columns", "Messages" };
+    Html.HeaderModel().ToolsSection = Html.GetPartial("Localization/_CustomTextListNavs");
+    Html.HeaderModel().AddToButtons(icon: "fa fa-save fa-lg", function: "SaveChanges()",btn:BtnClass.Primary);
+}
+
+<div class="col-md-3">
+
+    <div class="panel-group">
+        @foreach (var s in CodeShellCore.Shell.SupportedLanguages)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <span>@s.ToUpper()</span>
+                    </h4>
+                </div>
+                <div id="@s" class="panel-collapse">
+                    <ul class="nav nav-stacked nav-pills">
+                        @foreach (var it in items)
+                        {
+                            <li [ngClass]="isActive('@s','@it')?'active':null" >
+                                <a (click)="Load('@s','@it')" style="cursor:pointer">@it</a>
+                            </li>
+                        }
+
+
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+<div class="col-md-9">
+    <table class="table informative">
+        <thead>
+            <tr>
+                @Html.HeaderCell(e => e.Code)
+                @Html.HeaderCell(e => e.Value)
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of list;let i=index" [ngClass]="model.state=='Attached'?'success':(model.state=='Added' || model.state=='Modified'?'warning':(model.state=='Removed'?'danger':null))">
+                @Html.TextCell(e => e.Code)
+                @Html.TextBoxCell(e => e.Value, rowIndex: "i",inputAttr:new { evnt__change="text_change(model)" })
+            </tr>
+        </tbody>
+    </table>
+</div>

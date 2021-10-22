@@ -1,0 +1,15 @@
+@*ID:2000136308002*@
+@model PageDTO
+@{
+    Layout = Html.Config().Layout;
+    Html.HeaderModel().AddToButtons(title: "Save", icon: "fa fa-save fa-lg", function: "save()", btn: BtnClass.Primary);
+    Html.HeaderModel().AddToButtons(title: "AddPagesToGroup", icon: "fa fa-plus fa-lg", function: "AddPage()", btn: BtnClass.Success);
+}
+<div class="row">
+    <div class="col-md-4">
+        @Html.ComponentSelectorFromOther("NaveList", attr: new { evnt__valueChange = "getPages($event)" })
+    </div>
+    <div class="col-md-8">
+        @Html.ComponentSelectorFromOther("NavigationPageList")
+    </div>
+</div>

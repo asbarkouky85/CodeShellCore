@@ -1,0 +1,53 @@
+@*ID:1935258958002*@
+@model Domain
+@{
+    Layout = Html.Config().Layout;
+
+}
+<tree-root [nodes]="List"
+           [options]="treeOptions"
+           (toggleExpanded)="onExpanded($event)"
+           (moveNode)="onMoveNode($event)">
+
+    <ng-template #treeNodeTemplate let-node let-index="index">
+        <div class="tree-item-container" *ngIf="!node.data.editing">
+            <div style="display:inline-block">
+                {{ node.data.name }}
+                
+                <span class="label label-primary" *ngIf="node.data.contentCount>0">{{node.data.contentCount}}</span>&nbsp;
+                <span class="label label-warning" *ngIf="node.data.catCount>0">{{node.data.catCount}}</span>
+
+            </div>
+
+            @if (Html.GetAccessibility("Tree").Write)
+            {
+
+                <div class="btn-group pull-last" role="group" [show-if]="selectedId==node.data.id" *ngIf="AllowEdit">
+
+                    <button (click)="AddNode(node)" class="btn btn-default btn-sm" title="@Html.Word("AddChild")">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+
+                    <button (click)="EditNode(node)" class="btn btn-default btn-sm" title="@Html.Word("Update")">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </button>
+
+                    <button (click)="DeleteNode(node)" class="btn btn-default btn-sm" title="@Html.Word("Delete")">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+
+            }
+
+            <div class="btn-group pull-last" *ngIf="isGeneration">
+                @Html.Button(title: "Render", function: "render(node.data)", classes: "btn-sm", btn: BtnClass.Primary, icon: "fa fa-image")
+                @Html.Button(title: "Process", function: "process(node.data)", classes: "btn-sm", btn: BtnClass.Warning, icon: "fa fa-cog")
+            </div>
+
+        </div>
+        <input *ngIf="node.data.editing" class="tree-item-editor" [id]="'editor'+node.data.id" [(ngModel)]="node.data.name" />
+
+    </ng-template>
+
+</tree-root>

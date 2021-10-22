@@ -1,0 +1,19 @@
+{
+  "delete_confirm_message": "delete confirm message",
+  "field_required": "field required",
+  "already_rendered": "already rendered",
+  "bundling_failed": "bundling failed",
+  "bundling_successful": "bundling successful",
+  "delete_error_message": "delete error message",
+  "delete_success": "delete success",
+  "invalid_credentials": "invalid credentials",
+  "must_select_nav_group": "must select nav group",
+  "must_select_tenant": "must select tenant",
+  "render_tenant_first": "render tenant first",
+  "started_new_task": "started new task",
+  "success_message": "success message",
+  "task_is_already_running": "task is already running",
+  "operation_unavailable": "operation unavailable",
+  "unauthorized_operation": "unauthorized operation",
+  "unexpected_error": "unexpected error"
+}

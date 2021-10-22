@@ -1,0 +1,82 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Pages__PageTreeList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+    <a class="btn btn-success"
+       [routerLink]="'/routing/pages/page-create'"
+        *ngIf="Permission.insert"
+       >
+        <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Page' | translate } }}
+    </a>
+
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.Pages__PageTreeList' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Pages__PageTreeList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+
+    <a class="btn btn-success buttonGra-sm"
+       [routerLink]="'/routing/pages/page-create'"
+        *ngIf="Permission.insert"
+       >
+        <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Page' | translate } }}
+    </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <app-domain-tree #DomainTree [IsEmbedded]='true'></app-domain-tree>
+        </div>
+        <div class="col-md-9" [show-if]="currentDomain && model.tenantCode" style="margin-top:11px">
+            <app-page-list #PageList [IsEmbedded]='true'></app-page-list>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

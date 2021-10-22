@@ -1,0 +1,436 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Environments__EnvironmentEditEmbedded' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.Environments__EnvironmentEditEmbedded' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Environments__EnvironmentEditEmbedded' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div><div [ngClass]="IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'">
+
+    <div [ngClass]="IsEmbedded?'panel-body':'content-block'">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom">
+                <div class="btn-group btn-group-sm pull-last">
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='ar'?'btn-primary':'btn-default'" (click)="CurrentLang='ar'">
+                            {{'Words.ar' | translate }}
+                        </button>
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='en'?'btn-primary':'btn-default'" (click)="CurrentLang='en'">
+                            {{'Words.en' | translate }}
+                        </button>
+                </div>
+            </div>
+
+        </div>
+        <form #Form="ngForm" >
+
+<div class="row form-group "
+     id="FG_name"
+     #FG_name="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.MoldsterEnvironment__Name' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.MoldsterEnvironment__Name' | translate }}"
+       name="Form__name"
+       [(ngModel)]="model.name"
+       title="{{'Columns.MoldsterEnvironment__Name' | translate }}"
+       [li-watch]="model"
+
+       
+       required [pattern]="'[_a-zA-Z][_a-zA-Z0-9]{2,30}'"  [disabled]="!IsNew" >
+    <p *ngIf="!FG_name.Write">{{FG_name.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__name'] && Form.controls['Form__name'].invalid">
+        <small *ngIf="Form.controls['Form__name'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.MoldsterEnvironment__Name' | translate } }}</small>
+        <small *ngIf="Form.controls['Form__name'].errors!.pattern" class="form-text text-danger">{{'Messages.invalid_field' | translate : {p0:'Columns.MoldsterEnvironment__Name' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+<div class="row form-group "
+     id="FG_sourceDatabase"
+     #FG_sourceDatabase="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.MoldsterEnvironment__SourceDatabase' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.MoldsterEnvironment__SourceDatabase' | translate }}"
+       name="Form__sourceDatabase"
+       [(ngModel)]="model.sourceDatabase"
+       title="{{'Columns.MoldsterEnvironment__SourceDatabase' | translate }}"
+       [li-watch]="model"
+
+       
+        >
+    <p *ngIf="!FG_sourceDatabase.Write">{{FG_sourceDatabase.Value}}</p>
+
+
+        
+    </div>
+</div>
+<h4 class="section-header " >{{'Words.Database_Connection_Parameters' | translate }}</h4>
+<div class="row form-group "
+     id="FG_connectionParams_server"
+     #FG_connectionParams_server="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.DbConnectionParams__Server' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.DbConnectionParams__Server' | translate }}"
+       name="Form__connectionParams_server"
+       [(ngModel)]="model.connectionParams.server"
+       title="{{'Columns.DbConnectionParams__Server' | translate }}"
+       [li-watch]="model"
+
+       
+        >
+    <p *ngIf="!FG_connectionParams_server.Write">{{FG_connectionParams_server.Value}}</p>
+
+
+        
+    </div>
+</div>
+
+<div class="row form-group "
+     id="FG_connectionParams_userId"
+     #FG_connectionParams_userId="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.DbConnectionParams__UserId' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.DbConnectionParams__UserId' | translate }}"
+       name="Form__connectionParams_userId"
+       [(ngModel)]="model.connectionParams.userId"
+       title="{{'Columns.DbConnectionParams__UserId' | translate }}"
+       [li-watch]="model"
+
+       
+        >
+    <p *ngIf="!FG_connectionParams_userId.Write">{{FG_connectionParams_userId.Value}}</p>
+
+
+        
+    </div>
+</div>
+
+<div class="row form-group "
+     id="FG_connectionParams_password"
+     #FG_connectionParams_password="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.DbConnectionParams__Password' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.DbConnectionParams__Password' | translate }}"
+       name="Form__connectionParams_password"
+       [(ngModel)]="model.connectionParams.password"
+       title="{{'Columns.DbConnectionParams__Password' | translate }}"
+       [li-watch]="model"
+
+       
+        >
+    <p *ngIf="!FG_connectionParams_password.Write">{{FG_connectionParams_password.Value}}</p>
+
+
+        
+    </div>
+</div>
+<h4 class="section-header " >{{'Words.Publish_Parameters' | translate }}</h4>
+<div class="row form-group "
+     id="FG_upload_type"
+     #FG_upload_type="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.UploadConfig__Type' | translate }}
+    </label>
+    <div class="col-sm-9">
+        
+<select class="form-control"
+        name="Form__upload_type" 
+        [li-watch]="model"
+        [(ngModel)]="model.upload.type"
+         (change)="type_change()" >
+        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
+    <option *ngFor="let item of uploadTypes" [ngValue]="item.id">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_upload_type.Write">{{FG_upload_type.Value}}</p>
+
+        
+    </div>
+</div>
+    <div *ngIf="model.upload && model.upload.type=='FTP'">
+        
+<div class="row form-group "
+     id="FG_upload_server"
+     #FG_upload_server="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.UploadConfig__Server' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.UploadConfig__Server' | translate }}"
+       name="Form__upload_server"
+       [(ngModel)]="model.upload.server"
+       title="{{'Columns.UploadConfig__Server' | translate }}"
+       [li-watch]="model"
+
+       
+       required  >
+    <p *ngIf="!FG_upload_server.Write">{{FG_upload_server.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__upload_server'] && Form.controls['Form__upload_server'].invalid">
+        <small *ngIf="Form.controls['Form__upload_server'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.UploadConfig__Server' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+        
+<div class="row form-group "
+     id="FG_upload_serverUrl"
+     #FG_upload_serverUrl="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.UploadConfig__ServerUrl' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.UploadConfig__ServerUrl' | translate }}"
+       name="Form__upload_serverUrl"
+       [(ngModel)]="model.upload.serverUrl"
+       title="{{'Columns.UploadConfig__ServerUrl' | translate }}"
+       [li-watch]="model"
+
+       
+       required  >
+    <p *ngIf="!FG_upload_serverUrl.Write">{{FG_upload_serverUrl.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__upload_serverUrl'] && Form.controls['Form__upload_serverUrl'].invalid">
+        <small *ngIf="Form.controls['Form__upload_serverUrl'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.UploadConfig__ServerUrl' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+        
+<div class="row form-group "
+     id="FG_upload_userName"
+     #FG_upload_userName="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.UploadConfig__UserName' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.UploadConfig__UserName' | translate }}"
+       name="Form__upload_userName"
+       [(ngModel)]="model.upload.userName"
+       title="{{'Columns.UploadConfig__UserName' | translate }}"
+       [li-watch]="model"
+
+       
+       required  >
+    <p *ngIf="!FG_upload_userName.Write">{{FG_upload_userName.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__upload_userName'] && Form.controls['Form__upload_userName'].invalid">
+        <small *ngIf="Form.controls['Form__upload_userName'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.UploadConfig__UserName' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+        
+<div class="row form-group "
+     id="FG_upload_password"
+     #FG_upload_password="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.UploadConfig__Password' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.UploadConfig__Password' | translate }}"
+       name="Form__upload_password"
+       [(ngModel)]="model.upload.password"
+       title="{{'Columns.UploadConfig__Password' | translate }}"
+       [li-watch]="model"
+
+       
+       required  >
+    <p *ngIf="!FG_upload_password.Write">{{FG_upload_password.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__upload_password'] && Form.controls['Form__upload_password'].invalid">
+        <small *ngIf="Form.controls['Form__upload_password'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.UploadConfig__Password' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+        
+<div class="row form-group "
+     id="FG_upload_pathOnServer"
+     #FG_upload_pathOnServer="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.UploadConfig__PathOnServer' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.UploadConfig__PathOnServer' | translate }}"
+       name="Form__upload_pathOnServer"
+       [(ngModel)]="model.upload.pathOnServer"
+       title="{{'Columns.UploadConfig__PathOnServer' | translate }}"
+       [li-watch]="model"
+
+       
+        >
+    <p *ngIf="!FG_upload_pathOnServer.Write">{{FG_upload_pathOnServer.Value}}</p>
+
+
+        
+    </div>
+</div>
+
+    </div>
+    <div *ngIf="model.upload && model.upload.type=='FS'">
+
+        
+<div class="row form-group "
+     id="FG_upload_pathOnServer"
+     #FG_upload_pathOnServer="bsFormGroup" bs-group
+     >
+    <label class="col-sm-3 control-label">
+        {{'Columns.UploadConfig__PathOnServer' | translate }}
+<span style="color:red" > * </span>    </label>
+    <div class="col-sm-9">
+        <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.UploadConfig__PathOnServer' | translate }}"
+       name="Form__upload_pathOnServer"
+       [(ngModel)]="model.upload.pathOnServer"
+       title="{{'Columns.UploadConfig__PathOnServer' | translate }}"
+       [li-watch]="model"
+
+       
+       required  >
+    <p *ngIf="!FG_upload_pathOnServer.Write">{{FG_upload_pathOnServer.Value}}</p>
+
+
+        <span *ngIf="Form.controls['Form__upload_pathOnServer'] && Form.controls['Form__upload_pathOnServer'].invalid">
+        <small *ngIf="Form.controls['Form__upload_pathOnServer'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.UploadConfig__PathOnServer' | translate } }}</small>
+</span>
+    </div>
+</div>
+
+    </div>
+</form>
+<div *ngIf="model.connectionParams && model.connectionParams.server && model.databases">
+    <h4 class="section-header " >{{'Words.Databases' | translate }}</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of dbs;let i=index">
+                <td><input name="db_{{i}}" class="form-control" [(ngModel)]="item.name" required (onEnter)="dbItem_change(item)" (blur)="dbItem_change(item)" /></td>
+                <td>
+                    <div class="btn-group btnResponsive ">
+
+
+            <button *ngIf="Permission.delete" class="btn btn-danger btn-sm" (click)="deleteDb(item)">
+                <i class="fa fa-trash"></i>
+            </button>
+
+</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+        
+        <div class="row submit-buttons">
+            <div class="col-md-12">
+                <div class="pull-last">
+                    
+        <button class="btn btn-primary"
+            [disabled]="!CanSubmit"
+            (click)="Submit()">
+        {{'Words.Save' | translate }}
+    </button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,139 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Razor__PageCategoryList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.Razor__PageCategoryList' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Razor__PageCategoryList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{totalCount}}</span></span>
+            </div>
+            <div class="col-md-8">
+                <search-group (termChange)="HeaderSearch($event)"></search-group>
+            </div>
+        </div>
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+
+        <div class="table-responsive">
+            
+<table class="table table-striped">
+    <thead>
+        <tr>
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('Name')"  >
+        {{'Columns.PageCategoryListDTO__Name' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('Name')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('BaseComponent')"  >
+        {{'Columns.PageCategoryListDTO__BaseComponent' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('BaseComponent')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('DomainName')"  >
+        {{'Columns.PageCategoryListDTO__DomainName' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('DomainName')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('ResourceName')"  >
+        {{'Columns.PageCategoryListDTO__ResourceName' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('ResourceName')"></i>
+    </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            <td  >
+    {{model.name}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.baseComponent}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.domainName}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.resourceName}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td>
+                <div class="btn-group btnResponsive ">
+            <a *ngIf="Permission.update" class="btn btn-primary btn-sm" [routerLink]="'/razor/templates/page-category-edit/' +model.id">
+                <i class="fa fa-pen"></i>
+            </a>
+
+
+            <a *ngIf="Permission.delete" class="btn btn-danger btn-sm" (click)="Delete(model.id)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+
+</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+        </div>
+
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+    </div>
+
+</div>

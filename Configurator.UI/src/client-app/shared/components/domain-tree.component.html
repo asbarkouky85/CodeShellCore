@@ -1,0 +1,103 @@
+
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Shared__DomainTree' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.Shared__DomainTree' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Shared__DomainTree' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+<div  class="col-md-12" [ngClass]="HideHeader?null:'padTop'" id="Tree" #Tree>
+    <div class="row">
+        <div class="panel panel-default">
+
+            <div class="panel-body" style="min-height:400px;max-height:400px;overflow-y:scroll;">
+                <tree-root [nodes]="List"
+           [options]="treeOptions"
+           (toggleExpanded)="onExpanded($event)"
+           (moveNode)="onMoveNode($event)">
+
+    <ng-template #treeNodeTemplate let-node let-index="index">
+        <div class="tree-item-container" *ngIf="!node.data.editing">
+            <div style="display:inline-block">
+                {{ node.data.name }}
+                
+                <span class="label label-primary" *ngIf="node.data.contentCount>0">{{node.data.contentCount}}</span>&nbsp;
+                <span class="label label-warning" *ngIf="node.data.catCount>0">{{node.data.catCount}}</span>
+
+            </div>
+
+
+            <div class="btn-group pull-last" *ngIf="isGeneration">
+                
+    <button class="btn btn-primary btn-sm"
+            (click)="render(node.data)"
+            
+             title="{{'Words.Render' | translate }}">
+        <i class="fa fa-image"></i> 
+    </button>
+
+                
+    <button class="btn btn-warning btn-sm"
+            (click)="process(node.data)"
+            
+             title="{{'Words.Process' | translate }}">
+        <i class="fa fa-cog"></i> 
+    </button>
+
+            </div>
+
+        </div>
+        <input *ngIf="node.data.editing" class="tree-item-editor" [id]="'editor'+node.data.id" [(ngModel)]="node.data.name" />
+
+    </ng-template>
+
+</tree-root>
+
+            </div>
+        </div>
+    </div>
+</div>

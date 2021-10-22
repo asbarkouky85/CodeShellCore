@@ -1,0 +1,234 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Parameters__PageReferenceList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                    <div class="col-md-8 col-xs-12 text-last padTop">
+                        <div class="row text-first">
+
+    
+<div class="form-group col-md-7 "
+     id="FG_parameterTypeId"
+     #FG_parameterTypeId="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.ParameterRequestDTO__ParameterTypeId' | translate }} </label>
+    <div class="row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btnToggle radio-group">
+                <label class="btn btn-default" [ngClass]="filterModel.parameterTypeId==1?'active':''">
+                    <input type="radio" 
+                           name="__parameterTypeId" 
+                           [(ngModel)]="filterModel.parameterTypeId" 
+                           [value]="1" 
+                            (change)="LoadData()"  >
+                    {{'Words.PageParameterTypes_Text' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="filterModel.parameterTypeId==2?'active':''">
+                    <input type="radio" 
+                           name="__parameterTypeId" 
+                           [(ngModel)]="filterModel.parameterTypeId" 
+                           [value]="2" 
+                            (change)="LoadData()"  >
+                    {{'Words.PageParameterTypes_Embedded' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="filterModel.parameterTypeId==3?'active':''">
+                    <input type="radio" 
+                           name="__parameterTypeId" 
+                           [(ngModel)]="filterModel.parameterTypeId" 
+                           [value]="3" 
+                            (change)="LoadData()"  >
+                    {{'Words.PageParameterTypes_PageLink' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="filterModel.parameterTypeId==4?'active':''">
+                    <input type="radio" 
+                           name="__parameterTypeId" 
+                           [(ngModel)]="filterModel.parameterTypeId" 
+                           [value]="4" 
+                            (change)="LoadData()"  >
+                    {{'Words.PageParameterTypes_Modal' | translate }}
+                </label>
+
+        </div>
+    </div>
+
+</div>
+    
+</div>
+
+    
+<div class="form-group col-md-5 "
+     id="FG_type"
+     #FG_type="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.ParameterRequestDTO__Type' | translate }} </label>
+    <div class="row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btnToggle radio-group">
+                <label class="btn btn-default" [ngClass]="filterModel.type==0?'active':''">
+                    <input type="radio" 
+                           name="__type" 
+                           [(ngModel)]="filterModel.type" 
+                           [value]="0" 
+                            (change)="LoadData()"  >
+                    {{'Words.ParameterRequestTypes_InvalidLinks' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="filterModel.type==1?'active':''">
+                    <input type="radio" 
+                           name="__type" 
+                           [(ngModel)]="filterModel.type" 
+                           [value]="1" 
+                            (change)="LoadData()"  >
+                    {{'Words.ParameterRequestTypes_MissingLinks' | translate }}
+                </label>
+
+        </div>
+    </div>
+
+</div>
+    
+</div>
+
+</div>
+
+                    </div>
+                <div class="col-md-4 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+
+    <button class="btn btn-default"
+            (click)="ClearFilter()"
+            
+             title="{{'Words.ClearFilter' | translate }}">
+        <i class="fa fa-eraser"></i> 
+    </button>
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.Parameters__PageReferenceList' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Parameters__PageReferenceList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{totalCount}}</span></span>
+            </div>
+            <div class="col-md-8">
+                <search-group (termChange)="HeaderSearch($event)"></search-group>
+            </div>
+        </div>
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+    <thead>
+        <tr>
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('ReferenceTypeId')"  >
+        {{'Columns.PageReferenceDTO__ReferenceTypeId' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('ReferenceTypeId')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('PageViewPath')"  >
+        {{'Columns.PageReferenceDTO__PageViewPath' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('PageViewPath')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('ReferencedPageViewPath')"  >
+        {{'Columns.PageReferenceDTO__ReferencedPageViewPath' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('ReferencedPageViewPath')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('ParameterName')"  >
+        {{'Columns.PageReferenceDTO__ParameterName' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('ParameterName')"></i>
+    </th>
+
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('PageCategoryName')"  >
+        {{'Columns.PageReferenceDTO__PageCategoryName' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('PageCategoryName')"></i>
+    </th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list">
+            <td  >
+    {{&#x27;Words.&#x27;&#x2B;model.referenceTypeName | translate}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.pageViewPath}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.referencedPageViewPath}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.parameterName}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+
+            <td   [title]="model.pageCategoryViewPath">
+    {{model.pageCategoryName}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+
+        </tr>
+    </tbody>
+</table>
+        </div>
+
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+    </div>
+
+</div>

@@ -1,0 +1,92 @@
+<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [modal]="true" >
+    <p-header>
+{{'Pages.Generations__PageCategorySelect' | translate }}    </p-header>
+
+    <div class="col-md-12">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6">
+                <div class="btn-group btn-group-sm pull-last padBottom">
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='ar'?'btn-primary':'btn-default'" (click)="CurrentLang='ar'">
+                            {{'Words.ar' | translate }}
+                        </button>
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='en'?'btn-primary':'btn-default'" (click)="CurrentLang='en'">
+                            {{'Words.en' | translate }}
+                        </button>
+                </div>
+            </div>
+
+        </div>
+
+        
+<form #Form="ngForm">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                    <th class="cursorPointer" [ngClass]="GetHeaderClass('CreatedOn')"  >
+        {{'Columns.PageCategory__CreatedOn' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('CreatedOn')"></i>
+    </th>
+
+                    <th class="cursorPointer" [ngClass]="GetHeaderClass('ViewPath')"  >
+        {{'Columns.PageCategory__ViewPath' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('ViewPath')"></i>
+    </th>
+
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of list;let i=index">
+                <td  >
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'selected'+i"
+           [name]="'selected'+i"
+           [(ngModel)]="model.selected"
+           [li-watch]="model"
+            (change)="model.ApplyTo(SelectedItems)">
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+                <td  >
+    {{model.createdOn | date : &#x27;MM/dd h:m a&#x27;}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+                <td  >
+    {{model.viewPath}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+                
+                
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+
+
+    </div>
+
+
+    
+
+        <p-footer>
+            <div class="text-center modal-buttons">
+                
+    <button class="btn btn-primary" (click)="Ok()" [disabled]="Form.invalid">
+        {{'Words.Save' | translate }}
+    </button>
+
+            </div>
+        </p-footer>
+</p-dialog>

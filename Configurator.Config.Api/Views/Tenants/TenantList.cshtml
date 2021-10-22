@@ -1,0 +1,41 @@
+@*ID:1934264593001*@
+@model Tenant
+@{
+    Layout = Html.Config().Layout;
+    Html.AddModal("ServerTrace", "Generations/ServerTracerModal");
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @Html.HeaderCell(d => d.Code, width: "150px")
+            @Html.HeaderCell(d => d.Name)
+
+            @Html.HeaderCell(d => d.Version)
+            @Html.HeaderCell(d => d.IsActive)
+            <th style="width:150px"></th>
+            <th></th>
+            @Html.HeaderCell(d => d.CreatedOn)
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list;let i=index">
+            @Html.TextCell(d => d.Code)
+            @Html.TextCell(d => d.Name)
+            @Html.TextCell(d => d.Version)
+            @Html.CheckBoxCell("active", "i", null, "isActive", "isActive_change(model)")
+            <td>
+                @Html.ListModifiers()
+            </td>
+            <td>
+                <div class="btn-group">
+                    @Html.Button("Preview", "StartPreview(model)", btn: BtnClass.Info, icon: "fa fa-image", attr: new { star__ngIf = "current==null" })
+                    @Html.Button("View", function: "Open()", btn: BtnClass.Success, icon: "fa fa-image", attr: new { star__ngIf = "current==model.code" })
+                    @Html.Button("Stop", "StopPreview()", btn: BtnClass.Danger, icon: "fa fa-square", attr: new { star__ngIf = "current==model.code" })
+
+                </div>
+            </td>
+            @Html.TextCell(d => d.CreatedOn, pipe: "date : 'dd/MM/yyyy hh:mm a'")
+        </tr>
+    </tbody>
+</table>

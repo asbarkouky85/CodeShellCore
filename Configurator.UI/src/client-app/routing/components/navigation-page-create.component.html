@@ -1,0 +1,126 @@
+    <p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [modal]="true" >
+
+        <p-header *ngIf="!HideHeader">
+{{'Pages.Routing__NavigationPageCreate' | translate }}        </p-header>
+
+            <div style="max-width:500px">
+                <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                    <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{Source.TotalCount}}</span></span>
+                </div>
+                <div class="col-md-8">
+                    <search-group (termChange)="Source.Search($event)"></search-group>
+                </div>
+            </div>
+
+        <div class="col-md-12">
+            
+
+
+<table class="table" (change)="onTableChange()">
+    <thead>
+        <tr>
+            <th></th>
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('ViewPath')"  >
+        {{'Columns.PageListDTO__ViewPath' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('ViewPath')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('PageType')"  >
+        {{'Columns.PageListDTO__PageType' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('PageType')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('ResourceName')"  >
+        {{'Columns.PageListDTO__ResourceName' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('ResourceName')"></i>
+    </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of Source.List;let i=index">
+            <td   *ngIf="Multi">
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'select'+i"
+           [name]="'select'+i"
+           [(ngModel)]="model.Tag.selected"
+           [li-watch]="model.Tag"
+            (change)="model.Tag.ApplyTo(Items)">
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td   *ngIf="!Multi">
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'select'"
+           [name]="'select'"
+           [(ngModel)]="model.Tag.selected"
+           [li-watch]="model.Tag"
+            (change)="model.Tag.SelectOnly(Items)">
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.viewPath}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.pageType}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.resourceName}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+        </div>
+        <paginate [showing]="Source.Opts.Showing" 
+          [total-count]="Source.TotalCount" 
+          [max-pages]="10" 
+          [(currentPage)]="Source.pageIndex" 
+          (pageChange)="Source.PageChanged($event)"></paginate>
+
+            <p-footer>
+                <div class="form-group">
+                    <div class="text-center modal-buttons">
+                        
+    <button class="btn btn-default"
+            (click)="Cancel()"
+            
+            >
+        <i class="fa fa-window-close"></i> {{'Words.Cancel' | translate }}
+    </button>
+
+                        
+    <button class="btn btn-warning"
+            (click)="Ok()"
+            
+            >
+        <i class="fa fa-check"></i> {{'Words.OK' | translate }}
+    </button>
+
+                    </div>
+                </div>
+            </p-footer>
+
+    </p-dialog>

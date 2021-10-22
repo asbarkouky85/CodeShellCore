@@ -1,0 +1,74 @@
+@*ID:2002238501000*@
+
+@model PageCategory
+@{
+    Layout = Html.Config().Layout;
+    Html.HeaderModel().ToolsSection = Html.GetPartial("PageCategories/_PageCategoryEditNavs");
+    Html.UseSplitTheme();
+    var Par = Html.For<PageCategoryParameter>("par", "parForm");
+    var Con = Html.For<Control>("con", "conForm");
+}
+
+<form #Form="ngForm">
+    <div class="row">
+        @Html.LabelGroup(d => d.ViewPath)
+    </div>
+    <div class="row">
+        @Html.SelectControlGroup(d => d.ResourceId, Lister.Make("Resources", true), "name", "id", nullable: true)
+        @Html.SelectControlGroup(d => d.BaseComponent, Lister.Make("BaseComponent", true), "name", "name", nullable: true)
+    </div>
+    <div class="row">
+        @Html.SelectControlGroup(d => d.Layout, Lister.Make("layouts"), "name", "name")
+    </div>
+</form>
+
+
+
+<div class="col-md-6">
+    <div class="col-md-12 section-header">
+        @Html.Word("Controls")
+    </div>
+    <table class="table table-striped informative">
+        <thead>
+            <tr>
+                @Con.HeaderCell(d => d.ControlType)
+                @Con.HeaderCell(d => d.Identifier)
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let con of model.controls;let i=index">
+                @Con.TextCell(d => d.ControlType)
+                @Con.TextCell(d => d.Identifier)
+
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-md-6">
+    <div class="col-md-12 section-header">
+        @Html.Word("Parameters")
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                @Par.HeaderCell(d => d.TypeString)
+                @Par.HeaderCell(d => d.Name)
+                @Par.HeaderCell(d => d.DefaultValue)
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let par of model.pageCategoryParameters;let i=index">
+                @Par.TextCell(d => d.TypeString, pipe: "translate")
+                @Par.TextCell(d => d.Name)
+                @Par.TextCell(d => d.DefaultValue)
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section buttons{
+    @Html.SubmitButton()
+}

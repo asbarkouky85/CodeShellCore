@@ -1,0 +1,54 @@
+@*ID:2001961290000*@
+@model CodeShellCore.Moldster.Definitions.DbCreationRequest
+@{
+    Layout = Html.Config().Layout;
+    Html.HeaderModel().AddButton = Html.GetPartial("Generations/_GenerationButton");
+    Html.UseSplitTheme();
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="nav nav-tabs">
+                @Html.TabTitle("domains_tab", "ActiveTab")
+                @Html.TabTitle("builder_tab", "ActiveTab")
+                @Html.TabTitle("localization_tab", "ActiveTab")
+            </ul>
+            @if (Html.StartContainer("div", "domains_tab", tabVariable: "ActiveTab"))
+            {
+                @Html.CheckBoxGroup(d => d.Recursive, trueString: "IncludeSubdomains", falseString: "DomainOnly", size: 12)
+                @Html.ComponentSelectorFromOther("DomainTree")
+                @Html.CloseContainer("div")
+            }
+
+            @if (Html.StartContainer("div", "builder_tab", tabVariable: "ActiveTab"))
+            {
+                <div class="row">
+                    @Html.SelectControlGroup(d => d.Environment, Lister.Make("environments", false), "name", "name", size: 8)
+                    @Html.CheckBoxGroup(d => d.ReplaceExisting, size: 4)
+                </div>
+                @Html.Button("Mapping", "Mapping()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("AddBasicFiles", "InitializeApp()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("AddStaticFiles", "AddStaticFiles()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("AddShellComponents", "AddShellComponents()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("AddBaseScripts", "AddBaseScripts()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("WriteWebPackFiles", "WriteWebPackFiles()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("PrepEnvironment", "PrepEnvironment()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("ClearOlderBundles", "ClearOlderBundles()", btn: BtnClass.Primary, attr: new { calc__disabled = "!model.environment" }, classes: "btn-block")
+
+                @Html.CloseContainer("div")
+            }
+
+
+            @if (Html.StartContainer("div", "localization_tab", tabVariable: "ActiveTab"))
+            {
+                @Html.Button("InitializeResx", "InitializeResx()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("SyncLanguages", "SyncLanguages()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.Button("FixPages", "FixPages()", btn: BtnClass.Primary, classes: "btn-block")
+                @Html.CloseContainer("div")
+            }
+        </div>
+        <div class="col-md-8">
+            @Html.ComponentSelectorFromOther("GenerationInofList")
+        </div>
+    </div>
+</div>

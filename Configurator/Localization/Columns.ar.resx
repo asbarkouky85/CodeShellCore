@@ -1,0 +1,333 @@
+<?xml version="1.0"?>
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CreatePageDTO__ActionType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__Apps" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__CollectionId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__ComponentDomain" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__ComponentName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__ComponentPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__DefaultAccessibility" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__Layout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__NavigationGroup" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__Resource" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__ResourceId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__RouteParameters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__SpecialPermission" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__TemplatePath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__TenantCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatePageDTO__Usage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NavigationGroup__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NavigationPage__DisplayOrder" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NavigationPage__Url" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NotificationDTO__Payload" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NotificationDTO__TenantCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryListDTO__BaseComponent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryListDTO__DomainName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryListDTO__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryListDTO__ResourceName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__BaseComponent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__ResourceName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__ViewPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControlListDTO__Accessability" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControlListDTO__AccessabilityId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControlListDTO__ControlIdentifier" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControlListDTO__ControlType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControlListDTO__PageName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControlListDTO__Persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControlListDTO__SourceCollection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageControlListDTO__SourceCollectionId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageDTO__TenantCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__Apps" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__BaseComponent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__Layout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__PageCategoryName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__TenantCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__ViewPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__Layout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__SpecialPermission" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__ViewPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Select Component" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TemplateDTO__BaseComponent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TemplateDTO__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TemplateDTO__ResourceName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TemplateDTO__ViewPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TenantDTO__TenantCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__ConnectionString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Logo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control__ControlType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Control__Identifier" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CustomField__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CustomField__Type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DbCreationRequest__Environment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DbCreationRequest__TenantCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryParameter__DefaultValue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryParameter__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategoryParameter__TypeString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__CreatedOn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__Layout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__ResourceId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCategory__ScriptPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCustomizationDTO__Display" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCustomizationDTO__Presistant" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageFullDataDTO__Display" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__PageType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageListDTO__ResourceName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameter__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameter__ParameterValue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameter__TypeString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameter__UseDefault" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__TenantCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource__Domain" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource__DomainId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resource__Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__CreatedOn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__DbName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Environment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Force" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__Version" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ModuleRequestDTO__AssemblyName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tenant__IsActive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DbCreationRequest__ReplaceExisting" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageCustomizationDTO__Layout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageParameter__ViewPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DbCreationRequest__Recursive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageReferenceDTO__PageCategoryName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageReferenceDTO__PageName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageReferenceDTO__ParameterName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageReferenceDTO__ReferenceTypeName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageReferenceDTO__ReferencedPageName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageReferenceDTO__PageViewPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageReferenceDTO__ReferencedPageViewPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageReferenceDTO__ReferenceTypeId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CustomText__Code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CustomText__Value" xml:space="preserve">
+    <value />
+  </data>
+</root>

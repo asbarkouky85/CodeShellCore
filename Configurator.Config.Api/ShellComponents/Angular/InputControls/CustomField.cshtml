@@ -1,0 +1,9 @@
+﻿@model CodeShellCore.Web.Razor.Models.NgInput
+<input type="@Model.TextBoxType"
+       class="form-control @Model.Classes"
+       placeholder="@Html.Raw(Model.PlaceHolder)"
+       name="@Html.Raw(Model.FieldName)"
+       [(ngModel)]="@Model.NgModelName@(".extra.data.")@Model.MemberName"
+       title="@Html.Raw(Model.PlaceHolder)"
+       [li-watch]="@Model.NgModelName@(".extra")"
+       @Html.Raw(Model.Attributes)>

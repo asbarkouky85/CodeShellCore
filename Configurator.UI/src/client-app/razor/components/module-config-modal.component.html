@@ -1,0 +1,106 @@
+<p-dialog [(visible)]="Show" (onHide)="OnModalHide()" [modal]="true" >
+    <p-header>
+{{'Pages.Razor__ModuleConfigModal' | translate }}    </p-header>
+
+    <div class="col-md-12">
+        <div class="row" *ngIf="UseLocalization">
+            <div class="col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6">
+                <div class="btn-group btn-group-sm pull-last padBottom">
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='ar'?'btn-primary':'btn-default'" (click)="CurrentLang='ar'">
+                            {{'Words.ar' | translate }}
+                        </button>
+                        <button class="btn btn-sm" [ngClass]="CurrentLang=='en'?'btn-primary':'btn-default'" (click)="CurrentLang='en'">
+                            {{'Words.en' | translate }}
+                        </button>
+                </div>
+            </div>
+
+        </div>
+
+        <form #Form="ngForm" >
+    <div class="container-fluid">
+        <div class="row">
+            
+<div class="form-group col-md-8 "
+     id="FG_assemblyName"
+     #FG_assemblyName="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.ModuleRequestDTO__AssemblyName' | translate }} <span style="color:red">*</span></label>
+    
+<select class="form-control"
+        name="Form__assemblyName" 
+        [li-watch]="model"
+        [(ngModel)]="model.assemblyName"
+        required  >
+        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
+    <option *ngFor="let item of Lookups.modules" [ngValue]="item.assemblyName">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_assemblyName.Write">{{FG_assemblyName.Value}}</p>
+
+    <span *ngIf="Form.controls['Form__assemblyName'] && Form.controls['Form__assemblyName'].invalid">
+        <small *ngIf="Form.controls['Form__assemblyName'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.ModuleRequestDTO__AssemblyName' | translate } }}</small>
+</span>
+</div>
+
+            
+<div class="form-group col-md-4 "
+     id="FG_replace"
+     #FG_replace="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.ModuleRequestDTO__Replace' | translate }} </label>
+    
+<label  class="check-label ">
+    <i class="fa fa-lg" [ngClass]="model.replace?'fa-toggle-on greenColor':'fa-toggle-off grayColor'"></i>
+    
+        <span *ngIf="model.replace" class="greenColor">{{'Words.Yes' | translate }}</span>
+        <span *ngIf="!model.replace" class="grayColor">{{'Words.No' | translate }}</span>
+
+
+    <input name="__replace"
+           style="display:none"
+           type="checkbox"
+            
+           
+           [(ngModel)]="model.replace">
+</label>
+
+
+    
+</div>
+
+        </div>
+    </div>
+</form>
+
+<app-server-tracer-embed #server_tracer [IsEmbedded]='true'></app-server-tracer-embed>
+
+
+
+    </div>
+
+
+    
+
+        <p-footer>
+            <div class="text-center modal-buttons">
+                
+    
+    <button class="btn btn-primary"
+            (click)="Install()"
+             [disabled]="Form.invalid"
+            >
+        <i class="fa fa-download"></i> {{'Words.Install' | translate }}
+    </button>
+
+    
+    <button class="btn btn-info"
+            (click)="UpdateFiles()"
+             [disabled]="Form.invalid"
+            >
+        <i class="fa fa-upload"></i> {{'Words.UpdateFiles' | translate }}
+    </button>
+
+
+            </div>
+        </p-footer>
+</p-dialog>

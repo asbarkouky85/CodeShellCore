@@ -1,0 +1,18 @@
+@*ID:1935266244002*@
+@model PageDTO
+@{
+    Html.AddParameter("UseDefault", "P1");
+    
+    Layout = Html.Config().Layout;
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            @Html.ComponentSelectorFromOther("DomainTree", "DomainTree")
+        </div>
+        <div class="col-md-9" [show-if]="currentDomain && model.tenantCode" style="margin-top:11px">
+            @Html.ComponentSelectorFromOther("PageList", "PageList")
+        </div>
+    </div>
+</div>
+

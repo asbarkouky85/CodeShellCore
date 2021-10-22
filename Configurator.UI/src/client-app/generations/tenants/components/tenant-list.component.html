@@ -1,0 +1,205 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Tenants__TenantList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+    <a class="btn btn-success"
+       [routerLink]="'/generations/tenants/tenant-create'"
+        *ngIf="Permission.insert"
+       >
+        <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Tenant' | translate } }}
+    </a>
+
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        <ol class="breadcrumb">
+    <li>
+        <a routerLink="/">{{'Words.Main' | translate }}</a>
+    </li>
+    <li>
+        {{'Pages.Tenants__TenantList' | translate }}
+    </li>
+</ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Tenants__TenantList' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+
+    <a class="btn btn-success buttonGra-sm"
+       [routerLink]="'/generations/tenants/tenant-create'"
+        *ngIf="Permission.insert"
+       >
+        <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Tenant' | translate } }}
+    </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'">
+    <div [ngClass]="IsEmbedded?'panel-body':'container-fluid content-block'">
+        <div class="row">
+            <div class="col-md-4" style="padding: 10px 24px;color:#9B9B9B">
+                <span><b>{{'Words.Count' | translate }}</b> : <span style="color:#9B9B9B">{{totalCount}}</span></span>
+            </div>
+            <div class="col-md-8">
+                <search-group (termChange)="HeaderSearch($event)"></search-group>
+            </div>
+        </div>
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+
+        <div class="table-responsive">
+            
+<table class="table table-striped">
+    <thead>
+        <tr>
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('Code')" style='width:150px' >
+        {{'Columns.Tenant__Code' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('Code')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('Name')"  >
+        {{'Columns.Tenant__Name' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('Name')"></i>
+    </th>
+
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('Version')"  >
+        {{'Columns.Tenant__Version' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('Version')"></i>
+    </th>
+
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('IsActive')"  >
+        {{'Columns.Tenant__IsActive' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('IsActive')"></i>
+    </th>
+
+            <th style="width:150px"></th>
+            <th></th>
+                <th class="cursorPointer" [ngClass]="GetHeaderClass('CreatedOn')"  >
+        {{'Columns.Tenant__CreatedOn' | translate }}
+        <i class="fa fa-sort" (click)="SortBy('CreatedOn')"></i>
+    </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let model of list;let i=index">
+            <td  >
+    {{model.code}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.name}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    {{model.version}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td  >
+    <label class="chiller_cb">
+    
+    <input type="checkbox"
+           [id]="'active'+i"
+           [name]="'active'+i"
+           [(ngModel)]="model.isActive"
+           [li-watch]="model.Tag"
+            (change)="isActive_change(model)">
+    <span></span>
+</label>
+    <div style="position:relative">
+        
+    </div>
+</td>
+            <td>
+                <div class="btn-group btnResponsive ">
+
+            <a *ngIf="Permission.details" class="btn btn-primary btn-sm" [routerLink]="'/generations/tenants/tenant-details/' +model.id">
+                <i class="fa fa-copy"></i>
+            </a>
+
+            <a *ngIf="Permission.delete" class="btn btn-danger btn-sm" (click)="Delete(model.id)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+
+</div>
+            </td>
+            <td>
+                <div class="btn-group">
+                    
+    <button class="btn btn-info"
+            (click)="StartPreview(model)"
+             *ngIf="current==null"
+            >
+        <i class="fa fa-image"></i> {{'Words.Preview' | translate }}
+    </button>
+
+                    
+    <button class="btn btn-success"
+            (click)="Open()"
+             *ngIf="current==model.code"
+            >
+        <i class="fa fa-image"></i> {{'Words.View' | translate }}
+    </button>
+
+                    
+    <button class="btn btn-danger"
+            (click)="StopPreview()"
+             *ngIf="current==model.code"
+            >
+        <i class="fa fa-square"></i> {{'Words.Stop' | translate }}
+    </button>
+
+
+                </div>
+            </td>
+            <td  >
+    {{model.createdOn | date : &#x27;dd/MM/yyyy hh:mm a&#x27;}}
+    <div style="position:relative">
+        
+    </div>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+        </div>
+
+        <paginate [showing]="options.Showing" [total-count]="totalCount" [max-pages]="10" [(currentPage)]="pageIndex" (pageChange)="PageSelected($event)"></paginate>
+    </div>
+
+</div>

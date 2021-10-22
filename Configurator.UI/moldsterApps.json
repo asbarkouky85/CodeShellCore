@@ -1,0 +1,33 @@
+{
+    "AppList": [
+
+        {
+            "Name": "Default",
+            "ConfigUrl": "http://localhost:8000"
+        },
+        {
+            "Name": "Example",
+            "ConfigUrl": "http://localhost:8060"
+        },
+        {
+            "Name": "FMS",
+            "ConfigUrl": "http://localhost:8002"
+        },
+        {
+            "Name": "FMS_Preview",
+            "ConfigUrl": "http://localhost:8022"
+
+        },
+        {
+            "Name": "FMS_IIS",
+            "ConfigUrl": "http://localhost:8061"
+
+        },
+        {
+            "Name": "FMS_Production",
+            "ConfigUrl": "http://104.144.74.30:8021"
+
+        }
+
+    ]
+}

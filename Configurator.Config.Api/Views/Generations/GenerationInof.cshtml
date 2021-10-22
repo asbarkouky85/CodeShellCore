@@ -1,0 +1,18 @@
+@*ID:2001652470002*@
+
+@model NotificationDTO
+@{
+    Layout = Html.Config().Layout;
+    Html.ModalModel().Attrs = new { 
+        //calc__width = "1000"
+    };
+}
+
+<div class="output-word-container" #container>
+    <span *ngFor="let model of list"
+          class="output-word"
+          [ngClass]="model.newLine?'new-line':null"
+          [ngStyle]="{'color': model.color}">{{model.payload}}</span>
+</div>
+
+

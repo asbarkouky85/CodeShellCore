@@ -1,0 +1,26 @@
+﻿@model MoldsterEnvironment
+@{
+    Layout = Html.Config().Layout;
+    Html.HeaderModel().AddButton = Html.Button(content: Html.Word("Add"), function: "add()", btn: BtnClass.Success, icon: "fa fa-plus");
+}
+<div [ngClass]="showEdit?'col-md-4':'col-md-12'">
+    <table class="table">
+        <thead>
+            <tr>
+                @Html.HeaderCell(d => d.Name)
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let model of list">
+                @Html.TextCell(d => d.Name)
+                <td>
+                    @Html.ListModifiers(editFunction: "edit(model)", deleteFunction: "deleteEnv(model)")
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-md-8" [hidden]="!showEdit">
+    @Html.ComponentSelectorFromOther("editComponent")
+</div>

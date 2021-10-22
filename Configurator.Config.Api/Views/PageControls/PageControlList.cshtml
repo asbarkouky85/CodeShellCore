@@ -1,0 +1,170 @@
+@*ID:2000956416001*@
+@model PageControlListDTO
+@{
+    Layout = Html.Config().Layout;
+
+    Html.AddModal("PageSelector");
+    var Par = Html.For<PageParameterDTO>("par", "parForm");
+    var Rou = Html.For<PageRouteDTO>("pageRoute", "rouForm");
+    var mod = Html.For<PageCustomizationDTO>("page", "Form");
+    var fld = Html.For<CustomField>("field", "fieldForm");
+
+    Html.HeaderModel().AddButton = Html.Button(text: "Save", function: "update()", url: null, btn: BtnClass.Success);
+    Html.HeaderModel().ToolsSection = Html.GetPartial("PageControls/_PageControlListNavs");
+}
+
+<div class="col-md-12">
+    <div class="row">
+        @mod.LabelGroup(d => d.Display, size: 8)
+        @mod.SelectControlGroup(d => d.Layout, Lister.Make("Layout"), "name", "name", size: 4)
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs">
+            @Html.TabTitle("Controls", "ActiveTab")
+            @Html.TabTitle("ViewParameters", "ActiveTab")
+            @Html.TabTitle("CustomFields", "ActiveTab")
+        </ul>
+    </div>
+
+</div>
+
+@if (Html.StartContainer("div", "Controls", tabVariable: "ActiveTab"))
+{
+    <div class="row">
+
+
+        <div class="col-md-12">
+            <table class="table table-striped informative">
+                <thead>
+                    <tr>
+                        @Html.HeaderCell(d => d.ControlIdentifier)
+                        @Html.HeaderCell(d => d.ControlType)
+                        @Html.HeaderCell(d => d.Accessability)
+                        @Html.HeaderCell(d => d.SourceCollectionId)
+                        @Html.HeaderCell(d => d.Persistent)
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let model of list;let i=index">
+                        @Html.TextCell(d => d.ControlIdentifier)
+                        @Html.TextCell(d => d.ControlType)
+                        @Html.SelectCell(d => d.Accessability, Lister.Make("Accessability", true), "name", "id", rowIndex: "i")
+                        @Html.SelectCell(d => d.SourceCollectionId, Lister.Make("Collection", true), "name", "id", rowIndex: "i")
+                        @Html.CheckBoxCell("persistent", "i", null, "persistent", listItem: null)
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @Html.CloseContainer("div")
+}
+
+@if (Html.StartContainer("div", "ViewParameters", tabVariable: "ActiveTab"))
+{
+    <div class="row">
+        <div class="col-md-6">
+            @Rou.SelectModalButton("ListUrl", "SelectComponent('listUrl')", Rou.Property(d => d.ListUrlString).ToString(), buttons: new[] { new LinkModel { Title = "Clear", Function = "Clear('listUrl')", IconClass = "fa fa-eraser" } })
+
+        </div>
+        <div class="col-md-6">
+            @Rou.SelectModalButton("AddUrl", "SelectComponent('addUrl')", Rou.Property(d => d.AddUrlString).ToString(), buttons: new[] { new LinkModel { Title = "Clear", Function = "Clear('addUrl')", IconClass = "fa fa-eraser" } })
+        </div>
+        <div class="col-md-6">
+            @Rou.SelectModalButton("EditUrl", "SelectComponent('editUrl')", Rou.Property(d => d.EditUrlString).ToString(), buttons: new[] { new LinkModel { Title = "Clear", Function = "Clear('editUrl')", IconClass = "fa fa-eraser" } })
+        </div>
+        <div class="col-md-6">
+            @Rou.SelectModalButton("DetailsUrl", "SelectComponent('detailsUrl')", Rou.Property(d => d.DetailsUrlString).ToString(), buttons: new[] { new LinkModel { Title = "Clear", Function = "Clear('detailsUrl')", IconClass = "fa fa-eraser" } })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        @Par.HeaderCell(d => d.TypeString)
+                        @Par.HeaderCell(d => d.Name)
+
+                        @Par.HeaderCell(d => d.Entity.ParameterValue)
+
+                        <th>@Par.Word("SelectPage")</th>
+                        <th>@Par.Column(d => d.Entity.UseDefault)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let par of Parameters;let i=index">
+                        @Par.TextCell(d => d.TypeString, pipe: "translate")
+                        @Par.TextCell(d => d.Name)
+
+                        @Par.TextBoxCell(d => d.Entity.ParameterValue, rowIndex: "i", cellAttributes: new { star__ngIf = "!IsPageReference(par)" })
+                        @Par.TextCell(d => d.ViewPath, cellAttributes: new { star__ngIf = "IsPageReference(par)" })
+
+                        <td style="text-align:center">
+                            <div class="col-md-6">
+                                @Html.Button(title: "SelectComponent", function: "SelectComponent(null,par)", btn: BtnClass.Primary, classes: "btn-block", icon: "fa fa-window-restore", attr: new { star__ngIf = "IsPageReference(par)" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.Button(title: "Clear", function: "ClearValue(par)", btn: BtnClass.Default, classes: "btn-block", icon: "fa fa-eraser", attr: new { star__ngIf = "IsPageReference(par)" })
+                            </div>
+                            
+                        </td>
+                        @Par.CheckBoxCell("useDef", "i", null, "entity.useDefault", listItem: null)
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @Html.CloseContainer("div")
+}
+
+@if (Html.StartContainer("div", "CustomFields", tabVariable: "ActiveTab"))
+{
+    <div class="row">
+        <div class="col-md-12">
+            @using (fld.NgForm("tableForm"))
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            @fld.HeaderCell(d => d.Name, width: "40%")
+                            @fld.HeaderCell(d => d.Type, width: "40%")
+                            <th style="width:20%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let field of Fields;let i=index" [show-if]="field.state!='Removed'">
+                            @fld.TextBoxCell(d => d.Name, rowIndex: "i", coll: fld.VCollection().AddRequired())
+                            @fld.TextBoxCell(d => d.Type, rowIndex: "i")
+                            <td>
+                                @fld.ListModifiers(deleteFunction: "field.RemoveFrom(Fields)", permissionName: "subPermission")
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            @using (fld.NgForm("newRowForm", "newField"))
+            {
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            @fld.TextBoxCell(d => d.Name, coll: fld.VCollection().AddRequired().AddPattern($"'{Patterns.Identifier}'"), cellAttributes: new { style = "width:40%" })
+                            @fld.TextBoxCell(d => d.Type, cellAttributes: new { style = "width:40%" })
+                            <td style="width:20%">
+                                @Html.Button("Add", icon: "fa fa-plus", btn: BtnClass.Primary, function: "AddNewField()", attr: new { calc__disabled = "newRowForm.invalid" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+
+        </div>
+    </div>
+    @Html.CloseContainer("div")
+}
+
+
+
