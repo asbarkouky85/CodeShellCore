@@ -35,10 +35,11 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
 
             foreach (var t in dbTenants)
             {
-                if (!angularTenants.Tenants.TryGetValue(t.Code, out AngularTenant ngt))
+                var ten = Names.ApplyConvension(t.Code, AppParts.Project);
+                if (!angularTenants.Tenants.TryGetValue(ten, out AngularTenant ngt))
                 {
                     var tenantConfig = Writer.FillStringParameters(Molds.AngularJsonProject, new AppComponentModel { Name = t.Code });
-                    angularTenants.AddTenant(t.Code, tenantConfig);
+                    angularTenants.AddTenant(ten, tenantConfig);
                 }
             }
             var txt = angularTenants.JObject.ToString(Formatting.Indented);

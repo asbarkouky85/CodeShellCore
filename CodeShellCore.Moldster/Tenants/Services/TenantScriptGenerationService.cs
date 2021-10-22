@@ -22,20 +22,22 @@ namespace CodeShellCore.Moldster.Builder.Internal
     {
         private IMoldProvider Molds => Store.GetInstance<IMoldProvider>();
         private IPathsService Paths => Store.GetInstance<IPathsService>();
+        private INamingConventionService Naming => Store.GetInstance<INamingConventionService>();
 
         public TenantScriptGenerationService(IServiceProvider provider, IOptions<MoldsterModuleOptions> opts) : base(provider, opts)
         {
-            
+
         }
 
         public Result AddTenantToAngularJson(string tenant)
         {
             var angularJsonPath = Path.Combine(Paths.UIRoot, "angular.json");
-            tenant = tenant.LCFirst().Replace("-", "_");
+            
             if (!File.Exists(angularJsonPath))
             {
-                var tenantConfig = Writer.FillStringParameters(Molds.AngularJsonProject, new AppComponentModel { Name = tenant });
-                var angularJsonConent = Writer.FillStringParameters(Molds.AngularJson, new AngularJsonModel { Projects = tenantConfig.Trim(), DefaultProject = tenant });
+                var ten = Naming.ApplyConvension(tenant, AppParts.Project);
+                var tenantConfig = Writer.FillStringParameters(Molds.AngularJsonProject, new AppComponentModel { Name = ten });
+                var angularJsonConent = Writer.FillStringParameters(Molds.AngularJson, new AngularJsonModel { Projects = $"\"{ten}\":" + tenantConfig.Trim(), DefaultProject = ten });
                 Utils.CreateFolderForFile(angularJsonPath);
                 var str = Encoding.UTF8.GetBytes(angularJsonConent);
                 File.WriteAllBytes(angularJsonPath, str);
@@ -43,6 +45,6 @@ namespace CodeShellCore.Moldster.Builder.Internal
             return new Result();
         }
 
-        
+
     }
 }

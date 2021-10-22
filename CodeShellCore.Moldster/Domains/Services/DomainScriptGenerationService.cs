@@ -25,7 +25,7 @@ namespace CodeShellCore.Moldster.Domains.Services
     public class DomainScriptGenerationService : ScriptGenerationServiceBase, IDomainScriptGenerationService
     {
         private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
-        private INamingConventionService _fileNameService => Store.GetInstance<INamingConventionService>();
+        private INamingConventionService Names => Store.GetInstance<INamingConventionService>();
         private IPathsService _paths => Store.GetInstance<IPathsService>();
         private IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
         private ILocalizationService _localization => Store.GetInstance<ILocalizationService>();
@@ -37,10 +37,10 @@ namespace CodeShellCore.Moldster.Domains.Services
 
         public void GenerateMainFile(string moduleCode, bool addStyle = false)
         {
-            string bootPath = _fileNameService.GetSrcFolderPath("main-" + moduleCode.LCFirst(), ".ts", keepNameformat: true);
-            string pollyPath = _fileNameService.GetSrcFolderPath("polyfills");
-            string indexPath = _fileNameService.GetSrcFolderPath("index", ".html");
-            string dec = _fileNameService.GetSrcFolderPath("declarations.d");
+            string bootPath = Names.GetSrcFolderPath("main-" + Names.ApplyConvension(moduleCode, AppParts.Project), ".ts", keepNameformat: true);
+            string pollyPath = Names.GetSrcFolderPath("polyfills");
+            string indexPath = Names.GetSrcFolderPath("index", ".html");
+            string dec = Names.GetSrcFolderPath("declarations.d");
 
             if (!File.Exists(bootPath))
             {
@@ -48,8 +48,8 @@ namespace CodeShellCore.Moldster.Domains.Services
                 string bootTemplate = _molds.BootMold;
                 string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel
                 {
-                    Code = _fileNameService.ApplyConvension(moduleCode, AppParts.Route),
-                    ModulePath = _fileNameService.ApplyConvension(moduleCode + "/app", AppParts.Module),
+                    Code = Names.ApplyConvension(moduleCode, AppParts.Route),
+                    ModulePath = Names.ApplyConvension(moduleCode + "/app", AppParts.Route),
                     OtherTenants = _unit.TenantRepository.Exist(e => e.Code != moduleCode)
                 });
                 File.WriteAllText(bootPath, boot);
@@ -104,7 +104,7 @@ namespace CodeShellCore.Moldster.Domains.Services
         public virtual void GenerateAppModule(string modCode)
         {
             string moduleName = modCode + "Module";
-            string modulePath = _fileNameService.GetModuleFilePath(modCode, "app", createFolder: false) + ".ts";
+            string modulePath = Names.GetModuleFilePath(modCode, "app", createFolder: false) + ".ts";
 
             Out.Write("Generating " + moduleName + ".ts : ");
 
@@ -125,19 +125,19 @@ namespace CodeShellCore.Moldster.Domains.Services
                 Modules = "",
                 ModuleImports = "",
                 MainComponentName = "AppComponent",
-                MainComponentPath = _fileNameService.GetComponentImportPath("app", fromDomain: false),
+                MainComponentPath = Names.GetComponentImportPath("app", fromDomain: false),
                 BaseName = _paths.CoreAppName,
                 BaseAppModuleName = _paths.CoreAppName.UCFirst() + "BaseModule",
-                BaseAppModulePath = _fileNameService.GetBaseModuleFilePath(true),
-                RoutesModulePath = "./" + _fileNameService.ApplyConvension("AppRouting", AppParts.Module),
-                BaseHref = otherTen ? "{ provide: APP_BASE_HREF, useValue: '/" + _fileNameService.ApplyConvension(modCode, AppParts.Route) + "'}" : ""
+                BaseAppModulePath = Names.GetBaseModuleFilePath(true),
+                RoutesModulePath = "./" + Names.ApplyConvension("AppRouting", AppParts.Module),
+                BaseHref = otherTen ? "{ provide: APP_BASE_HREF, useValue: '/" + Names.ApplyConvension(modCode, AppParts.Route) + "'}" : ""
             };
 
             var homePage = _unit.PageRepository.GetHomePagePath(modCode);
             if (homePage != null)
             {
                 var name = homePage.GetAfterLast("/");
-                tempModel.ModuleImports += "import { " + name + " } from '" + _fileNameService.GetComponentImportPath(homePage, false) + "'";
+                tempModel.ModuleImports += "import { " + name + " } from '" + Names.GetComponentImportPath(homePage, false) + "'";
                 tempModel.Declarations += name.GetAfterLast("/");
             }
 
@@ -153,7 +153,7 @@ namespace CodeShellCore.Moldster.Domains.Services
 
         public virtual void GenerateRoutes(string modCode)
         {
-            string filePath = _fileNameService.GetModuleFilePath(modCode, "AppRouting", createFolder: false) + ".ts";
+            string filePath = Names.GetModuleFilePath(modCode, "AppRouting", createFolder: false) + ".ts";
             Out.Write($"Generating Routes [{modCode}Routes.ts] : ");
 
             if (!Options.ReplaceMainRoutes && File.Exists(filePath))
@@ -184,14 +184,14 @@ namespace CodeShellCore.Moldster.Domains.Services
             if (homePage != null)
             {
                 var name = homePage.GetAfterLast("/");
-                tempModel.ComponentImports += "import { " + name + " } from '" + _fileNameService.GetComponentImportPath(homePage, false) + "'";
+                tempModel.ComponentImports += "import { " + name + " } from '" + Names.GetComponentImportPath(homePage, false) + "'";
                 tempModel.Routes += _homeRoute(name);
             }
 
             foreach (var domain in domains)
             {
                 string dom = domain.DomainName;
-                tempModel.Routes += _fileNameService.GetDomainLazyLoadingRoute(domain.DomainName) + ",";
+                tempModel.Routes += Names.GetDomainLazyLoadingRoute(domain.DomainName) + ",";
             }
             string sep = "";
             foreach (var nav in navs)
@@ -257,7 +257,7 @@ namespace CodeShellCore.Moldster.Domains.Services
 
         protected virtual void _generateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null)
         {
-            string filePath = _fileNameService.GetModuleFilePath(tenantCode, dom.DomainName, parentDomain) + ".ts";
+            string filePath = Names.GetModuleFilePath(tenantCode, dom.DomainName, parentDomain) + ".ts";
             Out.Write($"Generating {dom.DomainName}Module : ");
             GotoColumn(SuccessCol);
 
@@ -300,7 +300,7 @@ namespace CodeShellCore.Moldster.Domains.Services
 
             DomainTsModel model = new DomainTsModel
             {
-                ComponentImports = parentDomain == null ? "" : $"import {{ {parentDomain}Module }} from \"../" + _fileNameService.ApplyConvension(parentDomain, AppParts.Module) + "\";\n",
+                ComponentImports = parentDomain == null ? "" : $"import {{ {parentDomain}Module }} from \"../" + Names.ApplyConvension(parentDomain, AppParts.Module) + "\";\n",
                 Components = "",
                 Name = dom.DomainName,
                 Registrations = "",
@@ -308,7 +308,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                 Lazy = "",
                 BaseName = _paths.CoreAppName,
                 BaseAppModuleName = _paths.CoreAppName.UCFirst() + "BaseModule",
-                BaseAppModulePath = _fileNameService.GetBaseModuleFilePath(true),
+                BaseAppModulePath = Names.GetBaseModuleFilePath(true),
                 PathToRoot = rootPath,
                 ParentModules = parentDomain == null ? "" : parentDomain + "Module,"
             };
@@ -318,7 +318,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                 string component = p.ComponentName;
 
                 model.Components += p.ComponentName + ",";
-                model.ComponentImports += $"import {{ {p.ComponentName} }} from '{_fileNameService.GetComponentImportPath(p.Page.ViewPath)}';\n";
+                model.ComponentImports += $"import {{ {p.ComponentName} }} from '{Names.GetComponentImportPath(p.Page.ViewPath)}';\n";
                 model.Registrations += p.Registration;
 
                 if (p.Page.CanEmbed)
@@ -331,7 +331,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             {
                 foreach (DomainWithPagesDTO dp in dom.SubDomains)
                 {
-                    model.Routes += _fileNameService.GetDomainLazyLoadingRoute(dp.DomainName) + ",";
+                    model.Routes += Names.GetDomainLazyLoadingRoute(dp.DomainName) + ",";
                 }
             }
 
@@ -375,7 +375,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                     Navigate = "true",
                     Resource = p.ResourceName,
                     Apps = p.Apps == null ? "null" : "[" + p.Apps + "]",
-                    Url = _fileNameService.ApplyConvension(p.Url, AppParts.Route)
+                    Url = Names.ApplyConvension(p.Url, AppParts.Route)
                 };
                 var s = "\n\t\t\t\t\t{{ name: \"{0}\", navigate: {1}, resource:\"{2}\", action: {3}, apps: {4} , url: \"{5}\"}},";
                 children += string.Format(s,
@@ -403,7 +403,7 @@ namespace CodeShellCore.Moldster.Domains.Services
 
             RouteTsModel route = new RouteTsModel
             {
-                Path = _fileNameService.ApplyConvension(component, AppParts.Route) + param,
+                Path = Names.ApplyConvension(component, AppParts.Route) + param,
 
                 Component = component,
                 Name = p.PageIdentifier,

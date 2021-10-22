@@ -2,6 +2,7 @@
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
 using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
@@ -18,6 +19,7 @@ namespace CodeShellCore.Moldster.Services
         IResourceScriptGenerationService resTs => GetService<IResourceScriptGenerationService>();
 
         IInitializationService Init => GetService<IInitializationService>();
+        IAngularJsonService NgJsonService => GetService<IAngularJsonService>();
         ITenantScriptGenerationService Builder => GetService<ITenantScriptGenerationService>();
         public MigrationService(IServiceProvider provider) : base(provider)
         {
@@ -178,6 +180,7 @@ namespace CodeShellCore.Moldster.Services
             Init.AddCodeShell(true);
             Init.AddUiBasicFiles(true);
             Builder.AddTenantToAngularJson(tenant);
+            NgJsonService.UpdateFileFromDatabase();
 
             string bootTemplate = Molds.BootMold;
             string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel
@@ -186,7 +189,7 @@ namespace CodeShellCore.Moldster.Services
                 ModulePath = Names.ApplyConvension(tenant + "/app", AppParts.Module),
                 OtherTenants = unit.TenantRepository.Exist(e => e.Code != tenant)
             });
-            string bootPath = Names.GetSrcFolderPath("main-" + tenant, ".ts", keepNameformat: true);
+            string bootPath = Names.GetSrcFolderPath("main-" + Names.ApplyConvension(tenant, AppParts.Project), ".ts", keepNameformat: true);
             File.WriteAllText(bootPath, boot);
             return new Result();
         }

@@ -15,7 +15,17 @@ namespace CodeShellCore.Moldster.CodeGeneration.Dtos
             this.ob = ob;
 
             var v = ob.GetValue("projects");
-            var p = v.ToObject<Dictionary<string, JObject>>();
+            var p = new Dictionary<string, JObject>();
+            if (v != null)
+            {
+                p = v.ToObject<Dictionary<string, JObject>>();
+            }
+            else
+            {
+                var add = (JObject)JsonConvert.DeserializeObject("[]");
+                ob.Add("projects", add);
+            }
+
 
             Tenants = new Dictionary<string, AngularTenant>();
             foreach (var b in p)

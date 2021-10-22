@@ -4,13 +4,14 @@ using System.Text;
 
 namespace CodeShellCore.Moldster
 {
-    public enum AppParts { Module, Component, BaseComponent, Service, Route }
+    public enum AppParts { Module, Component, BaseComponent, Service, Route, Project  }
     public enum PageParameterTypes
     {
         Text = 1,
         Embedded = 2,
         PageLink = 3,
-        Modal = 4
+        Modal = 4,
+       
     }
 
     public enum PageTypes

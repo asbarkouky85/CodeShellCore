@@ -117,6 +117,9 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
                 case AppParts.Route:
 
                     break;
+                case AppParts.Project:
+                    res = name.ToLower();
+                    break;
                 default:
                     break;
             }

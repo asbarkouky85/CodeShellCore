@@ -41,7 +41,7 @@ toolset set-version CodeShellCore.FileServer.Web 			5.2.0 %cd%
 
 toolset set-version Asga.Auth.Molds 						5.2.0 %cd%
 toolset set-version Asga.Public.Molds 						5.2.0 %cd%
-toolset set-version CodeShellCore.Cli						1.0.5 %cd%
+toolset set-version CodeShellCore.Cli						1.1.0 %cd%
 toolset set-version CodeShellCore.ToolSet.Cli				5.0.2 %cd%
 
 timeout 10
