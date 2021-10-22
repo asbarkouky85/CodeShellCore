@@ -1,8 +1,8 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Services;
+using CodeShellCore.Moldster.Pages.Dtos;
 
 namespace CodeShellCore.Moldster.Services
 {

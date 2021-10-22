@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
     <ProjectReference Include="..\CodeShellCore.MQ\CodeShellCore.MQ.csproj" />
   </ItemGroup>
 

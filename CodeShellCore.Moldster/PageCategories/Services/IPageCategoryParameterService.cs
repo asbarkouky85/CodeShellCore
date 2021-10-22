@@ -1,14 +1,13 @@
 ﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Data
+namespace CodeShellCore.Moldster.PageCategories.Services
 {
-    public interface ITemplateDataService : IServiceBase
+    public interface IPageCategoryParameterService : IServiceBase
     {
         SubmitResult UpdateParameters(PageCategory p, List<PageCategoryParameterDTO> parameters);
     }

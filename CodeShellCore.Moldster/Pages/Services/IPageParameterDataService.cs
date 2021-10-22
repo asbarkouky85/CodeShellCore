@@ -6,12 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Data
+namespace CodeShellCore.Moldster.Pages.Services
 {
     public interface IPageParameterDataService : IServiceBase
     {
         SubmitResult UpdateTemplatePages(long id, long tenantId);
-        SubmitResult UpdateTemplatePagesViewParamsJson(long tenantId,long? categoryId=null);
+        SubmitResult UpdateTemplatePagesViewParamsJson(long tenantId, long? categoryId = null);
         LoadResult<PageReferenceDTO> GetReferences(ParameterRequestDTO req, LoadOptions opt);
     }
 }

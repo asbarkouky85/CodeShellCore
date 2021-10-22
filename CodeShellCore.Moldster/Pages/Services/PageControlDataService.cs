@@ -1,6 +1,5 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Razor;
@@ -11,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Data.Internal
+namespace CodeShellCore.Moldster.Pages.Services
 {
     public class PageControlDataService : ServiceBase, IPageControlDataService
     {
@@ -19,7 +18,7 @@ namespace CodeShellCore.Moldster.Data.Internal
 
         public PageControlDataService(IConfigUnit unit)
         {
-            this.Unit = unit;
+            Unit = unit;
         }
 
         public IEnumerable<DomainWithPagesDTO> GetDomainWithPages(long tenantId, string domainName = null)

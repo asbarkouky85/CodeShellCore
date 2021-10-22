@@ -10,12 +10,12 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Moldster.Data;
 using System.Collections.Generic;
 using CodeShellCore.Cli;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Pages.Dtos;
 
-namespace CodeShellCore.Moldster.Configurator.Services
+namespace CodeShellCore.Moldster.Pages.Services
 {
     public class PagesService : EntityService<Page>, IPagesDataService
     {

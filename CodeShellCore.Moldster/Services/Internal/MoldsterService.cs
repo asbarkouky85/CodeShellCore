@@ -7,12 +7,14 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.PageCategories.Services;
 
 namespace CodeShellCore.Moldster.Services.Internal
 {
@@ -24,7 +26,8 @@ namespace CodeShellCore.Moldster.Services.Internal
         IOutputWriter _output => GetService<IOutputWriter>();
         IPageParameterDataService _pages => GetService<IPageParameterDataService>();
         IScriptGenerationService _ts => GetService<IScriptGenerationService>();
-        ITemplateProcessingService _html => GetService<ITemplateProcessingService>();
+        IPageHtmlGenerationService _html => GetService<IPageHtmlGenerationService>();
+        IPageCategoryHtmlService _proccess => GetService<IPageCategoryHtmlService>();
         IBuilderService _builder => GetService<IBuilderService>();
 
         public MoldsterService(IServiceProvider provider) : base(provider)
@@ -75,7 +78,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             var p = unit.PageRepository.FindSingleAs(d => new { d.PageCategoryId, d.TenantId }, d => d.Id == value);
             if (p != null)
             {
-                _html.ProcessForTenant(p.PageCategoryId.Value, p.TenantId);
+                _proccess.ProcessForTenant(p.PageCategoryId.Value, p.TenantId);
             }
             return new SubmitResult();
         }
@@ -202,7 +205,7 @@ namespace CodeShellCore.Moldster.Services.Internal
             var lst = unit.PageCategoryRepository.GetValues(d => d.Id, d => d.Pages.Any(e => e.TenantId == tenantId));
             foreach (long id in lst)
             {
-                _html.ProcessForTenant(id, tenantId);
+                _proccess.ProcessForTenant(id, tenantId);
                 _ts.GeneratePageCategory(id);
             }
         }
@@ -214,7 +217,7 @@ namespace CodeShellCore.Moldster.Services.Internal
 
             foreach (long id in lst)
             {
-                _html.ProcessForTenant(id, tenantId);
+                _proccess.ProcessForTenant(id, tenantId);
                 _ts.GeneratePageCategory(id);
             }
         }

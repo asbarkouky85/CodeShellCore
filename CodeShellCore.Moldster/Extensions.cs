@@ -24,6 +24,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using CodeShellCore.Cli.Routing;
 using CodeShellCore.Moldster.Cli;
+using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.Pages.Services;
 
 namespace CodeShellCore.Moldster
 {
@@ -137,14 +139,15 @@ namespace CodeShellCore.Moldster
 
             coll.AddTransient<IPageControlDataService, PageControlDataService>();
             coll.AddTransient<IPageParameterDataService, PageParameterDataService>();
-            coll.AddTransient<ITemplateDataService, TemplateDataService>();
+            coll.AddTransient<IPageCategoryParameterService, PageCategoryParameterService>();
             coll.AddTransient<IPagesDataService, PagesService>();
             coll.AddTransient<ITenantService, TenantsService>();
 
             coll.AddTransient<IViewsService, DefaultViewsService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
             coll.AddTransient<IScriptGenerationService, ScriptGenerationService>();
-            coll.AddTransient<ITemplateProcessingService, TemplateProcessingService>();
+            coll.AddTransient<IPageCategoryHtmlService, PageCategoryHtmlService>();
+            coll.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
 
         }
 

@@ -36,6 +36,8 @@ using CodeShellCore.Web.Razor.Tables.Moldster;
 using CodeShellCore.Web.Razor.SignalR;
 using CodeShellCore.Web.Razor.Controllers.Configurator;
 using Microsoft.AspNetCore.Routing;
+using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.PageCategories.Services;
 
 namespace CodeShellCore.Web.Razor
 {

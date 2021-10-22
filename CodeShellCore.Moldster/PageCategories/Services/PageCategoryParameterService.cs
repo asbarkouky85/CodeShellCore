@@ -1,17 +1,14 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace CodeShellCore.Moldster.Data.Internal
-{ 
-    public class TemplateDataService : DataService<IConfigUnit>, ITemplateDataService
+namespace CodeShellCore.Moldster.PageCategories.Services
+{
+    public class PageCategoryParameterService : DataService<IConfigUnit>, IPageCategoryParameterService
     {
-        public TemplateDataService(IConfigUnit unit) : base(unit)
+        public PageCategoryParameterService(IConfigUnit unit) : base(unit)
         {
         }
 

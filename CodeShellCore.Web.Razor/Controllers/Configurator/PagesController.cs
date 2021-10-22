@@ -12,6 +12,9 @@ using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.Pages.Services;
 
 namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
@@ -20,7 +23,8 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
     {
         PagesService _service;
         IViewsService views => GetService<IViewsService>();
-        ITemplateProcessingService cust => GetService<ITemplateProcessingService>();
+        IPageCategoryHtmlService process => GetService<IPageCategoryHtmlService>();
+        IPageHtmlGenerationService _html => GetService<IPageHtmlGenerationService>();
         ConfiguratorLookupService lookups => GetService<ConfiguratorLookupService>();
         IScriptGenerationService scr => GetService<IScriptGenerationService>();
         IPublisherService pub => GetService<IPublisherService>();
@@ -113,7 +117,7 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
             {
                 var r = (MovePageRequest)req;
 
-                cust.MoveHtmlTemplate(r);
+                _html.MoveHtmlTemplate(r);
                 scr.MoveScript(r);
                 scr.GenerateDomainModule(r.TenantCode, r.FromPath.GetBeforeLast("/"));
                 scr.GenerateDomainModule(r.TenantCode, r.ToPath.GetBeforeLast("/"));
@@ -128,7 +132,7 @@ namespace CodeShellCore.Web.Razor.Controllers.Configurator
             if (SubmitResult.IsSuccess && SubmitResult.Data.TryGetValue("ViewPath", out object data))
             {
                 var path = (MovePageRequest)data;
-                cust.DeleteHtmlTemplate(path.TenantCode, path.FromPath);
+                _html.DeleteHtmlTemplate(path.TenantCode, path.FromPath);
                 scr.DeleteScript(path.TenantCode, path.FromPath);
                 scr.GenerateDomainModule(path.TenantCode, path.FromPath.GetBeforeLast("/"));
                 scr.GenerateRoutes(path.TenantCode);

@@ -1,5 +1,4 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Http;
 using CodeShellCore.Tasks;
 using System.Net;
@@ -7,6 +6,7 @@ using System;
 using CodeShellCore.Text;
 using CodeShellCore.Moldster.Dto;
 using System.Collections.Generic;
+using CodeShellCore.Moldster.Pages.Dtos;
 
 namespace CodeShellCore.Moldster.Razor.Internal
 {

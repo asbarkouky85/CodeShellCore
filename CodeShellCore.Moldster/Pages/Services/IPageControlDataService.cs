@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using CodeShellCore.Data.Helpers;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 
-namespace CodeShellCore.Moldster.Data
+namespace CodeShellCore.Moldster.Pages.Services
 {
     public interface IPageControlDataService : IServiceBase
     {

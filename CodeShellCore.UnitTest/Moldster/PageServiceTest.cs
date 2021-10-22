@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Configurator.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.UnitTest.Data;
 using CodeShellCore.Web.Razor;
 using CodeShellCore.Web.UnitTest;

@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Http;
-using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Pages.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Definitions
+namespace CodeShellCore.Moldster.Pages.Dtos
 {
     public class PageAcquisitorDTO
     {

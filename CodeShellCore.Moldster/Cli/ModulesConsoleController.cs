@@ -3,6 +3,7 @@ using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using System;
@@ -17,7 +18,6 @@ namespace CodeShellCore.Moldster.Cli
         IDataService Data { get { return GetService<IDataService>(); } }
         ILocalizationService Localization { get { return GetService<ILocalizationService>(); } }
         IMoldsterService Moldster { get { return GetService<IMoldsterService>(); } }
-        ITemplateProcessingService Templates { get { return GetService<ITemplateProcessingService>(); } }
         IScriptGenerationService Scripts { get { return GetService<IScriptGenerationService>(); } }
         IScriptModelMappingService Mapping { get { return GetService<IScriptModelMappingService>(); } }
         IPagesDataService pages => GetService<IPagesDataService>();

@@ -2,7 +2,6 @@
 using CodeShellCore.Http;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Razor.Services;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeShellCore.Moldster.Pages.Dtos;
 
 namespace CodeShellCore.Web.Razor.Services
 {

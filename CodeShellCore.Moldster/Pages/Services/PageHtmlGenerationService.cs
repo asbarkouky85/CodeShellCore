@@ -1,42 +1,27 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
-using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Definitions;
-using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Text;
-using System;
-using System.IO;
 using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Types;
 using Microsoft.Extensions.Options;
+using System;
+using System.IO;
 
-namespace CodeShellCore.Moldster.Razor.Internal
+namespace CodeShellCore.Moldster.Pages.Services
 {
-    public class TemplateProcessingService : ConsoleService, ITemplateProcessingService
+    public class PageHtmlGenerationService : RazorViewsServiceBase, IPageHtmlGenerationService
     {
-        InstanceStore<object> Store;
-
-        MoldsterModuleOptions opts;
         protected IPathsService _paths => Store.GetInstance<IPathsService>();
         protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
-        protected IPageControlDataService _controls => Store.GetInstance<IPageControlDataService>();
-        protected ITemplateDataService _categories => Store.GetInstance<ITemplateDataService>();
-        protected IPageParameterDataService _pars => Store.GetInstance<IPageParameterDataService>();
-        protected ILocalizationService _loc => Store.GetInstance<ILocalizationService>();
         private IUIFileNameService _names => Store.GetInstance<IUIFileNameService>();
         protected IViewsService _dbViews => Store.GetInstance<IViewsService>();
 
-
-        public TemplateProcessingService(
-            IServiceProvider prov,
-            IOptions<MoldsterModuleOptions> opt,
-            IOutputWriter wtt) : base(wtt)
+        public PageHtmlGenerationService(IServiceProvider prov, IOptions<MoldsterModuleOptions> opt, IOutputWriter wtt) : base(prov, opt, wtt)
         {
-            opts = opt.Value;
-            Store = new InstanceStore<object>(prov);
         }
 
         public void GenerateGuidTemplate(string moduleCode)
@@ -50,87 +35,6 @@ namespace CodeShellCore.Moldster.Razor.Internal
             File.WriteAllText(path, contents);
             WriteSuccess();
         }
-
-        public void ProcessForTenant(string templatePath, string modCode)
-        {
-            long tempId = _unit.PageCategoryRepository.GetSingleValue(d => d.Id, d => d.ViewPath == templatePath);
-            long tenantId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
-            ProcessForTenant(tempId, tenantId);
-        }
-
-        public bool CollectTemplateData(long id)
-        {
-            PageCategory p = _unit.PageCategoryRepository.FindSingle(id);
-            if (p == null)
-                throw new Exception("Not Found");
-
-            Out.Write(p.ViewPath);
-            GotoColumn(6);
-            Out.Write(" View Data: ");
-            TemplateDataCollector dto = GetCollector(p.Id);
-            if (dto == null)
-            {
-                WriteFailed();
-                return false;
-            }
-            WriteSuccess();
-            Out.Write(" Controls: ");
-            _controls.UpdateTemplateControls(p, dto.Controls);
-            _controls.DeleteUnusedControls(p, dto.Controls);
-            _categories.UpdateParameters(p, dto.Parameters);
-            if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
-                _loc.UpdateFiles(dto.Localization);
-            WriteSuccess();
-            return true;
-        }
-
-        public void UpdateTemplatePages(long id, long tenantId)
-        {
-            Out.Write(" Pages: ");
-            _controls.UpdateTemplatePages(id, tenantId);
-            _pars.UpdateTemplatePages(id, tenantId);
-            _pars.UpdateTemplatePagesViewParamsJson(tenantId, id);
-            WriteSuccess();
-        }
-
-        public bool ProcessForTenant(long id, long tenantId)
-        {
-            using (var x = SW.Measure())
-            {
-                CollectTemplateData(id);
-                UpdateTemplatePages(id, tenantId);
-                using (Out.Set(ConsoleColor.Cyan))
-                {
-                    Out.Write(" " + x.Elapsed.TotalSeconds.ToString("F4"));
-                }
-            }
-
-            return true;
-        }
-
-        private void Handle(CodeShellHttpException ex)
-        {
-            if (ex.HttpResult != null && ex.HttpResult.ExceptionMessage.TryRead(out HttpResult res))
-            {
-                using (Out.Set(ConsoleColor.Red))
-                {
-                    Out.WriteLine();
-                    Out.WriteLine("Unable to render page : " + res.Message);
-                }
-                using (Out.Set(ConsoleColor.DarkRed))
-                {
-                    Out.WriteLine(res.ExceptionMessage);
-                    Out.WriteLine();
-                }
-            }
-            else
-            {
-
-                WriteException(ex);
-            }
-
-        }
-
 
         private RenderedPageResult GetPage(long id)
         {
@@ -202,24 +106,7 @@ namespace CodeShellCore.Moldster.Razor.Internal
             return true;
         }
 
-        private TemplateDataCollector GetCollector(long id)
-        {
-            try
-            {
-                return _dbViews.GetTemplateData(id);
-            }
-            catch (CodeShellHttpException ex)
-            {
-                Handle(ex);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                WriteException(ex, false);
-                return null;
-            }
 
-        }
 
         public virtual PageJsonData GenerateComponentTemplate(string moduleName, PageRenderDTO dto)
         {

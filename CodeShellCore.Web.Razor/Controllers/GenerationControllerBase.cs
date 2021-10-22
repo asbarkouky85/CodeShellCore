@@ -16,6 +16,8 @@ using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.PageCategories.Services;
 
 namespace CodeShellCore.Web.Razor.Controllers
 {
@@ -28,7 +30,7 @@ namespace CodeShellCore.Web.Razor.Controllers
         IPublisherService pub => GetService<IPublisherService>();
         IPathsService paths => GetService<IPathsService>();
         IDataService data => GetService<IDataService>();
-        ITemplateProcessingService c => GetService<ITemplateProcessingService>();
+        IPageCategoryHtmlService c => GetService<IPageCategoryHtmlService>();
         IPreviewService prev => GetService<IPreviewService>();
         IScriptGenerationService sc => GetService<IScriptGenerationService>();
         IScriptModelMappingService map => GetService<IScriptModelMappingService>();

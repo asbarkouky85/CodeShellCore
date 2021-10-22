@@ -1,12 +1,11 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Configurator.Services
+namespace CodeShellCore.Moldster.Pages.Services
 {
     public class PageControlService : EntityService<PageControl>
     {

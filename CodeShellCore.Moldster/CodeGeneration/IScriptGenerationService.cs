@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Definitions;
+﻿using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 using System;

@@ -3,9 +3,7 @@ using CodeShellCore.Files;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
 using CodeShellCore.Moldster.Angular;
-using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Models;
@@ -20,6 +18,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System;
 using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Pages.Services;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Internal
 {

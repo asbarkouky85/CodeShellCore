@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Data
+namespace CodeShellCore.Moldster.Pages.Services
 {
     public interface IPagesDataService
     {

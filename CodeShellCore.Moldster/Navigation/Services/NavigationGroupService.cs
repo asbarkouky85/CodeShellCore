@@ -4,6 +4,7 @@ using CodeShellCore.Linq;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Pages.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,7 +2,6 @@
 using CodeShellCore.Data.Services;
 using CodeShellCore.Files;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Text;
@@ -11,7 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace CodeShellCore.Moldster.Configurator.Services
+namespace CodeShellCore.Moldster.PageCategories.Services
 {
     public class PageCategoryService : EntityService<PageCategory>
     {
@@ -28,8 +27,8 @@ namespace CodeShellCore.Moldster.Configurator.Services
 
         public override PageCategory GetSingle(object id)
         {
-            var cat= base.GetSingle(id);
-            if(cat!=null)
+            var cat = base.GetSingle(id);
+            if (cat != null)
             {
                 cat.PageCategoryParameters = Unit.PageCategoryParameterRepository.Find(d => d.PageCategoryId.Equals(id));
                 cat.Controls = Unit.ControlRepository.Find(d => d.PageCategoryId.Equals(id));
@@ -126,7 +125,7 @@ namespace CodeShellCore.Moldster.Configurator.Services
             List<Domain> doms = new List<Domain>();
             foreach (var item in list)
             {
-               
+
                 var d = Unit.DomainRepository.GetOrCreatePath(item.ViewPath.GetBeforeLast("/"), ref doms);
                 Unit.PageCategoryRepository.Add(item, d);
             }
