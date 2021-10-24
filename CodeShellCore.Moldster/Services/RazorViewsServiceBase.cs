@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Razor
+namespace CodeShellCore.Moldster.Services
 {
     public abstract class RazorViewsServiceBase : ConsoleService
     {

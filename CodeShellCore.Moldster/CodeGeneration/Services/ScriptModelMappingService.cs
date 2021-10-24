@@ -2,7 +2,6 @@
 using CodeShellCore.Data;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Types;
 using System;
@@ -16,8 +15,6 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
     public class ScriptModelMappingService : ConsoleService, IScriptModelMappingService
     {
-        private readonly WriterService _writer;
-        private readonly IMoldProvider _molds;
         private readonly IPathsService _paths;
         private readonly IConfigUnit unit;
 
@@ -29,8 +26,6 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
             IConfigUnit unit,
             IOutputWriter output) : base(output)
         {
-            _writer = new WriterService();
-            _molds = mold;
             _paths = paths;
             this.unit = unit;
 

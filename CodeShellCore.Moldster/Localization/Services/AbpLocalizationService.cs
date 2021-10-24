@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Localization.Internal
+namespace CodeShellCore.Moldster.Localization.Services
 {
     public class AbpLocalizationService : LocalizationService, ILocalizationService
     {
@@ -58,7 +58,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
             {
                 if (!obj.Texts.ContainsKey(item.Name))
                 {
-                    obj.Texts[item.Name] = item.Value?? LangUtils.IdToPhrase(item.Name);
+                    obj.Texts[item.Name] = item.Value ?? LangUtils.IdToPhrase(item.Name);
                 }
             }
             SaveData(type, lang, obj.Texts);

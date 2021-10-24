@@ -2,14 +2,14 @@
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Moldster.Models;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Text.ResourceReader;
 using Microsoft.Extensions.Options;

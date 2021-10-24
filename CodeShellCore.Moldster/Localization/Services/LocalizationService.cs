@@ -1,12 +1,10 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Angular;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Localization.Dtos;
-using CodeShellCore.Moldster.Services;
 using CodeShellCore.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
@@ -17,9 +15,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 
-namespace CodeShellCore.Moldster.Localization.Internal
+namespace CodeShellCore.Moldster.Localization.Services
 {
     public class LocalizationService : ConsoleService, ILocalizationService
     {

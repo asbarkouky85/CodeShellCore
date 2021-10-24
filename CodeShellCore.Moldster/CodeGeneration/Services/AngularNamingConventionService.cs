@@ -1,11 +1,8 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Services
 {

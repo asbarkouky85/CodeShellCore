@@ -1,14 +1,12 @@
 ﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using CodeShellCore.Moldster.Pages.Dtos;
 
-namespace CodeShellCore.Moldster.Data
+namespace CodeShellCore.Moldster.Services
 {
     public interface IDataService : IServiceBase
     {

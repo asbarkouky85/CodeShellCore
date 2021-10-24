@@ -2,13 +2,13 @@
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Models;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
 using System;
@@ -16,7 +16,7 @@ using System.IO;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {
-    public class PageScriptGenerationService : CodeGeneration.ScriptGenerationServiceBase, IPageScriptGenerationService
+    public class PageScriptGenerationService : ScriptGenerationServiceBase, IPageScriptGenerationService
     {
         private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
         private INamingConventionService _fileNameService => Store.GetInstance<INamingConventionService>();

@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Security.Authorization;
 using System;
 using CodeShellCore.Moldster.Builder.Dtos;
+using CodeShellCore.Moldster.Builder.Services;
 
 namespace Configurator.Config.Api
 {

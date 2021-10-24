@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CodeShellCore.Cli;
+﻿using CodeShellCore.Cli;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.CodeGeneration;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Services;
-using CodeShellCore.Text;
 using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Domains.Services;
+using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Localization.Services;
+using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
-using CodeShellCore.Moldster.PageCategories.Services;
-using CodeShellCore.Moldster.Domains.Services;
+using CodeShellCore.Moldster.Sql;
+using CodeShellCore.Services;
+using CodeShellCore.Text;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace CodeShellCore.Moldster.Services.Internal
+namespace CodeShellCore.Moldster.Services
 {
     public class MoldsterService : StandAloneService, IMoldsterService
     {

@@ -1,20 +1,17 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Services;
 using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using CodeShellCore.Moldster.Pages.Dtos;
 
-namespace CodeShellCore.Moldster.Data.Internal
+namespace CodeShellCore.Moldster.Services
 {
     public class DbDataService : ServiceBase, IDataService
     {

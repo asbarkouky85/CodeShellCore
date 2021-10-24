@@ -1,13 +1,13 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Models;
 using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
 using System;
@@ -19,7 +19,7 @@ using System.Text.RegularExpressions;
 
 namespace CodeShellCore.Moldster.PageCategories.Services
 {
-    public class PageCategoryScriptGenerationService : CodeGeneration.ScriptGenerationServiceBase, IPageCategoryScriptGenerationService
+    public class PageCategoryScriptGenerationService : ScriptGenerationServiceBase, IPageCategoryScriptGenerationService
     {
         protected static string[] baseComponents => new[] { "Edit", "List", "Tree", "Select" };
         private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();

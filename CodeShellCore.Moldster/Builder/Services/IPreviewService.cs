@@ -1,10 +1,7 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Builder.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace CodeShellCore.Moldster.Builder
+namespace CodeShellCore.Moldster.Builder.Services
 {
     public interface IPreviewService
     {

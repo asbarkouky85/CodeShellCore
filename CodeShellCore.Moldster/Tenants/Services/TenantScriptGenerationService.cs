@@ -1,12 +1,12 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Models;
+using CodeShellCore.Moldster.Services;
 using CodeShellCore.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;

@@ -1,16 +1,16 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Models;
 using CodeShellCore.Services;
 using CodeShellCore.Types;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System;
-using CodeShellCore.Moldster.CodeGeneration.Services;
 
-namespace CodeShellCore.Moldster.CodeGeneration
+namespace CodeShellCore.Moldster.Services
 {
     public abstract class ScriptGenerationServiceBase : StandaloneConsoleService
     {
@@ -62,7 +62,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
 
         }
 
-        
+
 
     }
 }

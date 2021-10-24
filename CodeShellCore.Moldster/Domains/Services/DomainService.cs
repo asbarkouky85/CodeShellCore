@@ -1,16 +1,10 @@
-﻿using CodeShellCore.Text;
-using CodeShellCore.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Data.Helpers;
+using System.Collections.Generic;
 using System.Linq;
-using CodeShellCore.Data.Lookups;
-using CodeShellCore.Moldster;
 
-namespace CodeShellCore.Moldster.Configurator.Services
+namespace CodeShellCore.Moldster.Domains.Services
 {
     public class DomainService : EntityService<Domain>
     {

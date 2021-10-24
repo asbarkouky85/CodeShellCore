@@ -73,8 +73,8 @@ namespace CodeShellCore.Web.Razor.Tables
             var writer = new CellWriter(helper);
             writer.UseExpression(exp);
             writer.Initialize(null, null, cellAttributes, null);
-            if (url != null)
-                url = RazorUtils.ApplyConvension(url, AppParts.Route);
+            //if (url != null)
+            //    url = RazorUtils.ApplyConvension(url, AppParts.Route);
             writer.InputModel = writer.InputModel.GetLabelInput(pipe, url, blank);
             pipe = pipe == null ? "" : " | " + pipe;
             if (pipe.Contains("translate"))

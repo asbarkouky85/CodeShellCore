@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Localization.Internal
+namespace CodeShellCore.Moldster.Localization.Services
 {
     public class CustomTextService : DataService<IConfigUnit>, ICustomTextService
     {
@@ -27,7 +27,7 @@ namespace CodeShellCore.Moldster.Localization.Internal
                 op.AddFilter(e => e.TenantId == req.TenantId);
                 op.AddFilter(e => e.Type == req.Type);
                 op.AddFilter(e => e.Locale == req.Locale);
-                var data= Unit.CustomTextRepository.Find(op);
+                var data = Unit.CustomTextRepository.Find(op);
                 foreach (var x in data.ListT)
                     x.State = "Attached";
                 return data;

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Localization
+namespace CodeShellCore.Moldster.Localization.Services
 {
     public interface ICustomTextService
     {

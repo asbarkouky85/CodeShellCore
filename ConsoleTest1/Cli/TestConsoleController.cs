@@ -20,9 +20,9 @@ using CodeShellCore.Files;
 using Asga.Auth.Services;
 using Asga.Auth;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Builder.Services;
+using CodeShellCore.Moldster.Localization.Services;
 
 namespace ConsoleTest1
 {
