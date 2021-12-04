@@ -10,12 +10,12 @@ using System.Text;
 
 namespace CodeShellCore.Web.Controllers
 {
-    public interface IEntityController<T, TPrime> where T : class, IModel<TPrime>
+    public interface IEntityController<T, TPrime> : IReadOnlyEntityController<T,TPrime> where T : class, IModel<TPrime>
     {
-        IActionResult Get([FromQuery]LoadOptions opt);
-        IActionResult GetSingle([FromRoute]TPrime id);
+        
         IActionResult Post([FromBody] T obj);
         IActionResult Put([FromBody] T obj);
-        IActionResult Delete(TPrime id);
+
+        
     }
 }

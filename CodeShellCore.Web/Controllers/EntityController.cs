@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodeShellCore.Web.Controllers
 {
-    public class EntityController<T, TPrime> : BaseApiController where T : class, IModel<TPrime>
+    public class EntityController<T, TPrime> : BaseApiController, IReadOnlyEntityController<T, TPrime> where T : class, IModel<TPrime>
     {
 
         protected IEntityService<T> EntityService;
@@ -19,14 +19,14 @@ namespace CodeShellCore.Web.Controllers
 
         [HttpGet]
         [ApiAuthorize(Actions = new[] { DefaultActions.View })]
-        public virtual IActionResult Get([FromQuery]LoadOptions opt)
+        public virtual IActionResult Get([FromQuery] LoadOptions opt)
         {
             return Respond(EntityService.Load(opt));
         }
 
         [HttpGet]
         [ApiAuthorize(Actions = new[] { DefaultActions.Update, DefaultActions.ViewDetails })]
-        public virtual IActionResult GetSingle([FromRoute]TPrime id)
+        public virtual IActionResult GetSingle([FromRoute] TPrime id)
         {
             T obj = EntityService.GetSingle(id);
             return Respond(obj);

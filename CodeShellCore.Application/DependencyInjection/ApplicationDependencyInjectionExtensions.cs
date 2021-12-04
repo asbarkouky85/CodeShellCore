@@ -1,6 +1,8 @@
-﻿using CodeShellCore.Data;
+﻿using AutoMapper;
+using CodeShellCore.Data;
 using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.Lookups;
+using CodeShellCore.Data.Mapping;
 using CodeShellCore.Data.Services;
 using CodeShellCore.MQ;
 using CodeShellCore.Security;
@@ -24,6 +26,15 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<TService>();
             coll.AddTransient<IEntityService<T>, TService>();
         }
+        public static void AddCodeShellAutoMapper(this IServiceCollection collection)
+        {
+            collection.AddTransient<Data.Mapping.IObjectMapper, AutoMapperObjectMapper>();
+        }
+
+        public static void AddAutoMapper<T>(this IServiceCollection collection)
+        {
+            collection.AddAutoMapper(typeof(T).GetType().Assembly);
+        }
 
         public static void AddCodeShellApplication(this IServiceCollection coll)
         {
@@ -31,6 +42,8 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
             coll.AddScoped<IUserAccessor, UserAccessor>();
             coll.AddScoped<UserAccessor>();
+            coll.AddCodeShellAutoMapper();
+
         }
         public static void AddServiceFor<T, TService, ITService>(this IServiceCollection coll)
             where T : class

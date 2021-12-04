@@ -26,7 +26,7 @@ namespace ConsoleTest1
         public void AngularJson()
         {
             var ser = GetService<IAngularJsonService>();
-           ser.UpdateFileFromDatabase();
+           ser.UpdateAngularJsonFromDatabase();
         }
 
         public void Tests()

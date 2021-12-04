@@ -9,6 +9,7 @@ namespace CodeShellCore.Web.Services
 {
     public interface ISpaFallbackHandler
     {
+        string DefaultTenant { get; }
         Task HandleRequestAsync(HttpContext con);
     }
 }

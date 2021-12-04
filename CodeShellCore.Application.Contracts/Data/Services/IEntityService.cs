@@ -33,4 +33,6 @@ namespace CodeShellCore.Data.Services
         LoadResult<TDto> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, LoadOptions opts) where TDto : class;
         bool IsUnique(PropertyUniqueDTO dto);
     }
+
+    
 }

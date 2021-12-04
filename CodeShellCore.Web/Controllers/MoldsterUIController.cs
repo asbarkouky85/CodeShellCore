@@ -84,31 +84,14 @@ namespace CodeShellCore.Web.Controllers
                 version = item.Version;
 
             string loc = conf?.lang == null ? Request.GetLocaleFromCookie() : conf.lang;
-            string package = isDevBuild ? "dev" : "v" + version;
-            string path = Path.Combine(Shell.AppRootPath, Shell.PublicRoot, "dist", package);
-            string search = isDevBuild ? "dev*.js" : dom + "-" + package + "*.js";
-            Utils.CreateFolderForFile(path + "\\n.x");
-            string[] files = Directory.GetFiles(path, search);
 
             var mod = new IndexModel
             {
                 Title = GetDefaultTitle(loc),
-                Config = ServerConfig,
-                PackageId = package
+                Config = ServerConfig
             };
-            mod.Config.Locale = loc;
-            mod.Config.Env = JsEnvironment;
-            mod.Config.Version = version;
-            var urls = Shell.GetConfigAs<Dictionary<string, string>>("Services", false);
-            if (urls != null)
-            {
-                mod.Config.Urls = new Dictionary<string, string>();
-                foreach (var s in urls)
-                {
-                    mod.Config.Urls[s.Key] = WebUtils.FillConfigUrlParams(s.Value, Request);
-                }
-            }
 
+            mod.Config.Version = version;
 
             if (EmptyUrlHandler != null && Request.PathIsEmpty())
             {
@@ -116,9 +99,6 @@ namespace CodeShellCore.Web.Controllers
             }
 
             mod.Config.Domain = dom;
-            mod.Config.BaseURL = dom == DefaultDomain ? "/" : "/" + dom;
-            mod.Config.Hash = isDevBuild ? "" : "~7d078181";
-            mod.Chunks = files.Select(d => d.GetAfterLast("\\")).ToArray();
 
             return IndexPage(mod);
         }

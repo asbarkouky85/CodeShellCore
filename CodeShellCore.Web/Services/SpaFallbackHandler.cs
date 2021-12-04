@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CodeShellCore.Text;
 
 namespace CodeShellCore.Web.Services
 {
@@ -24,8 +25,26 @@ namespace CodeShellCore.Web.Services
 </body>
 </html>
 ";
-        protected virtual TenantInfoItem[] Tenants { get; }
-        protected virtual string DefaultTenant { get; }
+        protected virtual TenantInfoItem[] Tenants
+        {
+            get
+            {
+                var tens = GetTenants();
+                return tens.Select(e => e.Value).ToArray();
+            }
+        }
+        public virtual string DefaultTenant => Shell.GetConfigAs<string>("DefaultTenant", false);
+
+        protected virtual Dictionary<string, TenantInfoItem> GetTenants()
+        {
+            var _tenants = new Dictionary<string, TenantInfoItem>();
+            string infoFile = Path.Combine(Shell.AppRootPath, "tenantInfo.json");
+            if (File.Exists(infoFile))
+            {
+                _tenants = File.ReadAllText(infoFile).FromJson<Dictionary<string, TenantInfoItem>>();
+            }
+            return _tenants;
+        }
 
         /// <summary>
         /// Default is 'wwwroot/index.html'
@@ -38,13 +57,14 @@ namespace CodeShellCore.Web.Services
             {
                 foreach (var t in Tenants)
                 {
-                    if (req.Path.Value.StartsWith("/" + t.Code.ToLower()))
+                    if (req.Path.Value.StartsWith("/" + t.Code.Replace("-", "").ToLower()))
                     {
                         CurrentTenant = t.Code;
                         return "wwwroot/" + t.Code.ToLower() + "/index.html";
                     }
                 }
             }
+
             if (!string.IsNullOrEmpty(DefaultTenant))
             {
                 CurrentTenant = DefaultTenant;
@@ -53,6 +73,7 @@ namespace CodeShellCore.Web.Services
 
             return "wwwroot/index.html";
         }
+
         public virtual async Task HandleRequestAsync(HttpContext con)
         {
             var indexPath = GetIndexFilePath(con.Request);
@@ -65,11 +86,13 @@ namespace CodeShellCore.Web.Services
             con.Response.ContentType = "text/html";
             if (CurrentTenant != null)
             {
-                file = file.Replace("<base href=\"/\">", "<base href=\"/" + CurrentTenant + "/\">");
+                file = file.Replace("<base href=\"/\">", "<base href=\"/" + CurrentTenant.ToLower() + "/\">");
+
             }
-            
+            con.Response.Cookies.Append("current_tenant", CurrentTenant, new CookieOptions { Expires = DateTime.Now.AddYears(1), Path = "/" });
             await con.Response.WriteAsync(file);
-            
+
+
         }
     }
 }

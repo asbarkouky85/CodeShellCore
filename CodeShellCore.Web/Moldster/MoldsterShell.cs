@@ -10,6 +10,8 @@ namespace CodeShellCore.Web.Moldster
 {
     public abstract class MoldsterShell : WebShell
     {
+        protected override bool UseCors => true;
+        protected override bool IsSpa => true;
         public MoldsterShell(IConfiguration config) : base(config)
         {
 

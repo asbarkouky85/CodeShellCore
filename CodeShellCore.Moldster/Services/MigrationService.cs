@@ -2,7 +2,6 @@
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Angular.Models;
 using CodeShellCore.Moldster.Builder;
-using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
@@ -19,8 +18,7 @@ namespace CodeShellCore.Moldster.Services
         IResourceScriptGenerationService resTs => GetService<IResourceScriptGenerationService>();
 
         IInitializationService Init => GetService<IInitializationService>();
-        IAngularJsonService NgJsonService => GetService<IAngularJsonService>();
-        ITenantScriptGenerationService Builder => GetService<ITenantScriptGenerationService>();
+        ITenantScriptGenerationService TenantTs => GetService<ITenantScriptGenerationService>();
         public MigrationService(IServiceProvider provider) : base(provider)
         {
         }
@@ -179,8 +177,8 @@ namespace CodeShellCore.Moldster.Services
             Utils.DeleteDirectory(Path.Combine(Paths.UIRoot, "Core/codeshell"));
             Init.AddCodeShell(true);
             Init.AddUiBasicFiles(true);
-            Builder.AddTenantToAngularJson(tenant);
-            NgJsonService.UpdateFileFromDatabase();
+            TenantTs.AddAngularJson(tenant);
+            TenantTs.UpdateAngularJsonFromDatabase();
 
             string bootTemplate = Molds.BootMold;
             string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel

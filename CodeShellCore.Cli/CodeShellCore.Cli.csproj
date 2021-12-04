@@ -13,11 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <Compile Remove="Requests\Handlers\**" />
+    <EmbeddedResource Remove="Requests\Handlers\**" />
+    <None Remove="Requests\Handlers\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Requests\Handlers\" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
   </ItemGroup>
 
 </Project>

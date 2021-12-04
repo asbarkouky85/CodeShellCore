@@ -10,7 +10,6 @@ using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Sql;
-using CodeShellCore.Services;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
@@ -18,19 +17,19 @@ using System.Linq;
 
 namespace CodeShellCore.Moldster.Services
 {
-    public class MoldsterService : StandAloneService, IMoldsterService
+    public class MoldsterService : StandaloneConsoleService, IMoldsterService
     {
-        IConfigUnit unit => GetService<IConfigUnit>();
-        IDataService _data => GetService<IDataService>();
-        ILocalizationService _loc => GetService<ILocalizationService>();
-        IOutputWriter _output => GetService<IOutputWriter>();
-        IPageParameterDataService _pages => GetService<IPageParameterDataService>();
-        IDomainScriptGenerationService _domainTs => GetService<IDomainScriptGenerationService>();
-        IPageCategoryScriptGenerationService _catTs => GetService<IPageCategoryScriptGenerationService>();
-        IPageScriptGenerationService _pageTs => GetService<IPageScriptGenerationService>();
-        IPageHtmlGenerationService _html => GetService<IPageHtmlGenerationService>();
-        IPageCategoryHtmlService _proccess => GetService<IPageCategoryHtmlService>();
-        ITenantScriptGenerationService _builder => GetService<ITenantScriptGenerationService>();
+        IConfigUnit Unit => GetService<IConfigUnit>();
+        IDataService Data => GetService<IDataService>();
+        ILocalizationService Localization => GetService<ILocalizationService>();
+
+        IPageParameterDataService PageParameterSrv => GetService<IPageParameterDataService>();
+        IDomainScriptGenerationService DomainTs => GetService<IDomainScriptGenerationService>();
+        IPageCategoryScriptGenerationService CatTs => GetService<IPageCategoryScriptGenerationService>();
+        ITenantScriptGenerationService TenantTs => GetService<ITenantScriptGenerationService>();
+        IPageScriptGenerationService PageTs => GetService<IPageScriptGenerationService>();
+        IPageHtmlGenerationService PageHtml => GetService<IPageHtmlGenerationService>();
+        IPageCategoryHtmlService CatHtml => GetService<IPageCategoryHtmlService>();
 
         public MoldsterService(IServiceProvider provider) : base(provider)
         {
@@ -40,47 +39,44 @@ namespace CodeShellCore.Moldster.Services
 
         public virtual void RenderModuleDefinition(string modCode)
         {
-            string st = _data.GetAppStyle(modCode);
+            string st = Data.GetAppStyle(modCode);
 
             RenderMainComponent(modCode);
-            _builder.AddTenantToAngularJson(modCode);
+            TenantTs.AddAngularJson(modCode);
 
-            _domainTs.GenerateDomainModule(modCode, "Shared");
-            _domainTs.GenerateRoutes(modCode);
-            _domainTs.GenerateAppModule(modCode);
-            _domainTs.GenerateMainFile(modCode);
+            DomainTs.GenerateDomainModule(modCode, "Shared");
+            DomainTs.GenerateRoutes(modCode);
+            TenantTs.GenerateAppModule(modCode);
+            TenantTs.GenerateMainFile(modCode);
 
-
-            _loc.GenerateJsonFiles(modCode);
+            Localization.GenerateJsonFiles(modCode);
 
         }
 
-
-
         public virtual void RenderMainComponent(string mod)
         {
-            _output.Write("Writing Main Component for [" + mod + "] : ");
-            _html.GenerateMainComponentTemplate(mod);
-            _pageTs.GenerateAppComponent(mod);
-            _output.WriteLine();
+            Out.Write("Writing Main Component for [" + mod + "] : ");
+            PageHtml.GenerateMainComponentTemplate(mod);
+            PageTs.GenerateAppComponent(mod);
+            Out.WriteLine();
         }
 
         public virtual void RenderPage(string moduleName, PageRenderDTO dto)
         {
-            _output.Write("Writing Component \"" + dto.ViewPath + "\" : ");
-            _output.GotoColumn(9);
-            var data = _html.GenerateComponentTemplate(moduleName, dto);
-            _pageTs.GenerateComponent(moduleName, dto, data);
+            Out.Write("Writing Component \"" + dto.ViewPath + "\" : ");
+            Out.GotoColumn(9);
+            var data = PageHtml.GenerateComponentTemplate(moduleName, dto);
+            PageTs.GenerateComponent(moduleName, dto, data);
 
-            _output.WriteLine();
+            Out.WriteLine();
         }
 
         public SubmitResult ProcessForPage(long value)
         {
-            var p = unit.PageRepository.FindSingleAs(d => new { d.PageCategoryId, d.TenantId }, d => d.Id == value);
+            var p = Unit.PageRepository.FindSingleAs(d => new { d.PageCategoryId, d.TenantId }, d => d.Id == value);
             if (p != null)
             {
-                _proccess.ProcessForTenant(p.PageCategoryId.Value, p.TenantId);
+                CatHtml.ProcessForTenant(p.PageCategoryId.Value, p.TenantId);
             }
             return new SubmitResult();
         }
@@ -88,16 +84,16 @@ namespace CodeShellCore.Moldster.Services
         #region render domain
         public SubmitResult RenderDomainModule(RenderDTO dto)
         {
-            _output.WriteLine();
-            _output.Write("Rendering Module ");
+            Out.WriteLine();
+            Out.Write("Rendering Module ");
 
-            using (_output.Set(ConsoleColor.Yellow))
-                _output.Write(dto.Mod);
+            using (Out.Set(ConsoleColor.Yellow))
+                Out.Write(dto.Mod);
 
-            _output.WriteLine("----------------------------");
+            Out.WriteLine("----------------------------");
             string moduleName = dto.Mod;
 
-            var pages = _data.GetDomainPagesForRendering(dto.Mod, dto.NameChain, dto.Recursive ?? true);
+            var pages = Data.GetDomainPagesForRendering(dto.Mod, dto.NameChain, dto.Recursive ?? true);
 
             foreach (var e in pages)
             {
@@ -105,10 +101,10 @@ namespace CodeShellCore.Moldster.Services
 
             }
             var domToDefine = dto.NameChain.Contains("/") ? dto.NameChain.GetBeforeFirst("/") : dto.Domain;
-            _domainTs.GenerateDomainModule(dto.Mod, domToDefine);
-            _domainTs.GenerateRoutes(dto.Mod);
-            _loc.GenerateJsonFiles(dto.Mod);
-            _output.WriteLine();
+            DomainTs.GenerateDomainModule(dto.Mod, domToDefine);
+            DomainTs.GenerateRoutes(dto.Mod);
+            Localization.GenerateJsonFiles(dto.Mod);
+            Out.WriteLine();
             return new SubmitResult();
         }
 
@@ -120,7 +116,7 @@ namespace CodeShellCore.Moldster.Services
 
         public SubmitResult RenderAll(string modCode)
         {
-            var doms = _data.GetModuleDomains(modCode);
+            var doms = Data.GetModuleDomains(modCode);
 
             foreach (var d in doms)
             {
@@ -135,57 +131,57 @@ namespace CodeShellCore.Moldster.Services
         public SyncResult SyncTenants(long src, long tar)
         {
             var con = GetService<MoldsterContext>();
-            var wt = new ConsoleService(_output);
+            var wt = new ConsoleService(Out);
             using (var s = SW.Measure())
             {
                 var d = con.SyncTenants(src, tar);
                 if (d != null)
                 {
-                    _output.WriteLine();
-                    using (_output.Set(ConsoleColor.DarkCyan))
+                    Out.WriteLine();
+                    using (Out.Set(ConsoleColor.DarkCyan))
                     {
-                        _output.WriteLine("Synced tenant '" + d.SourceTenant + "' to '" + d.TargetTenant + "'");
+                        Out.WriteLine("Synced tenant '" + d.SourceTenant + "' to '" + d.TargetTenant + "'");
                     }
-                    _output.WriteLine("------------------------------------");
-                    _output.WriteLine();
+                    Out.WriteLine("------------------------------------");
+                    Out.WriteLine();
 
-                    _output.Write("Added Pages : ");
+                    Out.Write("Added Pages : ");
 
-                    _output.GotoColumn(5);
-                    _output.WriteLine(d.AddedPages.ToString());
+                    Out.GotoColumn(5);
+                    Out.WriteLine(d.AddedPages.ToString());
 
-                    _output.Write("Added Controls : ");
-                    _output.GotoColumn(5);
-                    _output.WriteLine(d.AddedPageControls.ToString());
+                    Out.Write("Added Controls : ");
+                    Out.GotoColumn(5);
+                    Out.WriteLine(d.AddedPageControls.ToString());
 
-                    _output.Write("Updated Pages : ");
-                    _output.GotoColumn(5);
-                    _output.WriteLine(d.UpdatedPages.ToString());
+                    Out.Write("Updated Pages : ");
+                    Out.GotoColumn(5);
+                    Out.WriteLine(d.UpdatedPages.ToString());
 
-                    _output.Write("Updated Controls : ");
-                    _output.GotoColumn(5);
-                    _output.WriteLine(d.UpdatedPageControls.ToString());
+                    Out.Write("Updated Controls : ");
+                    Out.GotoColumn(5);
+                    Out.WriteLine(d.UpdatedPageControls.ToString());
 
-                    _output.Write("Added Navigation Pages : ");
-                    _output.GotoColumn(5);
-                    _output.WriteLine(d.NavigationPages.ToString());
+                    Out.Write("Added Navigation Pages : ");
+                    Out.GotoColumn(5);
+                    Out.WriteLine(d.NavigationPages.ToString());
 
-                    _output.WriteLine();
+                    Out.WriteLine();
 
                 }
-                _output.Write("Updating viewparams");
-                SubmitResult res = _pages.UpdateTemplatePagesViewParamsJson(tar);
+                Out.Write("Updating viewparams");
+                SubmitResult res = PageParameterSrv.UpdateTemplatePagesViewParamsJson(tar);
                 wt.GotoColumn(wt.SuccessCol);
                 if (res.IsSuccess)
                 {
                     wt.WriteSuccess();
-                    _output.Write("Affected : " + res.AffectedRows);
+                    Out.Write("Affected : " + res.AffectedRows);
                 }
                 else
                 {
                     wt.WriteFailed();
                 }
-                _output.WriteLine();
+                Out.WriteLine();
                 return d;
             }
 
@@ -203,24 +199,24 @@ namespace CodeShellCore.Moldster.Services
 
         public void ProcessAllTemplates(string modCode)
         {
-            long tenantId = unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
-            var lst = unit.PageCategoryRepository.GetValues(d => d.Id, d => d.Pages.Any(e => e.TenantId == tenantId));
+            long tenantId = Unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            var lst = Unit.PageCategoryRepository.GetValues(d => d.Id, d => d.Pages.Any(e => e.TenantId == tenantId));
             foreach (long id in lst)
             {
-                _proccess.ProcessForTenant(id, tenantId);
-                _catTs.GeneratePageCategory(id);
+                CatHtml.ProcessForTenant(id, tenantId);
+                CatTs.GeneratePageCategory(id);
             }
         }
 
         public void ProcessDomainTemplates(string domain, string modCode)
         {
-            long tenantId = unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
-            IEnumerable<long> lst = unit.PageCategoryRepository.GetDomainTemplates(domain, tenantId);
+            long tenantId = Unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            IEnumerable<long> lst = Unit.PageCategoryRepository.GetDomainTemplates(domain, tenantId);
 
             foreach (long id in lst)
             {
-                _proccess.ProcessForTenant(id, tenantId);
-                _catTs.GeneratePageCategory(id);
+                CatHtml.ProcessForTenant(id, tenantId);
+                CatTs.GeneratePageCategory(id);
             }
         }
     }

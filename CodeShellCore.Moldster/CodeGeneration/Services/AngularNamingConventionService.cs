@@ -3,6 +3,7 @@ using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
@@ -93,14 +94,15 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
         public string ApplyConvension(string name, AppParts part)
         {
             var res = _angular_convesion(name);
+
             switch (part)
             {
                 case AppParts.Module:
-                    res = res.Replace("-module", "");
+                    res = new Regex("-module$").Replace(res, "");
                     res += ".module";
                     break;
                 case AppParts.Component:
-                    res = res.Replace("-component", "");
+                    res = new Regex("-component$").Replace(res, "");
                     res += ".component";
                     break;
                 case AppParts.BaseComponent:

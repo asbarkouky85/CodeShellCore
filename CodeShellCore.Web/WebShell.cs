@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.DependencyInjection;
+using CodeShellCore.Files.Logging;
 using CodeShellCore.Text;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Builder;
@@ -106,11 +107,6 @@ namespace CodeShellCore.Web
         {
             base.RegisterServices(services);
             services.AddCodeShellApplication();
-
-            //services.Configure<MvcOptions>(r =>
-            //{
-            //    r.EnableEndpointRouting = false;
-            //});
             var mvc = services.AddControllers();
 
             services.AddRouting(options =>

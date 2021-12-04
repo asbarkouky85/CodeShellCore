@@ -11,9 +11,11 @@ namespace CodeShellCore.Web.Controllers
     [QueryAuthorizeFilter(AllowAnonymous = true)]
     public abstract class SpaHomeController : BaseMvcController
     {
+        
         public async virtual Task Index()
         {
-            await GetService<ISpaFallbackHandler>().HandleRequestAsync(HttpContext);
+            var service = GetService<ISpaFallbackHandler>();
+            await service.HandleRequestAsync(HttpContext);
         }
     }
 }

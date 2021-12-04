@@ -120,7 +120,6 @@ namespace CodeShellCore.Moldster
 
             coll.AddTransient<IBundlingService, BundlingService>();
             coll.AddTransient<IInitializationService, InitializationService>();
-            coll.AddTransient<ITenantScriptGenerationService, TenantScriptGenerationService>();
             coll.AddTransient<ICustomTextService, CustomTextService>();
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IModulesService, ModulesService>();
@@ -132,7 +131,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<ISqlCommandService, SqlCommandService>();
             coll.AddTransient<INamingConventionService, AngularNamingConventionService>();
             coll.AddTransient<IMigrationService, MigrationService>();
-            coll.AddTransient<IAngularJsonService, AngularJsonService>();
+            
             coll.AddTransient<IEnvironmentsService, EnvironmentService>();
 
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
@@ -151,6 +150,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IPageScriptGenerationService, PageScriptGenerationService>();
             coll.AddTransient<IDomainScriptGenerationService, DomainScriptGenerationService>();
             coll.AddTransient<IResourceScriptGenerationService, ResourceScriptGenerationService>();
+            coll.AddTransient<ITenantScriptGenerationService, TenantScriptGenerationService>();
             coll.AddTransient<IPageCategoryHtmlService, PageCategoryHtmlService>();
             coll.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
 

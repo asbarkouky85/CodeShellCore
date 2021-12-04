@@ -18,10 +18,10 @@ namespace CodeShellCore.Moldster.Pages.Services
 {
     public class PageScriptGenerationService : ScriptGenerationServiceBase, IPageScriptGenerationService
     {
-        private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
-        private INamingConventionService _fileNameService => Store.GetInstance<INamingConventionService>();
-        private IPathsService _paths => Store.GetInstance<IPathsService>();
-        private IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
+        protected IMoldProvider Molds => Store.GetInstance<IMoldProvider>();
+        protected INamingConventionService Names => Store.GetInstance<INamingConventionService>();
+        protected IPathsService Paths => Store.GetInstance<IPathsService>();
+        protected IConfigUnit Unit => Store.GetInstance<IConfigUnit>();
 
         public PageScriptGenerationService(
             IServiceProvider prov,
@@ -32,8 +32,8 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
         {
-            PageDTO p = _unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
-            string scriptPath = _fileNameService.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".ts";
+            PageDTO p = Unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
+            string scriptPath = Names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".ts";
 
             using (Out.Set(ConsoleColor.DarkRed))
             {
@@ -51,9 +51,9 @@ namespace CodeShellCore.Moldster.Pages.Services
 
             string scriptTemplate = "";
             if (p.ParentHasResource)
-                scriptTemplate = _molds.ComponentMold;
+                scriptTemplate = Molds.ComponentMold;
             else
-                scriptTemplate = _molds.BasicComponent;
+                scriptTemplate = Molds.BasicComponent;
 
             if (p.BaseViewPath == null)
             {
@@ -64,14 +64,14 @@ namespace CodeShellCore.Moldster.Pages.Services
 
             string script = Writer.FillStringParameters(scriptTemplate, new ComponentTsModel
             {
-                BaseClassLocation = _fileNameService.GetBaseComponentFilePath(p.BaseViewPath, true),
+                BaseClassLocation = Names.GetBaseComponentFilePath(p.BaseViewPath, true),
                 BaseClass = p.BaseViewPath.GetAfterLast("/") + "Base",
                 ComponentName = p.Page.Name,
-                TemplateName = _fileNameService.ApplyConvension(p.Page.Name, AppParts.Component),
+                TemplateName = Names.ApplyConvension(p.Page.Name, AppParts.Component),
 
                 Domain = p.DomainName,
                 Resource = p.ResourceName,
-                Selector = _fileNameService.GetComponentSelector(p.Page.Name),
+                Selector = Names.GetComponentSelector(p.Page.Name),
                 ViewParams = data.ViewParams.ToJson(new Newtonsoft.Json.JsonSerializerSettings { StringEscapeHandling = Newtonsoft.Json.StringEscapeHandling.EscapeHtml }),
                 Sources = data.Sources.ToJsonIndent(),
                 CollectionId = p.CollectionId == null ? "null" : "'" + p.CollectionId + "'"
@@ -85,7 +85,7 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         public virtual void GenerateAppComponent(string mod)
         {
-            string path = _fileNameService.GetComponentFilePath(mod, "app") + ".ts";
+            string path = Names.GetComponentFilePath(mod, "app") + ".ts";
 
             using (Out.Set(ConsoleColor.DarkRed))
                 Out.Write(" Ts: ");
@@ -97,14 +97,14 @@ namespace CodeShellCore.Moldster.Pages.Services
                 return;
             }
 
-            string mainCompBase = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == mod);
-            string temp = _molds.MainComponentMold;
+            string mainCompBase = Unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == mod);
+            string temp = Molds.MainComponentMold;
             var model = new AppComponentModel
             {
                 Name = "AppComponent",
-                TemplateName = _fileNameService.ApplyConvension("AppComponent", AppParts.Component),
+                TemplateName = Names.ApplyConvension("AppComponent", AppParts.Component),
                 BaseComponentName = mainCompBase.GetAfterLast("/") + "Base",
-                BaseComponentPath = _fileNameService.GetBaseComponentFilePath(mainCompBase, true)
+                BaseComponentPath = Names.GetBaseComponentFilePath(mainCompBase, true)
             };
             string contents = Writer.FillStringParameters(temp, model);
 
@@ -117,8 +117,8 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         public void MoveScript(MovePageRequest r)
         {
-            string fromPath = Path.Combine(_paths.UIRoot, r.TenantCode, "app", r.FromPath + ".ts");
-            string toPath = Path.Combine(_paths.UIRoot, r.TenantCode, "app", r.ToPath + ".ts");
+            string fromPath = Path.Combine(Paths.UIRoot, r.TenantCode, "app", r.FromPath + ".ts");
+            string toPath = Path.Combine(Paths.UIRoot, r.TenantCode, "app", r.ToPath + ".ts");
             if (File.Exists(fromPath))
             {
                 Utils.CreateFolderForFile(toPath);
@@ -128,7 +128,7 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         public void DeleteScript(string tenantCode, string fromPath)
         {
-            string path = Path.Combine(_paths.UIRoot, tenantCode, "app", fromPath + ".ts");
+            string path = Path.Combine(Paths.UIRoot, tenantCode, "app", fromPath + ".ts");
             if (File.Exists(path))
             {
                 File.Delete(path);
