@@ -135,7 +135,18 @@ namespace CodeShellCore.Files.CsProject
             return _assemblyName;
         }
 
-        public string GetTagContent(string subject, string tag, string usePattern = null)
+        public string GetValueByTagName(string tag)
+        {
+            foreach (var con in contents)
+            {
+                var value = GetTagContent(con, tag);
+                if (value != null)
+                    return value;
+            }
+            return null;
+        }
+
+        protected virtual string GetTagContent(string subject, string tag, string usePattern = null)
         {
             var pat = usePattern ?? _tagPattern;
             string patternString = string.Format(pat, tag); //(isCore ?? IsCore) ? $"<{tag}>(.*?)</{tag}>" : @"\[assembly: " + tag + @"\((.*?)\)\]";
@@ -231,7 +242,7 @@ namespace CodeShellCore.Files.CsProject
 
         }
 
-        public void SetPublishProfile(string profileName, string version)
+        protected virtual void SetPublishProfile(string profileName, string version)
         {
             string publishFile = Path.Combine(Folder, "Properties\\PublishProfiles\\" + profileName + ".pubxml");
             if (!reader.FileExists(publishFile))

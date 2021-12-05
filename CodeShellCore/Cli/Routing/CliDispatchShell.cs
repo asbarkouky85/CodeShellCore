@@ -116,14 +116,22 @@ namespace CodeShellCore.Cli.Routing
         {
             Start(this);
             if (Arguments.Length < 1)
+            {
+                Console.WriteLine("No function provided");
                 return;
+            }
+                
 
             using (var sc = GetScope())
             {
                 __scoped = sc.ServiceProvider;
                 var h = Builder.GetHandler(Arguments[0], sc.ServiceProvider);
-                if (h == null)
+                if (h == null) 
+                {
+                    Console.WriteLine("Unknow function : " + Arguments[0]);
                     return;
+                }
+                
                 await h.HandleAsync(Arguments);
             }
 

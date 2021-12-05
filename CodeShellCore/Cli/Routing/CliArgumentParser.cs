@@ -15,23 +15,31 @@ namespace CodeShellCore.Cli.Routing
         }
         public virtual T Parse(string[] args)
         {
-            var t = Activator.CreateInstance<T>();
+            var requestInstance = Activator.CreateInstance<T>();
             ArgumentItem<T> valueFor = null;
 
             for (var i = 1; i < args.Length; i++)
             {
                 if (valueFor != null)
                 {
-                    valueFor.SetMemberValue(t, args[i]);
+                    valueFor.SetMemberValue(requestInstance, args[i]);
                     valueFor = null;
                 }
                 else if (TryGetArgumentItem(args[i], out ArgumentItem<T> item))
                 {
-                    valueFor = item;
+                    if (item.IsBool)
+                    {
+                        item.SetMemberValue(requestInstance, "True");
+                    }
+                    else
+                    {
+                        valueFor = item;
+                    }
+                   
                 }
                 else if (TryGetArgumentItem(i, out ArgumentItem<T> itemByOrder))
                 {
-                    itemByOrder.SetMemberValue(t, args[i]);
+                    itemByOrder.SetMemberValue(requestInstance, args[i]);
                 }
             }
 
@@ -39,7 +47,7 @@ namespace CodeShellCore.Cli.Routing
             {
                 throw new Exception(lst[0]);
             }
-            return t;
+            return requestInstance;
         }
 
         protected virtual bool TryGetArgumentItem(int order, out ArgumentItem<T> argItem)

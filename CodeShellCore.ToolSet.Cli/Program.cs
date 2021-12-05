@@ -13,7 +13,7 @@ namespace CodeShellCore.ToolSet
             {
                 if (Debugger.IsAttached)
                 {
-                    var testing = FunctionTypes.UploadNuget;
+                    var testing = FunctionTypes.GenerateDto;
 
                     switch (testing)
                     {
@@ -39,6 +39,10 @@ namespace CodeShellCore.ToolSet
                         case FunctionTypes.SyncLocAbp:
                             args = new[] { @"sync-loc-abp", @"modules\Maneh.IEC\src\Maneh.IEC.Domain.Shared\Localization\IEC" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
                             break;
+                        case FunctionTypes.GenerateDto:
+                            args = new[] { @"gen-dto", @"C:\_git\GitHub\CodeShellCore\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
+                            break;
+
                     }
                 }
 

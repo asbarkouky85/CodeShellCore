@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Cli.DtoGeneration
+namespace CodeShellCore.ToolSet.DtoGeneration
 {
     public class DtoGenerationRequest
     {
-        public string WorkingDirectory { get; set; }
+        public string Options { get; set; }
+        public string EntityType { get; set; }
+        public string ProjectFile { get; set; }
+        public bool NoBuild { get; set; }
     }
 }

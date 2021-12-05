@@ -28,12 +28,12 @@ namespace CodeShellCore.Types
 
         public static Type RealType(this Type type)
         {
-            if (type.IsNullable())
+            if (type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
                 return type.GetGenericArguments()[0];
             return type;
         }
 
-        
+
 
         public static IEnumerable<PropertyInfo> GetValueProperties(this Type type, bool ignoreId = true, string[] ignore = null)
         {
@@ -68,7 +68,7 @@ namespace CodeShellCore.Types
             return type.Equals(typeof(double));
         }
 
-        public static bool IsDecimalType(this Type type,bool includeNullable=false)
+        public static bool IsDecimalType(this Type type, bool includeNullable = false)
         {
             if (includeNullable)
                 type = type.RealType();
