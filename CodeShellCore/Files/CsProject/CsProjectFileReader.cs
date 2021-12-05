@@ -1,13 +1,11 @@
-﻿using System;
+﻿using CodeShellCore.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CodeShellCore.ToolSet
+namespace CodeShellCore.Files.CsProject
 {
-    public class PhysicalFileReader : IFileReader
+    public class CsProjectFileReader : ICsProjectFileReader
     {
         public bool FileExists(string path)
         {

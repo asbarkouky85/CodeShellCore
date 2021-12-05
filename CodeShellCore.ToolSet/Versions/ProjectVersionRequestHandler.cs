@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Cli.Routing;
+using CodeShellCore.Files.CsProject;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -31,8 +32,8 @@ namespace CodeShellCore.ToolSet.Versions
             string[] files = Directory.GetFiles(search, "*" + request.Project + ".csproj", SearchOption.AllDirectories);
             foreach (string path in files)
             {
-                ProjectFile f = new ProjectFile(path, new PhysicalFileReader());
-                f.SetVersion(request);
+                CsProjectFile f = new CsProjectFile(path, new CsProjectFileReader());
+                f.SetVersion(request.Version, request.IsWeb ? request.PublishProfile : null);
                 f.Save();
             }
 

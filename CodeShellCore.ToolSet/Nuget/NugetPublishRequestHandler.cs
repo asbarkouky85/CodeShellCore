@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using CodeShellCore.ToolSet.Versions;
+using CodeShellCore.Files.CsProject;
 
 namespace CodeShellCore.ToolSet.Nuget
 {
@@ -45,7 +46,7 @@ namespace CodeShellCore.ToolSet.Nuget
 
             foreach (var project in files)
             {
-                ProjectFile f = new ProjectFile(project, new PhysicalFileReader());
+                CsProjectFile f = new CsProjectFile(project, new CsProjectFileReader());
                 string assem = f.GetAssemblyName();
                 string version = f.GetVersion(4);
                 string[] nugets = Directory.GetFiles(f.Folder, "*." + version + ".nupkg", SearchOption.AllDirectories);

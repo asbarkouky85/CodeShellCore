@@ -95,6 +95,14 @@ namespace CodeShellCore.Text
             return EnglishNumbers;
         }
 
+        public static string ToFolderPath(this string st)
+        {
+            st.Replace('/', '\\');
+            if (st[st.Length - 1] != '\\')
+                st += '\\';
+            return st;
+        }
+
 
         public static T FromJson<T>(this string st)
         {

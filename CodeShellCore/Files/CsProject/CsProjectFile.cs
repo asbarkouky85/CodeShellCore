@@ -1,19 +1,18 @@
-﻿using CodeShellCore.ToolSet.Versions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace CodeShellCore.ToolSet
+namespace CodeShellCore.Files.CsProject
 {
-    public class ProjectFile
+    public class CsProjectFile
     {
         private List<string> contents;
-        Dictionary<string, ParameterValue> values = new Dictionary<string, ParameterValue>();
+        Dictionary<string, CsProjectParameter> values = new Dictionary<string, CsProjectParameter>();
 
         private int _targetFrameWorkLine = 5;
         private string _filePath;
-        private readonly IFileReader reader;
+        private readonly ICsProjectFileReader reader;
         private string _tagPattern;
         private string _tagFormatter;
         private string _assemblyName;
@@ -21,7 +20,7 @@ namespace CodeShellCore.ToolSet
         public string ProjectName { get; private set; }
         public bool IsCore { get; private set; }
 
-        public ProjectFile(string path, IFileReader reader)
+        public CsProjectFile(string path, ICsProjectFileReader reader)
         {
             if (!reader.FileExists(path))
                 throw new FileNotFoundException(path);
@@ -31,7 +30,7 @@ namespace CodeShellCore.ToolSet
             contents = reader.GetAllLines(path);
             IsCore = _isCore(out _targetFrameWorkLine);
             if (!IsCore)
-                _targetFrameWorkLine = contents.Count >= 5 ? 5 : (contents.Count - 1);
+                _targetFrameWorkLine = contents.Count >= 5 ? 5 : contents.Count - 1;
             _tagPattern = IsCore ? "<{0}>(.*?)</{0}>" : @"\[assembly: {0}\((.*?)\)\]";
             _tagFormatter = IsCore ? "<{0}>{1}</{0}>" : "[assembly: {0}(\"{1}\")]";
 
@@ -61,7 +60,7 @@ namespace CodeShellCore.ToolSet
                     var val = GetTagContent(contents[i], v);
                     if (val != null)
                     {
-                        values[v] = new ParameterValue
+                        values[v] = new CsProjectParameter
                         {
                             Name = v,
                             Value = val,
@@ -96,8 +95,8 @@ namespace CodeShellCore.ToolSet
                 {
                     for (var p = 0; p < vParams.Length; p++)
                     {
-                        ParameterValue pValue = new ParameterValue { Name = vParams[p] };
-                        if (values.TryGetValue(vParams[p], out ParameterValue ex))
+                        CsProjectParameter pValue = new CsProjectParameter { Name = vParams[p] };
+                        if (values.TryGetValue(vParams[p], out CsProjectParameter ex))
                             pValue = ex;
                         else
                             values[vParams[p]] = pValue;
@@ -176,26 +175,58 @@ namespace CodeShellCore.ToolSet
             reader.WriteAllLines(_filePath, contents);
         }
 
-        public void SetVersion(ProjectVersionRequest req)
+        private string getShortVersion(string version)
+        {
+            string[] parts = version.Split(new char[] { '.' });
+            string[] full = new string[] { "1", "0" };
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (i >= full.Length)
+                    break;
+                full[i] = parts[i];
+            }
+
+            return string.Join(".", full);
+        }
+
+        private string getLongVersionString(string version)
+        {
+            string[] parts = version.Split(new char[] { '.' });
+            if (parts.Length >= 4)
+                return version;
+
+            string[] full = new string[] { "1", "0", "0", "0" };
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (i >= full.Length)
+                    break;
+                full[i] = parts[i];
+            }
+            return string.Join(".", full);
+        }
+
+        public void SetVersion(string version, string publishProfile = null)
         {
             if (IsCore)
             {
-                values["Version"].Value = req.GetLongVersionString();
-                values["AssemblyVersion"].Value = req.GetLongVersionString();
-                values["FileVersion"].Value = req.GetLongVersionString();
+                values["Version"].Value = getLongVersionString(version);
+                values["AssemblyVersion"].Value = getLongVersionString(version);
+                values["FileVersion"].Value = getLongVersionString(version);
                 values["AssemblyName"].Value = GetAssemblyName();
             }
             else
             {
-                values["AssemblyTitle"].Value = ProjectName + "-v" + req.GetShortVersion();
-                values["AssemblyProduct"].Value = ProjectName + "-v" + req.GetShortVersion();
-                values["AssemblyVersion"].Value = req.GetShortVersion();
-                values["AssemblyFileVersion"].Value = req.GetShortVersion();
+                values["AssemblyTitle"].Value = ProjectName + "-v" + getShortVersion(version);
+                values["AssemblyProduct"].Value = ProjectName + "-v" + getShortVersion(version);
+                values["AssemblyVersion"].Value = getShortVersion(version);
+                values["AssemblyFileVersion"].Value = getShortVersion(version);
             }
 
-            if (req.IsWeb)
+            if (publishProfile != null)
             {
-                SetPublishProfile(req.PublishProfile, req.GetLongVersionString());
+                SetPublishProfile(publishProfile, getLongVersionString(version));
             }
 
         }
@@ -220,7 +251,7 @@ namespace CodeShellCore.ToolSet
             }
         }
 
-        void ChangeParameterValue(ParameterValue v)
+        void ChangeParameterValue(CsProjectParameter v)
         {
             string tag = v.Value;
             string patternString = string.Format(_tagPattern, v.Name);

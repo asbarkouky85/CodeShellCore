@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace CodeShellCore.ToolSet
+namespace CodeShellCore.Files.CsProject
 {
-    public interface IFileReader
+    public interface ICsProjectFileReader
     {
         bool FileExists(string path);
         string GetFileName(string path);
