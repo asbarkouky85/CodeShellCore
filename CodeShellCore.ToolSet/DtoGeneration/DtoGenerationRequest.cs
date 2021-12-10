@@ -10,7 +10,9 @@ namespace CodeShellCore.ToolSet.DtoGeneration
     {
         public string Options { get; set; }
         public string EntityType { get; set; }
-        public string ProjectFile { get; set; }
+        public string WorkingDirectory { get; set; }
+        public string EntityProject { get; set; }
+        public string OutputProject { get; set; }
         public bool NoBuild { get; set; }
     }
 }

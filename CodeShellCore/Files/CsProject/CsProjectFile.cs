@@ -7,8 +7,9 @@ namespace CodeShellCore.Files.CsProject
 {
     public class CsProjectFile
     {
-        private List<string> contents;
-        Dictionary<string, CsProjectParameter> values = new Dictionary<string, CsProjectParameter>();
+        private List<string> allLines;
+        Dictionary<string, CsProjectParameter> replacableParameters = new Dictionary<string, CsProjectParameter>();
+        Dictionary<string, string> _parameterCache = new Dictionary<string, string>();
 
         private int _targetFrameWorkLine = 5;
         private string _filePath;
@@ -19,6 +20,18 @@ namespace CodeShellCore.Files.CsProject
         public string Folder { get; private set; }
         public string ProjectName { get; private set; }
         public bool IsCore { get; private set; }
+        public string DefaultNamespace => GetValueByTagName("RootNamespace") ?? GetAssemblyName();
+
+        public static bool TryFindCsProj(string directory, string projectName, out CsProjectFile file)
+        {
+            var files = Directory.GetFiles(directory, "*" + projectName + ".csproj", SearchOption.AllDirectories);
+            file = null;
+            if (files.Length > 0)
+            {
+                file = new CsProjectFile(files[0], new CsProjectFileReader());
+            }
+            return file != null;
+        }
 
         public CsProjectFile(string path, ICsProjectFileReader reader)
         {
@@ -27,10 +40,10 @@ namespace CodeShellCore.Files.CsProject
 
             ProjectName = reader.GetFileName(path).Replace(".csproj", "");
             Folder = reader.GetFolderFullName(path);
-            contents = reader.GetAllLines(path);
+            allLines = reader.GetAllLines(path);
             IsCore = _isCore(out _targetFrameWorkLine);
             if (!IsCore)
-                _targetFrameWorkLine = contents.Count >= 5 ? 5 : contents.Count - 1;
+                _targetFrameWorkLine = allLines.Count >= 5 ? 5 : allLines.Count - 1;
             _tagPattern = IsCore ? "<{0}>(.*?)</{0}>" : @"\[assembly: {0}\((.*?)\)\]";
             _tagFormatter = IsCore ? "<{0}>{1}</{0}>" : "[assembly: {0}(\"{1}\")]";
 
@@ -43,7 +56,7 @@ namespace CodeShellCore.Files.CsProject
                 _filePath = Path.Combine(Folder, @"Properties\AssemblyInfo.cs");
                 if (!reader.FileExists(_filePath))
                     throw new FileNotFoundException(_filePath);
-                contents = reader.GetAllLines(_filePath);
+                allLines = reader.GetAllLines(_filePath);
             }
             ReadVersionParameters();
             this.reader = reader;
@@ -52,28 +65,30 @@ namespace CodeShellCore.Files.CsProject
         private List<string> RemoveExistingTags(string[] vParams)
         {
             List<string> nList = new List<string>();
-            for (var i = 0; i < contents.Count; i++)
+            for (var i = 0; i < allLines.Count; i++)
             {
                 bool found = false;
                 foreach (var v in vParams)
                 {
-                    var val = GetTagContent(contents[i], v);
+                    var val = GetTagContent(allLines[i], v);
                     if (val != null)
                     {
-                        values[v] = new CsProjectParameter
+                        replacableParameters[v] = new CsProjectParameter
                         {
                             Name = v,
                             Value = val,
-                            Line = contents[i]
+                            Line = allLines[i]
                         };
                         found = true;
                     }
                 }
                 if (!found)
-                    nList.Add(contents[i]);
+                    nList.Add(allLines[i]);
             }
             return nList;
         }
+
+
 
         public void ReadVersionParameters()
         {
@@ -84,22 +99,22 @@ namespace CodeShellCore.Files.CsProject
             else
                 vParams = new[] { "AssemblyTitle", "AssemblyProduct", "AssemblyVersion", "AssemblyFileVersion" };
 
-            contents = RemoveExistingTags(vParams);
+            allLines = RemoveExistingTags(vParams);
 
             bool added = false;
             var nContents = new List<string>();
-            for (var i = 0; i < contents.Count; i++)
+            for (var i = 0; i < allLines.Count; i++)
             {
-                nContents.Add(contents[i]);
+                nContents.Add(allLines[i]);
                 if (i >= _targetFrameWorkLine && !added)
                 {
                     for (var p = 0; p < vParams.Length; p++)
                     {
                         CsProjectParameter pValue = new CsProjectParameter { Name = vParams[p] };
-                        if (values.TryGetValue(vParams[p], out CsProjectParameter ex))
+                        if (replacableParameters.TryGetValue(vParams[p], out CsProjectParameter ex))
                             pValue = ex;
                         else
-                            values[vParams[p]] = pValue;
+                            replacableParameters[vParams[p]] = pValue;
 
                         string line = "    " + string.Format(_tagFormatter, pValue.Name, pValue.Value);
                         pValue.Index = i + p + 1;
@@ -108,7 +123,7 @@ namespace CodeShellCore.Files.CsProject
                     }
                 }
             }
-            contents = nContents;
+            allLines = nContents;
 
         }
 
@@ -116,9 +131,9 @@ namespace CodeShellCore.Files.CsProject
         {
             string targ = null;
             targetFrameWorkLine = 0;
-            for (var i = 0; i < contents.Count; i++)
+            for (var i = 0; i < allLines.Count; i++)
             {
-                targ = GetTagContent(contents[i], "TargetFramework", "<{0}>(.*?)</{0}>");
+                targ = GetTagContent(allLines[i], "TargetFramework", "<{0}>(.*?)</{0}>");
                 if (targ != null)
                 {
                     targetFrameWorkLine = i;
@@ -130,18 +145,24 @@ namespace CodeShellCore.Files.CsProject
 
         public string GetAssemblyName()
         {
-            _assemblyName = values["AssemblyName"].Value;
+            _assemblyName = replacableParameters["AssemblyName"].Value;
             _assemblyName = string.IsNullOrEmpty(_assemblyName) ? ProjectName : _assemblyName;
             return _assemblyName;
         }
 
         public string GetValueByTagName(string tag)
         {
-            foreach (var con in contents)
+            if (_parameterCache.TryGetValue(tag, out string cachedValue))
+                return cachedValue;
+            
+            foreach (var con in allLines)
             {
                 var value = GetTagContent(con, tag);
                 if (value != null)
+                {
+                    _parameterCache[tag] = value;
                     return value;
+                }
             }
             return null;
         }
@@ -160,7 +181,7 @@ namespace CodeShellCore.Files.CsProject
 
         public string GetVersion(int digits)
         {
-            string ver = values["AssemblyVersion"].Value;
+            string ver = replacableParameters["AssemblyVersion"].Value;
 
             if (string.IsNullOrEmpty(ver))
                 return null;
@@ -179,11 +200,11 @@ namespace CodeShellCore.Files.CsProject
 
         public void Save()
         {
-            foreach (var item in values)
+            foreach (var item in replacableParameters)
             {
                 ChangeParameterValue(item.Value);
             }
-            reader.WriteAllLines(_filePath, contents);
+            reader.WriteAllLines(_filePath, allLines);
         }
 
         private string getShortVersion(string version)
@@ -222,17 +243,17 @@ namespace CodeShellCore.Files.CsProject
         {
             if (IsCore)
             {
-                values["Version"].Value = getLongVersionString(version);
-                values["AssemblyVersion"].Value = getLongVersionString(version);
-                values["FileVersion"].Value = getLongVersionString(version);
-                values["AssemblyName"].Value = GetAssemblyName();
+                replacableParameters["Version"].Value = getLongVersionString(version);
+                replacableParameters["AssemblyVersion"].Value = getLongVersionString(version);
+                replacableParameters["FileVersion"].Value = getLongVersionString(version);
+                replacableParameters["AssemblyName"].Value = GetAssemblyName();
             }
             else
             {
-                values["AssemblyTitle"].Value = ProjectName + "-v" + getShortVersion(version);
-                values["AssemblyProduct"].Value = ProjectName + "-v" + getShortVersion(version);
-                values["AssemblyVersion"].Value = getShortVersion(version);
-                values["AssemblyFileVersion"].Value = getShortVersion(version);
+                replacableParameters["AssemblyTitle"].Value = ProjectName + "-v" + getShortVersion(version);
+                replacableParameters["AssemblyProduct"].Value = ProjectName + "-v" + getShortVersion(version);
+                replacableParameters["AssemblyVersion"].Value = getShortVersion(version);
+                replacableParameters["AssemblyFileVersion"].Value = getShortVersion(version);
             }
 
             if (publishProfile != null)
@@ -268,8 +289,8 @@ namespace CodeShellCore.Files.CsProject
             string patternString = string.Format(_tagPattern, v.Name);
             string changeTo = string.Format(_tagFormatter, v.Name, v.Value); // IsCore ? $"<{tag}>{v.Value}</{tag}>" : @"\[assembly: " + tag + $"(\"{v.Value}\")]";
             Regex pattern = new Regex(patternString);
-            var st = pattern.Replace(v.Line ?? contents[v.Index], changeTo);
-            contents[v.Index] = st;
+            var st = pattern.Replace(v.Line ?? allLines[v.Index], changeTo);
+            allLines[v.Index] = st;
         }
     }
 }

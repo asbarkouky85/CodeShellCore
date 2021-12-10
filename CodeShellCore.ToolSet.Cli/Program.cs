@@ -40,7 +40,7 @@ namespace CodeShellCore.ToolSet
                             args = new[] { @"sync-loc-abp", @"modules\Maneh.IEC\src\Maneh.IEC.Domain.Shared\Localization\IEC" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
                             break;
                         case FunctionTypes.GenerateDto:
-                            args = new[] { @"gen-dto", @"C:\_git\GitHub\CodeShellCore\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
+                            args = new[] { @"gen-dto", @"C:\_git\Asga\FMS_git", "FMS.Assets.Domain", "Item", "gcul", "-o", "FMS.Assets.Application.Contracts" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
                             break;
 
                     }

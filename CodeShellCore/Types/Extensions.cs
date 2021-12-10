@@ -61,6 +61,55 @@ namespace CodeShellCore.Types
             return type.GetInterfaces().Contains(check);
         }
 
+        public static string ToShortString(this Type type)
+        {
+            if (type == typeof(string))
+                return "string";
+            if (type == typeof(long))
+                return "long";
+            if (type == typeof(double))
+                return "double";
+            if (type == typeof(int))
+                return "int";
+            if (type == typeof(decimal))
+                return "decimal";
+            if (type == typeof(float))
+                return "float";
+            if (type == typeof(short))
+                return "short";
+            if (type == typeof(bool))
+                return "bool";
+            if (type == typeof(byte))
+                return "byte";
+            return type.Name;
+        } 
+
+        public static string ToPropertyTypeString(this Type type)
+        {
+           
+            var typeString = "";
+            if (type.IsGenericType)
+            {
+                var nullable = type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+                var genericArgs = type.GetGenericArguments();
+                if (genericArgs.Length == 1 && nullable && genericArgs.First().IsValueType)
+                {
+                    typeString = genericArgs.First().ToShortString() + "?";
+                }
+                else
+                {
+                    typeString = type.Name + "<";
+                    typeString += string.Join(',', genericArgs.Select(e => e.ToShortString()));
+                    typeString += ">";
+                }
+            }
+            else
+            {
+                typeString = type.ToShortString();
+            }
+            return typeString;
+        }
+
         public static bool IsDouble(this Type type, bool includeNullable = false)
         {
             if (includeNullable)

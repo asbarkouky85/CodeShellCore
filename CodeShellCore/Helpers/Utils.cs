@@ -98,7 +98,7 @@ namespace CodeShellCore.Helpers
             return st?.Replace("{PARENT}", sol);
         }
 
-        
+
 
         public static void CopyStringToClipBoard(string st)
         {
@@ -184,7 +184,7 @@ namespace CodeShellCore.Helpers
             return st;
         }
 
-        public static void RunCmdCommand(string command)
+        public static void RunCmdCommand(string command, string workingDirectory = null)
         {
             Process process = new Process
             {
@@ -194,8 +194,8 @@ namespace CodeShellCore.Helpers
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     CreateNoWindow = false,
-
-                    UseShellExecute = false
+                    UseShellExecute = false,
+                    WorkingDirectory = workingDirectory
                 }
             };
             process.Start();
@@ -359,6 +359,6 @@ namespace CodeShellCore.Helpers
             return long.Parse(st);
         }
 
-        
+
     }
 }
