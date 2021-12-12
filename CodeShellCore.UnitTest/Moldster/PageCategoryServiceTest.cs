@@ -9,6 +9,7 @@ using Moq;
 using CodeShellCore.Moldster.Configurator.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.PageCategories;
 
 namespace CodeShellCore.UnitTest.Moldster
 {

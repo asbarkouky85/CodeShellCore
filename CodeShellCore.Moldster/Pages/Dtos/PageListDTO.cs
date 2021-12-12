@@ -1,10 +1,11 @@
-﻿using CodeShellCore.Text;
+﻿using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Pages.Dtos
 {
     public class PageListDTO
     {
@@ -42,7 +43,7 @@ namespace CodeShellCore.Moldster.Dto
                     ViewPath = e.ViewPath,
                     HasRoute = e.HasRoute,
                     CanEmbed = e.CanEmbed,
-                    PageType = e.HasRoute && e.CanEmbed ? "Route,Embedded" : (e.HasRoute ? "Route" : "Embedded"),
+                    PageType = e.HasRoute && e.CanEmbed ? "Route,Embedded" : e.HasRoute ? "Route" : "Embedded",
                     RouteParameters = e.RouteParameters,
                     ResourceName = e.ResourceId.HasValue ? e.Resource.Name : "",
                     TenantId = e.TenantId,

@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Navigation;
+using CodeShellCore.Moldster.Navigation.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;

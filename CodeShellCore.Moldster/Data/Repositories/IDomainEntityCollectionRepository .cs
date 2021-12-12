@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;

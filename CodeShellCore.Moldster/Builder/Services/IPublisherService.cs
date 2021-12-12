@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Tenants.Dtos;
 using CodeShellCore.Net;
 using CodeShellCore.Services;
 using System;

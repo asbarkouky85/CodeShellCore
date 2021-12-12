@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.PageCategories.Dtos
 {
     public class PageCategoryDTO
     {
@@ -20,7 +20,7 @@ namespace CodeShellCore.Moldster.Dto
                     Category = e,
                     Resource = e.Resource == null ? null : e.Resource.Name,
                     Domain = e.Resource == null ? null : e.Domain.Name,
-                    ResourceDomain = e.Resource == null ? null : (e.Resource.Domain == null ? null : e.Resource.Domain.NameChain)
+                    ResourceDomain = e.Resource == null ? null : e.Resource.Domain == null ? null : e.Resource.Domain.NameChain
                 };
             }
         }

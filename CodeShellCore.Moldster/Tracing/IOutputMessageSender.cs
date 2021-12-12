@@ -1,11 +1,7 @@
-﻿using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Services.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CodeShellCore.Services.Notifications;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Moldster.Configurator
+namespace CodeShellCore.Moldster.Tracing
 {
     public interface IOutputMessageSender : IPushingContract
     {

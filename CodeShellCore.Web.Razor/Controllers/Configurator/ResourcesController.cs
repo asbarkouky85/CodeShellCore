@@ -1,13 +1,13 @@
 ﻿using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Resources.Dtos;
+using CodeShellCore.Moldster.Resources;
 
 namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {

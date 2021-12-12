@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Configurator;
+﻿using CodeShellCore.Moldster.Tracing;
 using CodeShellCore.Web.Notifiers;
 
 namespace CodeShellCore.Web.Razor.SignalR

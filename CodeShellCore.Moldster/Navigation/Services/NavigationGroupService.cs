@@ -1,16 +1,13 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Navigation.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace CodeShellCore.Moldster.Configurator.Services
+namespace CodeShellCore.Moldster.Navigation.Services
 {
     public class NavigationGroupService : EntityService<NavigationGroup>
     {

@@ -1,10 +1,9 @@
-﻿using CodeShellCore.Moldster;
-using CodeShellCore.Data.Recursion;
+﻿using CodeShellCore.Data.Recursion;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Definitions
+namespace CodeShellCore.Moldster.Domains.Dtos
 {
     public class DomainRecursive
     {
@@ -19,7 +18,7 @@ namespace CodeShellCore.Moldster.Definitions
             {
                 Id = dom.Id,
                 Name = dom.Name,
-                NameChain=dom.NameChain,
+                NameChain = dom.NameChain,
                 SubDomains = new List<DomainRecursive>()
             };
             foreach (var c in dom.Children)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Configurator.Dtos
+namespace CodeShellCore.Moldster.Pages.Dtos
 {
     public class FindPageRequest
     {

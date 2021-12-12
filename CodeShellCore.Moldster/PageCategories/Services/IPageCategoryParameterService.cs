@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;

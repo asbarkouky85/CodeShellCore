@@ -1,8 +1,9 @@
 ﻿using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.Pages.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,9 +1,6 @@
 ﻿using CodeShellCore.Linq;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.CodeGeneration;
-using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Text;
 using CodeShellCore.Web.Controllers;
@@ -17,6 +14,8 @@ using CodeShellCore.Moldster.Domains.Services;
 using CodeShellCore.Moldster.Builder.Services;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Sql.Dtos;
 
 namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {

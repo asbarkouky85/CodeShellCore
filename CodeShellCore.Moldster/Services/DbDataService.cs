@@ -1,10 +1,12 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Definitions;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Tenants.Dtos;
 using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Navigation.Dtos
 {
     public class NavigationGroupDTO
     {

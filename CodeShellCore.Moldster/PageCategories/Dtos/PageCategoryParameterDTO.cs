@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.PageCategories.Dtos
 {
-    
+
     public class PageCategoryParameterDTO : IEditable
     {
         public long Id { get; set; }

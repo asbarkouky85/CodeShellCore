@@ -1,9 +1,6 @@
 ﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.Web.Razor.General.Moldster
 {

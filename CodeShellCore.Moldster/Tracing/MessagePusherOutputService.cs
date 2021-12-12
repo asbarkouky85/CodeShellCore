@@ -1,10 +1,9 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Http.Pushing;
-using CodeShellCore.Moldster.Dto;
 using System;
 using System.Drawing;
 
-namespace CodeShellCore.Moldster.Configurator
+namespace CodeShellCore.Moldster.Tracing
 {
     public class MessagePusherOutputService : IOutputWriter
     {
@@ -70,7 +69,7 @@ namespace CodeShellCore.Moldster.Configurator
 
             if (dest > current)
             {
-                double tabs_dec = ((double)(dest - current) / (double)8);
+                double tabs_dec = (dest - current) / (double)8;
                 int tabs = (int)tabs_dec;
                 if (tabs < tabs_dec)
                     tabs += 1;
@@ -94,7 +93,7 @@ namespace CodeShellCore.Moldster.Configurator
 
             var str = col.ToString();
             Color clr = Color.FromName(str);
-            
+
             var h = clr.ToHexCode();
             return h;
         }

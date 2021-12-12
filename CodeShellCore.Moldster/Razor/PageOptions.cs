@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeShellCore.Text;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 
 namespace CodeShellCore.Moldster.Razor
 {

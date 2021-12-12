@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Pages.Dtos;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {

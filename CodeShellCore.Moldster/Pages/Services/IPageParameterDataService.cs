@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Configurator.Dtos;
+using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;

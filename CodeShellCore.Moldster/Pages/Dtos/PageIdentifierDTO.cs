@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Pages.Dtos
 {
-   public class PageIdentifierDTO
+    public class PageIdentifierDTO
     {
         public string Domain { get; set; }
         public string Page { get; set; }

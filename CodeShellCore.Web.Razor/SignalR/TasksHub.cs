@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Configurator;
+﻿using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Web.Notifiers;
 using System;
 using System.Collections.Generic;

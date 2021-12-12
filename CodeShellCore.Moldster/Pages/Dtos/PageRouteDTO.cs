@@ -1,9 +1,6 @@
 ﻿using CodeShellCore.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Pages.Dtos
 {
     public class PageRouteDTO : IDTO<PageRoute>
     {

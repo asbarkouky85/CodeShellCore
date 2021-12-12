@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Definitions
+namespace CodeShellCore.Moldster.Tenants.Dtos
 {
     public class TenantInfoItem
     {

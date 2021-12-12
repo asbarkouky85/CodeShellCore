@@ -3,10 +3,6 @@ using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Configurator;
-using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Web.Controllers;
@@ -22,6 +18,9 @@ using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Builder.Dtos;
 using CodeShellCore.Moldster.Sql;
+using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.Sql.Dtos;
+using CodeShellCore.Moldster.Builder;
 
 namespace CodeShellCore.Web.Razor.Controllers
 {

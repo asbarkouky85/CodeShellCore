@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using CodeShellCore.Data.Helpers;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 

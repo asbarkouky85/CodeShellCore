@@ -1,18 +1,13 @@
-﻿using System;
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Text;
+using CodeShellCore.Web.Razor.Models;
+using CodeShellCore.Web.Razor.Validation;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-using CodeShellCore.Web.Razor.Models;
-using CodeShellCore.Web.Razor.Validation;
-using CodeShellCore.Helpers;
-using CodeShellCore.Text;
-using CodeShellCore.Web.Razor.General.Moldster;
-using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster.CodeGeneration;
 
 namespace CodeShellCore.Web.Razor.Elements.Angular
 {

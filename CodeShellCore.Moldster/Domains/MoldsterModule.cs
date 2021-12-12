@@ -1,8 +1,5 @@
-﻿using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Dto;
-using System;
+﻿using CodeShellCore.Moldster.PageCategories.Dtos;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.Moldster.Domains
 {

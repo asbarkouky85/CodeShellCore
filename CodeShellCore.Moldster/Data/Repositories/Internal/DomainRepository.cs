@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Data.Recursion;
-using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.Domains;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {

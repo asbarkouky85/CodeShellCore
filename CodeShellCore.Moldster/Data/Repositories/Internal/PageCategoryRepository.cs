@@ -2,11 +2,12 @@
 using System.Linq;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Moldster.Data.Repositories;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Text;
+using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Resources;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {

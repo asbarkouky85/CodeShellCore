@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeShellCore.Moldster.Dto;
 using System.Linq;
-using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Pages;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {

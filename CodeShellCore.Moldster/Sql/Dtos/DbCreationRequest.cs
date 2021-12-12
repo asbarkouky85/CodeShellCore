@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CodeShellCore.Moldster.Definitions
+﻿namespace CodeShellCore.Moldster.Sql.Dtos
 {
     public class DbCreationRequest
     {

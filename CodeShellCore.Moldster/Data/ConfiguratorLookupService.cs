@@ -1,8 +1,9 @@
 ﻿using CodeShellCore.Data.Lookups;
-using CodeShellCore.Moldster.Dto;
 using System.Collections.Generic;
 using System.Dynamic;
 using CodeShellCore.Moldster.Domains.Services;
+using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.Resources;
 
 namespace CodeShellCore.Moldster.Data
 {

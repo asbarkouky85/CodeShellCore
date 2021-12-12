@@ -1,18 +1,17 @@
 ﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Resources.Dtos;
 using CodeShellCore.Web.Razor.General.Moldster;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace CodeShellCore.Web.Razor.Tables.Moldster
 {
     public class MoldsterCellWriter<T> : CellWriter
     {
-        
+
         protected ControlDTO Parent { get; set; }
         protected string Identifier { get; set; }
 

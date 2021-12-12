@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Security;
 using System;
 using System.Collections.Generic;

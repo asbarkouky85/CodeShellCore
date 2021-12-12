@@ -1,10 +1,10 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Data.Recursion;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.Domains;
 
 namespace CodeShellCore.Moldster.Data.Repositories
 {

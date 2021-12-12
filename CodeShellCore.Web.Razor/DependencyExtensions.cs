@@ -10,7 +10,6 @@ using CodeShellCore.Text.Localization;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Razor.Services;
-using CodeShellCore.Moldster.Configurator;
 using CodeShellCore.Moldster.Razor;
 
 using CodeShellCore.Web.Razor.Elements;
@@ -33,6 +32,11 @@ using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Moldster.Domains.Services;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Tracing;
+using CodeShellCore.Moldster.Builder;
 
 namespace CodeShellCore.Web.Razor
 {

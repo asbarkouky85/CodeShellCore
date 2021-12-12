@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Dto;
-using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Navigation.Dtos;
+using CodeShellCore.Moldster.Navigation;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {

@@ -1,10 +1,6 @@
-﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Configurator.Dtos
+namespace CodeShellCore.Moldster.Pages.Dtos
 {
     public class PageCustomizationDTO
     {

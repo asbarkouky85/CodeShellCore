@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Moldster.Configurator.Dtos
+namespace CodeShellCore.Moldster.Builder
 {
     public class BundlingTask
     {

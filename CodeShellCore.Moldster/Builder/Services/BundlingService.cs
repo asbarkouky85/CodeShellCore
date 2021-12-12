@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Configurator.Dtos;
 using CodeShellCore.Moldster.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;

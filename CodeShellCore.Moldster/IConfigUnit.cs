@@ -1,5 +1,8 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Moldster.Data.Repositories;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;

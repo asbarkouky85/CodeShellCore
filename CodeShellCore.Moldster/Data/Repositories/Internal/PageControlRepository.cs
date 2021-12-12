@@ -1,14 +1,16 @@
-﻿using System;
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Resources.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CodeShellCore.Helpers;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {
-    public class PageControlRepository : MoldsterRepository<PageControl, MoldsterContext>,IPageControlRepository
+    public class PageControlRepository : MoldsterRepository<PageControl, MoldsterContext>, IPageControlRepository
     {
         public PageControlRepository(MoldsterContext con) : base(con)
         {

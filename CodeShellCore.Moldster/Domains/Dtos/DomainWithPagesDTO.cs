@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Domains.Dtos
 {
     public class DomainWithPagesDTO
     {
@@ -16,7 +16,7 @@ namespace CodeShellCore.Moldster.Dto
         public IEnumerable<PageDTO> Pages { get; set; }
         public IEnumerable<DomainWithPagesDTO> SubDomains { get; set; }
 
-        
+
 
         public static Expression<Func<Domain, DomainWithPagesDTO>> RenderingExpression
         {

@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Configurator.Dtos;
+using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 ﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.Moldster.Definitions;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Tenants.Dtos;
 using CodeShellCore.Services;
 using System.Collections.Generic;
 

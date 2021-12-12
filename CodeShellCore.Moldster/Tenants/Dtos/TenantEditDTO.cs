@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Tenants.Dtos
 {
     public class TenantEditDTO : EditingDTO<Tenant>
     {

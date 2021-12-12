@@ -1,12 +1,9 @@
 ﻿using CodeShellCore.Linq;
-using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
-namespace CodeShellCore.Moldster.Dto
+namespace CodeShellCore.Moldster.Tenants.Dtos
 {
     public class TenantPageGuideDTO
     {
@@ -24,7 +23,7 @@ namespace CodeShellCore.Moldster.Dto
                     Domains = e.Pages.Select(d => new DomainGuidDTO
                     {
                         Name = d.Domain.Name,
-                        Resources=new List<ResourceGuidDTO>()
+                        Resources = new List<ResourceGuidDTO>()
                         //TODO:
                         //Resources = (from r in d.Domain.Resources
                         //             where r.Pages.Any(p => p.TenantDomainId == d.Id)

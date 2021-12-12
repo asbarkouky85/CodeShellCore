@@ -3,8 +3,6 @@ using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 using System;
@@ -12,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Pages.Dtos;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {

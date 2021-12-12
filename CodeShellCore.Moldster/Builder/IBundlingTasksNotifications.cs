@@ -1,10 +1,9 @@
-﻿using CodeShellCore.Moldster.Configurator.Dtos;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Moldster.Configurator
+namespace CodeShellCore.Moldster.Builder
 {
     public interface IBundlingTasksNotifications
     {

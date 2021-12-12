@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-using System.Text.RegularExpressions;
-using CodeShellCore.Data;
+﻿using CodeShellCore.Data;
 using CodeShellCore.Text;
 
 namespace CodeShellCore.Moldster.Pages.Dtos

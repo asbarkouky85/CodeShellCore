@@ -1,8 +1,8 @@
-﻿using CodeShellCore.Moldster.Configurator.Services;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
+﻿using CodeShellCore.Moldster;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using CodeShellCore.Moldster.Tenants.Dtos;
+using CodeShellCore.Moldster.Tenants.Services;
 
 namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {

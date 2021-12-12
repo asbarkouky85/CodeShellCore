@@ -1,11 +1,8 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Moldster;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
-namespace CodeShellCore.Moldster.Configurator.Dtos
+namespace CodeShellCore.Moldster.Resources.Dtos
 {
     public class ResourceListDTO : IDTO<Resource>
     {

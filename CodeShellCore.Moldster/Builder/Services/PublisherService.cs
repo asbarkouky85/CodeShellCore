@@ -2,8 +2,8 @@
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Definitions;
 using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Tenants.Dtos;
 using CodeShellCore.Net;
 using CodeShellCore.Net.Ftp;
 using CodeShellCore.Text;

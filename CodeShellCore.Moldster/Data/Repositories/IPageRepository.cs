@@ -1,13 +1,11 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Razor;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Pages;
 
 namespace CodeShellCore.Moldster.Data.Repositories
 {

@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

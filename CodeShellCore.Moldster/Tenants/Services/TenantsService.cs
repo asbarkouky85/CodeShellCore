@@ -2,12 +2,12 @@
 using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Tenants.Dtos;
 using CodeShellCore.MQ;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 
-namespace CodeShellCore.Moldster.Configurator.Services
+namespace CodeShellCore.Moldster.Tenants.Services
 {
     public class TenantsService : EntityService<Tenant>, ITenantService
     {

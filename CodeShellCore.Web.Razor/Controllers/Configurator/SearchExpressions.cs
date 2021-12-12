@@ -1,6 +1,8 @@
 ﻿using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Configurator.Dtos;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.Navigation.Dtos;
+using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Resources.Dtos;
 //using Configurator.Data;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Dto;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.PageCategories.Services
