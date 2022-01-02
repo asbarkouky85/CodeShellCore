@@ -28,10 +28,10 @@ toolset set-version Asga.Mobile.Module 						5.2.0 %cd%
 
 toolset set-version Asga.Dashboard 							5.2.0 %cd%
 
-toolset set-version CodeShellCore.Moldster 					5.2.0.0 %cd%
+toolset set-version CodeShellCore.Moldster 					5.2.1.0 %cd%
 
 toolset set-version CodeShellCore.Web 						5.2.0 %cd%
-toolset set-version CodeShellCore.Web.Razor 				5.2.0.0 %cd%
+toolset set-version CodeShellCore.Web.Razor 				5.2.1.0 %cd%
 
 toolset set-version Asga.Auth.Web 							5.2.0 %cd%
 toolset set-version Asga.Public.Web 						5.2.0 %cd%
@@ -43,5 +43,7 @@ toolset set-version Asga.Auth.Molds 						5.2.0 %cd%
 toolset set-version Asga.Public.Molds 						5.2.0 %cd%
 toolset set-version CodeShellCore.Cli						1.1.0 %cd%
 toolset set-version CodeShellCore.ToolSet.Cli				5.0.2 %cd%
+
+toolset set-version Configurator.UI							5.0.1 %cd%
 
 timeout 10

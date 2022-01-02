@@ -108,10 +108,8 @@ namespace CodeShellCore.Moldster.Builder.Services
                 return new Result { Code = 0, Message = "No Changes" };
             }
 
-            string name = $"webpack.{moduleName}.js";
-
-            string args = $"--max_old_space_size=8138 node_modules/webpack/bin/webpack.js --config {name} --env.prod --env.version={version} --debug --progress";
-            var p = GetCommandProcess(Paths.UIRoot, "node", args);
+            string args = $"run build {moduleName} --config production";
+            var p = GetCommandProcess(Paths.UIRoot, "npm", args);
             p.StartInfo.RedirectStandardOutput = trace;
             p.Start();
             if (trace)

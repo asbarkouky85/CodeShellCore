@@ -109,7 +109,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
             }
 
 
-            var main = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == tenantCode);
+            var version = _unit.TenantRepository.GetSingleValue(d => d.Version, d => d.Code == tenantCode);
             var otherTen = _unit.TenantRepository.Exist(e => e.Code != tenantCode);
             var tempModel = new ModuleTsModel
             {
@@ -121,6 +121,7 @@ namespace CodeShellCore.Moldster.Builder.Internal
                 BaseName = Paths.CoreAppName,
                 BaseAppModuleName = Paths.CoreAppName.UCFirst() + "BaseModule",
                 BaseAppModulePath = Names.GetBaseModuleFilePath(true),
+                Version = version,
                 RoutesModulePath = "./" + Names.ApplyConvension("AppRouting", AppParts.Module),
                 BaseHref = otherTen ? "{ provide: APP_BASE_HREF, useValue: '/" + Names.ApplyConvension(tenantCode, AppParts.Project) + "'}" : ""
             };

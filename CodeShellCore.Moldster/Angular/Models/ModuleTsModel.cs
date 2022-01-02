@@ -15,5 +15,6 @@ namespace CodeShellCore.Moldster.Models
         public string BaseName { get; set; }
         public string BaseHref { get; set; }
         public string Registrations { get; set; }
+        public string Version { get; set; }
     }
 }

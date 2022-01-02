@@ -7,10 +7,10 @@ import { LoadResult } from "codeshell/results";
 
 export enum PageTypes { All, AnyRoutable, ParameterizedRoutable, UnParameterizedRoutable, Embedded }
 
-@Component({template:''})
+@Component({ template: '' })
 export abstract class PageSelectBase extends SelectComponentBase {
 
-    get Service(): PagesService { return Shell.Injector.get(PagesService); }
+    Service: PagesService = new PagesService();
 
     list: any[] = [];
     model?: any = {};
@@ -20,7 +20,7 @@ export abstract class PageSelectBase extends SelectComponentBase {
 
     ngOnInit() {
         super.ngOnInit();
-        
+
     }
 
     LoadDataAsync(opts: LoadOptions): Promise<LoadResult> {
@@ -32,7 +32,7 @@ export abstract class PageSelectBase extends SelectComponentBase {
             this.Source.Loader = opts => this.LoadDataAsync(opts);
             await this.Source.LoadDataAsync();
         }
-        
+
     }
 
     onTableChange() {

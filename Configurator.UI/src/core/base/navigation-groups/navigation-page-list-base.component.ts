@@ -8,9 +8,9 @@ import { ComponentRequest } from "codeshell/components";
 import { LoadOptions, ListItem } from "codeshell/data";
 import { LoadResult, NoteType } from "codeshell/results";
 
-@Component({template:''})
+@Component({ template: '' })
 export abstract class NavigationPageListBase extends ListComponentBase {
-    get Service(): NavigationGroupsService { return Shell.Injector.get(NavigationGroupsService); }
+    Service: NavigationGroupsService = new NavigationGroupsService();
 
     tenantId?: number;
     navigationGroupId?: number;
@@ -25,7 +25,7 @@ export abstract class NavigationPageListBase extends ListComponentBase {
             this.options.Filters = "[]";
 
         }
-        var res = await this.Service.GetPagesByNave(this.Service.naveId, this.options);
+        var res = await this.Service.GetPagesByNave(this.navigationGroupId, this.options);
         res.list = ListItem.Convert(res.list);
         return res;
     }
@@ -62,25 +62,25 @@ export abstract class NavigationPageListBase extends ListComponentBase {
                     comp.Show = false;
                     return Promise.resolve(true)
                 }
-                
-                if (comp.Source.LoadedOnce){
+
+                if (comp.Source.LoadedOnce) {
                     comp.Source.LoadedOnce = comp.tenantId == this.tenantId;
                     comp.Source.Retag();
                 }
 
                 comp.pageType = PageTypes.UnParameterizedRoutable;
-                if(this.tenantId){
+                if (this.tenantId) {
                     comp.tenantId = this.tenantId;
                     comp.StartAsync().then(d => {
-                        
+
                         if (this.tenantId) {
                             comp.Show = true;
                         }
                     })
-                }else{
+                } else {
                     this.NotifyTranslate("must_select_tenant", NoteType.Error);
                 }
-                
+
             }).catch(error => console.log(error));;
         }
         else

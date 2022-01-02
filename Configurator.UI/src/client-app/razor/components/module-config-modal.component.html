@@ -25,7 +25,7 @@
      id="FG_assemblyName"
      #FG_assemblyName="bsFormGroup" bs-group
      >
-    <label>{{'Columns.ModuleRequestDTO__AssemblyName' | translate }} <span style="color:red">*</span></label>
+    <label>{{'Columns.ModuleRequestDto__AssemblyName' | translate }} <span style="color:red">*</span></label>
     
 <select class="form-control"
         name="Form__assemblyName" 
@@ -38,7 +38,7 @@
     <p *ngIf="!FG_assemblyName.Write">{{FG_assemblyName.Value}}</p>
 
     <span *ngIf="Form.controls['Form__assemblyName'] && Form.controls['Form__assemblyName'].invalid">
-        <small *ngIf="Form.controls['Form__assemblyName'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.ModuleRequestDTO__AssemblyName' | translate } }}</small>
+        <small *ngIf="Form.controls['Form__assemblyName'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.ModuleRequestDto__AssemblyName' | translate } }}</small>
 </span>
 </div>
 
@@ -47,7 +47,7 @@
      id="FG_replace"
      #FG_replace="bsFormGroup" bs-group
      >
-    <label>{{'Columns.ModuleRequestDTO__Replace' | translate }} </label>
+    <label>{{'Columns.ModuleRequestDto__Replace' | translate }} </label>
     
 <label  class="check-label ">
     <i class="fa fa-lg" [ngClass]="model.replace?'fa-toggle-on greenColor':'fa-toggle-off grayColor'"></i>

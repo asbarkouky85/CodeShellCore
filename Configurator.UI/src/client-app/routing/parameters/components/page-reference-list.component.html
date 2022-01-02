@@ -11,12 +11,15 @@
                         <div class="row text-first">
 
     
-<div class="form-group col-md-7 "
+<div class="row form-group "
      id="FG_parameterTypeId"
      #FG_parameterTypeId="bsFormGroup" bs-group
      >
-    <label>{{'Columns.ParameterRequestDTO__ParameterTypeId' | translate }} </label>
-    <div class="row">
+    <label class="col-sm-3 control-label">
+        {{'Columns.ParameterRequestDTO__ParameterTypeId' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <div class="row">
     <div class="col-md-12">
         <div class="btn-group btn-group-toggle btnToggle radio-group">
                 <label class="btn btn-default" [ngClass]="filterModel.parameterTypeId==1?'active':''">
@@ -56,16 +59,20 @@
     </div>
 
 </div>
-    
+        
+    </div>
 </div>
 
     
-<div class="form-group col-md-5 "
+<div class="row form-group "
      id="FG_type"
      #FG_type="bsFormGroup" bs-group
      >
-    <label>{{'Columns.ParameterRequestDTO__Type' | translate }} </label>
-    <div class="row">
+    <label class="col-sm-3 control-label">
+        {{'Columns.ParameterRequestDTO__Type' | translate }}
+    </label>
+    <div class="col-sm-9">
+        <div class="row">
     <div class="col-md-12">
         <div class="btn-group btn-group-toggle btnToggle radio-group">
                 <label class="btn btn-default" [ngClass]="filterModel.type==0?'active':''">
@@ -89,7 +96,8 @@
     </div>
 
 </div>
-    
+        
+    </div>
 </div>
 
 </div>

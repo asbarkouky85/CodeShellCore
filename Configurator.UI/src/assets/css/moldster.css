@@ -584,6 +584,17 @@ tr.selected>td {
     background-color: rgba(190, 190, 255, 0.21);
 }
 
+.version-wrapper {
+    position: absolute;
+    height: 15px;
+    width: 100px;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, .3);
+    color: black;
+    z-index: 9999;
+}
+
 @media(max-width:780px) {
     .page-header {
         margin: 0px;

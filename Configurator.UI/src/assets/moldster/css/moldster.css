@@ -586,6 +586,24 @@ tr.selected>td {
     background-color: rgba(190, 190, 255, 0.21);
 }
 
+.version-wrapper {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(255, 255, 255, .4);
+    color: black;
+    z-index: 9999;
+    padding: 0px 18px;
+    font-weight: bold;
+    border-top-right-radius: 6px;
+    box-shadow: 3px -3px 3px rgb(0 0 0 / 40%);
+}
+
+.version-wrapper:hover {
+    background: white;
+    cursor: pointer;
+}
+
 @media(max-width:780px) {
     .page-header {
         margin: 0px;

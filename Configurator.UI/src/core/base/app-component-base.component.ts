@@ -21,6 +21,7 @@ export class AppComponentBase extends AppBaseComponent {
     ready: boolean = false;
     RedirectToLogin = true;
     accountService = new AccountService();
+    version: string = "1.0.0.0";
 
     OnAppChanged: EventEmitter<AppInfo> = new EventEmitter<AppInfo>();
     OnTenantChanged: EventEmitter<Tenant | undefined> = new EventEmitter<Tenant | undefined>();
@@ -45,6 +46,9 @@ export class AppComponentBase extends AppBaseComponent {
     constructor(inj: Injector, trans: Title) {
         super(inj, trans);
         this.OnAppChanged.subscribe((d: AppInfo) => this.onAppInfoChanged(d));
+        if (window["APP_VERSION"])
+            this.version = window["APP_VERSION"];
+        console.log(this.version)
     }
 
     ngOnInit() {

@@ -13,6 +13,7 @@ import { %MainComponentName% } from '%MainComponentPath%';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule, GetDomainsData } from '%RoutesModulePath%';
 %ModuleImports%
+window["APP_VERSION"] = "%Version%";
 
 @NgModule({
     bootstrap: [%MainComponentName%],

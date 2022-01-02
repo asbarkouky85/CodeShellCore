@@ -9,9 +9,9 @@ import { NoteType } from "codeshell/results";
 import { NaveListBase } from "./nave-list-base.component";
 import { NavigationPageListBase } from "./navigation-page-list-base.component";
 
-@Component({template:''})
+@Component({ template: '' })
 export abstract class NavGroupPagesBase extends TenantComponentBase {
-    get Service(): NavigationGroupsService { return Shell.Injector.get(NavigationGroupsService); }
+    Service: NavigationGroupsService = new NavigationGroupsService();
 
     @ViewChild("NaveList") NaveList?: NaveListBase;
     @ViewChild("NavigationPageList") NavigationPageList?: NavigationPageListBase;
