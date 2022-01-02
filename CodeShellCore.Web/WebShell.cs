@@ -40,6 +40,7 @@ namespace CodeShellCore.Web
         /// </summary>
         protected virtual bool IsSpa => false;
         protected virtual bool UseCors => false;
+        protected virtual bool UseSwagger => false;
         /// <summary>
         /// If AllowedOrigins not found in appsettings this will be used
         /// Default is : http://localhost,http://localhost:4200
@@ -113,12 +114,17 @@ namespace CodeShellCore.Web
             {
                 options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
             });
-            services.AddSwaggerGen();
-            services.AddSwaggerGenWithConventionalRoutes(options =>
+
+            if (UseSwagger)
             {
-                //options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
-                // options.SkipDefaults = true;
-            });
+                services.AddSwaggerGen();
+                services.AddSwaggerGenWithConventionalRoutes(options =>
+                {
+                    //options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
+                    // options.SkipDefaults = true;
+                });
+            }
+            
 
             if (UseHealthChecks)
             {
@@ -155,12 +161,15 @@ namespace CodeShellCore.Web
                 }
             });
             app.UseRouting();
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
 
+            if (UseSwagger)
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
+            }
 
 
             if (UseCors)

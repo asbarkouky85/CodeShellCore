@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using CodeShellCore.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 
 namespace Configurator.UI
 {
@@ -18,7 +19,7 @@ namespace Configurator.UI
     {
         protected override bool useLocalization => false;
         protected override bool IsSpa => true;
-
+        protected override bool UseSwagger => false;
         protected override CultureInfo defaultCulture => new CultureInfo("en");
         public UIShell(IConfiguration config) : base(config)
         {
@@ -44,6 +45,15 @@ namespace Configurator.UI
             app.UseStaticFiles();
             base.ConfigureHttp(app, env);
 
+        }
+
+        public override void RegisterEndpointRoutes(IEndpointRouteBuilder endpoints)
+        {
+            base.RegisterEndpointRoutes(endpoints);
+            endpoints.MapControllerRoute(
+                name: "apiAction",
+                pattern: "apiAction/{controller=Home}/{action=Index}/{id?}"
+                );
         }
 
         protected override void OnReady()

@@ -14,18 +14,20 @@
 
   <ItemGroup>
     <Content Remove="moldsterApps.json" />
-    <Content Remove="tenantInfo.json" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="moldsterApps.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Include="tenantInfo.json" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\" />
   </ItemGroup>
 
 </Project>

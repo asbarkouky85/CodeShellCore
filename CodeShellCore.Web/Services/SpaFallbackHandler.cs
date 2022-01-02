@@ -87,9 +87,9 @@ namespace CodeShellCore.Web.Services
             if (CurrentTenant != null)
             {
                 file = file.Replace("<base href=\"/\">", "<base href=\"/" + CurrentTenant.ToLower() + "/\">");
-
+                con.Response.Cookies.Append("current_tenant", CurrentTenant, new CookieOptions { Expires = DateTime.Now.AddYears(1), Path = "/" });
             }
-            con.Response.Cookies.Append("current_tenant", CurrentTenant, new CookieOptions { Expires = DateTime.Now.AddYears(1), Path = "/" });
+            
             await con.Response.WriteAsync(file);
 
 
