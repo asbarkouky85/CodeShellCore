@@ -13,6 +13,8 @@ namespace CodeShellCore.ToolSet.Versions
         {
         }
 
+        public override string FunctionDescription => "Set assembly version for csproj files";
+
         protected override void Build(ICliRequestBuilder<ProjectVersionRequest> builder)
         {
             builder.FillProperty(e => e.Project, "project", order: 1, isRequired: true);

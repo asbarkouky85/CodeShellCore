@@ -1,6 +1,8 @@
-﻿using System;
+﻿using CodeShellCore.Text.Localization;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -16,6 +18,23 @@ namespace CodeShellCore.Cli.Routing.Internal
         {
             var item = new ArgumentItem<T, TVal>(t, key, ch, order, isRequired);
             _keys.Add(item);
+        }
+
+        public void Document()
+        {
+            var keys = _keys.OrderBy(e => e.Order ?? 30).ToList();
+            foreach (var item in keys)
+            {
+                var charSymb = item.CharacterSymbol.HasValue ? ("-" + item.CharacterSymbol)+", " : "";
+                var ord = item.Order.HasValue ? "[" + (item.Order).ToString() + "]" : "";
+                var req = item.IsRequired ? " *" : "";
+                var isBool = item.IsBool ? "" : " [value]";
+                Console.Write($"{ord}[{charSymb}--{item.Key}]{isBool}{req}\t:\t" );
+                using (ColorSetter.Set(ConsoleColor.White))
+                {
+                    Console.WriteLine(item.Description);
+                }
+            }
         }
 
         public bool IsInvalid(out string[] res)

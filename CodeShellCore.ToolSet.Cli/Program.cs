@@ -13,7 +13,7 @@ namespace CodeShellCore.ToolSet
             {
                 if (Debugger.IsAttached)
                 {
-                    var testing = FunctionTypes.GenerateDto;
+                    var testing = FunctionTypes.Help;
 
                     switch (testing)
                     {
@@ -28,7 +28,8 @@ namespace CodeShellCore.ToolSet
                             args = new[] { "zip", @"C:\_abdelrahman\Work\ziptest", @"C:\_abdelrahman\Work\ziptest.zip" };
                             break;
                         case FunctionTypes.Copy:
-                            args = new[] { "copy", @"C:\_abdelrahman\Work\ziptest\Info.txt", @"ftp:genial\ftp_user/Genial963258741@196.202.126.106:21::P::/" };
+                            //args = new[] { "copy", @"C:\_abdelrahman\Work\ziptest\Info.txt", @"ftp:genial\ftp_user/Genial963258741@196.202.126.106:21::P::/" };
+                            args = new[] { "copy", @"D:\Work\Common\tests\file.txt", @"D:\Work\Common\tests\copy\file_copy.txt", "-f" };
                             break;
                         case FunctionTypes.SqlRestore:
                             args = new[] { $"sql-restore", "User Id=app;Server=.;Password=123456;", "-d", "Configurator.Config_2", "-b", "C:\\ASGA_TFS\\Libraries\\Moldster\\master\\Configurator.Config.Api\\Backups\\Configurator.Config.bak" };
@@ -41,6 +42,9 @@ namespace CodeShellCore.ToolSet
                             break;
                         case FunctionTypes.GenerateDto:
                             args = new[] { @"gen-dto", @"C:\_git\Asga\FMS_git", "FMS.Assets.Domain", "Item", "gcul", "-o", "FMS.Assets.Application.Contracts" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
+                            break;
+                        case FunctionTypes.Help:
+                            args = new[] { @"help"};
                             break;
 
                     }

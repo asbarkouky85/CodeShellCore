@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Text;
 using CodeShellCore.Types;
+using CodeShellCore.Text.Localization;
 
 namespace CodeShellCore.Cli.Routing
 {
@@ -17,7 +18,7 @@ namespace CodeShellCore.Cli.Routing
         public bool IsSet { get; protected set; }
         public string MemberName { get; protected set; }
         public virtual bool IsBool { get; }
-
+        public string Description { get; set; }
         public T Item;
 
         protected ArgumentItem() { }
@@ -30,6 +31,7 @@ namespace CodeShellCore.Cli.Routing
         protected Expression<Func<T, TVal>> _action;
         private bool _isBool;
         public override bool IsBool => _isBool;
+        
 
         public ArgumentItem(Expression<Func<T, TVal>> t, string key = null, char? ch = null, int? order = null, bool required = false) : base()
         {
@@ -40,6 +42,7 @@ namespace CodeShellCore.Cli.Routing
             Order = order;
             IsRequired = required;
             MemberName = key ?? memberExpression.Member.Name;
+            Description = LangUtils.CamelCaseToWords(memberExpression.Member.Name, " ");
             _isBool = typeof(TVal).RealType() == typeof(bool);
         }
 

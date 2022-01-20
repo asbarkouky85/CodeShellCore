@@ -11,6 +11,7 @@ namespace CodeShellCore.ToolSet.Ftp
     {
         public string FromPath { get; set; }
         public string ToPath { get; set; }
+        public bool DestinationIsAFile { get; set; }
         
     }
 }

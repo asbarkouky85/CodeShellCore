@@ -7,20 +7,10 @@ namespace CodeShellCore.Cli.Routing.Internal
 {
     internal class CliDispatcherBuilder : ICliDispatcherBuilder
     {
-        private List<Type> _defaultHandlers = new List<Type>();
         private Dictionary<string, Type> _handlerList = new Dictionary<string, Type>();
 
         public IEnumerable<Type> HandlerTypes => _getHandlerTypes();
-
-        public IEnumerable<Type> GetStartupHandlers()
-        {
-            return _defaultHandlers;
-        }
-
-        public void AddStartupHandler<T>() where T: class,ICliRequestHandler
-        {
-            _defaultHandlers.Add(typeof(T));
-        }
+        public Dictionary<string, Type> HandlerDictionary => _handlerList;
 
         public void AddHandler<T>(string functionName) where T : class, ICliRequestHandler
         {
@@ -39,7 +29,6 @@ namespace CodeShellCore.Cli.Routing.Internal
         private IReadOnlyList<Type> _getHandlerTypes()
         {
             var lst = _handlerList.Select(e => e.Value).ToList();
-            lst.AddRange(_defaultHandlers);
             return lst.ToArray();
         }
 

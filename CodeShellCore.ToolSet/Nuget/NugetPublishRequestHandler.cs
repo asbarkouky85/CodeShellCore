@@ -10,6 +10,8 @@ namespace CodeShellCore.ToolSet.Nuget
 {
     public class NugetPublishRequestHandler : CliRequestHandler<NugetPublishRequest>
     {
+        public override string FunctionDescription => "Uploads nuget packages from directory to ftp location";
+
         public NugetPublishRequestHandler(IServiceProvider provider) : base(provider)
         {
         }

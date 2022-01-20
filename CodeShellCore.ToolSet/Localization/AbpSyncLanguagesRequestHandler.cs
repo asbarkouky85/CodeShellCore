@@ -13,6 +13,8 @@ namespace CodeShellCore.ToolSet.Localization
 {
     public class AbpSyncLanguagesRequestHandler : CliRequestHandler<AbpSyncLanguagesRequest>
     {
+        public override string FunctionDescription => "Sycnronizes abp localization .json files";
+
         public AbpSyncLanguagesRequestHandler(IServiceProvider provider) : base(provider)
         {
         }

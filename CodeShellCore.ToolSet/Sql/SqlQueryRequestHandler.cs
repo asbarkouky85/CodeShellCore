@@ -16,6 +16,8 @@ namespace CodeShellCore.ToolSet.Sql
         {
         }
 
+        public override string FunctionDescription => "Executes sql using connection string";
+
         protected override void Build(ICliRequestBuilder<SqlQueryRequest> builder)
         {
             builder.FillProperty(e => e.ConnectionString, "connection-string", 'c', 1, isRequired: true);

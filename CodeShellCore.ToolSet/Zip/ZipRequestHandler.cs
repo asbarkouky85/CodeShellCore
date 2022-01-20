@@ -15,6 +15,8 @@ namespace CodeShellCore.ToolSet.Zip
         {
         }
 
+        public override string FunctionDescription => "Compresses folder to location";
+
         protected override void Build(ICliRequestBuilder<ZipRequest> builder)
         {
             builder.FillProperty(e => e.FolderLocation, "source", order: 1, isRequired: true);

@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Cli.Routing;
 using CodeShellCore.ToolSet.DtoGeneration;
 using CodeShellCore.ToolSet.Ftp;
+using CodeShellCore.ToolSet.Help;
 using CodeShellCore.ToolSet.Localization;
 using CodeShellCore.ToolSet.Nuget;
 using CodeShellCore.ToolSet.Sql;
@@ -25,6 +26,7 @@ namespace CodeShellCore.ToolSet
             builder.AddHandler<ZipRequestHandler>("zip");
             builder.AddHandler<CopyRequestHandler>("copy");
             builder.AddHandler<DtoGenerationHandler>("gen-dto");
+            builder.AddHandler<HelpRequestHandler>("help");
         }
     }
 }

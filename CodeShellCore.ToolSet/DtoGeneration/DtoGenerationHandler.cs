@@ -19,6 +19,9 @@ namespace CodeShellCore.ToolSet.DtoGeneration
     public class DtoGenerationHandler : CliRequestHandler<DtoGenerationRequest>
     {
         private string NameSpace { get; set; }
+
+        public override string FunctionDescription => "Generates dtos";
+
         private WriterService _writer;
 
         const string DtoTemplate = @"using System;

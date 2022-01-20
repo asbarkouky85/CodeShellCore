@@ -31,13 +31,7 @@ namespace CodeShellCore.Cli.Routing
         {
             ServiceCollection collection = new ServiceCollection();
             RegisterHandlers(Builder);
-            var dhs = Builder.GetStartupHandlers();
-            foreach (var dh in dhs)
-            {
-                var h = (ICliRequestHandler)Activator.CreateInstance(dh);
-                var t = h.HandleAsync(Arguments);
-                t.Wait();
-            }
+            collection.AddSingleton(Builder);
             ConfigureCurrent();
             App.RegisterServices(collection);
             return collection.BuildServiceProvider();

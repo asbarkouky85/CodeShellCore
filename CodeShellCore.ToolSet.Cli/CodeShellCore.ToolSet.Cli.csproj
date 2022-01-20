@@ -4,10 +4,10 @@
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>CodeShellCore.ToolSet</RootNamespace>
 		<TargetFramework>net5.0</TargetFramework>
-    <Version>5.0.2.0</Version>
+    <Version>5.0.3.0</Version>
 		<AssemblyName>ToolSet</AssemblyName>
-    <AssemblyVersion>5.0.2.0</AssemblyVersion>
-    <FileVersion>5.0.2.0</FileVersion>
+    <AssemblyVersion>5.0.3.0</AssemblyVersion>
+    <FileVersion>5.0.3.0</FileVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>toolset</ToolCommandName>

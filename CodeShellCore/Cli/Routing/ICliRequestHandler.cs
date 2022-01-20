@@ -9,6 +9,8 @@ namespace CodeShellCore.Cli.Routing
     public interface ICliRequestHandler
     {
         Task<Result> HandleAsync(string[] args);
+        string FunctionDescription { get; }
+        void Document();
     }
 
 

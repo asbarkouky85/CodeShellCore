@@ -8,6 +8,8 @@ namespace CodeShellCore.ToolSet.Ftp
 {
     public class CopyRequestHandler : CliRequestHandler<CopyRequest>
     {
+        public override string FunctionDescription => "Copy file to ftp or physical directory to ftp or physical path";
+
         public CopyRequestHandler(IServiceProvider provider) : base(provider)
         {
         }
@@ -16,6 +18,7 @@ namespace CodeShellCore.ToolSet.Ftp
         {
             builder.FillProperty(e => e.FromPath, "source", 's', order: 1, isRequired: true);
             builder.FillProperty(e => e.ToPath, "target", 't', order: 2, isRequired: true);
+            builder.FillProperty(e => e.DestinationIsAFile, "dest-is-file", 'f');
         }
 
         public IToolSetFileHandler GetHandler(string nugetPath, bool isFile = false)
@@ -29,7 +32,7 @@ namespace CodeShellCore.ToolSet.Ftp
         protected override Task<Result> HandleAsync(CopyRequest request)
         {
             IToolSetFileHandler fromHandler = GetHandler(request.FromPath, true);
-            IToolSetFileHandler toHandler = GetHandler(request.ToPath);
+            IToolSetFileHandler toHandler = GetHandler(request.ToPath, request.DestinationIsAFile);
 
             byte[] file = fromHandler.GetFile();
             string fileName = fromHandler.GetFileName();

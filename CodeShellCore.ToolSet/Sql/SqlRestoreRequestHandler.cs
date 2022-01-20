@@ -8,6 +8,8 @@ namespace CodeShellCore.ToolSet.Sql
 {
     public class SqlRestoreRequestHandler : CliRequestHandler<SqlRestoreRequest>
     {
+        public override string FunctionDescription => "Restore database from backup";
+
         public SqlRestoreRequestHandler(IServiceProvider provider) : base(provider)
         {
         }
