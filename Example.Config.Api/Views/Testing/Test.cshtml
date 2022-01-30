@@ -1,0 +1,15 @@
+﻿@model Asga.Auth.Role
+@{
+    Layout = Html.Config().Layout;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.ComponentSelectorFromOther("UserList")
+    </div>
+    <div class="col-md-6">
+        @Html.ComponentSelectorFromOther("UserAdd")
+    </div>
+</div>
+
+

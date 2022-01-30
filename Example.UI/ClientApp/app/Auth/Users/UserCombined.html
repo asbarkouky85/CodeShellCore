@@ -1,0 +1,72 @@
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>{{'Pages.Users__UserCombined' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                <div class="col-md-12 col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        
+                        
+    <button class="btn btn-info margin-sides"
+            (click)="Refresh()"
+            
+            >
+        <i class="fa fa-redo"></i> 
+    </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+
+        <ol class="breadcrumb">
+            <li>
+                <a routerLink="'/'">{{'Words.Main' | translate }}</a>
+            </li>
+            <li>
+                {{'Pages.Users__UserCombined' | translate }}
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'Pages.Users__UserCombined' | translate }}<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <userListEmbed #UserList [IsEmbedded]='true'></userListEmbed>
+    </div>
+    <div class="col-md-6">
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div style='display:none' #lookupOptionsContainer values=''></div>
+<div style='display:none' #viewParamsContainer values='{"ModelType":null,"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":null,"Fields":[],"Other":{"UserList":"Auth/UserListEmbed","UserAdd":null}}'></div>

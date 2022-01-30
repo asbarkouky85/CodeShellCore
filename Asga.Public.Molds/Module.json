@@ -1,0 +1,47 @@
+{
+  "Name": "Public",
+  "AssemblyName": "Asga.Public.Molds",
+  "InstallPath": "Public",
+  "Categories": [
+    {
+      "Path": "PublicContents/PublicContentEdit",
+      "Base": "Edit",
+      "Resource": "PublicContents"
+    },
+    {
+      "Path": "Messages/MessageEdit",
+      "Base": "Edit",
+      "Resource": "Messages"
+    },
+    {
+      "Path": "Messages/MessageCombined",
+      "Base": null,
+      "Resource": null
+    },
+    {
+      "Path": "Messages/MessageList",
+      "Base": "List",
+      "Resource": "Messages"
+    },
+    {
+      "Path": "HomeSlides/HomeSlideCombined",
+      "Base": null,
+      "Resource": null
+    },
+    {
+      "Path": "HomeSlides/HomeSlideEdit",
+      "Base": "Edit",
+      "Resource": "HomeSlides"
+    },
+    {
+      "Path": "HomeSlides/HomeSlideList",
+      "Base": "List",
+      "Resource": "HomeSlides"
+    }
+  ],
+  "Resources": [
+    "PublicContents:Public",
+    "Messages:Public",
+    "HomeSlides:Public"
+  ]
+}

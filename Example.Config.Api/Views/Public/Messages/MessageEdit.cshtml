@@ -1,0 +1,24 @@
+﻿@model Message
+@{
+    Layout = Html.Config().Layout;
+}
+
+@using (Html.NgForm("Form"))
+{
+
+    @Html.ControlGroup(d => d.Name, coll: Html.VCollection().AddRequired())
+    @Html.ControlGroup(d => d.Phone)
+    @Html.ControlGroup(d => d.Email)
+    @Html.LabelGroup(d => d.CommentTypeName, filter: "translate")
+    @Html.LabelGroup(d => d.BaseTypeName, filter: "translate")
+    @Html.ControlGroup(d => d.Title)
+
+    @Html.SectionHeader(content: Html.Column(d => d.Body))
+    <p style="white-space:pre-wrap">@Html.ValueBinding(d => d.Body)</p>
+    <br />
+    @Html.SectionHeader(content: Html.Column(d => d.Response))
+    @Html.RichTextBoxGroup(d => d.Response, "quillModules", size: 12)
+}
+@section buttons{
+    @Html.Button("Respond", identifier: "respond_button", function: "Respond()", btn: BtnClass.Primary, attr: new { calc__disabled = "Form.invalid" })
+}

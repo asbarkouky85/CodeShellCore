@@ -1,0 +1,17 @@
+﻿@model OMS.IHasLocationDouble
+<div class="row">
+    @Html.ControlGroup(d => d.Longitude, "number", coll: Html.VCollection().AddMinMax(-180, 180))
+    @Html.ControlGroup(d => d.Latitude, "number", coll: Html.VCollection().AddMinMax(-90, 90))
+</div>
+<div class="row">
+    <div class="form-group col-md-12"
+         id="combined">
+        <label>
+            @Html.Column("Location__Combined")
+        </label>
+        <input type="text" class="form-control" [(ngModel)]="combined" (change)="combined_change()" name="combined" />
+    </div>
+
+    
+</div>
+

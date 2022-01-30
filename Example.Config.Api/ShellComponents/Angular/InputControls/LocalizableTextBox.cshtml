@@ -1,0 +1,21 @@
+﻿@model NgInput
+<input type="@Model.TextBoxType"
+       class="form-control @Model.Classes"
+       placeholder="@Html.Raw(Model.PlaceHolder)"
+       name="@Html.Raw(Model.FieldName)"
+       [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+       title="@Html.Raw(Model.PlaceHolder)"
+       [li-watch]="@Model.NgModelName"
+       @Html.Raw((Model.NgOptions != null) ? "autocomplete=\"off\" list=\"AC__" + Model.FieldName + "\"" : "")
+       @Html.Raw(Model.Attributes)>
+@if (Model.GroupName != null)
+{
+    <p *ngIf="!@(Model.GroupName + ".Write")">{{@(Model.GroupName + ".Value")}}</p>
+}
+
+@if (Model.NgOptions != null)
+{
+    <datalist id="AC__@Model.FieldName">
+        <option *ngFor="let op of @(Model.NgOptions)">{{op}}</option>
+    </datalist>
+}

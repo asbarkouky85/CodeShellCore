@@ -1,0 +1,279 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    
+    <EmbeddedResource Include="ShellComponents\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ShellComponents\Angular\Buttons\Button.cshtml" />
+    <None Remove="ShellComponents\Angular\Buttons\SubmitButton.cshtml" />
+    <None Remove="ShellComponents\Angular\Buttons\TreeButton.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\BreadCrumbs.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\ChillerCheckBox.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\ListView.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\ListView_Server.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\ModalSelectButton.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\Pagination.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\TabTitle.cshtml" />
+    <None Remove="ShellComponents\Angular\Containers\Cell.cshtml" />
+    <None Remove="ShellComponents\Angular\Containers\ControlGroup.cshtml" />
+    <None Remove="ShellComponents\Angular\Containers\ControlGroup_Split.cshtml" />
+    <None Remove="ShellComponents\Angular\Containers\LabelGroup.cshtml" />
+    <None Remove="ShellComponents\Angular\Containers\LabelGroup_Split.cshtml" />
+    <None Remove="ShellComponents\Angular\Containers\LocalizableControlGroup.cshtml" />
+    <None Remove="ShellComponents\Angular\Containers\LocalizableControlGroup_Split.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\CalendarTextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\CheckBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\CheckBoxCell.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\CustomField.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\DateTimeTextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\Duration.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\DurationLabel.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\FileTextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\HijriCalendarTextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\Label.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\LocalizableLabel.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\LocalizableTextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\Radio.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\SectionHead.cshtml" />
+    <None Remove="ShellComponents\Angular\Components\ValidationMessages.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\RichTextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\RichTextLabel.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\Select.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\Select_Searchable.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\Textarea.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\TextBox.cshtml" />
+    <None Remove="ShellComponents\Angular\InputControls\TextBoxWithButton.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\CollapsableComponentsLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\DefaultLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\EditLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\EmptyLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\ListLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\ModalComponentLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\ModalLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\ModalTreeLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\PublicEditLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\SelectLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\SelectModalLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\TreeLayout.cshtml" />
+    <None Remove="ShellComponents\Angular\Layout\_ViewImports.cshtml" />
+    <None Remove="ShellComponents\Angular\PageHeader.cshtml" />
+    <None Remove="ShellComponents\Angular\TableCells\ButtonCell.cshtml" />
+    <None Remove="ShellComponents\Angular\TableCells\CellValidation.cshtml" />
+    <None Remove="ShellComponents\Angular\TableCells\DragCell.cshtml" />
+    <None Remove="ShellComponents\Angular\TableCells\HeaderCell.cshtml" />
+    <None Remove="ShellComponents\Angular\TableCells\LabelCell.cshtml" />
+    <None Remove="ShellComponents\Angular\TableCells\ListModifiers.cshtml" />
+    <None Remove="ShellComponents\Angular\_ViewImports.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ShellComponents\Angular\Buttons\Button.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Buttons\SubmitButton.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Buttons\TreeButton.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Components\ChillerCheckBox.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Components\ListView.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Components\ListView_Server.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Components\ModalSelectButton.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Components\Pagination.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Components\TabTitle.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Containers\Cell.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Containers\ControlGroup.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Containers\ControlGroup_Split.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Containers\LabelGroup.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Containers\LabelGroup_Split.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Containers\LocalizableControlGroup.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Containers\LocalizableControlGroup_Split.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\CalendarTextBox.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\CheckBox.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\CheckBoxCell.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\CustomField.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\DateTimeTextBox.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\Duration.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\DurationLabel.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\FileTextBox.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\HijriCalendarTextBox.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\Label.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\LocalizableLabel.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\LocalizableTextBox.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\Radio.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\Select.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\Select_Searchable.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\Textarea.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\TextBox.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\InputControls\TextBoxWithButton.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\CollapsableComponentsLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\DefaultLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\EditLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\EmptyLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\ListLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\ModalComponentLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\ModalLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\ModalTreeLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\PublicEditLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\SelectLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\SelectModalLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\TreeLayout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\Layout\_ViewImports.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\TableCells\ButtonCell.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\TableCells\CellValidation.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\TableCells\DragCell.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\TableCells\HeaderCell.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\TableCells\LabelCell.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\TableCells\ListModifiers.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShellComponents\Angular\_ViewImports.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.0.1" />
+  </ItemGroup>
+    <ItemGroup>
+    <ProjectReference Include="$(CODESHELL_V215)\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="$(CODESHELL_V215)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <!--<ProjectReference Include="$(CODESHELL_V215)\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
+  </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="ShellComponents\Angular\Components\BreadCrumbs.cshtml">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Update="ShellComponents\Angular\Components\SectionHead.cshtml">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Update="ShellComponents\Angular\Components\ValidationMessages.cshtml">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="ShellComponents\Angular\PageHeader.cshtml">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2.15.14.1</Version>
+    <AssemblyVersion>2.15.14.1</AssemblyVersion>
+    <FileVersion>2.15.14.1</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+</Project>

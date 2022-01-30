@@ -1,0 +1,12 @@
+﻿@model CheckNgInput
+<label class="chiller_cb">
+    @Model.TrueString
+    <input type="@Model.Type"
+           [id]="@Html.Raw(Model.FieldName)"
+           [name]="@Html.Raw(Model.FieldName)"
+           @Html.Raw(Model.Type == "checkbox" ? "[(ngModel)]=\"" + Model.MemberName + "\"" : "[(radioCheck)]=\"" + Model.MemberName + "\"")
+           [li-watch]="@Model.ListItemName"
+           @((Model.Enabled) ? null : "disabled")
+           @Html.Raw(Model.Attributes)>
+    <span></span>
+</label>

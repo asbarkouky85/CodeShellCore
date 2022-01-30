@@ -1,0 +1,58 @@
+﻿@model PageHeaderModel
+@{
+    string buttonsCls = Model.ToolsSection == null ? "col-md-12" : "col-md-4";
+}
+<div class="page-header container-fluid" *ngIf="!IsEmbedded !HideHeader">
+    <div class="row">
+        <div class="col-sm-5 col-xs-12">
+            <h2>@Model.Title<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span></h2>
+        </div>
+
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+
+                @if (Model.ToolsSection != null)
+                {
+                    <div class="col-md-8 col-xs-12 text-last padTop">
+                        @Model.ToolsSection
+                    </div>
+                }
+                <div class="@buttonsCls col-xs-12 padTop padBottom">
+                    <div class="pull-last btn-group">
+
+                        @Model.AddButton
+                        @if (Model.Buttons != null)
+                        {
+                            @foreach (var b in Model.Buttons)
+                            {
+                                @Html.GetComponent("Buttons/Button", b)
+                            }
+                        }
+                        @Html.Button(null, "Refresh()", null, BtnClass.Info, "fa fa-redo", classes: "margin-sides")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" *ngIf="!IsEmbedded">
+        @Html.BreadCrumbs(Model)
+    </div>
+</div>
+
+<div class="page-header section-header" *ngIf="IsEmbedded && !HideHeader">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                @Model.Title<span *ngIf="HeaderExtra"> - {{HeaderExtra}}</span>
+            </div>
+            <div class="col-md-4">
+                @if (Model.EmbeddedAddButton != null)
+                {
+                    @Model.EmbeddedAddButton
+                }
+            </div>
+        </div>
+    </div>
+</div>

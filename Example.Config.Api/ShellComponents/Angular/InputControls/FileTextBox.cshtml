@@ -1,0 +1,56 @@
+﻿@model FileNgInput
+
+<div class="input-group">
+    <label class="form-control">
+        <a *ngIf="@Html.Raw(Model.NgModelName+"."+Model.MemberName)"
+           class="file-link"
+           target="_blank"
+           [routerLink]="'/'+@Html.Raw(Model.NgModelName+"."+Model.MemberName+".url")">
+            @Html.Raw("{{" + @Html.Raw(Model.NgModelName + "." + Model.MemberName + ".name") + "}}")
+        </a>
+    </label>
+
+    @if (Model.UploadUrl != null)
+    {
+        @if (Model.Multiple)
+        {
+            <div class="input-group-btn">
+                <label class="btn btn-primary">
+                    <input name="@Html.Raw(Model.FormFieldName)"
+                           type="file"
+                           [(ngModel)]="@Html.Raw(Model.FormFieldName)"
+                           [file-uploader]="@Model.UploadUrl"
+                           [(fileDataMany)]="@Html.Raw(Model.NgModelName+"."+Model.MemberName)"
+                           multiple
+                           @Html.Raw(Model.Attributes)
+                           style="display:none">
+                    <i class="fa fa-upload"></i>
+                </label>
+            </div>
+        }
+        else
+        {
+            <div class="input-group-btn">
+                <label class="btn btn-primary">
+                    <input name="@Html.Raw(Model.FormFieldName)"
+                           type="file"
+                           [(ngModel)]="@Html.Raw(Model.FormFieldName)"
+                           [file-uploader]="@Model.UploadUrl"
+                           [(fileData)]="@Html.Raw(Model.NgModelName+"."+Model.MemberName)"
+                           @Html.Raw(Model.Attributes)
+                           style="display:none">
+                    <i class="fa fa-upload"></i>
+                </label>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="input-group-btn">
+            <label class="btn">
+                <i class="fa fa-info-circle"></i>
+            </label>
+        </div>
+    }
+</div>

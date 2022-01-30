@@ -1,0 +1,20 @@
+﻿@model RadioNgInput
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btnToggle radio-group">
+            @foreach (var item in Model.Values)
+            {
+                <label class="btn btn-default" [ngClass]="@Html.Raw(Model.NgModelName+"."+Model.MemberName+"=="+item.Value)?'active':''">
+                    <input type="radio" 
+                           name="@Html.Raw(Model.FieldName)" 
+                           [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName" 
+                           [value]="@Html.Raw(item.Value)" 
+                           @Html.Raw(Model.Attributes) @(!Model.Enabled ? " disabled" : "")>
+                    @Html.Word(item.Key)
+                </label>
+            }
+
+        </div>
+    </div>
+
+</div>

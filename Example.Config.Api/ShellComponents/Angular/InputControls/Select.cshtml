@@ -1,0 +1,17 @@
+﻿@model SelectNgInput
+
+<select class="form-control"
+        name="@Html.Raw(Model.FieldName)" 
+        [li-watch]="@Model.NgModelName"
+        [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName"
+        @Html.Raw(Model.Attributes)>
+    @if (Model.Nullable)
+    {
+        <option [ngValue]="null">--(@Html.Word("Empty"))--</option>
+    }
+    <option *ngFor="let item of @Model.ListName" [ngValue]="item@(Model.Value)">{{item.@Html.Raw(Model.Display)}}</option>
+</select>
+@if (Model.GroupName != null)
+{
+    <p *ngIf="!@(Model.GroupName + ".Write")">{{@(Model.GroupName + ".Value")}}</p>
+}

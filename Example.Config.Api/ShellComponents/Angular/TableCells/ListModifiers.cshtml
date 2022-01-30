@@ -1,0 +1,58 @@
+﻿@model ListModifiersModel
+<div class="btn-group btnResponsive @Model.Classes">
+    @if (Model.ShowEdit)
+    {
+        if (Model.EditFunction != null)
+        {
+            <button *ngIf="@(Model.PermissionVariable).update" class="btn btn-primary btn-sm" (click)="@Html.Raw(Model.EditFunction)">
+                <i class="fa fa-pen"></i>
+            </button>
+        }
+        else if (Html.GetViewParams().EditUrl != null && !Model.ReadOnly)
+        {
+            <a *ngIf="@(Model.PermissionVariable).update" class="btn btn-primary btn-sm" [routerLink]="@Html.Raw($"'{Html.GetViewParams().EditUrl}/' +{Model.IdExpression}")">
+                <i class="fa fa-pen"></i>
+            </a>
+        }
+    }
+
+    @if (Model.ShowDetails)
+    {
+        if (Model.DetailsFunction != null)
+        {
+            <button *ngIf="@(Model.PermissionVariable).details" class="btn btn-primary btn-sm" (click)="@Html.Raw(Model.DetailsFunction)">
+                <i class="fa fa-copy"></i>
+            </button>
+        }
+        else if (Html.GetViewParams().DetailsUrl != null)
+        {
+            <a *ngIf="@(Model.PermissionVariable).details" class="btn btn-primary btn-sm" [routerLink]="@Html.Raw($"'{Html.GetViewParams().DetailsUrl}/' +{Model.IdExpression}")">
+                <i class="fa fa-copy"></i>
+            </a>
+        }
+    }
+
+    @if (Model.AdditionalButtons.Any())
+    {
+        foreach (var but in Model.AdditionalButtons)
+        {
+            @Html.GetComponent("Buttons/Button", but)
+        }
+    }
+    @if (!Model.ReadOnly && Model.ShowDelete)
+    {
+        if (Model.DeleteFunction != null)
+        {
+            <button *ngIf="@(Model.PermissionVariable).delete" class="btn btn-danger btn-sm" (click)="@Html.Raw(Model.DeleteFunction)">
+                <i class="fa fa-trash"></i>
+            </button>
+        }
+        else
+        {
+            <a *ngIf="@(Model.PermissionVariable).delete" class="btn btn-danger btn-sm" (click)="Delete(@Model.ModelExpression,@Model.IdExpression)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </a>
+        }
+    }
+
+</div>

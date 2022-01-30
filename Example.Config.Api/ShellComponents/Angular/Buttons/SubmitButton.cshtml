@@ -1,0 +1,12 @@
+﻿@if (Html.Config().DefaultAccessibility == 2)
+{
+    <button class="btn btn-primary"
+            [disabled]="!CanSubmit"
+            (click)="Submit()">
+        @Html.Word("Save")
+    </button>
+}
+
+
+
+@**ngIf="(Permission.update && !IsNew) || (Permission.insert && IsNew)"*@

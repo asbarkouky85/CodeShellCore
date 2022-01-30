@@ -1,0 +1,20 @@
+﻿@model CheckNgInput
+
+<label  class="check-label @Model.Classes">
+    <i class="fa fa-lg" [ngClass]="@Model.NgModelName@(".")@Model.MemberName?'fa-toggle-on greenColor':'fa-toggle-off grayColor'"></i>
+    
+    @if (Model.FalseString != null || Model.TrueString != null)
+    {
+        <span *ngIf="@Model.NgModelName@(".")@Model.MemberName" class="greenColor">@Model.TrueString</span>
+        <span *ngIf="!@Model.NgModelName@(".")@Model.MemberName" class="grayColor">@Model.FalseString</span>
+    }
+
+
+    <input name="@Html.Raw(Model.FieldName)"
+           style="display:none"
+           type="checkbox"
+           @Html.Raw(Model.Attributes)
+           @((Model.Enabled) ? null : "disabled")
+           [(ngModel)]="@Model.NgModelName@(".")@Model.MemberName">
+</label>
+
