@@ -44,6 +44,6 @@ toolset set-version Asga.Public.Molds 						5.2.0 %cd%
 toolset set-version CodeShellCore.Cli						1.1.0 %cd%
 toolset set-version CodeShellCore.ToolSet.Cli				5.0.3 %cd%
 
-toolset set-version Configurator.UI							5.0.1 %cd%
+toolset set-version Configurator.UI							5.0.2 %cd%
 
 timeout 10
