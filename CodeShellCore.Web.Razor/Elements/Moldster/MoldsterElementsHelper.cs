@@ -145,7 +145,7 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
 
         public override IHtmlContent InputControl<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, IValidationCollection coll, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
-            ComponentWriter mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, attrs, inputAttr, inputClasses, groupClasses);
+            ComponentWriter mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, attrs, inputAttr, inputClasses, groupClasses, false);
             mod.Accessibility = proc.Process(helper, exp, component);
             if (!mod.Accessibility.Read)
                 return null;

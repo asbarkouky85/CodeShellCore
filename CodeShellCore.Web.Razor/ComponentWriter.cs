@@ -33,7 +33,7 @@ namespace CodeShellCore.Web.Razor
             return "";
         }
 
-        public virtual void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp)
+        public virtual void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp, bool useBsGroup = true)
         {
             string groupName = "FG_" + RazorUtils.GetMemberName(exp).Replace(".", "_");
 
@@ -42,7 +42,7 @@ namespace CodeShellCore.Web.Razor
                 MemberName = RazorUtils.GetMemberName(exp),
                 NgModelName = Helper.GetModelName(),
                 NgFormName = Helper.GetFormName(),
-                GroupName = groupName
+                GroupName = useBsGroup ? groupName : null
             };
         }
 

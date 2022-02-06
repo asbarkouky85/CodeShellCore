@@ -88,11 +88,11 @@ namespace CodeShellCore.Web.Razor.Elements
 
         }
 
-        protected virtual ComponentWriter GetInputControlWriter<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, IValidationCollection coll, object attrs, object inputAttr, string inputClasses, string groupClasses)
+        protected virtual ComponentWriter GetInputControlWriter<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, IValidationCollection coll, object attrs, object inputAttr, string inputClasses, string groupClasses, bool useGroupName = true)
         {
             var mod = GetNewWriter(helper);
 
-            mod.UseExpression(exp);
+            mod.UseExpression(exp, useGroupName);
             mod.SetOptions(size, alternateLabel, placeHolder, attrs, inputAttr, inputClasses, groupClasses);
             if (coll != null)
                 mod.UseValidation(coll, null, alternateLabel);
@@ -112,7 +112,7 @@ namespace CodeShellCore.Web.Razor.Elements
 
         public virtual IHtmlContent InputControl<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, InputControls component, string textType, Dictionary<string, object> radioOptions, int size, string alternateLabel, string placeHolder, IValidationCollection coll, object attrs, object inputAttr, string inputClasses, string groupClasses)
         {
-            ComponentWriter mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, attrs, inputAttr, inputClasses, groupClasses);
+            ComponentWriter mod = GetInputControlWriter(helper, exp, component, textType, radioOptions, size, alternateLabel, placeHolder, coll, attrs, inputAttr, inputClasses, groupClasses, false);
             if (!mod.Accessibility.Read)
                 return null;
             if (!mod.Accessibility.Write)

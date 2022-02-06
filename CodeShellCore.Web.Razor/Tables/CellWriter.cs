@@ -32,7 +32,7 @@ namespace CodeShellCore.Web.Razor.Tables
         protected string ModelName { get; set; }
         protected string MemberName { get; set; }
 
-        public override void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp)
+        public override void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp, bool useGroupName = true)
         {
             ColumnId = RazorUtils.GetColumnId(exp);
             MemberName = RazorUtils.GetMemberName(exp);
@@ -49,7 +49,7 @@ namespace CodeShellCore.Web.Razor.Tables
                 NgModelName = Helper.GetModelName(),
                 NgFormName = Helper.GetFormName()
             };
-            Helper.AddText(StringType.Column,ColumnId);
+            Helper.AddText(StringType.Column, ColumnId);
         }
 
         public virtual void Initialize(string placeHolder = null, string width = null, object attrs = null, object inputAttr = null, string classes = "")
@@ -135,9 +135,9 @@ namespace CodeShellCore.Web.Razor.Tables
                         InputModel.AttributeObject = null;
                         return WriteCell(CellTypes.LabelCell);
                 }
-                
+
             }
-               
+
             if (ColumnModel.InputControl == null)
                 ColumnModel.InputControl = GetInputControl(component);
             string template = Helper.GetTheme().CellTemplate;

@@ -55,7 +55,7 @@ namespace CodeShellCore.Web.Razor.Elements
             Helper.AddText(StringType.Column, columnId);
         }
 
-        public override void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp)
+        public override void UseExpression<T, TValue>(Expression<Func<T, TValue>> exp, bool useBsGroup = true)
         {
             ColumnId = RazorUtils.GetColumnId(exp);
             MemberExpression = RazorUtils.GetMemberExpression(exp);
@@ -67,13 +67,13 @@ namespace CodeShellCore.Web.Razor.Elements
                 MemberName = RazorUtils.GetMemberName(exp),
                 NgModelName = Helper.GetModelName(),
                 NgFormName = Helper.GetFormName(),
-                GroupName = groupName
+                GroupName = useBsGroup ? groupName : null
             };
 
             GroupModel = new NgControlGroup
             {
                 Label = TextProvider.Column(ColumnId),
-                Name = groupName,
+                Name = useBsGroup ? groupName : null,
                 PropertyName = RazorUtils.GetMemberNameDefault(exp).GetAfterLast(".")
             };
 
