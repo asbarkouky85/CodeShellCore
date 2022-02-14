@@ -1,5 +1,14 @@
 ﻿using CodeShellCore;
+using CodeShellCore.Json;
+using CodeShellCore.Text;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Microsoft.AspNetCore.Mvc
 {
@@ -14,7 +23,40 @@ namespace Microsoft.AspNetCore.Mvc
             return loc;
         }
 
+        public static IWebHostBuilder UseKestrelHttps(this IWebHostBuilder builder)
+        {
+            var lSettings = "Properties/launchSettings.json";
+            int httpsPort = 5001;
+            int httpPort = 5000;
 
+            if (File.Exists(lSettings))
+            {
+                var data = File.ReadAllText(lSettings);
+                var obj = (JObject)JsonConvert.DeserializeObject(data);
+                var httpUrl = obj.GetPathAsString("iisSettings:iisExpress:applicationUrl");
+                var httpPortString = httpUrl?.GetAfterLast(":")?.Replace("/", "");
+                var httpsPortString = obj.GetPathAsString("iisSettings:iisExpress:sslPort");
+                if (!string.IsNullOrEmpty(httpPortString))
+                    int.TryParse(httpPortString, out httpPort);
+                if (!string.IsNullOrEmpty(httpsPortString))
+                    int.TryParse(httpsPortString, out httpsPort);
+                httpsPort = httpsPort == 0 ? 5001 : httpsPort;
+            }
+
+            builder.ConfigureKestrel(op =>
+             {
+                 op.Listen(IPAddress.Any, httpsPort, lop =>
+                 {
+                     lop.Protocols = HttpProtocols.Http1AndHttp2;
+                     lop.UseHttps(StoreName.Root, "localhost");
+                 });
+                 if (httpPort != httpsPort)
+                 {
+                     op.Listen(IPAddress.Any, httpPort);
+                 }
+             });
+            return builder;
+        }
 
         public static bool IsProccessed(this HttpContext con)
         {
