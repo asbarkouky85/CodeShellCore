@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using CodeShellCore.Data.Helpers;
+using CodeShellCore.Helpers;
 using CodeShellCore.Services;
 using CodeShellCore.Text.Localization;
 
@@ -91,6 +92,7 @@ namespace CodeShellCore.Data.Localization.Internal
                     var s = Activator.CreateInstance<T>();
                     s.ColumnName = n.Key;
                     s.Value = n.Value;
+                    s.Id = Utils.GenerateID();
                     sj.Add(s);
                 }
 
