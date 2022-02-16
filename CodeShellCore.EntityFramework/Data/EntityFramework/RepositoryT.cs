@@ -325,7 +325,7 @@ namespace CodeShellCore.Data.EntityFramework
                     res.CanDelete = false;
                     res.Code = 1;
                     res.ExceptionMessage = ex.Message;
-                    int? number = ((SqlException)ex.InnerException)?.Number;
+                    int? number = ((dynamic)ex.InnerException)?.Number;
                     string tableName = "";
                     if (number == 547)
                         tableName = SqlInterpreter.N00547(ex.InnerException.Message)[5].Split('.')[1];
