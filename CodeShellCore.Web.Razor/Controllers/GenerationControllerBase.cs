@@ -111,7 +111,7 @@ namespace CodeShellCore.Web.Razor.Controllers
                 {
                     var _acc = sc.ServiceProvider.GetService<EnvironmentAccessor>();
                     var _paths = sc.ServiceProvider.GetService<IPathsService>();
-                    _acc.CurrentEnvironment = _paths.GetEnvironments().Where(d => d.Name == tsk.Environment).FirstOrDefault();
+                    _acc.CurrentEnvironment = _paths.GetEnvironmentByName(tsk.Environment);
 
 
                     var _bund = sc.ServiceProvider.GetService<IBundlingService>();

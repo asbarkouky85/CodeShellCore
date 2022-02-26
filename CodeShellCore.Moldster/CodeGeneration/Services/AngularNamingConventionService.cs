@@ -125,6 +125,28 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
             return res;
         }
 
+        public string GetOutputBundlePath(string tenantCode, string version, bool full = false)
+        {
+            var projectName = ApplyConvension(tenantCode, AppParts.Project);
+            string outFolder = "wwwroot/" + projectName + "_v" + version;
+            if (full)
+            {
+                outFolder = Path.Combine(_paths.UIRoot, outFolder).Replace("\\", "/");
+            }
+            return outFolder+".zip";
+        }
+
+        public string GetOutputPath(string tenantCode, string version, bool full = false)
+        {
+            var projectName = ApplyConvension(tenantCode, AppParts.Project);
+            string outFolder = "wwwroot/" + projectName;
+            if (full)
+            {
+                outFolder = Path.Combine(_paths.UIRoot, outFolder).Replace("\\", "/");
+            }
+            return outFolder;
+        }
+
         public string GetComponentSelector(string name)
         {
             return "app-" + _angular_convesion(name);

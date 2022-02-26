@@ -12,7 +12,7 @@ namespace CodeShellCore.Moldster.Builder.Services
     public interface IPublisherService : IServiceBase
     {
         IOutputWriter OutputWriter { get; set; }
-        string CompressSubModuleScripts(string tenant, string version);
+        
         PublisherResult UploadTenantBundle(string tenant, string version);
         Result DeleteOtherBundlesForTenant(string tenant);
         Dictionary<string, TenantInfoItem> GetAllTenantsInfo();

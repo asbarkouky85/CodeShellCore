@@ -49,6 +49,11 @@ namespace CodeShellCore.Moldster
             return envs.ToList();
         }
 
+        public MoldsterEnvironment GetEnvironmentByName(string name)
+        {
+            return GetEnvironments().Where(e => e.Name == name).FirstOrDefault();
+        }
+
         public DefaultPathsService()
         {
             var sol = Shell.SolutionFolder;

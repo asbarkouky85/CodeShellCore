@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Files;
+using CodeShellCore.Helpers;
 using CodeShellCore.Net;
 using CodeShellCore.Web.Filters;
 using CodeShellCore.Web.Moldster;
@@ -9,7 +10,7 @@ using System.IO;
 namespace CodeShellCore.Web.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
-    public class MoldsterPublisherController : BaseApiController, IPublisherController
+    public abstract class MoldsterPublisherController : BaseApiController, IPublisherController
     {
         public MoldsterPublisherController()
         {
@@ -17,7 +18,7 @@ namespace CodeShellCore.Web.Controllers
         }
         [HttpPost]
         [Route("HandleRequest")]
-        public virtual PublisherResult HandleRequest([FromBody]PublisherRequest req)
+        public virtual PublisherResult HandleRequest([FromBody] PublisherRequest req)
         {
             var res = new PublisherResult
             {
@@ -26,10 +27,17 @@ namespace CodeShellCore.Web.Controllers
             };
             try
             {
-                string file = Path.Combine(Shell.AppRootPath, req.FileName);
-                string folder = Path.Combine(Shell.AppRootPath, req.DestinationFolder);
-                FileUtils.DecompressDirectory(file, folder);
-                System.IO.File.Delete(file);
+                switch (req.Type)
+                {
+                    case ServerRequestTypes.Decompress:
+                        Decompress(req);
+                        break;
+                    case ServerRequestTypes.DeleteDirectory:
+                        DeleteDirectory(req);
+                        break;
+                    default:
+                        break;
+                }
             }
             catch (Exception ex)
             {
@@ -38,6 +46,22 @@ namespace CodeShellCore.Web.Controllers
             }
 
             return res;
+        }
+
+        void DeleteDirectory(PublisherRequest req)
+        {
+            if (Directory.Exists(req.DestinationFolder))
+                Utils.DeleteDirectory(req.DestinationFolder);
+        }
+
+        private void Decompress(PublisherRequest req)
+        {
+            string file = Path.Combine(Shell.AppRootPath, req.FileName);
+            string folder = Path.Combine(Shell.AppRootPath, req.DestinationFolder);
+
+            FileUtils.DecompressDirectory(file, folder);
+            if (req.DeleteFileAfter == true)
+                System.IO.File.Delete(file);
         }
     }
 

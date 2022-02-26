@@ -192,7 +192,11 @@ namespace CodeShellCore.Web
 
 
             if (IsSpa)
+            {
                 app.Use(FallbackMiddlewareHandler);
+                app.UseStaticFiles();
+            }
+                
 
             if (UseHealthChecks)
             {

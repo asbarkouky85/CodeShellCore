@@ -21,5 +21,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
         string GetLocalizationJsonPath(string moduleCode, string type, string loc);
         string GetLocalizationLoaderPath(string moduleCode, string loc);
         string ReverseConvention(string v);
+        string GetOutputBundlePath(string tenantCode, string version, bool full = false);
+        string GetOutputPath(string tenantCode, string version, bool full = false);
     }
 }
