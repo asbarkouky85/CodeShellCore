@@ -107,9 +107,9 @@ namespace CodeShellCore.Moldster.Builder.Services
             {
                 return new Result { Code = 0, Message = "No Changes" };
             }
-
-            string args = $"run build {moduleName} --config production";
-            var p = GetCommandProcess(Paths.UIRoot, "npm", args);
+            var projectName = Names.ApplyConvension(moduleName, AppParts.Project);
+            string args = $"node_modules/@angular/cli/bin/ng build {projectName} --configuration production --output-path wwwroot/{projectName}_v{version}";
+            var p = GetCommandProcess(Paths.UIRoot, "node", args);
             p.StartInfo.RedirectStandardOutput = trace;
             p.Start();
             if (trace)
