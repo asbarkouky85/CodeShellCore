@@ -93,7 +93,7 @@ namespace CodeShellCore.Caching.Redis
 
             using (RedisClient client = new RedisClient(_endPoint))
             {
-                removed = client.Remove(typeof(T) + ":" + key);
+                removed = client.Remove(typeof(T).Name + ":" + key);
             }
 
             return removed;
