@@ -40,7 +40,7 @@ namespace CodeShellCore.Web.Controllers
             return Respond();
         }
 
-        protected IActionResult DefaultPost(T obj)
+        protected virtual IActionResult DefaultPost(T obj)
         {
             if (ModelIsValid())
                 SubmitResult = EntityService.Create(obj);
@@ -48,7 +48,7 @@ namespace CodeShellCore.Web.Controllers
             return Respond();
         }
 
-        protected IActionResult DefaultPut(T obj)
+        protected virtual IActionResult DefaultPut(T obj)
         {
             if (ModelIsValid())
                 SubmitResult = EntityService.Update(obj);

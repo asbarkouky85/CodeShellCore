@@ -7,6 +7,7 @@ using CodeShellCore.Web.Razor;
 using CodeShellCore.Moldster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace Example.Config.Api
 {
@@ -30,6 +31,7 @@ namespace Example.Config.Api
             coll.AddMoldsterRazorHelpers();
 
             coll.AddCodeShellEmbeddedViews();
+            coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(Configuration.GetConnectionString("Moldster")));
 
             coll.AddMoldsterModules(d =>
             {

@@ -108,7 +108,6 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IBundlingService, BundlingService>();
             coll.AddTransient<IPreviewService, PreviewService>();
             coll.AddTransient<IModulesService, ModulesService>();
-            coll.AddTransient<IEnvironmentsService, EnvironmentService>();
 
             coll.AddMoldsterDbData();
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));

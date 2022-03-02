@@ -25,25 +25,22 @@ namespace CodeShellCore.Web.Razor.Tables
             string size = null,
             bool isColumn = true,
             object cellAttributes = null,
-            bool? sorting = null,
-            bool isRequired = false)
+            bool? sorting = null)
         {
             var Provider = helper.GetService<ITablesHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
-            CellWriter mod = Provider.HeaderCell(helper, text, size, isColumn, cellAttributes, sorting.Value, isRequired);
+            CellWriter mod = Provider.HeaderCell(helper, text, size, isColumn, cellAttributes, sorting.Value);
             return mod.WriteHeaderCell();
         }
         public static IHtmlContent HeaderCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
             string size = null,
 
             object cellAttributes = null,
-            
-            bool? sorting = null,
-            bool isRequired = false)
+            bool? sorting = null)
         {
             var Provider = helper.GetService<ITablesHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
-            CellWriter mod = Provider.HeaderCell(helper, exp, size, cellAttributes, sorting.Value, isRequired);
+            CellWriter mod = Provider.HeaderCell(helper, exp, size, cellAttributes, sorting.Value);
             return mod.WriteHeaderCell();
         }
 

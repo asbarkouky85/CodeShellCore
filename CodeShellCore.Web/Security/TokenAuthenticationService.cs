@@ -66,7 +66,7 @@ namespace CodeShellCore.Web.Security
             return jwt;
         }
 
-        protected void SetToken(LoginResult res, bool remember = false)
+        protected virtual void SetToken(LoginResult res, bool remember = false)
         {
             JWTData jwt = MakeJWT(res);
             res.TokenExpiry = jwt.ExpireTime;

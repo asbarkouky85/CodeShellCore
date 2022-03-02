@@ -1,13 +1,18 @@
-﻿using CodeShellCore.Data.Helpers;
+﻿using CodeShellCore.Data;
+using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Configurator.Dtos;
+using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Dto;
 using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CodeShellCore.Moldster.Data.Internal
 {
@@ -70,20 +75,17 @@ namespace CodeShellCore.Moldster.Data.Internal
 
         public SubmitResult UpdateTemplatePagesViewParamsJson(long tenantId, long? pageCategoryId = null)
         {
-
-            var pagesByCategoryAndTenant = Unit.PageRepository.Find(d => (d.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.TenantId == tenantId);
-            IEnumerable<PageParameterForJson> pageParametersByTenantAndCategory = Unit.PageParameterRepository.FindForJson(tenantId, pageCategoryId);
-            IEnumerable<PageRouteDTO> pageRoutesByTenantAndCategory = Unit.PageRouteRepository.FindForJson(tenantId, pageCategoryId);
-            IEnumerable<CustomField> fieldsByTenantAndCategory = Unit.CustomFieldRepository.Find(d => (d.Page.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.Page.TenantId == tenantId);
+            var pages = Unit.PageRepository.Find(d => (d.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.TenantId == tenantId);
+            IEnumerable<PageParameterForJson> all = Unit.PageParameterRepository.FindForJson(tenantId, pageCategoryId);
+            IEnumerable<PageRouteDTO> routes = Unit.PageRouteRepository.FindForJson(tenantId, pageCategoryId);
+            IEnumerable<CustomField> fields = Unit.CustomFieldRepository.Find(d => (d.Page.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.Page.TenantId == tenantId);
             var func = FieldDefinition.Expression.Compile();
-            foreach (var page in pagesByCategoryAndTenant)
+            foreach (var p in pages)
             {
-                //if (page.PageCategoryId == 1830435732000)
-                //    Console.WriteLine("");
-                var pageParameters = pageParametersByTenantAndCategory.Where(d => d.PageId == page.Id).ToArray();
-                var pageRoutes = pageRoutesByTenantAndCategory.FirstOrDefault(d => d.PageId == page.Id);
-                var pageFields = fieldsByTenantAndCategory.Where(d => d.PageId == page.Id).Select(func).ToArray();
-                Unit.PageRepository.UpdatePageViewParamsJson(page, pageParameters, pageRoutes, pageFields);
+                var ps = all.Where(d => d.PageId == p.Id).ToArray();
+                var r = routes.FirstOrDefault(d => d.PageId == p.Id);
+                var fs = fields.Where(d => d.PageId == p.Id).Select(func).ToArray();
+                Unit.PageRepository.UpdatePageViewParamsJson(p, ps, r, fs);
             }
             return Unit.SaveChanges();
         }

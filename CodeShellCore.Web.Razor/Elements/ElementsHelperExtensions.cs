@@ -151,7 +151,7 @@ namespace CodeShellCore.Web.Razor.Elements
             )
         {
             var Provider = helper.GetService<IElementsHelper>();
-            var elem = Provider.RadioGroup(helper, exp, options,required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, template, readOnlyProperty, readOnlyPipe);
+            var elem = Provider.RadioGroup(helper, exp, options, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses, template, readOnlyProperty, readOnlyPipe);
             if (!elem.Accessibility.Write && readOnlyProperty != null)
             {
                 return elem.Write(InputControls.Label);
@@ -174,7 +174,7 @@ namespace CodeShellCore.Web.Razor.Elements
         {
             var Provider = helper.GetService<IElementsHelper>();
             var elem = Provider.CalendarGroup(helper, exp, type, range, cals, required, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses);
-            return elem.Write(InputControls.CalendarTextBox);
+            return elem.Write(cals == Calendars.Greg ? InputControls.CalendarTextBox : InputControls.HijriCalendarTextBox);
         }
 
         public static IHtmlContent DateTimeGroup<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,

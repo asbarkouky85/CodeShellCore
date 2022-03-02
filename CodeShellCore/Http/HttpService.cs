@@ -226,7 +226,8 @@ namespace CodeShellCore.Http
             Task.WaitAll(tsk);
             if (!tsk.Result.IsSuccessStatusCode)
                 throw new CodeShellHttpException(tsk.Result);
-            else {
+            else
+            {
                 var tt = tsk.Result.Content.ReadAsStringAsync();
                 Task.WaitAll(tt);
                 return tt.Result.FromJson<T>();
@@ -330,11 +331,11 @@ namespace CodeShellCore.Http
             HttpResponseMessage mes = await GetAsync(url, query);
             if (mes.IsSuccessStatusCode)
             {
-                FileBytes b = new FileBytes();
-                b.Bytes = await mes.Content.ReadAsByteArrayAsync();
 
-                b.FileName = url.GetAfterLast("/")?.GetBeforeFirst("?");
+                var Bytes = await mes.Content.ReadAsByteArrayAsync();
 
+                var FileName = url.GetAfterLast("/")?.GetBeforeFirst("?");
+                FileBytes b = new FileBytes(FileName, Bytes);
                 if (mes.Content.Headers.ContentDisposition != null)
                     b.FileName = mes.Content.Headers.ContentDisposition.FileName;
 

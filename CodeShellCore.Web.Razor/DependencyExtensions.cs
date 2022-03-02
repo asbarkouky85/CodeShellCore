@@ -39,7 +39,6 @@ using CodeShellCore.Web.Razor.Tables.Angular;
 using CodeShellCore.Web.Razor.Tables.Moldster;
 using CodeShellCore.Web.Razor.SignalR;
 using CodeShellCore.Web.Razor.Configurator;
-using System.IO;
 
 namespace CodeShellCore.Web.Razor
 {
@@ -62,10 +61,6 @@ namespace CodeShellCore.Web.Razor
                 d.MapHub<GenerationHub>("/generationHub");
                 d.MapHub<TasksHub>("/tasksHub");
             });
-            if (!File.Exists("./appEnvironments.json"))
-            {
-                File.WriteAllText("./appEnvironments.json", "[]");
-            }
         }
 
         public static void AddMoldsterServerGeneration(this IServiceCollection coll)

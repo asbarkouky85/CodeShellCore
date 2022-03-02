@@ -1,4 +1,6 @@
-﻿namespace CodeShellCore.Web.Features
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace CodeShellCore.Web.Features
 {
     public interface IFeatureConfiguration
     {

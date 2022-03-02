@@ -17,6 +17,5 @@ namespace CodeShellCore.Moldster.Data
         SubmitResult CreateTenantDatabase(long id, string code, string dbName);
         void BeforeComparisonInitiation(string db);
         void AfterComparisonInitiation(long id, string code, string db);
-        string[] GetDatabaseList();
     }
 }

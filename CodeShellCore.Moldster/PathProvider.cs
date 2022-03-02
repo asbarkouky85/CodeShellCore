@@ -5,13 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Linq;
 
 namespace CodeShellCore.Moldster
 {
     public class DefaultPathsService : IPathsService
     {
-        private string _filePath = "./appEnvironments.json";
         public virtual string CoreAppName { get; private set; }
         public virtual string LocalizationRoot { get; private set; }
         public virtual string ConfigRoot { get; private set; }
@@ -22,10 +20,10 @@ namespace CodeShellCore.Moldster
         public virtual List<MoldsterEnvironment> GetEnvironments()
         {
             List<MoldsterEnvironment> _envs = new List<MoldsterEnvironment>();
-            if (!File.Exists(_filePath))
-                throw new Exception($"appEnvironments.json is required to use this service");
+            if (!File.Exists("./appEnvironments.json"))
+                throw new Exception("appEnvironments.json is required to use this service");
 
-            var f = File.ReadAllText(_filePath);
+            var f = File.ReadAllText("./appEnvironments.json");
             if (!f.TryRead(out _envs))
                 throw new Exception("appEnvironments.json is invalid");
 
@@ -40,13 +38,6 @@ namespace CodeShellCore.Moldster
         public virtual List<LayoutFileDTO> GetLayouts(bool nameOnly = false)
         {
             return new List<LayoutFileDTO>();
-        }
-
-        public List<MoldsterEnvironment> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs)
-        {
-            var json = envs.ToJsonIndent();
-            File.WriteAllText(_filePath, json);
-            return envs.ToList();
         }
 
         public DefaultPathsService()

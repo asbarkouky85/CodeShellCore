@@ -9,9 +9,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.15.13.0</Version>
-    <AssemblyVersion>2.15.13.0</AssemblyVersion>
-    <FileVersion>2.15.13.0</FileVersion>
+    <Version>2.16.11.0</Version>
+    <AssemblyVersion>2.16.11.0</AssemblyVersion>
+    <FileVersion>2.16.11.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_V215)\CodeShellCore\CodeShellCore.csproj" />
+    <ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
   </ItemGroup>
 
 </Project>

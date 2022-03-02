@@ -5,24 +5,13 @@
       "UserId": "app",
       "Password": "123456",
       "Server": "(local)",
-      "Database": "",
-      "ConnectionString": "Server=(local);User Id=app;Password=123456;Database="
+      "Database": ""
     },
-    "SourceDatabase": null,
-    "ConfigDatabase": null,
-    "Databases": [
-      "FMS_New"
-    ],
-    "Upload": {
-      "Type": "FTP",
-      "Server": "localhost",
-      "ServerUrl": "localhost",
-      "UserName": "admin",
-      "Password": "admin",
-      "PathOnServer": null,
-      "Active": false
-    },
-    "Restore": null
+    "SourceDataBase": null,
+	"SourceBackupPath":null,
+	"ConfigDatabase":null,
+	"ConfigBackupPath":null,
+    "Databases": []
   },
   {
     "Name": "Development",
@@ -30,69 +19,35 @@
       "UserId": "app",
       "Password": "123456",
       "Server": "asga_dev",
-      "Database": "",
-      "ConnectionString": "Server=asga_dev;User Id=app;Password=123456;Database="
+      "Database": ""
     },
-    "SourceDatabase": null,
-    "ConfigDatabase": null,
+    "SourceDataBase": null,
     "Databases": [],
     "Upload": {
       "Type": "FS",
       "Server": "",
       "ServerUrl": "http://asga_dev",
-      "UserName": null,
-      "Password": null,
-      "PathOnServer": "\\\\dev-server\\Publish\\",
-      "Active": false
-    },
-    "Restore": null
+      "PathOnServer": "\\\\dev-server\\Publish\\"
+    }
   },
   {
     "Name": "Production",
     "ConnectionParams": {
       "UserId": "app",
       "Password": "123456",
-      "Server": "asga_dev",
-      "Database": "",
-      "ConnectionString": "Server=asga_dev;User Id=app;Password=123456;Database="
+      "Server": null,
+      "Database": ""
     },
-    "SourceDatabase": null,
-    "ConfigDatabase": null,
-    "Databases": [
-      "FMS_New"
-    ],
+    "SourceDataBase": null,
+    "Databases": [],
     "Upload": {
       "Type": "FTP",
       "Server": "(ftp server)",
       "ServerUrl": "(http server)",
+      "PathOnServer": "(path from ftp home to project)",
       "UserName": "(ftp user name)",
       "Password": "(ftp password)",
-      "PathOnServer": "(path from ftp home to project)",
       "Active": true
-    },
-    "Restore": null
-  },
-  {
-    "Name": "Home",
-    "ConnectionParams": {
-      "UserId": null,
-      "Password": null,
-      "Server": null,
-      "Database": null,
-      "ConnectionString": "Server=;User Id=;Password=;"
-    },
-    "SourceDatabase": null,
-    "ConfigDatabase": null,
-    "Databases": null,
-    "Upload": {
-      "Type": null,
-      "Server": null,
-      "ServerUrl": null,
-      "UserName": null,
-      "Password": null,
-      "PathOnServer": null,
-      "Active": false
-    },
-    "Restore": null
+    }
   }
 ]

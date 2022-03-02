@@ -11,7 +11,7 @@ namespace Asga.Public
 
         public void LoadFile(string serviceUrl)
         {
-            File = new TmpFileData(FilePath);
+            File = new TmpFileData(FileUtils.GetUploadedFileUrl(FilePath));
         }
     }
 }

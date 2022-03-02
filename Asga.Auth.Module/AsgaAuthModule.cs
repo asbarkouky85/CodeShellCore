@@ -31,7 +31,6 @@ namespace Asga.Auth
             }
 
             coll.AddScoped<ISecurityUnit>(d => d.GetService<AuthUnit>());
-            coll.AddScoped<IRoleBasedSecurityUnit>(d => d.GetService<AuthUnit>());
 
             coll.AddTransient<IUserRepository, UserRepository>();
             coll.AddTransient<IRoleRepository, RoleRepository>();

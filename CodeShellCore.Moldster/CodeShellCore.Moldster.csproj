@@ -9,19 +9,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.15.13.0</Version>
-    <AssemblyVersion>2.15.13.0</AssemblyVersion>
-    <FileVersion>2.15.13.0</FileVersion>
+    <Version>2.16.14.0</Version>
+    <AssemblyVersion>2.16.14.0</AssemblyVersion>
+    <FileVersion>2.16.14.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Angular\Molds\BaseComponent.ts.template" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_V215)\CodeShellCore\CodeShellCore.csproj" />
+    <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>

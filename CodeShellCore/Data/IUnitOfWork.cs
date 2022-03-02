@@ -1,15 +1,9 @@
 ﻿using CodeShellCore.Data.ConfiguredCollections;
-using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Security;
 using CodeShellCore.Text.Localization;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeShellCore.Data
 {

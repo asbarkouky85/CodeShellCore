@@ -8,7 +8,5 @@ namespace CodeShellCore.Files.Reporting
     {
         public abstract string Template { get; }
 
-        
-
     }
 }

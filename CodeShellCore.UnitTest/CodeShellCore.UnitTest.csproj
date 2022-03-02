@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_V215)\Asga.Auth.Web\Asga.Auth.Web.csproj" />
-    <ProjectReference Include="$(CODESHELL_V215)\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
+    <ProjectReference Include="..\Asga.Auth.Web\Asga.Auth.Web.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Data.ConfiguredCollections;
+using CodeShellCore.Files;
 using CodeShellCore.Linq;
 using CodeShellCore.Security;
 using CodeShellCore.Text;
@@ -38,10 +39,27 @@ namespace Asga.Public.Data.Internal
             });
         }
 
+        private void _fixUrls(IEnumerable<HomeSlide> slides)
+        {
+            foreach (var item in slides)
+            {
+                item.Image = FileUtils.GetUploadedFileUrl(item.Image);
+            }
+        }
+
         public virtual LoadResult GetLocalized(LoadOptions opts, string collectionId = null)
         {
             var q = collectionId == null ? Loader : QueryCollection(collectionId);
-            return QueryLocalized(q).LoadWith(opts.GetOptionsFor<HomeSlide>());
+            var data = QueryLocalized(q).LoadWith(opts.GetOptionsFor<HomeSlide>());
+            _fixUrls((IEnumerable<HomeSlide>)data.List);
+            return data;
+        }
+
+        public override LoadResult<HomeSlide> Find(ListOptions<HomeSlide> opts)
+        {
+            var res = base.Find(opts);
+            _fixUrls((IEnumerable<HomeSlide>)res.List);
+            return res;
         }
 
         public override void Add(HomeSlide obj)

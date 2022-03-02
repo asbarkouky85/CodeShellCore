@@ -22,13 +22,12 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string size = null,
             object cellAttributes = null,
             bool ignoreAccessibility = false,
-            bool? sorting = null,
-            bool isRequired = false)
+            bool? sorting = null)
         {
 
             var Provider = helper.GetService<IMoldsterTableHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
-            var writer = Provider.HeaderCell(helper, textId, isColumn, size, cellAttributes, ignoreAccessibility, sorting.Value, isRequired);
+            var writer = Provider.HeaderCell(helper, textId, isColumn, size, cellAttributes, ignoreAccessibility, sorting.Value);
             return writer.WriteHeaderCell();
         }
 
@@ -38,12 +37,11 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             string width = null,
             bool ignoreAccessibility = false,
             object cellAttributes = null,
-            bool? sorting = null,
-            bool isRequired = false)
+            bool? sorting = null)
         {
             var Provider = helper.GetService<IMoldsterTableHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
-            CellWriter wt = Provider.HeaderCell(helper, exp, width, ignoreAccessibility, cellAttributes, sorting.Value, isRequired);
+            CellWriter wt = Provider.HeaderCell(helper, exp, width, ignoreAccessibility, cellAttributes, sorting.Value);
             return wt.WriteHeaderCell();
         }
 

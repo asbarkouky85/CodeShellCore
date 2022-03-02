@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Example.UI.Controllers
 {
-    [ApiAuthorize(Clients = new[] { "Test.App" })]
+    [ApiAuthorize(AllowAnonymous = true)]
     public class FilesController : CodeShellCore.Web.Controllers.BaseFilesController
     {
         public FilesController()

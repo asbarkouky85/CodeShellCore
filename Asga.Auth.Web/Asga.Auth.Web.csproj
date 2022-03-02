@@ -9,17 +9,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.15.14.0</Version>
-    <AssemblyVersion>2.15.14.0</AssemblyVersion>
-    <FileVersion>2.15.14.0</FileVersion>
+    <Version>2.16.14.0</Version>
+    <AssemblyVersion>2.16.14.0</AssemblyVersion>
+    <FileVersion>2.16.14.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyName>Asga.Auth.Web</AssemblyName>
     <RootNamespace>Asga.Auth.Web</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_V215)\Asga.Auth.Module\Asga.Auth.Module.csproj" />
-    <ProjectReference Include="$(CODESHELL_V215)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <ProjectReference Include="..\Asga.Auth.Module\Asga.Auth.Module.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
   </ItemGroup>
 
 </Project>

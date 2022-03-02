@@ -25,13 +25,13 @@ namespace Asga.Mobile.Web.Conrollers
             return Respond(Service.LoadListDTO(opt.GetOptionsFor<NotificationListDTO>()));
         }
 
-        public IActionResult GetCount()
+        public virtual IActionResult GetCount()
         {
             int c = Service.GetCount(true);
             return Respond(c);
         }
 
-        public IActionResult SetRead(long id)
+        public virtual IActionResult SetRead(long id)
         {
             SubmitResult = Service.SetRead(id);
             return Respond();

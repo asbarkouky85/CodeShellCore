@@ -87,7 +87,7 @@ namespace CodeShellCore.Web.Razor
             return Helper.Partial(template, InputModel);
         }
 
-        public virtual IHtmlContent GetLabelControl(bool localizable = false)
+        public IHtmlContent GetLabelControl(bool localizable = false)
         {
             if (!(InputModel is LabelNgInput))
                 InputModel = InputModel.GetLabelInput();

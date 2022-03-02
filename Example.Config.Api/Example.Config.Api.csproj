@@ -48,11 +48,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_V215)\Asga.Auth.Molds\Asga.Auth.Molds.csproj" />
-    <ProjectReference Include="$(CODESHELL_V215)\Asga.Auth\Asga.Auth.csproj" />
-    <ProjectReference Include="$(CODESHELL_V215)\Asga.Public.Molds\Asga.Public.Molds.csproj" />
-    <ProjectReference Include="$(CODESHELL_V215)\Asga.Public\Asga.Public.csproj" />
-    <ProjectReference Include="$(CODESHELL_V215)\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
+    <ProjectReference Include="..\Asga.Auth.Molds\Asga.Auth.Molds.csproj" />
+    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
+    <ProjectReference Include="..\Asga.Public.Molds\Asga.Public.Molds.csproj" />
+    <ProjectReference Include="..\Asga.Public\Asga.Public.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

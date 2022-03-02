@@ -9,9 +9,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-<Version>2.15.14.0</Version>
-<AssemblyVersion>2.15.14.0</AssemblyVersion>
-<FileVersion>2.15.14.0</FileVersion>
+<Version>2.16.14.0</Version>
+<AssemblyVersion>2.16.14.0</AssemblyVersion>
+<FileVersion>2.16.14.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_V215)\Asga.Dashboard\Asga.Dashboard.csproj" />
-    <ProjectReference Include="$(CODESHELL_V215)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <ProjectReference Include="..\Asga.Dashboard\Asga.Dashboard.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
   </ItemGroup>
 
 </Project>

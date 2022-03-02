@@ -26,8 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_V215)\Asga.Auth.Web\Asga.Auth.Web.csproj" />
-    <ProjectReference Include="$(CODESHELL_V215)\Example\Example.csproj" />
+    <ProjectReference Include="..\Asga.Auth.Web\Asga.Auth.Web.csproj" />
+    <ProjectReference Include="..\CodeShellCore.FileServer.Web\CodeShellCore.FileServer.Web.csproj" />
+    <ProjectReference Include="..\Example\Example.csproj" />
   </ItemGroup>
 
   <ItemGroup>

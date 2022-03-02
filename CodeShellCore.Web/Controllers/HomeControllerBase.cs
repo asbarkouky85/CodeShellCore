@@ -10,7 +10,7 @@ namespace CodeShellCore.Web.Controllers
     [Produces("text/html")]
     public class HomeControllerBase : Controller
     {
-        public IActionResult Index()
+        public virtual IActionResult Index()
         {
             
             string ass = Shell.ProjectAssembly.GetName().Name;

@@ -38,7 +38,7 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes,bool sorting, bool isRequired)
+        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes,bool sorting)
         {
             using (var writer = new CellWriter(helper))
             {
@@ -50,14 +50,13 @@ namespace CodeShellCore.Web.Razor.Tables
             }
         }
 
-        public virtual CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes, bool sorting, bool isRequired)
+        public virtual CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes,bool sorting)
         {
             using (var writer = new CellWriter(helper))
             {
                 writer.UseExpression(exp);
                 writer.Initialize(null, size, cellAttributes, null);
                 writer.ColumnModel.Sorting = sorting;
-                writer.ColumnModel.IsRequired = isRequired;
                 writer.InputModel.PlaceHolder = RazorConfig.LocaleTextProvider.Column(writer.ColumnId);
                 return writer;
             }
