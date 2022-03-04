@@ -37,7 +37,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return writer;
         }
 
-        
+
 
         public override CellWriter CalendarCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, CalendarTypes rangeType, Calendars cals, DateRange range, bool required, object cellAttributes, object inputAttr, string classes)
         {
@@ -67,29 +67,29 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return wt;
         }
 
-        public override CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes, bool sorting)
+        public override CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes, bool sorting, bool isRequired)
         {
-            return base.HeaderCell(helper, textId, size, isColumn, cellAttributes, sorting);
+            return base.HeaderCell(helper, textId, size, isColumn, cellAttributes, sorting, isRequired);
         }
 
-        public override CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes, bool sorting)
+        public override CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes, bool sorting, bool isRequired)
         {
-            var s = base.HeaderCell(helper, exp, size, cellAttributes, sorting);
+            var s = base.HeaderCell(helper, exp, size, cellAttributes, sorting, isRequired);
             s.Accessibility = proc.ProcessCell(helper, exp, "Header");
             return s;
         }
 
-        public CellWriter HeaderCell<T>(IHtmlHelper<T> helper, string textId, bool isColumn = false, string size = null, object cellAttributes = null, bool ignoreAccessibility = false, bool sorting = true)
+        public CellWriter HeaderCell<T>(IHtmlHelper<T> helper, string textId, bool isColumn = false, string size = null, object cellAttributes = null, bool ignoreAccessibility = false, bool sorting = true, bool isRequired = false)
         {
-            var wt = base.HeaderCell(helper, textId, size, isColumn, cellAttributes, sorting);
+            var wt = base.HeaderCell(helper, textId, size, isColumn, cellAttributes, sorting, isRequired);
             if (!ignoreAccessibility)
                 wt.Accessibility = proc.ProcessCell(helper, textId, "Header");
             return wt;
         }
 
-        public CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string width, bool ignoreAccessibility, object cellAttributes, bool sorting)
+        public CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string width, bool ignoreAccessibility, object cellAttributes, bool sorting, bool isRequired)
         {
-            var wt = base.HeaderCell<T, TValue>(helper, exp, width, cellAttributes, sorting);
+            var wt = base.HeaderCell<T, TValue>(helper, exp, width, cellAttributes, sorting, isRequired);
             if (!ignoreAccessibility)
                 wt.Accessibility = proc.ProcessCell(helper, exp, "Header");
             return wt;

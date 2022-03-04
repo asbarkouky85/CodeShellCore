@@ -13,10 +13,10 @@ namespace CodeShellCore.Web.Razor.Tables
         {
             var writer = new CellWriter(helper);
             writer.UseExpression(exp);
-            
+
             writer.Initialize(null, null, cellAttributes, inputAttr, classes);
 
-            
+
             return writer;
         }
 
@@ -38,25 +38,27 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes,bool sorting)
+        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes, bool sorting, bool isRequired)
         {
             using (var writer = new CellWriter(helper))
             {
                 writer.ColumnModel.MemberName = textId;
                 writer.ColumnModel.Sorting = sorting;
+                writer.ColumnModel.IsRequired = isRequired;
                 writer.ColumnModel.Attributes = cellAttributes == null ? "" : RazorUtils.ToAttributeString(cellAttributes);
                 writer.InputModel.PlaceHolder = isColumn ? RazorConfig.LocaleTextProvider.Column(textId) : RazorConfig.LocaleTextProvider.Word(textId);
                 return writer;
             }
         }
 
-        public virtual CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes,bool sorting)
+        public virtual CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes, bool sorting, bool isRequired)
         {
             using (var writer = new CellWriter(helper))
             {
                 writer.UseExpression(exp);
                 writer.Initialize(null, size, cellAttributes, null);
                 writer.ColumnModel.Sorting = sorting;
+                writer.ColumnModel.IsRequired = isRequired;
                 writer.InputModel.PlaceHolder = RazorConfig.LocaleTextProvider.Column(writer.ColumnId);
                 return writer;
             }
@@ -83,14 +85,14 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter SelectCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string displayMember, string valueMember, bool required, bool multi, object cellAttributes, object inputAttr, string classes,bool nullable,string rowIndex)
+        public virtual CellWriter SelectCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, Lister source, string displayMember, string valueMember, bool required, bool multi, object cellAttributes, object inputAttr, string classes, bool nullable, string rowIndex)
         {
             var writer = new CellWriter(helper);
             writer.UseExpression(exp);
             writer.Initialize(null, null, cellAttributes, inputAttr, classes);
-            writer.InputModel = writer.InputModel.GetSelectInput(source.IsLookup ? "Lookups." + source.ListName : source.ListName, displayMember, valueMember,multi,nullable);
+            writer.InputModel = writer.InputModel.GetSelectInput(source.IsLookup ? "Lookups." + source.ListName : source.ListName, displayMember, valueMember, multi, nullable);
             if (required)
-                writer.UseValidation(helper.VCollection().AddRequired(),rowIndex:rowIndex);
+                writer.UseValidation(helper.VCollection().AddRequired(), rowIndex: rowIndex);
             return writer;
         }
 
@@ -114,11 +116,11 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter TextBoxCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string textBoxType,string rowIndex, IValidationCollection coll, object cellAttributes, object inputAttr, string classes)
+        public virtual CellWriter TextBoxCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string textBoxType, string rowIndex, IValidationCollection coll, object cellAttributes, object inputAttr, string classes)
         {
             var writer = new CellWriter(helper);
             writer.UseExpression(exp);
-            
+
             writer.InputModel.TextBoxType = textBoxType;
             writer.InputModel.RowIndex = rowIndex;
             writer.Initialize(null, null, cellAttributes, inputAttr, classes);
