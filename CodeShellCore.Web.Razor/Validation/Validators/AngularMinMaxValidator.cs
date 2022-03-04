@@ -26,7 +26,7 @@ namespace CodeShellCore.Web.Razor.Validation.Validators
                 {
                     string str = "numberRange ";
                     if (minExp != null)
-                        str += "min='" + minExp + "'";
+                        str += "[min]='" + minExp + "'";
 
                     if (maxExp != null)
                         str += " [max]='" + maxExp + "'";

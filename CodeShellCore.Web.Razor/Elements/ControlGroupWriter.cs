@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using CodeShellCore.Text;
 
 using CodeShellCore.Web.Razor.Models;
+using CodeShellCore.Web;
 using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Web.Razor.Validation.Internal;
 using CodeShellCore.Moldster.Razor;
@@ -104,6 +105,7 @@ namespace CodeShellCore.Web.Razor.Elements
             InputModel.PlaceHolder = placeHolder ?? GroupModel.Label;
             InputModel.Classes = classes;
             InputModel.AttributeObject = inputAttr;
+
         }
 
         public virtual IHtmlContent WriteLabel(bool localizable = false)
@@ -161,6 +163,7 @@ namespace CodeShellCore.Web.Razor.Elements
                         InputModel.AttributeObject = null;
                         return WriteLabel(localizable);
                 }
+
             }
             string template = Helper.GetTheme().GetControlGroupTemplate(cont, localizable);
             GroupModel.InputControl = GetInputControl(cont);

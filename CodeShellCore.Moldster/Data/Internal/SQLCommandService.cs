@@ -161,7 +161,7 @@ namespace CodeShellCore.Moldster.Data.Internal
                     else
                         res.Data["UpdateStructureRes"] = r2;
                 }
-
+                
                 if (id == 0)
                     id = GetNewTenantId();
                 AfterComparisonInitiation(id, code, dbName);

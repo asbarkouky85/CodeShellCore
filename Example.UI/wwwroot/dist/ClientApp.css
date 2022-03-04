@@ -1,0 +1,1008 @@
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserRole", function() { return UserRole; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "User", function() { return User; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FMSUserDTO", function() { return FMSUserDTO; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RoleResourceAction", function() { return RoleResourceAction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Perm", function() { return Perm; });
+/* harmony import */ var codeshell_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/helpers */ "./Core/codeshell/helpers.ts");
+/* harmony import */ var codeshell_security__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! codeshell/security */ "./Core/codeshell/security.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var UserRole = /** @class */ (function () {
+    function UserRole() {
+        this.roleId = 0;
+        this.userId = 0;
+    }
+    return UserRole;
+}());
+
+var User = /** @class */ (function () {
+    function User() {
+        this.id = 0;
+        this.userRoles = [];
+        this.parties = [];
+        this.userType = 0;
+    }
+    return User;
+}());
+
+var FMSUserDTO = /** @class */ (function (_super) {
+    __extends(FMSUserDTO, _super);
+    function FMSUserDTO() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return FMSUserDTO;
+}(codeshell_security__WEBPACK_IMPORTED_MODULE_1__["UserDTO"]));
+
+var RoleResourceAction = /** @class */ (function (_super) {
+    __extends(RoleResourceAction, _super);
+    function RoleResourceAction() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.resourceActionId = 0;
+        _this.roleId = 0;
+        _this.state = "Detached";
+        return _this;
+    }
+    return RoleResourceAction;
+}(codeshell_helpers__WEBPACK_IMPORTED_MODULE_0__["ListItem"]));
+
+var Perm = /** @class */ (function (_super) {
+    __extends(Perm, _super);
+    function Perm() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.resourceId = 0;
+        _this.roleId = 0;
+        _this.canViewDetails = false;
+        _this.canUpdate = false;
+        _this.canInsert = false;
+        _this.canDelete = false;
+        return _this;
+    }
+    Perm.prototype.SetAll = function (set) {
+        this.canDelete = set;
+        this.canInsert = set;
+        this.canUpdate = set;
+        this.canViewDetails = set;
+    };
+    return Perm;
+}(codeshell_helpers__WEBPACK_IMPORTED_MODULE_0__["ListItem"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthModule", function() { return AuthModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Shared/SharedModule */ "./ClientApp/app/Shared/SharedModule.ts");
+/* harmony import */ var codeshell_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! codeshell/core */ "./Core/codeshell/core.ts");
+/* harmony import */ var codeshell_security__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! codeshell/security */ "./Core/codeshell/security.ts");
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
+/* harmony import */ var _ForgotPassword__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ForgotPassword */ "./ClientApp/app/Auth/ForgotPassword.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var AuthModule = /** @class */ (function () {
+    function AuthModule(trans, conf) {
+        trans.setDefaultLang(conf.Locale);
+        trans.use(conf.Locale);
+    }
+    AuthModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [_ForgotPassword__WEBPACK_IMPORTED_MODULE_6__["ForgotPassword"],],
+            exports: [_ForgotPassword__WEBPACK_IMPORTED_MODULE_6__["ForgotPassword"],],
+            imports: [
+                _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__["SharedModule"],
+                _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild([
+                    { path: "ForgotPassword", component: _ForgotPassword__WEBPACK_IMPORTED_MODULE_6__["ForgotPassword"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "Auth__ForgotPassword", navigate: false, resource: "", action: "anonymous", apps: null } },
+                    { path: "Roles", loadChildren: function () { return new Promise(function (resolve, reject) { __webpack_require__.e(/*! require.ensure */ 4).then((function (require) { resolve(__webpack_require__(/*! ./Roles/RolesModule */ "./ClientApp/app/Auth/Roles/RolesModule.ts")['RolesModule']); }).bind(null, __webpack_require__)).catch(function (e) { reject({ loadChunkError: true, details: e }); }); }); } },
+                    { path: "Users", loadChildren: function () { return new Promise(function (resolve, reject) { __webpack_require__.e(/*! require.ensure */ 3).then((function (require) { resolve(__webpack_require__(/*! ./Users/UsersModule */ "./ClientApp/app/Auth/Users/UsersModule.ts")['UsersModule']); }).bind(null, __webpack_require__)).catch(function (e) { reject({ loadChunkError: true, details: e }); }); }); } },
+                ])
+            ],
+            entryComponents: []
+        }),
+        __metadata("design:paramtypes", [_ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateService"], codeshell_core__WEBPACK_IMPORTED_MODULE_3__["ServerConfigBase"]])
+    ], AuthModule);
+    return AuthModule;
+}());
+
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("Auth/ForgotPassword", _ForgotPassword__WEBPACK_IMPORTED_MODULE_6__["ForgotPassword"]);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ForgotPasswordBase", function() { return ForgotPasswordBase; });
+/* harmony import */ var codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/baseComponents */ "./Core/codeshell/baseComponents.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var codeshell_security__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! codeshell/security */ "./Core/codeshell/security.ts");
+/* harmony import */ var codeshell_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! codeshell/core */ "./Core/codeshell/core.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+var ForgotPasswordBase = /** @class */ (function (_super) {
+    __extends(ForgotPasswordBase, _super);
+    function ForgotPasswordBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(ForgotPasswordBase.prototype, "Service", {
+        get: function () { return codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Shell"].Injector.get(codeshell_security__WEBPACK_IMPORTED_MODULE_2__["AccountServiceBase"]); },
+        enumerable: true,
+        configurable: true
+    });
+    ForgotPasswordBase.prototype.SubmitAsync = function () {
+        return this.Service.SendResetMail(this.model);
+    };
+    ForgotPasswordBase = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    ], ForgotPasswordBase);
+    return ForgotPasswordBase;
+}(codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_0__["EditComponentBase"]));
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.Auth__ForgotPassword' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n        <ol class=\"breadcrumb\">\r\n    <li>\r\n        <a routerLink=\"/\">{{'Words.Main' | translate }}</a>\r\n    </li>\r\n        <li>\r\n        {{'Pages.Auth__ForgotPassword' | translate }}\r\n    </li>\r\n</ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.Auth__ForgotPassword' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div><div [ngClass]=\"IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'\">\r\n\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'content-block'\">\r\n        <div class=\"row\" *ngIf=\"UseLocalization\">\r\n            <div class=\"col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom\">\r\n                <div class=\"btn-group btn-group-sm pull-last\">\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='ar'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='ar'\">\r\n                            {{'Words.ar' | translate }}\r\n                        </button>\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='en'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='en'\">\r\n                            {{'Words.en' | translate }}\r\n                        </button>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n        <form #Form=\"ngForm\" >\n\r\n<div class=\"row form-group \"\r\n     id=\"FG_email\"\r\n     #FG_email=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.ResetPasswordDTO__Email' | translate }}\r\n<span style=\"color:red\" > * </span>    </label>\r\n    <div class=\"col-sm-9\">\r\n        <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.ResetPasswordDTO__Email' | translate }}\"\r\n       name=\"Form__email\"\r\n       [(ngModel)]=\"model.email\"\r\n       title=\"{{'Columns.ResetPasswordDTO__Email' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required [pattern]=\"'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'\"  >\r\n    <p *ngIf=\"!FG_email.Write\">{{FG_email.Value}}</p>\r\n\r\n\r\n        <span *ngIf=\"Form.controls['Form__email'] && Form.controls['Form__email'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__email'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.ResetPasswordDTO__Email' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__email'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.ResetPasswordDTO__Email' | translate } }}</small>\r\n</span>\r\n    </div>\r\n</div>\r\n</form>\r\n\r\n        \r\n        <div class=\"row submit-buttons\">\r\n            <div class=\"col-md-12\">\r\n                <div class=\"pull-last\">\r\n                    \r\n        <button class=\"btn btn-primary\"\r\n            [disabled]=\"!CanSubmit\"\r\n            (click)=\"Submit()\">\r\n        {{'Words.Save' | translate }}\r\n    </button>\r\n\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\n<div style='display:none' #lookupOptionsContainer values=''></div>\n<div style='display:none' #viewParamsContainer values='{\"AddUrl\":null,\"EditUrl\":null,\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{}}'></div>";__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RolesModule", function() { return RolesModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/SharedModule */ "./ClientApp/app/Shared/SharedModule.ts");
+/* harmony import */ var codeshell_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! codeshell/core */ "./Core/codeshell/core.ts");
+/* harmony import */ var codeshell_security__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! codeshell/security */ "./Core/codeshell/security.ts");
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
+/* harmony import */ var _AuthModule__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AuthModule */ "./ClientApp/app/Auth/AuthModule.ts");
+/* harmony import */ var _RoleList__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./RoleList */ "./ClientApp/app/Auth/Roles/RoleList.ts");
+/* harmony import */ var _RoleEdit__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./RoleEdit */ "./ClientApp/app/Auth/Roles/RoleEdit.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+var RolesModule = /** @class */ (function () {
+    function RolesModule(trans, conf) {
+        trans.setDefaultLang(conf.Locale);
+        trans.use(conf.Locale);
+    }
+    RolesModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [_RoleList__WEBPACK_IMPORTED_MODULE_7__["RoleList"], _RoleEdit__WEBPACK_IMPORTED_MODULE_8__["RoleEdit"],],
+            exports: [_RoleList__WEBPACK_IMPORTED_MODULE_7__["RoleList"], _RoleEdit__WEBPACK_IMPORTED_MODULE_8__["RoleEdit"],],
+            imports: [
+                _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__["SharedModule"],
+                _AuthModule__WEBPACK_IMPORTED_MODULE_6__["AuthModule"],
+                _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild([
+                    { path: "RoleList", component: _RoleList__WEBPACK_IMPORTED_MODULE_7__["RoleList"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "Roles__RoleList", navigate: false, resource: "", action: "allowAll", apps: null } },
+                    { path: "RoleEdit/:id", component: _RoleEdit__WEBPACK_IMPORTED_MODULE_8__["RoleEdit"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "Roles__RoleEdit", navigate: false, resource: "", action: "allowAll", apps: null } },
+                ])
+            ],
+            entryComponents: []
+        }),
+        __metadata("design:paramtypes", [_ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateService"], codeshell_core__WEBPACK_IMPORTED_MODULE_3__["ServerConfigBase"]])
+    ], RolesModule);
+    return RolesModule;
+}());
+
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("Auth/Roles/RoleList", _RoleList__WEBPACK_IMPORTED_MODULE_7__["RoleList"]);
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("Auth/Roles/RoleEdit", _RoleEdit__WEBPACK_IMPORTED_MODULE_8__["RoleEdit"]);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RoleList", function() { return RoleList; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var BaseApp_Auth_Roles_RoleListBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! BaseApp/Auth/Roles/RoleListBase */ "./Core/BaseApp/Auth/Roles/RoleListBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var RoleList = /** @class */ (function (_super) {
+    __extends(RoleList, _super);
+    function RoleList() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RoleList.prototype.GetPageId = function () { return 2019080802000; };
+    RoleList = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./RoleList.html */ "./ClientApp/app/Auth/Roles/RoleList.html"), selector: "roleList" })
+    ], RoleList);
+    return RoleList;
+}(BaseApp_Auth_Roles_RoleListBase__WEBPACK_IMPORTED_MODULE_1__["RoleListBase"]));
+
+throw new Error("Module build failed (from ./node_modules/angular-router-loader/src/index.js):\nError: ENOENT: no such file or directory, open 'C:\\ASGA_TFS\\Libraries\\CodeShellCore\\master\\Example.UI\\Core\\BaseApp\\Auth\\Roles\\RoleListBase.ts'");module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.Roles__RoleList' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n\r\n        <ol class=\"breadcrumb\">\r\n            <li>\r\n                <a routerLink=\"'/'\">{{'Words.Main' | translate }}</a>\r\n            </li>\r\n            <li>\r\n                {{'Pages.Roles__RoleList' | translate }}\r\n            </li>\r\n        </ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.Roles__RoleList' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div [ngClass]=\"IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'\">\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'container-fluid content-block'\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-4\" style=\"padding: 10px 24px;color:#9B9B9B\">\r\n                <span><b>{{'Words.Count' | translate }}</b> : <span style=\"color:#9B9B9B\">{{totalCount}}</span></span>\r\n            </div>\r\n            <div class=\"col-md-8\">\r\n                <search-group (termChange)=\"HeaderSearch($event)\"></search-group>\r\n            </div>\r\n        </div>\r\n        <paginate [showing]=\"options.Showing\" [total-count]=\"totalCount\" [max-pages]=\"10\" [(currentPage)]=\"pageIndex\" (pageChange)=\"PageSelected($event)\"></paginate>\r\n\r\n        <div class=\"table-responsive\">\r\n            \r\n<table class=\"table table-striped\">\r\n    <thead>\r\n        <tr>\r\n                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('Name')\"  >\r\n        {{'Columns.Role__Name' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('Name')\"></i>\r\n    </th>\r\n\r\n            <th></th>\r\n        </tr>\r\n\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let model of list\">\r\n            <td  >\r\n    {{model.name}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td><div class=\"btn-group btnResponsive \">\r\n            <a *ngIf=\"Permission.update\" class=\"btn btn-primary btn-sm\" [routerLink]=\"'/Auth/Roles/RoleEdit/' +model.id\">\r\n                <i class=\"fa fa-pen\"></i>\r\n            </a>\r\n\r\n\r\n                <a *ngIf=\"Permission.delete\" class=\"btn btn-danger btn-sm\" (click)=\"Delete(model,model.id)\">\r\n                <i class=\"fa fa-trash\" aria-hidden=\"true\"></i>\r\n            </a>\r\n\r\n</div></td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n\r\n        </div>\r\n\r\n        <paginate [showing]=\"options.Showing\" [total-count]=\"totalCount\" [max-pages]=\"10\" [(currentPage)]=\"pageIndex\" (pageChange)=\"PageSelected($event)\"></paginate>\r\n    </div>\r\n\r\n</div>\n<div style='display:none' #lookupOptionsContainer values=''></div>\n<div style='display:none' #viewParamsContainer values='{\"ModelType\":null,\"AddUrl\":null,\"EditUrl\":\"/Auth/Roles/RoleEdit\",\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{}}'></div>";__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RoleEdit", function() { return RoleEdit; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var BaseApp_Auth_Roles_RoleEditBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! BaseApp/Auth/Roles/RoleEditBase */ "./Core/BaseApp/Auth/Roles/RoleEditBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var RoleEdit = /** @class */ (function (_super) {
+    __extends(RoleEdit, _super);
+    function RoleEdit() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    RoleEdit.prototype.GetPageId = function () { return 2019082885000; };
+    RoleEdit = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./RoleEdit.html */ "./ClientApp/app/Auth/Roles/RoleEdit.html"), selector: "roleEdit" })
+    ], RoleEdit);
+    return RoleEdit;
+}(BaseApp_Auth_Roles_RoleEditBase__WEBPACK_IMPORTED_MODULE_1__["RoleEditBase"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RoleEditBase", function() { return RoleEditBase; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! codeshell/helpers */ "./Core/codeshell/helpers.ts");
+/* harmony import */ var codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! codeshell/baseComponents */ "./Core/codeshell/baseComponents.ts");
+/* harmony import */ var _Http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../Http */ "./Core/BaseApp/Auth/Http.ts");
+/* harmony import */ var _Models__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../Models */ "./Core/BaseApp/Auth/Models.ts");
+/* harmony import */ var _Services_PrivilegeService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../Services/PrivilegeService */ "./Core/BaseApp/Auth/Services/PrivilegeService.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+var RoleEditBase = /** @class */ (function (_super) {
+    __extends(RoleEditBase, _super);
+    function RoleEditBase() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.Service = new _Http__WEBPACK_IMPORTED_MODULE_3__["RolesService"]();
+        _this.Privileges = [];
+        _this.ResourceActions = [];
+        _this.Priv = new _Services_PrivilegeService__WEBPACK_IMPORTED_MODULE_5__["PrivilegeService"]([], [], [], 0);
+        return _this;
+    }
+    RoleEditBase.prototype.DefaultModel = function () {
+        return {
+            entity: {
+                roleResources: [],
+                roleResourceActions: []
+            }
+        };
+    };
+    RoleEditBase.prototype.OnReady = function () {
+        for (var _i = 0, _a = this.model.entity.roleResources; _i < _a.length; _i++) {
+            var priv = _a[_i];
+            this.Privileges.push(Object.assign(new _Models__WEBPACK_IMPORTED_MODULE_4__["Perm"], priv));
+        }
+        for (var _b = 0, _c = this.model.entity.roleResourceActions; _b < _c.length; _b++) {
+            var priv = _c[_b];
+            this.ResourceActions.push(Object.assign(new codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["ListItem"], priv));
+        }
+        this.Priv = new _Services_PrivilegeService__WEBPACK_IMPORTED_MODULE_5__["PrivilegeService"](this.Lookups.resourcesByDomain, this.Privileges, this.ResourceActions, this.model.entity.id);
+    };
+    RoleEditBase.prototype.Submit = function () {
+        this.model.entity.roleResources = codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["ListItem"].GetChangedItems(this.Privileges);
+        this.model.entity.roleResourceActions = codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["ListItem"].GetChangedItems(this.ResourceActions);
+        _super.prototype.Submit.call(this);
+    };
+    RoleEditBase = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])()
+    ], RoleEditBase);
+    return RoleEditBase;
+}(codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_2__["DTOEditComponentBase"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Http_UsersService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Http/UsersService */ "./Core/BaseApp/Auth/Http/UsersService.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UsersService", function() { return _Http_UsersService__WEBPACK_IMPORTED_MODULE_0__["UsersService"]; });
+
+/* harmony import */ var _Http_RolesService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Http/RolesService */ "./Core/BaseApp/Auth/Http/RolesService.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RolesService", function() { return _Http_RolesService__WEBPACK_IMPORTED_MODULE_1__["RolesService"]; });
+
+
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersService", function() { return UsersService; });
+/* harmony import */ var codeshell_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/http */ "./Core/codeshell/http.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var UsersService = /** @class */ (function (_super) {
+    __extends(UsersService, _super);
+    function UsersService() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(UsersService.prototype, "BaseUrl", {
+        get: function () {
+            return "/apiAction/Users";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    UsersService.prototype.GetTenantApps = function () {
+        return this.Get("GetTenantApps");
+    };
+    UsersService.prototype.GetUserRole = function (userId) {
+        return this.Get("GetUserRole", userId);
+    };
+    UsersService.prototype.CheckIsUserExist = function (model) {
+        return this.Post("CheckUserexist", model);
+    };
+    UsersService.prototype.ChangePassword = function (model) {
+        return this.Save("ChangePassword", model);
+    };
+    return UsersService;
+}(codeshell_http__WEBPACK_IMPORTED_MODULE_0__["EntityHttpService"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RolesService", function() { return RolesService; });
+/* harmony import */ var codeshell_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/http */ "./Core/codeshell/http.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var RolesService = /** @class */ (function (_super) {
+    __extends(RolesService, _super);
+    function RolesService() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(RolesService.prototype, "BaseUrl", {
+        get: function () {
+            return "/apiAction/Roles";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return RolesService;
+}(codeshell_http__WEBPACK_IMPORTED_MODULE_0__["EntityHttpService"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ForgotPassword", function() { return ForgotPassword; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var BaseApp_Auth_Users_ForgotPasswordBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! BaseApp/Auth/Users/ForgotPasswordBase */ "./Core/BaseApp/Auth/Users/ForgotPasswordBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var ForgotPassword = /** @class */ (function (_super) {
+    __extends(ForgotPassword, _super);
+    function ForgotPassword() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ForgotPassword.prototype.GetPageId = function () { return 2024353205000; };
+    Object.defineProperty(ForgotPassword.prototype, "CollectionId", {
+        get: function () { return null; },
+        enumerable: true,
+        configurable: true
+    });
+    ForgotPassword = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./ForgotPassword.html */ "./ClientApp/app/Auth/ForgotPassword.html"), selector: "forgotPassword" })
+    ], ForgotPassword);
+    return ForgotPassword;
+}(BaseApp_Auth_Users_ForgotPasswordBase__WEBPACK_IMPORTED_MODULE_1__["ForgotPasswordBase"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PrivilegeService", function() { return PrivilegeService; });
+/* harmony import */ var _Models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Models */ "./Core/BaseApp/Auth/Models.ts");
+/* harmony import */ var codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! codeshell/helpers */ "./Core/codeshell/helpers.ts");
+
+
+var PrivilegeService = /** @class */ (function () {
+    function PrivilegeService(domains, privileges, resourceActions, roleId) {
+        this.Domains = domains;
+        this.Privileges = privileges;
+        this.ResourceActions = resourceActions;
+        var s = true;
+        for (var _i = 0, domains_1 = domains; _i < domains_1.length; _i++) {
+            var domain = domains_1[_i];
+            domain.Selected = s;
+            s = false;
+            var _loop_1 = function (resource) {
+                var item = privileges.find(function (e) { return e.resourceId == resource.id; });
+                resource.available = item != null;
+                if (item == null) {
+                    item = Object.assign(new _Models__WEBPACK_IMPORTED_MODULE_0__["Perm"], {
+                        roleId: roleId,
+                        resourceId: resource.id,
+                        state: "Detached"
+                    });
+                }
+                var _loop_2 = function (action) {
+                    var ac = resourceActions.find(function (e) { return e.resourceActionId == action.id; });
+                    if (ac == null) {
+                        ac = Object.assign(new codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["ListItem"], {
+                            resourceActionId: action.id,
+                            roleId: roleId,
+                            state: "Detached"
+                        });
+                    }
+                    else {
+                        ac.selected = true;
+                    }
+                    action.Tag = ac;
+                };
+                for (var _i = 0, _a = resource.actions; _i < _a.length; _i++) {
+                    var action = _a[_i];
+                    _loop_2(action);
+                }
+                resource.Tag = item;
+            };
+            for (var _a = 0, _b = domain.resources; _a < _b.length; _a++) {
+                var resource = _b[_a];
+                _loop_1(resource);
+            }
+        }
+    }
+    PrivilegeService.prototype.ItemChanged = function (r) {
+        var priv = r.Tag;
+        if (!r.available) {
+            priv.SetAll(false);
+            priv.RemoveFrom(this.Privileges);
+        }
+        else {
+            if (priv.state == "Detached" || priv.state == "Removed") {
+                priv.SetAll(true);
+                priv.AddTo(this.Privileges);
+            }
+            else {
+                priv.SetModified();
+            }
+        }
+    };
+    PrivilegeService.prototype.ActionChanged = function (item) {
+        if (item.selected) {
+            item.AddTo(this.ResourceActions);
+        }
+        else {
+            item.RemoveFrom(this.ResourceActions);
+        }
+    };
+    PrivilegeService.prototype.Select = function (ob) {
+        for (var _i = 0, _a = this.Domains; _i < _a.length; _i++) {
+            var domain = _a[_i];
+            domain.Selected = false;
+        }
+        ob.Selected = true;
+    };
+    return PrivilegeService;
+}());
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.Roles__RoleEdit' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n\r\n        <ol class=\"breadcrumb\">\r\n            <li>\r\n                <a routerLink=\"'/'\">{{'Words.Main' | translate }}</a>\r\n            </li>\r\n            <li>\r\n                {{'Pages.Roles__RoleEdit' | translate }}\r\n            </li>\r\n        </ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.Roles__RoleEdit' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div><div [ngClass]=\"IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'\">\r\n\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'content-block'\">\r\n        <div class=\"row\" *ngIf=\"UseLocalization\">\r\n            <div class=\"col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom\">\r\n                <div class=\"btn-group btn-group-sm pull-last\">\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='ar'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='ar'\">\r\n                            {{'Words.ar' | translate }}\r\n                        </button>\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='en'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='en'\">\r\n                            {{'Words.en' | translate }}\r\n                        </button>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n        \r\n\r\n\r\n<form #Form=\"ngForm\">\r\n    \r\n<div class=\"row form-group \"\r\n     id=\"FG_entity_name\"\r\n     #FG_entity_name=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.Role__Name' | translate }}\r\n<span style=\"color:red\" > * </span>    </label>\r\n    <div class=\"col-sm-9\">\r\n        <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.Role__Name' | translate }}\"\r\n       name=\"Form__entity_name\"\r\n       [(ngModel)]=\"model.entity.name\"\r\n       title=\"{{'Columns.Role__Name' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required  >\r\n    <p *ngIf=\"!FG_entity_name.Write\">{{FG_entity_name.Value}}</p>\r\n\r\n\r\n        <span *ngIf=\"Form.controls['Form__entity_name'] && Form.controls['Form__entity_name'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_name'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.Role__Name' | translate } }}</small>\r\n</span>\r\n    </div>\r\n</div>\r\n\r\n    \r\n<div class=\"row form-group \"\r\n     id=\"FG_entity_description\"\r\n     #FG_entity_description=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.Role__Description' | translate }}\r\n    </label>\r\n    <div class=\"col-sm-9\">\r\n        \r\n<textarea class=\"form-control \"\r\n          placeholder=\"{{'Columns.Role__Description' | translate }}\"\r\n          name=\"Form__entity_description\"\r\n          [(ngModel)]=\"model.entity.description\"\r\n          maxlength=\"300\"  ></textarea>\r\n\r\n        <span *ngIf=\"Form.controls['Form__entity_description'] && Form.controls['Form__entity_description'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_description'].errors!.maxlength\" class=\"form-text text-danger\">{{'Messages.invalid_max_length' | translate : {p0:'300'} }}</small>\r\n</span>\r\n    </div>\r\n</div>\r\n\r\n</form>\r\n\r\n<div  id=\"PrivilegesControl\" #PrivilegesControl>\n\r\n<label class=\"section-header\">{{'Words.Privileges' | translate }}</label>\r\n\r\n<div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <ul class=\"nav nav-tabs\">\r\n            <li *ngFor=\"let res of Lookups.resourcesByDomain\" [ngClass]=\"res.Selected?'active':null\">\r\n                <a (click)=\"Priv.Select(res)\">{{ 'Words.'+res.name | translate }}</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"row\">\r\n<form #PrivForm=\"ngForm\" >\n        <div *ngFor=\"let dom of Lookups.resourcesByDomain\">\r\n            <div *ngIf=\"dom.Selected\" class=\"col-md-12\">\r\n                <table class=\"table table-striped text-center\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th style=\"width:300px;\">{{'Words.Resource' | translate }}</th>\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('available')\"  >\r\n        {{'Words.available' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('available')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canViewDetails')\"  >\r\n        {{'Words.canViewDetails' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canViewDetails')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canUpdate')\"  >\r\n        {{'Words.canUpdate' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canUpdate')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canInsert')\"  >\r\n        {{'Words.canInsert' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canInsert')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canDelete')\"  >\r\n        {{'Words.canDelete' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canDelete')\"></i>\r\n    </th>\r\n\r\n\r\n                            <th>{{'Words.Other' | translate }}</th>\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('CollectionId')\"  >\r\n        {{'Columns.RoleResource__CollectionId' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('CollectionId')\"></i>\r\n    </th>\r\n\r\n                        </tr>\r\n                    </thead>\r\n\r\n                    <tbody>\r\n                        <tr *ngFor=\"let r of dom.resources;let i = index\" (change)=\"Priv.ItemChanged(r)\">\r\n                            <td>{{ 'Words.'+ r.name | translate }}</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'available'+i\"\r\n           [name]=\"'available'+i\"\r\n           [(ngModel)]=\"r.available\"\r\n           [li-watch]=\"r\"\r\n            (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canViewDetails'+i\"\r\n           [name]=\"'canViewDetails'+i\"\r\n           [(ngModel)]=\"r.Tag.canViewDetails\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canUpdate'+i\"\r\n           [name]=\"'canUpdate'+i\"\r\n           [(ngModel)]=\"r.Tag.canUpdate\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canInsert'+i\"\r\n           [name]=\"'canInsert'+i\"\r\n           [(ngModel)]=\"r.Tag.canInsert\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canDelete'+i\"\r\n           [name]=\"'canDelete'+i\"\r\n           [(ngModel)]=\"r.Tag.canDelete\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n\r\n                            <td>\r\n                                <div class=\"form-group\" *ngFor=\"let ac of r.actions\">\r\n                                    <div class=\"row col-md-12\">\r\n                                        <div class=\"col-md-2\">\r\n                                            <label class=\"chiller_cb\">\r\n                                                <input type=\"checkbox\" [id]=\"'ac-'+ac.id\" [(ngModel)]=\"ac.Tag.selected\" (change)=\"Priv.ActionChanged(ac.Tag)\" />\r\n                                                <span></span>\r\n                                            </label>\r\n                                        </div>\r\n                                        <label class=\"col-md-10\" [for]=\"'ac-'+ac.id\">{{ 'Words.'+ac.name | translate }}</label>\r\n                                    </div>\r\n                                </div>\r\n                            </td>\r\n                                <td>\r\n                                    <select class=\"form-control\"\r\n                                            name=\"PrivForm__collectionId{{i}}\"\r\n                                            *ngIf=\"r.available\"\r\n                                            [li-watch]=\"r.Tag\"\r\n                                            [(ngModel)]=\"r.Tag.collectionId\">\r\n                                        <option *ngFor=\"let item of r.collections\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n                                    </select>\r\n                                </td>\r\n\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n        </div>\r\n</form>\r\n</div></div>\r\n\r\n\r\n        \r\n        <div class=\"row submit-buttons\">\r\n            <div class=\"col-md-12\">\r\n                <div class=\"pull-last\">\r\n                    \r\n        <button class=\"btn btn-primary\"\r\n            [disabled]=\"!CanSubmit\"\r\n            (click)=\"Submit()\">\r\n        {{'Words.Save' | translate }}\r\n    </button>\r\n\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\n<div style='display:none' #lookupOptionsContainer values='{\"resourcesByDomain\":\"C0\"}'></div>\n<div style='display:none' #viewParamsContainer values='{\"ModelType\":null,\"AddUrl\":null,\"EditUrl\":null,\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{}}'></div>";__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersModule", function() { return UsersModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/SharedModule */ "./ClientApp/app/Shared/SharedModule.ts");
+/* harmony import */ var codeshell_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! codeshell/core */ "./Core/codeshell/core.ts");
+/* harmony import */ var codeshell_security__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! codeshell/security */ "./Core/codeshell/security.ts");
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
+/* harmony import */ var _AuthModule__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AuthModule */ "./ClientApp/app/Auth/AuthModule.ts");
+/* harmony import */ var _UserCreate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./UserCreate */ "./ClientApp/app/Auth/Users/UserCreate.ts");
+/* harmony import */ var _EditProfile__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./EditProfile */ "./ClientApp/app/Auth/Users/EditProfile.ts");
+/* harmony import */ var _UserList__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./UserList */ "./ClientApp/app/Auth/Users/UserList.ts");
+/* harmony import */ var _UserEdit__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./UserEdit */ "./ClientApp/app/Auth/Users/UserEdit.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+var UsersModule = /** @class */ (function () {
+    function UsersModule(trans, conf) {
+        trans.setDefaultLang(conf.Locale);
+        trans.use(conf.Locale);
+    }
+    UsersModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [_UserCreate__WEBPACK_IMPORTED_MODULE_7__["UserCreate"], _EditProfile__WEBPACK_IMPORTED_MODULE_8__["EditProfile"], _UserList__WEBPACK_IMPORTED_MODULE_9__["UserList"], _UserEdit__WEBPACK_IMPORTED_MODULE_10__["UserEdit"],],
+            exports: [_UserCreate__WEBPACK_IMPORTED_MODULE_7__["UserCreate"], _EditProfile__WEBPACK_IMPORTED_MODULE_8__["EditProfile"], _UserList__WEBPACK_IMPORTED_MODULE_9__["UserList"], _UserEdit__WEBPACK_IMPORTED_MODULE_10__["UserEdit"],],
+            imports: [
+                _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__["SharedModule"],
+                _AuthModule__WEBPACK_IMPORTED_MODULE_6__["AuthModule"],
+                _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild([
+                    { path: "UserCreate", component: _UserCreate__WEBPACK_IMPORTED_MODULE_7__["UserCreate"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "Users__UserCreate", navigate: false, resource: "", action: "allowAll", apps: null } },
+                    { path: "EditProfile", component: _EditProfile__WEBPACK_IMPORTED_MODULE_8__["EditProfile"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "Users__EditProfile", navigate: false, resource: "", action: "allowAll", apps: null } },
+                    { path: "UserList", component: _UserList__WEBPACK_IMPORTED_MODULE_9__["UserList"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "Users__UserList", navigate: false, resource: "", action: "allowAll", apps: null } },
+                    { path: "UserEdit/:id", component: _UserEdit__WEBPACK_IMPORTED_MODULE_10__["UserEdit"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "Users__UserEdit", navigate: false, resource: "", action: "allowAll", apps: null } },
+                ])
+            ],
+            entryComponents: []
+        }),
+        __metadata("design:paramtypes", [_ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateService"], codeshell_core__WEBPACK_IMPORTED_MODULE_3__["ServerConfigBase"]])
+    ], UsersModule);
+    return UsersModule;
+}());
+
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("Auth/Users/UserCreate", _UserCreate__WEBPACK_IMPORTED_MODULE_7__["UserCreate"]);
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("Auth/Users/EditProfile", _EditProfile__WEBPACK_IMPORTED_MODULE_8__["EditProfile"]);
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("Auth/Users/UserList", _UserList__WEBPACK_IMPORTED_MODULE_9__["UserList"]);
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("Auth/Users/UserEdit", _UserEdit__WEBPACK_IMPORTED_MODULE_10__["UserEdit"]);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserCreate", function() { return UserCreate; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var BaseApp_Auth_Users_UserEditBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! BaseApp/Auth/Users/UserEditBase */ "./Core/BaseApp/Auth/Users/UserEditBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var UserCreate = /** @class */ (function (_super) {
+    __extends(UserCreate, _super);
+    function UserCreate() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserCreate.prototype.GetPageId = function () { return 2018265998000; };
+    UserCreate = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./UserCreate.html */ "./ClientApp/app/Auth/Users/UserCreate.html"), selector: "userCreate" })
+    ], UserCreate);
+    return UserCreate;
+}(BaseApp_Auth_Users_UserEditBase__WEBPACK_IMPORTED_MODULE_1__["UserEditBase"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserEditBase", function() { return UserEditBase; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! codeshell/helpers */ "./Core/codeshell/helpers.ts");
+/* harmony import */ var codeshell_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! codeshell/core */ "./Core/codeshell/core.ts");
+/* harmony import */ var _Http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Http */ "./Core/BaseApp/Auth/Http.ts");
+/* harmony import */ var _Models__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Models */ "./Core/BaseApp/Auth/Models.ts");
+/* harmony import */ var _Services_PrivilegeService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Services/PrivilegeService */ "./Core/BaseApp/Auth/Services/PrivilegeService.ts");
+/* harmony import */ var codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! codeshell/baseComponents */ "./Core/codeshell/baseComponents.ts");
+/* harmony import */ var codeshell_http__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! codeshell/http */ "./Core/codeshell/http.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+
+
+
+var UserEditBase = /** @class */ (function (_super) {
+    __extends(UserEditBase, _super);
+    function UserEditBase() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.Files = new codeshell_http__WEBPACK_IMPORTED_MODULE_7__["FilesHttpService"]("");
+        _this.Service = new _Http__WEBPACK_IMPORTED_MODULE_3__["UsersService"];
+        _this.model = new codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["DTO"]();
+        _this.Privileges = [];
+        _this.ResourceActions = [];
+        _this.Priv = new _Services_PrivilegeService__WEBPACK_IMPORTED_MODULE_5__["PrivilegeService"]([], [], [], 0);
+        _this.PreventCreateSubmit = false;
+        _this.isEditProfile = false;
+        _this.Upload = function (files) { return _this.Files.PostFiles("Upload", files); };
+        return _this;
+    }
+    UserEditBase.prototype.DefaultModel = function () {
+        var mod = { entity: new _Models__WEBPACK_IMPORTED_MODULE_4__["User"]() };
+        if (codeshell_core__WEBPACK_IMPORTED_MODULE_2__["Shell"].Session.User.tenantId && codeshell_core__WEBPACK_IMPORTED_MODULE_2__["Shell"].Session.User.tenantId != 0) {
+            mod.entity.tenantId = codeshell_core__WEBPACK_IMPORTED_MODULE_2__["Shell"].Session.User.tenantId;
+        }
+        return mod;
+    };
+    UserEditBase.prototype.LoadLookupsAsync = function (opts) {
+        return __awaiter(this, void 0, void 0, function () {
+            var l;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, _super.prototype.LoadLookupsAsync.call(this, opts)];
+                    case 1:
+                        l = _a.sent();
+                        if (l.roles)
+                            l.roles = codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["Tagged"].CastList(l.roles);
+                        return [2 /*return*/, l];
+                }
+            });
+        });
+    };
+    UserEditBase.prototype.GetModelFromServerAsync = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (this.isEditProfile) {
+                            id = codeshell_core__WEBPACK_IMPORTED_MODULE_2__["Shell"].Session.User.id;
+                        }
+                        _a = this;
+                        return [4 /*yield*/, _super.prototype.GetModelFromServerAsync.call(this, id)];
+                    case 1:
+                        _a.model = _b.sent();
+                        return [2 /*return*/, this.model];
+                }
+            });
+        });
+    };
+    UserEditBase.prototype.StartComponent = function () {
+        this.isEditProfile = this.GetParameterAsBoolean("EditProfile");
+        if (this.isEditProfile) {
+            this.IsNew = false;
+            var id = codeshell_core__WEBPACK_IMPORTED_MODULE_2__["Shell"].Session.User.id;
+            this.Fill(id);
+        }
+        else {
+            _super.prototype.StartComponent.call(this);
+        }
+    };
+    UserEditBase.prototype.OnReady = function () {
+        var _this = this;
+        this.model.entity.userRoles = codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["ListItem"].Convert(this.model.entity.userRoles);
+        if (this.Lookups.roles) {
+            this.Lookups.roles = codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["Tagged"].JoinLists({
+                Source: this.model.entity.userRoles,
+                Data: this.Lookups.roles,
+                Comparer: function (d, s) { return d.id == s.roleId; },
+                CreateNew: function (d) {
+                    return { roleId: d.id, userId: _this.model.entity.id };
+                }
+            });
+        }
+        this.Priv = new _Services_PrivilegeService__WEBPACK_IMPORTED_MODULE_5__["PrivilegeService"]([], [], [], 0);
+        if (this.Lookups.resourcesByDomain != undefined) {
+            this.Service.GetUserRole(this.model.entity.id).then(function (res) {
+                _this.model.entity.role = res;
+                _this.Privileges = [];
+                _this.ResourceActions = [];
+                for (var _i = 0, _a = _this.model.entity.role.roleResources; _i < _a.length; _i++) {
+                    var priv = _a[_i];
+                    _this.Privileges.push(Object.assign(new _Models__WEBPACK_IMPORTED_MODULE_4__["Perm"], priv));
+                }
+                for (var _b = 0, _c = _this.model.entity.role.roleResourceActions; _b < _c.length; _b++) {
+                    var priv = _c[_b];
+                    var s = Object.assign(new codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["ListItem"], priv);
+                    s.selected = true;
+                    _this.ResourceActions.push(s);
+                }
+                _this.Priv = new _Services_PrivilegeService__WEBPACK_IMPORTED_MODULE_5__["PrivilegeService"](_this.Lookups.resourcesByDomain, _this.Privileges, _this.ResourceActions, res.id);
+            });
+        }
+    };
+    UserEditBase.prototype.SubmitAsync = function () {
+        if (this.PreventCreateSubmit && this.IsNew) {
+            this.Show = false;
+            return Promise.resolve(new codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["SubmitResult"]());
+        }
+        if (this.model.entity.role != undefined) {
+            this.model.entity.role.roleResourceActions = codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["ListItem"].GetChangedItems(this.ResourceActions);
+            this.model.entity.role.roleResources = codeshell_helpers__WEBPACK_IMPORTED_MODULE_1__["ListItem"].GetChangedItems(this.Privileges);
+        }
+        return _super.prototype.SubmitAsync.call(this);
+    };
+    UserEditBase.prototype.OnSubmitSuccess = function (res) {
+        var _this = this;
+        if (this.isEditProfile) {
+            codeshell_core__WEBPACK_IMPORTED_MODULE_2__["Shell"].Session.ReloadUserDataAsync().then(function (e) {
+                _super.prototype.OnSubmitSuccess.call(_this, res);
+            });
+        }
+        else {
+            _super.prototype.OnSubmitSuccess.call(this, res);
+        }
+    };
+    UserEditBase = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])()
+    ], UserEditBase);
+    return UserEditBase;
+}(codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_6__["DTOEditComponentBase"]));
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.Users__UserCreate' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n\r\n        <ol class=\"breadcrumb\">\r\n            <li>\r\n                <a routerLink=\"'/'\">{{'Words.Main' | translate }}</a>\r\n            </li>\r\n            <li>\r\n                {{'Pages.Users__UserCreate' | translate }}\r\n            </li>\r\n        </ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.Users__UserCreate' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div><div [ngClass]=\"IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'\">\r\n\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'content-block'\">\r\n        <div class=\"row\" *ngIf=\"UseLocalization\">\r\n            <div class=\"col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom\">\r\n                <div class=\"btn-group btn-group-sm pull-last\">\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='ar'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='ar'\">\r\n                            {{'Words.ar' | translate }}\r\n                        </button>\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='en'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='en'\">\r\n                            {{'Words.en' | translate }}\r\n                        </button>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n        \r\n<form #Form=\"ngForm\">\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-12 \"\r\n     id=\"FG_entity_name\"\r\n     #FG_entity_name=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Name' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Name' | translate }}\"\r\n       name=\"Form__entity_name\"\r\n       [(ngModel)]=\"model.entity.name\"\r\n       title=\"{{'Columns.User__Name' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required  >\r\n    <p *ngIf=\"!FG_entity_name.Write\">{{FG_entity_name.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_name'] && Form.controls['Form__entity_name'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_name'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Name' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_logonName\"\r\n     #FG_entity_logonName=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__LogonName' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__LogonName' | translate }}\"\r\n       name=\"Form__entity_logonName\"\r\n       [(ngModel)]=\"model.entity.logonName\"\r\n       title=\"{{'Columns.User__LogonName' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required [pattern]=\"'[_a-zA-Z][_a-zA-Z0-9_.]{2,30}'\" is-unique [data-service]=\"Service\" [item-id]=\"model.entity.id\" column-id=\"LogonName\"  >\r\n    <p *ngIf=\"!FG_entity_logonName.Write\">{{FG_entity_logonName.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_logonName'] && Form.controls['Form__entity_logonName'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.unique\" class=\"form-text text-danger\">{{'Messages.field_exists' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_email\"\r\n     #FG_entity_email=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Email' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Email' | translate }}\"\r\n       name=\"Form__entity_email\"\r\n       [(ngModel)]=\"model.entity.email\"\r\n       title=\"{{'Columns.User__Email' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required [pattern]=\"'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'\" is-unique [data-service]=\"Service\" [item-id]=\"model.entity.id\" column-id=\"Email\"  >\r\n    <p *ngIf=\"!FG_entity_email.Write\">{{FG_entity_email.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_email'] && Form.controls['Form__entity_email'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.unique\" class=\"form-text text-danger\">{{'Messages.field_exists' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_password\"\r\n     #FG_entity_password=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Password' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"password\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Password' | translate }}\"\r\n       name=\"Form__entity_password\"\r\n       [(ngModel)]=\"model.entity.password\"\r\n       title=\"{{'Columns.User__Password' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [required]=\"IsNew\" maxlength=\"20\" minlength=\"5\"  autocomplete=\"new-password\" >\r\n    <p *ngIf=\"!FG_entity_password.Write\">{{FG_entity_password.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_password'] && Form.controls['Form__entity_password'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Password' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.minlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.maxlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_appId\"\r\n     #FG_entity_appId=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__AppId' | translate }} </label>\r\n    \r\n<select class=\"form-control\"\r\n        name=\"Form__entity_appId\" \r\n        [li-watch]=\"model\"\r\n        [(ngModel)]=\"model.entity.appId\"\r\n         >\r\n        <option [ngValue]=\"null\">--({{'Words.Empty' | translate }})--</option>\r\n    <option *ngFor=\"let item of Lookups.apps\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n</select>\r\n    <p *ngIf=\"!FG_entity_appId.Write\">{{FG_entity_appId.Value}}</p>\r\n\r\n    \r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_passwordConfim\"\r\n     #FG_entity_passwordConfim=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__PasswordConfim' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"password\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__PasswordConfim' | translate }}\"\r\n       name=\"Form__entity_passwordConfim\"\r\n       [(ngModel)]=\"model.entity.passwordConfim\"\r\n       title=\"{{'Columns.User__PasswordConfim' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [required]=\"model.entity.password!=null\" maxlength=\"20\" minlength=\"5\" [pattern]=\"model.entity.password\"  >\r\n    <p *ngIf=\"!FG_entity_passwordConfim.Write\">{{FG_entity_passwordConfim.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_passwordConfim'] && Form.controls['Form__entity_passwordConfim'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__PasswordConfim' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.minlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.maxlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__PasswordConfim' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_photoFile\"\r\n     #FG_entity_photoFile=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__PhotoFile' | translate }} </label>\r\n    \r\n<div class=\"input-group\">\r\n    <label class=\"form-control\">\r\n        <a *ngIf=\"model.entity.photoFile\"\r\n           class=\"file-link\"\r\n           target=\"_blank\"\r\n           [routerLink]=\"'/'+model.entity.photoFile.url\">\r\n            {{model.entity.photoFile.name}}\r\n        </a>\r\n    </label>\r\n\r\n            <div class=\"input-group-btn\">\r\n                <label class=\"btn btn-primary\">\r\n                    <input name=\"photo\"\r\n                           type=\"file\"\r\n                           [(ngModel)]=\"photo\"\r\n                           [file-uploader]=\"Upload\"\r\n                           [(fileData)]=\"model.entity.photoFile\"\r\n                            \r\n                           style=\"display:none\">\r\n                    <i class=\"fa fa-upload\"></i>\r\n                </label>\r\n            </div>\r\n</div>\r\n\r\n    \r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_birthDate\"\r\n     #FG_entity_birthDate=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__BirthDate' | translate }} </label>\r\n    \r\n<div class=\"row\" *ngIf=\"FG_entity_birthDate.Write\">\r\n    <div class=\"col-md-9\">\r\n        <input [matDatepicker]=\"picker_Form__entity_birthDate\"\r\n               name=\"Form__entity_birthDate\"\r\n               class=\"form-control\"\r\n               [(ngModel)]=\"model.entity.birthDate\"\r\n               fix-date\r\n               placeholder=\"{{'Columns.User__BirthDate' | translate }}\" date-validate [min-date]=\"'1/10/2000'\" [max-date]=\"'1/10/2020'\"   />\r\n        <mat-datepicker #picker_Form__entity_birthDate></mat-datepicker>\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n        <mat-datepicker-toggle [for]=\"picker_Form__entity_birthDate\"></mat-datepicker-toggle>\r\n    </div>\r\n\r\n</div>\r\n\r\n    <p *ngIf=\"!FG_entity_birthDate.Write\">{{FG_entity_birthDate.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_birthDate'] && Form.controls['Form__entity_birthDate'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_birthDate'].errors!.date_validation\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max' | translate : {p0:'Columns.User__BirthDate' | translate ,p1:'1/10/2000',p2:'1/10/2020'} }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-3 \"\r\n     id=\"FG_entity_mobile\"\r\n     #FG_entity_mobile=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Mobile' | translate }} </label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Mobile' | translate }}\"\r\n       name=\"Form__entity_mobile\"\r\n       [(ngModel)]=\"model.entity.mobile\"\r\n       title=\"{{'Columns.User__Mobile' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [pattern]=\"'[+-]?([0-9]*[.])?[0-9]+'\" ng-pattern='/[+-]?([0-9]*[.])?[0-9]+/'  >\r\n    <p *ngIf=\"!FG_entity_mobile.Write\">{{FG_entity_mobile.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_mobile'] && Form.controls['Form__entity_mobile'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_mobile'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__Mobile' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_mobile'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.must_be_numeric' | translate : {p0:'Columns.User__Mobile' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-3 \"\r\n     id=\"FG_entity_gender\"\r\n     #FG_entity_gender=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Gender' | translate }} </label>\r\n    <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <div class=\"btn-group btn-group-toggle btnToggle radio-group\">\r\n                <label class=\"btn btn-default\" [ngClass]=\"model.entity.gender==0?'active':''\">\r\n                    <input type=\"radio\" \r\n                           name=\"__entity_gender\" \r\n                           [(ngModel)]=\"model.entity.gender\" \r\n                           [value]=\"0\" \r\n                             >\r\n                    {{'Words.Female' | translate }}\r\n                </label>\r\n                <label class=\"btn btn-default\" [ngClass]=\"model.entity.gender==1?'active':''\">\r\n                    <input type=\"radio\" \r\n                           name=\"__entity_gender\" \r\n                           [(ngModel)]=\"model.entity.gender\" \r\n                           [value]=\"1\" \r\n                             >\r\n                    {{'Words.Male' | translate }}\r\n                </label>\r\n\r\n        </div>\r\n    </div>\r\n\r\n</div>\r\n    \r\n</div>\r\n\r\n    </div>\r\n</form>\r\n<hr />\r\n\r\n<div class=\"row form-group\">\r\n<div  class=\"col-md-6\" id=\"UserRoles\" #UserRoles>\n        <label class=\"section-header\">{{'Words.UserRoles' | translate }}</label>\r\n    <div class=\"list-view\">\r\n        <div>\r\n            <table class=\"table table-striped\">\r\n                <tbody>\r\n                    <tr *ngFor=\"let item of Lookups.roles\">\r\n                        <td width=\"25px\">\r\n                            <label class=\"chiller_cb\">\r\n                                <input [id]=\"'Form__entity_userRoles_'+item.id\"\r\n                                       type=\"checkbox\" [name]=\"'Form__entity_userRoles_'+item.id\" [(ngModel)]=\"item.Tag.selected\"                                       (change)=\"item.Tag.ApplyTo(model.entity.userRoles)\"\r\n                                       >\r\n                                <span></span>\r\n                            </label>\r\n                        </td>\r\n                        <td>\r\n                            {{ item.name }}\r\n                        </td>\r\n                    </tr>\r\n                </tbody>\r\n            </table>\r\n        </div>\r\n    </div></div></div>\r\n<hr />\r\n<div class=\"row form-group\">\r\n<div  class=\"col-md-12\" id=\"UserPrivileges\" #UserPrivileges>\n\r\n<label class=\"section-header\">{{'Words.Privileges' | translate }}</label>\r\n\r\n<div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <ul class=\"nav nav-tabs\">\r\n            <li *ngFor=\"let res of Lookups.resourcesByDomain\" [ngClass]=\"res.Selected?'active':null\">\r\n                <a (click)=\"Priv.Select(res)\">{{ 'Words.'+res.name | translate }}</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"row\">\r\n<form #PrivForm=\"ngForm\" >\n        <div *ngFor=\"let dom of Lookups.resourcesByDomain\">\r\n            <div *ngIf=\"dom.Selected\" class=\"col-md-12\">\r\n                <table class=\"table table-striped text-center\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th style=\"width:300px;\">{{'Words.Resource' | translate }}</th>\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('available')\"  >\r\n        {{'Words.available' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('available')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canViewDetails')\"  >\r\n        {{'Words.canViewDetails' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canViewDetails')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canUpdate')\"  >\r\n        {{'Words.canUpdate' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canUpdate')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canInsert')\"  >\r\n        {{'Words.canInsert' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canInsert')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canDelete')\"  >\r\n        {{'Words.canDelete' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canDelete')\"></i>\r\n    </th>\r\n\r\n\r\n                            <th>{{'Words.Other' | translate }}</th>\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('CollectionId')\"  >\r\n        {{'Columns.RoleResource__CollectionId' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('CollectionId')\"></i>\r\n    </th>\r\n\r\n                        </tr>\r\n                    </thead>\r\n\r\n                    <tbody>\r\n                        <tr *ngFor=\"let r of dom.resources;let i = index\" (change)=\"Priv.ItemChanged(r)\">\r\n                            <td>{{ 'Words.'+ r.name | translate }}</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'available'+i\"\r\n           [name]=\"'available'+i\"\r\n           [(ngModel)]=\"r.available\"\r\n           [li-watch]=\"r\"\r\n            (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canViewDetails'+i\"\r\n           [name]=\"'canViewDetails'+i\"\r\n           [(ngModel)]=\"r.Tag.canViewDetails\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canUpdate'+i\"\r\n           [name]=\"'canUpdate'+i\"\r\n           [(ngModel)]=\"r.Tag.canUpdate\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canInsert'+i\"\r\n           [name]=\"'canInsert'+i\"\r\n           [(ngModel)]=\"r.Tag.canInsert\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canDelete'+i\"\r\n           [name]=\"'canDelete'+i\"\r\n           [(ngModel)]=\"r.Tag.canDelete\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n\r\n                            <td>\r\n                                <div class=\"form-group\" *ngFor=\"let ac of r.actions\">\r\n                                    <div class=\"row col-md-12\">\r\n                                        <div class=\"col-md-2\">\r\n                                            <label class=\"chiller_cb\">\r\n                                                <input type=\"checkbox\" [id]=\"'ac-'+ac.id\" [(ngModel)]=\"ac.Tag.selected\" (change)=\"Priv.ActionChanged(ac.Tag)\" />\r\n                                                <span></span>\r\n                                            </label>\r\n                                        </div>\r\n                                        <label class=\"col-md-10\" [for]=\"'ac-'+ac.id\">{{ 'Words.'+ac.name | translate }}</label>\r\n                                    </div>\r\n                                </div>\r\n                            </td>\r\n                                <td>\r\n                                    <select class=\"form-control\"\r\n                                            name=\"PrivForm__collectionId{{i}}\"\r\n                                            *ngIf=\"r.available\"\r\n                                            [li-watch]=\"r.Tag\"\r\n                                            [(ngModel)]=\"r.Tag.collectionId\">\r\n                                        <option *ngFor=\"let item of r.collections\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n                                    </select>\r\n                                </td>\r\n\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n        </div>\r\n</form>\r\n</div></div></div>\r\n\r\n\r\n\r\n        \r\n        <div class=\"row submit-buttons\">\r\n            <div class=\"col-md-12\">\r\n                <div class=\"pull-last\">\r\n                    \r\n        <button class=\"btn btn-primary\"\r\n            [disabled]=\"!CanSubmit\"\r\n            (click)=\"Submit()\">\r\n        {{'Words.Save' | translate }}\r\n    </button>\r\n\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\n<div style='display:none' #lookupOptionsContainer values='{\"apps\":\"C0\",\"roles\":\"C0\",\"resourcesByDomain\":\"C0\"}'></div>\n<div style='display:none' #viewParamsContainer values='{\"ModelType\":null,\"AddUrl\":null,\"EditUrl\":null,\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{\"EditProfile\":\"false\"}}'></div>";__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditProfile", function() { return EditProfile; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var BaseApp_Auth_Users_UserEditBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! BaseApp/Auth/Users/UserEditBase */ "./Core/BaseApp/Auth/Users/UserEditBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var EditProfile = /** @class */ (function (_super) {
+    __extends(EditProfile, _super);
+    function EditProfile() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    EditProfile.prototype.GetPageId = function () { return 2018272984000; };
+    EditProfile = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./EditProfile.html */ "./ClientApp/app/Auth/Users/EditProfile.html"), selector: "editProfile" })
+    ], EditProfile);
+    return EditProfile;
+}(BaseApp_Auth_Users_UserEditBase__WEBPACK_IMPORTED_MODULE_1__["UserEditBase"]));
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.Users__EditProfile' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n\r\n        <ol class=\"breadcrumb\">\r\n            <li>\r\n                <a routerLink=\"'/'\">{{'Words.Main' | translate }}</a>\r\n            </li>\r\n            <li>\r\n                {{'Pages.Users__EditProfile' | translate }}\r\n            </li>\r\n        </ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.Users__EditProfile' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div><div [ngClass]=\"IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'\">\r\n\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'content-block'\">\r\n        <div class=\"row\" *ngIf=\"UseLocalization\">\r\n            <div class=\"col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom\">\r\n                <div class=\"btn-group btn-group-sm pull-last\">\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='ar'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='ar'\">\r\n                            {{'Words.ar' | translate }}\r\n                        </button>\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='en'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='en'\">\r\n                            {{'Words.en' | translate }}\r\n                        </button>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n        \r\n<form #Form=\"ngForm\">\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-12 \"\r\n     id=\"FG_entity_name\"\r\n     #FG_entity_name=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Name' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Name' | translate }}\"\r\n       name=\"Form__entity_name\"\r\n       [(ngModel)]=\"model.entity.name\"\r\n       title=\"{{'Columns.User__Name' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required  >\r\n    <p *ngIf=\"!FG_entity_name.Write\">{{FG_entity_name.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_name'] && Form.controls['Form__entity_name'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_name'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Name' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_logonName\"\r\n     #FG_entity_logonName=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__LogonName' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__LogonName' | translate }}\"\r\n       name=\"Form__entity_logonName\"\r\n       [(ngModel)]=\"model.entity.logonName\"\r\n       title=\"{{'Columns.User__LogonName' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required [pattern]=\"'[_a-zA-Z][_a-zA-Z0-9_.]{2,30}'\" is-unique [data-service]=\"Service\" [item-id]=\"model.entity.id\" column-id=\"LogonName\"  >\r\n    <p *ngIf=\"!FG_entity_logonName.Write\">{{FG_entity_logonName.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_logonName'] && Form.controls['Form__entity_logonName'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.unique\" class=\"form-text text-danger\">{{'Messages.field_exists' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_email\"\r\n     #FG_entity_email=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Email' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Email' | translate }}\"\r\n       name=\"Form__entity_email\"\r\n       [(ngModel)]=\"model.entity.email\"\r\n       title=\"{{'Columns.User__Email' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required [pattern]=\"'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'\" is-unique [data-service]=\"Service\" [item-id]=\"model.entity.id\" column-id=\"Email\"  >\r\n    <p *ngIf=\"!FG_entity_email.Write\">{{FG_entity_email.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_email'] && Form.controls['Form__entity_email'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.unique\" class=\"form-text text-danger\">{{'Messages.field_exists' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_password\"\r\n     #FG_entity_password=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Password' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"password\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Password' | translate }}\"\r\n       name=\"Form__entity_password\"\r\n       [(ngModel)]=\"model.entity.password\"\r\n       title=\"{{'Columns.User__Password' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [required]=\"IsNew\" maxlength=\"20\" minlength=\"5\"  autocomplete=\"new-password\" >\r\n    <p *ngIf=\"!FG_entity_password.Write\">{{FG_entity_password.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_password'] && Form.controls['Form__entity_password'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Password' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.minlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.maxlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_appId\"\r\n     #FG_entity_appId=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__AppId' | translate }} </label>\r\n    \r\n<select class=\"form-control\"\r\n        name=\"Form__entity_appId\" \r\n        [li-watch]=\"model\"\r\n        [(ngModel)]=\"model.entity.appId\"\r\n         >\r\n        <option [ngValue]=\"null\">--({{'Words.Empty' | translate }})--</option>\r\n    <option *ngFor=\"let item of Lookups.apps\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n</select>\r\n    <p *ngIf=\"!FG_entity_appId.Write\">{{FG_entity_appId.Value}}</p>\r\n\r\n    \r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_passwordConfim\"\r\n     #FG_entity_passwordConfim=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__PasswordConfim' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"password\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__PasswordConfim' | translate }}\"\r\n       name=\"Form__entity_passwordConfim\"\r\n       [(ngModel)]=\"model.entity.passwordConfim\"\r\n       title=\"{{'Columns.User__PasswordConfim' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [required]=\"model.entity.password!=null\" maxlength=\"20\" minlength=\"5\" [pattern]=\"model.entity.password\"  >\r\n    <p *ngIf=\"!FG_entity_passwordConfim.Write\">{{FG_entity_passwordConfim.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_passwordConfim'] && Form.controls['Form__entity_passwordConfim'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__PasswordConfim' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.minlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.maxlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__PasswordConfim' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_photoFile\"\r\n     #FG_entity_photoFile=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__PhotoFile' | translate }} </label>\r\n    \r\n<div class=\"input-group\">\r\n    <label class=\"form-control\">\r\n        <a *ngIf=\"model.entity.photoFile\"\r\n           class=\"file-link\"\r\n           target=\"_blank\"\r\n           [routerLink]=\"'/'+model.entity.photoFile.url\">\r\n            {{model.entity.photoFile.name}}\r\n        </a>\r\n    </label>\r\n\r\n            <div class=\"input-group-btn\">\r\n                <label class=\"btn btn-primary\">\r\n                    <input name=\"photo\"\r\n                           type=\"file\"\r\n                           [(ngModel)]=\"photo\"\r\n                           [file-uploader]=\"Upload\"\r\n                           [(fileData)]=\"model.entity.photoFile\"\r\n                            \r\n                           style=\"display:none\">\r\n                    <i class=\"fa fa-upload\"></i>\r\n                </label>\r\n            </div>\r\n</div>\r\n\r\n    \r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_birthDate\"\r\n     #FG_entity_birthDate=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__BirthDate' | translate }} </label>\r\n    \r\n<div class=\"row\" *ngIf=\"FG_entity_birthDate.Write\">\r\n    <div class=\"col-md-9\">\r\n        <input [matDatepicker]=\"picker_Form__entity_birthDate\"\r\n               name=\"Form__entity_birthDate\"\r\n               class=\"form-control\"\r\n               [(ngModel)]=\"model.entity.birthDate\"\r\n               fix-date\r\n               placeholder=\"{{'Columns.User__BirthDate' | translate }}\" date-validate [min-date]=\"'1/10/2000'\" [max-date]=\"'1/10/2020'\"   />\r\n        <mat-datepicker #picker_Form__entity_birthDate></mat-datepicker>\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n        <mat-datepicker-toggle [for]=\"picker_Form__entity_birthDate\"></mat-datepicker-toggle>\r\n    </div>\r\n\r\n</div>\r\n\r\n    <p *ngIf=\"!FG_entity_birthDate.Write\">{{FG_entity_birthDate.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_birthDate'] && Form.controls['Form__entity_birthDate'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_birthDate'].errors!.date_validation\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max' | translate : {p0:'Columns.User__BirthDate' | translate ,p1:'1/10/2000',p2:'1/10/2020'} }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-3 \"\r\n     id=\"FG_entity_mobile\"\r\n     #FG_entity_mobile=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Mobile' | translate }} </label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Mobile' | translate }}\"\r\n       name=\"Form__entity_mobile\"\r\n       [(ngModel)]=\"model.entity.mobile\"\r\n       title=\"{{'Columns.User__Mobile' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [pattern]=\"'[+-]?([0-9]*[.])?[0-9]+'\" ng-pattern='/[+-]?([0-9]*[.])?[0-9]+/'  >\r\n    <p *ngIf=\"!FG_entity_mobile.Write\">{{FG_entity_mobile.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_mobile'] && Form.controls['Form__entity_mobile'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_mobile'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__Mobile' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_mobile'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.must_be_numeric' | translate : {p0:'Columns.User__Mobile' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-3 \"\r\n     id=\"FG_entity_gender\"\r\n     #FG_entity_gender=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Gender' | translate }} </label>\r\n    <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <div class=\"btn-group btn-group-toggle btnToggle radio-group\">\r\n                <label class=\"btn btn-default\" [ngClass]=\"model.entity.gender==0?'active':''\">\r\n                    <input type=\"radio\" \r\n                           name=\"__entity_gender\" \r\n                           [(ngModel)]=\"model.entity.gender\" \r\n                           [value]=\"0\" \r\n                             >\r\n                    {{'Words.Female' | translate }}\r\n                </label>\r\n                <label class=\"btn btn-default\" [ngClass]=\"model.entity.gender==1?'active':''\">\r\n                    <input type=\"radio\" \r\n                           name=\"__entity_gender\" \r\n                           [(ngModel)]=\"model.entity.gender\" \r\n                           [value]=\"1\" \r\n                             >\r\n                    {{'Words.Male' | translate }}\r\n                </label>\r\n\r\n        </div>\r\n    </div>\r\n\r\n</div>\r\n    \r\n</div>\r\n\r\n    </div>\r\n</form>\r\n<hr />\r\n\r\n<div class=\"row form-group\">\r\n<div  class=\"col-md-6\" id=\"UserRoles\" #UserRoles>\n        <label class=\"section-header\">{{'Words.UserRoles' | translate }}</label>\r\n    <div class=\"list-view\">\r\n        <div>\r\n            <table class=\"table table-striped\">\r\n                <tbody>\r\n                    <tr *ngFor=\"let item of Lookups.roles\">\r\n                        <td width=\"25px\">\r\n                            <label class=\"chiller_cb\">\r\n                                <input [id]=\"'Form__entity_userRoles_'+item.id\"\r\n                                       type=\"checkbox\" [name]=\"'Form__entity_userRoles_'+item.id\" [(ngModel)]=\"item.Tag.selected\"                                       (change)=\"item.Tag.ApplyTo(model.entity.userRoles)\"\r\n                                       >\r\n                                <span></span>\r\n                            </label>\r\n                        </td>\r\n                        <td>\r\n                            {{ item.name }}\r\n                        </td>\r\n                    </tr>\r\n                </tbody>\r\n            </table>\r\n        </div>\r\n    </div></div></div>\r\n<hr />\r\n<div class=\"row form-group\">\r\n</div>\r\n\r\n\r\n\r\n        \r\n        <div class=\"row submit-buttons\">\r\n            <div class=\"col-md-12\">\r\n                <div class=\"pull-last\">\r\n                    \r\n        <button class=\"btn btn-primary\"\r\n            [disabled]=\"!CanSubmit\"\r\n            (click)=\"Submit()\">\r\n        {{'Words.Save' | translate }}\r\n    </button>\r\n\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\n<div style='display:none' #lookupOptionsContainer values='{\"apps\":\"C0\",\"roles\":\"C0\"}'></div>\n<div style='display:none' #viewParamsContainer values='{\"ModelType\":null,\"AddUrl\":null,\"EditUrl\":null,\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{\"EditProfile\":\"true\"}}'></div>";__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserList", function() { return UserList; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var BaseApp_Auth_Users_UserListBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! BaseApp/Auth/Users/UserListBase */ "./Core/BaseApp/Auth/Users/UserListBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var UserList = /** @class */ (function (_super) {
+    __extends(UserList, _super);
+    function UserList() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserList.prototype.GetPageId = function () { return 2019080746000; };
+    UserList = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./UserList.html */ "./ClientApp/app/Auth/Users/UserList.html"), selector: "userList" })
+    ], UserList);
+    return UserList;
+}(BaseApp_Auth_Users_UserListBase__WEBPACK_IMPORTED_MODULE_1__["UserListBase"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserListBase", function() { return UserListBase; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _Http_UsersService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../Http/UsersService */ "./Core/BaseApp/Auth/Http/UsersService.ts");
+/* harmony import */ var codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! codeshell/baseComponents */ "./Core/codeshell/baseComponents.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var UserListBase = /** @class */ (function (_super) {
+    __extends(UserListBase, _super);
+    function UserListBase() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.Service = new _Http_UsersService__WEBPACK_IMPORTED_MODULE_1__["UsersService"];
+        return _this;
+    }
+    UserListBase = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])()
+    ], UserListBase);
+    return UserListBase;
+}(codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_2__["ListComponentBase"]));
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.Users__UserList' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n    <a class=\"btn btn-success\"\r\n       [routerLink]=\"'/Auth/Users/UserCreate'\"\r\n        *ngIf=\"Permission.insert\"\r\n       >\r\n        <i class=\"fa fa-plus\"></i> {{'Words.AddEntity' | translate : {p0:'Words.User' | translate } }}\r\n    </a>\r\n\r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n\r\n        <ol class=\"breadcrumb\">\r\n            <li>\r\n                <a routerLink=\"'/'\">{{'Words.Main' | translate }}</a>\r\n            </li>\r\n            <li>\r\n                {{'Pages.Users__UserList' | translate }}\r\n            </li>\r\n        </ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.Users__UserList' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n\r\n    <a class=\"btn btn-success buttonGra-sm\"\r\n       [routerLink]=\"'/Auth/Users/UserCreate'\"\r\n        *ngIf=\"Permission.insert\"\r\n       >\r\n        <i class=\"fa fa-plus\"></i> {{'Words.AddEntity' | translate : {p0:'Words.User' | translate } }}\r\n    </a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div [ngClass]=\"IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'\">\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'container-fluid content-block'\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-4\" style=\"padding: 10px 24px;color:#9B9B9B\">\r\n                <span><b>{{'Words.Count' | translate }}</b> : <span style=\"color:#9B9B9B\">{{totalCount}}</span></span>\r\n            </div>\r\n            <div class=\"col-md-8\">\r\n                <search-group (termChange)=\"HeaderSearch($event)\"></search-group>\r\n            </div>\r\n        </div>\r\n        <paginate [showing]=\"options.Showing\" [total-count]=\"totalCount\" [max-pages]=\"10\" [(currentPage)]=\"pageIndex\" (pageChange)=\"PageSelected($event)\"></paginate>\r\n\r\n        <div class=\"table-responsive\">\r\n            \r\n\r\n\r\n<table class=\"table table-striped\">\r\n    <thead>\r\n        <tr>\r\n                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('Name')\"  >\r\n        {{'Columns.User__Name' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('Name')\"></i>\r\n    </th>\r\n\r\n                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('LogonName')\"  >\r\n        {{'Columns.User__LogonName' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('LogonName')\"></i>\r\n    </th>\r\n\r\n                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('BirthDate')\"  >\r\n        {{'Columns.User__BirthDate' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('BirthDate')\"></i>\r\n    </th>\r\n\r\n                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('Email')\"  >\r\n        {{'Columns.User__Email' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('Email')\"></i>\r\n    </th>\r\n\r\n                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('Mobile')\"  >\r\n        {{'Columns.User__Mobile' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('Mobile')\"></i>\r\n    </th>\r\n\r\n                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('AppName')\"  >\r\n        {{'Columns.User__AppName' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('AppName')\"></i>\r\n    </th>\r\n\r\n                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('CreatedOn')\"  >\r\n        {{'Columns.User__CreatedOn' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('CreatedOn')\"></i>\r\n    </th>\r\n\r\n            <th></th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let model of list\">\r\n            <td  >\r\n    {{model.name}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td  >\r\n    {{model.logonName}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td  >\r\n    {{model.birthDate | date : &#x27;dd/MM/yyyy&#x27;}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td  >\r\n    {{model.email}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td  >\r\n    {{model.mobile}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td  >\r\n    {{model.appName}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td  >\r\n    {{model.createdOn}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td>\r\n                <div class=\"btn-group btnResponsive \">\r\n            <a *ngIf=\"Permission.update\" class=\"btn btn-primary btn-sm\" [routerLink]=\"'/Auth/Users/UserEdit/' +model.id\">\r\n                <i class=\"fa fa-pen\"></i>\r\n            </a>\r\n\r\n\r\n                <a *ngIf=\"Permission.delete\" class=\"btn btn-danger btn-sm\" (click)=\"Delete(model,model.id)\">\r\n                <i class=\"fa fa-trash\" aria-hidden=\"true\"></i>\r\n            </a>\r\n\r\n</div>\r\n            </td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n\r\n        </div>\r\n\r\n        <paginate [showing]=\"options.Showing\" [total-count]=\"totalCount\" [max-pages]=\"10\" [(currentPage)]=\"pageIndex\" (pageChange)=\"PageSelected($event)\"></paginate>\r\n    </div>\r\n\r\n</div>\n<div style='display:none' #lookupOptionsContainer values=''></div>\n<div style='display:none' #viewParamsContainer values='{\"ModelType\":null,\"AddUrl\":\"/Auth/Users/UserCreate\",\"EditUrl\":\"/Auth/Users/UserEdit\",\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{}}'></div>";__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserEdit", function() { return UserEdit; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var BaseApp_Auth_Users_UserEditBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! BaseApp/Auth/Users/UserEditBase */ "./Core/BaseApp/Auth/Users/UserEditBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var UserEdit = /** @class */ (function (_super) {
+    __extends(UserEdit, _super);
+    function UserEdit() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UserEdit.prototype.GetPageId = function () { return 2019082988000; };
+    UserEdit = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./UserEdit.html */ "./ClientApp/app/Auth/Users/UserEdit.html"), selector: "userEdit" })
+    ], UserEdit);
+    return UserEdit;
+}(BaseApp_Auth_Users_UserEditBase__WEBPACK_IMPORTED_MODULE_1__["UserEditBase"]));
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.Users__UserEdit' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n        <ol class=\"breadcrumb\">\r\n    <li>\r\n        <a routerLink=\"/\">{{'Words.Main' | translate }}</a>\r\n    </li>\r\n        <li>\r\n            <a routerLink=\"{{'/Auth/Users/UserList/'+'?id='+model.id}}\">{{model.entity.name}}</a>\r\n        </li>\r\n        <li>\r\n            <a routerLink=\"{{'/Auth/Roles/RoleEdit/'+model.entity.roleId}}\">{{'Pages.Roles__RoleEdit' | translate }}</a>\r\n        </li>\r\n        <li>\r\n        {{'Pages.Users__UserEdit' | translate }}\r\n    </li>\r\n</ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.Users__UserEdit' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div><div [ngClass]=\"IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'\">\r\n\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'content-block'\">\r\n        <div class=\"row\" *ngIf=\"UseLocalization\">\r\n            <div class=\"col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom\">\r\n                <div class=\"btn-group btn-group-sm pull-last\">\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='ar'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='ar'\">\r\n                            {{'Words.ar' | translate }}\r\n                        </button>\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='en'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='en'\">\r\n                            {{'Words.en' | translate }}\r\n                        </button>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n        \r\n<form #Form=\"ngForm\">\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-12 \"\r\n     id=\"FG_entity_name\"\r\n     #FG_entity_name=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Name' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Name' | translate }}\"\r\n       name=\"Form__entity_name\"\r\n       [(ngModel)]=\"model.entity.name\"\r\n       title=\"{{'Columns.User__Name' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required  >\r\n    <p *ngIf=\"!FG_entity_name.Write\">{{FG_entity_name.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_name'] && Form.controls['Form__entity_name'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_name'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Name' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_logonName\"\r\n     #FG_entity_logonName=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__LogonName' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__LogonName' | translate }}\"\r\n       name=\"Form__entity_logonName\"\r\n       [(ngModel)]=\"model.entity.logonName\"\r\n       title=\"{{'Columns.User__LogonName' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required [pattern]=\"'[_a-zA-Z][_a-zA-Z0-9_.]{2,30}'\" is-unique [data-service]=\"Service\" [item-id]=\"model.entity.id\" column-id=\"LogonName\"  >\r\n    <p *ngIf=\"!FG_entity_logonName.Write\">{{FG_entity_logonName.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_logonName'] && Form.controls['Form__entity_logonName'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_logonName'].errors!.unique\" class=\"form-text text-danger\">{{'Messages.field_exists' | translate : {p0:'Columns.User__LogonName' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_email\"\r\n     #FG_entity_email=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Email' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Email' | translate }}\"\r\n       name=\"Form__entity_email\"\r\n       [(ngModel)]=\"model.entity.email\"\r\n       title=\"{{'Columns.User__Email' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required [pattern]=\"'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'\" is-unique [data-service]=\"Service\" [item-id]=\"model.entity.id\" column-id=\"Email\"  >\r\n    <p *ngIf=\"!FG_entity_email.Write\">{{FG_entity_email.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_email'] && Form.controls['Form__entity_email'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_email'].errors!.unique\" class=\"form-text text-danger\">{{'Messages.field_exists' | translate : {p0:'Columns.User__Email' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_password\"\r\n     #FG_entity_password=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Password' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"password\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Password' | translate }}\"\r\n       name=\"Form__entity_password\"\r\n       [(ngModel)]=\"model.entity.password\"\r\n       title=\"{{'Columns.User__Password' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [required]=\"IsNew\" maxlength=\"20\" minlength=\"5\"  autocomplete=\"new-password\" >\r\n    <p *ngIf=\"!FG_entity_password.Write\">{{FG_entity_password.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_password'] && Form.controls['Form__entity_password'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__Password' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.minlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_password'].errors!.maxlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_appId\"\r\n     #FG_entity_appId=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__AppId' | translate }} </label>\r\n    \r\n<select class=\"form-control\"\r\n        name=\"Form__entity_appId\" \r\n        [li-watch]=\"model\"\r\n        [(ngModel)]=\"model.entity.appId\"\r\n         >\r\n        <option [ngValue]=\"null\">--({{'Words.Empty' | translate }})--</option>\r\n    <option *ngFor=\"let item of Lookups.apps\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n</select>\r\n    <p *ngIf=\"!FG_entity_appId.Write\">{{FG_entity_appId.Value}}</p>\r\n\r\n    \r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_passwordConfim\"\r\n     #FG_entity_passwordConfim=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__PasswordConfim' | translate }} <span style=\"color:red\">*</span></label>\r\n    <input type=\"password\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__PasswordConfim' | translate }}\"\r\n       name=\"Form__entity_passwordConfim\"\r\n       [(ngModel)]=\"model.entity.passwordConfim\"\r\n       title=\"{{'Columns.User__PasswordConfim' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [required]=\"model.entity.password!=null\" maxlength=\"20\" minlength=\"5\" [pattern]=\"model.entity.password\"  >\r\n    <p *ngIf=\"!FG_entity_passwordConfim.Write\">{{FG_entity_passwordConfim.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_passwordConfim'] && Form.controls['Form__entity_passwordConfim'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.User__PasswordConfim' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.minlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.maxlength\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max_length' | translate : {p0:'20',p1:'5'} }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_passwordConfim'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__PasswordConfim' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_photoFile\"\r\n     #FG_entity_photoFile=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__PhotoFile' | translate }} </label>\r\n    \r\n<div class=\"input-group\">\r\n    <label class=\"form-control\">\r\n        <a *ngIf=\"model.entity.photoFile\"\r\n           class=\"file-link\"\r\n           target=\"_blank\"\r\n           [routerLink]=\"'/'+model.entity.photoFile.url\">\r\n            {{model.entity.photoFile.name}}\r\n        </a>\r\n    </label>\r\n\r\n            <div class=\"input-group-btn\">\r\n                <label class=\"btn btn-primary\">\r\n                    <input name=\"photo\"\r\n                           type=\"file\"\r\n                           [(ngModel)]=\"photo\"\r\n                           [file-uploader]=\"Upload\"\r\n                           [(fileData)]=\"model.entity.photoFile\"\r\n                            \r\n                           style=\"display:none\">\r\n                    <i class=\"fa fa-upload\"></i>\r\n                </label>\r\n            </div>\r\n</div>\r\n\r\n    \r\n</div>\r\n\r\n    </div>\r\n    <div class=\"row\">\r\n        \r\n<div class=\"form-group col-md-6 \"\r\n     id=\"FG_entity_birthDate\"\r\n     #FG_entity_birthDate=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__BirthDate' | translate }} </label>\r\n    \r\n<div class=\"row\" *ngIf=\"FG_entity_birthDate.Write\">\r\n    <div class=\"col-md-9\">\r\n        <input [matDatepicker]=\"picker_Form__entity_birthDate\"\r\n               name=\"Form__entity_birthDate\"\r\n               class=\"form-control\"\r\n               [(ngModel)]=\"model.entity.birthDate\"\r\n               fix-date\r\n               placeholder=\"{{'Columns.User__BirthDate' | translate }}\" date-validate [min-date]=\"'1/10/2000'\" [max-date]=\"'1/10/2020'\"   />\r\n        <mat-datepicker #picker_Form__entity_birthDate></mat-datepicker>\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n        <mat-datepicker-toggle [for]=\"picker_Form__entity_birthDate\"></mat-datepicker-toggle>\r\n    </div>\r\n\r\n</div>\r\n\r\n    <p *ngIf=\"!FG_entity_birthDate.Write\">{{FG_entity_birthDate.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_birthDate'] && Form.controls['Form__entity_birthDate'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_birthDate'].errors!.date_validation\" class=\"form-text text-danger\">{{'Messages.invalid_min_and_max' | translate : {p0:'Columns.User__BirthDate' | translate ,p1:'1/10/2000',p2:'1/10/2020'} }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-3 \"\r\n     id=\"FG_entity_mobile\"\r\n     #FG_entity_mobile=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Mobile' | translate }} </label>\r\n    <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.User__Mobile' | translate }}\"\r\n       name=\"Form__entity_mobile\"\r\n       [(ngModel)]=\"model.entity.mobile\"\r\n       title=\"{{'Columns.User__Mobile' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [pattern]=\"'[+-]?([0-9]*[.])?[0-9]+'\" ng-pattern='/[+-]?([0-9]*[.])?[0-9]+/'  >\r\n    <p *ngIf=\"!FG_entity_mobile.Write\">{{FG_entity_mobile.Value}}</p>\r\n\r\n\r\n    <span *ngIf=\"Form.controls['Form__entity_mobile'] && Form.controls['Form__entity_mobile'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__entity_mobile'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.User__Mobile' | translate } }}</small>\r\n        <small *ngIf=\"Form.controls['Form__entity_mobile'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.must_be_numeric' | translate : {p0:'Columns.User__Mobile' | translate } }}</small>\r\n</span>\r\n</div>\r\n\r\n        \r\n<div class=\"form-group col-md-3 \"\r\n     id=\"FG_entity_gender\"\r\n     #FG_entity_gender=\"bsFormGroup\" bs-group\r\n     >\r\n    <label>{{'Columns.User__Gender' | translate }} </label>\r\n    <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <div class=\"btn-group btn-group-toggle btnToggle radio-group\">\r\n                <label class=\"btn btn-default\" [ngClass]=\"model.entity.gender==0?'active':''\">\r\n                    <input type=\"radio\" \r\n                           name=\"__entity_gender\" \r\n                           [(ngModel)]=\"model.entity.gender\" \r\n                           [value]=\"0\" \r\n                             >\r\n                    {{'Words.Female' | translate }}\r\n                </label>\r\n                <label class=\"btn btn-default\" [ngClass]=\"model.entity.gender==1?'active':''\">\r\n                    <input type=\"radio\" \r\n                           name=\"__entity_gender\" \r\n                           [(ngModel)]=\"model.entity.gender\" \r\n                           [value]=\"1\" \r\n                             >\r\n                    {{'Words.Male' | translate }}\r\n                </label>\r\n\r\n        </div>\r\n    </div>\r\n\r\n</div>\r\n    \r\n</div>\r\n\r\n    </div>\r\n</form>\r\n<hr />\r\n\r\n<div class=\"row form-group\">\r\n<div  class=\"col-md-6\" id=\"UserRoles\" #UserRoles>\n        <label class=\"section-header\">{{'Words.UserRoles' | translate }}</label>\r\n    <div class=\"list-view\">\r\n        <div>\r\n            <table class=\"table table-striped\">\r\n                <tbody>\r\n                    <tr *ngFor=\"let item of Lookups.roles\">\r\n                        <td width=\"25px\">\r\n                            <label class=\"chiller_cb\">\r\n                                <input [id]=\"'Form__entity_userRoles_'+item.id\"\r\n                                       type=\"checkbox\" [name]=\"'Form__entity_userRoles_'+item.id\" [(ngModel)]=\"item.Tag.selected\"                                       (change)=\"item.Tag.ApplyTo(model.entity.userRoles)\"\r\n                                       >\r\n                                <span></span>\r\n                            </label>\r\n                        </td>\r\n                        <td>\r\n                            {{ item.name }}\r\n                        </td>\r\n                    </tr>\r\n                </tbody>\r\n            </table>\r\n        </div>\r\n    </div></div></div>\r\n<hr />\r\n<div class=\"row form-group\">\r\n<div  class=\"col-md-12\" id=\"UserPrivileges\" #UserPrivileges>\n\r\n<label class=\"section-header\">{{'Words.Privileges' | translate }}</label>\r\n\r\n<div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n        <ul class=\"nav nav-tabs\">\r\n            <li *ngFor=\"let res of Lookups.resourcesByDomain\" [ngClass]=\"res.Selected?'active':null\">\r\n                <a (click)=\"Priv.Select(res)\">{{ 'Words.'+res.name | translate }}</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"row\">\r\n<form #PrivForm=\"ngForm\" >\n        <div *ngFor=\"let dom of Lookups.resourcesByDomain\">\r\n            <div *ngIf=\"dom.Selected\" class=\"col-md-12\">\r\n                <table class=\"table table-striped text-center\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th style=\"width:300px;\">{{'Words.Resource' | translate }}</th>\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('available')\"  >\r\n        {{'Words.available' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('available')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canViewDetails')\"  >\r\n        {{'Words.canViewDetails' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canViewDetails')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canUpdate')\"  >\r\n        {{'Words.canUpdate' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canUpdate')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canInsert')\"  >\r\n        {{'Words.canInsert' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canInsert')\"></i>\r\n    </th>\r\n\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('canDelete')\"  >\r\n        {{'Words.canDelete' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('canDelete')\"></i>\r\n    </th>\r\n\r\n\r\n                            <th>{{'Words.Other' | translate }}</th>\r\n                                <th class=\"cursorPointer\" [ngClass]=\"GetHeaderClass('CollectionId')\"  >\r\n        {{'Columns.RoleResource__CollectionId' | translate }}\r\n        <i class=\"fa fa-sort\" (click)=\"SortBy('CollectionId')\"></i>\r\n    </th>\r\n\r\n                        </tr>\r\n                    </thead>\r\n\r\n                    <tbody>\r\n                        <tr *ngFor=\"let r of dom.resources;let i = index\" (change)=\"Priv.ItemChanged(r)\">\r\n                            <td>{{ 'Words.'+ r.name | translate }}</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'available'+i\"\r\n           [name]=\"'available'+i\"\r\n           [(ngModel)]=\"r.available\"\r\n           [li-watch]=\"r\"\r\n            (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canViewDetails'+i\"\r\n           [name]=\"'canViewDetails'+i\"\r\n           [(ngModel)]=\"r.Tag.canViewDetails\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canUpdate'+i\"\r\n           [name]=\"'canUpdate'+i\"\r\n           [(ngModel)]=\"r.Tag.canUpdate\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canInsert'+i\"\r\n           [name]=\"'canInsert'+i\"\r\n           [(ngModel)]=\"r.Tag.canInsert\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n                            <td  >\r\n    <label class=\"chiller_cb\">\r\n    \r\n    <input type=\"checkbox\"\r\n           [id]=\"'canDelete'+i\"\r\n           [name]=\"'canDelete'+i\"\r\n           [(ngModel)]=\"r.Tag.canDelete\"\r\n           [li-watch]=\"r\"\r\n            [disabled]=\"!r.available\" (change)=\"Priv.ItemChanged(r)\">\r\n    <span></span>\r\n</label>\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n\r\n                            <td>\r\n                                <div class=\"form-group\" *ngFor=\"let ac of r.actions\">\r\n                                    <div class=\"row col-md-12\">\r\n                                        <div class=\"col-md-2\">\r\n                                            <label class=\"chiller_cb\">\r\n                                                <input type=\"checkbox\" [id]=\"'ac-'+ac.id\" [(ngModel)]=\"ac.Tag.selected\" (change)=\"Priv.ActionChanged(ac.Tag)\" />\r\n                                                <span></span>\r\n                                            </label>\r\n                                        </div>\r\n                                        <label class=\"col-md-10\" [for]=\"'ac-'+ac.id\">{{ 'Words.'+ac.name | translate }}</label>\r\n                                    </div>\r\n                                </div>\r\n                            </td>\r\n                                <td>\r\n                                    <select class=\"form-control\"\r\n                                            name=\"PrivForm__collectionId{{i}}\"\r\n                                            *ngIf=\"r.available\"\r\n                                            [li-watch]=\"r.Tag\"\r\n                                            [(ngModel)]=\"r.Tag.collectionId\">\r\n                                        <option *ngFor=\"let item of r.collections\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n                                    </select>\r\n                                </td>\r\n\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n        </div>\r\n</form>\r\n</div></div></div>\r\n\r\n\r\n\r\n        \r\n        <div class=\"row submit-buttons\">\r\n            <div class=\"col-md-12\">\r\n                <div class=\"pull-last\">\r\n                    \r\n        <button class=\"btn btn-primary\"\r\n            [disabled]=\"!CanSubmit\"\r\n            (click)=\"Submit()\">\r\n        {{'Words.Save' | translate }}\r\n    </button>\r\n\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\n<div style='display:none' #lookupOptionsContainer values='{\"apps\":\"C0\",\"roles\":\"C0\",\"resourcesByDomain\":\"C0\"}'></div>\n<div style='display:none' #viewParamsContainer values='{\"AddUrl\":null,\"EditUrl\":null,\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{\"EditProfile\":\"false\",\"user_list\":\"Auth/Users/UserList\",\"role_list_breadcrumb\":\"Auth/Roles/RoleEdit\"}}'></div>";
+/*# sourceMappingURL=ClientApp.css.map*/

@@ -21,7 +21,7 @@
       "Password": "admin",
       "PathOnServer": null,
       "Active": false
-    },
+  },
     "Restore": null
   },
   {
@@ -44,7 +44,7 @@
       "Password": null,
       "PathOnServer": "\\\\dev-server\\Publish\\",
       "Active": false
-    },
+  },
     "Restore": null
   },
   {
@@ -65,6 +65,7 @@
       "Type": "FTP",
       "Server": "(ftp server)",
       "ServerUrl": "(http server)",
+      "PathOnServer": "(path from ftp home to project)",
       "UserName": "(ftp user name)",
       "Password": "(ftp password)",
       "PathOnServer": "(path from ftp home to project)",

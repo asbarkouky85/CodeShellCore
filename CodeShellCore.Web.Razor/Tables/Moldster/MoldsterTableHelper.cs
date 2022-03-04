@@ -187,6 +187,6 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return w;
         }
 
-     
+
     }
 }
