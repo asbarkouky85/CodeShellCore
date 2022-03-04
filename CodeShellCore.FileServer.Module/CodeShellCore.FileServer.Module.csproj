@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
-    <ProjectReference Include="..\CodeShellCore.FileServer\CodeShellCore.FileServer.csproj" />
+    <ProjectReference Include="$(CODESHELL_V216)\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
+    <ProjectReference Include="$(CODESHELL_V216)\CodeShellCore.FileServer\CodeShellCore.FileServer.csproj" />
   </ItemGroup>
 
 </Project>

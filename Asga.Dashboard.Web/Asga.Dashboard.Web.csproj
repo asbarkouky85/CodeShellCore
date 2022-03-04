@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Dashboard\Asga.Dashboard.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <ProjectReference Include="$(CODESHELL_V216)\Asga.Dashboard\Asga.Dashboard.csproj" />
+    <ProjectReference Include="$(CODESHELL_V216)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
   </ItemGroup>
 
 </Project>

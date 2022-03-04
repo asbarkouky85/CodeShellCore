@@ -248,9 +248,9 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.0.1" />
   </ItemGroup>
     <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
+    <ProjectReference Include="$(CODESHELL_V216)\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="$(CODESHELL_V216)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <!--<ProjectReference Include="$(CODESHELL_V216)\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
   </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Update="ShellComponents\Angular\Components\BreadCrumbs.cshtml">
