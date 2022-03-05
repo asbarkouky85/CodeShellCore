@@ -39,7 +39,7 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes, bool sorting, bool isRequired)
+        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes,bool sorting, bool isRequired)
         {
             using (var writer = new CellWriter(helper))
             {
