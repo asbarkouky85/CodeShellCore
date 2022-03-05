@@ -157,24 +157,24 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
             return QueryPageListDTO(q).LoadWith(opts.GetOptionsFor<PageListDTO>());
         }
 
-        public void UpdatePageViewParamsJson(Page p, PageParameterForJson[] ps, PageRouteDTO r, FieldDefinition[] definitions)
+        public void UpdatePageViewParamsJson(Page p, PageParameterForJson[] ps, PageRouteDTO pageRoute, FieldDefinition[] customFields)
         {
 
             var jsonParams = p.ViewParams == null ? new ViewParams() : p.ViewParams.FromJson<ViewParams>();
-            if (r != null)
+            if (pageRoute != null)
             {
-                jsonParams.AddUrl = r.AddUrlString != null ? "/" + r.AddUrlString : null;
-                jsonParams.DetailsUrl = r.DetailsUrlString != null ? "/" + r.DetailsUrlString : null;
-                jsonParams.EditUrl = r.EditUrlString != null ? "/" + r.EditUrlString : null;
-                jsonParams.ListUrl = r.ListUrlString != null ? "/" + r.ListUrlString : null;
+                jsonParams.AddUrl = pageRoute.AddUrlString != null ? "/" + pageRoute.AddUrlString : null;
+                jsonParams.DetailsUrl = pageRoute.DetailsUrlString != null ? "/" + pageRoute.DetailsUrlString : null;
+                jsonParams.EditUrl = pageRoute.EditUrlString != null ? "/" + pageRoute.EditUrlString : null;
+                jsonParams.ListUrl = pageRoute.ListUrlString != null ? "/" + pageRoute.ListUrlString : null;
             }
             foreach (var pp in ps)
             {
                 jsonParams.Other[pp.Name] = pp.Value;
             }
-            if (definitions != null)
+            if (customFields != null)
             {
-                jsonParams.Fields = definitions;
+                jsonParams.Fields = customFields;
             }
             p.ViewParams = jsonParams.ToJson();
             Update(p);

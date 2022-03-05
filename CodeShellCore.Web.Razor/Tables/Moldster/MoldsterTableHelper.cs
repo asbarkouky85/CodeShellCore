@@ -67,7 +67,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return wt;
         }
 
-        public override CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes, bool sorting, bool isRequired)
+        public override CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes, bool sorting, bool isRequired = false)
         {
             return base.HeaderCell(helper, textId, size, isColumn, cellAttributes, sorting, isRequired);
         }
@@ -87,7 +87,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             return wt;
         }
 
-        public CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string width, bool ignoreAccessibility, object cellAttributes, bool sorting, bool isRequired)
+        public CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string width, bool ignoreAccessibility, object cellAttributes, bool sorting, bool isRequired = false)
         {
             var wt = base.HeaderCell<T, TValue>(helper, exp, width, cellAttributes, sorting, isRequired);
             if (!ignoreAccessibility)

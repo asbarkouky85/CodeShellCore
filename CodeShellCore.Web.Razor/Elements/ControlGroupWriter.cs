@@ -80,7 +80,7 @@ namespace CodeShellCore.Web.Razor.Elements
             Helper.AddText(StringType.Column, ColumnId);
         }
 
-        public void UseValidation(IValidationCollection coll, string fieldName = null, string alternateLabel = null)
+        public virtual void UseValidation(IValidationCollection coll, string fieldName = null, string alternateLabel = null)
         {
             VCollection = coll;
             if (VCollection == null)
@@ -125,7 +125,7 @@ namespace CodeShellCore.Web.Razor.Elements
             if (!Accessibility.Write)
             {
                 InputModel.AttributeObject = null;
-                return WriteLabel();
+                return WriteLabel(localizable);
             }
 
             string template = Helper.GetTheme().GetControlGroupTemplate(componentName, localizable);
@@ -162,7 +162,7 @@ namespace CodeShellCore.Web.Razor.Elements
                         return WriteLabel();
                     default:
                         InputModel.AttributeObject = null;
-                        return WriteLabel();
+                        return WriteLabel(localizable);
                 }
 
             }
