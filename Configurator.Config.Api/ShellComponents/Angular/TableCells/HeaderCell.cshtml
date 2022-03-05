@@ -4,11 +4,19 @@
     <th class="cursorPointer" [ngClass]="GetHeaderClass('@Model.MemberName')" @Html.Raw(Model.Width) @Html.Raw(Model.Attributes)>
         @Model.InputControl
         <i class="fa fa-sort" (click)="SortBy('@Model.MemberName')"></i>
+        @if (Model.IsRequired)
+        {
+            <span style="color:red"> * </span>
+        }
     </th>
 }
 else
 {
     <th @Html.Raw(Model.Width) @Html.Raw(Model.Attributes)>
         @Model.InputControl
+        @if (Model.IsRequired)
+        {
+            <span style="color:red"> * </span>
+        }
     </th>
 }
