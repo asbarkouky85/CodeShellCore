@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.CodeGeneration.Dtos;
 
-namespace CodeShellCore.Moldster.Builder
+namespace CodeShellCore.Moldster.Tenants.Services
 {
     public interface ITenantScriptGenerationService
     {

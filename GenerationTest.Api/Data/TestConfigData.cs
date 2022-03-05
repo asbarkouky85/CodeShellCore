@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using CodeShellCore.Moldster;
 using System;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Resources;
 
 namespace GenerationTest.Api.Data
 {

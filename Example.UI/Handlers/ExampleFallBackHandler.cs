@@ -10,6 +10,6 @@ namespace Example.UI.Handlers
     public class ExampleFallBackHandler : SpaFallbackHandler
     {
         protected override TenantInfoItem[] Tenants => new[] { new TenantInfoItem { Code = "tenant_1" }, new TenantInfoItem { Code = "tenant_2" } };
-        protected override string DefaultTenant => "tenant_1";
+        public override string DefaultTenant => "tenant_1";
     }
 }

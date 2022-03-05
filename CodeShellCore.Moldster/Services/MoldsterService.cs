@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Domains.Services;
@@ -10,6 +9,7 @@ using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Sql;
+using CodeShellCore.Moldster.Tenants.Services;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;

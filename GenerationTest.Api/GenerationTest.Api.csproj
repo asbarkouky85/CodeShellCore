@@ -33,8 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\Asga.Auth\Asga.Auth.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

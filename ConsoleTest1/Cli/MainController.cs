@@ -2,6 +2,9 @@
 
 using CodeShellCore.Cli;
 using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Tenants.Services;
 using CodeShellCore.MQ;
 using CodeShellCore.MQ.Events;
 
@@ -25,7 +28,7 @@ namespace ConsoleTest1
 
         public void AngularJson()
         {
-            var ser = GetService<IAngularJsonService>();
+            var ser = GetService<ITenantScriptGenerationService>();
            ser.UpdateAngularJsonFromDatabase();
         }
 

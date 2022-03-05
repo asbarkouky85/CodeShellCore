@@ -12,6 +12,8 @@ namespace CodeShellCore.Cli.Requests
         {
         }
 
+        public override string FunctionDescription => "Migrate CodeShellCore application from angular 6 to angular 11";
+
         protected override void Build(ICliRequestBuilder<MigrateOldAppRequest> builder)
         {
             builder.FillProperty(e => e.TenantCode, "tenant", 't', isRequired: true);

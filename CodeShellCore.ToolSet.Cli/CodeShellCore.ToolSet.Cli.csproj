@@ -13,6 +13,6 @@
 		<ToolCommandName>toolset</ToolCommandName>
 	</PropertyGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\CodeShellCore.ToolSet\CodeShellCore.ToolSet.csproj" />
+	  <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.ToolSet\CodeShellCore.ToolSet.csproj" />
 	</ItemGroup>
 </Project>

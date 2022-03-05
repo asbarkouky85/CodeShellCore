@@ -1,4 +1,8 @@
 ﻿using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Navigation;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Resources;
 
 namespace CodeShellCore.UnitTest.Data
 {

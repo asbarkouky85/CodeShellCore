@@ -49,6 +49,11 @@ namespace CodeShellCore.Cli.Services
             return envs.ToList();
         }
 
+        public MoldsterEnvironment GetEnvironmentByName(string name)
+        {
+            return GetEnvironments().FirstOrDefault(e => e.Name == name);
+        }
+
         public CliPathsService()
         {
             var sol = CliShell.ConfigurationApiPath.Replace("\\", "/").GetBeforeLast("/");

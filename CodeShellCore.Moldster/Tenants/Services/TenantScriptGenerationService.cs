@@ -13,7 +13,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Builder.Internal
+namespace CodeShellCore.Moldster.Tenants.Services
 {
     public class TenantScriptGenerationService : ScriptGenerationServiceBase, ITenantScriptGenerationService
     {
