@@ -1,12 +1,12 @@
 ﻿using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Builder;
-using CodeShellCore.Moldster.Definitions;
+using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Web.Razor.Configurator
+namespace CodeShellCore.Web.Razor.Controllers.Configurator
 {
     [ApiAuthorize(AllowAll = true)]
     public class EnvironmentsController : BaseApiController, IEnvironmentsService
@@ -34,12 +34,12 @@ namespace CodeShellCore.Web.Razor.Configurator
             return service.GetDatabaseList(name);
         }
 
-        public MoldsterEnvironment Post([FromBody]MoldsterEnvironment dto)
+        public MoldsterEnvironment Post([FromBody] MoldsterEnvironment dto)
         {
             return service.Post(dto);
         }
 
-        public MoldsterEnvironment Put([FromBody]MoldsterEnvironment env)
+        public MoldsterEnvironment Put([FromBody] MoldsterEnvironment env)
         {
             return service.Put(env);
         }

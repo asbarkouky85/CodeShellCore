@@ -49,13 +49,6 @@ namespace CodeShellCore.Moldster
             return new List<LayoutFileDTO>();
         }
 
-        public List<MoldsterEnvironment> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs)
-        {
-            var json = envs.ToJsonIndent();
-            File.WriteAllText(_filePath, json);
-            return envs.ToList();
-        }
-
         public MoldsterEnvironment GetEnvironmentByName(string name)
         {
             return GetEnvironments().Where(e => e.Name == name).FirstOrDefault();
