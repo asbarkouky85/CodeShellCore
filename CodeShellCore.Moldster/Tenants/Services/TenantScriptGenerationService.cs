@@ -1,9 +1,9 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Angular.Models;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Dtos;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Models;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
@@ -34,8 +34,8 @@ namespace CodeShellCore.Moldster.Tenants.Services
             if (!File.Exists(angularJsonPath))
             {
                 var ten = Names.ApplyConvension(tenant, AppParts.Project);
-                var tenantConfig = Writer.FillStringParameters(Molds.AngularJsonProject, new AppComponentModel { Name = ten });
-                var angularJsonConent = Writer.FillStringParameters(Molds.AngularJson, new AngularJsonModel { Projects = $"\"{ten}\":" + tenantConfig.Trim(), DefaultProject = ten });
+                var tenantConfig = Writer.FillStringParameters(Molds.GetResourceByNameAsString(MoldNames.Angular_json_project), new AppComponentModel { Name = ten });
+                var angularJsonConent = Writer.FillStringParameters(Molds.GetResourceByNameAsString(MoldNames.Angular_json), new AngularJsonModel { Projects = $"\"{ten}\":" + tenantConfig.Trim(), DefaultProject = ten });
                 Utils.CreateFolderForFile(angularJsonPath);
                 var str = Encoding.UTF8.GetBytes(angularJsonConent);
                 File.WriteAllBytes(angularJsonPath, str);
@@ -53,7 +53,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
             if (!File.Exists(bootPath))
             {
                 Out.Write("Generating main.ts...  \t\t\t");
-                string bootTemplate = Molds.BootMold;
+                string bootTemplate = Molds.GetResourceByNameAsString(MoldNames.Boot_ts);
                 string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel
                 {
                     Code = Names.ApplyConvension(tenantCode, AppParts.Route),
@@ -68,7 +68,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
             if (!File.Exists(pollyPath))
             {
                 Out.Write("Generating polyfills.ts...  \t\t\t");
-                string pollyTemplate = Properties.Resources.pollyfills_ts;
+                string pollyTemplate = Molds.GetResourceByNameAsString(MoldNames.Pollyfills_ts);
                 File.WriteAllText(pollyPath, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
@@ -77,7 +77,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
             if (!File.Exists(indexPath))
             {
                 Out.Write("Generating index.html...  \t\t\t");
-                string pollyTemplate = Properties.Resources.index_html;
+                string pollyTemplate = Molds.GetResourceByNameAsString(MoldNames.Index_html);
                 File.WriteAllText(indexPath, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
@@ -86,7 +86,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
             if (!File.Exists(dec))
             {
                 Out.Write("Generating declarations.d.ts...  \t\t\t");
-                string pollyTemplate = Properties.Resources.declarations_d;
+                string pollyTemplate = Molds.GetResourceByNameAsString(MoldNames.Declarations_d);
                 File.WriteAllText(dec, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
@@ -134,7 +134,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
                 tempModel.Declarations += name.GetAfterLast("/");
             }
 
-            string moduleTemplate = Molds.AppModuleMold;
+            string moduleTemplate = Molds.GetResourceByNameAsString(MoldNames.Module_ts);
             string contents = Writer.FillStringParameters(moduleTemplate, tempModel);
             File.WriteAllText(modulePath, contents);
 
@@ -162,7 +162,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
                 var ten = Names.ApplyConvension(t.Code, AppParts.Project);
                 if (!angularTenants.Tenants.TryGetValue(ten, out AngularTenant ngt))
                 {
-                    var tenantConfig = Writer.FillStringParameters(Molds.AngularJsonProject, new AppComponentModel { Name = t.Code });
+                    var tenantConfig = Writer.FillStringParameters(Molds.GetResourceByNameAsString(MoldNames.Angular_json_project), new AppComponentModel { Name = t.Code });
                     angularTenants.AddTenant(ten, tenantConfig);
                 }
             }

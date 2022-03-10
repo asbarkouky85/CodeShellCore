@@ -1,15 +1,12 @@
-﻿using CodeShellCore.Cli;
-using CodeShellCore.Files;
-using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Angular.Models;
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Localization.Services;
-using CodeShellCore.Moldster.Models;
 using CodeShellCore.Moldster.Navigation.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Text.ResourceReader;
@@ -18,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CodeShellCore.Moldster.Domains.Services
@@ -46,7 +42,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             if (!File.Exists(bootPath))
             {
                 Out.Write("Generating main.ts...  \t\t\t");
-                string bootTemplate = _molds.BootMold;
+                string bootTemplate = _molds.GetResourceByNameAsString(MoldNames.Boot_ts);//BootMold;
                 string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel
                 {
                     Code = Names.ApplyConvension(moduleCode, AppParts.Route),
@@ -61,7 +57,8 @@ namespace CodeShellCore.Moldster.Domains.Services
             if (!File.Exists(pollyPath))
             {
                 Out.Write("Generating polyfills.ts...  \t\t\t");
-                string pollyTemplate = Properties.Resources.pollyfills_ts;
+
+                string pollyTemplate = _molds.GetResourceByNameAsString(MoldNames.Pollyfills_ts);  //Ng11.Properties.Resources.pollyfills_ts;
                 File.WriteAllText(pollyPath, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
@@ -70,7 +67,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             if (!File.Exists(indexPath))
             {
                 Out.Write("Generating index.html...  \t\t\t");
-                string pollyTemplate = Properties.Resources.index_html;
+                string pollyTemplate = _molds.GetResourceByNameAsString(MoldNames.Index_html);  //Properties.Resources.index_html;
                 File.WriteAllText(indexPath, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
@@ -79,7 +76,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             if (!File.Exists(dec))
             {
                 Out.Write("Generating declarations.d.ts...  \t\t\t");
-                string pollyTemplate = Properties.Resources.declarations_d;
+                string pollyTemplate = _molds.GetResourceByNameAsString(MoldNames.Declarations_d);  //Properties.Resources.declarations_d;
                 File.WriteAllText(dec, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
@@ -142,7 +139,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                 tempModel.Declarations += name.GetAfterLast("/");
             }
 
-            string moduleTemplate = _molds.AppModuleMold;
+            string moduleTemplate = _molds.GetResourceByNameAsString(MoldNames.Module_ts);//AppModuleMold;
             string contents = Writer.FillStringParameters(moduleTemplate, tempModel);
             File.WriteAllText(modulePath, contents);
 
@@ -169,7 +166,7 @@ namespace CodeShellCore.Moldster.Domains.Services
 
             IEnumerable<DomainWithPagesDTO> domains = _unit.DomainRepository.GetParentModules(modId);
             IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs(modId);
-            string routesTemplate = _molds.RoutesMold;
+            string routesTemplate = _molds.GetResourceByNameAsString(MoldNames.Routes_ts);//RoutesMold;
 
             var tempModel = new RoutesTsModel
             {
@@ -278,7 +275,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             }
 
             bool shared = dom.DomainName == "Shared";
-            string template = shared ? _molds.SharedModuleMold : _molds.GetDomainModuleMold();
+            string template = shared ? _molds.GetResourceByNameAsString(MoldNames.SharedModule_ts) : _molds.GetDomainModuleMold();
 
             dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id);
 
@@ -397,7 +394,7 @@ namespace CodeShellCore.Moldster.Domains.Services
 
         private string _childRoute(PageDTO p)
         {
-            string routeTemplate = _molds.RouteMold;
+            string routeTemplate = _molds.GetResourceByNameAsString(MoldNames.Route_ts);
             string param = p.Page.RouteParameters ?? "";
             string action = p.ActionName == null ? "ResourceActions." + p.Page.PrivilegeType ?? "view" : "\"" + p.ActionName + "\"";
             string component = p.Page.ViewPath.GetAfterLast("/");

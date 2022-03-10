@@ -1,0 +1,5 @@
+{
+  "GoogleKey": "AIzaSyD2ZSFjCvupPXGlyAKNhK7xcFtAuZQCBCQ",
+  "UseHotUpdate": true,
+  "env": "development"
+}

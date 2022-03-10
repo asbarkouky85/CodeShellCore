@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Angular.Models;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
@@ -180,7 +181,7 @@ namespace CodeShellCore.Moldster.Services
             TenantTs.AddAngularJson(tenant);
             TenantTs.UpdateAngularJsonFromDatabase();
 
-            string bootTemplate = Molds.BootMold;
+            string bootTemplate = Molds.GetResourceByNameAsString(MoldNames.Boot_ts);
             string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel
             {
                 Code = Names.ApplyConvension(tenant, AppParts.Route),

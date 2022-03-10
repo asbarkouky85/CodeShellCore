@@ -117,7 +117,7 @@ namespace CodeShellCore.Moldster
 
         public static void AddMoldsterCodeGeneration(this IServiceCollection coll)
         {
-            coll.AddSingleton<IMoldProvider, DefaultMoldProvider>();
+            coll.AddSingleton<IMoldProvider, AngularNg11MoldProvider>();
 
             coll.AddScoped<IPathsService, DefaultPathsService>();
             coll.AddScoped<EnvironmentAccessor>();

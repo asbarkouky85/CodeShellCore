@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Localization.Dtos;
@@ -85,7 +86,7 @@ namespace CodeShellCore.Moldster.Localization.Services
 
             Out.Write("Generating localization dictionaries : ");
 
-            string template = _molds.LocaleLoaderMold;
+            string template = _molds.GetResourceByNameAsString(MoldNames.LocaleLoader_ts);
             string[] locales = Shell.SupportedLanguages.ToArray();
             string[] types = new string[] { "Columns", "Words", "Pages", "Messages" };
             List<CustomText> ten = _unit.CustomTextRepository.GetForTenant(moduleCode);
@@ -151,7 +152,7 @@ namespace CodeShellCore.Moldster.Localization.Services
 
         public virtual void AddLocalizationFiles()
         {
-            UnZip(Properties.Resources.Localization, _paths.LocalizationRoot, "Localization");
+            UnZip(_molds.GetResourceByNameAsBytes(MoldNames.Localization_zip), _paths.LocalizationRoot, "Localization");
         }
 
         public virtual void InitializeResxFiles()

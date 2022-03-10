@@ -1,13 +1,11 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Angular.Models;
-using CodeShellCore.Moldster.Models;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Text;
 
 namespace CodeShellCore.Moldster.Environments.Services
 {
@@ -19,7 +17,8 @@ namespace CodeShellCore.Moldster.Environments.Services
 
         protected void AddBaseModuleFiles(bool replace)
         {
-            string serverConfig = Writer.FillStringParameters(Molds.ServerConfigMold, new ServerConfigTsModel
+            var serverConfigMold = Molds.GetResourceByNameAsString(MoldNames.ServerConfig_ts);
+            string serverConfig = Writer.FillStringParameters(serverConfigMold, new ServerConfigTsModel
             {
                 ApiUrl = "http://localhost",
                 Production = "false",
@@ -27,7 +26,7 @@ namespace CodeShellCore.Moldster.Environments.Services
             });
             AddToBaseFolder(Names.ApplyConvension("ServerConfig", AppParts.Route) + ".ts", serverConfig, true, replace);
 
-            string serverConfigProd = Writer.FillStringParameters(Molds.ServerConfigMold, new ServerConfigTsModel
+            string serverConfigProd = Writer.FillStringParameters(serverConfigMold, new ServerConfigTsModel
             {
                 ApiUrl = "",
                 Production = "true",
@@ -35,32 +34,32 @@ namespace CodeShellCore.Moldster.Environments.Services
             });
             AddToBaseFolder(Names.ApplyConvension("ServerConfig.prod", AppParts.Route) + ".ts", serverConfigProd, true, replace);
 
-            string baseModuleContent = Writer.FillStringParameters(Molds.BaseModuleMold, new DomainTsModel { Name = Paths.CoreAppName.UCFirst() + "Base" });
+            string baseModuleContent = Writer.FillStringParameters(Molds.GetResourceByNameAsString(MoldNames.BaseModule_ts), new DomainTsModel { Name = Paths.CoreAppName.UCFirst() + "Base" });
             AddToBaseFolder(Names.ApplyConvension(Paths.CoreAppName + "BaseModule", AppParts.Module) + ".ts", baseModuleContent, true, replace);
-            AddToBaseFolder(Names.ApplyConvension("AppComponent", AppParts.BaseComponent) + ".ts", Properties.Resources.AppComponentBase_ts, true, replace);
+            AddToBaseFolder(Names.ApplyConvension("AppComponent", AppParts.BaseComponent) + ".ts", Molds.GetResourceByNameAsString(MoldNames.AppComponentBase_ts), true, replace);
 
-            AddToBaseFolder(Names.ApplyConvension("Main/Login", AppParts.Component) + ".html", Properties.Resources.Login_html, true, replace);
-            AddToBaseFolder(Names.ApplyConvension("Main/Login", AppParts.Component) + ".ts", Properties.Resources.Login_ts, false, replace);
-            AddToBaseFolder(Names.ApplyConvension("Main/topBar", AppParts.Component) + ".html", Properties.Resources.topBar_html, false, replace);
-            AddToBaseFolder(Names.ApplyConvension("Main/topBar", AppParts.Component) + ".ts", Properties.Resources.topBar_ts, false, replace);
-            AddToBaseFolder(Names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".html", Properties.Resources.navigationSideBar_html, false, replace);
-            AddToBaseFolder(Names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".ts", Properties.Resources.navigationSideBar_ts, false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/Login", AppParts.Component) + ".html", Molds.GetResourceByNameAsString(MoldNames.Login_html), true, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/Login", AppParts.Component) + ".ts", Molds.GetResourceByNameAsString(MoldNames.Login_ts), false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/topBar", AppParts.Component) + ".html", Molds.GetResourceByNameAsString(MoldNames.TopBar_html), false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/topBar", AppParts.Component) + ".ts", Molds.GetResourceByNameAsString(MoldNames.TopBar_ts), false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".html", Molds.GetResourceByNameAsString(MoldNames.NavigationSideBar_html), false, replace);
+            AddToBaseFolder(Names.ApplyConvension("Main/navigationSideBar", AppParts.Component) + ".ts", Molds.GetResourceByNameAsString(MoldNames.NavigationSideBar_ts), false, replace);
 
-            AddToBaseFolder(Names.ApplyConvension("http/AccountService", AppParts.Service) + ".ts", Properties.Resources.AccountService_ts, true, replace);
+            AddToBaseFolder(Names.ApplyConvension("http/AccountService", AppParts.Service) + ".ts", Molds.GetResourceByNameAsString(MoldNames.AccountService_ts), true, replace);
         }
 
         public void AddShellComponents(bool replace)
         {
-            UnZip(Properties.Resources.ShellComponents, Paths.ConfigRoot, "ShellComponents", replace);
+            UnZip(Molds.GetResourceByNameAsBytes(MoldNames.ShellComponents_zip), Paths.ConfigRoot, "ShellComponents", replace);
         }
 
         public void AddUiBasicFiles(bool replace)
         {
-            AddToUI("package.json", Properties.Resources.package_json, replace);
-            AddToUI("tsconfig.json", Properties.Resources.tsconfig_json, replace);
-            AddToUI("src/declarations.d.ts", Properties.Resources.declarations_d, replace);
-            AddToUI("src/polyfills.ts", Properties.Resources.pollyfills_ts, replace);
-            AddToUI("src/index.html", Properties.Resources.index_html, replace);
+            AddToUI("package.json", Molds.GetResourceByNameAsString(MoldNames.Package_json), replace);
+            AddToUI("tsconfig.json", Molds.GetResourceByNameAsString(MoldNames.TsConfig_json), replace);
+            AddToUI("src/declarations.d.ts", Molds.GetResourceByNameAsString(MoldNames.Declarations_d), replace);
+            AddToUI("src/polyfills.ts", Molds.GetResourceByNameAsString(MoldNames.Pollyfills_ts), replace);
+            AddToUI("src/index.html", Molds.GetResourceByNameAsString(MoldNames.Index_html), replace);
         }
 
         public void AddBasicFiles(bool replace)
@@ -72,21 +71,21 @@ namespace CodeShellCore.Moldster.Environments.Services
             {
                 Utils.CreateFolderForFile(path);
                 WriteFileOperation("Adding", "AppComponent.cshtml", true);
-                File.WriteAllText(path, Properties.Resources.AppComponent_cshtml);
+                File.WriteAllText(path, Molds.GetResourceByNameAsString(MoldNames.AppComponent_cshtml));
             }
         }
 
         public void AddCodeShell(bool replace)
         {
-            UnZip(Properties.Resources.codeshell, Names.CoreFolder, "codeshell", replace);
+            UnZip(Molds.GetResourceByNameAsBytes(MoldNames.CodeShell_zip), Names.CoreFolder, "codeshell", replace);
         }
 
         public virtual void AddStaticFiles(bool replace)
         {
             string folder = Path.Combine(Paths.UIRoot, "src/assets/moldster");
-            UnZip(Properties.Resources.css, folder, "css", replace);
-            UnZip(Properties.Resources.img, folder, "img", replace);
-            UnZip(Properties.Resources.js, folder, "js", replace);
+            UnZip(Molds.GetResourceByNameAsBytes(MoldNames.Css_zip), folder, "css", replace);
+            UnZip(Molds.GetResourceByNameAsBytes(MoldNames.Img_zip), folder, "img", replace);
+            UnZip(Molds.GetResourceByNameAsBytes(MoldNames.Js_zip), folder, "js", replace);
         }
 
         protected void UnZip(byte[] bytes, string folder, string name, bool overwrite = false)

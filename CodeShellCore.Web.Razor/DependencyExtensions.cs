@@ -82,7 +82,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddTransient<IRazorRenderingService, RazorRenderingService>();
 
             coll.AddSingleton<DefaultPathsService>();
-            coll.AddSingleton<IMoldProvider, DefaultMoldProvider>();
+            coll.AddSingleton<IMoldProvider, AngularNg11MoldProvider>();
 
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();

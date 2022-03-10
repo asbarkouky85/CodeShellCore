@@ -1,7 +1,8 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Models;
 using CodeShellCore.Services;
 using CodeShellCore.Types;
 using Microsoft.Extensions.Options;
@@ -43,7 +44,7 @@ namespace CodeShellCore.Moldster.Services
             Utils.CreateFolderForFile(servicePath);
             if (!File.Exists(servicePath))
             {
-                string serviceTemplate = _molds.ServiceMold;
+                string serviceTemplate = _molds.GetResourceByNameAsString(MoldNames.Service_ts);
                 string service = Writer.FillStringParameters(serviceTemplate, new ServiceTsModel { Resource = resource });
                 File.WriteAllText(servicePath, service);
 

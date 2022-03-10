@@ -27,26 +27,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="Angular\Molds\BaseComponent.ts.template" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Application\CodeShellCore.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\CodeShellCore.Moldster.Ng11\CodeShellCore.Moldster.Ng11.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Moldster.Ng6\CodeShellCore.Moldster.Ng6.csproj" />
   </ItemGroup>
 
   <ItemGroup>
