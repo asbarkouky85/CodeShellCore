@@ -23,5 +23,6 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
         string ReverseConvention(string v);
         string GetOutputBundlePath(string tenantCode, string version, bool full = false);
         string GetOutputPath(string tenantCode, string version, bool full = false);
+        string GetCodeShellBaseComponentsImportPath();
     }
 }

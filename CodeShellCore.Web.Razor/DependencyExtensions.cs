@@ -62,7 +62,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddSignalRHub<IBundlingTasksNotifications, TasksHub>();
         }
 
-        public static void AddMoldsterWeb(this IServiceCollection coll)
+        public static void AddMoldsterWeb(this IServiceCollection coll, bool legacy = false)
         {
 
             coll.AddServiceFor<Domain, DomainService>();
@@ -73,7 +73,15 @@ namespace CodeShellCore.Web.Razor
             coll.AddTransient<IRazorRenderingService, RazorRenderingService>();
 
             coll.AddSingleton<DefaultPathsService>();
-            coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
+            if (legacy)
+            {
+                coll.AddSingleton<IMoldProvider, LegacyAngularMoldProvider>();
+            }
+            else
+            {
+                coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
+            }
+
 
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();

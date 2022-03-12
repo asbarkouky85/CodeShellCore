@@ -1,5 +1,4 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
@@ -243,7 +242,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             }
         }
 
-        protected void AppendLocaleLoaders(RoutesTsModel mod)
+        protected virtual void AppendLocaleLoaders(RoutesTsModel mod)
         {
             if (string.IsNullOrEmpty(_paths.LocalizationRoot))
                 return;

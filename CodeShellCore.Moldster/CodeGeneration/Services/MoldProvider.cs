@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Resources;
+using System.Text;
 
 namespace CodeShellCore.Moldster.CodeGeneration.Services
 {
@@ -7,20 +8,22 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
     {
         protected abstract ResourceManager ResourceManager { get; }
 
-        public byte[] GetResourceByNameAsBytes(string name)
+        public virtual byte[] GetResourceByNameAsBytes(string name)
         {
-            var str = ResourceManager.GetStream(name);
-            using (var mem = new MemoryStream())
-            {
-                str.CopyTo(mem);
-                return mem.ToArray();
-            }
-
+            return (byte[])ResourceManager.GetObject(name);
         }
 
-        public string GetResourceByNameAsString(string name)
+        public virtual string GetResourceByNameAsString(string name)
         {
-            return ResourceManager.GetString(name);
+            var ob = ResourceManager.GetObject(name);
+            if (ob.GetType() == typeof(string))
+                return (string)ob;
+            else if (ob.GetType() == typeof(byte[]))
+            {
+                var str = Encoding.UTF8.GetString((byte[])ob);
+                return str;
+            }
+            return null;
         }
 
         public virtual string GetBaseComponentMold(bool serviced)

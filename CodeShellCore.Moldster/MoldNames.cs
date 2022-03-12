@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.CodeGeneration
+namespace CodeShellCore.Moldster
 {
     public static class MoldNames
     {
@@ -49,5 +49,9 @@ namespace CodeShellCore.Moldster.CodeGeneration
         public const string TsConfig_json = "tsconfig_json";
         public const string WebPackSharedConfig_js = "WebPackSharedConfig_js";
         public const string WebPackConfigVendor_js = "webpack_config_vendor_js";
+        public const string WebPackConfig_js = "webpack_config_js";
+        public const string WebPackTenantConfig_js = "webpack_tenant_js";
+        public const string WebPackTenantJs_bat = "webpack_tenant_js_bat";
+        public const string WebPackTenantJs_json = "webpack_tenant_js_json";
     }
 }

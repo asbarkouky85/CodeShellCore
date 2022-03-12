@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Moldster.CodeGeneration;
-using CodeShellCore.Moldster.CodeGeneration.Models;
+﻿using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Navigation.Dtos;
 using CodeShellCore.Text;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace CodeShellCore.Moldster.Domains.Services
@@ -48,7 +48,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             foreach (var domain in domains)
             {
                 string dom = domain.DomainName;
-                tempModel.Routes += Names.GetDomainLazyLoadingRoute(domain.DomainName);
+                tempModel.Routes += Names.GetDomainLazyLoadingRoute(domain.DomainName)+",\r\n\t";
             }
             string sep = "";
             foreach (var nav in navs)
@@ -61,6 +61,18 @@ namespace CodeShellCore.Moldster.Domains.Services
 
             string builder = Writer.FillStringParameters(routesTemplate, tempModel);
             File.WriteAllText(filePath, builder);
+        }
+
+        protected override void AppendLocaleLoaders(RoutesTsModel mod)
+        {
+            if (string.IsNullOrEmpty(_paths.LocalizationRoot))
+                return;
+            string[] locales = Shell.SupportedLanguages.ToArray();
+            foreach (string loc in locales)
+            {
+                mod.LocalizationImports += "import { " + loc + "_Loader } from \"./../Localization/" + loc + "/loader\";\n";
+                mod.LocalizationLoaders += $"[\"{loc}\"]:new {loc}_Loader, ";
+            }
         }
     }
 }

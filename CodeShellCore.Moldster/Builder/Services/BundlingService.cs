@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Builder.Services
 {
-    public class BundlingService : MoldsterFileHandlingService, IBundlingService
+    public class BundlingService : MoldsterFileHandlingService, IBundlingService, ILegacyBundlingService
     {
         public BundlingService(IServiceProvider provider) : base(provider)
         {
@@ -160,7 +160,7 @@ namespace CodeShellCore.Moldster.Builder.Services
                 GotoColumn(SuccessCol);
                 WriteColored("EXISTS", ConsoleColor.DarkCyan);
             }
-            
+
             Out.WriteLine();
             return bundleFolder + ".zip";
         }
@@ -196,6 +196,9 @@ namespace CodeShellCore.Moldster.Builder.Services
             RunCommand(Paths.UIRoot, "npm", args, true);
         }
 
+        public virtual void WriteWebpackConfigFiles()
+        {
 
+        }
     }
 }

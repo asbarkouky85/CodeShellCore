@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Moldster;
+using CodeShellCore.Web.Razor.Moldster;
 using CodeShellCore.Web.Razor.SignalR;
 using CodeShellCore.Web.Razor.Themes;
 using Microsoft.AspNetCore.Builder;
@@ -21,6 +22,7 @@ namespace CodeShellCore.Web.Razor
         protected override bool UseCors => true;
         protected virtual bool MigrateOnStartup => true;
         protected override bool useLocalization => false;
+        protected virtual bool UseLegacy => false;
         protected override string DefaultCorsOrigins => "http://localhost:8050,http://localhost:4200,http://127.0.0.1:8050,http://127.0.0.1:8051";
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");
@@ -30,11 +32,12 @@ namespace CodeShellCore.Web.Razor
             base.RegisterServices(coll);
 
             coll.AddMoldsterDbData(Configuration);
-            coll.AddMoldsterWeb();
-            coll.AddMoldsterConfigurator();
-            coll.AddMoldsterServerGeneration();
+            coll.AddMoldsterWeb(UseLegacy);
+            coll.AddMoldsterConfigurator(UseLegacy);
+            coll.AddMoldsterServerGeneration(UseLegacy);
             coll.AddMoldsterRazorHelpers();
             coll.AddRazorPages().AddRazorRuntimeCompilation();
+
             coll.Configure<MoldsterModuleOptions>(e =>
             {
                 e.ReplaceComponentHtml = true;
@@ -68,6 +71,7 @@ namespace CodeShellCore.Web.Razor
             base.OnApplicationStarted(prov);
             if (MigrateOnStartup)
                 prov.MigrateContext<MoldsterContext>();
+            SearchExpressions.RegisterExpressions();
         }
     }
 }

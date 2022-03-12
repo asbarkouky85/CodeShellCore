@@ -541,5 +541,92 @@ namespace CodeShellCore.Moldster.Ng6.Properties {
                 return ResourceManager.GetString("tsconfig_json", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] webpack_config_js {
+            get {
+                object obj = ResourceManager.GetObject("webpack_config_js", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to const path = require(&apos;path&apos;);
+        ///const webpack = require(&apos;webpack&apos;);
+        ///const ExtractTextPlugin = require(&apos;extract-text-webpack-plugin&apos;);
+        ///const UglifyJsPlugin = require(&apos;uglifyjs-webpack-plugin&apos;);
+        ///
+        ///const treeShakableModules = [
+        ///
+        ///    &apos;@angular/common&apos;,
+        ///    &apos;@angular/forms&apos;,
+        ///    &apos;@angular/animations&apos;,
+        ///    &apos;@angular/platform-browser&apos;,
+        ///    &quot;@angular/platform-browser/animations&quot;,
+        ///    &apos;@angular/platform-browser-dynamic&apos;,
+        ///    &apos;@angular/router&apos;,
+        ///
+        ///    &apos;@angular/compiler&apos;,
+        ///
+        ///    &apos;@angular/material&apos;,
+        ///    &quot;@ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string webpack_config_vendor_js {
+            get {
+                return ResourceManager.GetString("webpack_config_vendor_js", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] webpack_tenant_js {
+            get {
+                object obj = ResourceManager.GetObject("webpack_tenant_js", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] webpack_tenant_js_bat {
+            get {
+                object obj = ResourceManager.GetObject("webpack_tenant_js_bat", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] webpack_tenant_js_json {
+            get {
+                object obj = ResourceManager.GetObject("webpack_tenant_js_json", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to const path = require(&apos;path&apos;);
+        ///const webpack = require(&apos;webpack&apos;);
+        ///const CheckerPlugin = require(&apos;awesome-typescript-loader&apos;).CheckerPlugin;
+        ///const ExtractTextPlugin = require(&apos;extract-text-webpack-plugin&apos;);
+        ///
+        ///module.exports = function WebpackSharedConfig(env) {
+        ///    const isDevBuild = !(env &amp;&amp; env.prod);
+        ///    const app = env.app ? env.app + &quot;-&quot; : &quot;&quot;;
+        ///    const version = isDevBuild ? &quot;dev&quot; : &quot;v&quot; + (env.version ? env.version : &quot;1.0.0.0&quot;)
+        ///    const clientBundleOutputDir = &apos;./wwwroot/dist&apos;;
+        ///    return {
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string WebPackSharedConfig_js {
+            get {
+                return ResourceManager.GetString("WebPackSharedConfig_js", resourceCulture);
+            }
+        }
     }
 }

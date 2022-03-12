@@ -192,5 +192,10 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
         {
             return LangUtils.WordsToCamelCase(v, "-");
         }
+
+        public virtual string GetCodeShellBaseComponentsImportPath()
+        {
+            return "codeshell/base-components";
+        }
     }
 }

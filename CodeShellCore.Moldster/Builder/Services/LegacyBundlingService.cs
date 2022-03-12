@@ -1,7 +1,9 @@
 ﻿using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace CodeShellCore.Moldster.Builder.Services
@@ -75,6 +77,76 @@ namespace CodeShellCore.Moldster.Builder.Services
                 args = "node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod --progress";
                 RunCommand(Paths.UIRoot, "node", args);
             }
+        }
+
+        public void GenerateDevWebPackFiles(IEnumerable<string> modules, IEnumerable<string> activeMods = null)
+        {
+            IEnumerable<string> apps = modules;
+            activeMods = activeMods ?? apps;
+            string packTemplate = Molds.GetResourceByNameAsString(MoldNames.WebPackConfig_js);
+            Out.Write("Generating webpack.config.js\t");
+            WebPackModel mod = new WebPackModel();
+            string sep = "";
+            foreach (string app in activeMods)
+            {
+                mod.Tenants += sep + $"\"{app}\" : \"./{app}/boot.ts\",\r";
+                sep = "\t\t\t";
+            }
+            string contents = Writer.FillStringParameters(packTemplate, mod);
+            string packPath = Path.Combine(Paths.UIRoot, "webpack.config.js");
+            File.WriteAllText(packPath, contents);
+            WriteSuccess(null);
+            Out.WriteLine();
+
+        }
+
+        public void GenerateWebPackFiles(string code, IEnumerable<string> others, bool lazy)
+        {
+            string packTemplate = Molds.GetResourceByNameAsString(MoldNames.WebPackTenantConfig_js);
+            string jsonTemplate = Molds.GetResourceByNameAsString(MoldNames.WebPackTenantJs_json);
+
+            WebPackModel mod = new WebPackModel
+            {
+                Code = code,
+                Tenants = "",
+                Lazy = lazy ? "" : ""
+            };
+
+            foreach (var t in others)
+                mod.Tenants += $"\"{t}\",\r";
+
+            string packContents = Writer.FillStringParameters(packTemplate, mod);
+            string jsonContents = Writer.FillStringParameters(jsonTemplate, mod);
+
+            string packPath = $"webpack.{code}.js";
+            string jsonPath = $"webpack.{code}.js.tsc";
+
+            Out.Write("Generating " + packPath + "\t");
+            File.WriteAllText(Path.Combine(Paths.UIRoot, packPath), packContents);
+            WriteSuccess(null);
+            Out.WriteLine();
+
+            Out.Write("Generating " + jsonPath + "\t");
+            File.WriteAllText(Path.Combine(Paths.UIRoot, jsonPath), jsonContents);
+            WriteSuccess(null);
+            Out.WriteLine();
+
+        }
+
+        public override void WriteWebpackConfigFiles()
+        {
+            using (var x = SW.Measure())
+            {
+                string[] modules = Data.GetAppCodes();
+                string[] act = Data.GetAppCodes(true);
+                GenerateDevWebPackFiles(modules, act);
+                foreach (var t in modules)
+                {
+                    string[] others = modules.Where(d => d != t).ToArray();
+                    GenerateWebPackFiles(t, others, true);
+                }
+            }
+
         }
     }
 }

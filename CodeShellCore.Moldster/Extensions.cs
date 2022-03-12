@@ -121,6 +121,7 @@ namespace CodeShellCore.Moldster
             {
                 coll.AddSingleton<IMoldProvider, LegacyAngularMoldProvider>();
                 coll.AddTransient<IBundlingService, LegacyBundlingService>();
+                coll.AddTransient<ILegacyBundlingService, LegacyBundlingService>();
                 coll.AddTransient<IInitializationService, LegacyInitializationService>();
                 coll.AddTransient<IPublisherService, LegacyPublisherService>();
                 coll.AddTransient<INamingConventionService, LegacyAngularNamingConventionService>();
@@ -130,6 +131,7 @@ namespace CodeShellCore.Moldster
             }
             else
             {
+                coll.AddTransient<ILegacyBundlingService, BundlingService>();
                 coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
                 coll.AddTransient<IBundlingService, BundlingService>();
                 coll.AddTransient<IInitializationService, InitializationService>();

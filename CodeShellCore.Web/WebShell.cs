@@ -175,21 +175,18 @@ namespace CodeShellCore.Web
             if (UseCors)
             {
                 var origins = getConfig("AllowedOrigins").Value ?? DefaultCorsOrigins;
-                app.UseCors(d => d.WithOrigins(origins.Split(","))
+                var originArray = origins.Split(",");
+                app.UseCors(d => d.WithOrigins(originArray)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
             }
-
-
 
             app.UseEndpoints(e =>
             {
                 RegisterEndpointRoutes(e);
                 ConventionalRoutingSwaggerGen.UseRoutes(e);
             });
-
-
 
             if (IsSpa)
             {

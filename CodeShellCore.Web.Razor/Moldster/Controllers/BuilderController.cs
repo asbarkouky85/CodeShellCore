@@ -14,6 +14,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
     {
         IInitializationService Initialize => GetService<IInitializationService>();
         IBundlingService Bundling => GetService<IBundlingService>();
+        ILegacyBundlingService LegacyBundling => GetService<ILegacyBundlingService>();
         IPublisherService Publisher => GetService<IPublisherService>();
         IPathsService paths => GetService<IPathsService>();
         ILocalizationService Localization => GetService<ILocalizationService>();
@@ -48,7 +49,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         }
         public IActionResult WriteWebPackFiles()
         {
-
+            LegacyBundling.WriteWebpackConfigFiles();
             return Respond();
         }
 

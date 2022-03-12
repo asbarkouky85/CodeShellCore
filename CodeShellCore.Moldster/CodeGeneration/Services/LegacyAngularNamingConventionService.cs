@@ -53,7 +53,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
 
         public string GetDomainLazyLoadingRoute(string domain)
         {
-            return "{ path:\"" + domain + "\", loadChildren:\"./" + domain + "/" + domain + "Module#" + domain + "Module\" },\n\t";
+            return "{ path:\"" + domain + "\", loadChildren:\"./" + domain + "/" + domain + "Module#" + domain + "Module\" }";
         }
 
         public string GetHttpServiceFolder(string domainPath = null, bool import = false)
@@ -61,14 +61,14 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
             if (domainPath == null)
             {
                 if (import)
-                    return "@base/http";
-                return Utils.CombineUrl(BaseFolder, "http");
+                    return _paths.CoreAppName + "/Http";
+                return Utils.CombineUrl(BaseFolder, "Http");
             }
             else
             {
                 if (import)
-                    return Utils.CombineUrl("@base", _angular_convesion(domainPath), "http");
-                return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath), "http");
+                    return Utils.CombineUrl(_paths.CoreAppName, _angular_convesion(domainPath), "Http");
+                return Utils.CombineUrl(BaseFolder, _angular_convesion(domainPath), "Http");
             }
 
         }
@@ -82,7 +82,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
         {
             var path = ApplyConvension(viewFilePath, AppParts.BaseComponent);
             if (import)
-                return Utils.CombineUrl("@base", path);
+                return Utils.CombineUrl(_paths.CoreAppName, path);
             return Utils.CombineUrl(BaseFolder, path);
         }
 
@@ -94,6 +94,18 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
             {
                 case AppParts.Module:
                     res += "Module";
+                    break;
+                case AppParts.BaseComponent:
+                    res += "Base";
+                    break;
+                case AppParts.Service:
+                    res += "Service";
+                    break;
+                case AppParts.Route:
+                    //res += "Module";
+                    break;
+                case AppParts.Project:
+                    //res += "Module";
                     break;
             }
             return res;
@@ -128,7 +140,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
 
         public string GetModuleFilePath(string tenantCode, string domainName, string parentDomain = null, bool createFolder = true)
         {
-            var path = Path.Combine(tenantCode, "app\\" + (parentDomain != null ? "\\" + parentDomain + "\\" : "") + domainName + "\\" + domainName + "Module.ts");
+            var path = Path.Combine(tenantCode, "app\\" + (parentDomain != null ? "\\" + parentDomain + "\\" : "") + domainName + "\\" + domainName);
             path = ApplyConvension(path, AppParts.Module);
             return Utils.CombineUrl(_paths.UIRoot, path);
         }
@@ -137,7 +149,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
         {
             var path = ApplyConvension(_paths.CoreAppName + "Base", AppParts.Module);
             if (import)
-                return Utils.CombineUrl("@base", path);
+                return Utils.CombineUrl(_paths.CoreAppName, path);
             return Utils.CombineUrl(BaseFolder, path);
         }
 
@@ -165,6 +177,11 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
         public string ReverseConvention(string v)
         {
             return v;
+        }
+
+        public virtual string GetCodeShellBaseComponentsImportPath()
+        {
+            return "codeshell/baseComponents";
         }
     }
 }
