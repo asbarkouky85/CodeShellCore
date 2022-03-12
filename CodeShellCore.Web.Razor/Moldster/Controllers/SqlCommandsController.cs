@@ -4,14 +4,13 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Sql.Dtos;
 using CodeShellCore.Web.Controllers;
-using CodeShellCore.Web.Razor.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     public class SqlCommandsController : BaseApiController
     {

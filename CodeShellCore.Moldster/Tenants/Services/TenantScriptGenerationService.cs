@@ -17,17 +17,17 @@ namespace CodeShellCore.Moldster.Tenants.Services
 {
     public class TenantScriptGenerationService : ScriptGenerationServiceBase, ITenantScriptGenerationService
     {
-        private IMoldProvider Molds => Store.GetInstance<IMoldProvider>();
-        private IPathsService Paths => Store.GetInstance<IPathsService>();
-        private INamingConventionService Names => Store.GetInstance<INamingConventionService>();
-        private IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
+        protected IMoldProvider Molds => Store.GetInstance<IMoldProvider>();
+        protected IPathsService Paths => Store.GetInstance<IPathsService>();
+        protected INamingConventionService Names => Store.GetInstance<INamingConventionService>();
+        protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
 
         public TenantScriptGenerationService(IServiceProvider provider, IOptions<MoldsterModuleOptions> opts) : base(provider, opts)
         {
 
         }
 
-        public Result AddAngularJson(string tenant)
+        public virtual Result AddAngularJson(string tenant)
         {
             var angularJsonPath = Path.Combine(Paths.UIRoot, "angular.json");
 
@@ -43,7 +43,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
             return new Result();
         }
 
-        public void GenerateMainFile(string tenantCode, bool addStyle = false)
+        public virtual void GenerateMainFile(string tenantCode, bool addStyle = false)
         {
             string bootPath = Names.GetSrcFolderPath("main-" + Names.ApplyConvension(tenantCode, AppParts.Project), ".ts", keepNameformat: true);
             string pollyPath = Names.GetSrcFolderPath("polyfills");
@@ -131,7 +131,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
             {
                 var name = homePage.GetAfterLast("/");
                 tempModel.ModuleImports += "import { " + name + " } from '" + Names.GetComponentImportPath(homePage, false) + "'";
-                tempModel.Declarations += name.GetAfterLast("/");
+                tempModel.Declarations += name;
             }
 
             string moduleTemplate = Molds.GetResourceByNameAsString(MoldNames.Module_ts);

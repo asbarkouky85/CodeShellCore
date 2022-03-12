@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using CodeShellCore.Moldster.Tenants.Dtos;
 using CodeShellCore.Moldster.Tenants.Services;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     public class TenantsController : EntityController<Tenant, long>, IEntityController<Tenant, long>
     {

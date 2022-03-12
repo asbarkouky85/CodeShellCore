@@ -97,9 +97,9 @@ namespace CodeShellCore.Moldster
             modules(conf);
         }
 
-        public static void AddMoldsterConfigurator(this IServiceCollection coll)
+        public static void AddMoldsterConfigurator(this IServiceCollection coll, bool legacy = false)
         {
-            coll.AddMoldsterCodeGeneration();
+            coll.AddMoldsterCodeGeneration(legacy);
 
             coll.AddTransient<ConfiguratorLookupService>();
 
@@ -115,27 +115,45 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
         }
 
-        public static void AddMoldsterCodeGeneration(this IServiceCollection coll)
+        public static void AddMoldsterCodeGeneration(this IServiceCollection coll, bool legacy = false)
         {
-            coll.AddSingleton<IMoldProvider, AngularNg11MoldProvider>();
+            if (legacy)
+            {
+                coll.AddSingleton<IMoldProvider, LegacyAngularMoldProvider>();
+                coll.AddTransient<IBundlingService, LegacyBundlingService>();
+                coll.AddTransient<IInitializationService, LegacyInitializationService>();
+                coll.AddTransient<IPublisherService, LegacyPublisherService>();
+                coll.AddTransient<INamingConventionService, LegacyAngularNamingConventionService>();
+                coll.AddTransient<IDomainScriptGenerationService, LegacyDomainScriptGenerationService>();
+                coll.AddTransient<ITenantScriptGenerationService, LegacyTenantScriptGenerationService>();
+
+            }
+            else
+            {
+                coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
+                coll.AddTransient<IBundlingService, BundlingService>();
+                coll.AddTransient<IInitializationService, InitializationService>();
+                coll.AddTransient<IPublisherService, PublisherService>();
+                coll.AddTransient<INamingConventionService, AngularNamingConventionService>();
+                coll.AddTransient<IDomainScriptGenerationService, DomainScriptGenerationService>();
+                coll.AddTransient<ITenantScriptGenerationService, TenantScriptGenerationService>();
+            }
 
             coll.AddScoped<IPathsService, DefaultPathsService>();
             coll.AddScoped<EnvironmentAccessor>();
 
-            coll.AddTransient<IBundlingService, BundlingService>();
-            coll.AddTransient<IInitializationService, InitializationService>();
             coll.AddTransient<ICustomTextService, CustomTextService>();
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IModulesService, ModulesService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
             coll.AddTransient<IPreviewService, PreviewService>();
             coll.AddTransient<IPublisherHttpService, PublisherHttpService>();
-            coll.AddTransient<IPublisherService, PublisherService>();
+
             coll.AddTransient<IScriptModelMappingService, ScriptModelMappingService>();
             coll.AddTransient<ISqlCommandService, SqlCommandService>();
-            coll.AddTransient<INamingConventionService, AngularNamingConventionService>();
+
             coll.AddTransient<IMigrationService, MigrationService>();
-            
+
             coll.AddTransient<IEnvironmentsService, EnvironmentService>();
 
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
@@ -152,17 +170,15 @@ namespace CodeShellCore.Moldster
 
             coll.AddTransient<IPageCategoryScriptGenerationService, PageCategoryScriptGenerationService>();
             coll.AddTransient<IPageScriptGenerationService, PageScriptGenerationService>();
-            coll.AddTransient<IDomainScriptGenerationService, DomainScriptGenerationService>();
             coll.AddTransient<IResourceScriptGenerationService, ResourceScriptGenerationService>();
-            coll.AddTransient<ITenantScriptGenerationService, TenantScriptGenerationService>();
             coll.AddTransient<IPageCategoryHtmlService, PageCategoryHtmlService>();
             coll.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
 
         }
 
-        public static void AddMoldsterCli(this IServiceCollection coll)
+        public static void AddMoldsterCli(this IServiceCollection coll, bool legacy = false)
         {
-            coll.AddMoldsterCodeGeneration();
+            coll.AddMoldsterCodeGeneration(legacy);
         }
 
 

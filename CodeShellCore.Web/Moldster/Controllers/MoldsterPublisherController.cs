@@ -1,13 +1,14 @@
 ﻿using CodeShellCore.Files;
 using CodeShellCore.Helpers;
 using CodeShellCore.Net;
+using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
 using CodeShellCore.Web.Moldster;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 
-namespace CodeShellCore.Web.Controllers
+namespace CodeShellCore.Web.Moldster.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
     public abstract class MoldsterPublisherController : BaseApiController, IPublisherController

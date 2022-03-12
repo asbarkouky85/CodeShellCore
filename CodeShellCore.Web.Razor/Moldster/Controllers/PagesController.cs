@@ -17,7 +17,7 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Sql.Dtos;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
     public class PagesController : EntityController<Page, long>

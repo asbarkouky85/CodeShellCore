@@ -9,7 +9,7 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains.Services;
 using CodeShellCore.Moldster.Domains;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     public class DomainsController : EntityController<Domain, long>, ILookupLoaderController
     {

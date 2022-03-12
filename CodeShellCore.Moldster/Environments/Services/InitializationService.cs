@@ -15,7 +15,7 @@ namespace CodeShellCore.Moldster.Environments.Services
         {
         }
 
-        protected void AddBaseModuleFiles(bool replace)
+        protected virtual void AddBaseModuleFiles(bool replace)
         {
             var serverConfigMold = Molds.GetResourceByNameAsString(MoldNames.ServerConfig_ts);
             string serverConfig = Writer.FillStringParameters(serverConfigMold, new ServerConfigTsModel
@@ -48,12 +48,12 @@ namespace CodeShellCore.Moldster.Environments.Services
             AddToBaseFolder(Names.ApplyConvension("http/AccountService", AppParts.Service) + ".ts", Molds.GetResourceByNameAsString(MoldNames.AccountService_ts), true, replace);
         }
 
-        public void AddShellComponents(bool replace)
+        public virtual void AddShellComponents(bool replace)
         {
             UnZip(Molds.GetResourceByNameAsBytes(MoldNames.ShellComponents_zip), Paths.ConfigRoot, "ShellComponents", replace);
         }
 
-        public void AddUiBasicFiles(bool replace)
+        public virtual void AddUiBasicFiles(bool replace)
         {
             AddToUI("package.json", Molds.GetResourceByNameAsString(MoldNames.Package_json), replace);
             AddToUI("tsconfig.json", Molds.GetResourceByNameAsString(MoldNames.TsConfig_json), replace);
@@ -62,7 +62,7 @@ namespace CodeShellCore.Moldster.Environments.Services
             AddToUI("src/index.html", Molds.GetResourceByNameAsString(MoldNames.Index_html), replace);
         }
 
-        public void AddBasicFiles(bool replace)
+        public virtual void AddBasicFiles(bool replace)
         {
             AddUiBasicFiles(replace);
             AddBaseModuleFiles(replace);
@@ -75,7 +75,7 @@ namespace CodeShellCore.Moldster.Environments.Services
             }
         }
 
-        public void AddCodeShell(bool replace)
+        public virtual void AddCodeShell(bool replace)
         {
             UnZip(Molds.GetResourceByNameAsBytes(MoldNames.CodeShell_zip), Names.CoreFolder, "codeshell", replace);
         }
@@ -88,7 +88,7 @@ namespace CodeShellCore.Moldster.Environments.Services
             UnZip(Molds.GetResourceByNameAsBytes(MoldNames.Js_zip), folder, "js", replace);
         }
 
-        protected void UnZip(byte[] bytes, string folder, string name, bool overwrite = false)
+        protected virtual void UnZip(byte[] bytes, string folder, string name, bool overwrite = false)
         {
             using (var t = SW.Measure())
             {

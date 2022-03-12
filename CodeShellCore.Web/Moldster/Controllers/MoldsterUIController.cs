@@ -1,16 +1,12 @@
-﻿using CodeShellCore.Helpers;
-using CodeShellCore.Text;
+﻿using CodeShellCore.Text;
 using CodeShellCore.Types;
-using CodeShellCore.Web.Moldster;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
-namespace CodeShellCore.Web.Controllers
+namespace CodeShellCore.Web.Moldster.Controllers
 {
     public abstract class MoldsterUIController : Controller
     {
@@ -19,7 +15,7 @@ namespace CodeShellCore.Web.Controllers
         public abstract string GetDefaultTitle(string loc);
 
         public virtual IServerConfig ServerConfig { get { return new DefaultServerConfig(); } }
-        public virtual bool RestrictHttps => Shell.GetConfigAs<bool>("RestrictHttps",false);
+        public virtual bool RestrictHttps => Shell.GetConfigAs<bool>("RestrictHttps", false);
         public virtual string HttpsUrl => Shell.GetConfigAs<string>("HttpsUrl", false);
         public virtual string[] Domains => Tenants.Select(d => d.Key).ToArray();
         public virtual Func<IndexModel, IActionResult> EmptyUrlHandler { get; }
@@ -42,7 +38,7 @@ namespace CodeShellCore.Web.Controllers
             get
             {
                 string env = Shell.GetConfigAs<string>("env", false);
-                return (env == null || env == "production") ? "prod" : "dev";
+                return env == null || env == "production" ? "prod" : "dev";
             }
         }
 
@@ -61,7 +57,7 @@ namespace CodeShellCore.Web.Controllers
         }
 
 
-        public virtual IActionResult Index([FromRoute]string id, [FromQuery]LangConfig conf)
+        public virtual IActionResult Index([FromRoute] string id, [FromQuery] LangConfig conf)
         {
             if (!Request.IsHttps && RestrictHttps)
             {

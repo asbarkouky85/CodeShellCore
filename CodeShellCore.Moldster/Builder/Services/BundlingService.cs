@@ -21,7 +21,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         public IOutputWriter OutputWriter { get { return Out; } set { Out = value; } }
 
-        public string GetAppVersion(string code, bool uiIfLager = false)
+        public virtual string GetAppVersion(string code, bool uiIfLager = false)
         {
             string ver = Data.GetAppVersion(code);
             if (string.IsNullOrEmpty(ver))
@@ -35,7 +35,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             return ver;
         }
 
-        public string GetNextVersionNumber(string ver)
+        public virtual string GetNextVersionNumber(string ver)
         {
             string ui = GetUIVersion();
             if (Utils.CompareVersions(ui, ver) == 1)
@@ -48,7 +48,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             }
         }
 
-        public bool StartProductionPackIfNeeded(string tenantCode, out BundlingTask tt, string version = null)
+        public virtual bool StartProductionPackIfNeeded(string tenantCode, out BundlingTask tt, string version = null)
         {
             var v = version ?? GetAppVersion(tenantCode, true);
 
@@ -90,7 +90,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
 
 
-        public bool IsBundled(string moduleName, string version)
+        public virtual bool IsBundled(string moduleName, string version)
         {
             string bundleFolder = Names.GetOutputBundlePath(moduleName, version, true);
             if (File.Exists(bundleFolder))
@@ -139,7 +139,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         }
 
-        public string CompressModuleBundle(string tenant, string version)
+        public virtual string CompressModuleBundle(string tenant, string version)
         {
             string bundleFolder = Names.GetOutputPath(tenant, version, true);
             string bundleFile = Names.GetOutputBundlePath(tenant, version, true);
@@ -165,7 +165,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             return bundleFolder + ".zip";
         }
 
-        public SubmitResult UpdateTenantVersionInDataSource(string code, string version)
+        public virtual SubmitResult UpdateTenantVersionInDataSource(string code, string version)
         {
 
             Out.Write("Updating [" + code + "] to version [" + version + "]");

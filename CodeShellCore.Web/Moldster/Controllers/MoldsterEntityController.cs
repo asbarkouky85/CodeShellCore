@@ -7,8 +7,9 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Data;
 using CodeShellCore.Data.Localization;
 using CodeShellCore.Data.Lookups;
+using CodeShellCore.Web.Controllers;
 
-namespace CodeShellCore.Web.Controllers
+namespace CodeShellCore.Web.Moldster.Controllers
 {
     public abstract class MoldsterEntityController<T, TPrime> : EntityController<T, TPrime>, ILookupLoaderController
         where T : class, IModel<TPrime>
@@ -19,19 +20,19 @@ namespace CodeShellCore.Web.Controllers
         {
         }
 
-        public virtual IActionResult GetEditLookups([FromQuery]Dictionary<string, string> data)
+        public virtual IActionResult GetEditLookups([FromQuery] Dictionary<string, string> data)
         {
             return Respond(lookupsService.GetRequestedLookups(data));
         }
 
-        public virtual IActionResult GetListLookups([FromQuery]Dictionary<string, string> data)
+        public virtual IActionResult GetListLookups([FromQuery] Dictionary<string, string> data)
         {
             return Respond(lookupsService.GetRequestedLookups(data));
         }
 
-        public virtual IActionResult GetCollection(string id, [FromQuery]LoadOptions opts)
+        public virtual IActionResult GetCollection(string id, [FromQuery] LoadOptions opts)
         {
-            
+
             var res = EntityService.LoadCollection(id, opts);
             return Respond(res);
         }
@@ -41,7 +42,7 @@ namespace CodeShellCore.Web.Controllers
             return Respond(LocService.GetDataFor<T>(id));
         }
 
-        public virtual IActionResult SetLocalizationData(TPrime id, [FromBody]Dictionary<string, LocalizablesDTO> data)
+        public virtual IActionResult SetLocalizationData(TPrime id, [FromBody] Dictionary<string, LocalizablesDTO> data)
         {
             return Respond(LocService.SetDataFor<T>(id, data));
         }

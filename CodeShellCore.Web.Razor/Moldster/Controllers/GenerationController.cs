@@ -3,30 +3,29 @@ using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.Builder.Dtos;
+using CodeShellCore.Moldster.Builder.Services;
+using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.Domains.Services;
+using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Services;
+using CodeShellCore.Moldster.Sql;
+using CodeShellCore.Moldster.Sql.Dtos;
 using CodeShellCore.Web.Controllers;
+using CodeShellCore.Web.Razor;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.PageCategories.Services;
-using CodeShellCore.Moldster.Domains.Services;
-using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Builder.Services;
-using CodeShellCore.Moldster.Environments;
-using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.Builder.Dtos;
-using CodeShellCore.Moldster.Sql;
-using CodeShellCore.Moldster.Domains.Dtos;
-using CodeShellCore.Moldster.Sql.Dtos;
-using CodeShellCore.Moldster.Builder;
 
-namespace CodeShellCore.Web.Razor.Controllers
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
-    public abstract class GenerationControllerBase : BaseApiController
+    public class GenerationController : BaseApiController
     {
-
         IMoldsterService molds => GetService<IMoldsterService>();
         IBundlingService bundl => GetService<IBundlingService>();
         EnvironmentAccessor acc => GetService<EnvironmentAccessor>();
@@ -38,7 +37,7 @@ namespace CodeShellCore.Web.Razor.Controllers
         IDomainScriptGenerationService sc => GetService<IDomainScriptGenerationService>();
         IScriptModelMappingService map => GetService<IScriptModelMappingService>();
 
-        public IActionResult ProcessForPage([FromQuery]MoldsterRequest req)
+        public IActionResult ProcessForPage([FromQuery] MoldsterRequest req)
         {
             if (req.PageId == null)
                 Respond(new { Message = "PageId is required" }, System.Net.HttpStatusCode.BadRequest);
@@ -52,19 +51,19 @@ namespace CodeShellCore.Web.Razor.Controllers
             var dto = new PageRenderDTO { Id = id };
             molds.RenderPage(null, dto);
             sc.GenerateModuleDefinitionByPage(dto);
-            SubmitResult = new Data.Helpers.SubmitResult(0, "success_message");
+            SubmitResult = new SubmitResult(0, "success_message");
             return Respond();
         }
 
         [HttpPost]
-        public IActionResult Render([FromBody]RenderDTO dto)
+        public IActionResult Render([FromBody] RenderDTO dto)
         {
             SubmitResult = molds.RenderDomainModule(dto);
             return Respond();
         }
 
         [HttpPost]
-        public IActionResult Process([FromBody]RenderDTO dto)
+        public IActionResult Process([FromBody] RenderDTO dto)
         {
             molds.ProcessTemplates(dto.Mod, dto.NameChain);
 
@@ -77,13 +76,13 @@ namespace CodeShellCore.Web.Razor.Controllers
             return Respond();
         }
 
-        public IActionResult RenderTenant([FromBody]RenderDTO dto)
+        public IActionResult RenderTenant([FromBody] RenderDTO dto)
         {
             SubmitResult = molds.RenderAll(dto.Mod);
             return Respond();
         }
 
-        public IActionResult SyncTenants([FromBody]AssociateDTO dto)
+        public IActionResult SyncTenants([FromBody] AssociateDTO dto)
         {
             SyncResult res = molds.SyncTenants(dto.Id1, dto.Id2);
             SubmitResult = new SubmitResult();
@@ -91,7 +90,7 @@ namespace CodeShellCore.Web.Razor.Controllers
             return Respond();
         }
 
-        public IActionResult ModuleDefinition([FromBody]RenderDTO dto)
+        public IActionResult ModuleDefinition([FromBody] RenderDTO dto)
         {
             molds.RenderModuleDefinition(dto.Mod);
             return Respond();
@@ -154,7 +153,7 @@ namespace CodeShellCore.Web.Razor.Controllers
                 return Respond();
         }
 
-        public IActionResult StartTenantPreview([FromBody]DbCreationRequest req)
+        public IActionResult StartTenantPreview([FromBody] DbCreationRequest req)
         {
             acc.CurrentEnvironment = new MoldsterEnvironment { Upload = new Net.UploadConfig { Type = "DEV" } };
             pub.SetTenantInfo(req.TenantCode, null);
@@ -169,7 +168,7 @@ namespace CodeShellCore.Web.Razor.Controllers
             return string.Join(".", spl);
         }
 
-        public IActionResult PublishTenant([FromBody]DbCreationRequest req)
+        public IActionResult PublishTenant([FromBody] DbCreationRequest req)
         {
             SubmitResult = new SubmitResult();
             var outwriter = GetService<IOutputWriter>();

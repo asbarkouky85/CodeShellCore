@@ -2,6 +2,7 @@
 using CodeShellCore.Linq;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
+using CodeShellCore.Web.Moldster.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace Asga.Public.Web.Controllers
 {
-   public class HomeSlidesController : MoldsterEntityController<HomeSlide, long>, IEntityController<HomeSlide, long>
+    public class HomeSlidesController : MoldsterEntityController<HomeSlide, long>, IEntityController<HomeSlide, long>
     {
         protected readonly IHomeSlideService Service;
 

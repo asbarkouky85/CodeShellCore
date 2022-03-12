@@ -9,7 +9,7 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Resources.Dtos;
 using CodeShellCore.Moldster.Resources;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     public class ResourcesController : EntityController<Resource, long>, IEntityController<Resource, long>, ILookupLoaderController
     {

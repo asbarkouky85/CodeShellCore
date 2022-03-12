@@ -6,7 +6,7 @@ using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     [ApiAuthorize(AllowAll = true)]
     public class EnvironmentsController : BaseApiController, IEnvironmentsService

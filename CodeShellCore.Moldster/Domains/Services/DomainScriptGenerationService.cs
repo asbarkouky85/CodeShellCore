@@ -21,68 +21,16 @@ namespace CodeShellCore.Moldster.Domains.Services
 {
     public class DomainScriptGenerationService : ScriptGenerationServiceBase, IDomainScriptGenerationService
     {
-        private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
-        private INamingConventionService Names => Store.GetInstance<INamingConventionService>();
-        private IPathsService _paths => Store.GetInstance<IPathsService>();
-        private IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
-        private ILocalizationService _localization => Store.GetInstance<ILocalizationService>();
+        protected IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
+        protected INamingConventionService Names => Store.GetInstance<INamingConventionService>();
+        protected IPathsService _paths => Store.GetInstance<IPathsService>();
+        protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
+        protected ILocalizationService _localization => Store.GetInstance<ILocalizationService>();
         public DomainScriptGenerationService(
             IServiceProvider prov,
             IOptions<MoldsterModuleOptions> opt) : base(prov, opt)
         {
         }
-
-        public void GenerateMainFile(string moduleCode, bool addStyle = false)
-        {
-            string bootPath = Names.GetSrcFolderPath("main-" + Names.ApplyConvension(moduleCode, AppParts.Project), ".ts", keepNameformat: true);
-            string pollyPath = Names.GetSrcFolderPath("polyfills");
-            string indexPath = Names.GetSrcFolderPath("index", ".html");
-            string dec = Names.GetSrcFolderPath("declarations.d");
-
-            if (!File.Exists(bootPath))
-            {
-                Out.Write("Generating main.ts...  \t\t\t");
-                string bootTemplate = _molds.GetResourceByNameAsString(MoldNames.Boot_ts);//BootMold;
-                string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel
-                {
-                    Code = Names.ApplyConvension(moduleCode, AppParts.Route),
-                    ModulePath = Names.ApplyConvension(moduleCode + "/app", AppParts.Route),
-                    OtherTenants = _unit.TenantRepository.Exist(e => e.Code != moduleCode)
-                });
-                File.WriteAllText(bootPath, boot);
-                WriteSuccess();
-                Out.WriteLine();
-            }
-
-            if (!File.Exists(pollyPath))
-            {
-                Out.Write("Generating polyfills.ts...  \t\t\t");
-
-                string pollyTemplate = _molds.GetResourceByNameAsString(MoldNames.Pollyfills_ts);  //Ng11.Properties.Resources.pollyfills_ts;
-                File.WriteAllText(pollyPath, pollyTemplate);
-                WriteSuccess();
-                Out.WriteLine();
-            }
-
-            if (!File.Exists(indexPath))
-            {
-                Out.Write("Generating index.html...  \t\t\t");
-                string pollyTemplate = _molds.GetResourceByNameAsString(MoldNames.Index_html);  //Properties.Resources.index_html;
-                File.WriteAllText(indexPath, pollyTemplate);
-                WriteSuccess();
-                Out.WriteLine();
-            }
-
-            if (!File.Exists(dec))
-            {
-                Out.Write("Generating declarations.d.ts...  \t\t\t");
-                string pollyTemplate = _molds.GetResourceByNameAsString(MoldNames.Declarations_d);  //Properties.Resources.declarations_d;
-                File.WriteAllText(dec, pollyTemplate);
-                WriteSuccess();
-                Out.WriteLine();
-            }
-        }
-
 
         public virtual void GenerateModuleDefinitionByPage(PageRenderDTO dto)
         {
@@ -98,56 +46,6 @@ namespace CodeShellCore.Moldster.Domains.Services
                 GenerateRoutes(data.Code);
             }
         }
-
-        public virtual void GenerateAppModule(string modCode)
-        {
-            string moduleName = modCode + "Module";
-            string modulePath = Names.GetModuleFilePath(modCode, "app", createFolder: false) + ".ts";
-
-            Out.Write("Generating " + moduleName + ".ts : ");
-
-            if (!Options.ReplaceMainModule && File.Exists(modulePath))
-            {
-                GotoColumn(SuccessCol);
-                WriteColored("Exists", ConsoleColor.Cyan);
-                Out.WriteLine();
-                return;
-            }
-
-
-            var main = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == modCode);
-            var otherTen = _unit.TenantRepository.Exist(e => e.Code != modCode);
-            var tempModel = new ModuleTsModel
-            {
-                Code = "App",
-                Modules = "",
-                ModuleImports = "",
-                MainComponentName = "AppComponent",
-                MainComponentPath = Names.GetComponentImportPath("app", fromDomain: false),
-                BaseName = _paths.CoreAppName,
-                BaseAppModuleName = _paths.CoreAppName.UCFirst() + "BaseModule",
-                BaseAppModulePath = Names.GetBaseModuleFilePath(true),
-                RoutesModulePath = "./" + Names.ApplyConvension("AppRouting", AppParts.Module),
-                BaseHref = otherTen ? "{ provide: APP_BASE_HREF, useValue: '/" + Names.ApplyConvension(modCode, AppParts.Route) + "'}" : ""
-            };
-
-            var homePage = _unit.PageRepository.GetHomePagePath(modCode);
-            if (homePage != null)
-            {
-                var name = homePage.GetAfterLast("/");
-                tempModel.ModuleImports += "import { " + name + " } from '" + Names.GetComponentImportPath(homePage, false) + "'";
-                tempModel.Declarations += name.GetAfterLast("/");
-            }
-
-            string moduleTemplate = _molds.GetResourceByNameAsString(MoldNames.Module_ts);//AppModuleMold;
-            string contents = Writer.FillStringParameters(moduleTemplate, tempModel);
-            File.WriteAllText(modulePath, contents);
-
-            GotoColumn(SuccessCol);
-            WriteSuccess();
-            Out.WriteLine();
-        }
-
 
         public virtual void GenerateRoutes(string modCode)
         {
@@ -183,7 +81,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             {
                 var name = homePage.GetAfterLast("/");
                 tempModel.ComponentImports += "import { " + name + " } from '" + Names.GetComponentImportPath(homePage, false) + "'";
-                tempModel.Routes += _homeRoute(name);
+                tempModel.Routes += HomeRoute(name);
             }
 
             foreach (var domain in domains)
@@ -194,11 +92,11 @@ namespace CodeShellCore.Moldster.Domains.Services
             string sep = "";
             foreach (var nav in navs)
             {
-                tempModel.DomainsData += sep + _getNavigationObject(nav);
+                tempModel.DomainsData += sep + GetNavigationObject(nav);
                 sep = ",\n\t\t\t";
             }
 
-            _appendLocaleLoaders(tempModel);
+            AppendLocaleLoaders(tempModel);
 
             string builder = Writer.FillStringParameters(routesTemplate, tempModel);
             Utils.CreateFolderForFile(filePath);
@@ -208,8 +106,6 @@ namespace CodeShellCore.Moldster.Domains.Services
             WriteSuccess();
             Out.WriteLine();
         }
-
-
 
         public virtual void GenerateDomainModuleById(string moduleCode, long? domId)
         {
@@ -322,7 +218,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                 if (p.Page.CanEmbed)
                     model.EmbeddedComponents += p.ComponentName + ", ";
                 else if (p.Page.HasRoute)
-                    model.Routes += "\t\t\t" + _childRoute(p) + ",\n";
+                    model.Routes += "\t\t\t" + ChildRoute(p) + ",\n";
             }
 
             if (dom.SubDomains != null)
@@ -347,7 +243,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             }
         }
 
-        private void _appendLocaleLoaders(RoutesTsModel mod)
+        protected void AppendLocaleLoaders(RoutesTsModel mod)
         {
             if (string.IsNullOrEmpty(_paths.LocalizationRoot))
                 return;
@@ -359,7 +255,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             }
         }
 
-        private string _getNavigationObject(NavigationGroupDTO dto)
+        protected string GetNavigationObject(NavigationGroupDTO dto)
         {
             string children = "";
             foreach (var p in dto.Pages)
@@ -387,12 +283,12 @@ namespace CodeShellCore.Moldster.Domains.Services
             return string.Format("{{\n\t\t\t\tname: \"{0}\" ,\n\t\t\t\tchildren: [{1}]\n\t\t\t}}", dto.Name, children);
         }
 
-        private string _homeRoute(string name)
+        protected string HomeRoute(string name)
         {
             return $"{{ path: '', component: {name}, data: {{ action: 'anonymous' }} }},\n";
         }
 
-        private string _childRoute(PageDTO p)
+        protected string ChildRoute(PageDTO p)
         {
             string routeTemplate = _molds.GetResourceByNameAsString(MoldNames.Route_ts);
             string param = p.Page.RouteParameters ?? "";

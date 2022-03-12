@@ -4,12 +4,8 @@ using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Resources.Dtos;
 //using Configurator.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster
 {
     public static class SearchExpressions
     {

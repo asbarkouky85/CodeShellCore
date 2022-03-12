@@ -6,7 +6,7 @@ using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.PageCategories;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
 
     public class PageCategoriesController : EntityController<PageCategory, long>, IEntityController<PageCategory, long>, ILookupLoaderController

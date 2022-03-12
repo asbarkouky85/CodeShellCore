@@ -18,11 +18,11 @@ namespace CodeShellCore.Moldster.Builder.Services
 {
     public class PublisherService : MoldsterFileHandlingService, IPublisherService
     {
-        private readonly IPathsService paths;
-        private readonly IPublisherHttpService http;
-        private readonly EnvironmentAccessor envAccessor;
-        private readonly IConfigUnit unit;
-        private readonly IOutputWriter output;
+        protected readonly IPathsService paths;
+        protected readonly IPublisherHttpService http;
+        protected readonly EnvironmentAccessor envAccessor;
+        protected readonly IConfigUnit unit;
+        protected readonly IOutputWriter output;
         UploadConfig Config
         {
             get
@@ -55,7 +55,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         public IOutputWriter OutputWriter { get { return Out; } set { Out = value; } }
 
-        public PublisherResult DecompressFiles(string zipFile, string distFolder)
+        public virtual PublisherResult DecompressFiles(string zipFile, string distFolder)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         }
 
-        private PublisherResult UploadFtp(UploadConfig env, string tenant, string version)
+        protected virtual PublisherResult UploadFtp(UploadConfig env, string tenant, string version)
         {
             using (var m = SW.Measure())
             {
@@ -150,7 +150,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             }
         }
 
-        public PublisherResult UploadTenantBundle(string tenant, string version)
+        public virtual PublisherResult UploadTenantBundle(string tenant, string version)
         {
 
             switch (Config.Type)
@@ -165,12 +165,12 @@ namespace CodeShellCore.Moldster.Builder.Services
             throw new Exception("Unsupported upload type " + Config.Type);
         }
 
-        private PublisherResult UploadDev(UploadConfig config, string tenant, string version)
+        protected virtual PublisherResult UploadDev(UploadConfig config, string tenant, string version)
         {
             return new PublisherResult { Code = 0 };
         }
 
-        private PublisherResult UploadFileSystem(UploadConfig upload, string tenant, string version)
+        protected virtual PublisherResult UploadFileSystem(UploadConfig upload, string tenant, string version)
         {
             var res = new PublisherResult();
             try
@@ -201,7 +201,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             return res;
         }
 
-        FTPClient GetFTPClient()
+        protected virtual FTPClient GetFTPClient()
         {
             var upload = Config;
             if (upload.Type != "FTP")
@@ -290,7 +290,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             return new Result();
         }
 
-        void DeleteOtherFiles(IEnumerable<string> files, string version, bool ftp = false)
+        protected virtual void DeleteOtherFiles(IEnumerable<string> files, string version, bool ftp = false)
         {
             List<string> lst = new List<string>();
             FTPClient cl = null;
@@ -332,7 +332,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         }
 
-        void DeleteEmptyDirectories(IEnumerable<string> dir, bool ftp = false)
+        protected virtual void DeleteEmptyDirectories(IEnumerable<string> dir, bool ftp = false)
         {
             FTPClient cl = null;
             string pathOnServer = null;
@@ -366,7 +366,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             }
         }
 
-        public Result SetTenantInfo(string tenant, string version = null)
+        public virtual Result SetTenantInfo(string tenant, string version = null)
         {
             var info = GetAllTenantsInfo();
             string fromVer = "";

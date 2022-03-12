@@ -47,5 +47,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
         public const string TopBar_html = "topBar_html";
         public const string TopBar_ts = "topBar_ts";
         public const string TsConfig_json = "tsconfig_json";
+        public const string WebPackSharedConfig_js = "WebPackSharedConfig_js";
+        public const string WebPackConfigVendor_js = "webpack_config_vendor_js";
     }
 }

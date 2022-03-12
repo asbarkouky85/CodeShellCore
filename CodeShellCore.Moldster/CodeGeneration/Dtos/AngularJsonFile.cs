@@ -10,6 +10,11 @@ namespace CodeShellCore.Moldster.CodeGeneration.Dtos
         private readonly JObject ob;
         public Dictionary<string, AngularTenant> Tenants { get; private set; }
 
+        public AngularJsonFile()
+        {
+            Tenants = new Dictionary<string, AngularTenant>();
+        }
+
         public AngularJsonFile(JObject ob)
         {
             this.ob = ob;

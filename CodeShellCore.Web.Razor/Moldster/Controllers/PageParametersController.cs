@@ -4,7 +4,7 @@ using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     public class PageParametersController : BaseApiController
     {

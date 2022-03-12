@@ -8,7 +8,7 @@ using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Pages;
 
-namespace CodeShellCore.Web.Razor.Controllers.Configurator
+namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     public class PageControlsController : EntityController<PageControl, long>
     {
