@@ -11,8 +11,8 @@ import { DomainDataProvider } from 'codeshell/security';
 import { %BaseName%BaseModule } from '%BaseName%/%BaseName%BaseModule';
 
 import { AppComponent } from './AppComponent';
-import { SharedModule } from './Shared/SharedModule%Lazy%';
-import { Routes, GetDomainsData } from './%Code%Routes%Lazy%';
+import { SharedModule } from './Shared/SharedModule';
+import { Routes, GetDomainsData } from './%Code%Routes';
 %ModuleImports%
 
 @NgModule({
