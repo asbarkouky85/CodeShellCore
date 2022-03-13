@@ -36,6 +36,7 @@ namespace CodeShellCore.Data
         /// Should return a type that implements from <see cref="ICollectionEFRepository{T, TContext}"/>
         /// </summary>
         protected virtual Type GenericCollectionRepositoryType { get; }
+        protected virtual Type GenericKeyRepositoryType { get; }
         public bool IsDisposed { get; protected set; } = false;
 
         public ILocaleTextProvider Strings
@@ -174,5 +175,7 @@ namespace CodeShellCore.Data
                 return Strings.Message(message_code, parameters);
             return message_code;
         }
+
+        
     }
 }

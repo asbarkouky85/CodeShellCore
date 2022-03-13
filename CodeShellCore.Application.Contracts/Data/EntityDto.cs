@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CodeShellCore.Data
 {
-    public class EntityDto<Prime>
+    public class EntityDto<TPrime> : IEntityDto<TPrime>
     {
-        public Prime Id { get; set; }
+        public TPrime Id { get; set; }
     }
 }

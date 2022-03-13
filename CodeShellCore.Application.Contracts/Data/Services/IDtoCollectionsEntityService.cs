@@ -2,8 +2,7 @@
 
 namespace CodeShellCore.Data.Services
 {
-    public interface IDtoCollectionsEntityService<T, TPrime, TOptionsDto, TListDto>
-        where T : class, IModel<TPrime>
+    public interface IDtoCollectionsEntityService<TPrime, TOptionsDto, TListDto>
         where TListDto : class
         where TOptionsDto : LoadOptions
     {

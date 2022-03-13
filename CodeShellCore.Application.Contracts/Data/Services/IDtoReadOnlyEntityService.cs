@@ -2,8 +2,7 @@
 
 namespace CodeShellCore.Data.Services
 {
-    public interface IDtoReadOnlyEntityService<T, TPrime, TOptionsDto, TListDto, TGetDto>
-        where T : class, IModel<TPrime>
+    public interface IDtoReadOnlyEntityService<TPrime, TOptionsDto, TListDto, TGetDto>
         where TGetDto : class
         where TListDto : class
         where TOptionsDto : LoadOptions

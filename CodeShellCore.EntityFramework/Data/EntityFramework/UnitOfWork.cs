@@ -95,6 +95,22 @@ namespace CodeShellCore.Data.EntityFramework
             return inst;
         }
 
+        public IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>
+        {
+            IKeyRepository<T, TPrime> inst;
+            if (GenericKeyRepositoryType != null)
+            {
+                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
+                inst = (IKeyRepository<T, TPrime>)Store.GetInstance(t);
+            }
+            else
+            {
+                inst = Store.GetInstance<KeyRepository<T, TContext, TPrime>>();
+            }
+            inst.Projector = Projector;
+            return inst;
+        }
+
         public override ICollectionRepository<T> GetCollectionRepositoryFor<T>()
         {
             ICollectionRepository<T> inst;

@@ -6,10 +6,11 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Tenants.Dtos
 {
-    public class TenantEditDTO : EditingDTO<Tenant>
+    public class TenantEditDTO : IEditingDto<TenantDto>
     {
         public string Environment { get; set; }
         public string DbName { get; set; }
         public bool Force { get; set; }
+        public TenantDto Entity { get; set; }
     }
 }
