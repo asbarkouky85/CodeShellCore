@@ -1,10 +1,6 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Data.Services;
-using CodeShellCore.Data.Sql;
+﻿using CodeShellCore.Data.Sql;
 using CodeShellCore.Net;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.Moldster.Environments
 {

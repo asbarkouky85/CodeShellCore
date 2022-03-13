@@ -29,6 +29,7 @@ namespace CodeShellCore.DependencyInjection
         public static void AddCodeShellAutoMapper(this IServiceCollection collection)
         {
             collection.AddTransient<Data.Mapping.IObjectMapper, AutoMapperObjectMapper>();
+            collection.AddTransient<Data.Mapping.IQueryProjector, AutoMapperObjectMapper>();
         }
 
         public static void AddAutoMapper<T>(this IServiceCollection collection)

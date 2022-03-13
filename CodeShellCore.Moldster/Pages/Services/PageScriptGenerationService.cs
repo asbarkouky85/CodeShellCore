@@ -27,7 +27,7 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
         {
-            PageDTO p = Unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
+            PageDetailsDto p = Unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
             string scriptPath = Names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".ts";
 
             using (Out.Set(ConsoleColor.DarkRed))

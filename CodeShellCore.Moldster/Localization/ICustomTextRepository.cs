@@ -1,10 +1,9 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Moldster.Localization;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Data.Repositories
+namespace CodeShellCore.Moldster.Localization
 {
     public interface ICustomTextRepository : IRepository<CustomText>
     {

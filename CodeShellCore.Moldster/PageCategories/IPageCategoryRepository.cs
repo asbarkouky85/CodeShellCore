@@ -1,12 +1,11 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Resources;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Data.Repositories
+namespace CodeShellCore.Moldster.PageCategories
 {
     public interface IPageCategoryRepository : IRepository<PageCategory>
     {

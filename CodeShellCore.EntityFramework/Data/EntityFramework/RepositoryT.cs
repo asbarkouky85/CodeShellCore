@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Transactions;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
+using CodeShellCore.Data.Mapping;
 using CodeShellCore.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -69,8 +70,12 @@ namespace CodeShellCore.Data.EntityFramework
             DbContext = con;
             repos = new Dictionary<Type, IRepository>();
         }
+        public IQueryProjector Projector { get; set; }
+
+
 
         #region Protected
+
 
         protected string _entityName { get { return typeof(T).Name; } }
 
@@ -385,6 +390,21 @@ namespace CodeShellCore.Data.EntityFramework
                 existing = obj;
                 return false;
             }
+        }
+
+        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
+        {
+            var q = Loader;
+            if (cond != null)
+            {
+                q = q.Where(cond);
+            }
+            var dtoq = Projector.Project<T, TR>(q);
+            if (opts != null)
+            {
+                return dtoq.ToListWith(opts);
+            }
+            return dtoq.ToList();
         }
     }
 }

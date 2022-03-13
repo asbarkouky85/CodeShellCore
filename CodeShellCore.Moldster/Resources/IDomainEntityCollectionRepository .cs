@@ -1,10 +1,9 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Moldster.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Data.Repositories
+namespace CodeShellCore.Moldster.Resources
 {
     public interface IDomainEntityCollectionRepository : IRepository<ResourceCollection>
     {

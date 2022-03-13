@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
+using CodeShellCore.Data.Mapping;
 using CodeShellCore.Linq;
 
 namespace CodeShellCore.Data
@@ -13,6 +14,8 @@ namespace CodeShellCore.Data
     public class DefaultRepository<T> : IRepository<T> where T : class
     {
         static List<T> _storedData = new List<T>();
+
+        public IQueryProjector Projector { get; set; }
 
         public void Add(T obj)
         {
@@ -73,6 +76,11 @@ namespace CodeShellCore.Data
         }
 
         public LoadResult<T> Find(ListOptions<T> opts)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Helpers;
+﻿using CodeShellCore.Data.Mapping;
+using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
@@ -25,10 +26,12 @@ namespace CodeShellCore.Moldster.Domains.Services
         protected IPathsService _paths => Store.GetInstance<IPathsService>();
         protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
         protected ILocalizationService _localization => Store.GetInstance<ILocalizationService>();
+        protected IObjectMapper Mapper;
         public DomainScriptGenerationService(
             IServiceProvider prov,
             IOptions<MoldsterModuleOptions> opt) : base(prov, opt)
         {
+            Mapper = Store.GetInstance<IObjectMapper>();
         }
 
         public virtual void GenerateModuleDefinitionByPage(PageRenderDTO dto)
@@ -172,6 +175,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             bool shared = dom.DomainName == "Shared";
             string template = shared ? _molds.GetResourceByNameAsString(MoldNames.SharedModule_ts) : _molds.GetDomainModuleMold();
 
+            var domainPages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
             dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id);
 
             if (dom.Pages.Any())
@@ -206,7 +210,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                 ParentModules = parentDomain == null ? "" : parentDomain + "Module,"
             };
 
-            foreach (PageDTO p in dom.Pages)
+            foreach (PageDetailsDto p in dom.Pages)
             {
                 string component = p.ComponentName;
 
@@ -287,7 +291,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             return $"{{ path: '', component: {name}, data: {{ action: 'anonymous' }} }},\n";
         }
 
-        protected string ChildRoute(PageDTO p)
+        protected string ChildRoute(PageDetailsDto p)
         {
             string routeTemplate = _molds.GetResourceByNameAsString(MoldNames.Route_ts);
             string param = p.Page.RouteParameters ?? "";

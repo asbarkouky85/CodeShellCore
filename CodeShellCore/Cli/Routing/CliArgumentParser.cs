@@ -59,7 +59,7 @@ namespace CodeShellCore.Cli.Routing
         protected virtual bool TryGetArgumentItem(string arg, out ArgumentItem<T> argItem)
         {
             argItem = null;
-            if (!arg.StartsWith('-'))
+            if (!arg.StartsWith("-"))
                 return false;
 
             if (arg.StartsWith("--"))

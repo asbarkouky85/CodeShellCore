@@ -146,7 +146,7 @@ namespace CodeShellCore.Web.Razor
             var data = helper.GetViewData<string>("ModelType");
             if (data == null)
             {
-                data = helper.ViewData.ModelMetadata?.ModelType?.RealModelType().Name ?? "";
+                data = helper.ViewData.ModelMetadata?.ModelType?.GetEntityName() ?? "";
                 helper.SetViewData("ModelType", data);
             }
             return data;

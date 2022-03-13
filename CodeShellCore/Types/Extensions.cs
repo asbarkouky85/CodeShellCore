@@ -99,7 +99,7 @@ namespace CodeShellCore.Types
                 else
                 {
                     typeString = type.Name + "<";
-                    typeString += string.Join(',', genericArgs.Select(e => e.ToShortString()));
+                    typeString += string.Join(",", genericArgs.Select(e => e.ToShortString()));
                     typeString += ">";
                 }
             }

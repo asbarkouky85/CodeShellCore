@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Version>5.2.0.0</Version>
     <AssemblyName>CodeShellCore</AssemblyName>
     <AssemblyVersion>5.2.0.0</AssemblyVersion>

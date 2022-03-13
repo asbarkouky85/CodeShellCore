@@ -1,33 +1,39 @@
 ﻿using CodeShellCore.Data;
-using CodeShellCore.Text;
+using CodeShellCore.Localization;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace CodeShellCore.Moldster.Pages.Dtos
 {
-    public class PageDTO : IDTO<Page>
+    [EntityName("Page")]
+    public class PageDto : EntityDto<long>
     {
+        [StringLength(50)]
+        public string Name { get; set; }
+        [StringLength(300)]
+        public string ViewPath { get; set; }
+        public string Apps { get; set; }
+        public string ViewParams { get; set; }
+        public long? ResourceId { get; set; }
+        [StringLength(200)]
+        public string Layout { get; set; }
+        [StringLength(50)]
+        public string PrivilegeType { get; set; }
+        public long? ResourceActionId { get; set; }
+        [StringLength(50)]
+        public string SpecialPermission { get; set; }
+        public long? SourceCollectionId { get; set; }
+        public long? PageCategoryId { get; set; }
+        [StringLength(100)]
+        public string RouteParameters { get; set; }
+        public bool HasRoute { get; set; }
+        public bool CanEmbed { get; set; }
+        public int DefaultAccessibility { get; set; }
+        public long DomainId { get; set; }
         public long TenantId { get; set; }
-        public string TenantCode { get; set; }
-        public Page Page { get; set; }
-        public string BaseViewPath { get; set; }
-        public string PageIdentifier { get; set; }
-        public string ActionName { get; set; }
-        public string ResourceName { get; set; }
-        public string DomainName { get; set; }
-        public bool ParentHasResource { get; set; }
-        public string CollectionId { get; set; }
-
-        public string ComponentName { get { return Page.ViewPath.GetAfterLast("/"); } }
-
-
-
-        public string Registration { get { return "Registry.Register(\"" + Page.ViewPath + "\", " + ComponentName + ");\n"; } }
-
-        public string GetImportString(bool sameFolder = false)
-        {
-            string path = !sameFolder ? "../" + Page.ViewPath : "./" + ComponentName;
-            return $"import {{ {ComponentName} }} from \"{path}\";\n";
-        }
-
-
+        public bool? IsHomePage { get; set; }
+        public long? ParentId { get; set; }
     }
 }

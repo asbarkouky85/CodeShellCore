@@ -1,12 +1,9 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Data.Recursion;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using CodeShellCore.Moldster.Domains.Dtos;
-using CodeShellCore.Moldster.Domains;
+using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Data.Repositories
+namespace CodeShellCore.Moldster.Domains
 {
     public interface IDomainRepository : IRepository<Domain>, IRecursiveRepository<Domain>
     {

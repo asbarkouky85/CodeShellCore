@@ -25,10 +25,16 @@
 		<ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Application\CodeShellCore.Application.csproj" />
 		<ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster.Ng11\CodeShellCore.Moldster.Ng11.csproj" />
 		<ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster.Ng6\CodeShellCore.Moldster.Ng6.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Moldster.Application.Contracts\CodeShellCore.Moldster.Application.Contracts.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Moldster.Domain\CodeShellCore.Moldster.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Localization\Dtos\" />
 	</ItemGroup>
 
 </Project>

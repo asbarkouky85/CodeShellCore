@@ -1,11 +1,11 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Moldster.Data.Repositories;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Resources;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.Moldster.Data
 {

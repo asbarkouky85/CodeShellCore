@@ -11,7 +11,7 @@ namespace CodeShellCore.Moldster.Data.Repositories
 {
     public interface IPageRepository : IRepository<Page>
     {
-        IEnumerable<PageDTO> GetDomainPagesForRouting(string tenantCode, long domainId, bool searchChildren = false);
+        IEnumerable<PageDetailsDto> GetDomainPagesForRouting(string tenantCode, long domainId, bool searchChildren = false);
         string GetHomePagePath(string modCode);
         LoadResult<PageListDTO> GetUnderDomain(long domainId, LoadOptions opt);
         PageAndTypeDTO FindLinkedPage(string paramName, string val, long tenantId, ref List<string> add);
@@ -21,7 +21,7 @@ namespace CodeShellCore.Moldster.Data.Repositories
         IEnumerable<Page> GetReferencing(long pageId, long tenantId);
         void FillReferencedBy(IEnumerable<PageListDTO> listT);
         void FillReferences(IEnumerable<PageListDTO> listT);
-        PageDTO FindSingleForRendering(Expression<Func<Page, bool>> p);
+        PageDetailsDto FindSingleForRendering(Expression<Func<Page, bool>> p);
         List<PageIdentifierDTO> GetDistinctIdentifiers();
     }
 }

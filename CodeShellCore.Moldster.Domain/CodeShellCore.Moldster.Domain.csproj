@@ -2,20 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>CodeShellCore.Moldster</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
     <ProjectReference Include="..\CodeShellCore.Moldster.Domain.Shared\CodeShellCore.Moldster.Domain.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Domains\" />
-    <Folder Include="Localization\" />
-    <Folder Include="Navigation\" />
-    <Folder Include="Tenants\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Pages\" />
-    <Folder Include="PageCategories\" />
   </ItemGroup>
 
 </Project>

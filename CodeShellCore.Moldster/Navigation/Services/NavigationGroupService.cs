@@ -101,7 +101,7 @@ namespace CodeShellCore.Moldster.Navigation.Services
                 _unit.NavigationPageRepository.Update(s);
                 _unit.NavigationPageRepository.Update(t);
 
-                var page = _unit.PageRepository.FindAs(a => new PageDTO
+                var page = _unit.PageRepository.FindAs(a => new PageDetailsDto
                 {
                     TenantCode = a.Tenant.Code,
                     DomainName = a.Domain.NameChain
