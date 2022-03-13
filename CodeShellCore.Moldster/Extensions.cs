@@ -30,6 +30,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
 
 namespace CodeShellCore.Moldster
 {
@@ -175,7 +176,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IResourceScriptGenerationService, ResourceScriptGenerationService>();
             coll.AddTransient<IPageCategoryHtmlService, PageCategoryHtmlService>();
             coll.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
-
+            coll.AddAutoMapper(Assembly.GetCallingAssembly());
         }
 
         public static void AddMoldsterCli(this IServiceCollection coll, bool legacy = false)

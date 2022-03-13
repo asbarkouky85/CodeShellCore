@@ -13,6 +13,7 @@ namespace CodeShellCore.Moldster
     {
         public MoldsterMappingProfile()
         {
+            CreateMap<Page, PageDto>();
             CreateMap<Page, PageDetailsDto>()
                 .ForMember(e => e.ParentHasResource, e => e.MapFrom(p => p.PageCategory.ResourceId != null))
                 .ForMember(e => e.BaseViewPath, e => e.MapFrom(p => p.PageCategory.ViewPath))
