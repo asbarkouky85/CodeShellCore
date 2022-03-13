@@ -99,6 +99,10 @@ namespace CodeShellCore.Data.EntityFramework
             return DbContext.Set<T>();
         }
 
+        public abstract TValue GetValue<TValue>(object id, Expression<Func<T, TValue>> ex);
+        public abstract TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
+        public abstract TR FindSingleAndMap<TR>(object id) where TR : class;
+
         protected T GetRepository<TRepo>() where TRepo : class, IRepository
         {
             IRepository repo;
@@ -113,12 +117,12 @@ namespace CodeShellCore.Data.EntityFramework
 
         #endregion
 
-        public abstract TValue GetValue<TValue>(object id, Expression<Func<T, TValue>> ex);
+        
         public virtual T FindSingle(object id)
         {
             return DbContext.Set<T>().Find(id);
         }
-        public abstract TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
+        
         public virtual void DeleteById(object ob)
         {
             var d = DbContext.Set<T>().Find(ob);
@@ -392,6 +396,11 @@ namespace CodeShellCore.Data.EntityFramework
             }
         }
 
+        protected virtual IQueryable<TDto> QueryDto<TDto>(IQueryable<T> q = null)
+        {
+            return Projector.Project<T, TDto>(q);
+        }
+
         public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
         {
             var q = Loader;
@@ -399,13 +408,39 @@ namespace CodeShellCore.Data.EntityFramework
             {
                 q = q.Where(cond);
             }
-            var dtoq = Projector.Project<T, TR>(q);
+            var dtoq = QueryDto<TR>(q);
             if (opts != null)
             {
                 return dtoq.ToListWith(opts);
             }
             return dtoq.ToList();
         }
+
+        public List<TR> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
+        {
+            var q = Loader;
+            foreach (var ex in filtes)
+                q = q.Where(ex);
+            return QueryDto<TR>(q).ToList();
+        }
+
+        public LoadResult<TR> FindAndMap<TR>(ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        {
+            var q = Loader;
+            if (cond != null)
+            {
+                q = q.Where(cond);
+            }
+            return QueryDto<TR>(q).LoadWith(opts);
+        }
+
+        public TR FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class
+        {
+            var q = Loader.Where(expression);
+            return QueryDto<TR>(q).FirstOrDefault();
+        }
+
+        
     }
 }
 

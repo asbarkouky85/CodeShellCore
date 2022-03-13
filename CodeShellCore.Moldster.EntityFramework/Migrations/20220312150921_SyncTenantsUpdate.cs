@@ -64,7 +64,6 @@ BEGIN
 		DefaultAccessibility=tx.DefaultAccessibility,
 		PageCategoryId=tx.PageCategoryId,
 		ResourceId=tx.ResourceId,
-		AppearsInNavigation=tx.AppearsInNavigation,
 		CanEmbed=tx.CanEmbed,
 		HasRoute=tx.HasRoute,
 		Name=tx.Name
@@ -101,7 +100,6 @@ BEGIN
 		,[TenantId]
 		,[DomainId]
 		,[Apps]
-		,[AppearsInNavigation]
 		,[HasRoute]
 		,[CanEmbed]
 		,[CreatedOn]
@@ -127,7 +125,6 @@ BEGIN
 		,@targetTenant
 		,[DomainId]
 		,[Apps]
-		,[AppearsInNavigation]
 		,[HasRoute]
 		,[CanEmbed]
 		,GETDATE()

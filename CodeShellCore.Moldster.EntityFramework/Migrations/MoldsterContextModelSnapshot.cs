@@ -955,6 +955,9 @@ namespace CodeShellCore.Moldster.Migrations
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime");
 
+                    b.Property<bool>("UseParentUI")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Version")
                         .HasMaxLength(100)
                         .IsUnicode(false)

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.Localization.Dtos;
+using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Pages.Dtos;
 using System;
@@ -25,6 +27,11 @@ namespace CodeShellCore.Moldster
             CreateMap<Domain, DomainWithPagesDTO>()
                 .ForMember(e => e.DomainName, e => e.MapFrom(d => d.Name))
                 .ForMember(e => e.Pages, d => d.MapFrom(e => e.Pages));
+
+            CreateMap<PageControl, PageControlListDTO>()
+                .ForMember(e => e.ControlType, d => d.MapFrom(e => e.Control.ControlType));
+
+            CreateMap<CustomField, CustomFieldDto>();
         }
     }
 }

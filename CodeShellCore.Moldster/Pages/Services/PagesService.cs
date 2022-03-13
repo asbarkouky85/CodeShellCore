@@ -15,6 +15,7 @@ using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Navigation;
+using CodeShellCore.Moldster.Localization.Dtos;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {
@@ -599,7 +600,7 @@ namespace CodeShellCore.Moldster.Pages.Services
                 return null;
             var dto = new PageCustomizationDTO
             {
-                Controls = Unit.PageControlRepository.FindAs(PageControlListDTO.Expression, d => d.PageId == id),
+                Controls = Unit.PageControlRepository.FindAndMap<PageControlListDTO>(d => d.PageId == id),
                 Parameters = Unit.PageParameterRepository.FindForPage(id),
                 Route = Unit.PageRouteRepository.FindByPage(id) ?? new PageRouteDTO(),
                 Fields = Unit.CustomFieldRepository.Find(d => d.PageId == id),

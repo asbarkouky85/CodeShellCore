@@ -60,6 +60,12 @@ namespace CodeShellCore.Data.EntityFramework
             return Loader.Where(d => d.Id.Equals(id)).Select(exp).FirstOrDefault();
         }
 
+        public override TR FindSingleAndMap<TR>(object id)
+        {
+            var q = Loader.Where(d => d.Id.Equals(id));
+            return QueryDto<TR>(q).FirstOrDefault();
+        }
+
         public override void DeleteById(object id)
         {
             var m = Activator.CreateInstance<T>();
@@ -96,5 +102,7 @@ namespace CodeShellCore.Data.EntityFramework
         {
             return QueryNamed(Loader.Where(ex)).OrderBy(d => d.Name).ToList();
         }
+
+
     }
 }

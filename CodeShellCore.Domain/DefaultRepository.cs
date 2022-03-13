@@ -85,6 +85,16 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
+        public List<TR> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public LoadResult<TR> FindAndMap<TR>(ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
         {
             throw new NotImplementedException();
@@ -121,6 +131,16 @@ namespace CodeShellCore.Data
         }
 
         public T FindSingle(Expression<Func<T, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TR FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public TR FindSingleAndMap<TR>(object id) where TR : class
         {
             throw new NotImplementedException();
         }
