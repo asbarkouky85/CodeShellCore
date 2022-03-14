@@ -6,10 +6,10 @@ using System.Text;
 
 namespace CodeShellCore.Linq
 {
-    public class LoadResult<T> : LoadResult where T : class
+    public class LoadResult<T> where T : class
     {
-        [IgnoreDataMember]
-        public IEnumerable<T> ListT { get { return (List as IEnumerable<T>) ?? new List<T>(); } }
+        public int TotalCount { get; set; }
+        public IEnumerable<T> List { get; set; }
 
     }
 }

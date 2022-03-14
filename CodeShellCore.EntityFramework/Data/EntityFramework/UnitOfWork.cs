@@ -95,12 +95,12 @@ namespace CodeShellCore.Data.EntityFramework
             return inst;
         }
 
-        public IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>
+        public override IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>()
         {
             IKeyRepository<T, TPrime> inst;
             if (GenericKeyRepositoryType != null)
             {
-                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
+                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T), typeof(TContext),typeof(TPrime));
                 inst = (IKeyRepository<T, TPrime>)Store.GetInstance(t);
             }
             else
@@ -110,6 +110,31 @@ namespace CodeShellCore.Data.EntityFramework
             inst.Projector = Projector;
             return inst;
         }
+
+        public override IRepository<T> GetRepositoryFor<T>()
+        {
+            var i = typeof(T);
+            var repo = _provider.GetService<IRepository<T>>();
+            if (repo != null)
+            {
+                appendCollectionId(repo);
+                return repo;
+            }
+            IRepository<T> inst;
+            if (GenericRepositoryType != null)
+            {
+                var t = GenericRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
+                inst = (IRepository<T>)Store.GetInstance(t);
+            }
+            else
+            {
+                inst = Store.GetInstance<Repository<T, TContext>>(r => appendCollectionId(r));
+            }
+
+            inst.Projector = Projector;
+            return inst;
+        }
+
 
         public override ICollectionRepository<T> GetCollectionRepositoryFor<T>()
         {
@@ -160,29 +185,6 @@ namespace CodeShellCore.Data.EntityFramework
 
         }
 
-        public override IRepository<T> GetRepositoryFor<T>()
-        {
-            var i = typeof(T);
-            var repo = _provider.GetService<IRepository<T>>();
-            if (repo != null)
-            {
-                appendCollectionId(repo);
-                return repo;
-            }
-            IRepository<T> inst;
-            if (GenericRepositoryType != null)
-            {
-                var t = GenericRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
-                inst = (IRepository<T>)Store.GetInstance(t);
-            }
-            else
-            {
-                inst = Store.GetInstance<Repository<T, TContext>>(r => appendCollectionId(r));
-            }
-
-            inst.Projector = Projector;
-            return inst;
-        }
 
 
         protected virtual void FillChangeColumns(ChangeLists lst)

@@ -38,6 +38,7 @@ namespace CodeShellCore.DependencyInjection
         {
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
+            
             coll.AddScoped<IUserAccessor, UserAccessor>();
             coll.AddScoped<UserAccessor>();
             coll.AddCodeShellAutoMapper();

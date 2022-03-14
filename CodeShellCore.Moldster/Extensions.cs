@@ -56,7 +56,9 @@ namespace CodeShellCore.Moldster
                 coll.AddDbContext<MoldsterContext>();
             }
 
+            //coll.AddCodeShellEntityFramework();
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
+            coll.AddCodeShellEntityFramework();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));
 
             coll.AddRepositoryFor<CustomText, CustomTextRepository, ICustomTextRepository>();

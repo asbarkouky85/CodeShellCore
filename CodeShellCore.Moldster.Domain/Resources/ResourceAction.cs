@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Tenants;
 using System;using System.Collections.Generic;using System.ComponentModel.DataAnnotations;using System.ComponentModel.DataAnnotations.Schema;namespace CodeShellCore.Moldster.Resources{    public partial class ResourceAction : MoldsterModelBase, IMoldsterModel    {        public ResourceAction()        {            Pages = new HashSet<Page>();        }        public long Id { get; set; }        [StringLength(150)]        public string Name { get; set; }        public long ResourceId { get; set; }        [Column(TypeName = "datetime")]        public DateTime? CreatedOn { get; set; }        [Column(TypeName = "datetime")]        public DateTime? UpdatedOn { get; set; }        public long TenantId { get; set; }        public long? CreatedBy { get; set; }        public long? UpdatedBy { get; set; }        [ForeignKey("ResourceId")]        [InverseProperty("ResourceActions")]
         [System.Runtime.Serialization.IgnoreDataMember]
         public Resource Resource { get; set; }        [ForeignKey("TenantId")]        [InverseProperty("ResourceActions")]

@@ -28,14 +28,14 @@ namespace CodeShellCore.Moldster.Localization.Services
                 op.AddFilter(e => e.Type == req.Type);
                 op.AddFilter(e => e.Locale == req.Locale);
                 var data = Unit.CustomTextRepository.Find(op);
-                foreach (var x in data.ListT)
+                foreach (var x in data.List)
                     x.State = "Attached";
                 return data;
             }
             var resx = loc.LoadForTenant(req, opts);
             List<CustomText> db = Unit.CustomTextRepository.GetBy(req);
             var lst = new List<CustomText>();
-            foreach (var item in resx.ListT)
+            foreach (var item in resx.List)
             {
                 var ex = db.Where(e => e.Code == item.Code).FirstOrDefault();
                 if (ex != null)

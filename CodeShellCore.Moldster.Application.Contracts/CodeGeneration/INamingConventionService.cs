@@ -24,5 +24,6 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
         string GetOutputBundlePath(string tenantCode, string version, bool full = false);
         string GetOutputPath(string tenantCode, string version, bool full = false);
         string GetCodeShellBaseComponentsImportPath();
+        string GetLogoFilePath(string tenantCode, string fileName);
     }
 }

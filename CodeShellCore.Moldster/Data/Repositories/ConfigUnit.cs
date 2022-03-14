@@ -10,6 +10,7 @@ using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Tenants;
 
 namespace CodeShellCore.Moldster.Data.Repositories
 {

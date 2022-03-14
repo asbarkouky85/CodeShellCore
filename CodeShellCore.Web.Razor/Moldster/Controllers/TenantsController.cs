@@ -3,6 +3,7 @@ using CodeShellCore.Data.Lookups;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Web.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
@@ -46,7 +47,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.GetSingle(id);
         }
 
-        public bool IsUnique(PropertyUniqueDTO dto)
+        public bool IsUnique(IsUniqueDto dto)
         {
             return _service.IsUnique(dto);
         }
@@ -56,7 +57,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.Post(obj);
         }
 
-        public SubmitResult<TenantEditDTO> Put(TenantDto obj)
+        public SubmitResult<TenantEditDTO> Put([FromBody]TenantDto obj)
         {
             return _service.Put(obj);
         }

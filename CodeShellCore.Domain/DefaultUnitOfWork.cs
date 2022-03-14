@@ -14,7 +14,7 @@ namespace CodeShellCore.Data
 {
     public class DefaultUnitOfWork : IUnitOfWork
     {
-        
+
         protected InstanceStore<IRepository> Store;
         protected IServiceProvider _provider;
         private ILocaleTextProvider _textProvider;
@@ -157,12 +157,12 @@ namespace CodeShellCore.Data
             return Store.GetInstance<IRepository<T>>();
         }
 
-        public IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>
+        public virtual IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>
         {
             IKeyRepository<T, TPrime> inst;
             if (GenericKeyRepositoryType != null)
             {
-                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T));
+                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T), typeof(TPrime));
                 inst = (IKeyRepository<T, TPrime>)Store.GetInstance(t);
             }
             else
@@ -191,6 +191,6 @@ namespace CodeShellCore.Data
             return message_code;
         }
 
-        
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Files;
+using CodeShellCore.Localization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Tenants
 {
+    [EntityName("Tenant")]
     public class TenantDto : EntityDto<long>
     {
         [Required]
@@ -15,18 +17,9 @@ namespace CodeShellCore.Moldster.Tenants
         [Required]
         [StringLength(200)]
         public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-
         public string ConnectionString { get; set; }
-        public long? CreatedBy { get; set; }
-        public long? UpdatedBy { get; set; }
         public bool IsActive { get; set; }
-        [StringLength(300)]
-        public string Logo { get; set; }
+        public DateTime? CreatedOn { get; set; }
         [StringLength(300)]
         public string MainComponentBase { get; set; }
         [StringLength(100)]

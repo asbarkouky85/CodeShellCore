@@ -345,7 +345,7 @@ namespace CodeShellCore.Data.EntityFramework
                 }
             }
         }
-        public virtual LoadResult FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
+        public virtual LoadResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
         {
             if (dir == SortDir.ASC)
                 return Loader.OrderBy(sort).Select(exp).LoadWith(opts);

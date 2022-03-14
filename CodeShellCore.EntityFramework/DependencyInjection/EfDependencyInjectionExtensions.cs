@@ -21,6 +21,11 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient(t);
         }
 
+        public static void AddCodeShellEntityFramework(this IServiceCollection coll)
+        {
+            coll.AddTransient(typeof(KeyRepository<,,>));
+        }
+
         public static void AddAttachmentsEntity<T, TContext>(this IServiceCollection coll)
             where T : class, IAttachmentModel, IModel<long>
             where TContext : DbContext

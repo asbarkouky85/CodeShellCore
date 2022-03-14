@@ -16,6 +16,7 @@ using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.Localization.Dtos;
+using CodeShellCore.Moldster.Tenants;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {
@@ -511,8 +512,8 @@ namespace CodeShellCore.Moldster.Pages.Services
             }
 
             var lst = Unit.PageRepository.FindAs(PageListDTO.Expression, op);
-            Unit.PageRepository.FillReferencedBy(lst.ListT);
-            Unit.PageRepository.FillReferences(lst.ListT);
+            Unit.PageRepository.FillReferencedBy(lst.List);
+            Unit.PageRepository.FillReferences(lst.List);
             return lst;
         }
 

@@ -29,13 +29,6 @@ namespace CodeShellCore.Web.Controllers
             return (IEntityService)Store.GetInstance(enitityService);
         }
 
-        public virtual IActionResult Get(string entity, [FromQuery]LoadOptions opts)
-        {
-            Service = GetServiceFor(entity);
-            var x = Service.LoadObjects(opts);
-            return Respond(x);
-        }
-
         public virtual IActionResult GetSingle(string entity, long id)
         {
             Service = GetServiceFor(entity);

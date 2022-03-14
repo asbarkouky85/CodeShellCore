@@ -120,7 +120,7 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public LoadResult FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
+        public LoadResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
         {
             throw new NotImplementedException();
         }

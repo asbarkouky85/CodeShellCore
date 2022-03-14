@@ -6,6 +6,7 @@ using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster.Tenants;
 
 namespace CodeShellCore.Moldster.Data
 {

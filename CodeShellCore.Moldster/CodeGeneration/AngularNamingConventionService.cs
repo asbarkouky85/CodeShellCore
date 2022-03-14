@@ -198,5 +198,11 @@ namespace CodeShellCore.Moldster.CodeGeneration
         {
             return "codeshell/base-components";
         }
+
+        public virtual string GetLogoFilePath(string tenantCode, string fileName)
+        {
+            var tenantFolder = ApplyConvension(tenantCode, AppParts.Project);
+            return Path.Combine(_paths.UIRoot, $"wwwroot\\{tenantFolder}\\assets\\logos", fileName);
+        }
     }
 }

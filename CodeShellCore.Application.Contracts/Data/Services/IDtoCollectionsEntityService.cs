@@ -6,6 +6,6 @@ namespace CodeShellCore.Data.Services
         where TListDto : class
         where TOptionsDto : LoadOptions
     {
-        LoadResult<TListDto> GetCollection(string id, TOptionsDto opts);
+        LoadResult<TListDto> GetCollection(string id, TOptionsDto options);
     }
 }

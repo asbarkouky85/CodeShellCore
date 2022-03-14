@@ -15,9 +15,9 @@ namespace CodeShellCore.Data.Services
         where TUpdateDto : class
         where TOptionsDto : LoadOptions
     {
-        DeleteResult Delete(TPrime prime);
-        SubmitResult<TSingleDto> Post(TCreateDto obj);
-        SubmitResult<TSingleDto> Put(TUpdateDto obj);
+        DeleteResult Delete(TPrime id);
+        SubmitResult<TSingleDto> Post(TCreateDto dto);
+        SubmitResult<TSingleDto> Put(TUpdateDto dto);
     }
 
 

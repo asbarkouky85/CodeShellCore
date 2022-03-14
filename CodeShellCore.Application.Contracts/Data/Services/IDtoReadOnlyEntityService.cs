@@ -7,8 +7,8 @@ namespace CodeShellCore.Data.Services
         where TListDto : class
         where TOptionsDto : LoadOptions
     {
-        LoadResult<TListDto> Get(TOptionsDto opts);
+        LoadResult<TListDto> Get(TOptionsDto options);
         TGetDto GetSingle(TPrime id);
-        bool IsUnique(PropertyUniqueDTO dto);
+        bool IsUnique(IsUniqueDto dto);
     }
 }

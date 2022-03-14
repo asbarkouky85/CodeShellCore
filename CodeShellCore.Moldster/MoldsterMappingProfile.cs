@@ -1,19 +1,38 @@
 ﻿using AutoMapper;
+using CodeShellCore.Files;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Localization.Dtos;
-using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Pages.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CodeShellCore.Moldster.Tenants;
 
 namespace CodeShellCore.Moldster
 {
     public class MoldsterMappingProfile : Profile
     {
         public MoldsterMappingProfile()
+        {
+            DomainsMapping();
+            LocalizationMapping();
+            PagesMapping();
+            TenantsMapping();
+        }
+
+        void DomainsMapping()
+        {
+            CreateMap<Domain, DomainWithPagesDTO>()
+                .ForMember(e => e.DomainName, e => e.MapFrom(d => d.Name))
+                .ForMember(e => e.Pages, d => d.MapFrom(e => e.Pages));
+
+        }
+
+        void LocalizationMapping()
+        {
+            CreateMap<CustomField, CustomFieldDto>();
+        }
+
+        void PagesMapping()
         {
             CreateMap<Page, PageDto>();
             CreateMap<Page, PageDetailsDto>()
@@ -24,14 +43,26 @@ namespace CodeShellCore.Moldster
                 .ForMember(e => e.ComponentName, d => d.MapFrom(e => e.SourceCollection == null ? null : e.SourceCollection.Name))
                 .ForMember(e => e.Page, d => d.MapFrom(e => e));
 
-            CreateMap<Domain, DomainWithPagesDTO>()
-                .ForMember(e => e.DomainName, e => e.MapFrom(d => d.Name))
-                .ForMember(e => e.Pages, d => d.MapFrom(e => e.Pages));
-
             CreateMap<PageControl, PageControlListDTO>()
                 .ForMember(e => e.ControlType, d => d.MapFrom(e => e.Control.ControlType));
 
-            CreateMap<CustomField, CustomFieldDto>();
+        }
+
+        void TenantsMapping()
+        {
+            CreateMap<Tenant, TenantEditDTO>()
+                .ForMember(e => e.Entity, e => e.MapFrom(d => d));
+
+            CreateMap<Tenant, TenantDto>()
+                .ForMember(e => e.LogoFile, e => e.MapFrom(d => new TmpFileData(d.Logo)));
+
+            CreateMap<TenantDto, Tenant>()
+                .IgnoreId()
+                .ForMember(e => e.Logo, e =>
+                {
+                    e.PreCondition(d => d.LogoFile?.TmpPath != null);
+                    e.MapFrom(d => "logos/" + d.LogoFile.Name);
+                });
         }
     }
 }

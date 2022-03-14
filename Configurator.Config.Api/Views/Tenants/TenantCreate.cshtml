@@ -20,6 +20,10 @@
         @Html.FileGroup(e => e.Entity.LogoFile, "f_logo", "upload", false)
     </div>
     <div class="row">
+        @Html.SelectControlGroup(e => e.Entity.ParentId, Lister.Make("tenants"), "name", "id")
+        @Html.CheckBoxGroup(e => e.Entity.UseParentUI)
+    </div>
+    <div class="row">
         <div class="col-md-6">
             @Html.SelectModalButton("MainComponentBase", "SelectTemplate()", "model.entity.mainComponentBase")
         </div>
