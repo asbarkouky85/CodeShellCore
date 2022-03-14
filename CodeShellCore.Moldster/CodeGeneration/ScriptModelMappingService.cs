@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Data;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Text;
 using CodeShellCore.Types;
@@ -11,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Services
+namespace CodeShellCore.Moldster.CodeGeneration
 {
     public class ScriptModelMappingService : ConsoleService, IScriptModelMappingService
     {

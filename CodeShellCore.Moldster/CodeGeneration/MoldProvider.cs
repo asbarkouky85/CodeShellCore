@@ -1,8 +1,7 @@
-﻿using System.IO;
-using System.Resources;
+﻿using System.Resources;
 using System.Text;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Services
+namespace CodeShellCore.Moldster.CodeGeneration
 {
     public abstract class MoldProvider
     {

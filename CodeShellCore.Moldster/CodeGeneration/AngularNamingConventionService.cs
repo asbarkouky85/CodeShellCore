@@ -1,11 +1,12 @@
 ﻿using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Services
+namespace CodeShellCore.Moldster.CodeGeneration
 {
     public class AngularNamingConventionService : INamingConventionService
     {
@@ -133,7 +134,7 @@ namespace CodeShellCore.Moldster.CodeGeneration.Services
             {
                 outFolder = Path.Combine(_paths.UIRoot, outFolder).Replace("\\", "/");
             }
-            return outFolder+".zip";
+            return outFolder + ".zip";
         }
 
         public string GetOutputPath(string tenantCode, string version, bool full = false)

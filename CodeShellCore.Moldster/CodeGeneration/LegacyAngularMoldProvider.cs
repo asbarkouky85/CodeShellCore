@@ -1,6 +1,7 @@
-﻿using System.Resources;
+﻿using CodeShellCore.Moldster.CodeGeneration.Services;
+using System.Resources;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Services
+namespace CodeShellCore.Moldster.CodeGeneration
 {
     public class LegacyAngularMoldProvider : MoldProvider, IMoldProvider
     {

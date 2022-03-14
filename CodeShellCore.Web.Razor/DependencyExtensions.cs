@@ -3,6 +3,7 @@ using CodeShellCore.DependencyInjection;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Domains.Services;

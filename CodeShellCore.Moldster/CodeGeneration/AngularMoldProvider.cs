@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+﻿using CodeShellCore.Moldster.CodeGeneration.Services;
 using System.Resources;
-using System.Text;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Services
+namespace CodeShellCore.Moldster.CodeGeneration
 {
     public class AngularMoldProvider : MoldProvider, IMoldProvider
     {
