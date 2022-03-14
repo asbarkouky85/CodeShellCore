@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.CodeGeneration.Dtos
+namespace CodeShellCore.Moldster.CodeGeneration
 {
     public class AngularProjectBuildConfiguration
     {

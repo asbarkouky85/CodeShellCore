@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.CodeGeneration.Dtos;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
@@ -12,7 +12,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Tenants.Services
+namespace CodeShellCore.Moldster.Tenants
 {
     public class TenantScriptGenerationService : ScriptGenerationServiceBase, ITenantScriptGenerationService
     {

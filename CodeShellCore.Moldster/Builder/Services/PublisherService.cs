@@ -4,7 +4,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Services;
-using CodeShellCore.Moldster.Tenants.Dtos;
+using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Net;
 using CodeShellCore.Net.Ftp;
 using CodeShellCore.Text;

@@ -157,6 +157,21 @@ namespace CodeShellCore.Data
             return Store.GetInstance<IRepository<T>>();
         }
 
+        public IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>
+        {
+            IKeyRepository<T, TPrime> inst;
+            if (GenericKeyRepositoryType != null)
+            {
+                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T));
+                inst = (IKeyRepository<T, TPrime>)Store.GetInstance(t);
+            }
+            else
+            {
+                inst = Store.GetInstance<IKeyRepository<T, TPrime>>();
+            }
+            return inst;
+        }
+
 
         public virtual SubmitResult SaveChanges(string successMessage = null, string faileMessage = null)
         {

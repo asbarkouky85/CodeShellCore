@@ -5,7 +5,7 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Moldster.Resources.Services;
-using CodeShellCore.Moldster.Tenants.Services;
+using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Text;
 using System;
 using System.IO;

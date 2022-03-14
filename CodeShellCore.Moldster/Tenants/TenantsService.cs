@@ -1,15 +1,13 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Helpers;
+using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Tenants.Dtos;
-using CodeShellCore.MQ;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 
-namespace CodeShellCore.Moldster.Tenants.Services
+namespace CodeShellCore.Moldster.Tenants
 {
-    public class TenantsService : EntityService<Tenant>, ITenantService
+    public class TenantsService : DtoEntityService<Tenant, long, TenantDto, LoadOptions, TenantEditDTO, TenantDto>, ITenantService
     {
         private readonly IConfigUnit unit;
 
@@ -18,30 +16,27 @@ namespace CodeShellCore.Moldster.Tenants.Services
             this.unit = unit;
         }
 
-        public override Tenant GetSingle(object id)
-        {
-            var t = base.GetSingle(id);
-            t.LogoFile = new Files.TmpFileData(t.Logo);
-            return t;
-        }
-
-        public override SubmitResult Create(Tenant obj)
+        public override SubmitResult<TenantEditDTO> Post(TenantDto obj)
         {
             if (obj.Id == 0)
             {
                 long id = unit.TenantRepository.GetMax(d => d.Id);
                 obj.Id = id + 1;
             }
-            if (obj.LogoFile?.TmpPath != null)
-            {
-                obj.Logo = "logos/" + obj.LogoFile.Name;
-            }
+
             if (!unit.TenantRepository.Exist(d => true))
             {
                 obj.IsActive = true;
             }
-            var c = base.Create(obj);
-            if (c.IsSuccess)
+
+            if (obj.LogoFile?.TmpPath != null)
+            {
+                obj.Logo = "logos/" + obj.LogoFile.Name;
+            }
+
+            var res = base.Post(obj);
+
+            if (res.IsSuccess)
             {
                 IPathsService paths = unit.ServiceProvider.GetService<IPathsService>();
                 if (paths != null && obj.LogoFile?.TmpPath != null)
@@ -50,16 +45,17 @@ namespace CodeShellCore.Moldster.Tenants.Services
                     File.Move(obj.LogoFile.TmpPath, newFilePath);
                 }
             }
-            return c;
+
+            return res;
         }
 
-        public override SubmitResult Update(Tenant obj)
+        public override SubmitResult<TenantEditDTO> Put(TenantDto obj)
         {
             if (obj.LogoFile?.TmpPath != null)
             {
                 obj.Logo = "logos/" + obj.LogoFile.Name;
             }
-            var c = base.Update(obj);
+            var c = base.Put(obj);
             if (c.IsSuccess)
             {
                 IPathsService paths = unit.ServiceProvider.GetService<IPathsService>();
@@ -70,12 +66,6 @@ namespace CodeShellCore.Moldster.Tenants.Services
                 }
             }
             return c;
-        }
-
-        public TenantEditDTO GetSingleDTO(long id)
-        {
-
-            return unit.TenantRepository.FindSingleAs(d => new TenantEditDTO { Entity = d, Id = d.Id }, id);
         }
     }
 }

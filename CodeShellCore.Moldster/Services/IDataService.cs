@@ -2,7 +2,7 @@
 using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Tenants.Dtos;
+using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Services;
 using System.Collections.Generic;
 

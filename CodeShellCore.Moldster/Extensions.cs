@@ -24,7 +24,7 @@ using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Resources.Services;
 using CodeShellCore.Moldster.Services;
-using CodeShellCore.Moldster.Tenants.Services;
+using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Security.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -110,8 +110,8 @@ namespace CodeShellCore.Moldster
             coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
             coll.AddServiceFor<PageControl, PageControlService>();
             coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
-            coll.AddServiceFor<Tenant, TenantsService>();
 
+            coll.AddTransient<ITenantService, TenantsService>();
             coll.AddTransient<IUserDataService, UserDataService>();
             coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
         }

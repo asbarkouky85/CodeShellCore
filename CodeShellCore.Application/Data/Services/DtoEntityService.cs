@@ -20,14 +20,16 @@ namespace CodeShellCore.Data.Services
         public IUnitOfWork Unit { get; }
         public IKeyRepository<T, TPrime> Repository { get; private set; }
         public IObjectMapper Mapper { get; private set; }
+        public ILookupsService LookupsService { get; private set; }
         public DtoEntityService(IUnitOfWork unit)
         {
             Unit = unit;
             Repository = unit.GetRepositoryFor<T, TPrime>();
             Mapper = unit.ServiceProvider.GetService<IObjectMapper>();
+            LookupsService = unit.ServiceProvider.GetService<ILookupsService>();
         }
 
-        public DeleteResult Delete(TPrime prime)
+        public virtual DeleteResult Delete(TPrime prime)
         {
             var can = Repository.CanDeleteById(prime);
             if (can.IsSuccess)
@@ -42,39 +44,39 @@ namespace CodeShellCore.Data.Services
             return Unit.SaveChanges().MapToResult<DeleteResult>();
         }
 
-        public LoadResult<TListDto> Get(TOptionsDto opts)
+        public virtual LoadResult<TListDto> Get(TOptionsDto opts)
         {
             var mapped = opts.GetOptionsFor<TListDto>();
             return Repository.FindAndMap(mapped);
         }
 
-        public LoadResult<TListDto> GetCollection(string id, TOptionsDto opts)
+        public virtual LoadResult<TListDto> GetCollection(string id, TOptionsDto opts)
         {
             var mapped = opts.GetOptionsFor<TListDto>();
             return Unit.GetCollectionRepositoryFor<T>().LoadCollectionAndMap(id, mapped);
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
+        public virtual Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
         {
-            throw new NotImplementedException();
+            return LookupsService.GetRequestedLookups(data);
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> data)
+        public virtual Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> data)
         {
-            throw new NotImplementedException();
+            return LookupsService.GetRequestedLookups(data);
         }
 
-        public TSingleDto GetSingle(TPrime id)
+        public virtual TSingleDto GetSingle(TPrime id)
         {
             return Repository.FindSingleAndMapById<TSingleDto>(id);
         }
 
-        public bool IsUnique(PropertyUniqueDTO dto)
+        public virtual bool IsUnique(PropertyUniqueDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public SubmitResult<TSingleDto> Post(TCreateDto obj)
+        public virtual SubmitResult<TSingleDto> Post(TCreateDto obj)
         {
             var entity = Mapper.Map<TCreateDto, T>(obj);
             Repository.Add(entity);
@@ -86,7 +88,7 @@ namespace CodeShellCore.Data.Services
             return res;
         }
 
-        public SubmitResult<TSingleDto> Put(TUpdateDto obj)
+        public virtual SubmitResult<TSingleDto> Put(TUpdateDto obj)
         {
             var entity = Repository.FindSingleById(obj.Id);
             Mapper.Map(obj, entity);

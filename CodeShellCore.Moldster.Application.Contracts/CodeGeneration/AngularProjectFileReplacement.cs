@@ -1,4 +1,4 @@
-﻿namespace CodeShellCore.Moldster.CodeGeneration.Dtos
+﻿namespace CodeShellCore.Moldster.CodeGeneration
 {
     public class AngularProjectFileReplacement
     {

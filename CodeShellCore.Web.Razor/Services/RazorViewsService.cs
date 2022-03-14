@@ -2,10 +2,11 @@
 using CodeShellCore.Http;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
-using CodeShellCore.Moldster.Tenants.Dtos;
+using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Services;
 using Microsoft.AspNetCore.Http;
 using System;

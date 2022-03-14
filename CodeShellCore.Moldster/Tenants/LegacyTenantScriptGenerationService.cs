@@ -1,14 +1,12 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.CodeGeneration.Dtos;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace CodeShellCore.Moldster.Tenants.Services
+namespace CodeShellCore.Moldster.Tenants
 {
     public class LegacyTenantScriptGenerationService : TenantScriptGenerationService
     {
@@ -28,7 +26,7 @@ namespace CodeShellCore.Moldster.Tenants.Services
 
         public override void UpdateAngularJsonFromDatabase()
         {
-            
+
         }
 
         public override void GenerateMainFile(string tenantCode, bool addStyle = false)

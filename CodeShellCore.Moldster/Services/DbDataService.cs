@@ -6,7 +6,7 @@ using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Tenants.Dtos;
+using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;
@@ -91,7 +91,7 @@ namespace CodeShellCore.Moldster.Services
 
         public TenantPageGuideDTO GetAppGuide(long id)
         {
-            return _unit.TenantRepository.FindSingleAs(TenantPageGuideDTO.Expression, id);
+            return _unit.TenantRepository.FindSingleAndMap<TenantPageGuideDTO>( id);
         }
 
         public PageOptions GetPageOptionsById(long pageId)

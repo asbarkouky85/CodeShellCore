@@ -9,7 +9,7 @@ using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Sql;
-using CodeShellCore.Moldster.Tenants.Services;
+using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
