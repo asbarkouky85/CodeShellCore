@@ -1,9 +1,10 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.CodeGeneration.Models;
+using CodeShellCore.Moldster.Environments.Services;
 using System;
 using System.IO;
 
-namespace CodeShellCore.Moldster.Environments.Services
+namespace CodeShellCore.Moldster.Environments
 {
     public class LegacyInitializationService : InitializationService, IInitializationService
     {

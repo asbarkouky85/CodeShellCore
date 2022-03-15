@@ -248,7 +248,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
 
     NotifyCanNotDeleteRow(res: DeleteResult) {
-        //debugger
+        
         let tableName = ""
         if (res.tableName)
             tableName = Shell.Word(res.tableName);

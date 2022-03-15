@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Localization.Dtos
+namespace CodeShellCore.Moldster.Localization
 {
     public enum StringType { Word, Column, Page, Message }
     public class LocalizationDataCollector

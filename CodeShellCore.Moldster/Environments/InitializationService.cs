@@ -1,12 +1,13 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.CodeGeneration.Models;
+using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using System;
 using System.IO;
 using System.IO.Compression;
 
-namespace CodeShellCore.Moldster.Environments.Services
+namespace CodeShellCore.Moldster.Environments
 {
     public class InitializationService : MoldsterFileHandlingService, IInitializationService
     {

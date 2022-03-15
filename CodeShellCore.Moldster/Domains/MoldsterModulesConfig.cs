@@ -12,7 +12,7 @@ namespace CodeShellCore.Moldster.Domains
     {
         static List<MoldsterModule> _modules = new List<MoldsterModule>();
         static Dictionary<string, string> _paths = new Dictionary<string, string>();
-        internal static IEnumerable<MoldsterModule> Modules => _modules;
+        public static IEnumerable<MoldsterModule> Modules => _modules;
 
         public void Register(string assemblyName, string projectPath = null)
         {
@@ -39,7 +39,7 @@ namespace CodeShellCore.Moldster.Domains
 
         }
 
-        internal static void SetModule(MoldsterModule mod)
+        public static void SetModule(MoldsterModule mod)
         {
             var lst = new List<MoldsterModule>();
             foreach (var m in Modules)

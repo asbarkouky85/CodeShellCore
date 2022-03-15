@@ -1,12 +1,12 @@
 ﻿using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeShellCore.Moldster.Environments.Services
+namespace CodeShellCore.Moldster.Environments
 {
     public class EnvironmentService : StandAloneService, IEnvironmentsService
     {

@@ -11,8 +11,8 @@ namespace CodeShellCore.Files.Uploads
     {
         static Regex UrlRegex = new Regex("^http(.*)://");
         protected virtual Dictionary<long, string> FolderByCategory { get; } = new Dictionary<long, string>();
-        protected virtual string TempRoot { get; private set; }
-        protected virtual string SaveRoot { get; private set; }
+        public virtual string TempRoot { get; private set; }
+        public virtual string SaveRoot { get; private set; }
 
         public UploadedFileHandler()
         {

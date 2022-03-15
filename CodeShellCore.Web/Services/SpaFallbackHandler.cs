@@ -13,6 +13,7 @@ namespace CodeShellCore.Web.Services
 {
     public class SpaFallbackHandler : ISpaFallbackHandler
     {
+        public virtual string DefaultTenant => Shell.GetConfigAs<string>("DefaultTenant", false);
         protected string CurrentTenant { get; set; }
         private static string _defaultHtml = @"<!DOCTYPE html>
 <html>
@@ -33,7 +34,7 @@ namespace CodeShellCore.Web.Services
                 return tens.Select(e => e.Value).ToArray();
             }
         }
-        public virtual string DefaultTenant => Shell.GetConfigAs<string>("DefaultTenant", false);
+        
 
         protected virtual Dictionary<string, TenantInfoItem> GetTenants()
         {

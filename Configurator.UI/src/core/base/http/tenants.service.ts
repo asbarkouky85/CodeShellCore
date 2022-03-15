@@ -14,7 +14,7 @@ export class TenantsService extends ConfigHttpService {
     }
 
     Render(connectionId: string): Promise<SubmitResult> {
-        debugger;
+        
         return this.PostAs<SubmitResult>("Render", connectionId);
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using CodeShellCore.Types;
 
 namespace CodeShellCore.Web.Razor.Text
 {
@@ -15,7 +16,7 @@ namespace CodeShellCore.Web.Razor.Text
             {
                 MemberExpression inExp = exp.Expression as MemberExpression;
                 string mem = memberName == null ? "." + exp.Member.Name : "";
-                return inExp.Type.Name+"." + exp.Member.Name;
+                return inExp.Type.GetEntityName()+"." + exp.Member.Name;
             }
             else
             {

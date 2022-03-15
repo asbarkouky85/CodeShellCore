@@ -1,10 +1,9 @@
 ﻿using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Domains.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Domains.Services
+namespace CodeShellCore.Moldster.Domains
 {
     public interface IModulesService
     {

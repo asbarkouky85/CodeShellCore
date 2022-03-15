@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule, GetDomainsData } from './app-routing.module';
 
-window["APP_VERSION"] = "5.0.1";
+window["APP_VERSION"] = "5.2.0";
 
 @NgModule({
     bootstrap: [AppComponent],

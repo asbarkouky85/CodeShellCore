@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using CodeShellCore.Files;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.Domains.Dtos;
-using CodeShellCore.Moldster.Localization.Dtos;
+using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Tenants;

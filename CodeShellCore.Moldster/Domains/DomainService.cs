@@ -4,7 +4,7 @@ using CodeShellCore.Moldster.Data;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeShellCore.Moldster.Domains.Services
+namespace CodeShellCore.Moldster.Domains
 {
     public class DomainService : EntityService<Domain>
     {

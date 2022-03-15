@@ -1,5 +1,4 @@
 ﻿using CodeShellCore.Moldster.CodeGeneration.Models;
-using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Navigation.Dtos;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
@@ -9,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Domains.Services
+namespace CodeShellCore.Moldster.Domains
 {
     public class LegacyDomainScriptGenerationService : DomainScriptGenerationService
     {
@@ -48,7 +47,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             foreach (var domain in domains)
             {
                 string dom = domain.DomainName;
-                tempModel.Routes += Names.GetDomainLazyLoadingRoute(domain.DomainName)+",\r\n\t";
+                tempModel.Routes += Names.GetDomainLazyLoadingRoute(domain.DomainName) + ",\r\n\t";
             }
             string sep = "";
             foreach (var nav in navs)

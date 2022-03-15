@@ -12,10 +12,10 @@ using CodeShellCore.Security.Authorization;
 using System;
 using CodeShellCore.Moldster.Builder.Dtos;
 using CodeShellCore.Moldster.Builder.Services;
-using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Sql.Dtos;
 using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.Domains;
 
 namespace Configurator.Config.Api
 {

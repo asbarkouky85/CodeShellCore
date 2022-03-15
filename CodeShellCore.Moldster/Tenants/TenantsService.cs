@@ -1,5 +1,7 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
+using CodeShellCore.Files.Uploads;
+using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
@@ -12,11 +14,16 @@ namespace CodeShellCore.Moldster.Tenants
     {
         private readonly IConfigUnit unit;
         private readonly INamingConventionService naming;
+        private readonly IUploadedFilesHandler uploaded;
 
-        public TenantsService(IConfigUnit unit, INamingConventionService naming) : base(unit)
+        public TenantsService(
+            IConfigUnit unit,
+            INamingConventionService naming,
+            IUploadedFilesHandler uploaded) : base(unit)
         {
             this.unit = unit;
             this.naming = naming;
+            this.uploaded = uploaded;
         }
 
         public override SubmitResult<TenantEditDTO> Post(TenantDto dto)
@@ -45,13 +52,15 @@ namespace CodeShellCore.Moldster.Tenants
             SaveLogo(dto);
         }
 
-        private void SaveLogo(TenantDto dto)
+        protected virtual void SaveLogo(TenantDto dto)
         {
             IPathsService paths = unit.ServiceProvider.GetService<IPathsService>();
             if (paths != null && dto.LogoFile?.TmpPath != null)
             {
                 var newFilePath = naming.GetLogoFilePath(dto.Code, dto.LogoFile.Name);
-                File.Move(dto.LogoFile.TmpPath, newFilePath);
+                var path = Path.Combine(uploaded.TempRoot, dto.LogoFile.TmpPath);
+                Utils.CreateFolderForFile(newFilePath);
+                File.Move(path, newFilePath);
             }
         }
     }

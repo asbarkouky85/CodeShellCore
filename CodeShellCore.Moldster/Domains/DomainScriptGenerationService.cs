@@ -3,7 +3,6 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Domains.Dtos;
 using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Moldster.Navigation.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
@@ -17,7 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CodeShellCore.Moldster.Domains.Services
+namespace CodeShellCore.Moldster.Domains
 {
     public class DomainScriptGenerationService : ScriptGenerationServiceBase, IDomainScriptGenerationService
     {

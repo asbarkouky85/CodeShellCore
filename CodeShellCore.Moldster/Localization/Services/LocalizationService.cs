@@ -3,7 +3,6 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Localization.Dtos;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Services;
 using CodeShellCore.Text;

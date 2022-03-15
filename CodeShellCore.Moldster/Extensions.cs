@@ -116,6 +116,8 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<ITenantService, TenantsService>();
             coll.AddTransient<IUserDataService, UserDataService>();
             coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
+
+            coll.AddLookupsService<ConfiguratorLookupService>();
         }
 
         public static void AddMoldsterCodeGeneration(this IServiceCollection coll, bool legacy = false)

@@ -183,6 +183,54 @@
 
     </div>
     <div class="row">
+        
+<div class="form-group col-md-6 "
+     id="FG_entity_parentId"
+     #FG_entity_parentId="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Tenant__ParentId' | translate }} </label>
+    
+<select class="form-control"
+        name="Form__entity_parentId" 
+        [li-watch]="model"
+        [(ngModel)]="model.entity.parentId"
+         >
+        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
+    <option *ngFor="let item of Lookups.tenants" [ngValue]="item.id">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_entity_parentId.Write">{{FG_entity_parentId.Value}}</p>
+
+    
+</div>
+
+        
+<div class="form-group col-md-6 "
+     id="FG_entity_useParentUI"
+     #FG_entity_useParentUI="bsFormGroup" bs-group
+      *ngIf="model.entity.parentId">
+    <label>{{'Columns.Tenant__UseParentUI' | translate }} </label>
+    
+<label  class="check-label ">
+    <i class="fa fa-lg" [ngClass]="model.entity.useParentUI?'fa-toggle-on greenColor':'fa-toggle-off grayColor'"></i>
+    
+        <span *ngIf="model.entity.useParentUI" class="greenColor">{{'Words.Yes' | translate }}</span>
+        <span *ngIf="!model.entity.useParentUI" class="grayColor">{{'Words.No' | translate }}</span>
+
+
+    <input name="__entity_useParentUI"
+           style="display:none"
+           type="checkbox"
+            
+           
+           [(ngModel)]="model.entity.useParentUI">
+</label>
+
+
+    
+</div>
+
+    </div>
+    <div class="row" *ngIf="canRender()">
         <div class="col-md-6">
             <div class="form-group"
      id="MainComponentBase" bs-group #MainComponentBase="bsFormGroup"     >
@@ -223,7 +271,7 @@
 
     <div class="row">
 <div  class="from-group" id="update_buttons" #update_buttons>
-            <div class="col-md-3">
+            <div class="col-md-3" *ngIf="canRender()">
                 <br />
                 <div class="input-group btn-group">
                     
@@ -289,7 +337,7 @@
 <div class="form-group col-md-1 "
      id="FG_force"
      #FG_force="bsFormGroup" bs-group
-     >
+      *ngIf="canRender()">
     <label>{{'Columns.Tenant__Force' | translate }} </label>
     
 <label  class="check-label ">
@@ -328,7 +376,7 @@
                     
     <button class="btn btn-success"
             (click)="Publish()"
-             [disabled]="!model.environment"
+             [disabled]="!model.environment" *ngIf="canRender()"
             >
         <i class="fa fa-upload"></i> {{'Words.Publish' | translate }}
     </button>

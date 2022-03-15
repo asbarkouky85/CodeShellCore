@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Tenants;

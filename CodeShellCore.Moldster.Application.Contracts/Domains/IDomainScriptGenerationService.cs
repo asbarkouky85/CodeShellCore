@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Domains.Services
+namespace CodeShellCore.Moldster.Domains
 {
     public interface IDomainScriptGenerationService
     {

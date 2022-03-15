@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Localization.Dtos
+namespace CodeShellCore.Moldster.Localization
 {
     public class CustomFieldDto : EntityDto<long>
     {

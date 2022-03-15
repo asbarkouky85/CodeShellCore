@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Domains.Dtos
+namespace CodeShellCore.Moldster.Domains
 {
     public class DomainWithPagesDTO
     {
