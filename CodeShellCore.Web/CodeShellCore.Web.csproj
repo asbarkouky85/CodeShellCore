@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Application\CodeShellCore.Application.csproj" />
+	  <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore\CodeShellCore.csproj" />
   </ItemGroup>
 
 </Project>

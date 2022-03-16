@@ -68,7 +68,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         public override void PrepEnvironment(bool prod = false)
         {
-            string args = "install";
+            string args = "install --force";
             RunCommand(Paths.UIRoot, "npm", args, true);
             args = "node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --progress";
             RunCommand(Paths.UIRoot, "node", args);

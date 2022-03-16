@@ -192,7 +192,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         public virtual void PrepEnvironment(bool prod = false)
         {
-            string args = "install";
+            string args = "install --force";
             RunCommand(Paths.UIRoot, "npm", args, true);
         }
 

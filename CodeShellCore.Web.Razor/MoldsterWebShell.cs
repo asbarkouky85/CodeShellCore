@@ -15,14 +15,16 @@ namespace CodeShellCore.Web.Razor
     public class MoldsterWebShell : WebShell
     {
         protected virtual IRazorTheme Theme { get; }
+        private bool _useLegacy = false;
         public MoldsterWebShell(IConfiguration config) : base(config)
         {
+            _useLegacy = config.GetSection("Moldster:Legacy").Get<bool>();
         }
 
         protected override bool UseCors => true;
         protected virtual bool MigrateOnStartup => true;
         protected override bool useLocalization => false;
-        protected virtual bool UseLegacy => false;
+        protected virtual bool UseLegacy => _useLegacy;
         protected override string DefaultCorsOrigins => "http://localhost:8050,http://localhost:4200,http://127.0.0.1:8050,http://127.0.0.1:8051";
 
         protected override CultureInfo defaultCulture => new CultureInfo("en");

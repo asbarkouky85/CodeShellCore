@@ -1,6 +1,8 @@
 ﻿using CodeShellCore.Web.Filters;
 using CodeShellCore.Web.Moldster;
 using CodeShellCore.Web.Services;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -21,23 +23,16 @@ namespace CodeShellCore.Web.Controllers
             if (!Request.IsHttps && RestrictHttps)
             {
                 string url = (HttpsUrl ?? "https://" + Request.Host) + Request.Path;
-                Redirect(url);
-            }
-            else if (UseLegacy)
-            {
-                var legacyHandler = new LegacySpaFallbackHandler(Request, DefaultTenant);
-                var model = legacyHandler.Index(GetDefaultTitle(""));
-                IndexPage(model);
+                HttpContext.Response.Redirect(url);
             }
             else
             {
                 var service = GetService<ISpaFallbackHandler>();
                 await service.HandleRequestAsync(HttpContext);
             }
-
         }
 
-        protected virtual IActionResult IndexPage(IndexModel mod)
+        protected virtual ViewResult IndexPage(IndexModel mod)
         {
             return View("~/Pages/Index.cshtml", mod);
         }

@@ -1,0 +1,10 @@
+{
+
+  "tenant_2": {
+    "Code": "tenant_2",
+    "Name": "Smart Roads",
+    "Version": "2.6.1.7",
+    "Logo": "logos/smart_roads.jpg",
+    "UseTenantPackage": "tenant_1"
+  }
+}

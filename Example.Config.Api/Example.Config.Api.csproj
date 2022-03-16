@@ -22,9 +22,20 @@
     <None Remove="wwwroot\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="appsettings - Copy.fms.json" />
+    <Content Remove="appsettings.legacy.json" />
+  </ItemGroup>
+
 
 
   <ItemGroup>
+    <None Include="appsettings.legacy.fms.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="appsettings.legacy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="appsettings.fms.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -444,6 +444,31 @@ namespace CodeShellCore.Moldster.Ng6.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to import { ServerConfigBase } from &quot;codeshell/core&quot;;
+        ///
+        ///export class ServerConfig implements ServerConfigBase {
+        ///    GoogleKey: string = &quot;&quot;;
+        ///	DefaultLocale: string = &quot;&quot;;
+        ///    Version?: string | null | undefined;
+        ///    BaseURL: string = &quot;&quot;;
+        ///    Domain: string = &quot;&quot;;
+        ///    Locale: string = &quot;&quot;;
+        ///	Urls : any = {};
+        ///
+        ///    constructor() {
+        ///        let item: HTMLElement = document.getElementById(&quot;view-data&quot;) as HTMLElement;
+        ///        if (item)
+        ///            Object.assign(this, JSON.parse(item.innerHTML));
+        ///    }
+        ///}.
+        /// </summary>
+        public static string server_config_ts {
+            get {
+                return ResourceManager.GetString("server_config_ts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] Service_ts {

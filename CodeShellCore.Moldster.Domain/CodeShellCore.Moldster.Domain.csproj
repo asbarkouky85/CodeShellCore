@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Moldster.Domain.Shared\CodeShellCore.Moldster.Domain.Shared.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster.Domain.Shared\CodeShellCore.Moldster.Domain.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,6 +11,7 @@ namespace CodeShellCore.Web.Moldster
         public string[] Chunks { get; set; }
         public string ConfigString { get { return Config.ToJson(); } }
 
+        public string PackageDomain { get; set; }
         public string PackageId { get; internal set; }
     }
 }

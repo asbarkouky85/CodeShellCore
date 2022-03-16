@@ -12,7 +12,7 @@ namespace CodeShellCore.Web.Razor.Services
     public class LegacyRazorViewsService : RazorViewsService
     {
         public LegacyRazorViewsService(
-            IRazorRenderingService razor,
+            IMoldsterRazorRenderingService razor,
             IConfigUnit unit,
             IDataService Data,
             IHttpContextAccessor contextAccessor) : base(razor, unit, Data, contextAccessor)

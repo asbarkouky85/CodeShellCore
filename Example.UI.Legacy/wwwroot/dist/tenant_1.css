@@ -1,0 +1,493 @@
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PublicModule", function() { return PublicModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Shared/SharedModule */ "./tenant_1/app/Shared/SharedModule.ts");
+/* harmony import */ var codeshell_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! codeshell/core */ "./Core/codeshell/core.ts");
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var PublicModule = /** @class */ (function () {
+    function PublicModule(trans, conf) {
+        trans.setDefaultLang(conf.Locale);
+        trans.use(conf.Locale);
+    }
+    PublicModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [],
+            exports: [],
+            imports: [
+                _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__["SharedModule"],
+                _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild([
+                    { path: "HomeSlides", loadChildren: function () { return new Promise(function (resolve, reject) { __webpack_require__.e(/*! require.ensure */ 0).then((function (require) { resolve(__webpack_require__(/*! ./HomeSlides/HomeSlidesModule */ "./tenant_1/app/Public/HomeSlides/HomeSlidesModule.ts")['HomeSlidesModule']); }).bind(null, __webpack_require__)).catch(function (e) { reject({ loadChunkError: true, details: e }); }); }); } },
+                ])
+            ],
+            entryComponents: []
+        }),
+        __metadata("design:paramtypes", [_ngx_translate_core__WEBPACK_IMPORTED_MODULE_4__["TranslateService"], codeshell_core__WEBPACK_IMPORTED_MODULE_3__["ServerConfigBase"]])
+    ], PublicModule);
+    return PublicModule;
+}());
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeSlidesModule", function() { return HomeSlidesModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Shared/SharedModule */ "./tenant_1/app/Shared/SharedModule.ts");
+/* harmony import */ var codeshell_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! codeshell/core */ "./Core/codeshell/core.ts");
+/* harmony import */ var codeshell_security__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! codeshell/security */ "./Core/codeshell/security.ts");
+/* harmony import */ var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-translate/core */ "./node_modules/@ngx-translate/core/fesm5/ngx-translate-core.js");
+/* harmony import */ var _PublicModule__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../PublicModule */ "./tenant_1/app/Public/PublicModule.ts");
+/* harmony import */ var _HomeSlideList__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./HomeSlideList */ "./tenant_1/app/Public/HomeSlides/HomeSlideList.ts");
+/* harmony import */ var _HomeSlideCreate__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./HomeSlideCreate */ "./tenant_1/app/Public/HomeSlides/HomeSlideCreate.ts");
+/* harmony import */ var _HomeSlideEdit__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./HomeSlideEdit */ "./tenant_1/app/Public/HomeSlides/HomeSlideEdit.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+var HomeSlidesModule = /** @class */ (function () {
+    function HomeSlidesModule(trans, conf) {
+        trans.setDefaultLang(conf.Locale);
+        trans.use(conf.Locale);
+    }
+    HomeSlidesModule = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
+            declarations: [_HomeSlideList__WEBPACK_IMPORTED_MODULE_7__["HomeSlideList"], _HomeSlideCreate__WEBPACK_IMPORTED_MODULE_8__["HomeSlideCreate"], _HomeSlideEdit__WEBPACK_IMPORTED_MODULE_9__["HomeSlideEdit"],],
+            exports: [_HomeSlideList__WEBPACK_IMPORTED_MODULE_7__["HomeSlideList"], _HomeSlideCreate__WEBPACK_IMPORTED_MODULE_8__["HomeSlideCreate"], _HomeSlideEdit__WEBPACK_IMPORTED_MODULE_9__["HomeSlideEdit"],],
+            imports: [
+                _Shared_SharedModule__WEBPACK_IMPORTED_MODULE_2__["SharedModule"],
+                _PublicModule__WEBPACK_IMPORTED_MODULE_6__["PublicModule"],
+                _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild([
+                    { path: "HomeSlideList", component: _HomeSlideList__WEBPACK_IMPORTED_MODULE_7__["HomeSlideList"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "HomeSlides__HomeSlideList", navigate: false, resource: "", action: "allowAll", apps: null } },
+                    { path: "HomeSlideCreate", component: _HomeSlideCreate__WEBPACK_IMPORTED_MODULE_8__["HomeSlideCreate"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "HomeSlides__HomeSlideCreate", navigate: false, resource: "", action: "allowAll", apps: null } },
+                    { path: "HomeSlideEdit/:id", component: _HomeSlideEdit__WEBPACK_IMPORTED_MODULE_9__["HomeSlideEdit"], canActivate: [codeshell_security__WEBPACK_IMPORTED_MODULE_4__["AuthFilter"]], data: { name: "HomeSlides__HomeSlideEdit", navigate: false, resource: "", action: "allowAll", apps: null } },
+                ])
+            ],
+            entryComponents: []
+        }),
+        __metadata("design:paramtypes", [_ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateService"], codeshell_core__WEBPACK_IMPORTED_MODULE_3__["ServerConfigBase"]])
+    ], HomeSlidesModule);
+    return HomeSlidesModule;
+}());
+
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("public/HomeSlides/HomeSlideList", _HomeSlideList__WEBPACK_IMPORTED_MODULE_7__["HomeSlideList"]);
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("public/HomeSlides/HomeSlideCreate", _HomeSlideCreate__WEBPACK_IMPORTED_MODULE_8__["HomeSlideCreate"]);
+codeshell_core__WEBPACK_IMPORTED_MODULE_3__["Registry"].Register("public/HomeSlides/HomeSlideEdit", _HomeSlideEdit__WEBPACK_IMPORTED_MODULE_9__["HomeSlideEdit"]);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeSlideList", function() { return HomeSlideList; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var Example_public_HomeSlides_HomeSlideListBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Example/public/HomeSlides/HomeSlideListBase */ "./Core/Example/public/HomeSlides/HomeSlideListBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var HomeSlideList = /** @class */ (function (_super) {
+    __extends(HomeSlideList, _super);
+    function HomeSlideList() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    HomeSlideList.prototype.GetPageId = function () { return 0; };
+    Object.defineProperty(HomeSlideList.prototype, "CollectionId", {
+        get: function () { return null; },
+        enumerable: true,
+        configurable: true
+    });
+    HomeSlideList = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./HomeSlideList.html */ "./tenant_1/app/Public/HomeSlides/HomeSlideList.html"), selector: "HomeSlideList" })
+    ], HomeSlideList);
+    return HomeSlideList;
+}(Example_public_HomeSlides_HomeSlideListBase__WEBPACK_IMPORTED_MODULE_1__["HomeSlideListBase"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeSlideListBase", function() { return HomeSlideListBase; });
+/* harmony import */ var codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/baseComponents */ "./Core/codeshell/baseComponents.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _Http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Http */ "./Core/Example/public/Http.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var HomeSlideListBase = /** @class */ (function (_super) {
+    __extends(HomeSlideListBase, _super);
+    function HomeSlideListBase() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.Service = new _Http__WEBPACK_IMPORTED_MODULE_2__["HomeSlidesService"]();
+        _this.showEditor = false;
+        _this.OnAdding = function () { };
+        _this.OnEditing = function (m) { };
+        _this.options = { Showing: 20, Skip: 0, OrderProperty: "DisplayOrder" };
+        return _this;
+    }
+    HomeSlideListBase.prototype.ngOnInit = function () {
+        _super.prototype.ngOnInit.call(this);
+    };
+    HomeSlideListBase.prototype.AfterLoad = function () {
+        var _this = this;
+        $(".sortable").sortable({
+            beforeStop: function (ev) {
+                var el = ev.target;
+                var q = el.querySelectorAll("tr");
+                var ids = [];
+                for (var i = 0; i < q.length; i++) {
+                    var tr = q.item(i);
+                    if (tr && tr.id)
+                        ids.push(parseInt(tr.id));
+                }
+                _this.Service.Silent = true;
+                _this.Service.SetSorting(ids).then(function (d) { return _this.Service.Silent = false; });
+                console.log(ids);
+            }
+        });
+    };
+    HomeSlideListBase.prototype.StartAdd = function () {
+        if (this.AddComponent) {
+            this.AddComponent.Clear();
+        }
+        this.OnAdding();
+        this.showEditor = true;
+    };
+    HomeSlideListBase.prototype.Edit = function (model) {
+        var _this = this;
+        if (this.AddComponent) {
+            this.AddComponent.FillAsync(model.id).then(function (d) {
+                _this.showEditor = true;
+            });
+        }
+        this.OnEditing(model);
+    };
+    HomeSlideListBase.prototype.isActive_Change = function (model) {
+        var _this = this;
+        this.Service.Silent = true;
+        this.Service.SetActive(model.id, model.isActive).then(function (d) { return _this.Service.Silent = false; });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])("AddComponent"),
+        __metadata("design:type", codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_0__["EditComponentBase"])
+    ], HomeSlideListBase.prototype, "AddComponent", void 0);
+    HomeSlideListBase = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    ], HomeSlideListBase);
+    return HomeSlideListBase;
+}(codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_0__["ListComponentBase"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Http_HomeSlidesService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Http/HomeSlidesService */ "./Core/Example/public/Http/HomeSlidesService.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "HomeSlidesService", function() { return _Http_HomeSlidesService__WEBPACK_IMPORTED_MODULE_0__["HomeSlidesService"]; });
+
+/* harmony import */ var _Http_PublicContentsService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Http/PublicContentsService */ "./Core/Example/public/Http/PublicContentsService.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PublicContentsService", function() { return _Http_PublicContentsService__WEBPACK_IMPORTED_MODULE_1__["PublicContentsService"]; });
+
+/* harmony import */ var _Http_MessagesService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Http/MessagesService */ "./Core/Example/public/Http/MessagesService.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MessagesService", function() { return _Http_MessagesService__WEBPACK_IMPORTED_MODULE_2__["MessagesService"]; });
+
+
+
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeSlidesService", function() { return HomeSlidesService; });
+/* harmony import */ var codeshell_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/http */ "./Core/codeshell/http.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var HomeSlidesService = /** @class */ (function (_super) {
+    __extends(HomeSlidesService, _super);
+    function HomeSlidesService() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(HomeSlidesService.prototype, "BaseUrl", {
+        get: function () {
+            return "/apiAction/HomeSlides";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    HomeSlidesService.prototype.SetSorting = function (ids) {
+        return this.Post("SetSorting", ids);
+    };
+    HomeSlidesService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    ], HomeSlidesService);
+    return HomeSlidesService;
+}(codeshell_http__WEBPACK_IMPORTED_MODULE_0__["EntityHttpService"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PublicContentsService", function() { return PublicContentsService; });
+/* harmony import */ var codeshell_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/http */ "./Core/codeshell/http.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var PublicContentsService = /** @class */ (function (_super) {
+    __extends(PublicContentsService, _super);
+    function PublicContentsService() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(PublicContentsService.prototype, "BaseUrl", {
+        get: function () {
+            return "/apiAction/PublicContents";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    PublicContentsService.prototype.GetByCode = function (code, lang) {
+        return this.Get("GetByCode", { code: code, lang: lang });
+    };
+    PublicContentsService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    ], PublicContentsService);
+    return PublicContentsService;
+}(codeshell_http__WEBPACK_IMPORTED_MODULE_0__["EntityHttpService"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MessagesService", function() { return MessagesService; });
+/* harmony import */ var codeshell_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/http */ "./Core/codeshell/http.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var MessagesService = /** @class */ (function (_super) {
+    __extends(MessagesService, _super);
+    function MessagesService() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(MessagesService.prototype, "BaseUrl", {
+        get: function () {
+            return "/apiAction/Messages";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MessagesService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    ], MessagesService);
+    return MessagesService;
+}(codeshell_http__WEBPACK_IMPORTED_MODULE_0__["EntityHttpService"]));
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.HomeSlides__HomeSlideList' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n    <a class=\"btn btn-success\"\r\n       [routerLink]=\"'/public/HomeSlides/HomeSlideCreate'\"\r\n        *ngIf=\"Permission.insert\"\r\n       >\r\n        <i class=\"fa fa-plus\"></i> {{'Words.AddEntity' | translate : {p0:'Words.HomeSlide' | translate } }}\r\n    </a>\r\n\r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n        <ol class=\"breadcrumb\">\r\n    <li>\r\n        <a routerLink=\"/\">{{'Words.Main' | translate }}</a>\r\n    </li>\r\n    <li>\r\n        {{'Pages.HomeSlides__HomeSlideList' | translate }}\r\n    </li>\r\n</ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.HomeSlides__HomeSlideList' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n\r\n    <a class=\"btn btn-success buttonGra-sm\"\r\n       [routerLink]=\"'/public/HomeSlides/HomeSlideCreate'\"\r\n        *ngIf=\"Permission.insert\"\r\n       >\r\n        <i class=\"fa fa-plus\"></i> {{'Words.AddEntity' | translate : {p0:'Words.HomeSlide' | translate } }}\r\n    </a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div [ngClass]=\"IsEmbedded?'panel panel-default embedded body':'animated fadeInRight'\">\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'container-fluid content-block'\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-4\" style=\"padding: 10px 24px;color:#9B9B9B\">\r\n                <span><b>{{'Words.Count' | translate }}</b> : <span style=\"color:#9B9B9B\">{{totalCount}}</span></span>\r\n            </div>\r\n            <div class=\"col-md-8\">\r\n                <search-group (termChange)=\"HeaderSearch($event)\"></search-group>\r\n            </div>\r\n        </div>\r\n        <paginate [showing]=\"options.Showing\" [total-count]=\"totalCount\" [max-pages]=\"10\" [(currentPage)]=\"pageIndex\" (pageChange)=\"PageSelected($event)\"></paginate>\r\n\r\n        <div class=\"table-responsive\">\r\n            <table class=\"table\">\r\n    <thead>\r\n        <tr>\r\n            <th></th>\r\n                <th  >\r\n        {{'Columns.HomeSlide__Image' | translate }}\r\n    </th>\r\n\r\n                <th  >\r\n        {{'Columns.HomeSlide__Title' | translate }}\r\n    </th>\r\n\r\n                <th  >\r\n        {{'Columns.HomeSlide__IsActive' | translate }}\r\n    </th>\r\n\r\n            <th></th>\r\n        </tr>\r\n    </thead>\r\n    <tbody class=\"sortable\">\r\n\r\n        <tr *ngFor=\"let item of list\" [id]=\"item.id\">\r\n\r\n            <td>\r\n                <div class=\"d-flex align-items-center\">\r\n                    <i class=\"fa fa-bars sort-icon\"></i>\r\n                </div>\r\n            </td>\r\n            <td>\r\n                <img [src]=\"'/'+item.image\" class=\"banner_icon\" alt=\"\">\r\n            </td>\r\n            <td  >\r\n    {{item.title}}\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td  >\r\n    \r\n<select class=\"form-control\"\r\n        name=\"Form__isActive\" \r\n        [li-watch]=\"item\"\r\n        [(ngModel)]=\"item.isActive\"\r\n         (change)=\"isActive_Change(item)\" >\r\n    <option *ngFor=\"let item of activation\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n</select>\r\n\r\n    <div style=\"position:relative\">\r\n        \r\n    </div>\r\n</td>\r\n            <td>\r\n                <div class=\"btn-group btnResponsive \">\r\n            <a *ngIf=\"Permission.update\" class=\"btn btn-primary btn-sm\" [routerLink]=\"'/public/HomeSlides/HomeSlideEdit/' +item.id\">\r\n                <i class=\"fa fa-pen\"></i>\r\n            </a>\r\n\r\n\r\n            <a *ngIf=\"Permission.delete\" class=\"btn btn-danger btn-sm\" (click)=\"Delete(item.id)\">\r\n                <i class=\"fa fa-trash\" aria-hidden=\"true\"></i>\r\n            </a>\r\n\r\n</div>\r\n            </td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n\r\n\r\n\r\n        </div>\r\n\r\n        <paginate [showing]=\"options.Showing\" [total-count]=\"totalCount\" [max-pages]=\"10\" [(currentPage)]=\"pageIndex\" (pageChange)=\"PageSelected($event)\"></paginate>\r\n    </div>\r\n\r\n</div>\n<div style='display:none' #lookupOptionsContainer values='null'></div>\n<div style='display:none' #viewParamsContainer values='{\"AddUrl\":\"/public/HomeSlides/HomeSlideCreate\",\"EditUrl\":\"/public/HomeSlides/HomeSlideEdit\",\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{}}'></div>";__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeSlideCreate", function() { return HomeSlideCreate; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var Example_public_HomeSlides_HomeSlideEditBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Example/public/HomeSlides/HomeSlideEditBase */ "./Core/Example/public/HomeSlides/HomeSlideEditBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var HomeSlideCreate = /** @class */ (function (_super) {
+    __extends(HomeSlideCreate, _super);
+    function HomeSlideCreate() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    HomeSlideCreate.prototype.GetPageId = function () { return 0; };
+    Object.defineProperty(HomeSlideCreate.prototype, "CollectionId", {
+        get: function () { return null; },
+        enumerable: true,
+        configurable: true
+    });
+    HomeSlideCreate = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./HomeSlideCreate.html */ "./tenant_1/app/Public/HomeSlides/HomeSlideCreate.html"), selector: "HomeSlideCreate" })
+    ], HomeSlideCreate);
+    return HomeSlideCreate;
+}(Example_public_HomeSlides_HomeSlideEditBase__WEBPACK_IMPORTED_MODULE_1__["HomeSlideEditBase"]));
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeSlideEditBase", function() { return HomeSlideEditBase; });
+/* harmony import */ var codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! codeshell/baseComponents */ "./Core/codeshell/baseComponents.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var codeshell_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! codeshell/http */ "./Core/codeshell/http.ts");
+/* harmony import */ var _Http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Http */ "./Core/Example/public/Http.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+var HomeSlideEditBase = /** @class */ (function (_super) {
+    __extends(HomeSlideEditBase, _super);
+    function HomeSlideEditBase() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.Service = new _Http__WEBPACK_IMPORTED_MODULE_3__["HomeSlidesService"]();
+        _this.Files = new codeshell_http__WEBPACK_IMPORTED_MODULE_2__["FilesHttpService"]("");
+        _this.Upload = function (f) { return _this.Files.PostFiles("Upload", f); };
+        _this.isActive = [];
+        return _this;
+    }
+    HomeSlideEditBase = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    ], HomeSlideEditBase);
+    return HomeSlideEditBase;
+}(codeshell_baseComponents__WEBPACK_IMPORTED_MODULE_0__["EditComponentBase"]));
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.HomeSlides__HomeSlideCreate' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n        <ol class=\"breadcrumb\">\r\n    <li>\r\n        <a routerLink=\"/\">{{'Words.Main' | translate }}</a>\r\n    </li>\r\n    <li>\r\n        {{'Pages.HomeSlides__HomeSlideCreate' | translate }}\r\n    </li>\r\n</ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.HomeSlides__HomeSlideCreate' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div><div [ngClass]=\"IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'\">\r\n\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'content-block'\">\r\n        <div class=\"row\" *ngIf=\"UseLocalization\">\r\n            <div class=\"col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom\">\r\n                <div class=\"btn-group btn-group-sm pull-last\">\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='ar'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='ar'\">\r\n                            {{'Words.ar' | translate }}\r\n                        </button>\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='en'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='en'\">\r\n                            {{'Words.en' | translate }}\r\n                        </button>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n        \r\n<form #Form=\"ngForm\" >\n\r\n<div class=\"row form-group \"\r\n     id=\"FG_imageFile\"\r\n     #FG_imageFile=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__ImageFile' | translate }}\r\n<span style=\"color:red\" > * </span>    </label>\r\n    <div class=\"col-sm-9\">\r\n        \r\n<div class=\"input-group\">\r\n    <label class=\"form-control\">\r\n        <a *ngIf=\"model.imageFile\"\r\n           class=\"file-link\"\r\n           target=\"_blank\"\r\n           [routerLink]=\"'/'+model.imageFile.url\">\r\n            {{model.imageFile.name}}\r\n        </a>\r\n    </label>\r\n\r\n            <div class=\"input-group-btn\">\r\n                <label class=\"btn btn-primary\">\r\n                    <input name=\"image_f\"\r\n                           type=\"file\"\r\n                           [(ngModel)]=\"image_f\"\r\n                           [file-uploader]=\"Upload\"\r\n                           [(fileData)]=\"model.imageFile\"\r\n                           required  \r\n                           style=\"display:none\">\r\n                    <i class=\"fa fa-upload\"></i>\r\n                </label>\r\n            </div>\r\n</div>\r\n\r\n        <span *ngIf=\"Form.controls['image_f'] && Form.controls['image_f'].invalid\">\r\n        <small *ngIf=\"Form.controls['image_f'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__ImageFile' | translate } }}</small>\r\n</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"row form-group \"\r\n     id=\"FG_title\"\r\n     #FG_title=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__Title' | translate }} ({{UI_Lang}})\r\n<span style=\"color:red\" > * </span>    </label>\r\n    <div class=\"col-sm-9 row\">\r\n        <div class=\"col-sm-6\">\r\n            <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.HomeSlide__Title' | translate }}\"\r\n       name=\"Form__title\"\r\n       [(ngModel)]=\"model.title\"\r\n       title=\"{{'Columns.HomeSlide__Title' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required  >\r\n    <p *ngIf=\"!FG_title.Write\">{{FG_title.Value}}</p>\r\n\r\n\r\n            <span *ngIf=\"Form.controls['Form__title'] && Form.controls['Form__title'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__title'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__Title' | translate } }}</small>\r\n</span>\r\n        </div>\r\n        <div class=\"col-sm-6\">\r\n                    <input name=\"Title_Loc\"\r\n                           placeholder=\"{{&#x27;Columns.HomeSlide__Title&#x27; | translate }} ({{&#x27;Words.&#x27;&#x2B;CurrentLang | translate}})\"\r\n                          [ngClass]=\"CurrentLang=='ar'?'dir-rtl':'dir-ltr'\"\r\n                           type=\"text\" \r\n                           [(ngModel)]=\"Loc.data.Title\"\r\n                           (change)=\"Loc.AddToChangeList()\"\r\n                           class=\"form-control\" />\r\n\r\n\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n<div class=\"row form-group \"\r\n     id=\"FG_text\"\r\n     #FG_text=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__Text' | translate }} ({{UI_Lang}})\r\n<span style=\"color:red\" > * </span>    </label>\r\n    <div class=\"col-sm-9 row\">\r\n        <div class=\"col-sm-6\">\r\n            \r\n<textarea class=\"form-control \"\r\n          placeholder=\"{{'Columns.HomeSlide__Text' | translate }}\"\r\n          name=\"Form__text\"\r\n          [(ngModel)]=\"model.text\"\r\n          required  ></textarea>\r\n\r\n            <span *ngIf=\"Form.controls['Form__text'] && Form.controls['Form__text'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__text'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__Text' | translate } }}</small>\r\n</span>\r\n        </div>\r\n        <div class=\"col-sm-6\">\r\n                    <textarea class=\"form-control\" \r\n                              name=\"Text_Loc\" \r\n                              [ngClass]=\"CurrentLang=='ar'?'dir-rtl':'dir-ltr'\"\r\n                              placeholder=\"{{&#x27;Columns.HomeSlide__Text&#x27; | translate }} ({{&#x27;Words.&#x27;&#x2B;CurrentLang | translate}})\"\r\n                              [(ngModel)]=\"Loc.data.Text\"\r\n                              (change)=\"Loc.AddToChangeList()\"\r\n                              ></textarea>\r\n\r\n\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n<div class=\"row form-group \"\r\n     id=\"FG_url\"\r\n     #FG_url=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__Url' | translate }}\r\n    </label>\r\n    <div class=\"col-sm-9\">\r\n        <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.HomeSlide__Url' | translate }}\"\r\n       name=\"Form__url\"\r\n       [(ngModel)]=\"model.url\"\r\n       title=\"{{'Columns.HomeSlide__Url' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [pattern]=\"'(https?:\\/\\/[a-zA-Z0-9][a-zA-Z0-9-\\./\\?=&]+[a-zA-Z0-9])'\"  >\r\n    <p *ngIf=\"!FG_url.Write\">{{FG_url.Value}}</p>\r\n\r\n\r\n        <span *ngIf=\"Form.controls['Form__url'] && Form.controls['Form__url'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__url'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.HomeSlide__Url' | translate } }}</small>\r\n</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"row form-group \"\r\n     id=\"FG_isActive\"\r\n     #FG_isActive=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__IsActive' | translate }}\r\n    </label>\r\n    <div class=\"col-sm-9\">\r\n        \r\n<select class=\"form-control\"\r\n        name=\"Form__isActive\" \r\n        [li-watch]=\"model\"\r\n        [(ngModel)]=\"model.isActive\"\r\n         >\r\n    <option *ngFor=\"let item of isActive\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n</select>\r\n    <p *ngIf=\"!FG_isActive.Write\">{{FG_isActive.Value}}</p>\r\n\r\n        \r\n    </div>\r\n</div>\r\n</form>\r\n\r\n\r\n        \r\n        <div class=\"row submit-buttons\">\r\n            <div class=\"col-md-12\">\r\n                <div class=\"pull-last\">\r\n                    \r\n        <button class=\"btn btn-primary\"\r\n            [disabled]=\"!CanSubmit\"\r\n            (click)=\"Submit()\">\r\n        {{'Words.Save' | translate }}\r\n    </button>\r\n\r\n    \r\n    <button class=\"btn btn-default\"\r\n            (click)=\"Cancel()\"\r\n            \r\n            >\r\n        {{'Words.Cancel' | translate }}\r\n    </button>\r\n\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\n<div style='display:none' #lookupOptionsContainer values='null'></div>\n<div style='display:none' #viewParamsContainer values='{\"AddUrl\":null,\"EditUrl\":null,\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{}}'></div>";__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeSlideEdit", function() { return HomeSlideEdit; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var Example_public_HomeSlides_HomeSlideEditBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! Example/public/HomeSlides/HomeSlideEditBase */ "./Core/Example/public/HomeSlides/HomeSlideEditBase.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var HomeSlideEdit = /** @class */ (function (_super) {
+    __extends(HomeSlideEdit, _super);
+    function HomeSlideEdit() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    HomeSlideEdit.prototype.GetPageId = function () { return 0; };
+    Object.defineProperty(HomeSlideEdit.prototype, "CollectionId", {
+        get: function () { return null; },
+        enumerable: true,
+        configurable: true
+    });
+    HomeSlideEdit = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({ template: __webpack_require__(/*! ./HomeSlideEdit.html */ "./tenant_1/app/Public/HomeSlides/HomeSlideEdit.html"), selector: "HomeSlideEdit" })
+    ], HomeSlideEdit);
+    return HomeSlideEdit;
+}(Example_public_HomeSlides_HomeSlideEditBase__WEBPACK_IMPORTED_MODULE_1__["HomeSlideEditBase"]));
+
+module.exports = "<div class=\"page-header container-fluid\" *ngIf=\"!IsEmbedded !HideHeader\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-5 col-xs-12\">\r\n            <h2>{{'Pages.HomeSlides__HomeSlideEdit' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span></h2>\r\n        </div>\r\n\r\n        <div class=\"col-sm-7 col-xs-12\">\r\n            <div class=\"row\">\r\n\r\n                <div class=\"col-md-12 col-xs-12 padTop padBottom\">\r\n                    <div class=\"pull-last btn-group\">\r\n\r\n                        \r\n                        \r\n    <button class=\"btn btn-info margin-sides\"\r\n            (click)=\"Refresh()\"\r\n            \r\n            >\r\n        <i class=\"fa fa-redo\"></i> \r\n    </button>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"row\" *ngIf=\"!IsEmbedded\">\r\n        <ol class=\"breadcrumb\">\r\n    <li>\r\n        <a routerLink=\"/\">{{'Words.Main' | translate }}</a>\r\n    </li>\r\n    <li>\r\n        {{'Pages.HomeSlides__HomeSlideEdit' | translate }}\r\n    </li>\r\n</ol>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"page-header section-header\" *ngIf=\"IsEmbedded && !HideHeader\">\r\n    <div class=\"container-fluid\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-8\">\r\n                {{'Pages.HomeSlides__HomeSlideEdit' | translate }}<span *ngIf=\"HeaderExtra\"> - {{HeaderExtra}}</span>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div><div [ngClass]=\"IsEmbedded?'panel panel-default embedded':'container-fluid animated fadeInRight'\">\r\n\r\n    <div [ngClass]=\"IsEmbedded?'panel-body':'content-block'\">\r\n        <div class=\"row\" *ngIf=\"UseLocalization\">\r\n            <div class=\"col-xs-12 col-md-6 col-xs-offset-0 col-md-offset-6 padBottom\">\r\n                <div class=\"btn-group btn-group-sm pull-last\">\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='ar'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='ar'\">\r\n                            {{'Words.ar' | translate }}\r\n                        </button>\r\n                        <button class=\"btn btn-sm\" [ngClass]=\"CurrentLang=='en'?'btn-primary':'btn-default'\" (click)=\"CurrentLang='en'\">\r\n                            {{'Words.en' | translate }}\r\n                        </button>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n        \r\n<form #Form=\"ngForm\" >\n\r\n<div class=\"row form-group \"\r\n     id=\"FG_imageFile\"\r\n     #FG_imageFile=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__ImageFile' | translate }}\r\n<span style=\"color:red\" > * </span>    </label>\r\n    <div class=\"col-sm-9\">\r\n        \r\n<div class=\"input-group\">\r\n    <label class=\"form-control\">\r\n        <a *ngIf=\"model.imageFile\"\r\n           class=\"file-link\"\r\n           target=\"_blank\"\r\n           [routerLink]=\"'/'+model.imageFile.url\">\r\n            {{model.imageFile.name}}\r\n        </a>\r\n    </label>\r\n\r\n            <div class=\"input-group-btn\">\r\n                <label class=\"btn btn-primary\">\r\n                    <input name=\"image_f\"\r\n                           type=\"file\"\r\n                           [(ngModel)]=\"image_f\"\r\n                           [file-uploader]=\"Upload\"\r\n                           [(fileData)]=\"model.imageFile\"\r\n                           required  \r\n                           style=\"display:none\">\r\n                    <i class=\"fa fa-upload\"></i>\r\n                </label>\r\n            </div>\r\n</div>\r\n\r\n        <span *ngIf=\"Form.controls['image_f'] && Form.controls['image_f'].invalid\">\r\n        <small *ngIf=\"Form.controls['image_f'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__ImageFile' | translate } }}</small>\r\n</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"row form-group \"\r\n     id=\"FG_title\"\r\n     #FG_title=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__Title' | translate }} ({{UI_Lang}})\r\n<span style=\"color:red\" > * </span>    </label>\r\n    <div class=\"col-sm-9 row\">\r\n        <div class=\"col-sm-6\">\r\n            <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.HomeSlide__Title' | translate }}\"\r\n       name=\"Form__title\"\r\n       [(ngModel)]=\"model.title\"\r\n       title=\"{{'Columns.HomeSlide__Title' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       required  >\r\n    <p *ngIf=\"!FG_title.Write\">{{FG_title.Value}}</p>\r\n\r\n\r\n            <span *ngIf=\"Form.controls['Form__title'] && Form.controls['Form__title'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__title'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__Title' | translate } }}</small>\r\n</span>\r\n        </div>\r\n        <div class=\"col-sm-6\">\r\n                    <input name=\"Title_Loc\"\r\n                           placeholder=\"{{&#x27;Columns.HomeSlide__Title&#x27; | translate }} ({{&#x27;Words.&#x27;&#x2B;CurrentLang | translate}})\"\r\n                          [ngClass]=\"CurrentLang=='ar'?'dir-rtl':'dir-ltr'\"\r\n                           type=\"text\" \r\n                           [(ngModel)]=\"Loc.data.Title\"\r\n                           (change)=\"Loc.AddToChangeList()\"\r\n                           class=\"form-control\" />\r\n\r\n\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n<div class=\"row form-group \"\r\n     id=\"FG_text\"\r\n     #FG_text=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__Text' | translate }} ({{UI_Lang}})\r\n<span style=\"color:red\" > * </span>    </label>\r\n    <div class=\"col-sm-9 row\">\r\n        <div class=\"col-sm-6\">\r\n            \r\n<textarea class=\"form-control \"\r\n          placeholder=\"{{'Columns.HomeSlide__Text' | translate }}\"\r\n          name=\"Form__text\"\r\n          [(ngModel)]=\"model.text\"\r\n          required  ></textarea>\r\n\r\n            <span *ngIf=\"Form.controls['Form__text'] && Form.controls['Form__text'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__text'].errors!.required\" class=\"form-text text-danger\">{{'Messages.field_required' | translate : {p0:'Columns.HomeSlide__Text' | translate } }}</small>\r\n</span>\r\n        </div>\r\n        <div class=\"col-sm-6\">\r\n                    <textarea class=\"form-control\" \r\n                              name=\"Text_Loc\" \r\n                              [ngClass]=\"CurrentLang=='ar'?'dir-rtl':'dir-ltr'\"\r\n                              placeholder=\"{{&#x27;Columns.HomeSlide__Text&#x27; | translate }} ({{&#x27;Words.&#x27;&#x2B;CurrentLang | translate}})\"\r\n                              [(ngModel)]=\"Loc.data.Text\"\r\n                              (change)=\"Loc.AddToChangeList()\"\r\n                              ></textarea>\r\n\r\n\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n<div class=\"row form-group \"\r\n     id=\"FG_url\"\r\n     #FG_url=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__Url' | translate }}\r\n    </label>\r\n    <div class=\"col-sm-9\">\r\n        <input type=\"text\"\r\n       class=\"form-control \"\r\n       placeholder=\"{{'Columns.HomeSlide__Url' | translate }}\"\r\n       name=\"Form__url\"\r\n       [(ngModel)]=\"model.url\"\r\n       title=\"{{'Columns.HomeSlide__Url' | translate }}\"\r\n       [li-watch]=\"model\"\r\n\r\n       \r\n       [pattern]=\"'(https?:\\/\\/[a-zA-Z0-9][a-zA-Z0-9-\\./\\?=&]+[a-zA-Z0-9])'\"  >\r\n    <p *ngIf=\"!FG_url.Write\">{{FG_url.Value}}</p>\r\n\r\n\r\n        <span *ngIf=\"Form.controls['Form__url'] && Form.controls['Form__url'].invalid\">\r\n        <small *ngIf=\"Form.controls['Form__url'].errors!.pattern\" class=\"form-text text-danger\">{{'Messages.invalid_field' | translate : {p0:'Columns.HomeSlide__Url' | translate } }}</small>\r\n</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"row form-group \"\r\n     id=\"FG_isActive\"\r\n     #FG_isActive=\"bsFormGroup\" bs-group\r\n     >\r\n    <label class=\"col-sm-3 control-label\">\r\n        {{'Columns.HomeSlide__IsActive' | translate }}\r\n    </label>\r\n    <div class=\"col-sm-9\">\r\n        \r\n<select class=\"form-control\"\r\n        name=\"Form__isActive\" \r\n        [li-watch]=\"model\"\r\n        [(ngModel)]=\"model.isActive\"\r\n         >\r\n    <option *ngFor=\"let item of isActive\" [ngValue]=\"item.id\">{{item.name}}</option>\r\n</select>\r\n    <p *ngIf=\"!FG_isActive.Write\">{{FG_isActive.Value}}</p>\r\n\r\n        \r\n    </div>\r\n</div>\r\n</form>\r\n\r\n\r\n        \r\n        <div class=\"row submit-buttons\">\r\n            <div class=\"col-md-12\">\r\n                <div class=\"pull-last\">\r\n                    \r\n        <button class=\"btn btn-primary\"\r\n            [disabled]=\"!CanSubmit\"\r\n            (click)=\"Submit()\">\r\n        {{'Words.Save' | translate }}\r\n    </button>\r\n\r\n    \r\n    <button class=\"btn btn-default\"\r\n            (click)=\"Cancel()\"\r\n            \r\n            >\r\n        {{'Words.Cancel' | translate }}\r\n    </button>\r\n\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\n<div style='display:none' #lookupOptionsContainer values='null'></div>\n<div style='display:none' #viewParamsContainer values='{\"AddUrl\":null,\"EditUrl\":null,\"DetailsUrl\":null,\"ListUrl\":null,\"Fields\":[],\"Other\":{}}'></div>";
+/*# sourceMappingURL=tenant_1.css.map*/

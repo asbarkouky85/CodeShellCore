@@ -17,13 +17,13 @@ namespace CodeShellCore.Web.Razor.Services
 {
     public class RazorViewsService : ServiceBase, IViewsService
     {
-        private readonly IRazorRenderingService razor;
+        private readonly IMoldsterRazorRenderingService razor;
         private readonly IConfigUnit _unit;
         private readonly IDataService data;
         private readonly IHttpContextAccessor contextAccessor;
 
         public RazorViewsService(
-            IRazorRenderingService razor,
+            IMoldsterRazorRenderingService razor,
             IConfigUnit unit,
             IDataService Data,
             IHttpContextAccessor contextAccessor

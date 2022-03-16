@@ -9,8 +9,7 @@
     <RootNamespace>CodeShellCore</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore\CodeShellCore.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore\CodeShellCore.csproj" />
+	</ItemGroup>
 </Project>

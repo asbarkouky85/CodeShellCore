@@ -23,7 +23,7 @@ using CodeShellCore.Moldster.Localization;
 
 namespace CodeShellCore.Web.Razor.Services
 {
-    public class RazorRenderingService : ServiceBase, IRazorRenderingService
+    public class RazorRenderingService : ServiceBase, IMoldsterRazorRenderingService
     {
         protected IRazorViewEngine _razorViewEngine;
         protected ITempDataProvider _tempDataProvider;

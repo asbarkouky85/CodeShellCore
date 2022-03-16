@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Moldster.Domain\CodeShellCore.Moldster.Domain.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Moldster.Domain\CodeShellCore.Moldster.Domain.csproj" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />

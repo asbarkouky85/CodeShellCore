@@ -51,7 +51,7 @@ namespace CodeShellCore.Web.Razor
                 coll.AddTransient<IViewsService, RazorViewsService>();
             }
 
-            coll.AddTransient<IRazorRenderingService, RazorRenderingService>();
+            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
             coll.AddScoped<IOutputWriter, MessagePusherOutputService>();
             coll.AddTransient<IPushingSessionManager, ConfigSessionManager>();
             coll.AddTransient<ISessionManager, ConfigSessionManager>();
@@ -70,7 +70,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddServiceFor<PageCategory, PageCategoryService>();
             coll.AddTransient<RazorViewsService>();
 
-            coll.AddTransient<IRazorRenderingService, RazorRenderingService>();
+            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
 
             coll.AddSingleton<DefaultPathsService>();
             if (legacy)
@@ -87,7 +87,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddTransient<IMoldsterService, MoldsterService>();
 
             coll.AddTransient<IDataService, DbDataService>();
-            coll.AddTransient<IRazorRenderingService, RazorRenderingService>();
+            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
         }
 
         public static void AddMvcRazorHelpers(this IServiceCollection coll)
