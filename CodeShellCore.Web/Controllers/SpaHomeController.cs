@@ -11,15 +11,15 @@ namespace CodeShellCore.Web.Controllers
     [QueryAuthorizeFilter(AllowAnonymous = true)]
     public abstract class SpaHomeController : BaseMvcController
     {
-        protected virtual bool UseLegacy { get; }
-
+        public abstract string GetDefaultTitle(string locale);
         public virtual string DefaultTenant => Shell.GetConfigAs<string>("DefaultTenant", false);
         public virtual bool RestrictHttps => Shell.GetConfigAs<bool>("RestrictHttps", false);
         public virtual string HttpsUrl => Shell.GetConfigAs<string>("HttpsUrl", false);
-        public abstract string GetDefaultTitle(string loc);
 
         public async virtual Task Index()
         {
+            var locale = Request.GetLocaleFromCookie();
+            var title = GetDefaultTitle(locale);
             if (!Request.IsHttps && RestrictHttps)
             {
                 string url = (HttpsUrl ?? "https://" + Request.Host) + Request.Path;
@@ -28,13 +28,8 @@ namespace CodeShellCore.Web.Controllers
             else
             {
                 var service = GetService<ISpaFallbackHandler>();
-                await service.HandleRequestAsync(HttpContext);
+                await service.HandleRequestAsync(HttpContext, title);
             }
-        }
-
-        protected virtual ViewResult IndexPage(IndexModel mod)
-        {
-            return View("~/Pages/Index.cshtml", mod);
         }
 
         public virtual IActionResult SetLocale(string lang)

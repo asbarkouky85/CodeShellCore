@@ -8,10 +8,9 @@ namespace Example.UI.Legacy.Controllers
 {
     public class HomeController : SpaHomeController
     {
-        protected override bool UseLegacy => true;
-        public override string GetDefaultTitle(string loc)
+        public override string GetDefaultTitle(string locale)
         {
-            return "Legacy Spa";
+            return "";
         }
     }
 }

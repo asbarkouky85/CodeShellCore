@@ -18,13 +18,14 @@ namespace CodeShellCore.Web.Services
         }
         public string DefaultTenant => Shell.GetConfigAs<string>("DefaultTenant", false);
 
-        public async Task HandleRequestAsync(HttpContext con)
+        public async Task HandleRequestAsync(HttpContext con, string defaultTitle = null)
         {
             var legacyHandler = new LegacySpaModelBuilder(con.Request, DefaultTenant);
-            var model = legacyHandler.Index("");
+            var model = legacyHandler.BuildModel(defaultTitle);
+
             con.Response.ContentType = "text/html";
             var res = razor.RenderPartial(con, "Index", model);
-            
+
             await con.Response.WriteAsync(res);
         }
     }

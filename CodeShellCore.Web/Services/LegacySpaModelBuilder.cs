@@ -65,7 +65,7 @@ namespace CodeShellCore.Web.Services
         }
 
 
-        public virtual IndexModel Index(string defaultTitle)
+        public virtual IndexModel BuildModel(string defaultTitle)
         {
             string requestedDomain = RequestedDomain;
             string useDomain = requestedDomain;
