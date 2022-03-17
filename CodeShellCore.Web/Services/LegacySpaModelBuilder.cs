@@ -13,27 +13,22 @@ using CodeShellCore.Helpers;
 
 namespace CodeShellCore.Web.Services
 {
-    public class LegacySpaModelBuilder
+    public class LegacySpaModelBuilder : ILegacySpaModelBuilder
     {
-        private readonly string defaultTenant;
 
-        HttpRequest Request { get; set; }
-        public LegacySpaModelBuilder(HttpRequest req, string defaultTenant)
-        {
-            Request = req;
-            this.defaultTenant = defaultTenant;
-        }
+        private string DefaultTenant;
+        protected HttpRequest Request { get; set; }
+        protected virtual IServerConfig ServerConfig { get { return new DefaultServerConfig(); } }
+        protected virtual string[] Domains => Tenants.Select(d => d.Key).ToArray();
+        protected virtual Func<IndexModel, IActionResult> EmptyUrlHandler { get; }
 
-        public virtual IServerConfig ServerConfig { get { return new DefaultServerConfig(); } }
-        public virtual string[] Domains => Tenants.Select(d => d.Key).ToArray();
-        public virtual Func<IndexModel, IActionResult> EmptyUrlHandler { get; }
-        public virtual Dictionary<string, TenantInfoItem> Tenants
+        protected virtual Dictionary<string, TenantInfoItem> Tenants
         {
             get
             {
                 var _tenants = new Dictionary<string, TenantInfoItem>();
                 string infoFile = Path.Combine(Shell.AppRootPath, "tenantInfo.json");
-                if (System.IO.File.Exists(infoFile))
+                if (File.Exists(infoFile))
                 {
                     _tenants = System.IO.File.ReadAllText(infoFile).FromJson<Dictionary<string, TenantInfoItem>>();
                 }
@@ -41,7 +36,7 @@ namespace CodeShellCore.Web.Services
             }
         }
 
-        public string JsEnvironment
+        protected string JsEnvironment
         {
             get
             {
@@ -50,7 +45,7 @@ namespace CodeShellCore.Web.Services
             }
         }
 
-        public virtual string RequestedDomain
+        protected virtual string RequestedDomain
         {
             get
             {
@@ -60,13 +55,16 @@ namespace CodeShellCore.Web.Services
                     if (Domains.Contains(p))
                         return p;
                 }
-                return defaultTenant;
+                return DefaultTenant;
             }
         }
 
 
-        public virtual IndexModel BuildModel(string defaultTitle)
+        public virtual IndexModel BuildModel(HttpRequest request, string defaultTenant, string defaultTitle)
         {
+            Request = request;
+            DefaultTenant = defaultTenant;
+
             string requestedDomain = RequestedDomain;
             string useDomain = requestedDomain;
             bool isDevBuild = JsEnvironment == "dev";

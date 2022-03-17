@@ -28,6 +28,7 @@ namespace CodeShellCore.Web.Moldster
             {
                 services.AddTransient<IRazorRenderingService, RazorRenderingService>();
                 services.AddTransient<ISpaFallbackHandler, LegacySpaFallbackHandler>();
+                services.AddTransient<ILegacySpaModelBuilder, LegacySpaModelBuilder>();
             }
         }
 
