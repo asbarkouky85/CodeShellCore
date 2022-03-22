@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CodeShellCore.Text;
 
 namespace CodeShellCore.Web.Moldster
 {
@@ -19,6 +20,11 @@ namespace CodeShellCore.Web.Moldster
         public DefaultServerConfig()
         {
             DefaultLocale = Shell.DefaultCulture.TwoLetterISOLanguageName;
+        }
+
+        public string GetJson()
+        {
+            return this.ToJson();
         }
     }
 }

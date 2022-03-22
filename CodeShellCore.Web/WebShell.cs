@@ -87,7 +87,7 @@ namespace CodeShellCore.Web
         protected virtual async Task FallbackMiddlewareHandler(HttpContext context, Func<Task> next)
         {
             var s = context.RequestServices.GetRequiredService<ISpaFallbackHandler>();
-            await s.HandleRequestAsync(context);
+            await s.HandleRequestAsync(context, next);
         }
 
         public virtual void RegisterRoutes(IRouteBuilder routeBuilder)
@@ -124,7 +124,7 @@ namespace CodeShellCore.Web
                     // options.SkipDefaults = true;
                 });
             }
-            
+
 
             if (UseHealthChecks)
             {
@@ -193,7 +193,7 @@ namespace CodeShellCore.Web
                 app.Use(FallbackMiddlewareHandler);
                 app.UseStaticFiles();
             }
-                
+
 
             if (UseHealthChecks)
             {

@@ -6,6 +6,7 @@ using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,15 +27,28 @@ namespace CodeShellCore.Web.Moldster
             base.RegisterServices(services);
             if (UseLegacy)
             {
-                services.AddTransient<IRazorRenderingService, RazorRenderingService>();
+                
                 services.AddTransient<ISpaFallbackHandler, LegacySpaFallbackHandler>();
-                services.AddTransient<ILegacySpaModelBuilder, LegacySpaModelBuilder>();
             }
+            services.AddRazorPages();
+            services.AddTransient<IRazorRenderingService, RazorRenderingService>();
         }
 
         public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseStaticFiles();
+            var hot = getConfig("UseHotUpdate")?.Value == "True";
+
+            if (hot)
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true,
+                });
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+
             base.ConfigureHttp(app, env);
         }
     }

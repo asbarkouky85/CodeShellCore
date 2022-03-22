@@ -8,10 +8,9 @@ namespace CodeShellCore.Web.Moldster
         public string Locale { get; set; }
         public string FooterMessage { get; set; }
         public IServerConfig Config { get; set; }
-        public string[] Chunks { get; set; }
-        public string ConfigString { get { return Config.ToJson(); } }
+        public string ConfigString => Config.GetJson();
 
         public string PackageDomain { get; set; }
-        public string PackageId { get; internal set; }
+        public string PackageId { get; set; }
     }
 }

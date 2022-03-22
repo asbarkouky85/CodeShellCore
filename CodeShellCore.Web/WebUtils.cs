@@ -1,12 +1,5 @@
-﻿using CodeShellCore.Files.Logging;
-using CodeShellCore.Helpers;
-using CodeShellCore.Http;
+﻿using CodeShellCore.Types;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 
 namespace CodeShellCore.Web
 {
@@ -28,6 +21,13 @@ namespace CodeShellCore.Web
             return FillConfigUrlParams(formattedUrl, Request.Host.Host, Request.IsHttps);
         }
 
-       
+        public static string GetAssemblyInfoHtml(string title = null)
+        {
+            string serviceName = Shell.ProjectAssembly.GetName().Name;
+            string version = Shell.ProjectAssembly.GetVersionString();
+
+            return "<head><title>" + (title ?? serviceName) + "</title></head><h1>" + serviceName + "</h1><h2>Version : " + version + "</h2>";
+        }
+
     }
 }

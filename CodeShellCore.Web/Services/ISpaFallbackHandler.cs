@@ -11,5 +11,6 @@ namespace CodeShellCore.Web.Services
     {
         string DefaultTenant { get; }
         Task HandleRequestAsync(HttpContext con, string defaultTitle = null);
+        Task HandleRequestAsync(HttpContext con, Func<Task> next);
     }
 }

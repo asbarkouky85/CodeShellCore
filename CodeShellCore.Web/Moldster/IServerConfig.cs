@@ -13,7 +13,7 @@ namespace CodeShellCore.Web.Moldster
         string DefaultLocale { get; }
         string Env { get; set; }
         string Version { get; set; }
-        string Hash { get; set; }
         Dictionary<string, string> Urls { get; set; }
+        string GetJson();
     }
 }

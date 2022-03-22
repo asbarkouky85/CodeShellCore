@@ -20,6 +20,7 @@ namespace CodeShellCore.Web.Controllers
         {
             var locale = Request.GetLocaleFromCookie();
             var title = GetDefaultTitle(locale);
+            var pth = HttpContext.Request.Path;
             if (!Request.IsHttps && RestrictHttps)
             {
                 string url = (HttpsUrl ?? "https://" + Request.Host) + Request.Path;

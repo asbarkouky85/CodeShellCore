@@ -95,5 +95,10 @@ namespace CodeShellCore.Web.Services
 
 
         }
+
+        public Task HandleRequestAsync(HttpContext con, Func<Task> next)
+        {
+            return HandleRequestAsync(con);
+        }
     }
 }
