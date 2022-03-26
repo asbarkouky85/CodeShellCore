@@ -13,4 +13,8 @@
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>
