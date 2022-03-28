@@ -510,7 +510,7 @@ namespace CodeShellCore.Moldster.Pages.Services
                 op.AddFilter(d => d.DomainId == domainId);
             }
 
-            var lst = Unit.PageRepository.FindAs(PageListDTO.Expression, op);
+            var lst = Unit.PageRepository.FindAndMap(op);
             Unit.PageRepository.FillReferencedBy(lst.List);
             Unit.PageRepository.FillReferences(lst.List);
             return lst;
@@ -519,7 +519,7 @@ namespace CodeShellCore.Moldster.Pages.Services
         public LoadResult<PageListDTO> GetAll(LoadOptions op)
         {
             var opts = op.GetOptionsFor<PageListDTO>();
-            return Unit.PageRepository.FindAs(PageListDTO.Expression, opts);
+            return Unit.PageRepository.FindAndMap(opts);
         }
 
         public SubmitResult ApplyCustomization(PageCustomizationDTO dto)

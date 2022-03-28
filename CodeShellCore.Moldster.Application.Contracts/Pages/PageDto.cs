@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Pages.Dtos
+namespace CodeShellCore.Moldster.Pages
 {
     [EntityName("Page")]
     public class PageDto : EntityDto<long>

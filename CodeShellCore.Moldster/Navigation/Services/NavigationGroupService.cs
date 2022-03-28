@@ -3,6 +3,7 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Navigation.Dtos;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Tenants;
 using System.Collections.Generic;
@@ -54,9 +55,7 @@ namespace CodeShellCore.Moldster.Navigation.Services
             var opts = opt.GetOptionsFor<PageListDTO>();
             opts.AddFilter(a => a.HasRoute == true);
             opts.AddFilter(a => a.RouteParameters == null);
-            //&& np.Page.HasRoute == true
-            //        && np.Page.RouteParameters == null
-            return _unit.PageRepository.FindAs(PageListDTO.Expression, opts);
+            return _unit.PageRepository.FindAndMap(opt.GetOptionsFor<PageListDTO>());
         }
 
         public SubmitResult DeleteNavPage(long id)

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Pages.Dtos
+namespace CodeShellCore.Moldster.Pages
 {
     public class CreatePageDTO
     {
