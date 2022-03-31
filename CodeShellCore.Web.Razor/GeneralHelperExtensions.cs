@@ -545,7 +545,7 @@ namespace CodeShellCore.Web.Razor
                 classes: classes,
                 url: url,
                 btn: BtnClass.Success,
-                attr: new { star__ngIf = "Permission.insert" },
+                attr: new { star__ngIf = "Permission.insert", automationId = "btnAdd" },
                 icon: "fa fa-plus");
         }
 
