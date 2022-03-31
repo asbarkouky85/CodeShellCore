@@ -155,11 +155,11 @@ namespace CodeShellCore.Files
             }
         }
 
-        public static void CompressDirectory(string folderPath, string targetPath)
+        public static void CompressDirectory(string folderPath, string targetPath, bool includeBaseDirectory = false)
         {
             if (File.Exists(targetPath))
                 File.Delete(targetPath);
-            ZipFile.CreateFromDirectory(folderPath, targetPath, CompressionLevel.Optimal, false);
+            ZipFile.CreateFromDirectory(folderPath, targetPath, CompressionLevel.Optimal, includeBaseDirectory);
         }
 
         public static void DecompressDirectory(string file, string folder)

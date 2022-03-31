@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Localization.Dtos;
+﻿using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Text;
 using CodeShellCore.Web.Razor.Models;

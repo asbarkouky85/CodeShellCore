@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
+using CodeShellCore.Data.Mapping;
 using CodeShellCore.Linq;
 
 namespace CodeShellCore.Data
@@ -13,6 +14,8 @@ namespace CodeShellCore.Data
     public class DefaultRepository<T> : IRepository<T> where T : class
     {
         static List<T> _storedData = new List<T>();
+
+        public IQueryProjector Projector { get; set; }
 
         public void Add(T obj)
         {
@@ -77,6 +80,21 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
+        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<TR> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public LoadResult<TR> FindAndMap<TR>(ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
         {
             throw new NotImplementedException();
@@ -102,7 +120,7 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public LoadResult FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
+        public LoadResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
         {
             throw new NotImplementedException();
         }
@@ -113,6 +131,16 @@ namespace CodeShellCore.Data
         }
 
         public T FindSingle(Expression<Func<T, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TR FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public TR FindSingleAndMap<TR>(object id) where TR : class
         {
             throw new NotImplementedException();
         }

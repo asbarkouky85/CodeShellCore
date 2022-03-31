@@ -1,15 +1,14 @@
-﻿using NUnit.Framework;
-using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.UnitTest.Data;
+﻿using CodeShellCore.Files;
 using CodeShellCore.Moldster;
-using Microsoft.EntityFrameworkCore;
-using CodeShellCore.Web.Razor;
-using CodeShellCore.Files;
-using Moq;
-using CodeShellCore.Moldster.Configurator.Services;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.UnitTest.Data;
+using CodeShellCore.Web.Razor;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using NUnit.Framework;
 
 namespace CodeShellCore.UnitTest.Moldster
 {

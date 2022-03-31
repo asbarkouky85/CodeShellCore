@@ -21,7 +21,7 @@ using CodeShellCore.Web.Razor.General;
 using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Localization.Dtos;
+using CodeShellCore.Moldster.Localization;
 
 namespace CodeShellCore.Web.Razor
 {
@@ -146,7 +146,7 @@ namespace CodeShellCore.Web.Razor
             var data = helper.GetViewData<string>("ModelType");
             if (data == null)
             {
-                data = helper.ViewData.ModelMetadata?.ModelType?.RealModelType().Name ?? "";
+                data = helper.ViewData.ModelMetadata?.ModelType?.GetEntityName() ?? "";
                 helper.SetViewData("ModelType", data);
             }
             return data;

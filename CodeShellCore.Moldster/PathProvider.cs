@@ -37,16 +37,21 @@ namespace CodeShellCore.Moldster
 
         }
 
-        public virtual List<LayoutFileDTO> GetLayouts(bool nameOnly = false)
-        {
-            return new List<LayoutFileDTO>();
-        }
-
         public List<MoldsterEnvironment> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs)
         {
             var json = envs.ToJsonIndent();
             File.WriteAllText(_filePath, json);
             return envs.ToList();
+        }
+
+        public virtual List<LayoutFileDTO> GetLayouts(bool nameOnly = false)
+        {
+            return new List<LayoutFileDTO>();
+        }
+
+        public MoldsterEnvironment GetEnvironmentByName(string name)
+        {
+            return GetEnvironments().Where(e => e.Name == name).FirstOrDefault();
         }
 
         public DefaultPathsService()

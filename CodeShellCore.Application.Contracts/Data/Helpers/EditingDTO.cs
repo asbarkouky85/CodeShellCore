@@ -15,6 +15,11 @@ namespace CodeShellCore.Data.Helpers
         }
     }
 
+    public interface IEditingDto<EntityDto>
+    {
+        EntityDto Entity { get; set; }
+    }
+
     public class EditingDTO<T> : DTO<T, long> where T : class
     {
 

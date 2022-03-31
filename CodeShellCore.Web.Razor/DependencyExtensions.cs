@@ -1,53 +1,57 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-
+﻿using CodeShellCore.Cli;
 using CodeShellCore.DependencyInjection;
-using CodeShellCore.Cli;
-using CodeShellCore.Security.Sessions;
 using CodeShellCore.Http.Pushing;
-using CodeShellCore.Text.Localization;
-
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Services;
-using CodeShellCore.Moldster.Razor.Services;
+using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Localization.Services;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Razor;
-
+using CodeShellCore.Moldster.Services;
+using CodeShellCore.Moldster.Tracing;
+using CodeShellCore.Security.Sessions;
+using CodeShellCore.Text.Localization;
 using CodeShellCore.Web.Razor.Elements;
-using CodeShellCore.Web.Razor.Tables;
-using CodeShellCore.Web.Razor.Services;
 using CodeShellCore.Web.Razor.Elements.Angular;
-using CodeShellCore.Web.Razor.Themes;
-using CodeShellCore.Web.Razor.Validation.Internal;
-using CodeShellCore.Web.Razor.Text;
-using CodeShellCore.Web.Razor.General;
 using CodeShellCore.Web.Razor.Elements.Moldster;
+using CodeShellCore.Web.Razor.General;
 using CodeShellCore.Web.Razor.General.Moldster;
+using CodeShellCore.Web.Razor.Services;
+using CodeShellCore.Web.Razor.SignalR;
+using CodeShellCore.Web.Razor.Tables;
 using CodeShellCore.Web.Razor.Tables.Angular;
 using CodeShellCore.Web.Razor.Tables.Moldster;
-using CodeShellCore.Web.Razor.SignalR;
-using CodeShellCore.Web.Razor.Controllers.Configurator;
+using CodeShellCore.Web.Razor.Text;
+using CodeShellCore.Web.Razor.Themes;
+using CodeShellCore.Web.Razor.Validation.Internal;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
-using CodeShellCore.Moldster.Pages.Services;
-using CodeShellCore.Moldster.PageCategories.Services;
-using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Localization.Services;
-using CodeShellCore.Moldster.Domains.Services;
-using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.Tracing;
-using CodeShellCore.Moldster.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Web.Razor
 {
     public static class DependencyExtensions
     {
 
-        public static void AddMoldsterServerGeneration(this IServiceCollection coll)
+        public static void AddMoldsterServerGeneration(this IServiceCollection coll, bool legacy = false)
         {
-            coll.AddMoldsterCodeGeneration();
+            coll.AddMoldsterCodeGeneration(legacy);
 
-            coll.AddTransient<IViewsService, ServerViewsService>();
+            if (legacy)
+            {
+                coll.AddTransient<IViewsService, LegacyRazorViewsService>();
+            }
+            else
+            {
+                coll.AddTransient<IViewsService, RazorViewsService>();
+            }
+
+            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
             coll.AddScoped<IOutputWriter, MessagePusherOutputService>();
             coll.AddTransient<IPushingSessionManager, ConfigSessionManager>();
             coll.AddTransient<ISessionManager, ConfigSessionManager>();
@@ -58,37 +62,32 @@ namespace CodeShellCore.Web.Razor
             coll.AddSignalRHub<IBundlingTasksNotifications, TasksHub>();
         }
 
-        public static void AddMoldsterConfiguratorControllers(this IMvcBuilder coll)
-        {
-            var ass = typeof(DomainsController).Assembly;
-
-            coll.AddApplicationPart(ass)
-                .AddControllersAsServices()
-                .ConfigureApplicationPartManager(d =>
-            {
-                d.FeatureProviders.Add(new ConfiguratorFeatureProvider());
-            });
-            SearchExpressions.RegisterExpressions();
-        }
-
-        public static void AddMoldsterWeb(this IServiceCollection coll)
+        public static void AddMoldsterWeb(this IServiceCollection coll, bool legacy = false)
         {
 
             coll.AddServiceFor<Domain, DomainService>();
             coll.AddServiceFor<Page, PagesService>();
             coll.AddServiceFor<PageCategory, PageCategoryService>();
-            coll.AddTransient<ServerViewsService>();
+            coll.AddTransient<RazorViewsService>();
 
-            coll.AddTransient<IRazorRenderingService, RazorRenderingService>();
+            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
 
             coll.AddSingleton<DefaultPathsService>();
-            coll.AddSingleton<IMoldProvider, DefaultMoldProvider>();
+            if (legacy)
+            {
+                coll.AddSingleton<IMoldProvider, LegacyAngularMoldProvider>();
+            }
+            else
+            {
+                coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
+            }
+
 
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
 
             coll.AddTransient<IDataService, DbDataService>();
-            coll.AddTransient<IMoldsterRazorService, MoldsterRazorService>();
+            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
         }
 
         public static void AddMvcRazorHelpers(this IServiceCollection coll)

@@ -7,5 +7,6 @@ namespace CodeShellCore.Moldster.Pages.Dtos
     {
         public ViewParams ViewParams { get; set; }
         public Dictionary<string, string> Sources { get; set; }
+
     }
 }

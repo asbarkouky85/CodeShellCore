@@ -17,10 +17,13 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Services;
 using CodeShellCore.Http;
 using CodeShellCore.Files.Logging;
+using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Localization;
 
 namespace CodeShellCore.Web.Razor.Services
 {
-    public class RazorRenderingService : ServiceBase, IRazorRenderingService
+    public class RazorRenderingService : ServiceBase, IMoldsterRazorRenderingService
     {
         protected IRazorViewEngine _razorViewEngine;
         protected ITempDataProvider _tempDataProvider;
@@ -29,6 +32,60 @@ namespace CodeShellCore.Web.Razor.Services
             _razorViewEngine = engine;
             _tempDataProvider = tmp;
         }
+
+        public TemplateDataCollector GetCollector(HttpContext context, string viewName, string layout = null)
+        {
+            ActionContext actionContext = new ActionContext(context, new RouteData(), new ActionDescriptor());
+
+            using (var sw = new StringWriter())
+            {
+                var viewResult = _razorViewEngine.FindView(actionContext, viewName, false);
+
+                if (viewResult.View == null)
+                    throw new Exception($"{viewName} does not match any available view");
+
+                var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
+
+                viewDictionary["CollectViewData"] = true;
+                viewDictionary["PageControls"] = new TemplateDataCollector
+                {
+                    EntityName = null,
+                    Controls = new List<ControlDTO>()
+                };
+                viewDictionary["LocalizationDataCollector"] = new LocalizationDataCollector();
+
+
+                if (layout != null)
+                {
+                    viewDictionary["PageOptions"] = new PageOptions
+                    {
+                        Layout = layout
+                    };
+                }
+
+                var viewContext = new ViewContext(
+                            actionContext,
+                            viewResult.View,
+                            viewDictionary,
+                            new TempDataDictionary(actionContext.HttpContext, _tempDataProvider),
+                            sw,
+                            new HtmlHelperOptions()
+                        );
+
+                var t = RenderAsync(viewResult, viewContext);
+                t.Wait();
+                if (t.Result.Code != 200)
+                {
+                    throw new CodeShellHttpException(t.Result);
+                }
+
+                var data = (TemplateDataCollector)viewContext.ViewData["PageControls"];
+                data.Localization = ((LocalizationDataCollector)viewContext.ViewData["LocalizationDataCollector"]);
+                data.Localization.Unify();
+                return data;
+            }
+        }
+
         public string RenderPartial(HttpContext context, string viewName, object model = null, Dictionary<string, object> viewData = null)
         {
             ActionContext actionContext = new ActionContext(context, new RouteData(), new ActionDescriptor());

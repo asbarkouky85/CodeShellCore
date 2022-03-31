@@ -33,7 +33,7 @@ export class NavigationGroupsService extends ConfigHttpService {
     }
 
     SetApplyOrder(applyOrder: any): Promise<SubmitResult> {
-        debugger;
+        
         return this.PostAs<SubmitResult>("SetApplyOrder", applyOrder);
     }
 

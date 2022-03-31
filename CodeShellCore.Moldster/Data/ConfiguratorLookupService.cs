@@ -1,9 +1,11 @@
 ﻿using CodeShellCore.Data.Lookups;
 using System.Collections.Generic;
 using System.Dynamic;
-using CodeShellCore.Moldster.Domains.Services;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Resources;
+using System;
+using CodeShellCore.Moldster.Tenants;
+using CodeShellCore.Moldster.Domains;
 
 namespace CodeShellCore.Moldster.Data
 {
@@ -12,6 +14,11 @@ namespace CodeShellCore.Moldster.Data
         private readonly IConfigUnit _unit;
         private readonly IPathsService app;
         private readonly IModulesService mods;
+
+        protected override Dictionary<string, Type> ResourceToModel => new Dictionary<string, Type>
+        {
+            {"Tenants",typeof(Tenant) }
+        };
 
         protected override string EntitiesAssembly => "CodeShellCore.Moldster";
 

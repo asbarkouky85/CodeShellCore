@@ -70,7 +70,7 @@ export abstract class EditComponentBase extends BaseComponent {
         this.model = this._bound ? this._bound : this.DefaultModel();
 
         let lookupOpts = this.GetLookupOptions();
-
+        
         if (!this.IsEmbedded) {
             if (lookupOpts == null && !this.LoadLookups) {
                 this.StartComponent();
@@ -262,7 +262,7 @@ export abstract class EditComponentBase extends BaseComponent {
     protected OnReady(): void { };
 
     async SubmitLocalizablesAsync(): Promise<void> {
-        debugger;
+        
         var s: { [key: string]: LocalizablesDTO } = {};
         let submit: boolean = false;
         for (var i in this.Localizables) {

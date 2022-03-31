@@ -68,7 +68,7 @@ export class Paginate {
     }
 
     SetPages() {
-        ////debugger;
+        
         
         this.Pages = [];
         if (this.Showing == 0 || this.Total == 0)
@@ -89,7 +89,7 @@ export class Paginate {
 
     WritePages() {
         if (this.MaxPages) {
-            ////debugger;
+            
             let s = this.MaxPages / 2;
             let sInt = Math.floor(s);
             let start = 0, end = this.MaxPages;

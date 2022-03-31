@@ -13,16 +13,16 @@ namespace CodeShellCore.Moldster.Builder.Services
 {
     public class PreviewService : ConsoleService, IPreviewService
     {
-        private readonly IPathsService paths;
-        private readonly IDataService data;
+        protected readonly IPathsService Paths;
+        protected readonly IDataService Data;
         public static PreviewTask Current { get; protected set; }
 
         public virtual PreviewTask CurrentPreview => Current;
 
         public PreviewService(IOutputWriter writer, IPathsService paths, IDataService data) : base(writer)
         {
-            this.paths = paths;
-            this.data = data;
+            this.Paths = paths;
+            this.Data = data;
         }
 
         protected static string WebpackConfigTemplate => @"const merge = require('webpack-merge');
@@ -63,26 +63,26 @@ module.exports = (env) => {
                 StopPreview();
             try
             {
-                var folder = Path.Combine(paths.UIRoot, tenantCode);
+                var folder = Path.Combine(Paths.UIRoot, tenantCode);
                 if (!Directory.Exists(folder))
                     return new Result { Code = 1, Message = "render_tenant_first" };
 
-                var otherApps = data.GetAppCodes().Where(d => d != tenantCode);
+                var otherApps = Data.GetAppCodes().Where(d => d != tenantCode);
                 Out.WriteLine("Deleting other tenant files");
                 foreach (var app in otherApps)
                 {
-                    var p = Path.Combine(paths.UIRoot, app);
+                    var p = Path.Combine(Paths.UIRoot, app);
                     if (Directory.Exists(p))
                     {
                         DeleteFolder(p, app);
                     }
                 }
-                var dev = Path.Combine(paths.UIRoot, BundleFolder, "dev");
+                var dev = Path.Combine(Paths.UIRoot, BundleFolder, "dev");
                 if (Directory.Exists(dev))
                     DeleteFolder(dev, "Development bundle");
 
                 var configString = WebpackConfigTemplate.Replace("%TenantCode%", tenantCode);
-                var configPath = Path.Combine(paths.UIRoot, "webpack.config.js");
+                var configPath = Path.Combine(Paths.UIRoot, "webpack.config.js");
                 Out.Write("Changing configuration");
                 File.WriteAllText(configPath, configString);
                 WriteSuccess(null, SuccessCol);
@@ -94,7 +94,7 @@ module.exports = (env) => {
 
                 if (Current.IsStarted)
                 {
-                    var url = Utils.CombineUrl(paths.UIUrl, Current.TenantCode);
+                    var url = Utils.CombineUrl(Paths.UIUrl, Current.TenantCode);
                     Out.WriteLine("Preview started on :" + url);
                     res.Message = "tenant_preview_created";
                     res.Data["Url"] = url;
@@ -127,7 +127,7 @@ module.exports = (env) => {
             try
             {
                 var arg = launchProfile == null ? "" : $"--launch-profile {launchProfile}";
-                var process = GetCommandProcess(paths.UIRoot, "dotnet", $"-d run {arg} --no-build");
+                var process = GetCommandProcess(Paths.UIRoot, "dotnet", $"-d run {arg} --no-build");
 
                 //process.EnableRaisingEvents = true;
                 process.StartInfo.RedirectStandardOutput = true;
@@ -193,7 +193,7 @@ module.exports = (env) => {
                 try
                 {
 
-                    var process = GetCommandProcess(paths.UIRoot, "node", $"node_modules/webpack/bin/webpack.js --watch");
+                    var process = GetCommandProcess(Paths.UIRoot, "node", $"node_modules/webpack/bin/webpack.js --watch");
 
                     process.StartInfo.RedirectStandardError = true;
                     process.StartInfo.RedirectStandardOutput = true;

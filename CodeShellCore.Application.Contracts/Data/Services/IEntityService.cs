@@ -10,7 +10,7 @@ namespace CodeShellCore.Data.Services
 {
     public interface IEntityService : IServiceBase
     {
-        LoadResult LoadObjects(LoadOptions opts);
+        //LoadResult LoadObjects(LoadOptions opts);
         DeleteResult DeleteById(object prime);
         object GetSingleObject(object id);
         SubmitResult Create(string obj);

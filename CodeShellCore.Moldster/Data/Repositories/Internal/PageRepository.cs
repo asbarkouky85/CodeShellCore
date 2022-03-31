@@ -13,45 +13,24 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {
     public class PageRepository : Repository_Int64<Page, MoldsterContext>, IPageRepository
     {
-        private readonly IPathsService paths;
+        //private readonly IPathsService paths;
 
         public PageRepository(MoldsterContext con, IPathsService paths) : base(con)
         {
-            this.paths = paths;
+            //this.paths = paths;
         }
 
 
-        protected IQueryable<PageDTO> QueryPageDTOForRendering(IQueryable<Page> q = null)
+        protected IQueryable<PageDetailsDto> QueryPageDTOForRendering(IQueryable<Page> q = null)
         {
             q = q ?? Loader;
-            return q.Select(e => new PageDTO
-            {
-                TenantCode = e.Tenant.Code,
-                TenantId = e.TenantId,
-                Page = e,
-                BaseViewPath = e.PageCategory.ViewPath,
-                ParentHasResource = e.PageCategory.ResourceId != null,
-                ResourceName = e.Resource.Name,
-                DomainName = e.Domain.Name,
-                CollectionId = e.SourceCollection == null ? null : e.SourceCollection.Name,
-            });
-
+            return Projector.Project<Page, PageDetailsDto>(q);
         }
 
-        protected IQueryable<PageDTO> QueryPageDTOForRouting(IQueryable<Page> q = null)
+        protected IQueryable<PageDetailsDto> QueryPageDTOForRouting(IQueryable<Page> q = null)
         {
             q = q ?? Loader;
-            return q.Select(p => new PageDTO
-            {
-                DomainName = p.Domain.Name,
-                TenantCode = p.Tenant.Code,
-                TenantId = p.TenantId,
-                Page = p,
-                BaseViewPath = paths.CoreAppName + "/" + p.PageCategory.ViewPath + "Base",
-                ResourceName = p.Resource.Name,
-                ActionName = p.ResourceAction == null ? (p.SpecialPermission ?? null) : p.ResourceAction.Name,
-                PageIdentifier = p.Domain.Name + "__" + p.Name,
-            });
+            return Projector.Project<Page, PageDetailsDto>(q);
         }
 
         internal IQueryable<PageListDTO> QueryPageListDTO(IQueryable<Page> q = null)
@@ -78,7 +57,7 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
             return qq;
         }
 
-        public IEnumerable<PageDTO> GetDomainPagesForRouting(string tenantCode, long domainId, bool chldren = false)
+        public IEnumerable<PageDetailsDto> GetDomainPagesForRouting(string tenantCode, long domainId, bool chldren = false)
         {
             var q = Loader.Where(d => d.Tenant.Code == tenantCode && d.DomainId == domainId && d.IsHomePage != true);
             if (chldren)
@@ -157,24 +136,24 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
             return QueryPageListDTO(q).LoadWith(opts.GetOptionsFor<PageListDTO>());
         }
 
-        public void UpdatePageViewParamsJson(Page p, PageParameterForJson[] ps, PageRouteDTO r, FieldDefinition[] definitions)
+        public void UpdatePageViewParamsJson(Page p, PageParameterForJson[] ps, PageRouteDTO pageRoute, FieldDefinition[] customFields)
         {
 
             var jsonParams = p.ViewParams == null ? new ViewParams() : p.ViewParams.FromJson<ViewParams>();
-            if (r != null)
+            if (pageRoute != null)
             {
-                jsonParams.AddUrl = r.AddUrlString != null ? "/" + r.AddUrlString : null;
-                jsonParams.DetailsUrl = r.DetailsUrlString != null ? "/" + r.DetailsUrlString : null;
-                jsonParams.EditUrl = r.EditUrlString != null ? "/" + r.EditUrlString : null;
-                jsonParams.ListUrl = r.ListUrlString != null ? "/" + r.ListUrlString : null;
+                jsonParams.AddUrl = pageRoute.AddUrlString != null ? "/" + pageRoute.AddUrlString : null;
+                jsonParams.DetailsUrl = pageRoute.DetailsUrlString != null ? "/" + pageRoute.DetailsUrlString : null;
+                jsonParams.EditUrl = pageRoute.EditUrlString != null ? "/" + pageRoute.EditUrlString : null;
+                jsonParams.ListUrl = pageRoute.ListUrlString != null ? "/" + pageRoute.ListUrlString : null;
             }
             foreach (var pp in ps)
             {
                 jsonParams.Other[pp.Name] = pp.Value;
             }
-            if (definitions != null)
+            if (customFields != null)
             {
-                jsonParams.Fields = definitions;
+                jsonParams.Fields = customFields;
             }
             p.ViewParams = jsonParams.ToJson();
             Update(p);
@@ -247,7 +226,7 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
             }
         }
 
-        public PageDTO FindSingleForRendering(Expression<Func<Page, bool>> p)
+        public PageDetailsDto FindSingleForRendering(Expression<Func<Page, bool>> p)
         {
             var q = Loader.Where(p);
             return QueryPageDTOForRendering(q).FirstOrDefault();

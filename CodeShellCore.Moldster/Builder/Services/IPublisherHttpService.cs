@@ -9,5 +9,6 @@ namespace CodeShellCore.Moldster.Builder.Services
         PublisherResult HandleRequest(PublisherRequest req);
         Result UploadFile(string files, string folder);
         Result UploadFile(byte[] file, string folder);
+        bool FileExists(string url);
     }
 }

@@ -1,0 +1,15 @@
+<div [hidden]="!ShowLoader" class="loader-overlay">
+    <div class="loader"></div>
+</div>
+
+<div>
+    <div class="wrapper">
+        <app-top-bar #topBar></app-top-bar>
+        <div class="wrapper-side" *ngIf="IsLoggedIn && ShowNav">
+            <app-navigation-side-bar></app-navigation-side-bar>
+        </div>
+        <div class="wrapper-content" [ngClass]="!IsLoggedIn || !ShowNav?'expanded':null">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

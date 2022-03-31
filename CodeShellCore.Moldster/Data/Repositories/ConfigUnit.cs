@@ -7,6 +7,10 @@ using CodeShellCore.Moldster.Data.Repositories.Internal;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Navigation;
+using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Tenants;
 
 namespace CodeShellCore.Moldster.Data.Repositories
 {

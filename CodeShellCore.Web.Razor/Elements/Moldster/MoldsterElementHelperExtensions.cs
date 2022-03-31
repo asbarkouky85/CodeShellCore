@@ -14,7 +14,7 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
                 return null;
 
             ControlGroupWriter mod = new ControlGroupWriter(helper);
-            mod.UseProperty(define.Name, typeof(T).RealModelType().Name + "__" + define.Name, define.Name, false);
+            mod.UseProperty(define.Name, typeof(T).GetEntityName() + "__" + define.Name, define.Name, false);
 
             if (!acc.Write)
             {

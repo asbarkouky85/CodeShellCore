@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CodeShellCore.Data.EntityFramework
 {
-    public class KeyRepository<T, TContext, TPrime> : Repository<T, TContext>
+    public class KeyRepository<T, TContext, TPrime> : Repository<T, TContext>, IKeyRepository<T, TPrime>
          where T : class, IModel<TPrime>
 
         where TContext : DbContext
@@ -60,6 +60,19 @@ namespace CodeShellCore.Data.EntityFramework
             return Loader.Where(d => d.Id.Equals(id)).Select(exp).FirstOrDefault();
         }
 
+        public override TR FindSingleAndMap<TR>(object id)
+        {
+            var q = Loader.Where(d => d.Id.Equals(id));
+            return QueryDto<TR>(q).FirstOrDefault();
+        }
+
+        public virtual void DeleteByKey(TPrime id)
+        {
+            var m = Activator.CreateInstance<T>();
+            m.Id = id;
+            DbContext.Entry(m).State = EntityState.Deleted;
+        }
+
         public override void DeleteById(object id)
         {
             var m = Activator.CreateInstance<T>();
@@ -80,6 +93,11 @@ namespace CodeShellCore.Data.EntityFramework
             return Loader.Any(d => d.Id.Equals(ob));
         }
 
+        public bool IdExistsById(TPrime id)
+        {
+            return Loader.Any(d => d.Id.Equals(id));
+        }
+
         public override void Delete(Expression<Func<T, bool>> ex)
         {
             var ids = GetValues(d => d.Id, ex);
@@ -96,5 +114,29 @@ namespace CodeShellCore.Data.EntityFramework
         {
             return QueryNamed(Loader.Where(ex)).OrderBy(d => d.Name).ToList();
         }
+
+        public DeleteResult CanDeleteById(TPrime id)
+        {
+            return CanDelete(id);
+        }
+
+
+
+        public TR FindSingleAndMapById<TR>(TPrime id) where TR : class
+        {
+            return FindSingleAndMap<TR>(id);
+        }
+
+        public T FindSingleById(TPrime id)
+        {
+            return FindSingle(id);
+        }
+
+        public TValue GetValueById<TValue>(TPrime id, Expression<Func<T, TValue>> ex)
+        {
+            return GetValue(id, ex);
+        }
+
+
     }
 }

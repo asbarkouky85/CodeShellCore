@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Models;
 using CodeShellCore.Services;
 using CodeShellCore.Types;
 using Microsoft.Extensions.Options;
@@ -43,8 +43,8 @@ namespace CodeShellCore.Moldster.Services
             Utils.CreateFolderForFile(servicePath);
             if (!File.Exists(servicePath))
             {
-                string serviceTemplate = _molds.ServiceMold;
-                string service = Writer.FillStringParameters(serviceTemplate, new ServiceTsModel { Resource = resource });
+                string serviceTemplate = _molds.GetResourceByNameAsString(MoldNames.Service_ts);
+                string service = Writer.FillStringParameters(serviceTemplate, new ServiceTsModel { Resource = resource, Domain = domain });
                 File.WriteAllText(servicePath, service);
 
                 string httpPath = Path.Combine(_paths.UIRoot, folder, "index.ts"); ;

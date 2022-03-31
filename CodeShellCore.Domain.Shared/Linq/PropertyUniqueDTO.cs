@@ -10,4 +10,5 @@ namespace CodeShellCore.Linq
         public string Property { get; set; }
         public long Id { get; set; }
     }
+
 }

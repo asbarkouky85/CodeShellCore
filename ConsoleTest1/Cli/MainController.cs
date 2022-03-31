@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-using CodeShellCore.Cli;
-using CodeShellCore.Moldster.CodeGeneration.Services;
+﻿using CodeShellCore.Cli;
+using CodeShellCore.Moldster.Data;
 using CodeShellCore.MQ;
 using CodeShellCore.MQ.Events;
+using System.Collections.Generic;
 
 namespace ConsoleTest1
 {
@@ -12,7 +11,7 @@ namespace ConsoleTest1
         public override Dictionary<int, string> Functions => new Dictionary<int, string>
         {
             { 1,"Reporting" },
-            { 2,"AngularJson" },
+            { 2,"Active" },
             { 3,"Tests" },
             { 4,"SendEvent" }
         };
@@ -23,10 +22,10 @@ namespace ConsoleTest1
             con.Run();
         }
 
-        public void AngularJson()
+        public void Active()
         {
-            var ser = GetService<IAngularJsonService>();
-           ser.UpdateAngularJsonFromDatabase();
+            var unit = GetService<IConfigUnit>();
+            var data = unit.PageRepository.GetDomainPagesForRouting("tenant_1", 2116407100007);
         }
 
         public void Tests()

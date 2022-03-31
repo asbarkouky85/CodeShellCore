@@ -14,7 +14,7 @@ namespace CodeShellCore.Data
 {
     public class DefaultUnitOfWork : IUnitOfWork
     {
-        
+
         protected InstanceStore<IRepository> Store;
         protected IServiceProvider _provider;
         private ILocaleTextProvider _textProvider;
@@ -36,6 +36,7 @@ namespace CodeShellCore.Data
         /// Should return a type that implements from <see cref="ICollectionEFRepository{T, TContext}"/>
         /// </summary>
         protected virtual Type GenericCollectionRepositoryType { get; }
+        protected virtual Type GenericKeyRepositoryType { get; }
         public bool IsDisposed { get; protected set; } = false;
 
         public ILocaleTextProvider Strings
@@ -156,6 +157,21 @@ namespace CodeShellCore.Data
             return Store.GetInstance<IRepository<T>>();
         }
 
+        public virtual IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>
+        {
+            IKeyRepository<T, TPrime> inst;
+            if (GenericKeyRepositoryType != null)
+            {
+                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T), typeof(TPrime));
+                inst = (IKeyRepository<T, TPrime>)Store.GetInstance(t);
+            }
+            else
+            {
+                inst = Store.GetInstance<IKeyRepository<T, TPrime>>();
+            }
+            return inst;
+        }
+
 
         public virtual SubmitResult SaveChanges(string successMessage = null, string faileMessage = null)
         {
@@ -174,5 +190,7 @@ namespace CodeShellCore.Data
                 return Strings.Message(message_code, parameters);
             return message_code;
         }
+
+
     }
 }

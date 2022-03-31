@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿using CodeShellCore.Data.Auditing;
+using CodeShellCore.Data.ConfiguredCollections;
+using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Mapping;
+using CodeShellCore.DependencyInjection;
+using CodeShellCore.Security;
+using CodeShellCore.Security.Authorization;
+using CodeShellCore.Text.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
-
-using CodeShellCore.Data.Helpers;
-using CodeShellCore.Text.Localization;
-using CodeShellCore.Types;
-using CodeShellCore.DependencyInjection;
+using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
-using CodeShellCore.Linq;
-using CodeShellCore.Data.ConfiguredCollections;
-using CodeShellCore.Security;
-using CodeShellCore.Security.Authorization;
-using CodeShellCore.Data.Auditing;
+using System.Linq;
 
 namespace CodeShellCore.Data.EntityFramework
 {
@@ -35,7 +32,7 @@ namespace CodeShellCore.Data.EntityFramework
         protected virtual bool UseCollectionPermission => false;
 
         protected virtual TContext DbContext { get; private set; }
-
+        protected virtual IQueryProjector Projector { get; private set; }
         /// <summary>
         /// override to process changes before saving
         /// </summary>
@@ -50,7 +47,7 @@ namespace CodeShellCore.Data.EntityFramework
         public UnitOfWork(IServiceProvider provider) : base(provider)
         {
             DbContext = _provider.GetService<TContext>();
-
+            Projector = _provider.GetService<IQueryProjector>();
         }
 
         private bool _hasCollections(string res)
@@ -92,17 +89,67 @@ namespace CodeShellCore.Data.EntityFramework
                 return repo;
             var gen = GenericRepositoryType ?? typeof(Repository<,>);
             var t = gen.MakeGenericType(i, typeof(TContext));
-            return Store.GetInstance(t);
+
+            var inst = Store.GetInstance(t);
+            inst.Projector = Projector;
+            return inst;
         }
+
+        public override IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>()
+        {
+            IKeyRepository<T, TPrime> inst;
+            if (GenericKeyRepositoryType != null)
+            {
+                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T), typeof(TContext),typeof(TPrime));
+                inst = (IKeyRepository<T, TPrime>)Store.GetInstance(t);
+            }
+            else
+            {
+                inst = Store.GetInstance<KeyRepository<T, TContext, TPrime>>();
+            }
+            inst.Projector = Projector;
+            return inst;
+        }
+
+        public override IRepository<T> GetRepositoryFor<T>()
+        {
+            var i = typeof(T);
+            var repo = _provider.GetService<IRepository<T>>();
+            if (repo != null)
+            {
+                appendCollectionId(repo);
+                return repo;
+            }
+            IRepository<T> inst;
+            if (GenericRepositoryType != null)
+            {
+                var t = GenericRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
+                inst = (IRepository<T>)Store.GetInstance(t);
+            }
+            else
+            {
+                inst = Store.GetInstance<Repository<T, TContext>>(r => appendCollectionId(r));
+            }
+
+            inst.Projector = Projector;
+            return inst;
+        }
+
 
         public override ICollectionRepository<T> GetCollectionRepositoryFor<T>()
         {
+            ICollectionRepository<T> inst;
             if (GenericCollectionRepositoryType != null)
             {
                 var t = GenericCollectionRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
-                return (ICollectionRepository<T>)Store.GetInstance(t);
+                inst = (ICollectionRepository<T>)Store.GetInstance(t);
             }
-            return Store.GetInstance<ICollectionEFRepository<T, TContext>>(r => appendCollectionId(r));
+            else
+            {
+                inst = Store.GetInstance<ICollectionEFRepository<T, TContext>>(r => appendCollectionId(r));
+            }
+            inst.Projector = Projector;
+            return inst;
         }
 
         private bool _obtainUser()
@@ -138,23 +185,6 @@ namespace CodeShellCore.Data.EntityFramework
 
         }
 
-        public override IRepository<T> GetRepositoryFor<T>()
-        {
-            var i = typeof(T);
-            var repo = _provider.GetService<IRepository<T>>();
-            if (repo != null)
-            {
-                appendCollectionId(repo);
-                return repo;
-            }
-
-            if (GenericRepositoryType != null)
-            {
-                var t = GenericRepositoryType.MakeGenericType(typeof(T), typeof(TContext));
-                return (IRepository<T>)Store.GetInstance(t);
-            }
-            return Store.GetInstance<Repository<T, TContext>>(r => appendCollectionId(r));
-        }
 
 
         protected virtual void FillChangeColumns(ChangeLists lst)
@@ -278,7 +308,9 @@ namespace CodeShellCore.Data.EntityFramework
 
         public override T GetRepository<T>()
         {
-            return Store.GetInstance<T>(r => appendCollectionId(r));
+            var repo = Store.GetInstance<T>(r => appendCollectionId(r));
+            repo.Projector = Projector;
+            return repo;
         }
     }
 }

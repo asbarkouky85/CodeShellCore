@@ -18,7 +18,11 @@ namespace CodeShellCore.Linq
         /// </example>
         public List<Expression> Filters { get; set; }
 
-        
+        public void SetOrderProperty<TVal>(Expression<Func<T, TVal>> ex,SortDir dir=SortDir.ASC)
+        {
+            OrderProperty = ((MemberExpression)ex.Body).Member.Name;
+            Direction = dir;
+        }
         /// <summary>
         /// Object defining conditions for <see cref="IRepository.Find(ListOptions)"/>
         /// </summary>

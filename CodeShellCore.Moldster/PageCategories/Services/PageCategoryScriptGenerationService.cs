@@ -1,10 +1,10 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Models;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Services;
@@ -55,7 +55,7 @@ namespace CodeShellCore.Moldster.PageCategories.Services
                 if (baseComponents.Contains(p.Category.BaseComponent))
                 {
                     mod.Parent = p.Category.BaseComponent + "ComponentBase";
-                    mod.ParentPath = "codeshell/base-components";
+                    mod.ParentPath = _fileNameService.GetCodeShellBaseComponentsImportPath();
                     if (p.Resource == null)
                     {
                         mod.Resource = "DefaultHttp";
@@ -84,7 +84,7 @@ namespace CodeShellCore.Moldster.PageCategories.Services
             else
             {
                 mod.Parent = "BaseComponent";
-                mod.ParentPath = "codeshell/base-components";
+                mod.ParentPath = _fileNameService.GetCodeShellBaseComponentsImportPath();
             }
 
             string baseComponentTemplatePath = _molds.GetBaseComponentMold(serviced);

@@ -13,6 +13,7 @@ namespace CodeShellCore.Web.Services
 {
     public class SpaFallbackHandler : ISpaFallbackHandler
     {
+        public virtual string DefaultTenant => Shell.GetConfigAs<string>("DefaultTenant", false);
         protected string CurrentTenant { get; set; }
         private static string _defaultHtml = @"<!DOCTYPE html>
 <html>
@@ -33,7 +34,7 @@ namespace CodeShellCore.Web.Services
                 return tens.Select(e => e.Value).ToArray();
             }
         }
-        public virtual string DefaultTenant => Shell.GetConfigAs<string>("DefaultTenant", false);
+
 
         protected virtual Dictionary<string, TenantInfoItem> GetTenants()
         {
@@ -74,7 +75,7 @@ namespace CodeShellCore.Web.Services
             return "wwwroot/index.html";
         }
 
-        public virtual async Task HandleRequestAsync(HttpContext con)
+        public virtual async Task HandleRequestAsync(HttpContext con, string defaultTitle = null)
         {
             var indexPath = GetIndexFilePath(con.Request);
             if (!File.Exists(indexPath))
@@ -89,10 +90,15 @@ namespace CodeShellCore.Web.Services
                 file = file.Replace("<base href=\"/\">", "<base href=\"/" + CurrentTenant.ToLower() + "/\">");
                 con.Response.Cookies.Append("current_tenant", CurrentTenant, new CookieOptions { Expires = DateTime.Now.AddYears(1), Path = "/" });
             }
-            
+
             await con.Response.WriteAsync(file);
 
 
+        }
+
+        public Task HandleRequestAsync(HttpContext con, Func<Task> next)
+        {
+            return HandleRequestAsync(con);
         }
     }
 }

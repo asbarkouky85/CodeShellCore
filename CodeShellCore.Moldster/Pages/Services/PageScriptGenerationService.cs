@@ -1,11 +1,7 @@
-﻿using CodeShellCore.Cli;
-using CodeShellCore.Files;
-using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Angular.Models;
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Models;
 using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
@@ -31,7 +27,7 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
         {
-            PageDTO p = Unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
+            PageDetailsDto p = Unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
             string scriptPath = Names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".ts";
 
             using (Out.Set(ConsoleColor.DarkRed))
@@ -50,9 +46,9 @@ namespace CodeShellCore.Moldster.Pages.Services
 
             string scriptTemplate = "";
             if (p.ParentHasResource)
-                scriptTemplate = Molds.ComponentMold;
+                scriptTemplate = Molds.GetResourceByNameAsString(MoldNames.Component_ts);
             else
-                scriptTemplate = Molds.BasicComponent;
+                scriptTemplate = Molds.GetResourceByNameAsString(MoldNames.BasicComponent_ts);
 
             if (p.BaseViewPath == null)
             {
@@ -97,7 +93,7 @@ namespace CodeShellCore.Moldster.Pages.Services
             }
 
             string mainCompBase = Unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == mod);
-            string temp = Molds.MainComponentMold;
+            string temp = Molds.GetResourceByNameAsString(MoldNames.AppComponent_ts);
             var model = new AppComponentModel
             {
                 Name = "AppComponent",

@@ -9,6 +9,7 @@ using CodeShellCore.Security;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace CodeShellCore.DependencyInjection
@@ -28,18 +29,16 @@ namespace CodeShellCore.DependencyInjection
         }
         public static void AddCodeShellAutoMapper(this IServiceCollection collection)
         {
-            collection.AddTransient<Data.Mapping.IObjectMapper, AutoMapperObjectMapper>();
-        }
 
-        public static void AddAutoMapper<T>(this IServiceCollection collection)
-        {
-            collection.AddAutoMapper(typeof(T).GetType().Assembly);
+            collection.AddTransient<Data.Mapping.IObjectMapper, AutoMapperObjectMapper>();
+            collection.AddTransient<Data.Mapping.IQueryProjector, AutoMapperObjectMapper>();
         }
 
         public static void AddCodeShellApplication(this IServiceCollection coll)
         {
             coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
+            
             coll.AddScoped<IUserAccessor, UserAccessor>();
             coll.AddScoped<UserAccessor>();
             coll.AddCodeShellAutoMapper();

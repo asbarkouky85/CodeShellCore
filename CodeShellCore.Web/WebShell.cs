@@ -87,7 +87,7 @@ namespace CodeShellCore.Web
         protected virtual async Task FallbackMiddlewareHandler(HttpContext context, Func<Task> next)
         {
             var s = context.RequestServices.GetRequiredService<ISpaFallbackHandler>();
-            await s.HandleRequestAsync(context);
+            await s.HandleRequestAsync(context, next);
         }
 
         public virtual void RegisterRoutes(IRouteBuilder routeBuilder)
@@ -124,7 +124,7 @@ namespace CodeShellCore.Web
                     // options.SkipDefaults = true;
                 });
             }
-            
+
 
             if (UseHealthChecks)
             {
@@ -175,13 +175,12 @@ namespace CodeShellCore.Web
             if (UseCors)
             {
                 var origins = getConfig("AllowedOrigins").Value ?? DefaultCorsOrigins;
-                app.UseCors(d => d.WithOrigins(origins.Split(","))
+                var originArray = origins.Split(",");
+                app.UseCors(d => d.WithOrigins(originArray)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
             }
-
-
 
             app.UseEndpoints(e =>
             {
@@ -189,10 +188,12 @@ namespace CodeShellCore.Web
                 ConventionalRoutingSwaggerGen.UseRoutes(e);
             });
 
-
-
             if (IsSpa)
+            {
                 app.Use(FallbackMiddlewareHandler);
+                app.UseStaticFiles();
+            }
+
 
             if (UseHealthChecks)
             {

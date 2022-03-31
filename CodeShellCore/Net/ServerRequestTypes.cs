@@ -6,6 +6,7 @@ namespace CodeShellCore.Net
 {
     public enum ServerRequestTypes
     {
-        Decompress
+        Decompress,
+        DeleteDirectory
     }
 }

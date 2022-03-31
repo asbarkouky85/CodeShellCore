@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Data.Helpers;
+using CodeShellCore.Files;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Builder.Services
 {
-    public class BundlingService : MoldsterFileHandlingService, IBundlingService
+    public class BundlingService : MoldsterFileHandlingService, IBundlingService, ILegacyBundlingService
     {
         public BundlingService(IServiceProvider provider) : base(provider)
         {
@@ -20,7 +21,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         public IOutputWriter OutputWriter { get { return Out; } set { Out = value; } }
 
-        public string GetAppVersion(string code, bool uiIfLager = false)
+        public virtual string GetAppVersion(string code, bool uiIfLager = false)
         {
             string ver = Data.GetAppVersion(code);
             if (string.IsNullOrEmpty(ver))
@@ -34,7 +35,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             return ver;
         }
 
-        public string GetNextVersionNumber(string ver)
+        public virtual string GetNextVersionNumber(string ver)
         {
             string ui = GetUIVersion();
             if (Utils.CompareVersions(ui, ver) == 1)
@@ -47,7 +48,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             }
         }
 
-        public bool StartProductionPackIfNeeded(string tenantCode, out BundlingTask tt, string version = null)
+        public virtual bool StartProductionPackIfNeeded(string tenantCode, out BundlingTask tt, string version = null)
         {
             var v = version ?? GetAppVersion(tenantCode, true);
 
@@ -87,13 +88,14 @@ namespace CodeShellCore.Moldster.Builder.Services
             return true;
         }
 
-        public bool IsBundled(string moduleName, string version)
+
+
+        public virtual bool IsBundled(string moduleName, string version)
         {
-            string bundleVersion = AddVToVersion ? "v" + version : version;
-            string mainScript = Path.Combine(Paths.UIRoot, "wwwroot\\dist", moduleName + "-" + bundleVersion + ".js");
-            if (File.Exists(mainScript))
+            string bundleFolder = Names.GetOutputBundlePath(moduleName, version, true);
+            if (File.Exists(bundleFolder))
             {
-                Out.WriteLine($"Version {bundleVersion} is already bundled for {moduleName}");
+                Out.WriteLine($"Version {version} is already bundled for {moduleName}");
                 UpdateTenantVersionInDataSource(moduleName, version);
                 return true;
             }
@@ -107,9 +109,9 @@ namespace CodeShellCore.Moldster.Builder.Services
             {
                 return new Result { Code = 0, Message = "No Changes" };
             }
-
-            string args = $"run build {moduleName} --config production";
-            var p = GetCommandProcess(Paths.UIRoot, "npm", args);
+            var projectName = Names.ApplyConvension(moduleName, AppParts.Project);
+            string args = $"node_modules/@angular/cli/bin/ng build {projectName} --configuration production --output-path {Names.GetOutputPath(moduleName, version)}";
+            var p = GetCommandProcess(Paths.UIRoot, "node", args);
             p.StartInfo.RedirectStandardOutput = trace;
             p.Start();
             if (trace)
@@ -121,7 +123,7 @@ namespace CodeShellCore.Moldster.Builder.Services
                 }
             }
             p.WaitForExit();
-
+            CompressModuleBundle(moduleName, version);
             var code = p.ExitCode;
             var res = new Result { Code = code, Message = code == 0 ? "bundling_successful" : "bundling_failed" };
             if (res.IsSuccess)
@@ -137,7 +139,33 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         }
 
-        public SubmitResult UpdateTenantVersionInDataSource(string code, string version)
+        public virtual string CompressModuleBundle(string tenant, string version)
+        {
+            string bundleFolder = Names.GetOutputPath(tenant, version, true);
+            string bundleFile = Names.GetOutputBundlePath(tenant, version, true);
+
+            Out.Write("Compressing scripts [");
+            WriteColored(tenant, ConsoleColor.Yellow);
+            Out.Write("] for version [");
+            WriteColored(version, ConsoleColor.Cyan);
+            Out.Write("]...");
+
+            if (!File.Exists(bundleFile))
+            {
+                FileUtils.CompressDirectory(bundleFolder, bundleFile, true);
+                WriteSuccess();
+            }
+            else
+            {
+                GotoColumn(SuccessCol);
+                WriteColored("EXISTS", ConsoleColor.DarkCyan);
+            }
+
+            Out.WriteLine();
+            return bundleFolder + ".zip";
+        }
+
+        public virtual SubmitResult UpdateTenantVersionInDataSource(string code, string version)
         {
 
             Out.Write("Updating [" + code + "] to version [" + version + "]");
@@ -164,10 +192,13 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         public virtual void PrepEnvironment(bool prod = false)
         {
-            string args = "install";
+            string args = "install --force";
             RunCommand(Paths.UIRoot, "npm", args, true);
         }
 
+        public virtual void WriteWebpackConfigFiles()
+        {
 
+        }
     }
 }

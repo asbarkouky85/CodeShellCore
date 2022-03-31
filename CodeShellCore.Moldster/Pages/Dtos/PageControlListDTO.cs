@@ -23,25 +23,5 @@ namespace CodeShellCore.Moldster.Pages.Dtos
         //public long? AccessabilityId { get; set; }
         public long? SourceCollectionId { get; set; }
 
-        public static Expression<Func<PageControl, PageControlListDTO>> Expression
-        {
-            get
-            {
-                return e => new PageControlListDTO
-                {
-                    Id = e.Id,
-                    ControlType = e.Control.ControlType,
-                    ControlIdentifier = e.Control.Identifier,
-                    PageName = e.Page.Name,
-                    //Accessability = e.Accessability == 1 ? "Read Only" : (e.Accessability == 2 ? "Read Write" : "Hide") ,
-                    SourceCollectionName = e.SourceCollection.Name,
-                    Persistent = e.Persistent,
-                    ControlId = e.ControlId,
-                    PageId = e.PageId,
-                    Accessability = e.Accessability,
-                    SourceCollectionId = e.SourceCollectionId
-                };
-            }
-        }
     }
 }

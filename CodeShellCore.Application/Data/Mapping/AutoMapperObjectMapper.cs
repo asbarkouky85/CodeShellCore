@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CodeShellCore.Data.Mapping
 {
-    public class AutoMapperObjectMapper : IObjectMapper
+    public class AutoMapperObjectMapper : IObjectMapper, IQueryProjector
     {
         private IMapper _mapper;
         public AutoMapperObjectMapper(IMapper mapper)

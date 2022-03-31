@@ -1,20 +1,21 @@
-﻿using System;
+﻿using CodeShellCore.Cli;
+using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Services;
+using CodeShellCore.Helpers;
+using CodeShellCore.Http;
+using CodeShellCore.Linq;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Navigation;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster.Tenants;
+using CodeShellCore.Text;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using CodeShellCore.Data.Helpers;
-using CodeShellCore.Http;
-using CodeShellCore.Text;
-using CodeShellCore.Helpers;
-using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster.Data;
-using System.Collections.Generic;
-using CodeShellCore.Cli;
-using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.Resources;
-using CodeShellCore.Moldster.Navigation;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {
@@ -510,8 +511,8 @@ namespace CodeShellCore.Moldster.Pages.Services
             }
 
             var lst = Unit.PageRepository.FindAs(PageListDTO.Expression, op);
-            Unit.PageRepository.FillReferencedBy(lst.ListT);
-            Unit.PageRepository.FillReferences(lst.ListT);
+            Unit.PageRepository.FillReferencedBy(lst.List);
+            Unit.PageRepository.FillReferences(lst.List);
             return lst;
         }
 
@@ -599,7 +600,7 @@ namespace CodeShellCore.Moldster.Pages.Services
                 return null;
             var dto = new PageCustomizationDTO
             {
-                Controls = Unit.PageControlRepository.FindAs(PageControlListDTO.Expression, d => d.PageId == id),
+                Controls = Unit.PageControlRepository.FindAndMap<PageControlListDTO>(d => d.PageId == id),
                 Parameters = Unit.PageParameterRepository.FindForPage(id),
                 Route = Unit.PageRouteRepository.FindByPage(id) ?? new PageRouteDTO(),
                 Fields = Unit.CustomFieldRepository.Find(d => d.PageId == id),
