@@ -8,6 +8,7 @@ namespace Example.Config.Api
 {
     public class ConfigShell : MoldsterWebShell
     {
+        protected override bool UseSwagger => true;
         public ConfigShell(IConfiguration config) : base(config)
         {
         }

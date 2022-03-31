@@ -45,6 +45,11 @@ namespace CodeShellCore.Moldster
             CreateMap<PageControl, PageControlListDTO>()
                 .ForMember(e => e.ControlType, d => d.MapFrom(e => e.Control.ControlType));
 
+            CreateMap<Page, PageListDTO>()
+                .ForMember(e => e.ActionType, d => d.MapFrom(e => e.ResourceActionId.HasValue ? e.ResourceAction.Name : e.SpecialPermission == null ? e.PrivilegeType : e.SpecialPermission))
+                .ForMember(e => e.PageType, d => d.MapFrom(e => e.HasRoute && e.CanEmbed ? "Route,Embedded" : e.HasRoute ? "Route" : "Embedded"))
+                .ForMember(e => e.BaseComponent, d => d.MapFrom(e => e.PageCategory.BaseComponent));
+
         }
 
         void TenantsMapping()

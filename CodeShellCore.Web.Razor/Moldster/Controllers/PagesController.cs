@@ -16,40 +16,44 @@ using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Sql.Dtos;
 using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Services;
+using CodeShellCore.Data.Lookups;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
-    public class PagesController : EntityController<Page, long>
+    public class PagesController : BaseApiController, IPageService
     {
         PagesService _service;
-        IViewsService views => GetService<IViewsService>();
-        IPageCategoryHtmlService process => GetService<IPageCategoryHtmlService>();
-        IPageHtmlGenerationService _html => GetService<IPageHtmlGenerationService>();
-        ConfiguratorLookupService lookups => GetService<ConfiguratorLookupService>();
-        IPageScriptGenerationService pageTs => GetService<IPageScriptGenerationService>();
-        IDomainScriptGenerationService domainTs => GetService<IDomainScriptGenerationService>();
+        private readonly IPageService pageService;
+
         IPublisherService pub => GetService<IPublisherService>();
         EnvironmentAccessor acc => GetService<EnvironmentAccessor>();
         IPathsService paths => GetService<IPathsService>();
 
-        public PagesController(PagesService service) : base(service)
+        public PagesController(PagesService service, IPageService pageService) 
         {
             _service = service;
+            this.pageService = pageService;
         }
 
+
+        [HttpPut]
+        public SubmitResult<CreatePageDTO> Put([FromBody] PageDto obj)
+        {
+            return pageService.Put(obj);
+        }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreatePageDTO obj)
+        public SubmitResult<CreatePageDTO> Post([FromBody] CreatePageDTO obj)
         {
-            SubmitResult = _service.Create(obj);
-            return Respond();
+            return pageService.Post(obj);
         }
 
-        public IActionResult SetViewParams([FromBody] ViewParamsSetter @params)
+        public SubmitResult SetViewParams([FromBody] ViewParamsSetter @params)
         {
-            SubmitResult = _service.SetViewParams(@params);
-            return Respond();
+            return _service.SetViewParams(@params);
         }
 
         public IActionResult TenantCreated([FromBody] DbCreationRequest req)
@@ -64,9 +68,9 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Respond();
         }
 
-        public IActionResult Get([FromQuery] LoadOptions opt, [FromQuery] long tenantId)
+        public LoadResult<PageListDTO> Get([FromQuery] LoadOptions opt)
         {
-            return Respond(_service.GetAll(opt));
+            return pageService.Get(opt);
         }
 
         public IActionResult GetPagesByDomain([FromQuery] LoadOptions opts, [FromQuery] long domainId)
@@ -74,73 +78,60 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Respond(_service.GetPagesByDomain(domainId, opts));
         }
 
-        public IActionResult GetEditLookups([FromQuery] Dictionary<string, string> data)
+        //public object GetEditLookups([FromQuery] Dictionary<string, string> data)
+        //{
+        //    return lookups.PageEdit(data);
+        //}
+
+        public IEnumerable<PageParameterDTO> GetViewParameters(long id)
         {
-            return Respond(lookups.PageEdit(data));
+            return _service.GetViewParameters(id);
         }
 
-        public IActionResult GetViewParameters(long id)
+        public PageCustomizationDTO GetCustomizationData(long id)
         {
-            IEnumerable<PageParameterDTO> lst = _service.GetViewParameters(id);
-            return Respond(lst);
+            return _service.GetCustomizationData(id);
         }
 
-        public IActionResult GetCustomizationData(long id)
+        public SubmitResult ApplyCustomization([FromBody] PageCustomizationDTO dto)
         {
-            PageCustomizationDTO data = _service.GetCustomizationData(id);
-            return Respond(data);
+            return _service.ApplyCustomization(dto);
         }
 
-        public IActionResult ApplyCustomization([FromBody] PageCustomizationDTO dto)
-        {
-            SubmitResult = _service.ApplyCustomization(dto);
-
-            return Respond();
-        }
-
-        public IActionResult FindPages([FromQuery] LoadOptions opts, [FromBody] FindPageRequest request)
+        public LoadResult<PageListDTO> FindPages([FromQuery] LoadOptions opts, [FromBody] FindPageRequest request)
         {
             LoadResult<PageListDTO> pages = _service.FindPages(request, opts);
-            return Respond(pages);
+            return pages;
         }
 
-
-
-        public override IActionResult GetSingle([FromRoute] long id)
+        public DeleteResult Delete(long id)
         {
-            var ps = _service.GetSinglePage(id);
-            return Respond(ps);
+            return pageService.Delete(id);
         }
 
-        public IActionResult Put([FromBody] CreatePageDTO dto)
+        public CreatePageDTO GetSingle(long id)
         {
-            SubmitResult = _service.UpdatePage(dto);
-            if (SubmitResult.IsSuccess && SubmitResult.Data.TryGetValue("MoveRequest", out object req))
-            {
-                var r = (MovePageRequest)req;
-
-                _html.MoveHtmlTemplate(r);
-                pageTs.MoveScript(r);
-                domainTs.GenerateDomainModule(r.TenantCode, r.FromPath.GetBeforeLast("/"));
-                domainTs.GenerateDomainModule(r.TenantCode, r.ToPath.GetBeforeLast("/"));
-                domainTs.GenerateRoutes(r.TenantCode);
-            }
-            return Respond();
+            return pageService.GetSingle(id);
         }
 
-        public override IActionResult Delete(long id)
+        public bool IsUnique(IsUniqueDto dto)
         {
-            SubmitResult = _service.DeleteById(id);
-            if (SubmitResult.IsSuccess && SubmitResult.Data.TryGetValue("ViewPath", out object data))
-            {
-                var path = (MovePageRequest)data;
-                _html.DeleteHtmlTemplate(path.TenantCode, path.FromPath);
-                pageTs.DeleteScript(path.TenantCode, path.FromPath);
-                domainTs.GenerateDomainModule(path.TenantCode, path.FromPath.GetBeforeLast("/"));
-                domainTs.GenerateRoutes(path.TenantCode);
-            }
-            return Respond();
+            return pageService.IsUnique(dto);
         }
 
+        public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
+        {
+            return pageService.GetEditLookups(data);
+        }
+
+        public Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> data)
+        {
+            return pageService.GetListLookups(data);
+        }
+
+        public LoadResult<PageListDTO> GetCollection(string id, LoadOptions options)
+        {
+            return pageService.GetCollection(id, options);
+        }
     }
 }

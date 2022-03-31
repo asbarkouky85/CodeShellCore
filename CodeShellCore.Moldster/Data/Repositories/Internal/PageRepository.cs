@@ -36,25 +36,7 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
         internal IQueryable<PageListDTO> QueryPageListDTO(IQueryable<Page> q = null)
         {
             q = q ?? Loader;
-            var qq = q.Select(PageListDTO.Expression);
-            //var qq = from p in q
-            //         select new PageListDTO
-            //         {
-            //             DomainId = p.DomainId,
-            //             Id = p.Id,
-            //             Name = p.Name,
-            //             SpecialPermission = p.SpecialPermission,
-            //             TenantId = p.TenantId,
-            //             ViewPath = p.ViewPath,
-            //             TenantCode = p.Tenant.Code,
-            //             BaseComponent = p.PageCategory.BaseComponent,
-            //             PageCategoryName = p.PageCategory.Name,
-            //             HasRoute = p.HasRoute,
-            //             DomainName = p.Domain.Name,
-            //             Apps = p.Apps,
-            //             RouteParameters = p.RouteParameters
-            //         };
-            return qq;
+            return QueryDto<PageListDTO>(q);
         }
 
         public IEnumerable<PageDetailsDto> GetDomainPagesForRouting(string tenantCode, long domainId, bool chldren = false)
