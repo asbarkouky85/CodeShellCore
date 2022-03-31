@@ -230,7 +230,6 @@ namespace CodeShellCore.Moldster.Properties {
         /// <summary>
         ///   Looks up a localized string similar to declare module &quot;*.json&quot; {
         ///    const value: any;
-        ///    export default value;
         ///}
         ///declare var jQuery: any;
         ///declare var $: any;
