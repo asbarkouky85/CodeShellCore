@@ -34,6 +34,7 @@ namespace CodeShellCore.Files.Uploads
             dto = new SavedFileDto();
             try
             {
+                string fileName;
                 if (req?.TmpPath == null)
                 {
                     return false;
@@ -46,8 +47,18 @@ namespace CodeShellCore.Files.Uploads
                     folder = catFolder;
                 }
 
-                string fileName = Utils.GenerateID().ToString() + "_" + req.Name;
+                if (req.Name != null)
+                {
+                    fileName = Utils.GenerateID().ToString() + "_" + req.Name;
+                }
+                else
+                {
+                    int startUrl = req.TmpPath.Replace(Shell.PublicRoot + "", "").LastIndexOf('/') + 1;
+                    fileName = req.TmpPath.Substring(startUrl, req.TmpPath.Length - startUrl);
+                }
+
                 dto.Path = Utils.CombineUrl(folder, fileName);
+                //req.TmpPath = Path.Combine(SaveRoot, dto.Path);
 
                 string saveLocation = Path.Combine(SaveRoot, dto.Path).Replace("/", "\\");
 
@@ -61,7 +72,8 @@ namespace CodeShellCore.Files.Uploads
                     {
                         fileName = bytes.FileName;
                         var dir = Path.GetDirectoryName(dto.Path);
-                       
+                        if (string.IsNullOrEmpty(dir))
+                            dir = TempRoot;
                         bytes.Save(dir);
                     }
                     else
