@@ -1,10 +1,8 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Pages.Dtos;
+using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.Data.Repositories
 {

@@ -4,5 +4,4 @@ using System;using System.Collections.Generic;using System.ComponentModel.Data
         [System.Runtime.Serialization.IgnoreDataMember]
         public PageCategory PageCategory { get; set; }        [ForeignKey("ParentControl")]        [InverseProperty("InverseParentControlNavigation")]
         [System.Runtime.Serialization.IgnoreDataMember]
-        public Control ParentControlNavigation { get; set; }        [InverseProperty("Control")]        public ICollection<ControlValidator> ControlValidators { get; set; }        [InverseProperty("ParentControlNavigation")]        public ICollection<Control> InverseParentControlNavigation { get; set; }        [InverseProperty("Control")]        public ICollection<PageControl> PageControls { get; set; }        [NotMapped]
-        public ResourceCollection Collection { get; set; }    }}
+        public Control ParentControlNavigation { get; set; }        [InverseProperty("Control")]        public ICollection<ControlValidator> ControlValidators { get; set; }        [InverseProperty("ParentControlNavigation")]        public ICollection<Control> InverseParentControlNavigation { get; set; }        [InverseProperty("Control")]        public ICollection<PageControl> PageControls { get; set; }    }}

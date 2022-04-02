@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Text;
 using Microsoft.AspNetCore.Html;
@@ -36,7 +37,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         {
             if (identifier != null)
             {
-                helper.AddToViewControls(new ControlDTO
+                helper.AddToViewControls(new ControlRenderDto
                 {
                     Identifier = identifier?.ToLower(),
                     ControlType = "Button"

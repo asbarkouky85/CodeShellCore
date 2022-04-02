@@ -1,8 +1,7 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Resources.Dtos;
+using CodeShellCore.Moldster.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +15,12 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
         {
         }
 
-        public List<ControlDTO> GetDtos(Expression<Func<PageControl, bool>> filter = null)
+        public List<ControlRenderDto> GetDtos(Expression<Func<PageControl, bool>> filter = null)
         {
             var q = Loader;
             if (filter != null)
                 q = q.Where(filter);
-            var dtoq = q.Select(d => new ControlDTO
+            var dtoq = q.Select(d => new ControlRenderDto
             {
                 Identifier = d.Control.Identifier,
                 Accessibilty = d.Accessability,
@@ -32,8 +31,8 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
                 } : null,
                 ParentId = d.Control.ParentControl,
                 ControlType = d.Control.ControlType,
-                CustomValidators = d.PageControlValidators.Select(v => v.Validator).ToList(),
-                DefaultValidators = d.Control.ControlValidators.Select(v => v.Validator).ToList()
+                //CustomValidators = d.PageControlValidators.Select(v => v.Validator).ToList(),
+                //DefaultValidators = d.Control.ControlValidators.Select(v => v.Validator).ToList()
             });
 
             return dtoq.ToList();

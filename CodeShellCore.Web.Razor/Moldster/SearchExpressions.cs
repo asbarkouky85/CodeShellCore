@@ -1,9 +1,8 @@
 ﻿using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Navigation.Dtos;
-using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.Resources.Dtos;
+using CodeShellCore.Moldster.Resources;
 //using Configurator.Data;
 
 namespace CodeShellCore.Web.Razor.Moldster

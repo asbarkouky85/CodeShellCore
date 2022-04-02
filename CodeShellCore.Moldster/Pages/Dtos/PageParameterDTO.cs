@@ -1,12 +1,15 @@
 ﻿using CodeShellCore.Data;
+using CodeShellCore.Localization;
 using CodeShellCore.Text;
 using System;
 using System.Linq.Expressions;
 
 namespace CodeShellCore.Moldster.Pages.Dtos
 {
-    public class PageParameterDTO : DTO<PageParameter, long>
+    [EntityName("PageParameter")]
+    public class PageParameterDTO : EntityDto<long>
     {
+        public PageParameter Entity { get; set; }
         public string Name { get; set; }
         public int Type { get; set; }
         public string TypeString { get { return TypeEnum.GetString(); } }

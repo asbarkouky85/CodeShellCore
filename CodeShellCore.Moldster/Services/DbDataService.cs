@@ -2,9 +2,8 @@
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Services;
 using System;
@@ -95,7 +94,7 @@ namespace CodeShellCore.Moldster.Services
 
         public PageOptions GetPageOptionsById(long pageId)
         {
-            List<ControlDTO> lst = new List<ControlDTO>();
+            List<ControlRenderDto> lst = new List<ControlRenderDto>();
 
             PageOptions opts = _unit.PageRepository.FindSingleAs(d => new PageOptions
             {
@@ -108,7 +107,7 @@ namespace CodeShellCore.Moldster.Services
             }, e => e.Id == pageId);
             lst = _unit.PageControlRepository.GetDtos(e => e.PageId == pageId);
 
-            opts.Controls = new Dictionary<string, ControlDTO>();
+            opts.Controls = new Dictionary<string, ControlRenderDto>();
             var rep = new List<string>();
             foreach (var d in lst)
             {

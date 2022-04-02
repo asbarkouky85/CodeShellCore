@@ -579,7 +579,7 @@ namespace CodeShellCore.Moldster.Pages.Services
 
                 if (dto.Route == null)
                     dto.Route = Unit.PageRouteRepository.FindByPage(dto.Id);
-                var fs = Unit.CustomFieldRepository.FindAs(FieldDefinition.Expression, d => d.PageId == dto.Id).ToArray();
+                var fs = Unit.CustomFieldRepository.FindAs(e => new FieldDefinition { Name = e.Name, Type = e.Type }, d => d.PageId == dto.Id).ToArray();
                 fs = fs.Any() ? fs : null;
                 Unit.PageRepository.UpdatePageViewParamsJson(page, pars.ToArray(), dto.Route, fs);
                 res.Data["updatingJsonResult"] = Unit.SaveChanges();
@@ -662,7 +662,9 @@ namespace CodeShellCore.Moldster.Pages.Services
             {
                 PageParameterForJson[] pars = Unit.PageParameterRepository.FindForJsonByPage(p.Id).ToArray();
                 PageRouteDTO r = Unit.PageRouteRepository.FindByPage(p.Id);
-                var fs = Unit.CustomFieldRepository.FindAs(FieldDefinition.Expression, d => d.PageId == p.Id).ToArray();
+                var fs = Unit.CustomFieldRepository.FindAs(
+                    e => new FieldDefinition { Name = e.Name, Type = e.Type },
+                    d => d.PageId == p.Id).ToArray();
                 fs = fs.Any() ? fs : null;
                 Unit.PageRepository.UpdatePageViewParamsJson(p, pars, r, fs);
             }

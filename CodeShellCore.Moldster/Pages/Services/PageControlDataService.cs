@@ -3,7 +3,6 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 using CodeShellCore.Text;
@@ -41,11 +40,11 @@ namespace CodeShellCore.Moldster.Pages.Services
             return Unit.SaveChanges();
         }
 
-        public SubmitResult UpdateTemplateControls(PageCategory cat, List<ControlDTO> cont)
+        public SubmitResult UpdateTemplateControls(PageCategory cat, List<ControlRenderDto> cont)
         {
             IEnumerable<Control> current = Unit.ControlRepository.Find(d => d.PageCategoryId == cat.Id);
 
-            foreach (ControlDTO c in cont)
+            foreach (ControlRenderDto c in cont)
             {
                 Control con = GetControl(c, cat, current);
                 if (!current.Contains(con))
@@ -55,7 +54,7 @@ namespace CodeShellCore.Moldster.Pages.Services
             return Unit.SaveChanges();
         }
 
-        public SubmitResult DeleteUnusedControls(PageCategory category, List<ControlDTO> controls)
+        public SubmitResult DeleteUnusedControls(PageCategory category, List<ControlRenderDto> controls)
         {
             List<string> sts = new List<string>();
             foreach (var c in controls)
@@ -68,7 +67,7 @@ namespace CodeShellCore.Moldster.Pages.Services
         }
 
 
-        public Control GetControl(ControlDTO src, PageCategory cat, IEnumerable<Control> current)
+        public Control GetControl(ControlRenderDto src, PageCategory cat, IEnumerable<Control> current)
         {
             Control con = current.Where(d => d.Identifier == src.Identifier).FirstOrDefault();
 
@@ -83,7 +82,7 @@ namespace CodeShellCore.Moldster.Pages.Services
                 };
             }
 
-            foreach (ControlDTO cc in src.Children)
+            foreach (ControlRenderDto cc in src.Children)
             {
                 Control d = GetControl(cc, cat, current);
                 if (!current.Contains(d))
@@ -96,7 +95,7 @@ namespace CodeShellCore.Moldster.Pages.Services
 
 
 
-        private List<string> GetIdentifiers(ControlDTO dto)
+        private List<string> GetIdentifiers(ControlRenderDto dto)
         {
             List<string> st = new List<string>();
             st.Add(dto.Identifier);

@@ -5,7 +5,7 @@ using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Moldster.Navigation.Dtos;
-using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Text.ResourceReader;

@@ -1,5 +1,6 @@
-﻿using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.Razor;
+﻿using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Web.Razor.Containers;
 using CodeShellCore.Web.Razor.General.Moldster;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,7 +13,7 @@ namespace CodeShellCore.Web.Razor
     {
         public Accessibility Process(IHtmlHelper helper, string id, string cont)
         {
-            helper.AddToViewControls(new ControlDTO
+            helper.AddToViewControls(new ControlRenderDto
             {
                 Identifier = id?.ToLower(),
                 ControlType = cont
@@ -22,7 +23,7 @@ namespace CodeShellCore.Web.Razor
 
         private Accessibility Process(IHtmlHelper helper, MoldsterHtmlContainer parent, string id, string cont)
         {
-            parent.Control.Children.Add(new ControlDTO
+            parent.Control.Children.Add(new ControlRenderDto
             {
                 Identifier = id?.ToLower(),
                 ControlType = cont

@@ -1,24 +1,17 @@
-﻿using CodeShellCore.Linq;
+﻿using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Lookups;
+using CodeShellCore.Linq;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.CodeGeneration;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Text;
+using CodeShellCore.Moldster.Builder.Services;
+using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Sql.Dtos;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.PageCategories.Services;
-using CodeShellCore.Moldster.Pages.Services;
-using CodeShellCore.Moldster.Builder.Services;
-using CodeShellCore.Moldster.Environments;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Sql.Dtos;
-using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Data.Helpers;
-using CodeShellCore.Data.Services;
-using CodeShellCore.Data.Lookups;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
@@ -32,7 +25,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         EnvironmentAccessor acc => GetService<EnvironmentAccessor>();
         IPathsService paths => GetService<IPathsService>();
 
-        public PagesController(PagesService service, IPageService pageService) 
+        public PagesController(PagesService service, IPageService pageService)
         {
             _service = service;
             this.pageService = pageService;

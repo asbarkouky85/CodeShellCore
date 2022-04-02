@@ -1,11 +1,12 @@
 ﻿using CodeShellCore.Data.Lookups;
 using System.Collections.Generic;
 using System.Dynamic;
-using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Resources;
 using System;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.PageCategories;
+using System.Collections;
 
 namespace CodeShellCore.Moldster.Data
 {
@@ -59,17 +60,17 @@ namespace CodeShellCore.Moldster.Data
             return mod;
         }
 
-        public object PageCategoryEdit(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> PageCategoryEdit(Dictionary<string, string> data)
         {
-            dynamic mod = new ExpandoObject();
+            var mod = new Dictionary<string, IEnumerable<Named<object>>>();
             if (data.TryGetValue("Resources", out string r))
-                mod.Resources = GetLookupNamed<Resource>(r);
+                mod["Resources"] = GetLookupNamed<Resource>(r);
             if (data.TryGetValue("layouts", out string l))
-                mod.layouts = GetLayoutFiles(true);
+                mod["layouts"] = GetLayoutFiles(true);
             return mod;
         }
 
-        public object ResourceEdit(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> ResourceEdit(Dictionary<string, string> data)
         {
             dynamic mod = new ExpandoObject();
             if (data.TryGetValue("domains", out string l))

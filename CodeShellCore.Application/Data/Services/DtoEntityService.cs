@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
+using System.Collections;
 
 namespace CodeShellCore.Data.Services
 {
@@ -34,16 +35,7 @@ namespace CodeShellCore.Data.Services
 
         public virtual DeleteResult Delete(TPrime id)
         {
-            var can = Repository.CanDeleteById(id);
-            if (can.IsSuccess)
-            {
-                Repository.DeleteByKey(id);
-            }
-            else
-            {
-                return can;
-            }
-
+            Repository.DeleteByKey(id);
             return Unit.SaveChanges().MapToResult<DeleteResult>();
         }
 

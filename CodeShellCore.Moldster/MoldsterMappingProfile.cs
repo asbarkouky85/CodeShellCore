@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using CodeShellCore.Data;
 using CodeShellCore.Files;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Tenants;
+using System;
 
 namespace CodeShellCore.Moldster
 {
@@ -15,7 +19,36 @@ namespace CodeShellCore.Moldster
             DomainsMapping();
             LocalizationMapping();
             PagesMapping();
+            PageCategoriesMapping();
+            ResourceMapping();
             TenantsMapping();
+        }
+
+        void PageCategoriesMapping()
+        {
+            CreateMap<PageCategory, PageCategoryDto>();
+            CreateMap<PageCategoryDto, PageCategory>()
+                .IgnoreId()
+                .ForMember(e => e.Controls, d => d.Ignore())
+                .ForMember(e => e.PageCategoryParameters, d => d.Ignore());
+
+            CreateMap<PageCategory, PageCategoryListDTO>();
+            CreateMap<Control, ControlDto>();
+
+            CreateMap<PageCategoryParameter, PageCategoryParameterDto>()
+                .MapChangeState();
+
+            CreateMap<PageCategory, PageCategoryEditDto>()
+                .ForMember(e => e.Category, d => d.MapFrom(e => e))
+                .ForMember(e => e.Resource, d => d.MapFrom(e => e.Resource == null ? null : e.Resource.Name))
+                .ForMember(e => e.Domain, d => d.MapFrom(e => e.Resource == null ? null : e.Domain.Name))
+                .ForMember(e => e.ResourceDomain, d => d.MapFrom(e => e.Resource == null ? null : e.Resource.Domain == null ? null : e.Resource.Domain.NameChain));
+        }
+
+        void ResourceMapping()
+        {
+            CreateMap<Resource, ResourceListDTO>()
+                .ForMember(e => e.Domain, d => d.MapFrom(e => e.Domain.Name));
         }
 
         void DomainsMapping()

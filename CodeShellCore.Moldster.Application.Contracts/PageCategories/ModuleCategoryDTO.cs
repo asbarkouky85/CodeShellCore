@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.PageCategories.Dtos
+namespace CodeShellCore.Moldster.PageCategories
 {
     public class ModuleCategoryDTO
     {

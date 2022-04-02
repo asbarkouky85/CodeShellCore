@@ -1,16 +1,11 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Data.Helpers;
+﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Services;
+using CodeShellCore.Moldster.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Pages.Dtos;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {
@@ -78,14 +73,14 @@ namespace CodeShellCore.Moldster.Pages.Services
             IEnumerable<PageParameterForJson> pageParametersByTenantAndCategory = Unit.PageParameterRepository.FindForJson(tenantId, pageCategoryId);
             IEnumerable<PageRouteDTO> pageRoutesByTenantAndCategory = Unit.PageRouteRepository.FindForJson(tenantId, pageCategoryId);
             IEnumerable<CustomField> fieldsByTenantAndCategory = Unit.CustomFieldRepository.Find(d => (d.Page.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.Page.TenantId == tenantId);
-            var func = FieldDefinition.Expression.Compile();
+
             foreach (var page in pagesByCategoryAndTenant)
             {
                 //if (page.PageCategoryId == 1830435732000)
                 //    Console.WriteLine("");
                 var pageParameters = pageParametersByTenantAndCategory.Where(d => d.PageId == page.Id).ToArray();
                 var pageRoutes = pageRoutesByTenantAndCategory.FirstOrDefault(d => d.PageId == page.Id);
-                var pageFields = fieldsByTenantAndCategory.Where(d => d.PageId == page.Id).Select(func).ToArray();
+                var pageFields = fieldsByTenantAndCategory.Where(d => d.PageId == page.Id).Select(e => new FieldDefinition { Name = e.Name, Type = e.Type }).ToArray();
                 Unit.PageRepository.UpdatePageViewParamsJson(page, pageParameters, pageRoutes, pageFields);
             }
             return Unit.SaveChanges();

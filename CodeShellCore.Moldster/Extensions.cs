@@ -17,7 +17,6 @@ using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.Navigation.Services;
 using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Razor;
@@ -107,13 +106,14 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<ConfiguratorLookupService>();
 
             coll.AddServiceFor<Domain, DomainService>();
-            coll.AddServiceFor<PageCategory, PageCategoryService>();
+
             coll.AddServiceFor<Page, PagesService>();
             coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
             coll.AddServiceFor<PageControl, PageControlService>();
             coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
 
             coll.AddTransient<ITenantService, TenantsService>();
+
             coll.AddTransient<IUserDataService, UserDataService>();
             coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
 
@@ -171,6 +171,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IPageCategoryParameterService, PageCategoryParameterService>();
             coll.AddTransient<IPagesDataService, PagesService>();
             coll.AddTransient<ITenantService, TenantsService>();
+            coll.AddTransient<IPageCategoryService, PageCategoryService>();
 
             coll.AddTransient<IViewsService, DefaultViewsService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();

@@ -2,8 +2,7 @@
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +40,7 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
             return q.ToList();
         }
 
-        public void UpdateParameters(long id, List<PageCategoryParameterDTO> parameters)
+        public void UpdateParameters(long id, List<PageCategoryParameter> parameters)
         {
             var existing = Find(d => d.PageCategoryId == id);
             foreach (var p in parameters)

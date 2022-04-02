@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.PageCategories.Dtos;
+﻿using CodeShellCore.Moldster.PageCategories;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.Domains

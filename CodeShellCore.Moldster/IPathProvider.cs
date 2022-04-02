@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeShellCore.Services;
 using CodeShellCore.Moldster.Environments;
-using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.PageCategories;
 
 namespace CodeShellCore.Moldster
 {

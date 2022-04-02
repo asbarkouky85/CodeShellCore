@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -10,7 +11,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         {
             if (helper.CollectingData())
             {
-                helper.GetCollector().Parameters.Add(new PageCategoryParameterDTO { Name = key, Type = (int)type, DefaultValue = value });
+                helper.GetCollector().Parameters.Add(new PageCategoryParameterDto { Name = key, Type = (int)type, DefaultValue = value });
             }
         }
 
@@ -20,7 +21,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
         {
             if (helper.CollectingData())
             {
-                helper.GetCollector().Parameters.Add(new PageCategoryParameterDTO
+                helper.GetCollector().Parameters.Add(new PageCategoryParameterDto
                 {
                     Name = link.Name,
                     Type = (int)PageParameterTypes.PageLink,

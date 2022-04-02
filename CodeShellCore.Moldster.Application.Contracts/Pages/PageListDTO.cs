@@ -1,14 +1,9 @@
-﻿using CodeShellCore.Text;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+﻿using CodeShellCore.Data;
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public class PageListDTO
+    public class PageListDTO : EntityDto<long>
     {
-        public long Id { get; set; }
         public string Name { get; set; }
         public string Layout { get; set; }
         public string ActionType { get; set; }
