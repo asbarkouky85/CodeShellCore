@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Builder.Services
+namespace CodeShellCore.Moldster.Builder
 {
     public class LegacyPublisherService : PublisherService
     {

@@ -1,6 +1,5 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Builder.Dtos;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using System;
@@ -9,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Moldster.Builder.Services
+namespace CodeShellCore.Moldster.Builder
 {
     public class PreviewService : ConsoleService, IPreviewService
     {
@@ -21,8 +20,8 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         public PreviewService(IOutputWriter writer, IPathsService paths, IDataService data) : base(writer)
         {
-            this.Paths = paths;
-            this.Data = data;
+            Paths = paths;
+            Data = data;
         }
 
         protected static string WebpackConfigTemplate => @"const merge = require('webpack-merge');

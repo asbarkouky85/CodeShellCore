@@ -5,7 +5,7 @@ using CodeShellCore.Net;
 using CodeShellCore.Services;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Builder.Services
+namespace CodeShellCore.Moldster.Builder
 {
     public interface IPublisherService : IServiceBase
     {

@@ -9,7 +9,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeShellCore.Moldster.Builder.Services
+namespace CodeShellCore.Moldster.Builder
 {
     public class BundlingService : MoldsterFileHandlingService, IBundlingService, ILegacyBundlingService
     {

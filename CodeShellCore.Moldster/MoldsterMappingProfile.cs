@@ -83,6 +83,10 @@ namespace CodeShellCore.Moldster
                 .ForMember(e => e.PageType, d => d.MapFrom(e => e.HasRoute && e.CanEmbed ? "Route,Embedded" : e.HasRoute ? "Route" : "Embedded"))
                 .ForMember(e => e.BaseComponent, d => d.MapFrom(e => e.PageCategory.BaseComponent));
 
+            CreateMap<PageParameter, PageParameterDto>();
+            CreateMap<PageParameterDto, PageParameter>().IgnoreId();
+
+            
         }
 
         void TenantsMapping()

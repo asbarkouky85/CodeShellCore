@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using CodeShellCore.Moldster.Pages;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {
@@ -219,6 +220,16 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
                  .GroupBy(e => new { DomainName = e.Domain.Name, Page = e.Name })
                  .Select(e => new PageIdentifierDTO { Domain = e.Key.DomainName, Page = e.Key.Page })
                  .ToList();
+        }
+
+        public Page GetForCustomization(long id)
+        {
+            var q = Loader
+                .Include(e => e.PageControls)
+                .Include(e => e.PageParameters)
+                .Include(e => e.PageRoutes)
+                .Include(e => e.CustomFields);
+            return q.FirstOrDefault(e => e.Id == id);
         }
     }
 }

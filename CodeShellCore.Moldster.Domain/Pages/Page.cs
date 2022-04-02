@@ -15,4 +15,10 @@ using System;using System.Collections.Generic;using System.ComponentModel.Data
         [System.Runtime.Serialization.IgnoreDataMember]
         public ResourceCollection SourceCollection { get; set; }        [ForeignKey("TenantId")]        [InverseProperty("Pages")]
         [System.Runtime.Serialization.IgnoreDataMember]
-        public Tenant Tenant { get; set; }        [InverseProperty("Page")]        public ICollection<CustomField> CustomFields { get; set; }        [InverseProperty("Page")]        public ICollection<NavigationPage> NavigationPages { get; set; }        [InverseProperty("Page")]        public ICollection<PageControl> PageControls { get; set; }        [InverseProperty("Page")]        public ICollection<PageParameter> PageParameters { get; set; }        [InverseProperty("Page")]        public ICollection<PageRoute> PageRoutes { get; set; }    }}
+        public Tenant Tenant { get; set; }        [InverseProperty("Page")]        public ICollection<CustomField> CustomFields { get; set; }        [InverseProperty("Page")]        public ICollection<NavigationPage> NavigationPages { get; set; }        [InverseProperty("Page")]        public ICollection<PageControl> PageControls { get; set; }        [InverseProperty("Page")]        public ICollection<PageParameter> PageParameters { get; set; }        [InverseProperty("Page")]        public ICollection<PageRoute> PageRoutes { get; set; }
+
+        public void SetRoute(PageRoute pageRoute)
+        {
+            throw new NotImplementedException();
+        }
+    }}

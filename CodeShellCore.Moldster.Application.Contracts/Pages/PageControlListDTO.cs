@@ -1,13 +1,13 @@
-﻿using System;
+﻿using CodeShellCore.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public class PageControlListDTO
+    public class PageControlListDTO : EntityDto<long>, IEditable<long>
     {
-        public long Id { get; set; }
         public string PageName { get; set; }
         public string ControlType { get; set; }
         public string ControlIdentifier { get; set; }

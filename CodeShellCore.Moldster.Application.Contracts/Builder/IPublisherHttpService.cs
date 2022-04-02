@@ -2,7 +2,7 @@
 using CodeShellCore.Http;
 using CodeShellCore.Net;
 
-namespace CodeShellCore.Moldster.Builder.Services
+namespace CodeShellCore.Moldster.Builder
 {
     public interface IPublisherHttpService : IHttpService
     {

@@ -1,15 +1,14 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Data;
 using CodeShellCore.Data.Helpers;
-using CodeShellCore.Data.Services;
 using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace CodeShellCore.Moldster.Data.Internal
+namespace CodeShellCore.Moldster.Sql
 {
 
 

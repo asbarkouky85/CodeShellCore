@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Services;
 
-namespace CodeShellCore.Moldster.Data
+namespace CodeShellCore.Moldster.Sql
 {
     public interface ISqlCommandService : IServiceBase
     {

@@ -3,7 +3,7 @@ using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Services;
 
-namespace CodeShellCore.Moldster.Builder.Services
+namespace CodeShellCore.Moldster.Builder
 {
     public interface IBundlingService : IServiceBase
     {

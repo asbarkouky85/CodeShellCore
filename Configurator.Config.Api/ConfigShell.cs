@@ -10,13 +10,10 @@ using Microsoft.AspNetCore.Hosting;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Security.Authorization;
 using System;
-using CodeShellCore.Moldster.Builder.Dtos;
-using CodeShellCore.Moldster.Builder.Services;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.Sql.Dtos;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Sql;
 
 namespace Configurator.Config.Api
 {
@@ -46,7 +43,7 @@ namespace Configurator.Config.Api
             coll.AddScriptMapping("Core/Example/Dtos", d =>
             {
                 string st = "";
-                st += d.MapEntity<PageParameterDTO>(true);
+                st += d.MapEntity<PageParameterEditDto>(true);
                 st += d.MapEntity<RenderDTO>();
                 st += d.MapEntity<DbCreationRequest>();
                 st += d.MapEntity<ParameterRequestDTO>();

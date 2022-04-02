@@ -21,5 +21,6 @@ namespace CodeShellCore.Moldster.Data.Repositories
         void FillReferences(IEnumerable<PageListDTO> listT);
         PageDetailsDto FindSingleForRendering(Expression<Func<Page, bool>> p);
         List<PageIdentifierDTO> GetDistinctIdentifiers();
+        Page GetForCustomization(long id);
     }
 }

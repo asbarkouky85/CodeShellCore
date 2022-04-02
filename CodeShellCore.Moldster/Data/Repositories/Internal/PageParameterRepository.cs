@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Linq;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Pages.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -84,31 +83,6 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
             return QueryPageParameterForJson(q).ToList();
         }
 
-        public List<PageParameterDTO> FindForPage(long id)
-        {
-            var catId = DbContext.Pages.Where(d => d.Id == id).Select(d => d.PageCategoryId).FirstOrDefault();
-
-            var q = from s in DbContext.PageCategoryParameters
-                    where s.PageCategoryId == catId
-                    orderby s.Type
-                    select new PageParameterDTO
-                    {
-                        Id = s.Id,
-                        Entity = s.PageParameters.Where(d => d.PageId == id).FirstOrDefault() ?? new PageParameter { UseDefault = true },
-                        Name = s.Name,
-                        Type = s.Type,
-                        DefaultValue = s.DefaultValue,
-                        ViewPath = (from e in s.PageParameters
-                                    where e.PageId == id
-                                    select e.LinkedPageId.HasValue ? DbContext.Pages
-                                        .Where(p => p.Id == e.LinkedPageId)
-                                        .Select(p => p.ViewPath)
-                                        .FirstOrDefault() : null)
-                                 .FirstOrDefault()
-                    };
-            return q.ToList();
-        }
-
         public LoadResult<PageReferenceDTO> FindReferences(ParameterRequestDTO req, ListOptions<PageReferenceDTO> o)
         {
             var q = Loader.Where(d => d.Page.Tenant.Code == req.TenantCode);
@@ -143,6 +117,19 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
                 q = q.Where(d => d.LinkedPageId == req.ReferencedPageId.Value);
 
             return QueryPageReferenceDTO(q).LoadWith(o);
+        }
+
+        public List<PageReference> GetReferencesByPage(long id)
+        {
+            var q = Loader.Where(e => e.PageId == id && e.LinkedPageId != null);
+            var pagesQuery = DbContext.Pages;
+            return q.Select(e => new PageReference
+            {
+                PageParameterId = e.Id,
+                ViewPath = pagesQuery.Where(d => d.Id == e.LinkedPageId).Select(d => d.ViewPath).FirstOrDefault()
+            }).ToList();
+
+
         }
     }
 }

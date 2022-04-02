@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Mapping;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
@@ -7,28 +8,33 @@ using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Tenants;
+using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Text;
+using CodeShellCore.Extensions.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using CodeShellCore.Data;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {
     public class PagesService : EntityService<Page>, IPagesDataService
     {
         IConfigUnit Unit;
+        private readonly IObjectMapper mapper;
         private readonly IOutputWriter output;
 
         public PagesService(
             IConfigUnit unit,
+            IObjectMapper mapper,
             IOutputWriter output) : base(unit)
         {
             Unit = unit;
+            this.mapper = mapper;
             this.output = output;
         }
 
@@ -142,7 +148,7 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         }
 
-        PageParameterDTO CreateParameter(string key, string value, long pageId, long tenantId, long catId)
+        PageParameterEditDto CreateParameter(string key, string value, long pageId, long tenantId, long catId)
         {
 
             var param = new PageParameter
@@ -174,14 +180,39 @@ namespace CodeShellCore.Moldster.Pages.Services
 
             Unit.PageCategoryParameterRepository.Add(p);
 
-            return new PageParameterDTO
+            return new PageParameterEditDto
             {
                 Id = p.Id,
                 DefaultValue = p.DefaultValue,
                 Name = p.Name,
-                Entity = param,
+                Entity = mapper.Map(param, new PageParameterDto()),
                 Type = p.Type
             };
+        }
+
+        public IEnumerable<PageParameterEditDto> GetViewParameters(long id)
+        {
+            var catId = Unit.PageRepository.GetValue(id, e => e.PageCategoryId);
+            var categoryParameters = Unit.PageCategoryParameterRepository.FindAndMap<PageParameterEditDto>(e => e.PageCategoryId == catId);
+            var pageParameters = Unit.PageParameterRepository.FindAndMap<PageParameter>(e => e.PageId == id);
+            List<PageReference> references = Unit.PageParameterRepository.GetReferencesByPage(id);
+
+            foreach (var categoryParameter in categoryParameters)
+            {
+                var pageParameter = pageParameters.FirstOrDefault(e => e.PageCategoryParameterId == categoryParameter.Id);
+                if (pageParameter == null)
+                {
+                    pageParameter = new PageParameter { UseDefault = true };
+                }
+                else
+                {
+                    categoryParameter.ViewPath = references.Where(e => e.PageParameterId == pageParameter.Id)
+                        .Select(e => e.ViewPath)
+                        .FirstOrDefault();
+                }
+                categoryParameter.Entity = mapper.Map(pageParameter ?? new PageParameter { UseDefault = true }, new PageParameterDto());
+            }
+            return categoryParameters;
         }
 
         public void UpdateParametersFromJson(long id, long tenantId, ViewParams jsonParams, ref List<string> errors)
@@ -189,7 +220,7 @@ namespace CodeShellCore.Moldster.Pages.Services
             if (jsonParams.Other == null)
                 return;
             long catId = Unit.PageRepository.GetValue(id, d => d.PageCategoryId ?? 0);
-            List<PageParameterDTO> pars = Unit.PageParameterRepository.FindForPage(id);
+            List<PageParameterEditDto> pars = GetViewParameters(id).ToList();
             int[] isPageParam = new[] {
                     (int)PageParameterTypes.Embedded,
                     (int)PageParameterTypes.Modal,
@@ -205,7 +236,7 @@ namespace CodeShellCore.Moldster.Pages.Services
                     if (par == null)
                         par = CreateParameter(fromJson.Key, fromJson.Value, id, tenantId, catId);
 
-                    var n = par.Entity;
+                    var n = mapper.Map(par.Entity, new PageParameter());
 
                     if (par.Entity.Id == 0)
                     {
@@ -524,10 +555,11 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         public SubmitResult ApplyCustomization(PageCustomizationDTO dto)
         {
+            Page page = Unit.PageRepository.GetForCustomization(dto.Id);
+
             if (dto.Controls != null && dto.Controls.Any())
             {
-                var list = dto.Controls.MapTo<PageControl>(false);
-                Unit.PageControlRepository.ApplyChanges(list);
+                page.PageControls.ApplyChangesLong(dto.Controls, mapper);
             }
 
             if (dto.Parameters != null && dto.Parameters.Any())
@@ -536,8 +568,7 @@ namespace CodeShellCore.Moldster.Pages.Services
                 {
                     if (par.Entity.Id == 0)
                     {
-                        par.Entity.State = "Added";
-                        par.Entity.PageId = dto.Id;
+                        par.Entity.State = ChangeStates.Added;
                         par.Entity.PageCategoryParameterId = par.Id;
                     }
                     else
@@ -545,40 +576,30 @@ namespace CodeShellCore.Moldster.Pages.Services
                         par.Entity.State = par.State;
                     }
                 }
-                Unit.PageParameterRepository.ApplyChanges(dto.Parameters.Select(d => d.Entity));
+                page.PageParameters.ApplyChangesLong(dto.Parameters.Select(d => d.Entity), mapper);
             }
+
             if (dto.Route != null)
             {
-                var rout = Unit.PageRouteRepository.FindSingle(dto.Route.Id);
-                if (rout == null)
-                {
-                    rout = new PageRoute
-                    {
-                        PageId = dto.Id,
-                    };
-                    Unit.PageRouteRepository.Add(rout);
-                }
-                else
-                {
-                    Unit.PageRouteRepository.Update(rout);
-                }
-                rout.AppendProperties(dto.Route, true, new[] { "CreatedOn", "CreatedBy", "PageId" });
+                page.SetRoute(mapper.Map(dto.Route, new PageRoute()));
             }
-            Unit.CustomFieldRepository.ApplyChanges(dto.Fields);
+            page.CustomFields.ApplyChangesLong(dto.Fields, mapper);
+
             var res = Unit.SaveChanges();
+
             if (res.Code == 0)
             {
                 var pars = Unit.PageParameterRepository.FindForJsonByPage(dto.Id);
-                var page = Unit.PageRepository.FindSingle(dto.Id);
+
                 if (page.Layout != dto.Layout)
                 {
                     page.Layout = dto.Layout;
                     Unit.PageRepository.Update(page);
                 }
 
-
                 if (dto.Route == null)
                     dto.Route = Unit.PageRouteRepository.FindByPage(dto.Id);
+
                 var fs = Unit.CustomFieldRepository.FindAs(e => new FieldDefinition { Name = e.Name, Type = e.Type }, d => d.PageId == dto.Id).ToArray();
                 fs = fs.Any() ? fs : null;
                 Unit.PageRepository.UpdatePageViewParamsJson(page, pars.ToArray(), dto.Route, fs);
@@ -601,9 +622,9 @@ namespace CodeShellCore.Moldster.Pages.Services
             var dto = new PageCustomizationDTO
             {
                 Controls = Unit.PageControlRepository.FindAndMap<PageControlListDTO>(d => d.PageId == id),
-                Parameters = Unit.PageParameterRepository.FindForPage(id),
+                Parameters = GetViewParameters(id),
                 Route = Unit.PageRouteRepository.FindByPage(id) ?? new PageRouteDTO(),
-                Fields = Unit.CustomFieldRepository.Find(d => d.PageId == id),
+                Fields = Unit.CustomFieldRepository.FindAndMap<CustomFieldDto>(d => d.PageId == id),
                 ViewPath = p.ViewPath,
                 Id = id,
                 TenantId = p.TenantId,
@@ -611,11 +632,6 @@ namespace CodeShellCore.Moldster.Pages.Services
                 Layout = p.Layout
             };
             return dto;
-        }
-
-        public IEnumerable<PageParameterDTO> GetViewParameters(long id)
-        {
-            return Unit.PageParameterRepository.FindForPage(id);
         }
 
         public PageAcquisitorDTO GetPageAcquisitor(long pageId)

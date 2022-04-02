@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Builder.Dtos
+namespace CodeShellCore.Moldster.Builder
 {
     public class PreviewData
     {

@@ -1,4 +1,4 @@
-﻿namespace CodeShellCore.Moldster.Sql.Dtos
+﻿namespace CodeShellCore.Moldster.Sql
 {
     public class DbCreationRequest
     {

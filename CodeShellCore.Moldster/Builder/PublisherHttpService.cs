@@ -6,7 +6,7 @@ using CodeShellCore.Net.Ftp;
 using System;
 using System.IO;
 
-namespace CodeShellCore.Moldster.Builder.Services
+namespace CodeShellCore.Moldster.Builder
 {
     public class PublisherHttpService : HttpService, IPublisherHttpService
     {

@@ -2,12 +2,11 @@
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Builder.Services;
+using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Pages.Dtos;
 using CodeShellCore.Moldster.Pages.Services;
-using CodeShellCore.Moldster.Sql.Dtos;
+using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +75,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         //    return lookups.PageEdit(data);
         //}
 
-        public IEnumerable<PageParameterDTO> GetViewParameters(long id)
+        public IEnumerable<PageParameterEditDto> GetViewParameters(long id)
         {
             return _service.GetViewParameters(id);
         }
