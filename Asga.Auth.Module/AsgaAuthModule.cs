@@ -53,12 +53,13 @@ namespace Asga.Auth
         public static void AddAsgaAuthModule(this IServiceCollection coll, IConfiguration config, bool defaultModule = true)
         {
             coll.AddAuthData(defaultModule, config);
+            coll.AddCodeShellApplication();
             coll.AddTransient<IAuthLookupService, AuthLookupService>();
             coll.AddTransient<IAuthenticationMailService, AsgaAuthMailService>();
             coll.AddTransient<AuthorizationService>();
             coll.AddServiceFor<Role, RolesService, IRolesService>();
             coll.AddServiceFor<User, UsersService, IUsersService>();
-
+            
             coll.AddDataSeeders<AuthContext>(e =>
             {
                 e.AddSeeder<AuthDataSeeder>();

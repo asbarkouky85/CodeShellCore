@@ -42,7 +42,7 @@ namespace Asga.Mobile.Business.Internal
                 data = Repository.FindAs(NotificationListDTO.Expression, opts);
             }
 
-            _unit.ServiceProvider.GetService<IModuleNotificationService>().FillAutoData(data.ListT);
+            _unit.ServiceProvider.GetService<IModuleNotificationService>().FillAutoData(data.List);
             return data;
         }
 

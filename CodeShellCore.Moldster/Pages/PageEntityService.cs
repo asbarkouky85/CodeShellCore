@@ -69,7 +69,7 @@ namespace CodeShellCore.Moldster.Pages
             }
 
             page.Name = dto.ComponentName;
-            var res = Unit.SaveChanges().MapToResult<SubmitResult<CreatePageDTO>>();
+            var res = Unit.SaveChanges().ToSubmitResult<CreatePageDTO>();
 
             if (res.IsSuccess && pathChanged)
             {
@@ -365,7 +365,7 @@ namespace CodeShellCore.Moldster.Pages
                     return submitResult;
                 }
 
-                p.Resource = resource;
+                resource.Pages.Add(p);
             }
 
 
@@ -400,7 +400,7 @@ namespace CodeShellCore.Moldster.Pages
             tenant.Pages.Add(p);
             domain.Pages.Add(p);
             dto.DomainId = domain.Id;
-            submitResult = Unit.SaveChanges().MapToResult<SubmitResult<CreatePageDTO>>();
+            submitResult = Unit.SaveChanges().ToSubmitResult<CreatePageDTO>();
             submitResult.Data["Id"] = p.Id;
             return submitResult;
         }

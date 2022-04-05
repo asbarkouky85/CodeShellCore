@@ -18,6 +18,8 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             Shell.Start(new UnitTestShell(coll =>
             {
+                coll.Services.AddMoldsterDbData(coll.Configuration);
+                coll.Services.AddMoldsterCodeGeneration();
                 coll.Services.AddMoldsterWeb();
                 coll.Services.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
                 coll.Services.AddScoped<MoldsterDataInit>();

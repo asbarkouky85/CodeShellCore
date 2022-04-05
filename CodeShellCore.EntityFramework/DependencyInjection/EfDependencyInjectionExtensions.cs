@@ -75,7 +75,7 @@ namespace CodeShellCore.DependencyInjection
             }
             else
             {
-                coll.AddDbContext<T>();
+                coll.AddScoped<T>();
             }
 
             if (setAsDefault)

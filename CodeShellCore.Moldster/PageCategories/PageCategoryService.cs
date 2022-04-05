@@ -46,26 +46,26 @@ namespace CodeShellCore.Moldster.PageCategories
             return cat;
         }
 
-        public override SubmitResult<PageCategoryDto> Post(PageCategoryDto obj)
+        public override SubmitResult<PageCategoryDto> Post(PageCategoryDto dto)
         {
             SubmitResult<PageCategoryDto> returned = new SubmitResult<PageCategoryDto>();
 
-            if (string.IsNullOrEmpty(obj.Name))
-                obj.Name = obj.ViewPath?.GetAfterLast("/");
+            if (string.IsNullOrEmpty(dto.Name))
+                dto.Name = dto.ViewPath?.GetAfterLast("/");
 
-            var domain = Unit.DomainRepository.GetOrCreatePath(obj.ViewPath.GetBeforeLast("/"));
+            var domain = Unit.DomainRepository.GetOrCreatePath(dto.ViewPath.GetBeforeLast("/"));
 
-            string template = Path.Combine(Shell.AppRootPath, "Views", obj.ViewPath + ".cshtml");
+            string template = Path.Combine(Shell.AppRootPath, "Views", dto.ViewPath + ".cshtml");
             if (!fileHandler.Exists(template))
                 throw new Exception("No such template : " + template);
 
-            var mapped = Mapper.Map<PageCategoryDto, PageCategory>(obj);
+            var mapped = Mapper.Map<PageCategoryDto, PageCategory>(dto);
             domain.PageCategories.Add(mapped);
-            obj.DomainId = domain.Id;
-            if (obj.ResourceName != null)
+            dto.DomainId = domain.Id;
+            if (dto.ResourceName != null)
             {
-                string[] sp = obj.ResourceName.Split('/');
-                string res = obj.ResourceName;
+                string[] sp = dto.ResourceName.Split('/');
+                string res = dto.ResourceName;
                 string service = null;
 
                 if (sp.Length > 1)
@@ -77,18 +77,18 @@ namespace CodeShellCore.Moldster.PageCategories
                 Resource r = Unit.ResourceRepository.GetResource(res, service);
 
                 string[] bases = new[] { "Edit", "List", "Tree" };
-                if (bases.Contains(obj.BaseComponent) && r == null)
+                if (bases.Contains(dto.BaseComponent) && r == null)
                 {
-                    throw new Exception("This " + obj.BaseComponent + " base component requires a Resource");
+                    throw new Exception("This " + dto.BaseComponent + " base component requires a Resource");
                 }
                 r.PageCategories.Add(mapped);
 
-                returned = Unit.SaveChanges().MapToResult<SubmitResult<PageCategoryDto>>();
+                returned = Unit.SaveChanges().ToSubmitResult<PageCategoryDto>();
                 returned.Result = GetSingle(mapped.Id);
             }
             else
             {
-                returned = base.Post(obj);
+                returned = base.Post(dto);
             }
             return returned;
 

@@ -52,7 +52,7 @@ namespace CodeShellCore.Moldster
             }
             else
             {
-                coll.AddDbContext<MoldsterContext>();
+                coll.AddScoped<MoldsterContext>();
             }
 
             //coll.AddCodeShellEntityFramework();
@@ -183,7 +183,10 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IResourceScriptGenerationService, ResourceScriptGenerationService>();
             coll.AddTransient<IPageCategoryHtmlService, PageCategoryHtmlService>();
             coll.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
-            coll.AddAutoMapper(Assembly.GetCallingAssembly());
+
+            coll.AddCodeShellApplication();
+            
+            coll.AddAutoMapper(typeof(MoldsterService).Assembly);
         }
 
         public static void AddMoldsterCli(this IServiceCollection coll, bool legacy = false)

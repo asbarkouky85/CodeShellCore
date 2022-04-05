@@ -93,7 +93,7 @@ namespace CodeShellCore.Data.Services
         {
             var entity = Mapper.Map<TCreateDto, T>(dto);
             Repository.Add(entity);
-            var res = DefaultUnit.SaveChanges().MapToResult<SubmitResult<TSingleDto>>();
+            var res = DefaultUnit.SaveChanges().ToSubmitResult<TSingleDto>();
             if (res.IsSuccess)
             {
                 AfterCreate(dto, entity);
@@ -107,7 +107,7 @@ namespace CodeShellCore.Data.Services
             var entity = GetSingleById(dto.Id);
             Mapper.Map(dto, entity);
             Repository.Update(entity);
-            var res = DefaultUnit.SaveChanges().MapToResult<SubmitResult<TSingleDto>>();
+            var res = DefaultUnit.SaveChanges().ToSubmitResult<TSingleDto>();
             if (res.IsSuccess)
             {
                 AfterUpdate(dto, entity);
