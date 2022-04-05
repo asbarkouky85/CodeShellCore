@@ -7,8 +7,6 @@ using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Localization.Services;
-using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Tracing;
@@ -64,9 +62,8 @@ namespace CodeShellCore.Web.Razor
         {
 
             coll.AddServiceFor<Domain, DomainService>();
-            coll.AddServiceFor<Page, PagesService>();
-            coll.AddTransient<RazorViewsService>();
 
+            coll.AddTransient<RazorViewsService>();
             coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
 
             coll.AddSingleton<DefaultPathsService>();
@@ -78,7 +75,6 @@ namespace CodeShellCore.Web.Razor
             {
                 coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
             }
-
 
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();

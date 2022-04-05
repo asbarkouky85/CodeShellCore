@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Pages.Services
+namespace CodeShellCore.Moldster.Pages
 {
     public interface IPageScriptGenerationService
     {

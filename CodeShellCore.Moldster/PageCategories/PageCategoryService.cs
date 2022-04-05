@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Files;
 using CodeShellCore.Linq;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
@@ -18,13 +20,14 @@ namespace CodeShellCore.Moldster.PageCategories
     {
         private readonly IFileHandler fileHandler;
         private readonly IPathsService conf;
-        private readonly IConfigUnit configUnit;
+        private readonly IConfigUnit Unit;
+        IMoldsterLookupService Lookups => Unit.ServiceProvider.GetService<IMoldsterLookupService>();
 
         public PageCategoryService(IConfigUnit unit, IFileHandler fileHandler, IPathsService conf) : base(unit)
         {
             this.fileHandler = fileHandler;
             this.conf = conf;
-            configUnit = unit;
+            Unit = unit;
         }
 
         protected override PageCategory GetSingleById(long id)
@@ -37,8 +40,8 @@ namespace CodeShellCore.Moldster.PageCategories
             var cat = base.GetSingle(id);
             if (cat != null)
             {
-                cat.PageCategoryParameters = configUnit.PageCategoryParameterRepository.FindAndMap<PageCategoryParameterDto>(d => d.PageCategoryId.Equals(id));
-                cat.Controls = configUnit.ControlRepository.FindAndMap<ControlDto>(d => d.PageCategoryId.Equals(id));
+                cat.PageCategoryParameters = Unit.PageCategoryParameterRepository.FindAndMap<PageCategoryParameterDto>(d => d.PageCategoryId.Equals(id));
+                cat.Controls = Unit.ControlRepository.FindAndMap<ControlDto>(d => d.PageCategoryId.Equals(id));
             }
             return cat;
         }
@@ -50,7 +53,7 @@ namespace CodeShellCore.Moldster.PageCategories
             if (string.IsNullOrEmpty(obj.Name))
                 obj.Name = obj.ViewPath?.GetAfterLast("/");
 
-            var domain = configUnit.DomainRepository.GetOrCreatePath(obj.ViewPath.GetBeforeLast("/"));
+            var domain = Unit.DomainRepository.GetOrCreatePath(obj.ViewPath.GetBeforeLast("/"));
 
             string template = Path.Combine(Shell.AppRootPath, "Views", obj.ViewPath + ".cshtml");
             if (!fileHandler.Exists(template))
@@ -71,7 +74,7 @@ namespace CodeShellCore.Moldster.PageCategories
                     service = sp[0];
                 }
 
-                Resource r = configUnit.ResourceRepository.GetResource(res, service);
+                Resource r = Unit.ResourceRepository.GetResource(res, service);
 
                 string[] bases = new[] { "Edit", "List", "Tree" };
                 if (bases.Contains(obj.BaseComponent) && r == null)
@@ -80,7 +83,7 @@ namespace CodeShellCore.Moldster.PageCategories
                 }
                 r.PageCategories.Add(mapped);
 
-                returned = configUnit.SaveChanges().MapToResult<SubmitResult<PageCategoryDto>>();
+                returned = Unit.SaveChanges().MapToResult<SubmitResult<PageCategoryDto>>();
                 returned.Result = GetSingle(mapped.Id);
             }
             else
@@ -94,18 +97,18 @@ namespace CodeShellCore.Moldster.PageCategories
         public LoadResult<PageCategoryListDTO> GetAll(LoadOptions opt)
         {
             var opts = opt.GetOptionsFor<PageCategoryListDTO>();
-            return configUnit.PageCategoryRepository.FindAndMap(opts);
+            return Unit.PageCategoryRepository.FindAndMap(opts);
         }
 
         public LoadResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, LoadOptions opt)
         {
-            return configUnit.PageCategoryRepository.GetUnderDomain(domainId, opt);
+            return Unit.PageCategoryRepository.GetUnderDomain(domainId, opt);
         }
 
         public List<TemplateDTO> GetTemplates()
         {
             string configPath = conf.ConfigRoot;
-            var DbTemplateList = configUnit.PageCategoryRepository.GetValues(d => d.ViewPath);
+            var DbTemplateList = Unit.PageCategoryRepository.GetValues(d => d.ViewPath);
             return GetLocalTemplate(DbTemplateList);
         }
 
@@ -142,11 +145,16 @@ namespace CodeShellCore.Moldster.PageCategories
             foreach (var item in list)
             {
 
-                var d = configUnit.DomainRepository.GetOrCreatePath(item.ViewPath.GetBeforeLast("/"), ref doms);
+                var d = Unit.DomainRepository.GetOrCreatePath(item.ViewPath.GetBeforeLast("/"), ref doms);
                 var cat = Mapper.Map<PageCategoryDto, PageCategory>(item);
-                configUnit.PageCategoryRepository.Add(cat, d);
+                Unit.PageCategoryRepository.Add(cat, d);
             }
-            return Unit.SaveChanges();
+            return DefaultUnit.SaveChanges();
+        }
+
+        public override Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
+        {
+            return Lookups.PageCategoryEdit(data);
         }
 
     }

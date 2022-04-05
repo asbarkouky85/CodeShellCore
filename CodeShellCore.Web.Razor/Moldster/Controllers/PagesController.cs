@@ -5,7 +5,6 @@ using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
@@ -15,24 +14,21 @@ using System.Collections.Generic;
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
-    public class PagesController : BaseApiController, IPageService
+    public class PagesController : BaseApiController, IPageEntityService
     {
-        PagesService _service;
-        private readonly IPageService pageService;
+        private readonly IPageEntityService pageService;
 
         IPublisherService pub => GetService<IPublisherService>();
         EnvironmentAccessor acc => GetService<EnvironmentAccessor>();
         IPathsService paths => GetService<IPathsService>();
 
-        public PagesController(PagesService service, IPageService pageService)
+        public PagesController(IPageEntityService pageService)
         {
-            _service = service;
             this.pageService = pageService;
         }
 
-
         [HttpPut]
-        public SubmitResult<CreatePageDTO> Put([FromBody] PageDto obj)
+        public SubmitResult<CreatePageDTO> Put([FromBody] CreatePageDTO obj)
         {
             return pageService.Put(obj);
         }
@@ -45,19 +41,18 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
 
         public SubmitResult SetViewParams([FromBody] ViewParamsSetter @params)
         {
-            return _service.SetViewParams(@params);
+            return pageService.SetViewParams(@params);
         }
 
-        public IActionResult TenantCreated([FromBody] DbCreationRequest req)
+        public SubmitResult TenantCreated([FromBody] DbCreationRequest req)
         {
-
             acc.CurrentEnvironment = paths.GetEnvironments().Find(d => d.Name == req.Environment);
 
             if (acc.CurrentEnvironment != null)
             {
                 pub.SetTenantInfo(req.TenantCode, null);
             }
-            return Respond();
+            return SubmitResult;
         }
 
         public LoadResult<PageListDTO> Get([FromQuery] LoadOptions opt)
@@ -65,35 +60,29 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return pageService.Get(opt);
         }
 
-        public IActionResult GetPagesByDomain([FromQuery] LoadOptions opts, [FromQuery] long domainId)
+        public LoadResult<PageListDTO> GetPagesByDomain([FromQuery] long domainId, [FromQuery] LoadOptions opts)
         {
-            return Respond(_service.GetPagesByDomain(domainId, opts));
+            return pageService.GetPagesByDomain(domainId, opts);
         }
-
-        //public object GetEditLookups([FromQuery] Dictionary<string, string> data)
-        //{
-        //    return lookups.PageEdit(data);
-        //}
 
         public IEnumerable<PageParameterEditDto> GetViewParameters(long id)
         {
-            return _service.GetViewParameters(id);
+            return pageService.GetViewParameters(id);
         }
 
         public PageCustomizationDTO GetCustomizationData(long id)
         {
-            return _service.GetCustomizationData(id);
+            return pageService.GetCustomizationData(id);
         }
 
         public SubmitResult ApplyCustomization([FromBody] PageCustomizationDTO dto)
         {
-            return _service.ApplyCustomization(dto);
+            return pageService.ApplyCustomization(dto);
         }
 
         public LoadResult<PageListDTO> FindPages([FromQuery] LoadOptions opts, [FromBody] FindPageRequest request)
         {
-            LoadResult<PageListDTO> pages = _service.FindPages(request, opts);
-            return pages;
+            return pageService.FindPages(opts, request);
         }
 
         public DeleteResult Delete(long id)

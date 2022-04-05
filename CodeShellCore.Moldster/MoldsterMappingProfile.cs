@@ -8,7 +8,9 @@ using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Tenants;
+using CodeShellCore.Text;
 using System;
+using System.Linq;
 
 namespace CodeShellCore.Moldster
 {
@@ -86,7 +88,17 @@ namespace CodeShellCore.Moldster
             CreateMap<PageParameter, PageParameterDto>();
             CreateMap<PageParameterDto, PageParameter>().IgnoreId();
 
-            
+            CreateMap<Page, CreatePageDTO>()
+                .ForMember(e => e.ActionType, e => e.MapFrom(p => p.PrivilegeType))
+                .ForMember(e => e.CategoryId, e => e.MapFrom(p => p.PageCategoryId))
+                .ForMember(e => e.CollectionId, e => e.MapFrom(p => p.SourceCollectionId))
+                .ForMember(e => e.ComponentName, e => e.MapFrom(a => a.ViewPath.GetAfterLast("/")))
+                .ForMember(e => e.CollectionId, e => e.MapFrom(p => p.SourceCollectionId))
+                .ForMember(e => e.CollectionId, e => e.MapFrom(p => p.SourceCollectionId))
+                .ForMember(e => e.CollectionId, e => e.MapFrom(p => p.SourceCollectionId))
+                .ForMember(e => e.AppsString, e => e.MapFrom(p => p.Apps))
+                .ForMember(e => e.Apps, e => e.MapFrom(p => p.GetAppsList()));
+
         }
 
         void TenantsMapping()

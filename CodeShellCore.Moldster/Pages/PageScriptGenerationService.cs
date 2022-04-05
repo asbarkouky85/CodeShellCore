@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 
-namespace CodeShellCore.Moldster.Pages.Services
+namespace CodeShellCore.Moldster.Pages
 {
     public class PageScriptGenerationService : ScriptGenerationServiceBase, IPageScriptGenerationService
     {

@@ -103,11 +103,11 @@ namespace CodeShellCore.Moldster
         {
             coll.AddMoldsterCodeGeneration(legacy);
 
-            coll.AddTransient<ConfiguratorLookupService>();
+            coll.AddTransient<MoldsterLookupService>();
 
             coll.AddServiceFor<Domain, DomainService>();
 
-            coll.AddServiceFor<Page, PagesService>();
+            coll.AddTransient<IPagesDataService, PagesDataService>();
             coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
             coll.AddServiceFor<PageControl, PageControlService>();
             coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
@@ -117,7 +117,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IUserDataService, UserDataService>();
             coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
 
-            coll.AddLookupsService<ConfiguratorLookupService>();
+            coll.AddLookupsService<MoldsterLookupService>();
         }
 
         public static void AddMoldsterCodeGeneration(this IServiceCollection coll, bool legacy = false)
@@ -153,6 +153,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IModulesService, ModulesService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
+            coll.AddTransient<IMoldsterLookupService, MoldsterLookupService>();
             coll.AddTransient<IPreviewService, PreviewService>();
             coll.AddTransient<IPublisherHttpService, PublisherHttpService>();
 
@@ -169,9 +170,10 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IPageControlDataService, PageControlDataService>();
             coll.AddTransient<IPageParameterDataService, PageParameterDataService>();
             coll.AddTransient<IPageCategoryParameterService, PageCategoryParameterService>();
-            coll.AddTransient<IPagesDataService, PagesService>();
+            coll.AddTransient<IPagesDataService, PagesDataService>();
             coll.AddTransient<ITenantService, TenantsService>();
             coll.AddTransient<IPageCategoryService, PageCategoryService>();
+            coll.AddTransient<IPageEntityService, PageEntityService>();
 
             coll.AddTransient<IViewsService, DefaultViewsService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();

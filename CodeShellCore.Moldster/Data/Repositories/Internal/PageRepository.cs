@@ -1,6 +1,5 @@
 ﻿using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
@@ -52,6 +51,17 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
         public string GetHomePagePath(string modCode)
         {
             return GetSingleValue(d => d.ViewPath, d => d.IsHomePage == true && d.Tenant.Code == modCode);
+        }
+
+        public override Page FindSingle(object id)
+        {
+            var q = Loader.Include(e => e.Domain)
+                .Include(e => e.NavigationPages)
+                .Include(e => e.Resource)
+                .Include(e => e.PageCategory)
+                .Include(e => e.Tenant);
+
+            return q.Where(e => e.Id.Equals(id)).FirstOrDefault();
         }
 
         public PageAndTypeDTO FindLinkedPage(string paramName, string val, long tenantId, ref List<string> add)

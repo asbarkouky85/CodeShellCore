@@ -7,10 +7,11 @@ using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.PageCategories;
 using System.Collections;
+using CodeShellCore.Moldster.Data;
 
-namespace CodeShellCore.Moldster.Data
+namespace CodeShellCore.Moldster
 {
-    public class ConfiguratorLookupService : LookupsService<IConfigUnit>
+    public class MoldsterLookupService : LookupsService<IConfigUnit>, IMoldsterLookupService
     {
         private readonly IConfigUnit _unit;
         private readonly IPathsService app;
@@ -23,14 +24,14 @@ namespace CodeShellCore.Moldster.Data
 
         protected override string EntitiesAssembly => "CodeShellCore.Moldster";
 
-        public ConfiguratorLookupService(IConfigUnit unit, IPathsService app, IModulesService mods) : base(unit)
+        public MoldsterLookupService(IConfigUnit unit, IPathsService app, IModulesService mods) : base(unit)
         {
             _unit = unit;
             this.app = app;
             this.mods = mods;
         }
 
-        public object Modules(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> Modules(Dictionary<string, string> data)
         {
             dynamic mod = new ExpandoObject();
             if (data.TryGetValue("modules", out string t))
@@ -39,7 +40,7 @@ namespace CodeShellCore.Moldster.Data
             return mod;
         }
 
-        public object PageEdit(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> PageEdit(Dictionary<string, string> data)
         {
             dynamic mod = new ExpandoObject();
             if (data.TryGetValue("TenantCode", out string t))
@@ -78,7 +79,7 @@ namespace CodeShellCore.Moldster.Data
             return mod;
         }
 
-        public object PageControlList(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> PageControlList(Dictionary<string, string> data)
         {
             dynamic mod = new ExpandoObject();
 

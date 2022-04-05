@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Pages.Services
+namespace CodeShellCore.Moldster.Pages
 {
-    public interface IPageHtmlGenerationService 
+    public interface IPageHtmlGenerationService
     {
         void MoveHtmlTemplate(MovePageRequest r);
         void DeleteHtmlTemplate(string tenantCode, string fromPath);

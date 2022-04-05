@@ -4,7 +4,7 @@ using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Data;
 using System.Collections.Generic;
 
-namespace CodeShellCore.Moldster.Pages.Services
+namespace CodeShellCore.Moldster.Pages
 {
     public class PageControlService : EntityService<PageControl>
     {

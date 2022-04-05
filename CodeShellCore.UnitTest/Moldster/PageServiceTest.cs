@@ -2,7 +2,6 @@
 using CodeShellCore.Moldster.CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.UnitTest.Data;
 using CodeShellCore.Web.Razor;
 using CodeShellCore.Web.UnitTest;
@@ -59,7 +58,7 @@ namespace CodeShellCore.UnitTest.Moldster
                     NavigationGroup = navGroup,
                     Apps = new[] { "Admin" }
                 };
-                var service = p.GetService<PagesService>();
+                var service = p.GetService<PagesDataService>();
                 var unit = p.GetService<IConfigUnit>();
                 Page page = null;
                 unit.Saving += (u, lst) =>

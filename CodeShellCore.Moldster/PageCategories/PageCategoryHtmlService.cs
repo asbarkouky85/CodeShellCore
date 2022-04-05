@@ -4,7 +4,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Localization.Services;
-using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using Microsoft.Extensions.Options;

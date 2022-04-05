@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Web.Controllers;
@@ -14,7 +13,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
     public class PageCategoriesController : BaseApiController, IPageCategoryService
     {
         IPageCategoryService _service;
-        ConfiguratorLookupService Lookups => GetService<ConfiguratorLookupService>();
+
         public PageCategoriesController(IPageCategoryService configPageCategoryService)
         {
             _service = configPageCategoryService;
@@ -38,12 +37,12 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups([FromQuery] Dictionary<string, string> data)
         {
 
-            return Lookups.PageCategoryEdit(data);
+            return _service.GetEditLookups(data);
         }
 
         public Dictionary<string, IEnumerable<Named<object>>> GetListLookups([FromQuery] Dictionary<string, string> data)
         {
-            return Lookups.PageCategoryEdit(data);
+            return _service.GetListLookups(data);
         }
 
         public SubmitResult Create([FromBody] List<PageCategoryDto> list)
@@ -51,7 +50,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.Create(list);
         }
 
-        public LoadResult<PageCategoryListDTO> GetAll([FromQuery]LoadOptions opt)
+        public LoadResult<PageCategoryListDTO> GetAll([FromQuery] LoadOptions opt)
         {
             return _service.GetAll(opt);
         }
@@ -81,7 +80,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.Post(dto);
         }
 
-        public SubmitResult<PageCategoryDto> Put([FromBody]PageCategoryDto dto)
+        public SubmitResult<PageCategoryDto> Put([FromBody] PageCategoryDto dto)
         {
             return _service.Put(dto);
         }

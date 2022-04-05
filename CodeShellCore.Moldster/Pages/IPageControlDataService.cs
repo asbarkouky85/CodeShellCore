@@ -7,7 +7,7 @@ using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
 
-namespace CodeShellCore.Moldster.Pages.Services
+namespace CodeShellCore.Moldster.Pages
 {
     public interface IPageControlDataService : IServiceBase
     {

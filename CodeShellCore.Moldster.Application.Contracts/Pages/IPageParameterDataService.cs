@@ -2,7 +2,7 @@
 using CodeShellCore.Linq;
 using CodeShellCore.Services;
 
-namespace CodeShellCore.Moldster.Pages.Services
+namespace CodeShellCore.Moldster.Pages
 {
     public interface IPageParameterDataService : IServiceBase
     {

@@ -19,7 +19,7 @@ namespace CodeShellCore.Data.Services
         where TUpdateDto : class, IEntityDto<TPrime>
         where TOptionsDto : LoadOptions
     {
-        public IUnitOfWork Unit { get; }
+        public IUnitOfWork DefaultUnit { get; }
         public IKeyRepository<T, TPrime> Repository { get; private set; }
         public IObjectMapper Mapper { get; private set; }
         public ILookupsService LookupsService { get; private set; }
@@ -27,7 +27,7 @@ namespace CodeShellCore.Data.Services
 
         public DtoEntityService(IUnitOfWork unit)
         {
-            Unit = unit;
+            DefaultUnit = unit;
             Repository = unit.GetRepositoryFor<T, TPrime>();
             Mapper = unit.ServiceProvider.GetService<IObjectMapper>();
             LookupsService = unit.ServiceProvider.GetService<ILookupsService>();
@@ -36,7 +36,7 @@ namespace CodeShellCore.Data.Services
         public virtual DeleteResult Delete(TPrime id)
         {
             Repository.DeleteByKey(id);
-            return Unit.SaveChanges().MapToResult<DeleteResult>();
+            return DefaultUnit.SaveChanges().MapToResult<DeleteResult>();
         }
 
         public virtual LoadResult<TListDto> Get(TOptionsDto options)
@@ -48,7 +48,7 @@ namespace CodeShellCore.Data.Services
         public virtual LoadResult<TListDto> GetCollection(string id, TOptionsDto options)
         {
             var mapped = options.GetOptionsFor<TListDto>();
-            return Unit.GetCollectionRepositoryFor<T>().LoadCollectionAndMap(id, mapped);
+            return DefaultUnit.GetCollectionRepositoryFor<T>().LoadCollectionAndMap(id, mapped);
         }
 
         public virtual Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> dto)
@@ -93,7 +93,7 @@ namespace CodeShellCore.Data.Services
         {
             var entity = Mapper.Map<TCreateDto, T>(dto);
             Repository.Add(entity);
-            var res = Unit.SaveChanges().MapToResult<SubmitResult<TSingleDto>>();
+            var res = DefaultUnit.SaveChanges().MapToResult<SubmitResult<TSingleDto>>();
             if (res.IsSuccess)
             {
                 AfterCreate(dto, entity);
@@ -107,7 +107,7 @@ namespace CodeShellCore.Data.Services
             var entity = GetSingleById(dto.Id);
             Mapper.Map(dto, entity);
             Repository.Update(entity);
-            var res = Unit.SaveChanges().MapToResult<SubmitResult<TSingleDto>>();
+            var res = DefaultUnit.SaveChanges().MapToResult<SubmitResult<TSingleDto>>();
             if (res.IsSuccess)
             {
                 AfterUpdate(dto, entity);

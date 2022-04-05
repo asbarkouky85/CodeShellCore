@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using CodeShellCore.Data;
+using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public class CreatePageDTO
+    public class CreatePageDTO : EntityDto<long>
     {
-        public long Id { get; set; }
         public string TenantCode { get; set; }
         public string ComponentName { get; set; }
         public string ComponentPath { get; set; }

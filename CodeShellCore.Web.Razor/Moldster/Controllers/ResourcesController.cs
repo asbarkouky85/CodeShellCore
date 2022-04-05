@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
@@ -29,7 +30,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
 
         public IActionResult GetEditLookups([FromQuery] Dictionary<string, string> data)
         {
-            object ob = GetService<ConfiguratorLookupService>().ResourceEdit(data);
+            object ob = GetService<MoldsterLookupService>().ResourceEdit(data);
             return Respond(ob);
         }
 

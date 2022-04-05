@@ -3,9 +3,8 @@ using CodeShellCore.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using CodeShellCore.Moldster.Pages;
 
-namespace CodeShellCore.Moldster.Data.Repositories
+namespace CodeShellCore.Moldster.Pages
 {
     public interface IPageRepository : IRepository<Page>
     {
