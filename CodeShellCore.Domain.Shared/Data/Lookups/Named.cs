@@ -5,11 +5,6 @@ using System.Text;
 
 namespace CodeShellCore.Data.Lookups
 {
-    public class NamedLong
-    {
-        public long Id { get; set; }
-        public string Name { get; set; }
-    }
     public class Named<TPrime> : INamed<TPrime>
     {
         public TPrime Id { get; set; }

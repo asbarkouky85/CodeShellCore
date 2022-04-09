@@ -15,4 +15,8 @@
     <Folder Include="SQL\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.Moldster.Application.Contracts\CodeShellCore.Moldster.Application.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

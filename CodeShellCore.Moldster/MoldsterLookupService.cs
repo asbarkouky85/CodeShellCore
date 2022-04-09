@@ -8,6 +8,7 @@ using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.PageCategories;
 using System.Collections;
 using CodeShellCore.Moldster.Data;
+using System.Linq;
 
 namespace CodeShellCore.Moldster
 {
@@ -33,31 +34,31 @@ namespace CodeShellCore.Moldster
 
         public Dictionary<string, IEnumerable<Named<object>>> Modules(Dictionary<string, string> data)
         {
-            dynamic mod = new ExpandoObject();
+            var mod = new Dictionary<string, IEnumerable<Named<object>>>();
             if (data.TryGetValue("modules", out string t))
-                mod.modules = mods.GetRegisteredModules();
+                mod["modules"] = mods.GetRegisteredModules().Select(e => new Named<object> { Name = e.Name });
 
             return mod;
         }
 
         public Dictionary<string, IEnumerable<Named<object>>> PageEdit(Dictionary<string, string> data)
         {
-            dynamic mod = new ExpandoObject();
+            var mod = new Dictionary<string, IEnumerable<Named<object>>>();
             if (data.TryGetValue("TenantCode", out string t))
-                mod.TenantCode = _unit.TenantRepository.FindAs(s => new { s.Id, s.Name, s.Code });
+                mod["TenantCode"] = _unit.TenantRepository.FindAs(e => new TenantLookupDto { Id = e.Code, Code = e.Code, Name = e.Name });
             if (data.TryGetValue("Resources", out string r))
-                mod.Resources = _unit.ResourceRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.Name });
+                mod["Resources"] = _unit.ResourceRepository.FindAsLookup(r);
             if (data.TryGetValue("Collection", out string c))
-                mod.Collection = _unit.ResourceCollectionRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.Name });
+                mod["Collection"] = _unit.ResourceCollectionRepository.FindAsLookup(c);
             if (data.TryGetValue("Apps", out string a))
-                mod.Apps = _unit.AppRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.Name });
+                mod["Apps"] = _unit.AppRepository.FindAsLookup(c);
             if (data.TryGetValue("NavigationGroup", out string n))
-                mod.NavigationGroup = _unit.NavigationGroupRepository.FindAs(s => s.Name);
+                mod["NavigationGroup"] = new List<Named<object>>();
             if (data.TryGetValue("TemplatePath", out string tP))
-                mod.TemplatePath = _unit.PageCategoryRepository.FindAs(s => new Named<long> { Id = s.Id, Name = s.ViewPath });
+                mod["TemplatePath"] = _unit.PageCategoryRepository.FindAs(s => new Named<object> { Id = s.Id, Name = s.ViewPath });
 
             if (data.TryGetValue("Layout", out string l))
-                mod.Layout = GetLayoutFiles();
+                mod["Layout"] = GetLayoutFiles();
             return mod;
         }
 
@@ -73,9 +74,9 @@ namespace CodeShellCore.Moldster
 
         public Dictionary<string, IEnumerable<Named<object>>> ResourceEdit(Dictionary<string, string> data)
         {
-            dynamic mod = new ExpandoObject();
+            var mod = new Dictionary<string, IEnumerable<Named<object>>>();
             if (data.TryGetValue("domains", out string l))
-                mod.domains = Unit.DomainRepository.FindAs(d => new Named<long> { Id = d.Id, Name = d.Name }, d => d.ParentId == null);
+                mod["domains"] = Unit.DomainRepository.FindAs(d => new Named<object> { Id = d.Id, Name = d.Name }, d => d.ParentId == null);
             return mod;
         }
 

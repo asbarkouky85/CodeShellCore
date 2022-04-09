@@ -116,6 +116,8 @@ namespace CodeShellCore.Moldster
                     e.PreCondition(d => d.LogoFile?.TmpPath != null);
                     e.MapFrom(d => "logos/" + d.LogoFile.Name);
                 });
+
+            
         }
     }
 }
