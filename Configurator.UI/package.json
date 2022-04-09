@@ -33,7 +33,7 @@
     "bootstrap3": "3.3.5",
     "bootstrap3-rtl": "1.1.0",
     "js-cookie": "^2.2.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "ng-zorro-antd": "11.1.0",
     "ngx-owl-carousel-o": "^5.0.0",
     "ngx-quill": "^13.1.0",
