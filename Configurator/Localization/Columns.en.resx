@@ -405,4 +405,40 @@
   <data name="Tenant__UseParentUI" xml:space="preserve">
     <value />
   </data>
+  <data name="Page__TemplatePath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__ComponentDomain" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__ComponentName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__RouteParameters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__ComponentPath" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__Usage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__Apps" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__ResourceId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__ActionType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__NavigationGroup" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__CollectionId" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Page__DefaultAccessibility" xml:space="preserve">
+    <value />
+  </data>
 </root>

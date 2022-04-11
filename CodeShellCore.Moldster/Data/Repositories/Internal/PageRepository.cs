@@ -7,15 +7,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using CodeShellCore.Moldster.Pages;
 using Microsoft.EntityFrameworkCore;
+using CodeShellCore.Moldster.CodeGeneration.Services;
 
 namespace CodeShellCore.Moldster.Data.Repositories.Internal
 {
     public class PageRepository : Repository_Int64<Page, MoldsterContext>, IPageRepository
     {
+        private readonly INamingConventionService naming;
+
         //private readonly IPathsService paths;
 
-        public PageRepository(MoldsterContext con, IPathsService paths) : base(con)
+        public PageRepository(MoldsterContext con, INamingConventionService naming) : base(con)
         {
+            this.naming = naming;
             //this.paths = paths;
         }
 

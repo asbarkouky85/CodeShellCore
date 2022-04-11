@@ -82,12 +82,12 @@ namespace CodeShellCore.Moldster
 
         public Dictionary<string, IEnumerable<Named<object>>> PageControlList(Dictionary<string, string> data)
         {
-            dynamic mod = new ExpandoObject();
+            var mod = new Dictionary<string, IEnumerable<Named<object>>>();
 
             if (data.TryGetValue("Collection", out string c))
-                mod.Collection = GetLookupNamed<ResourceCollection>(c);
+                mod["Collection"] = GetLookupNamed<ResourceCollection>(c);
             if (data.TryGetValue("Layout", out string l))
-                mod.Layout = GetLayoutFiles();
+                mod["Layout"] = GetLayoutFiles();
             return mod;
         }
 

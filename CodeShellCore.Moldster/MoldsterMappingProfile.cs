@@ -4,7 +4,6 @@ using CodeShellCore.Files;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Tenants;
@@ -39,6 +38,9 @@ namespace CodeShellCore.Moldster
 
             CreateMap<PageCategoryParameter, PageCategoryParameterDto>()
                 .MapChangeState();
+
+            CreateMap<PageCategoryParameterDto, PageCategoryParameter>()
+                .IgnoreId();
 
             CreateMap<PageCategory, PageCategoryEditDto>()
                 .ForMember(e => e.Category, d => d.MapFrom(e => e))
@@ -85,6 +87,8 @@ namespace CodeShellCore.Moldster
                 .ForMember(e => e.PageType, d => d.MapFrom(e => e.HasRoute && e.CanEmbed ? "Route,Embedded" : e.HasRoute ? "Route" : "Embedded"))
                 .ForMember(e => e.BaseComponent, d => d.MapFrom(e => e.PageCategory.BaseComponent));
 
+            CreateMap<PageCategoryParameter, PageParameterEditDto>()
+                .ForMember(e => e.Entity, e => e.Ignore());
             CreateMap<PageParameter, PageParameterDto>();
             CreateMap<PageParameterDto, PageParameter>().IgnoreId();
 
@@ -117,7 +121,7 @@ namespace CodeShellCore.Moldster
                     e.MapFrom(d => "logos/" + d.LogoFile.Name);
                 });
 
-            
+
         }
     }
 }

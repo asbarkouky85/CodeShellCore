@@ -24,6 +24,11 @@ namespace CodeShellCore.Moldster.Pages
         {
         }
 
+        protected virtual string GetViewParamsJson(long pageId, ViewParams json)
+        {
+            return json.ToJson(new Newtonsoft.Json.JsonSerializerSettings { StringEscapeHandling = Newtonsoft.Json.StringEscapeHandling.EscapeHtml });
+        }
+
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
         {
             PageDetailsDto p = Unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
@@ -66,7 +71,7 @@ namespace CodeShellCore.Moldster.Pages
                 Domain = p.DomainName,
                 Resource = p.ResourceName,
                 Selector = Names.GetComponentSelector(p.Page.Name),
-                ViewParams = data.ViewParams.ToJson(new Newtonsoft.Json.JsonSerializerSettings { StringEscapeHandling = Newtonsoft.Json.StringEscapeHandling.EscapeHtml }),
+                ViewParams = GetViewParamsJson(p.Page.Id, data.ViewParams),
                 Sources = data.Sources.ToJsonIndent(),
                 CollectionId = p.CollectionId == null ? "null" : "'" + p.CollectionId + "'"
             });

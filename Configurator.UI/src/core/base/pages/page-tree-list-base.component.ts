@@ -43,28 +43,29 @@ export abstract class PageTreeListBase extends TenantComponentBase {
         if (this.PageList) {
             this.PageList.HideHeader = true;
         }
-
-
+           
     }
 
     ngAfterViewInit() {
         super.ngAfterViewInit();
-        
+
         if (this.DomainTree) {
+            this.App.AppDataReady().then(res => {
+                this.DomainTree.tenantId = this.getTenantId();
+                this.DomainTree.UseTenantTree = true;
+                this.DomainTree.AllowEdit = true;
+                this.DomainTree.HideHeader = true;
+                this.DomainTree.OnSelectedEvent = domain => this.OnDomainSelected(domain);
+                this.DomainTree.CountMode = DomainCountMode.Pages;
 
-            this.DomainTree.tenantId = this.getTenantId();
-            this.DomainTree.UseTenantTree = true;
-            this.DomainTree.AllowEdit = true;
-            this.DomainTree.HideHeader = true;
-            this.DomainTree.OnSelectedEvent = domain => this.OnDomainSelected(domain);
-            this.DomainTree.CountMode = DomainCountMode.Pages;
+                this.DomainTree.OnTreeLoaded = () => {
+                    if (this.UseState && this.UseState.tenantCode == this.App.UseState.tenantCode && this.UseState.domainId) {
+                        this.DomainTree!.SetSelected(this.UseState.domainId);
+                    }
+                };
+                this.DomainTree.LoadData();
+            })
 
-            this.DomainTree.OnTreeLoaded = () => {
-                if (this.UseState && this.UseState.tenantCode == this.App.UseState.tenantCode && this.UseState.domainId) {
-                    this.DomainTree!.SetSelected(this.UseState.domainId);
-                }
-            };
-            this.DomainTree.LoadData();
         }
     }
 
@@ -73,6 +74,7 @@ export abstract class PageTreeListBase extends TenantComponentBase {
         if (this.DomainTree) {
 
             this.DomainTree.tenantId = this.getTenantId();
+            this.DomainTree.LoadData();
             this.DomainTree.LoadCounts();
             this.LoadPages();
         }

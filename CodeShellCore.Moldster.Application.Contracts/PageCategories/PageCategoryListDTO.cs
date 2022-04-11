@@ -1,8 +1,11 @@
-﻿namespace CodeShellCore.Moldster.PageCategories
+﻿using CodeShellCore.Data;
+using CodeShellCore.Localization;
+
+namespace CodeShellCore.Moldster.PageCategories
 {
-    public class PageCategoryListDTO
+    [EntityName("PageCategory")]
+    public class PageCategoryListDTO : EntityDto<long>
     {
-        public long Id { get; set; }
         public string Name { get; set; }
         public string BaseComponent { get; set; }
         public string ResourceName { get; set; }

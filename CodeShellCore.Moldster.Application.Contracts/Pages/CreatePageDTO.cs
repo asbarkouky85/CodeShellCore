@@ -1,8 +1,10 @@
 ﻿using CodeShellCore.Data;
+using CodeShellCore.Localization;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.Pages
 {
+    [EntityName("Page")]
     public class CreatePageDTO : EntityDto<long>
     {
         public string TenantCode { get; set; }

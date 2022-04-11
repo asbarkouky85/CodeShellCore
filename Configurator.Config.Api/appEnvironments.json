@@ -4,33 +4,58 @@
     "ConnectionParams": {
       "UserId": "app",
       "Password": "123456",
-      "Server": "."
-    },
-    "Upload": {
-      "Type": "FS",
-      "PathOnServer": "C:\\Publish\\Configurator.UI",
-      "ServerUrl": "http://192.168.1.21"
+      "Server": ".",
+      "Database": null,
+      "ConnectionString": "Server=.;User Id=app;Password=123456;"
     },
     "SourceDatabase": "SurgeryRegister",
-    "Databases": [ "TEST" ],
-    "ConfigDatabase": "Configurator.Config"
-  },
-    {
-        "Name": "Testing",
-        "Upload": {
-            "Type": "FS",
-            "PathOnServer": "\\\\dev-server\\Publish\\TenantConfigurator"
-        }
+    "ConfigDatabase": "Configurator.Config",
+    "Databases": [
+      "TEST2"
+    ],
+    "Upload": {
+      "Type": "FS",
+      "Server": null,
+      "ServerUrl": "http://192.168.1.21",
+      "UserName": null,
+      "Password": null,
+      "PathOnServer": "C:\\Publish\\Configurator.UI",
+      "Active": false
     },
-    {
-        "Name": "TestFtp",
-        "Upload": {
-            "Type": "FTP",
-            "Server": "SRV-GENIAL",
-            "ServerUrl": "http://SRV-GENIAL:8050",
-            "Username": "abarkouky",
-            "Password": "Gabr1el2018",
-            "PathOnServer": "Configurator.UI"
-        }
-    }
+    "Restore": null
+  },
+  {
+    "Name": "Testing",
+    "ConnectionParams": null,
+    "SourceDatabase": null,
+    "ConfigDatabase": null,
+    "Databases": null,
+    "Upload": {
+      "Type": "FS",
+      "Server": null,
+      "ServerUrl": null,
+      "UserName": null,
+      "Password": null,
+      "PathOnServer": "\\\\dev-server\\Publish\\TenantConfigurator",
+      "Active": false
+    },
+    "Restore": null
+  },
+  {
+    "Name": "TestFtp",
+    "ConnectionParams": null,
+    "SourceDatabase": null,
+    "ConfigDatabase": null,
+    "Databases": null,
+    "Upload": {
+      "Type": "FTP",
+      "Server": "SRV-GENIAL",
+      "ServerUrl": "http://SRV-GENIAL:8050",
+      "UserName": "abarkouky",
+      "Password": "Gabr1el2018",
+      "PathOnServer": "Configurator.UI",
+      "Active": false
+    },
+    "Restore": null
+  }
 ]

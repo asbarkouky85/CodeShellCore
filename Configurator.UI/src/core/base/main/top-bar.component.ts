@@ -59,8 +59,10 @@ export class TopBar extends TopBarBase {
     tenantChanged() {
         this.App.SaveState();
         var t = this.tenants.find(d => d.code == this.App.UseState.tenantCode);
-        if (t)
+        if (t) {
             this.App.OnTenantChanged.emit(t);
+            this.App.OnTenantSelected.emit(t);
+        }
         else
             this.App.OnTenantChanged.emit(undefined);
     }

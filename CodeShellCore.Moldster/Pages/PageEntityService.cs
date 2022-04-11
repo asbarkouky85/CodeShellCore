@@ -57,7 +57,7 @@ namespace CodeShellCore.Moldster.Pages
             if (IsDefaultAction(dto.ActionType))
                 page.PrivilegeType = dto.ActionType;
             var dom = Unit.DomainRepository.GetOrCreatePath(dto.ComponentDomain);
-            dom.Pages.Add(page);
+            page.Domain = dom;
             page.SourceCollectionId = dto.CollectionId;
             page.HasRoute = dto.Usage.Contains("R");
             page.CanEmbed = dto.Usage.Contains("E");
@@ -69,6 +69,7 @@ namespace CodeShellCore.Moldster.Pages
             }
 
             page.Name = dto.ComponentName;
+            Repository.Update(page);
             var res = Unit.SaveChanges().ToSubmitResult<CreatePageDTO>();
 
             if (res.IsSuccess && pathChanged)
@@ -208,7 +209,7 @@ namespace CodeShellCore.Moldster.Pages
         {
             var catId = Unit.PageRepository.GetValue(id, e => e.PageCategoryId);
             var categoryParameters = Unit.PageCategoryParameterRepository.FindAndMap<PageParameterEditDto>(e => e.PageCategoryId == catId);
-            var pageParameters = Unit.PageParameterRepository.FindAndMap<PageParameter>(e => e.PageId == id);
+            var pageParameters = Unit.PageParameterRepository.Find(e => e.PageId == id);
             List<PageReference> references = Unit.PageParameterRepository.GetReferencesByPage(id);
 
             foreach (var categoryParameter in categoryParameters)
@@ -364,10 +365,10 @@ namespace CodeShellCore.Moldster.Pages
                     submitResult.Message = "Action type or SpecialPermission is required if resource is not null";
                     return submitResult;
                 }
-
-                resource.Pages.Add(p);
             }
 
+            if (resource != null)
+                p.Resource = resource;
 
             if (!string.IsNullOrEmpty(dto.ActionType) && resource != null)
             {
@@ -388,7 +389,7 @@ namespace CodeShellCore.Moldster.Pages
                         };
                         resource.ResourceActions.Add(ra);
                     }
-                    ra.Pages.Add(p);
+                    p.ResourceAction = ra;
                 }
             }
 
@@ -397,9 +398,10 @@ namespace CodeShellCore.Moldster.Pages
                 AddToNavigation(p, dto.NavigationGroup);
             }
 
-            tenant.Pages.Add(p);
-            domain.Pages.Add(p);
-            dto.DomainId = domain.Id;
+            p.Tenant = tenant;
+            p.Domain = domain;
+            Repository.Add(p);
+
             submitResult = Unit.SaveChanges().ToSubmitResult<CreatePageDTO>();
             submitResult.Data["Id"] = p.Id;
             return submitResult;

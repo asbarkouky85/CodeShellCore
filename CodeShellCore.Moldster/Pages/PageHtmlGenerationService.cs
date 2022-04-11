@@ -36,7 +36,7 @@ namespace CodeShellCore.Moldster.Pages
             WriteSuccess();
         }
 
-        private RenderedPageResult GetPage(long id)
+        private RenderedPageResult GeneratePageHtml(long id)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace CodeShellCore.Moldster.Pages
                     WriteColored("Exists", ConsoleColor.Cyan);
                     return true;
                 }
-                res = GetPage(p.Page.Id);
+                res = GeneratePageHtml(p.Page.Id);
                 string template = res.TemplateContent;
                 if (template == null)
                 {
