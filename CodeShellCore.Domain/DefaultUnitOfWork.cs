@@ -73,6 +73,8 @@ namespace CodeShellCore.Data
 
         public IServiceProvider ServiceProvider => _provider;
 
+        public virtual bool TrackChanges { get;set; }
+
         public DefaultUnitOfWork(IServiceProvider prov)
         {
             _provider = prov;
@@ -173,7 +175,7 @@ namespace CodeShellCore.Data
         }
 
 
-        public virtual SubmitResult SaveChanges(string successMessage = null, string faileMessage = null)
+        public virtual SubmitResult SaveChanges(string successMessage = null, string faileMessage = null, bool throwException = false)
         {
             Saving?.Invoke(this, new ChangeLists());
             return new SubmitResult();

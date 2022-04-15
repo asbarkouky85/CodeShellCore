@@ -57,6 +57,9 @@ namespace CodeShellCore.Moldster
 
         void DomainsMapping()
         {
+            CreateMap<Domain, DomainDto>()
+                .ForMember(e => e.DomainName, d => d.MapFrom(e => e.Name));
+
             CreateMap<Domain, DomainWithPagesDTO>()
                 .ForMember(e => e.DomainName, e => e.MapFrom(d => d.Name))
                 .ForMember(e => e.Pages, d => d.MapFrom(e => e.Pages));
@@ -65,32 +68,17 @@ namespace CodeShellCore.Moldster
 
         void LocalizationMapping()
         {
-            CreateMap<CustomField, CustomFieldDto>();
+
         }
 
         void PagesMapping()
         {
             CreateMap<Page, PageDto>();
-            CreateMap<Page, PageDetailsDto>()
-                .ForMember(e => e.ParentHasResource, e => e.MapFrom(p => p.PageCategory.ResourceId != null))
-                .ForMember(e => e.BaseViewPath, e => e.MapFrom(p => p.PageCategory.ViewPath))
-                .ForMember(e => e.ActionName, e => e.MapFrom(p => p.ResourceAction == null ? (p.SpecialPermission ?? null) : p.ResourceAction.Name))
-                .ForMember(e => e.PageIdentifier, e => e.MapFrom(p => p.Domain.Name + "__" + p.Name))
-                .ForMember(e => e.ComponentName, d => d.MapFrom(e => e.SourceCollection == null ? null : e.SourceCollection.Name))
-                .ForMember(e => e.Page, d => d.MapFrom(e => e));
-
-            CreateMap<PageControl, PageControlListDTO>()
-                .ForMember(e => e.ControlType, d => d.MapFrom(e => e.Control.ControlType));
 
             CreateMap<Page, PageListDTO>()
                 .ForMember(e => e.ActionType, d => d.MapFrom(e => e.ResourceActionId.HasValue ? e.ResourceAction.Name : e.SpecialPermission == null ? e.PrivilegeType : e.SpecialPermission))
                 .ForMember(e => e.PageType, d => d.MapFrom(e => e.HasRoute && e.CanEmbed ? "Route,Embedded" : e.HasRoute ? "Route" : "Embedded"))
                 .ForMember(e => e.BaseComponent, d => d.MapFrom(e => e.PageCategory.BaseComponent));
-
-            CreateMap<PageCategoryParameter, PageParameterEditDto>()
-                .ForMember(e => e.Entity, e => e.Ignore());
-            CreateMap<PageParameter, PageParameterDto>();
-            CreateMap<PageParameterDto, PageParameter>().IgnoreId();
 
             CreateMap<Page, CreatePageDTO>()
                 .ForMember(e => e.ActionType, e => e.MapFrom(p => p.PrivilegeType))
@@ -102,6 +90,32 @@ namespace CodeShellCore.Moldster
                 .ForMember(e => e.CollectionId, e => e.MapFrom(p => p.SourceCollectionId))
                 .ForMember(e => e.AppsString, e => e.MapFrom(p => p.Apps))
                 .ForMember(e => e.Apps, e => e.MapFrom(p => p.GetAppsList()));
+
+            CreateMap<Page, PageDetailsDto>()
+                .ForMember(e => e.ParentHasResource, e => e.MapFrom(p => p.PageCategory.ResourceId != null))
+                .ForMember(e => e.BaseViewPath, e => e.MapFrom(p => p.PageCategory.ViewPath))
+                .ForMember(e => e.ActionName, e => e.MapFrom(p => p.ResourceAction == null ? (p.SpecialPermission ?? null) : p.ResourceAction.Name))
+                .ForMember(e => e.PageIdentifier, e => e.MapFrom(p => p.Domain.Name + "__" + p.Name))
+                .ForMember(e => e.ComponentName, d => d.MapFrom(e => e.SourceCollection == null ? null : e.SourceCollection.Name))
+                .ForMember(e => e.Page, d => d.MapFrom(e => e));
+
+            CreateMap<PageControl, PageControlListDTO>()
+                .ForMember(e => e.ControlType, d => d.MapFrom(e => e.Control.ControlType))
+                .MapChangeState();
+            CreateMap<PageControlListDTO, PageControl>().IgnoreId();
+
+
+            CreateMap<PageCategoryParameter, PageParameterEditDto>()
+                .ForMember(e => e.Entity, e => e.Ignore());
+            CreateMap<PageParameter, PageParameterDto>().MapChangeState();
+            CreateMap<PageParameterDto, PageParameter>().IgnoreId();
+
+            CreateMap<CustomFieldDto, CustomField>().IgnoreId();
+            CreateMap<CustomField, CustomFieldDto>().MapChangeState();
+
+            CreateMap<PageRoute, PageRouteDTO>().MapChangeState();
+            CreateMap<PageRouteDTO, PageRoute>().IgnoreId();
+
 
         }
 

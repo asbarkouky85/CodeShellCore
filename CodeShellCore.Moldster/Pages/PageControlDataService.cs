@@ -37,7 +37,8 @@ namespace CodeShellCore.Moldster.Pages
             {
                 Unit.PageControlRepository.UpdateControls(p.Id, controls, (byte)p.DefaultAccessibility);
             }
-            return Unit.SaveChanges();
+            var s = Unit.SaveChanges();
+            return s;
         }
 
         public SubmitResult UpdateTemplateControls(PageCategory cat, List<ControlRenderDto> cont)
@@ -63,7 +64,7 @@ namespace CodeShellCore.Moldster.Pages
             var cons = Unit.ControlRepository.Find(d => d.PageCategoryId == category.Id && !sts.Contains(d.Identifier));
             foreach (var c in cons)
                 Unit.ControlRepository.Delete(c);
-            return Unit.SaveChanges();
+            return Unit.SaveChanges(throwException:true);
         }
 
 

@@ -63,7 +63,7 @@ namespace CodeShellCore.Moldster.Domains
 
             long modId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
 
-            IEnumerable<DomainWithPagesDTO> domains = _unit.DomainRepository.GetParentModules(modId);
+            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(modId);
             IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs(modId);
             string routesTemplate = _molds.GetResourceByNameAsString(MoldNames.Routes_ts);//RoutesMold;
 
@@ -110,15 +110,14 @@ namespace CodeShellCore.Moldster.Domains
 
         public virtual void GenerateDomainModuleById(string moduleCode, long? domId)
         {
-            var doms = new List<DomainWithPagesDTO>();
+            var doms = new List<DomainDto>();
             if (!_unit.DomainRepository.FindSingleOrAdd(e => e.Id == 1, new Domain { Id = 1, Name = "Shared" }, out Domain shared))
             {
                 _unit.SaveChanges();
             }
-            doms = _unit.DomainRepository.GetByTenantCodeForRouting(moduleCode, domId);
+            doms = _unit.DomainRepository.GetByTenantCodeForRouting<DomainDto>(moduleCode, domId);
 
-
-            var newList = new List<DomainWithPagesDTO>();
+            var newList = new List<DomainDto>();
             if (domId == null)
                 newList = doms.Where(d => d.ParentId == null).ToList();
             else
@@ -150,7 +149,7 @@ namespace CodeShellCore.Moldster.Domains
             GenerateDomainModuleById(moduleCode, id);
         }
 
-        protected virtual void _generateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null)
+        protected virtual void _generateDomainRecursive(DomainDto dom, string tenantCode, string parentDomain = null)
         {
             string filePath = Names.GetModuleFilePath(tenantCode, dom.DomainName, parentDomain) + ".ts";
             Out.Write($"Generating {dom.DomainName}Module : ");
@@ -159,12 +158,12 @@ namespace CodeShellCore.Moldster.Domains
             if (!Options.ReplaceDomainRoutes && File.Exists(filePath))
             {
                 WriteColored("Exists", ConsoleColor.Cyan);
-                dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
+                var domPages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
 
                 if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
                 {
-                    var pages = dom.Pages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
-                    if (dom.Pages.Any())
+                    var pages = domPages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
+                    if (domPages.Any())
                         _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
                 }
                 Out.WriteLine();
@@ -174,12 +173,11 @@ namespace CodeShellCore.Moldster.Domains
             bool shared = dom.DomainName == "Shared";
             string template = shared ? _molds.GetResourceByNameAsString(MoldNames.SharedModule_ts) : _molds.GetDomainModuleMold();
 
-            var domainPages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
-            dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id);
+            var domainPages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id);
 
-            if (dom.Pages.Any())
+            if (domainPages.Any())
             {
-                var pages = dom.Pages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
+                var pages = domainPages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
                 if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
                     _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
             }
@@ -209,7 +207,7 @@ namespace CodeShellCore.Moldster.Domains
                 ParentModules = parentDomain == null ? "" : parentDomain + "Module,"
             };
 
-            foreach (PageDetailsDto p in dom.Pages)
+            foreach (PageDetailsDto p in domainPages)
             {
                 string component = p.ComponentName;
 
@@ -225,7 +223,7 @@ namespace CodeShellCore.Moldster.Domains
 
             if (dom.SubDomains != null)
             {
-                foreach (DomainWithPagesDTO dp in dom.SubDomains)
+                foreach (DomainDto dp in dom.SubDomains)
                 {
                     model.Routes += Names.GetDomainLazyLoadingRoute(dp.DomainName) + ",";
                 }

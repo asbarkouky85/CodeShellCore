@@ -24,7 +24,7 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
                      where d.TenantId == tenantId
                      select d;
             var q = from d in Loader
-                    where d.PageCategoryId==id
+                    where d.PageCategoryId == id
                     select new PageCategoryParameterWithPageId
                     {
                         DefaultValue = d.DefaultValue,
@@ -56,7 +56,7 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
                 }
                 else
                 {
-                    ex.AppendProperties(p);
+                    ex.AppendProperties(p, ignore: new[] { "PageCategoryId" });
                     Update(ex);
                 }
             }

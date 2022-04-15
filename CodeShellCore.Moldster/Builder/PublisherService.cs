@@ -79,6 +79,28 @@ namespace CodeShellCore.Moldster.Builder
 
         }
 
+
+
+        public virtual PublisherResult UploadTenantBundle(string tenant, string version)
+        {
+
+            switch (Config.Type)
+            {
+                case "FTP":
+                    return UploadFtp(Config, tenant, version);
+                case "FS":
+                    return UploadFileSystem(Config, tenant, version);
+                case "DEV":
+                    return UploadDev(Config, tenant, version);
+            }
+            throw new Exception("Unsupported upload type " + Config.Type);
+        }
+
+        protected virtual PublisherResult UploadDev(UploadConfig config, string tenant, string version)
+        {
+            return new PublisherResult { Code = 0 };
+        }
+
         protected virtual PublisherResult UploadFtp(UploadConfig env, string tenant, string version)
         {
             using (var m = SW.Measure())
@@ -88,10 +110,10 @@ namespace CodeShellCore.Moldster.Builder
                 string zipFile = Names.GetOutputBundlePath(tenant, version, true);
                 string zipFileTarget = Utils.CombineUrl(path, BundleFolder, Path.GetFileName(zipFile));
 
-                WriteFileOperation("Uploading", $"{env.Server}/{zipFileTarget}", false);
-
                 if (!http.FileExists(zipFileTarget))
                 {
+                    WriteFileOperation("Uploading with FTP", $"{env.Server}/{zipFileTarget}", false);
+
                     var upl = http.UploadFile(zipFile, zipFileTarget);
 
                     if (!upl.IsSuccess)
@@ -150,44 +172,42 @@ namespace CodeShellCore.Moldster.Builder
             }
         }
 
-        public virtual PublisherResult UploadTenantBundle(string tenant, string version)
+        private bool IsOnlyTenant(string tenantCode)
         {
-
-            switch (Config.Type)
-            {
-                case "FTP":
-                    return UploadFtp(Config, tenant, version);
-                case "FS":
-                    return UploadFileSystem(Config, tenant, version);
-                case "DEV":
-                    return UploadDev(Config, tenant, version);
-            }
-            throw new Exception("Unsupported upload type " + Config.Type);
+            return !unit.TenantRepository.Exist(e => e.Code != tenantCode);
         }
 
-        protected virtual PublisherResult UploadDev(UploadConfig config, string tenant, string version)
-        {
-            return new PublisherResult { Code = 0 };
-        }
-
-        protected virtual PublisherResult UploadFileSystem(UploadConfig upload, string tenant, string version)
+        protected virtual PublisherResult UploadFileSystem(UploadConfig env, string tenant, string version)
         {
             var res = new PublisherResult();
             try
             {
+                string path = env.PathOnServer;
 
-                string subModuleTarget = Path.Combine(upload.PathOnServer, BundleFolder, version);
+                string zipFile = Names.GetOutputBundlePath(tenant, version, true);
+                string zipFileTarget = Utils.CombineUrl(path, BundleFolder, Path.GetFileName(zipFile));
 
-                if (!Directory.Exists(subModuleTarget))
-                    Directory.CreateDirectory(subModuleTarget);
-
-                string mainModule = Names.GetOutputBundlePath(tenant, version);
-                if (File.Exists(mainModule))
+                Utils.CreateFolderForFile(zipFileTarget);
+                if (File.Exists(zipFileTarget))
                 {
-                    string mainModuleTarget = Path.Combine(upload.PathOnServer, BundleFolder, Path.GetFileName(mainModule));
-                    File.Copy(mainModule, mainModuleTarget);
-                    WriteFileOperation("Copied", Path.GetFileName(mainModule));
+                    WriteFileOperation("Copying File", $"{zipFileTarget}", false);
+                    File.Copy(zipFile, zipFileTarget);
+                    if (IsOnlyTenant(tenant))
+                    {
+                        FileUtils.DecompressDirectory(zipFileTarget, BundleFolder);
+                    }
+                    else
+                    {
+                        FileUtils.DecompressDirectory
+                    }
                 }
+                else
+                {
+                    GotoColumn(SuccessCol);
+                    WriteColored("EXISTS", ConsoleColor.DarkCyan);
+                }
+
+
 
                 res.Message = "Success";
                 res.Code = 0;

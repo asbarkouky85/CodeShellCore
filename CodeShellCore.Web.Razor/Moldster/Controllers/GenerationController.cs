@@ -97,7 +97,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Respond();
         }
 
-        private static void OnTaskCompleted(BundlingTask tsk, bool success, string message, IOutputWriter output = null)
+        private static void OnBundlingTaskCompleted(BundlingTask tsk, bool success, string message, IOutputWriter output = null)
         {
             using (var sc = Shell.GetScope())
             {
@@ -183,13 +183,13 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
                 {
                     tsk.Environment = req.Environment;
 
-                    tsk.OnComplete = (t, res) => OnTaskCompleted(tsk, res.IsSuccess, res.Message, outwriter);
+                    tsk.OnComplete = (t, res) => OnBundlingTaskCompleted(tsk, res.IsSuccess, res.Message, outwriter);
                     SubmitResult.Message = "started_new_task";
                     BundlingTask.Add(tsk);
                 }
                 else
                 {
-                    OnTaskCompleted(new BundlingTask
+                    OnBundlingTaskCompleted(new BundlingTask
                     {
                         Status = "NULL",
                         TenantCode = req.TenantCode,

@@ -1,9 +1,10 @@
-﻿using CodeShellCore.Localization;
+﻿using CodeShellCore.Data;
+using CodeShellCore.Localization;
 
 namespace CodeShellCore.Moldster.Pages
 {
     [EntityName("PageRoute")]
-    public class PageRouteDTO
+    public class PageRouteDTO : IEditable<long>
     {
         public long Id { get; set; }
         public long PageId { get; set; }
@@ -15,5 +16,6 @@ namespace CodeShellCore.Moldster.Pages
         public string AddUrlString { get; set; }
         public string EditUrlString { get; set; }
         public string DetailsUrlString { get; set; }
+        public string State { get; set; }
     }
 }

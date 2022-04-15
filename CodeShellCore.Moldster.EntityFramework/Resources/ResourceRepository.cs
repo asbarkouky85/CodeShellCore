@@ -1,11 +1,9 @@
-﻿using CodeShellCore.Data.EntityFramework;
-using CodeShellCore.Helpers;
+﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.Resources;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeShellCore.Moldster.Data.Repositories.Internal
+namespace CodeShellCore.Moldster.Resources
 {
     public class ResourceRepository : MoldsterRepository<Resource, MoldsterContext>, IMoldsterResourceRepository
     {

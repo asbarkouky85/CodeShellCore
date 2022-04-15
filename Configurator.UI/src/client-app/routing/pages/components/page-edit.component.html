@@ -73,33 +73,375 @@
 
     <div class="row">
         
+<div class="form-group col-md-8 " >
+    <label>{{'Columns.Page__TemplatePath' | translate }}</label>
+        <p class=""  >
+        {{model.templatePath}}
+    </p>
+
+    
+</div>
+
 
         
+<div class="form-group col-md-4 " >
+    <label>{{'Columns.Page__TenantCode' | translate }}</label>
+        <p class=""  >
+        {{model.tenantCode}}
+    </p>
+
+    
+</div>
+
     </div>
 
     <div class="row">
         
+<div class="form-group col-md-4 "
+     id="FG_componentDomain"
+     #FG_componentDomain="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__ComponentDomain' | translate }} </label>
+    <div class="input-group modal-selector">
+    <input
+           class="form-control"
+           placeholder="{{'Columns.Page__ComponentDomain' | translate }}"
+           name="Form__componentDomain"
+           [(ngModel)]="model.componentDomain"
+           title="{{'Columns.Page__ComponentDomain' | translate }}"
+           [li-watch]="model"
+           
+            (change)="writePath()" required="true" >
+    <div class="input-group-btn">
+        <button title="Select Domain" class="btn" (click)="TextBoxWithButtonClick('componentDomain')">
+            <i class="fa fa-folder"></i>
+        </button>
+    </div>
+</div>
+
+    
+</div>
+
         
+<div class="form-group col-md-4 "
+     id="FG_componentName"
+     #FG_componentName="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__ComponentName' | translate }} <span style="color:red">*</span></label>
+    <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.Page__ComponentName' | translate }}"
+       name="Form__componentName"
+       [(ngModel)]="model.componentName"
+       title="{{'Columns.Page__ComponentName' | translate }}"
+       [li-watch]="model"
+
+       
+       required  (change)="writePath()" >
+    <p *ngIf="!FG_componentName.Write">{{FG_componentName.Value}}</p>
+
+
+    <span *ngIf="Form.controls['Form__componentName'] && Form.controls['Form__componentName'].invalid">
+        <small *ngIf="Form.controls['Form__componentName'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.Page__ComponentName' | translate } }}</small>
+</span>
+</div>
+
         
+<div class="form-group col-md-4 "
+     id="FG_routeParameters"
+     #FG_routeParameters="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__RouteParameters' | translate }} </label>
+    <input type="text"
+       class="form-control "
+       placeholder="{{'Columns.Page__RouteParameters' | translate }}"
+       name="Form__routeParameters"
+       [(ngModel)]="model.routeParameters"
+       title="{{'Columns.Page__RouteParameters' | translate }}"
+       [li-watch]="model"
+
+       
+        >
+    <p *ngIf="!FG_routeParameters.Write">{{FG_routeParameters.Value}}</p>
+
+
+    
+</div>
+
     </div>
     <div class="row">
         
+<div class="form-group col-md-8 " >
+    <label>{{'Columns.Page__ComponentPath' | translate }}</label>
+        <p class=""  >
+        {{model.componentPath}}
+    </p>
+
+    
+</div>
+
         
+<div class="form-group col-md-4 "
+     id="FG_usage"
+     #FG_usage="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__Usage' | translate }} </label>
+    <div class="row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btnToggle radio-group">
+                <label class="btn btn-default" [ngClass]="model.usage=='R'?'active':''">
+                    <input type="radio" 
+                           name="__usage" 
+                           [(ngModel)]="model.usage" 
+                           [value]="'R'" 
+                             >
+                    {{'Words.Route' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.usage=='E'?'active':''">
+                    <input type="radio" 
+                           name="__usage" 
+                           [(ngModel)]="model.usage" 
+                           [value]="'E'" 
+                             >
+                    {{'Words.Embedded' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.usage=='RE'?'active':''">
+                    <input type="radio" 
+                           name="__usage" 
+                           [(ngModel)]="model.usage" 
+                           [value]="'RE'" 
+                             >
+                    {{'Words.Both' | translate }}
+                </label>
+
+        </div>
+    </div>
+
+</div>
+    
+</div>
+
 
     </div>
     <div class="row" *ngIf="model.usage!='E'">
         
+<div class="form-group col-md-6 "
+     id="FG_apps"
+     #FG_apps="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__Apps' | translate }} </label>
+    <ng-select [items]="Lookups.Apps"
+               name="Form__apps"
+               bindLabel="name"
+               bindValue="name"
+               [(ngModel)]="model.apps"
+                
+               [multiple]="true"></ng-select>
+        <p *ngIf="!FG_apps.Write">{{FG_apps.Value}}</p>
+
+    <p *ngIf="!FG_apps.Write">{{FG_apps.Value}}</p>
+
+    
+</div>
+
         
+<div class="form-group col-md-4 col-md-offset-2"
+     id="FG_specialPermission"
+     #FG_specialPermission="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__SpecialPermission' | translate }} </label>
+    <div class="row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btnToggle radio-group">
+                <label class="btn btn-default" [ngClass]="model.specialPermission=='anonymous'?'active':''">
+                    <input type="radio" 
+                           name="__specialPermission" 
+                           [(ngModel)]="model.specialPermission" 
+                           [value]="'anonymous'" 
+                             >
+                    {{'Words.Anonymous' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.specialPermission=='allowAll'?'active':''">
+                    <input type="radio" 
+                           name="__specialPermission" 
+                           [(ngModel)]="model.specialPermission" 
+                           [value]="'allowAll'" 
+                             >
+                    {{'Words.Allow all' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.specialPermission==null?'active':''">
+                    <input type="radio" 
+                           name="__specialPermission" 
+                           [(ngModel)]="model.specialPermission" 
+                           [value]="null" 
+                             >
+                    {{'Words.Resource' | translate }}
+                </label>
+
+        </div>
+    </div>
+
+</div>
+    
+</div>
+
     </div>
     <div class="row" *ngIf="model.usage!='E'">
         
+<div class="form-group col-md-6 "
+     id="FG_resourceId"
+     #FG_resourceId="bsFormGroup" bs-group
+      *ngIf="!model.specialPermission">
+    <label>{{'Columns.Page__ResourceId' | translate }} <span style="color:red">*</span></label>
+    
+<select class="form-control"
+        name="Form__resourceId" 
+        [li-watch]="model"
+        [(ngModel)]="model.resourceId"
+        required  >
+        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
+    <option *ngFor="let item of Lookups.Resources" [ngValue]="item.id">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_resourceId.Write">{{FG_resourceId.Value}}</p>
+
+    <span *ngIf="Form.controls['Form__resourceId'] && Form.controls['Form__resourceId'].invalid">
+        <small *ngIf="Form.controls['Form__resourceId'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.Page__ResourceId' | translate } }}</small>
+</span>
+</div>
+
         
+<div class="form-group col-md-6 "
+     id="FG_actionType"
+     #FG_actionType="bsFormGroup" bs-group
+      *ngIf="!model.specialPermission">
+    <label>{{'Columns.Page__ActionType' | translate }} </label>
+    <div class="row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btnToggle radio-group">
+                <label class="btn btn-default" [ngClass]="model.actionType=='view'?'active':''">
+                    <input type="radio" 
+                           name="__actionType" 
+                           [(ngModel)]="model.actionType" 
+                           [value]="'view'" 
+                             >
+                    {{'Words.View' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.actionType=='update'?'active':''">
+                    <input type="radio" 
+                           name="__actionType" 
+                           [(ngModel)]="model.actionType" 
+                           [value]="'update'" 
+                             >
+                    {{'Words.Update' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.actionType=='insert'?'active':''">
+                    <input type="radio" 
+                           name="__actionType" 
+                           [(ngModel)]="model.actionType" 
+                           [value]="'insert'" 
+                             >
+                    {{'Words.Insert' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.actionType=='details'?'active':''">
+                    <input type="radio" 
+                           name="__actionType" 
+                           [(ngModel)]="model.actionType" 
+                           [value]="'details'" 
+                             >
+                    {{'Words.Details' | translate }}
+                </label>
+
+        </div>
+    </div>
+
+</div>
+    
+</div>
+
     </div>
     <div class="row">
         
+<div class="form-group col-md-4 "
+     id="FG_layout"
+     #FG_layout="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__Layout' | translate }} </label>
+    
+<select class="form-control"
+        name="Form__layout" 
+        [li-watch]="model"
+        [(ngModel)]="model.layout"
+         >
+        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
+    <option *ngFor="let item of Lookups.Layout" [ngValue]="item.name">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_layout.Write">{{FG_layout.Value}}</p>
+
+    
+</div>
+
         
         
+<div class="form-group col-md-2 "
+     id="FG_collectionId"
+     #FG_collectionId="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__CollectionId' | translate }} </label>
+    
+<select class="form-control"
+        name="Form__collectionId" 
+        [li-watch]="model"
+        [(ngModel)]="model.collectionId"
+         >
+        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
+    <option *ngFor="let item of Lookups.Collection" [ngValue]="item.id">{{item.name}}</option>
+</select>
+    <p *ngIf="!FG_collectionId.Write">{{FG_collectionId.Value}}</p>
+
+    
+</div>
+
         
+<div class="form-group col-md-4 "
+     id="FG_defaultAccessibility"
+     #FG_defaultAccessibility="bsFormGroup" bs-group
+     >
+    <label>{{'Columns.Page__DefaultAccessibility' | translate }} </label>
+    <div class="row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-toggle btnToggle radio-group">
+                <label class="btn btn-default" [ngClass]="model.defaultAccessibility==1?'active':''">
+                    <input type="radio" 
+                           name="__defaultAccessibility" 
+                           [(ngModel)]="model.defaultAccessibility" 
+                           [value]="1" 
+                             >
+                    {{'Words.Read Only' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.defaultAccessibility==2?'active':''">
+                    <input type="radio" 
+                           name="__defaultAccessibility" 
+                           [(ngModel)]="model.defaultAccessibility" 
+                           [value]="2" 
+                             >
+                    {{'Words.Read Write' | translate }}
+                </label>
+                <label class="btn btn-default" [ngClass]="model.defaultAccessibility==3?'active':''">
+                    <input type="radio" 
+                           name="__defaultAccessibility" 
+                           [(ngModel)]="model.defaultAccessibility" 
+                           [value]="3" 
+                             >
+                    {{'Words.Hide' | translate }}
+                </label>
+
+        </div>
+    </div>
+
+</div>
+    
+</div>
+
     </div>
     <div class="row">
 

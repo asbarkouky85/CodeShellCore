@@ -9,6 +9,7 @@ namespace CodeShellCore.Moldster.PageCategories
         public int Type { get; set; }
         public string DefaultValue { get; set; }
         public string State { get; set; }
+        public long PageCategoryId { get; set; }
 
     }
 }

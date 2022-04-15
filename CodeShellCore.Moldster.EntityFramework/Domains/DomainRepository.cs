@@ -1,12 +1,11 @@
 ﻿using CodeShellCore.Data.Recursion;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Domains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace CodeShellCore.Moldster.Data.Repositories.Internal
+namespace CodeShellCore.Moldster.Domains
 {
     public class DomainRepository : MoldsterRepository<Domain, MoldsterContext>, IDomainRepository, IRecursiveRepository<Domain>
     {
@@ -46,23 +45,20 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
                    select d;
         }
 
-        public List<DomainWithPagesDTO> GetByTenantCodeForRouting(string moduleCode, long? domId = null)
+        public List<T> GetByTenantCodeForRouting<T>(string moduleCode, long? domId = null) where T : class
         {
-            if (domId == 1)
-            {
-                return new List<DomainWithPagesDTO> { new DomainWithPagesDTO { Id = 1, DomainName = "Shared", ParentId = null } };
-            }
+            //if (domId == 1)
+            //{
+            //    return new List<DomainWithPagesDTO> { new DomainWithPagesDTO { Id = 1, DomainName = "Shared", ParentId = null } };
+            //}
             var q = from d in Loader
                     where (domId == null || d.Chain.Contains("|" + domId + "|"))
-                    && (DbContext.Pages.Any(e => e.Domain.Chain.Contains("|" + d.Id + "|") && e.Tenant.Code == moduleCode))
-                    select new DomainWithPagesDTO
-                    {
-                        Id = d.Id,
-                        ParentId = d.ParentId,
-                        DomainName = d.Name
-                    };
+                    && DbContext.Pages.Any(e => e.Domain.Chain.Contains("|" + d.Id + "|") && e.Tenant.Code == moduleCode)
+                    select d;
 
-            return q.ToList();
+
+
+            return QueryDto<T>(q).ToList();
         }
 
         public Domain GetDomainByPath(string path)
@@ -76,14 +72,10 @@ namespace CodeShellCore.Moldster.Data.Repositories.Internal
             return FindSingle(d => d.NameChain == path);
         }
 
-        public IEnumerable<DomainWithPagesDTO> GetParentModules(long modId)
+        public IEnumerable<T> GetParentModules<T>(long modId)
         {
-            return QueryByTenant(modId).Where(d => d.ParentId == null).Select(d => new DomainWithPagesDTO
-            {
-                Id = d.Id,
-                ParentId = d.ParentId,
-                DomainName = d.Name
-            }).ToList();
+            var q = QueryByTenant(modId).Where(d => d.ParentId == null);
+            return QueryDto<T>(q).ToList();
         }
 
         List<string> _partitionPath(string path)

@@ -22,7 +22,7 @@ namespace CodeShellCore.Moldster.Domains
             string fileName = modCode + "Routes";
             string filePath = Path.Combine(_paths.UIRoot, modCode, "app", fileName + ".ts");
 
-            IEnumerable<DomainWithPagesDTO> domains = _unit.DomainRepository.GetParentModules(modId);
+            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(modId);
             IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs(modId);
             string routesTemplate = _molds.GetResourceByNameAsString(MoldNames.Routes_ts);
 

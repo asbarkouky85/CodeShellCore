@@ -14,7 +14,7 @@ namespace CodeShellCore.Moldster.PageCategories
         public SubmitResult UpdateParameters(PageCategory cat, List<PageCategoryParameter> lst)
         {
             Unit.PageCategoryParameterRepository.UpdateParameters(cat.Id, lst);
-            var s = Unit.SaveChanges();
+            var s = Unit.SaveChanges(throwException: true);
 
             return s;
         }

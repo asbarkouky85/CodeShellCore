@@ -153,7 +153,7 @@ namespace CodeShellCore.Moldster.Pages
         public SubmitResult ApplyCustomization(PageCustomizationDTO dto)
         {
             Page page = Unit.PageRepository.GetForCustomization(dto.Id);
-
+            
             if (dto.Controls != null && dto.Controls.Any())
             {
                 page.PageControls.ApplyChangesLong(dto.Controls, Mapper);
@@ -181,7 +181,7 @@ namespace CodeShellCore.Moldster.Pages
                 page.SetRoute(Mapper.Map(dto.Route, new PageRoute()));
             }
             page.CustomFields.ApplyChangesLong(dto.Fields, Mapper);
-
+           // Unit.PageRepository.Update(page);
             var res = Unit.SaveChanges();
 
             if (res.Code == 0)

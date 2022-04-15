@@ -1,15 +1,13 @@
 ﻿using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Data.Repositories;
-using CodeShellCore.Moldster.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Data.Repositories.Internal
+namespace CodeShellCore.Moldster
 {
     public class MoldsterRepository<T, TContext> : Repository_Int64<T, TContext>
         where T : class, IMoldsterModel
