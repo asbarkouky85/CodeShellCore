@@ -32,7 +32,7 @@ export class DateValidator {
             var e = date2 as Moment.Moment;
             date2 = e.toDate()
         }
-        //debugger
+        
 
         date1.setHours(0, 0, 0, 0);
         date2.setHours(0, 0, 0, 0);

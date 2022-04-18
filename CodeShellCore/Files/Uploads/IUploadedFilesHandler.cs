@@ -7,5 +7,8 @@
         string GetUrlById(string id);
         string GetUrlByPath(string id);
         TmpFileData AddToTemp(FileBytes bts, string key);
+
+        string TempRoot { get; }
+        string SaveRoot { get; }
     }
 }

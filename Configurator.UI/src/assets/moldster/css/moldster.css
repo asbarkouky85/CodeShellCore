@@ -604,6 +604,11 @@ tr.selected>td {
     cursor: pointer;
 }
 
+.p-component{
+    font-family: inherit !important;
+    font-size: unset !important;
+}
+
 @media(max-width:780px) {
     .page-header {
         margin: 0px;

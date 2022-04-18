@@ -12,11 +12,8 @@ namespace CodeShellCore.Web.Controllers
     {
         public virtual IActionResult Index()
         {
-            
-            string ass = Shell.ProjectAssembly.GetName().Name;
-            string ver = Shell.ProjectAssembly.GetVersionString();
             Response.ContentType = "text/html";
-            return Content("<head><title>" + ass + "</title></head><h1>" + ass + "</h1><h2>Version : " + ver + "</h2>");
+            return Content(WebUtils.GetAssemblyInfoHtml());
         }
     }
 }

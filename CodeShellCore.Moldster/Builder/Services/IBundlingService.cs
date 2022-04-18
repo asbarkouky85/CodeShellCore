@@ -15,6 +15,7 @@ namespace CodeShellCore.Moldster.Builder.Services
         bool StartProductionPackIfNeeded(string tenantCode, out BundlingTask tt, string version = null);
         bool IsBundled(string moduleName, string version);
         string GetAppVersion(string code, bool uiIfLarger = false);
+        string CompressModuleBundle(string tenant, string version);
         IOutputWriter OutputWriter { get; set; }
 
         SubmitResult UpdateTenantVersionInDataSource(string code, string version);

@@ -22,7 +22,7 @@ namespace CodeShellCore.Data
         /// contains current locale requested and can be used to translate (Word,Column,Page or Message)
         /// </summary>
         ILocaleTextProvider Strings { get; }
-        
+
         /// <summary>
         /// contains current user data
         /// </summary>
@@ -37,10 +37,12 @@ namespace CodeShellCore.Data
         /// <typeparam name="T">entity class </typeparam>
         /// <returns><see cref="IRepository{T}"/></returns>
         IRepository<T> GetRepositoryFor<T>() where T : class;
-        IRepository GetRepositoryFor(Type t);
+
         ICollectionRepository<T> GetCollectionRepositoryFor<T>() where T : class;
-        T GetRepository<T>() where T : class, IRepository;
+        IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>;
         IRepository GetRepository(Type t);
+        IRepository GetRepositoryFor(Type t);
         SubmitResult SaveChanges(string successMessage = null, string faileMessage = null);
+        T GetRepository<T>() where T : class, IRepository;
     }
 }

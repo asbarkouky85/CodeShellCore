@@ -1,0 +1,1 @@
+﻿{ path : "%Path%", component : %Component%, canActivate: [AuthFilter], data: { name : "%Name%", navigate: %Navigate%, resource:"%Resource%", action: %Action%, apps:%Apps% }}

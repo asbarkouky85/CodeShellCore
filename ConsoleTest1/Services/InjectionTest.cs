@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Text;
+using CodeShellCore.Localization;
 
 namespace ExampleProject.Commander.Services
 {
@@ -22,4 +23,8 @@ namespace ExampleProject.Commander.Services
             ScopedClass = prov.GetService<ScopedClass>();
         }
     }
+
+    [EntityName("Test")]
+    public class TestDto { }
+
 }

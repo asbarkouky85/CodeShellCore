@@ -81,7 +81,7 @@ namespace CodeShellCore.Web.Razor
         public static string GetIdentifier<T, TValue>(Expression<Func<T, TValue>> expression)
         {
             string member = GetMemberName(expression);
-            return (typeof(T).RealModelType().Name + "__" + member.Replace(".", "__")).ToLower();
+            return (typeof(T).GetEntityName() + "__" + member.Replace(".", "__")).ToLower();
         }
 
         public static string GetColumnId<T, TValue>(Expression<Func<T, TValue>> expression)
@@ -89,7 +89,7 @@ namespace CodeShellCore.Web.Razor
             string col = RazorConfig.ExpressionStringifier.GetColumnId((MemberExpression)expression.Body);
             bool isSub = col.Contains(".");
             col = col.Replace(".", "__");
-            return (isSub) ? col : typeof(T).RealModelType().Name + "__" + col;
+            return (isSub) ? col : typeof(T).GetEntityName() + "__" + col;
         }
 
         public static MemberExpression GetMemberExpression<T, TValue>(Expression<Func<T, TValue>> expression)

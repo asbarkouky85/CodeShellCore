@@ -3,7 +3,8 @@ using CodeShellCore.Files;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
-using CodeShellCore.Moldster.Tenants.Dtos;
+using CodeShellCore.Moldster.Services;
+using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Net;
 using CodeShellCore.Net.Ftp;
 using CodeShellCore.Text;
@@ -15,13 +16,13 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Builder.Services
 {
-    public class PublisherService : ConsoleService, IPublisherService
+    public class PublisherService : MoldsterFileHandlingService, IPublisherService
     {
-        private readonly IPathsService paths;
-        private readonly IPublisherHttpService http;
-        private readonly EnvironmentAccessor envAccessor;
-        private readonly IConfigUnit unit;
-        private readonly IOutputWriter output;
+        protected readonly IPathsService paths;
+        protected readonly IPublisherHttpService http;
+        protected readonly EnvironmentAccessor envAccessor;
+        protected readonly IConfigUnit unit;
+        protected readonly IOutputWriter output;
         UploadConfig Config
         {
             get
@@ -35,11 +36,12 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         public override int SuccessCol => 10;
         public PublisherService(
+            IServiceProvider prov,
             IPathsService paths,
             IPublisherHttpService http,
             EnvironmentAccessor envAccessor,
             IConfigUnit unit,
-            IOutputWriter output) : base(output)
+            IOutputWriter output) : base(prov)
         {
             this.paths = paths;
             this.http = http;
@@ -49,11 +51,11 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         }
 
-        protected virtual string BundleFolder => "wwwroot/dist";
+        protected virtual string BundleFolder => "wwwroot";
 
         public IOutputWriter OutputWriter { get { return Out; } set { Out = value; } }
 
-        public PublisherResult DecompressFiles(string zipFile, string distFolder)
+        public virtual PublisherResult DecompressFiles(string zipFile, string distFolder)
         {
             try
             {
@@ -77,36 +79,20 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         }
 
-        private PublisherResult UploadFtp(UploadConfig env, string tenant, string version)
+        protected virtual PublisherResult UploadFtp(UploadConfig env, string tenant, string version)
         {
             using (var m = SW.Measure())
             {
                 string path = env.PathOnServer;
 
-                string zipFile = CompressSubModuleScripts(tenant, version);
-
+                string zipFile = Names.GetOutputBundlePath(tenant, version, true);
                 string zipFileTarget = Utils.CombineUrl(path, BundleFolder, Path.GetFileName(zipFile));
 
                 WriteFileOperation("Uploading", $"{env.Server}/{zipFileTarget}", false);
 
-                var upl = http.UploadFile(zipFile, zipFileTarget);
-
-                if (!upl.IsSuccess)
+                if (!http.FileExists(zipFileTarget))
                 {
-                    WriteException(upl.ExceptionMessage, upl.Message, upl.StackTrace);
-                    return upl.MapToResult<PublisherResult>();
-                }
-
-                WriteSuccess();
-                output.WriteLine();
-
-                string mainFile = GetMainModuleScriptPath(tenant, version);
-                if (File.Exists(mainFile))
-                {
-                    string mainFileTarget = Utils.CombineUrl(path, BundleFolder, Path.GetFileName(mainFile));
-                    WriteFileOperation("Uploading", $"{env.Server}/{mainFileTarget}", false);
-
-                    upl = http.UploadFile(mainFile, mainFileTarget);
+                    var upl = http.UploadFile(zipFile, zipFileTarget);
 
                     if (!upl.IsSuccess)
                     {
@@ -115,34 +101,56 @@ namespace CodeShellCore.Moldster.Builder.Services
                     }
 
                     WriteSuccess();
-                    output.WriteLine();
-                }
-
-                WriteFileOperation("Sending extract command", env.ServerUrl, false);
-
-                var dec = http.HandleRequest(new PublisherRequest
-                {
-                    Type = ServerRequestTypes.Decompress,
-                    DestinationFolder = Path.Combine(BundleFolder, version),
-                    FileName = Path.Combine(BundleFolder, Path.GetFileName(zipFile))
-                });
-
-                if (!dec.IsSuccess)
-                {
-                    WriteException(dec.ExceptionMessage, dec.Message, dec.StackTrace);
                 }
                 else
                 {
-                    File.Delete(zipFile);
+                    GotoColumn(SuccessCol);
+                    WriteColored("EXISTS", ConsoleColor.DarkCyan);
+                }
+                output.WriteLine();
+
+                WriteFileOperation("Sending delete existing command", env.ServerUrl, false);
+                var deleteRequest = new PublisherRequest
+                {
+                    Type = ServerRequestTypes.DeleteDirectory,
+                    DestinationFolder = Path.Combine(BundleFolder, Names.ApplyConvension(tenant, AppParts.Project))
+                };
+                var handleResult = http.HandleRequest(deleteRequest);
+
+                if (!handleResult.IsSuccess)
+                {
+                    WriteException(handleResult.ExceptionMessage, handleResult.Message, handleResult.StackTrace);
+                }
+                else
+                {
+                    WriteSuccess();
+                }
+                Out.WriteLine();
+                WriteFileOperation("Sending extract command", env.ServerUrl, false);
+
+                handleResult = http.HandleRequest(new PublisherRequest
+                {
+                    Type = ServerRequestTypes.Decompress,
+                    DestinationFolder = BundleFolder,
+                    FileName = Path.Combine(BundleFolder, Path.GetFileName(zipFile)),
+                    DeleteFileAfter = false
+                });
+
+                if (!handleResult.IsSuccess)
+                {
+                    WriteException(handleResult.ExceptionMessage, handleResult.Message, handleResult.StackTrace);
+                }
+                else
+                {
                     WriteSuccess(m.Elapsed);
                 }
 
-                output.WriteLine();
-                return dec.MapToResult<PublisherResult>();
+                Out.WriteLine();
+                return handleResult.MapToResult<PublisherResult>();
             }
         }
 
-        public PublisherResult UploadTenantBundle(string tenant, string version)
+        public virtual PublisherResult UploadTenantBundle(string tenant, string version)
         {
 
             switch (Config.Type)
@@ -157,29 +165,23 @@ namespace CodeShellCore.Moldster.Builder.Services
             throw new Exception("Unsupported upload type " + Config.Type);
         }
 
-        private PublisherResult UploadDev(UploadConfig config, string tenant, string version)
+        protected virtual PublisherResult UploadDev(UploadConfig config, string tenant, string version)
         {
             return new PublisherResult { Code = 0 };
         }
 
-        private PublisherResult UploadFileSystem(UploadConfig upload, string tenant, string version)
+        protected virtual PublisherResult UploadFileSystem(UploadConfig upload, string tenant, string version)
         {
             var res = new PublisherResult();
             try
             {
-                string[] files = GetSubModuleScriptPaths(tenant, version);
 
                 string subModuleTarget = Path.Combine(upload.PathOnServer, BundleFolder, version);
 
                 if (!Directory.Exists(subModuleTarget))
                     Directory.CreateDirectory(subModuleTarget);
-                foreach (var f in files)
-                {
-                    File.Copy(f, Path.Combine(subModuleTarget, Path.GetFileName(f)), true);
-                    WriteFileOperation("Copied", Path.GetFileName(f));
-                }
 
-                string mainModule = GetMainModuleScriptPath(tenant, version);
+                string mainModule = Names.GetOutputBundlePath(tenant, version);
                 if (File.Exists(mainModule))
                 {
                     string mainModuleTarget = Path.Combine(upload.PathOnServer, BundleFolder, Path.GetFileName(mainModule));
@@ -199,7 +201,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             return res;
         }
 
-        FTPClient GetFTPClient()
+        protected virtual FTPClient GetFTPClient()
         {
             var upload = Config;
             if (upload.Type != "FTP")
@@ -288,7 +290,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             return new Result();
         }
 
-        void DeleteOtherFiles(IEnumerable<string> files, string version, bool ftp = false)
+        protected virtual void DeleteOtherFiles(IEnumerable<string> files, string version, bool ftp = false)
         {
             List<string> lst = new List<string>();
             FTPClient cl = null;
@@ -330,7 +332,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         }
 
-        void DeleteEmptyDirectories(IEnumerable<string> dir, bool ftp = false)
+        protected virtual void DeleteEmptyDirectories(IEnumerable<string> dir, bool ftp = false)
         {
             FTPClient cl = null;
             string pathOnServer = null;
@@ -364,46 +366,7 @@ namespace CodeShellCore.Moldster.Builder.Services
             }
         }
 
-        protected virtual string[] GetSubModuleScriptPaths(string tenant, string version)
-        {
-            string folder = Path.Combine(paths.UIRoot, BundleFolder, version);
-            return Directory.GetFiles(folder, tenant + "*");
-        }
-
-        public virtual string GetMainModuleScriptPath(string tenant, string version)
-        {
-            return Path.Combine(paths.UIRoot, BundleFolder, tenant + "-" + version + ".js");
-        }
-
-        public string CompressSubModuleScripts(string tenant, string version)
-        {
-            string[] files = GetSubModuleScriptPaths(tenant, version);
-
-            string dist = Path.Combine(paths.UIRoot, BundleFolder, tenant + "-" + version);
-
-            if (!Directory.Exists(dist))
-                Directory.CreateDirectory(dist);
-
-            foreach (var f in files)
-            {
-                string g = Path.Combine(dist, Path.GetFileName(f));
-                File.Copy(f, g, true);
-            }
-
-            output.Write("Compressing scripts [");
-            WriteColored(tenant, ConsoleColor.Yellow);
-            output.Write("] for version [");
-            WriteColored(version, ConsoleColor.Cyan);
-            output.Write("]...");
-
-            FileUtils.CompressDirectory(dist, dist + ".zip");
-            Directory.Delete(dist, true);
-            WriteSuccess();
-            output.WriteLine();
-            return dist + ".zip";
-        }
-
-        public Result SetTenantInfo(string tenant, string version = null)
+        public virtual Result SetTenantInfo(string tenant, string version = null)
         {
             var info = GetAllTenantsInfo();
             string fromVer = "";

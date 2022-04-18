@@ -23,6 +23,7 @@ using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Builder.Services;
 using CodeShellCore.Moldster.Localization.Services;
+using CodeShellCore.Localization;
 
 namespace ConsoleTest1
 {
@@ -33,7 +34,7 @@ namespace ConsoleTest1
             { 1,"TestLogger"},
             { 2,"TestId" },
             { 3,"TestFCM"},
-            { 4,"Tasks"},
+            { 4,"TestAttributes"},
             { 5,"TestEmail"},
             { 6,"TestExpressions"},
             { 7,"TestLookups"},
@@ -88,21 +89,11 @@ namespace ConsoleTest1
             }
         }
 
-        public void Tasks()
+        public void TestAttributes()
         {
-            var t = new Task<int>(() =>
-              {
-                  Console.WriteLine("starting task");
-                  Thread.Sleep(2000);
-                  Console.WriteLine("done");
-                  return 5;
-              });
-            Console.WriteLine("before call");
-            t.Then(res =>
-            {
-                Console.WriteLine("Then action " + res);
-            });
-            Console.WriteLine("after call");
+            var attrs = (EntityNameAttribute)typeof(TestDto).GetCustomAttributes(true).FirstOrDefault(e=>e.GetType().IsAssignableFrom(typeof(EntityNameAttribute)));
+            if (attrs != null)
+                Console.WriteLine(attrs.EntityName);
         }
 
         public void TestInjection()

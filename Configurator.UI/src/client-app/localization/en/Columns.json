@@ -120,5 +120,14 @@
   "UploadConfig__ServerUrl": "Server url",
   "UploadConfig__UserName": "User name",
   "UploadConfig__Password": "Password",
-  "UploadConfig__PathOnServer": "Path on server"
+  "UploadConfig__PathOnServer": "Path on server",
+  "TenantDto__Code": "Code",
+  "TenantDto__Name": "Name",
+  "TenantDto__ConnectionString": "Connection string",
+  "TenantDto__LogoFile": "Logo file",
+  "TenantDto__ParentId": "Parent id",
+  "TenantDto__UseParentUI": "Use parent ui",
+  "TenantDto__Version": "Version",
+  "Tenant__ParentId": "Parent id",
+  "Tenant__UseParentUI": "Use parent ui"
 }

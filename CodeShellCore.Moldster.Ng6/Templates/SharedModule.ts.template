@@ -1,0 +1,26 @@
+﻿import { NgModule } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { %BaseName%BaseModule } from '%BaseName%/%BaseName%BaseModule';
+import { ServerConfigBase, Registry } from "codeshell/core";
+%ComponentImports%
+
+@NgModule({
+    declarations: [%Components%],
+    exports: [
+		%Components%
+		%BaseName%BaseModule
+	],
+    imports: [
+        %BaseName%BaseModule
+    ],
+	entryComponents:[%EmbeddedComponents%]
+})
+export class %Name%Module {
+
+	constructor(trans: TranslateService, conf: ServerConfigBase) {
+        trans.setDefaultLang(conf.Locale);
+        trans.use(conf.Locale);
+    }
+}
+
+%Registrations%

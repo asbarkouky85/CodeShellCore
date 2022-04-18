@@ -2,8 +2,8 @@
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
-using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
+using CodeShellCore.Web.Moldster.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Asga.Public.Web.Controllers
 {
-   public class MessagesController : MoldsterEntityController<Message, long>
+    public class MessagesController : MoldsterEntityController<Message, long>
     {
        protected IPublicUnit PublicUnit => GetService<IPublicUnit>();
         public MessagesController(IEntityService<Message> service) : base(service)

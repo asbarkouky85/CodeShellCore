@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Domains.Dtos;
+using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Razor;
@@ -26,8 +26,8 @@ namespace CodeShellCore.Moldster.Pages.Services
         public IEnumerable<DomainWithPagesDTO> GetDomainWithPages(long tenantId, string domainName = null)
         {
             if (domainName != null)
-                return Unit.DomainRepository.FindAs(DomainWithPagesDTO.RenderingExpression, n => n.Pages.Any(p => p.TenantId == tenantId) && n.Name == domainName);
-            return Unit.DomainRepository.FindAs(DomainWithPagesDTO.RenderingExpression, n => n.Pages.Any(p => p.TenantId == tenantId));
+                return Unit.DomainRepository.FindAndMap<DomainWithPagesDTO>(n => n.Pages.Any(p => p.TenantId == tenantId) && n.Name == domainName);
+            return Unit.DomainRepository.FindAndMap<DomainWithPagesDTO>(n => n.Pages.Any(p => p.TenantId == tenantId));
         }
 
         public SubmitResult UpdateTemplatePages(long template, long? tenant = null)

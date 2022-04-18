@@ -81,5 +81,24 @@ namespace CodeShellCore.Moldster.Builder.Services
             return res;
 
         }
+
+        public bool FileExists(string url)
+        {
+            Result res = new Result();
+            try
+            {
+                var conf = Config;
+
+                FTPClient client = new FTPClient(conf.Server, conf.UserName, conf.Password);
+                client.Active = conf.Active;
+
+                return client.Exists(url);
+            }
+            catch (Exception e)
+            {
+                res.SetException(e);
+                throw e;
+            }
+        }
     }
 }

@@ -19,7 +19,8 @@ namespace CodeShellCore.Moldster.Pages.Services
         public LoadResult<PageControlListDTO> GetControlByPageId(LoadOptions opt)
         {
             var opts = opt.GetOptionsFor<PageControlListDTO>();
-            return (LoadResult<PageControlListDTO>)_unit.PageControlRepository.FindAsSorted(PageControlListDTO.Expression, d => d.Control.Identifier, SortDir.ASC, opts);
+            opts.SetOrderProperty(e => e.ControlIdentifier);
+            return _unit.PageControlRepository.FindAndMap(opts);
         }
 
         public SubmitResult UpdatePageControls(List<PageControlListDTO> pageControls)

@@ -100,6 +100,10 @@ tree-viewport {
     display: block;
 }
 
+.p-dialog tree-viewport {
+    min-width: 500px;
+}
+
 .tree-children {
     padding-right: 0px
 }

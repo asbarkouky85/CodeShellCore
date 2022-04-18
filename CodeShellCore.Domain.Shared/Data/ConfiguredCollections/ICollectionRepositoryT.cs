@@ -12,7 +12,9 @@ namespace CodeShellCore.Data.ConfiguredCollections
 
         IEnumerable<T> GetCollectionList(string collectionId);
         IEnumerable<TObject> GetCollectionListAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp);
+        IEnumerable<TObject> GetCollectionListAndMap<TObject>(string collectionId);
         LoadResult<T> LoadCollection(string collectionId, ListOptions<T> opts);
         LoadResult<TObject> LoadCollectionAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp, ListOptions<TObject> opts) where TObject : class;
+        LoadResult<TObject> LoadCollectionAndMap<TObject>(string collectionId, ListOptions<TObject> opts) where TObject : class;
     }
 }

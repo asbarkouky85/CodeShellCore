@@ -20,6 +20,10 @@
         @Html.FileGroup(e => e.Entity.LogoFile, "f_logo", "upload", false)
     </div>
     <div class="row">
+        @Html.SelectControlGroup(e => e.Entity.ParentId, Lister.Make("tenants"), "name", "id")
+        @Html.CheckBoxGroup(e => e.Entity.UseParentUI,attrs:new { star__ngIf=Html.Property(e=>e.Entity.ParentId)})
+    </div>
+    <div class="row" *ngIf="canRender()">
         <div class="col-md-6">
             @Html.SelectModalButton("MainComponentBase", "SelectTemplate()", "model.entity.mainComponentBase")
         </div>
@@ -34,7 +38,7 @@
     <div class="row">
         @if (Html.StartContainer("div", "update_buttons", attrs: new { @class = "from-group" }))
         {
-            <div class="col-md-3">
+            <div class="col-md-3" *ngIf="canRender()">
                 <br />
                 <div class="input-group btn-group">
                     @Html.Button("UpdateConfigurations", function: "SyncTenant()", btn: BtnClass.Info, icon: "fa fa-sync")
@@ -46,7 +50,7 @@
         @Html.SelectControlGroup(d => d.Environment, Lister.Make("environments", false), "name", "name", size: 2, inputAttr: new { evnt__change = "env_change()" })
         @Html.SelectControlGroup(d => d.DbName, Lister.Make("databases", false), "name", "name", size: 3, idExtra: "_selector")
 
-        @Html.CheckBoxGroup(d => d.Force, trueString: null, falseString: null, size: 1, inputAttr: new { title = "Force" })
+        @Html.CheckBoxGroup(d => d.Force, trueString: null, falseString: null, size: 1, inputAttr: new { title = "Force" },attrs:new { star__ngIf = "canRender()" })
 
 
         @if (Html.StartContainer("div", "update_buttons", attrs: new { @class = "from-group" }))
@@ -57,7 +61,7 @@
                 <div class="input-group btn-group">
 
                     @Html.Button("UpdateDatabase", function: "UpdateDatabase()", btn: BtnClass.Primary, icon: "fa fa-download", attr: new { calc__disabled = "!model.dbName" })
-                    @Html.Button("Publish", function: "Publish()", btn: BtnClass.Success, icon: "fa fa-upload", attr: new { calc__disabled = "!model.environment" })
+                    @Html.Button("Publish", function: "Publish()", btn: BtnClass.Success, icon: "fa fa-upload", attr: new { calc__disabled = "!model.environment",star__ngIf="canRender()" })
                 </div>
             </div>
             @Html.CloseContainer("div")

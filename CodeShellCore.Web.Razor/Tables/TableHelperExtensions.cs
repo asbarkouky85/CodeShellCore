@@ -25,22 +25,24 @@ namespace CodeShellCore.Web.Razor.Tables
             string size = null,
             bool isColumn = true,
             object cellAttributes = null,
-            bool? sorting = null)
+            bool? sorting = null,
+            bool isRequired = false)
         {
             var Provider = helper.GetService<ITablesHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
-            CellWriter mod = Provider.HeaderCell(helper, text, size, isColumn, cellAttributes, sorting.Value);
+            CellWriter mod = Provider.HeaderCell(helper, text, size, isColumn, cellAttributes, sorting.Value, isRequired);
             return mod.WriteHeaderCell();
         }
         public static IHtmlContent HeaderCell<T, TValue>(this IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp,
             string size = null,
 
             object cellAttributes = null,
-            bool? sorting = null)
+            bool? sorting = null,
+            bool isRequired = false)
         {
             var Provider = helper.GetService<ITablesHelper>();
             sorting = sorting ?? helper.GetTheme().SortingInTables;
-            CellWriter mod = Provider.HeaderCell(helper, exp, size, cellAttributes, sorting.Value);
+            CellWriter mod = Provider.HeaderCell(helper, exp, size, cellAttributes, sorting.Value, isRequired);
             return mod.WriteHeaderCell();
         }
 
@@ -83,7 +85,7 @@ namespace CodeShellCore.Web.Razor.Tables
         }
 
         public static IHtmlContent CalendarCell<T, TValue>(
-            this IHtmlHelper<T> helper, 
+            this IHtmlHelper<T> helper,
             Expression<Func<T, TValue>> exp,
             CalendarTypes rangeType = CalendarTypes.PastAndFuture,
             Calendars cals = Calendars.Greg,

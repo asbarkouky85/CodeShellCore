@@ -5,6 +5,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
+using CodeShellCore.Text;
+using System.Linq;
 
 namespace CodeShellCore.Net.Ftp
 {
@@ -90,6 +92,14 @@ namespace CodeShellCore.Net.Ftp
                 }
             }
             return dirs.ToArray();
+        }
+
+        public bool Exists(string url)
+        {
+            var directory = url.GetBeforeLast("/")+"/";
+            var file = url.GetAfterLast("/");
+            var files = GetFilesList(directory);
+            return files.Contains(file);
         }
 
         string[] ReadAsArray(FtpWebResponse response)

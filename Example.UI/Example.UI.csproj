@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
     <ProjectReference Include="..\Example.Api\Example.Api.csproj" />
     <ProjectReference Include="..\Example\Example.csproj" />
   </ItemGroup>

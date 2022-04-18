@@ -137,7 +137,7 @@ namespace CodeShellCore.Data.Services
             return Repository.CanDelete(id);
         }
 
-        public virtual LoadResult LoadObjects(LoadOptions opts)
+        public virtual LoadResult<T> LoadObjects(LoadOptions opts)
         {
             return Load(opts);
         }

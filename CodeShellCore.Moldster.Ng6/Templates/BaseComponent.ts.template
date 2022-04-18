@@ -1,0 +1,7 @@
+﻿import { %Parent% } from "%ParentPath%";
+import { Injectable } from "@angular/core";
+
+@Injectable()
+export abstract class %Name% extends %Parent% {
+	
+}

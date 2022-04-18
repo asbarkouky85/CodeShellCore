@@ -77,5 +77,17 @@ namespace CodeShellCore.Data.ConfiguredCollections
         {
             return base.FindAsLookup(collectionId, ex);
         }
+
+        public IEnumerable<TObject> GetCollectionListAndMap<TObject>(string collectionId)
+        {
+            var q = QueryCollection(collectionId);
+            return QueryDto<TObject>(q).ToList();
+        }
+
+        public LoadResult<TObject> LoadCollectionAndMap<TObject>(string collectionId, ListOptions<TObject> opts) where TObject : class
+        {
+            var q = QueryCollection(collectionId);
+            return QueryDto<TObject>(q).LoadWith(opts);
+        }
     }
 }

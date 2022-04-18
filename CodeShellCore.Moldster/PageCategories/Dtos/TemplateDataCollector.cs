@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Localization.Dtos;
+﻿using CodeShellCore.Moldster.Localization;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.PageCategories.Dtos

@@ -125,7 +125,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
                 if (PageControls.EntityName == null)
                 {
                     Type t = helper.GetType().GenericTypeArguments.FirstOrDefault();
-                    PageControls.EntityName = t == null ? "None" : t.RealModelType().FullName;
+                    PageControls.EntityName = t == null ? "None" : t.GetEntityName(true);
                 }
             }
             else
@@ -133,7 +133,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
                 Type t = helper.GetType().GenericTypeArguments.FirstOrDefault();
                 helper.ViewData["PageControls"] = new TemplateDataCollector
                 {
-                    EntityName = t == null ? "None" : t.RealModelType().FullName,
+                    EntityName = t == null ? "None" : t.GetEntityName(true),
                     Controls = new List<ControlDTO>()
                 };
                 PageControls = (TemplateDataCollector)helper.ViewData["PageControls"];

@@ -84,7 +84,7 @@ namespace CodeShellCore.Moldster.Pages.Services
                 using (Out.Set(ConsoleColor.Cyan))
                     Out.Write(" Html: ");
 
-                PageDTO p = _unit.PageRepository.FindSingleForRendering(e => e.Id == id);
+                PageDetailsDto p = _unit.PageRepository.FindSingleForRendering(e => e.Id == id);
                 string templatePath = _names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".html";
                 if (!opts.ReplaceComponentHtml && File.Exists(templatePath))
                 {

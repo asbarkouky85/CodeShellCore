@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Security.Authorization;
+﻿using CodeShellCore.DependencyInjection;
+using CodeShellCore.Security.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -60,6 +61,7 @@ namespace CodeShellCore.Cli
         public override void RegisterServices(IServiceCollection coll)
         {
             base.RegisterServices(coll);
+            coll.AddCodeShellApplication();
             coll.AddSingleton<AuthorizationService>();
         }
 

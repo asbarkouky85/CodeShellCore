@@ -10,5 +10,6 @@ namespace CodeShellCore.Web.Moldster
         public string Name { get; set; }
         public string Version { get; set; }
         public string Logo { get; set; }
+        public string UseTenantPackage { get; set; }
     }
 }

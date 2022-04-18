@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Data.Lookups;
+using CodeShellCore.Data.Mapping;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
 using System;
@@ -11,6 +12,8 @@ namespace Asga.Auth.Data
 
     public class AdminRolesRepository : IRoleRepository
     {
+        public IQueryProjector Projector { get; set; }
+
         public IEnumerable All()
         {
             return new object[0];
@@ -33,6 +36,8 @@ namespace Asga.Auth.Data
     }
     public class AdminResourceRepository : IResourceRepository
     {
+        public IQueryProjector Projector { get; set; }
+
         public IEnumerable All()
         {
             return new object[0];

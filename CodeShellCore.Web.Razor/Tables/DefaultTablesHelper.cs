@@ -39,25 +39,27 @@ namespace CodeShellCore.Web.Razor.Tables
             return writer;
         }
 
-        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes, bool sorting)
+        public virtual CellWriter HeaderCell(IHtmlHelper helper, string textId, string size, bool isColumn, object cellAttributes,bool sorting, bool isRequired)
         {
             using (var writer = new CellWriter(helper))
             {
                 writer.ColumnModel.MemberName = textId;
                 writer.ColumnModel.Sorting = sorting;
+                writer.ColumnModel.IsRequired = isRequired;
                 writer.ColumnModel.Attributes = cellAttributes == null ? "" : RazorUtils.ToAttributeString(cellAttributes);
                 writer.InputModel.PlaceHolder = isColumn ? RazorConfig.LocaleTextProvider.Column(textId) : RazorConfig.LocaleTextProvider.Word(textId);
                 return writer;
             }
         }
 
-        public virtual CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes, bool sorting)
+        public virtual CellWriter HeaderCell<T, TValue>(IHtmlHelper<T> helper, Expression<Func<T, TValue>> exp, string size, object cellAttributes, bool sorting, bool isRequired)
         {
             using (var writer = new CellWriter(helper))
             {
                 writer.UseExpression(exp);
                 writer.Initialize(null, size, cellAttributes, null);
                 writer.ColumnModel.Sorting = sorting;
+                writer.ColumnModel.IsRequired = isRequired;
                 writer.InputModel.PlaceHolder = RazorConfig.LocaleTextProvider.Column(writer.ColumnId);
                 return writer;
             }
