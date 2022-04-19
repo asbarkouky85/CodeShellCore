@@ -1,6 +1,5 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
@@ -89,12 +88,11 @@ namespace CodeShellCore.Moldster.Services
 
         public TenantPageGuideDTO GetAppGuide(long id)
         {
-            return _unit.TenantRepository.FindSingleAndMap<TenantPageGuideDTO>( id);
+            return _unit.TenantRepository.FindSingleAndMap<TenantPageGuideDTO>(id);
         }
 
         public PageOptions GetPageOptionsById(long pageId)
         {
-            List<ControlRenderDto> lst = new List<ControlRenderDto>();
 
             PageOptions opts = _unit.PageRepository.FindSingleAs(d => new PageOptions
             {
@@ -105,7 +103,8 @@ namespace CodeShellCore.Moldster.Services
                 ViewPath = d.PageCategory.ViewPath,
                 DefaultAccessibility = d.DefaultAccessibility,
             }, e => e.Id == pageId);
-            lst = _unit.PageControlRepository.GetDtos(e => e.PageId == pageId);
+
+            var lst = _unit.PageControlRepository.GetDtos<ControlRenderDto>(e => e.PageId == pageId);
 
             opts.Controls = new Dictionary<string, ControlRenderDto>();
             var rep = new List<string>();

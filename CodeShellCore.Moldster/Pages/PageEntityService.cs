@@ -5,10 +5,10 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Extensions.Data;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Navigation;
+using CodeShellCore.Moldster.Pages.Views;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Text;
@@ -37,7 +37,7 @@ namespace CodeShellCore.Moldster.Pages
 
         public LoadResult<PageListDTO> FindPages(LoadOptions opts, FindPageRequest request)
         {
-            return Unit.PageRepository.FindUsing(request, opts);
+            return Unit.PageRepository.FindUsing<PageListDTO>(request, opts);
 
         }
 
@@ -100,12 +100,14 @@ namespace CodeShellCore.Moldster.Pages
             foreach (var p in ps)
             {
                 PageParameterForJson[] pars = Unit.PageParameterRepository.FindForJsonByPage(p.Id).ToArray();
-                PageRouteDTO r = Unit.PageRouteRepository.FindByPage(p.Id);
+                var routeView = Unit.PageRouteRepository.FindByPage(p.Id);
+                var dto = Mapper.Map(routeView, new PageRouteDTO());
                 var fs = Unit.CustomFieldRepository.FindAs(
                     e => new FieldDefinition { Name = e.Name, Type = e.Type },
                     d => d.PageId == p.Id).ToArray();
                 fs = fs.Any() ? fs : null;
-                Unit.PageRepository.UpdatePageViewParamsJson(p, pars, r, fs);
+
+                Unit.PageRepository.UpdatePageViewParamsJson(p, pars, routeView, fs);
             }
             return Unit.SaveChanges();
         }
@@ -135,11 +137,13 @@ namespace CodeShellCore.Moldster.Pages
             var p = Unit.PageRepository.FindSingleAs(d => new { d.ViewPath, d.Name, d.TenantId, d.Tenant.Code, d.Layout }, id);
             if (p == null)
                 return null;
+
+            var routeView = Unit.PageRouteRepository.FindByPage(id);
             var dto = new PageCustomizationDTO
             {
                 Controls = Unit.PageControlRepository.FindAndMap<PageControlListDTO>(d => d.PageId == id),
                 Parameters = GetViewParameters(id),
-                Route = Unit.PageRouteRepository.FindByPage(id) ?? new PageRouteDTO(),
+                Route = Mapper.Map(routeView, new PageRouteDTO()),
                 Fields = Unit.CustomFieldRepository.FindAndMap<CustomFieldDto>(d => d.PageId == id),
                 ViewPath = p.ViewPath,
                 Id = id,
@@ -153,7 +157,7 @@ namespace CodeShellCore.Moldster.Pages
         public SubmitResult ApplyCustomization(PageCustomizationDTO dto)
         {
             Page page = Unit.PageRepository.GetForCustomization(dto.Id);
-            
+
             if (dto.Controls != null && dto.Controls.Any())
             {
                 page.PageControls.ApplyChangesLong(dto.Controls, Mapper);
@@ -181,12 +185,13 @@ namespace CodeShellCore.Moldster.Pages
                 page.SetRoute(Mapper.Map(dto.Route, new PageRoute()));
             }
             page.CustomFields.ApplyChangesLong(dto.Fields, Mapper);
-           // Unit.PageRepository.Update(page);
+            // Unit.PageRepository.Update(page);
             var res = Unit.SaveChanges();
 
             if (res.Code == 0)
             {
                 var pars = Unit.PageParameterRepository.FindForJsonByPage(dto.Id);
+                var routeView = Unit.PageRouteRepository.FindByPage(dto.Id);
 
                 if (page.Layout != dto.Layout)
                 {
@@ -194,12 +199,11 @@ namespace CodeShellCore.Moldster.Pages
                     Unit.PageRepository.Update(page);
                 }
 
-                if (dto.Route == null)
-                    dto.Route = Unit.PageRouteRepository.FindByPage(dto.Id);
+                dto.Route = Mapper.Map(routeView, new PageRouteDTO());
 
                 var fs = Unit.CustomFieldRepository.FindAs(e => new FieldDefinition { Name = e.Name, Type = e.Type }, d => d.PageId == dto.Id).ToArray();
                 fs = fs.Any() ? fs : null;
-                Unit.PageRepository.UpdatePageViewParamsJson(page, pars.ToArray(), dto.Route, fs);
+                Unit.PageRepository.UpdatePageViewParamsJson(page, pars.ToArray(), routeView, fs);
                 res.Data["updatingJsonResult"] = Unit.SaveChanges();
             }
             return res;

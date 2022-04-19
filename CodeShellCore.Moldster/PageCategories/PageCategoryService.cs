@@ -3,7 +3,6 @@ using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Files;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Text;
@@ -101,7 +100,7 @@ namespace CodeShellCore.Moldster.PageCategories
 
         public LoadResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, LoadOptions opt)
         {
-            return Unit.PageCategoryRepository.GetUnderDomain(domainId, opt);
+            return Unit.PageCategoryRepository.GetUnderDomain<PageCategoryListDTO>(domainId, opt);
         }
 
         public List<TemplateDTO> GetTemplates()

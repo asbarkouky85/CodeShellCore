@@ -2,7 +2,7 @@
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public class PageListDTO : EntityDto<long>
+    public class PageListDTO : EntityDto<long>, IPageReferenceCounter
     {
         public string Name { get; set; }
         public string Layout { get; set; }

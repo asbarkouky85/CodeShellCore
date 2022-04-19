@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Navigation.Dtos;
+using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Resources;

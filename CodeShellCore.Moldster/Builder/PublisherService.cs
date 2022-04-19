@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Tenants;
@@ -186,7 +185,7 @@ namespace CodeShellCore.Moldster.Builder
 
                 string zipFile = Names.GetOutputBundlePath(tenant, version, true);
                 string zipFileTarget = Utils.CombineUrl(path, BundleFolder, Path.GetFileName(zipFile));
-
+                
                 Utils.CreateFolderForFile(zipFileTarget);
                 if (File.Exists(zipFileTarget))
                 {
@@ -198,7 +197,8 @@ namespace CodeShellCore.Moldster.Builder
                     }
                     else
                     {
-                        FileUtils.DecompressDirectory
+                        string tenantProject = Names.ApplyConvension(tenant, AppParts.Project);
+                        FileUtils.DecompressDirectory(zipFile, Path.Combine(BundleFolder, tenantProject));
                     }
                 }
                 else

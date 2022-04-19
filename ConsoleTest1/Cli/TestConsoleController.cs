@@ -9,7 +9,7 @@ using CodeShellCore.Linq;
 using CodeShellCore.Localization;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Environments;
-using CodeShellCore.Moldster.Localization.Services;
+using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Services.Email;
 using ConsoleTest1.Models;
 using ExampleProject.Commander.Services;

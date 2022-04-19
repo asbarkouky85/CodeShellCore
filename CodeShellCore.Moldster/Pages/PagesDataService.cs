@@ -3,8 +3,8 @@ using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages.Views;
 using CodeShellCore.Services;
 using CodeShellCore.Text;
 using System;
@@ -247,7 +247,7 @@ namespace CodeShellCore.Moldster.Pages
                             Unit.PageParameterRepository.Update(n);
                     }
 
-                    PageAndTypeDTO p = null;
+                    PageAndType p = null;
                     if (par.Type != (int)PageParameterTypes.Text)
                         p = Unit.PageRepository.FindLinkedPage("Other." + par.Name, fromJson.Value, tenantId, ref errors);
 

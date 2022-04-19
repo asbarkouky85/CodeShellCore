@@ -1,8 +1,7 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
-using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
@@ -83,7 +82,7 @@ namespace CodeShellCore.Moldster.Pages
                 using (Out.Set(ConsoleColor.Cyan))
                     Out.Write(" Html: ");
 
-                PageDetailsDto p = _unit.PageRepository.FindSingleForRendering(e => e.Id == id);
+                PageDetailsDto p = _unit.PageRepository.FindSingleAndMap<PageDetailsDto>(e => e.Id == id);
                 string templatePath = _names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".html";
                 if (!opts.ReplaceComponentHtml && File.Exists(templatePath))
                 {

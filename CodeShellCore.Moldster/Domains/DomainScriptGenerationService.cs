@@ -1,10 +1,10 @@
 ﻿using CodeShellCore.Data.Mapping;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Localization.Services;
-using CodeShellCore.Moldster.Navigation.Dtos;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
@@ -61,10 +61,11 @@ namespace CodeShellCore.Moldster.Domains
                 return;
             }
 
-            long modId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            long tenantId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
 
-            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(modId);
-            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs(modId);
+            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(tenantId);
+            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs<NavigationGroupDTO>(tenantId);
+
             string routesTemplate = _molds.GetResourceByNameAsString(MoldNames.Routes_ts);//RoutesMold;
 
             var tempModel = new RoutesTsModel
@@ -90,10 +91,12 @@ namespace CodeShellCore.Moldster.Domains
                 string dom = domain.DomainName;
                 tempModel.Routes += Names.GetDomainLazyLoadingRoute(domain.DomainName) + ",";
             }
+
             string sep = "";
             foreach (var nav in navs)
             {
-                tempModel.DomainsData += sep + GetNavigationObject(nav);
+                var pages = _unit.NavigationPageRepository.FindAndMap<NavigationPageDTO>(e => e.Page.TenantId == tenantId && e.NavigationGroupId == nav.Id);
+                tempModel.DomainsData += sep + GetNavigationObject(nav.Name, pages);
                 sep = ",\n\t\t\t";
             }
 
@@ -158,7 +161,7 @@ namespace CodeShellCore.Moldster.Domains
             if (!Options.ReplaceDomainRoutes && File.Exists(filePath))
             {
                 WriteColored("Exists", ConsoleColor.Cyan);
-                var domPages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
+                var domPages = _unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>(tenantCode, dom.Id, true);
 
                 if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
                 {
@@ -173,7 +176,7 @@ namespace CodeShellCore.Moldster.Domains
             bool shared = dom.DomainName == "Shared";
             string template = shared ? _molds.GetResourceByNameAsString(MoldNames.SharedModule_ts) : _molds.GetDomainModuleMold();
 
-            var domainPages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id);
+            var domainPages = _unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>(tenantCode, dom.Id);
 
             if (domainPages.Any())
             {
@@ -255,10 +258,10 @@ namespace CodeShellCore.Moldster.Domains
             }
         }
 
-        protected string GetNavigationObject(NavigationGroupDTO dto)
+        protected string GetNavigationObject(string groupName, IEnumerable<NavigationPageDTO> pages)
         {
             string children = "";
-            foreach (var p in dto.Pages)
+            foreach (var p in pages)
             {
                 string param = p.RouteParameters ?? "";
                 string action = p.ActionName == null ? "ResourceActions." + p.PrivilegeType : "\"" + p.ActionName + "\"";
@@ -280,7 +283,7 @@ namespace CodeShellCore.Moldster.Domains
                     route.Apps,
                     route.Url);
             }
-            return string.Format("{{\n\t\t\t\tname: \"{0}\" ,\n\t\t\t\tchildren: [{1}]\n\t\t\t}}", dto.Name, children);
+            return string.Format("{{\n\t\t\t\tname: \"{0}\" ,\n\t\t\t\tchildren: [{1}]\n\t\t\t}}", groupName, children);
         }
 
         protected string HomeRoute(string name)

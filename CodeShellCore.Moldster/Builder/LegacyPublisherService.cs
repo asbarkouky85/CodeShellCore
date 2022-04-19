@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Net;
 using System;

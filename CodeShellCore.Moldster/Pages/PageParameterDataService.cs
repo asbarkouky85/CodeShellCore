@@ -2,7 +2,7 @@
 using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Pages.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +16,15 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         }
 
-        public LoadResult<PageReferenceDTO> GetReferences(ParameterRequestDTO req, LoadOptions opt)
+        public LoadResult<PageReferenceDTO> GetReferences(ParameterRequest req, LoadOptions opt)
         {
-            var o = opt.GetOptionsFor<PageReferenceDTO>();
-            return Unit.PageParameterRepository.FindReferences(req, o);
-        }
-
-        public SubmitResult UpdateJsonFromDataForTenant(long tar)
-        {
-            throw new NotImplementedException();
+            var o = opt.GetOptionsFor<PageReferenceView>();
+            var result = Unit.PageParameterRepository.FindReferences(req, o);
+            return new LoadResult<PageReferenceDTO>
+            {
+                TotalCount = result.TotalCount,
+                List = Mapper.Map(result.List, new List<PageReferenceDTO>())
+            };
         }
 
         public SubmitResult UpdateTemplatePages(long id, long tenantId)
@@ -71,7 +71,7 @@ namespace CodeShellCore.Moldster.Pages.Services
 
             var pagesByCategoryAndTenant = Unit.PageRepository.Find(d => (d.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.TenantId == tenantId);
             IEnumerable<PageParameterForJson> pageParametersByTenantAndCategory = Unit.PageParameterRepository.FindForJson(tenantId, pageCategoryId);
-            IEnumerable<PageRouteDTO> pageRoutesByTenantAndCategory = Unit.PageRouteRepository.FindForJson(tenantId, pageCategoryId);
+            IEnumerable<PageRouteView> pageRoutesByTenantAndCategory = Unit.PageRouteRepository.FindForJson(tenantId, pageCategoryId);
             IEnumerable<CustomField> fieldsByTenantAndCategory = Unit.CustomFieldRepository.Find(d => (d.Page.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.Page.TenantId == tenantId);
 
             foreach (var page in pagesByCategoryAndTenant)

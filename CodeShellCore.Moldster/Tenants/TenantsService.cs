@@ -3,8 +3,7 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Files.Uploads;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.CodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 

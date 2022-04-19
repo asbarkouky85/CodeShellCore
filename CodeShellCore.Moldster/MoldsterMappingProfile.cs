@@ -3,8 +3,10 @@ using CodeShellCore.Data;
 using CodeShellCore.Files;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Pages.Views;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Text;
@@ -19,10 +21,31 @@ namespace CodeShellCore.Moldster
         {
             DomainsMapping();
             LocalizationMapping();
-            PagesMapping();
+            NavigationMapping();
             PageCategoriesMapping();
-            ResourceMapping();
+            PagesMapping();
+            ResourcesMapping();
             TenantsMapping();
+        }
+
+        void NavigationMapping()
+        {
+            CreateMap<NavigationGroup, NavigationGroupDTO>();
+
+            CreateMap<NavigationPage, NavigationPageDTO>()
+                .ForMember(e => e.ActionName, d => d.MapFrom(e => e.Page.SpecialPermission != null ? e.Page.SpecialPermission : (e.Page.ResourceActionId != null ? e.Page.ResourceAction.Name : null)))
+                .ForMember(e => e.PrivilegeType, d => d.MapFrom(e => e.Page.PrivilegeType))
+                .ForMember(e => e.Apps, d => d.MapFrom(e => e.Page.Apps))
+                .ForMember(e => e.PageIdentifier, d => d.MapFrom(e => e.Page.Domain.Name + "__" + e.Page.Name))
+                .ForMember(e => e.ResourceName, d => d.MapFrom(e => e.Page.ResourceId == null ? null : e.Page.Resource.Name))
+                .ForMember(e => e.RouteParameters, d => d.MapFrom(e => e.Page.RouteParameters))
+                .ForMember(e => e.Url, d => d.MapFrom(e => e.Page.ViewPath));
+
+            CreateMap<NavigationPage, NavigationPageListDTO>()
+
+                .ForMember(e => e.Name, e => e.MapFrom(d => d.Page.Name))
+                .ForMember(e => e.Url, e => e.MapFrom(d => d.Page.ViewPath))
+                .ForMember(e => e.TenantId, e => e.MapFrom(d => d.Page.TenantId));
         }
 
         void PageCategoriesMapping()
@@ -42,6 +65,11 @@ namespace CodeShellCore.Moldster
             CreateMap<PageCategoryParameterDto, PageCategoryParameter>()
                 .IgnoreId();
 
+            CreateMap<PageCategory, ModuleCategoryDTO>()
+                .ForMember(e => e.Base, e => e.MapFrom(c => c.BaseComponent))
+                .ForMember(e => e.Path, e => e.MapFrom(c => c.ViewPath))
+                .ForMember(e => e.Resource, e => e.MapFrom(c => c.ResourceId == null ? null : c.Resource.Name));
+
             CreateMap<PageCategory, PageCategoryEditDto>()
                 .ForMember(e => e.Category, d => d.MapFrom(e => e))
                 .ForMember(e => e.Resource, d => d.MapFrom(e => e.Resource == null ? null : e.Resource.Name))
@@ -49,7 +77,7 @@ namespace CodeShellCore.Moldster
                 .ForMember(e => e.ResourceDomain, d => d.MapFrom(e => e.Resource == null ? null : e.Resource.Domain == null ? null : e.Resource.Domain.NameChain));
         }
 
-        void ResourceMapping()
+        void ResourcesMapping()
         {
             CreateMap<Resource, ResourceListDTO>()
                 .ForMember(e => e.Domain, d => d.MapFrom(e => e.Domain.Name));
@@ -102,6 +130,19 @@ namespace CodeShellCore.Moldster
             CreateMap<PageControl, PageControlListDTO>()
                 .ForMember(e => e.ControlType, d => d.MapFrom(e => e.Control.ControlType))
                 .MapChangeState();
+
+            CreateMap<PageControl, ControlRenderDto>()
+                .ForMember(e => e.Identifier, e => e.MapFrom(d => d.Control.Identifier))
+                .ForMember(e => e.Accessibilty, e => e.MapFrom(d => d.Accessability))
+                .ForMember(e => e.Collection, e => e.MapFrom(
+                    d => d.SourceCollection != null ? new CollectionDTO
+                    {
+                        Id = d.SourceCollection.Id,
+                        Name = d.SourceCollection.Name
+                    } : null))
+                .ForMember(e => e.ParentId, e => e.MapFrom(d => d.Control.ParentControl))
+                .ForMember(e => e.ControlType, e => e.MapFrom(d => d.Control.ControlType));
+
             CreateMap<PageControlListDTO, PageControl>().IgnoreId();
 
 
@@ -115,7 +156,8 @@ namespace CodeShellCore.Moldster
 
             CreateMap<PageRoute, PageRouteDTO>().MapChangeState();
             CreateMap<PageRouteDTO, PageRoute>().IgnoreId();
-
+            CreateMap<PageRouteView, PageRouteDTO>().MapChangeState();
+            CreateMap<PageReferenceView, PageReferenceDTO>();
 
         }
 

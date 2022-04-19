@@ -8,6 +8,6 @@ namespace CodeShellCore.Moldster.Pages
     {
         SubmitResult UpdateTemplatePages(long id, long tenantId);
         SubmitResult UpdateTemplatePagesViewParamsJson(long tenantId, long? categoryId = null);
-        LoadResult<PageReferenceDTO> GetReferences(ParameterRequestDTO req, LoadOptions opt);
+        LoadResult<PageReferenceDTO> GetReferences(ParameterRequest req, LoadOptions opt);
     }
 }

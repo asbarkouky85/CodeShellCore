@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Text;
 using Microsoft.AspNetCore.Html;

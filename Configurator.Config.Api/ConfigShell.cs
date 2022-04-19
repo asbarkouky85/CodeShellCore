@@ -46,7 +46,7 @@ namespace Configurator.Config.Api
                 st += d.MapEntity<PageParameterEditDto>(true);
                 st += d.MapEntity<RenderDTO>();
                 st += d.MapEntity<DbCreationRequest>();
-                st += d.MapEntity<ParameterRequestDTO>();
+                st += d.MapEntity<ParameterRequest>();
                 st += d.MapEntity<BundlingTask>();
                 st += d.MapEntity<PreviewData>();
                 st += d.MapEntity<CustomTextRequest>();

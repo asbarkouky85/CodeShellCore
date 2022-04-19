@@ -1,7 +1,7 @@
 ﻿using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
@@ -31,7 +31,7 @@ namespace CodeShellCore.Moldster.Pages
 
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
         {
-            PageDetailsDto p = Unit.PageRepository.FindSingleForRendering(d => d.Id == viewPath.Id);
+            PageDetailsDto p = Unit.PageRepository.FindSingleAndMap<PageDetailsDto>(d => d.Id == viewPath.Id);
             string scriptPath = Names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".ts";
 
             using (Out.Set(ConsoleColor.DarkRed))

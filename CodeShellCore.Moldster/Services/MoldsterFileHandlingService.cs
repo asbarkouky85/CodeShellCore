@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Services;
 using System;

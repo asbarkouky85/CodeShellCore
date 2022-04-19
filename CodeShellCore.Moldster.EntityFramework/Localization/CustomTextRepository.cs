@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeShellCore.Moldster.Localization;
 
-namespace CodeShellCore.Moldster.Data.Repositories.Internal
+namespace CodeShellCore.Moldster.Localization
 {
 
-    public class CustomTextRepository : MoldsterRepository<CustomText, MoldsterContext>,ICustomTextRepository
+    public class CustomTextRepository : MoldsterRepository<CustomText, MoldsterContext>, ICustomTextRepository
     {
         public CustomTextRepository(MoldsterContext con) : base(con)
         {

@@ -6,7 +6,7 @@ using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.Localization.Services;
+using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Tracing;

@@ -1,6 +1,5 @@
 ﻿using CodeShellCore.Files;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Services;
@@ -268,8 +267,13 @@ namespace CodeShellCore.Moldster.Domains.Services
 
         protected virtual void UpdateDefinitionJson(MoldsterModule mod, string projectPath)
         {
-            mod.Categories = unit.PageCategoryRepository.GetByMoldsterModule(mod.InstallPath);
+            mod.Categories = unit.PageCategoryRepository.GetByMoldsterModule<ModuleCategoryDTO>(mod.InstallPath);
             mod.Resources = unit.ResourceRepository.GetByMoldsterModule(mod.InstallPath);
+
+            foreach (var l in mod.Categories)
+            {
+                l.Path = l.Path.GetAfterFirst(mod.InstallPath + "/");
+            }
 
             WriteFileOperation("Updating", "Module.json");
             string path = Path.Combine(projectPath, "Module.json");

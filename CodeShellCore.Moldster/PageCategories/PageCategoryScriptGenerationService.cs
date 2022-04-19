@@ -1,9 +1,9 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Files;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Services;
@@ -29,6 +29,7 @@ namespace CodeShellCore.Moldster.PageCategories
             IServiceProvider prov,
             IOptions<MoldsterModuleOptions> opt) : base(prov, opt)
         {
+            
         }
 
 

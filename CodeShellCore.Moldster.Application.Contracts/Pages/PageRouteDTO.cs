@@ -4,9 +4,8 @@ using CodeShellCore.Localization;
 namespace CodeShellCore.Moldster.Pages
 {
     [EntityName("PageRoute")]
-    public class PageRouteDTO : IEditable<long>
+    public class PageRouteDTO : EntityDto<long>, IEditable<long>
     {
-        public long Id { get; set; }
         public long PageId { get; set; }
         public long? ListUrl { get; set; }
         public long? AddUrl { get; set; }

@@ -2,7 +2,7 @@
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
-using CodeShellCore.Moldster.Localization.Services;
+using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;

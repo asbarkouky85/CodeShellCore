@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Moldster.CodeGeneration.Models;
-using CodeShellCore.Moldster.Navigation.Dtos;
+using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
 using System;
@@ -18,12 +18,13 @@ namespace CodeShellCore.Moldster.Domains
 
         public override void GenerateRoutes(string modCode)
         {
-            long modId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            long tenantId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
             string fileName = modCode + "Routes";
             string filePath = Path.Combine(_paths.UIRoot, modCode, "app", fileName + ".ts");
 
-            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(modId);
-            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs(modId);
+            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(tenantId);
+            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs<NavigationGroupDTO>(tenantId);
+
             string routesTemplate = _molds.GetResourceByNameAsString(MoldNames.Routes_ts);
 
             var tempModel = new RoutesTsModel
@@ -52,7 +53,8 @@ namespace CodeShellCore.Moldster.Domains
             string sep = "";
             foreach (var nav in navs)
             {
-                tempModel.DomainsData += sep + GetNavigationObject(nav);
+                var pages = _unit.NavigationPageRepository.FindAndMap<NavigationPageDTO>(e => e.Page.TenantId == tenantId && e.NavigationGroupId == nav.Id);
+                tempModel.DomainsData += sep + GetNavigationObject(nav.Name, pages);
                 sep = ",\n\t\t\t";
             }
 

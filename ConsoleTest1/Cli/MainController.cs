@@ -1,5 +1,5 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster;
 using CodeShellCore.MQ;
 using CodeShellCore.MQ.Events;
 using System.Collections.Generic;

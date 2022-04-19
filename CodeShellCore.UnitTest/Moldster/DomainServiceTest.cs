@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using CodeShellCore.UnitTest.Data;
 using CodeShellCore.Web.Razor;
-using CodeShellCore.Moldster.Data;
 
 namespace CodeShellCore.UnitTest.Moldster
 {

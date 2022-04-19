@@ -2,8 +2,7 @@
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Localization.Services;
+using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
@@ -18,7 +17,7 @@ namespace CodeShellCore.Moldster.PageCategories
         protected IPathsService _paths => Store.GetInstance<IPathsService>();
         protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
         protected IPageControlDataService _controls => Store.GetInstance<IPageControlDataService>();
-        protected IPageCategoryParameterService _categories => Store.GetInstance<IPageCategoryParameterService>();
+        protected IPageCategoryParameterDomainService _categories => Store.GetInstance<IPageCategoryParameterDomainService>();
         protected IPageParameterDataService _pars => Store.GetInstance<IPageParameterDataService>();
         protected ILocalizationService _loc => Store.GetInstance<ILocalizationService>();
         protected IViewsService _dbViews => Store.GetInstance<IViewsService>();
