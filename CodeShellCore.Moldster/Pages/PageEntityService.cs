@@ -6,7 +6,6 @@ using CodeShellCore.Extensions.Data;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.Pages.Views;
 using CodeShellCore.Moldster.Resources;

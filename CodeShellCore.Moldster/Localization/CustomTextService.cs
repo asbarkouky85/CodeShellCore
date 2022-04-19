@@ -18,41 +18,51 @@ namespace CodeShellCore.Moldster.Localization
             this.loc = loc;
         }
 
-        public LoadResult<CustomText> Get(CustomTextRequest req, LoadOptions opts)
+        public LoadResult<CustomTextDto> Get(CustomTextRequest req, LoadOptions opts)
         {
+            LoadResult<CustomText> data;
             if (req.ModifiedOnly)
             {
                 var op = opts.GetOptionsFor<CustomText>();
                 op.AddFilter(e => e.TenantId == req.TenantId);
                 op.AddFilter(e => e.Type == req.Type);
                 op.AddFilter(e => e.Locale == req.Locale);
-                var data = Unit.CustomTextRepository.Find(op);
+                data = Unit.CustomTextRepository.Find(op);
                 foreach (var x in data.List)
                     x.State = "Attached";
-                return data;
+
             }
-            var resx = loc.LoadForTenant(req, opts);
-            List<CustomText> db = Unit.CustomTextRepository.GetBy(req);
-            var lst = new List<CustomText>();
-            foreach (var item in resx.List)
+            else
             {
-                var ex = db.Where(e => e.Code == item.Code).FirstOrDefault();
-                if (ex != null)
+                data = loc.LoadForTenant(req, opts);
+                List<CustomText> db = Unit.CustomTextRepository.GetBy(req);
+                var lst = new List<CustomText>();
+                foreach (var item in data.List)
                 {
-                    ex.State = "Attached";
-                    lst.Add(ex);
+                    var ex = db.Where(e => e.Code == item.Code).FirstOrDefault();
+                    if (ex != null)
+                    {
+                        ex.State = "Attached";
+                        lst.Add(ex);
+                    }
+                    else
+                    {
+                        lst.Add(item);
+                    }
                 }
-                else
-                {
-                    lst.Add(item);
-                }
+                data.List = lst;
             }
-            resx.List = lst;
-            return resx;
+
+            return new LoadResult<CustomTextDto>
+            {
+                TotalCount = data.TotalCount,
+                List = Mapper.Map(data.List, new List<CustomTextDto>())
+            };
         }
 
-        public SubmitResult SaveChanges(IEnumerable<CustomText> lst)
+        public SubmitResult SaveChanges(IEnumerable<CustomTextDto> lst)
         {
+            var items=Mapper.Map()
             Unit.CustomTextRepository.ApplyChanges(lst);
             return Unit.SaveChanges();
         }

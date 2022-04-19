@@ -2,7 +2,6 @@
 using CodeShellCore.Data;
 using CodeShellCore.Files;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;

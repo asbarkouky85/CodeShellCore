@@ -56,5 +56,7 @@ namespace CodeShellCore.Data.Helpers
             foreach (T item in Deleted)
                 repo.Delete(item);
         }
+
+        
     }
 }

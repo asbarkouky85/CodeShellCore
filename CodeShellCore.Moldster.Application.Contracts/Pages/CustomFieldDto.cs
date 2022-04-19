@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Localization
+namespace CodeShellCore.Moldster.Pages
 {
-    public class CustomFieldDto : EntityDto<long>,IEditable<long>
+    public class CustomFieldDto : EntityDto<long>, IEditable<long>
     {
         public string Name { get; set; }
         public string Type { get; set; }
