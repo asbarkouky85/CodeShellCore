@@ -23,6 +23,8 @@ namespace CodeShellCore.Data.Helpers
 
             return set;
         }
+
+        
     }
     public class ChangeSet<T> : ChangeSet where T : class, IEditable
     {

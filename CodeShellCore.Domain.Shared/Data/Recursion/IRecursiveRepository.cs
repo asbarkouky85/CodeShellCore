@@ -13,6 +13,7 @@ namespace CodeShellCore.Data.Recursion
     {
         IEnumerable<RecursionModel> GetRecursionModels();
         IEnumerable<RecursionModel> GetRecursionModels(Expression<Func<T, bool>> filter);
+        
         IEnumerable<T> GetChildren(object prime);
 
         IEnumerable<T> GetChildren(object prime, Expression<Func<T, bool>> filter);

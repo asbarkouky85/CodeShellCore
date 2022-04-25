@@ -8,7 +8,7 @@ namespace CodeShellCore.Moldster.Localization
 {
     public interface ICustomTextService
     {
-        LoadResult<CustomText> Get(CustomTextRequest req, LoadOptions opts);
-        SubmitResult SaveChanges(IEnumerable<CustomText> lst);
+        LoadResult<CustomTextDto> Get(CustomTextRequest req, LoadOptions opts);
+        SubmitResult SaveChanges(IEnumerable<CustomTextDto> lst);
     }
 }

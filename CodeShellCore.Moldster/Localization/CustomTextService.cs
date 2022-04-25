@@ -62,8 +62,7 @@ namespace CodeShellCore.Moldster.Localization
 
         public SubmitResult SaveChanges(IEnumerable<CustomTextDto> lst)
         {
-            var items=Mapper.Map()
-            Unit.CustomTextRepository.ApplyChanges(lst);
+            Unit.CustomTextRepository.ApplyChanges(lst, Mapper);
             return Unit.SaveChanges();
         }
     }
