@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Web.CommonDTOs
+namespace CodeShellCore
 {
     public class ItemList<T>
     {

@@ -69,7 +69,7 @@ namespace CodeShellCore.Data.Lookups
             IRepository repo = Unit.GetRepositoryFor(t);
 
             string collectionId = null;
-            if (identifier.Contains("__"))
+            if (identifier != null && identifier.Contains("__"))
             {
                 collectionId = identifier.GetAfterLast("__");
             }
@@ -105,7 +105,7 @@ namespace CodeShellCore.Data.Lookups
         public IEnumerable<TResult> GetLookupAs<TObject, TResult>(string identifier, Expression<Func<TObject, TResult>> ex) where TObject : class where TResult : class
         {
             IRepository<TObject> repo = Unit.GetRepositoryFor<TObject>();
-            if (identifier.Contains("__"))
+            if (identifier != null && identifier.Contains("__"))
             {
                 string collectionId = identifier.GetAfterLast("__");
 
@@ -137,7 +137,7 @@ namespace CodeShellCore.Data.Lookups
             IRepository<TObject> repo = Unit.GetRepositoryFor<TObject>();
 
             string collectionId = null;
-            if (identifier.Contains("__"))
+            if (identifier != null && identifier.Contains("__"))
             {
                 collectionId = identifier.GetAfterLast("__");
             }

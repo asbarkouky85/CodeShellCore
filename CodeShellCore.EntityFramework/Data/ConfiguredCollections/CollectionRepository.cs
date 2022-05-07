@@ -75,7 +75,9 @@ namespace CodeShellCore.Data.ConfiguredCollections
 
         public override IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
         {
-            return base.FindAsLookup(collectionId, ex);
+            var l = collectionId == null ? Loader : QueryCollection(collectionId);
+            l = l.Where(ex);
+            return QueryNamed(l).OrderBy(d => d.Name).ToList();
         }
 
         public IEnumerable<TObject> GetCollectionListAndMap<TObject>(string collectionId)

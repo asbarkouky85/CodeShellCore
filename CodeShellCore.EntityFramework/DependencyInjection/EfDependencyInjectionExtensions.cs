@@ -62,6 +62,24 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<ILocalizablesRepository<T>, LocalizableRepository<T, TContext>>();
         }
 
+        public static void AddCodeshellDbContext<T>(this IServiceCollection coll, IConfiguration config, string connectionStringKey, bool setAsDefault = false) where T : DbContext
+        {
+
+            var conn = config.GetConnectionString("Default");
+            if (connectionStringKey != null)
+                conn = config.GetConnectionString(connectionStringKey) ?? conn;
+            if (string.IsNullOrEmpty(conn))
+                throw new Exception($"Connot find connection string '{connectionStringKey}' or 'Default' in appsettings");
+            coll.AddDbContext<T>(e => e.UseSqlServer(conn));
+
+
+            if (setAsDefault)
+            {
+                coll.AddScoped<DbContext, T>();
+                coll.AddScoped(typeof(T), d => (T)d.GetRequiredService<DbContext>());
+            }
+        }
+
         public static void AddCodeshellDbContext<T>(this IServiceCollection coll, bool setAsDefault = true, IConfiguration config = null, string connectionStringKey = null) where T : DbContext
         {
             if (config != null)

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 using System.Collections;
+using CodeShellCore.Data.Localization;
 
 namespace CodeShellCore.Data.Services
 {
@@ -23,6 +24,22 @@ namespace CodeShellCore.Data.Services
         public IKeyRepository<T, TPrime> Repository { get; private set; }
         public IObjectMapper Mapper { get; private set; }
         public ILookupsService LookupsService { get; private set; }
+        private ILocalizationDataService _localizationDataService;
+        protected ILocalizationDataService LocalizationDataService
+        {
+            get
+            {
+                if (_localizationDataService != null)
+                {
+                    return _localizationDataService;
+                }
+                else
+                {
+                    _localizationDataService = DefaultUnit.ServiceProvider.GetRequiredService<ILocalizationDataService>();
+                    return _localizationDataService;
+                }
+            }
+        }
         public virtual bool ProjectGetSingle => true;
 
         public DtoEntityService(IUnitOfWork unit)
