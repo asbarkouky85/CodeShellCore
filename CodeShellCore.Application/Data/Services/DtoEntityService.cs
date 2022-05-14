@@ -133,5 +133,15 @@ namespace CodeShellCore.Data.Services
 
             return res;
         }
+
+        public virtual Dictionary<string, LocalizablesDTO> GetLocalizationData(long id)
+        {
+            return LocalizationDataService.GetDataFor<T>(id);
+        }
+
+        public virtual SubmitResult SetLocalizationData(long id, Dictionary<string, LocalizablesDTO> data)
+        {
+            return LocalizationDataService.SetDataFor<T>(id, data);
+        }
     }
 }
