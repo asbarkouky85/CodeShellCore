@@ -46,14 +46,14 @@ namespace CodeShellCore.Extensions.Data
             return ApplyChangesGeneric<TEntity, TDto, int>(repo, items, mapper);
         }
 
-        public static List<TEntity> ApplyChangesLong<TEntity, TDto>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
+        public static List<TEntity> ApplyChanges<TEntity, TDto>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
             where TEntity : class, IModel<long>
             where TDto : class, IEditable<long>
         {
             return ApplyChangesGeneric<TEntity, TDto, long>(repo, items, mapper);
         }
 
-        public static List<TEntity> ApplyChanges<TEntity, TDto>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
+        public static List<TEntity> ApplyChangesGuid<TEntity, TDto>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
             where TEntity : class, IModel<Guid>
             where TDto : class, IEditable<Guid>
         {
