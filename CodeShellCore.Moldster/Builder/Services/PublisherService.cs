@@ -51,7 +51,7 @@ namespace CodeShellCore.Moldster.Builder.Services
 
         }
 
-        protected virtual string BundleFolder => "wwwroot";
+        protected virtual string BundleFolder => "wwwroot\\dist";
 
         public IOutputWriter OutputWriter { get { return Out; } set { Out = value; } }
 
