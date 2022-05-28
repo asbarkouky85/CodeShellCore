@@ -111,7 +111,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
         public string GetOutputBundlePath(string tenantCode, string version, bool full = false)
         {
             var projectName = ApplyConvension(tenantCode, AppParts.Project);
-            string outFolder = "wwwroot/" + projectName + "_v" + version;
+            string outFolder = "wwwroot\\dist" + projectName + "_v" + version;
             if (full)
             {
                 outFolder = Path.Combine(_paths.UIRoot, outFolder).Replace("\\", "/");
