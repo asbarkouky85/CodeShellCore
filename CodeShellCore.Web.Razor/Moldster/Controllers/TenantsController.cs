@@ -17,11 +17,13 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             _service = configTenantService;
         }
 
+        [HttpDelete]
         public DeleteResult Delete(long id)
         {
             return _service.Delete(id);
         }
 
+        
         public LoadResult<TenantDto> Get(LoadOptions opts)
         {
             return _service.Get(opts);
@@ -42,21 +44,25 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.GetListLookups(data);
         }
 
+
         public TenantEditDTO GetSingle(long id)
         {
             return _service.GetSingle(id);
         }
 
+        [HttpGet]
         public bool IsUnique(IsUniqueDto dto)
         {
             return _service.IsUnique(dto);
         }
 
-        public SubmitResult<TenantEditDTO> Post(TenantDto obj)
+        [HttpPost]
+        public SubmitResult<TenantEditDTO> Post([FromBody]TenantDto obj)
         {
             return _service.Post(obj);
         }
 
+        [HttpPut]
         public SubmitResult<TenantEditDTO> Put([FromBody]TenantDto obj)
         {
             return _service.Put(obj);
