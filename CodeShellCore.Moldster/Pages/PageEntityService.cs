@@ -159,7 +159,7 @@ namespace CodeShellCore.Moldster.Pages
 
             if (dto.Controls != null && dto.Controls.Any())
             {
-                page.PageControls.ApplyChangesLong(dto.Controls, Mapper);
+                page.PageControls.ApplyChanges(dto.Controls, Mapper);
             }
 
             if (dto.Parameters != null && dto.Parameters.Any())
@@ -176,14 +176,14 @@ namespace CodeShellCore.Moldster.Pages
                         par.Entity.State = par.State;
                     }
                 }
-                page.PageParameters.ApplyChangesLong(dto.Parameters.Select(d => d.Entity), Mapper);
+                page.PageParameters.ApplyChanges(dto.Parameters.Select(d => d.Entity), Mapper);
             }
 
             if (dto.Route != null)
             {
                 page.SetRoute(Mapper.Map(dto.Route, new PageRoute()));
             }
-            page.CustomFields.ApplyChangesLong(dto.Fields, Mapper);
+            page.CustomFields.ApplyChanges(dto.Fields, Mapper);
             // Unit.PageRepository.Update(page);
             var res = Unit.SaveChanges();
 

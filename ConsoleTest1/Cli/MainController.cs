@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.MQ;
 using CodeShellCore.MQ.Events;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace ConsoleTest1
         public void Active()
         {
             var unit = GetService<IConfigUnit>();
-            var data = unit.PageRepository.GetDomainPagesForRouting("tenant_1", 2116407100007);
+            var data = unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>("tenant_1", 2116407100007);
         }
 
         public void Tests()
