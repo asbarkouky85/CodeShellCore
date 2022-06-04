@@ -17,9 +17,9 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             _service = configTenantService;
         }
 
-        public DeleteResult Delete(long prime)
+        public DeleteResult Delete(long id)
         {
-            return _service.Delete(prime);
+            return _service.Delete(id);
         }
 
         public LoadResult<TenantDto> Get(LoadOptions opts)
