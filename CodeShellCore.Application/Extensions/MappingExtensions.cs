@@ -29,5 +29,6 @@ namespace AutoMapper
             return expression.ForMember(e => e.CreatedBy, e => e.Ignore())
                 .ForMember(e => e.CreatedOn, e => e.Ignore());
         }
+
     }
 }

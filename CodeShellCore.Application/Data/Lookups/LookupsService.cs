@@ -8,6 +8,8 @@ using CodeShellCore.Http;
 using CodeShellCore.Text;
 using CodeShellCore.Data.ConfiguredCollections;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+using CodeShellCore.Data.Mapping;
 
 namespace CodeShellCore.Data.Lookups
 {
@@ -17,10 +19,11 @@ namespace CodeShellCore.Data.Lookups
         protected abstract string EntitiesAssembly { get; }
         protected virtual string EntitiesNameSpace => EntitiesAssembly;
         protected T Unit;
+        protected readonly IObjectMapper Mapper;
         public LookupsService(T unit)
         {
             Unit = unit;
-            Unit.EnableJsonLoading();
+            Mapper = unit.ServiceProvider.GetRequiredService<IObjectMapper>();
         }
 
         protected virtual Dictionary<string, Type> ResourceToModel { get; }

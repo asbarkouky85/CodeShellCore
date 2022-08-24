@@ -17,12 +17,12 @@ namespace CodeShellCore.Data.Services
         where TUpdateDto : class, IEntityDto<TPrime>
         where TOptionsDto : LoadOptions
     {
-        
+
         public virtual bool ProjectGetSingle => true;
 
-        public DtoEntityService(IUnitOfWork unit):base(unit)
+        public DtoEntityService(IUnitOfWork unit) : base(unit)
         {
-            
+
         }
 
         public virtual DeleteResult Delete(TPrime id)
@@ -45,10 +45,19 @@ namespace CodeShellCore.Data.Services
         {
             var entity = Mapper.Map<TCreateDto, T>(dto);
             Repository.Add(entity);
-            var res = DefaultUnit.SaveChanges().ToSubmitResult<TSingleDto>();
+            var res = SaveAndGetSingle(entity);
             if (res.IsSuccess)
             {
                 AfterCreate(dto, entity);
+            }
+            return res;
+        }
+
+        protected virtual SubmitResult<TSingleDto> SaveAndGetSingle(T entity)
+        {
+            var res = DefaultUnit.SaveChanges().ToSubmitResult<TSingleDto>();
+            if (res.IsSuccess)
+            {
                 res.Result = GetSingle(entity.Id);
             }
             return res;
@@ -59,11 +68,10 @@ namespace CodeShellCore.Data.Services
             var entity = GetSingleById(dto.Id);
             Mapper.Map(dto, entity);
             Repository.Update(entity);
-            var res = DefaultUnit.SaveChanges().ToSubmitResult<TSingleDto>();
+            var res = SaveAndGetSingle(entity);
             if (res.IsSuccess)
             {
                 AfterUpdate(dto, entity);
-                res.Result = GetSingle(entity.Id);
             }
 
             return res;
