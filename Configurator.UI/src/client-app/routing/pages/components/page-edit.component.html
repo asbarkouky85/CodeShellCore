@@ -73,31 +73,19 @@
 
     <div class="row">
         
-<div class="form-group col-md-8 "
-     id="FG_templatePath"
-     #FG_templatePath="bsFormGroup" bs-group
-     >
-    <label>{{'Columns.CreatePageDTO__TemplatePath' | translate }} <span style="color:red">*</span></label>
-    <ng-select [items]="Lookups.TemplatePath"
-               name="Form__templatePath"
-               bindLabel="name"
-               bindValue="name"
-               [(ngModel)]="model.templatePath"
-               required  
-               [multiple]="false"></ng-select>
-        <p *ngIf="!FG_templatePath.Write">{{FG_templatePath.Value}}</p>
+<div class="form-group col-md-8 " >
+    <label>{{'Columns.Page__TemplatePath' | translate }}</label>
+        <p class=""  >
+        {{model.templatePath}}
+    </p>
 
-    <p *ngIf="!FG_templatePath.Write">{{FG_templatePath.Value}}</p>
-
-    <span *ngIf="Form.controls['Form__templatePath'] && Form.controls['Form__templatePath'].invalid">
-        <small *ngIf="Form.controls['Form__templatePath'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.CreatePageDTO__TemplatePath' | translate } }}</small>
-</span>
+    
 </div>
 
 
         
 <div class="form-group col-md-4 " >
-    <label>{{'Columns.CreatePageDTO__TenantCode' | translate }}</label>
+    <label>{{'Columns.Page__TenantCode' | translate }}</label>
         <p class=""  >
         {{model.tenantCode}}
     </p>
@@ -113,14 +101,14 @@
      id="FG_componentDomain"
      #FG_componentDomain="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__ComponentDomain' | translate }} </label>
+    <label>{{'Columns.Page__ComponentDomain' | translate }} </label>
     <div class="input-group modal-selector">
     <input
            class="form-control"
-           placeholder="{{'Columns.CreatePageDTO__ComponentDomain' | translate }}"
+           placeholder="{{'Columns.Page__ComponentDomain' | translate }}"
            name="Form__componentDomain"
            [(ngModel)]="model.componentDomain"
-           title="{{'Columns.CreatePageDTO__ComponentDomain' | translate }}"
+           title="{{'Columns.Page__ComponentDomain' | translate }}"
            [li-watch]="model"
            
             (change)="writePath()" required="true" >
@@ -139,13 +127,13 @@
      id="FG_componentName"
      #FG_componentName="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__ComponentName' | translate }} <span style="color:red">*</span></label>
+    <label>{{'Columns.Page__ComponentName' | translate }} <span style="color:red">*</span></label>
     <input type="text"
        class="form-control "
-       placeholder="{{'Columns.CreatePageDTO__ComponentName' | translate }}"
+       placeholder="{{'Columns.Page__ComponentName' | translate }}"
        name="Form__componentName"
        [(ngModel)]="model.componentName"
-       title="{{'Columns.CreatePageDTO__ComponentName' | translate }}"
+       title="{{'Columns.Page__ComponentName' | translate }}"
        [li-watch]="model"
 
        
@@ -154,7 +142,7 @@
 
 
     <span *ngIf="Form.controls['Form__componentName'] && Form.controls['Form__componentName'].invalid">
-        <small *ngIf="Form.controls['Form__componentName'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.CreatePageDTO__ComponentName' | translate } }}</small>
+        <small *ngIf="Form.controls['Form__componentName'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.Page__ComponentName' | translate } }}</small>
 </span>
 </div>
 
@@ -163,13 +151,13 @@
      id="FG_routeParameters"
      #FG_routeParameters="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__RouteParameters' | translate }} </label>
+    <label>{{'Columns.Page__RouteParameters' | translate }} </label>
     <input type="text"
        class="form-control "
-       placeholder="{{'Columns.CreatePageDTO__RouteParameters' | translate }}"
+       placeholder="{{'Columns.Page__RouteParameters' | translate }}"
        name="Form__routeParameters"
        [(ngModel)]="model.routeParameters"
-       title="{{'Columns.CreatePageDTO__RouteParameters' | translate }}"
+       title="{{'Columns.Page__RouteParameters' | translate }}"
        [li-watch]="model"
 
        
@@ -184,7 +172,7 @@
     <div class="row">
         
 <div class="form-group col-md-8 " >
-    <label>{{'Columns.CreatePageDTO__ComponentPath' | translate }}</label>
+    <label>{{'Columns.Page__ComponentPath' | translate }}</label>
         <p class=""  >
         {{model.componentPath}}
     </p>
@@ -197,7 +185,7 @@
      id="FG_usage"
      #FG_usage="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__Usage' | translate }} </label>
+    <label>{{'Columns.Page__Usage' | translate }} </label>
     <div class="row">
     <div class="col-md-12">
         <div class="btn-group btn-group-toggle btnToggle radio-group">
@@ -241,7 +229,7 @@
      id="FG_apps"
      #FG_apps="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__Apps' | translate }} </label>
+    <label>{{'Columns.Page__Apps' | translate }} </label>
     <ng-select [items]="Lookups.Apps"
                name="Form__apps"
                bindLabel="name"
@@ -261,7 +249,7 @@
      id="FG_specialPermission"
      #FG_specialPermission="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__SpecialPermission' | translate }} </label>
+    <label>{{'Columns.Page__SpecialPermission' | translate }} </label>
     <div class="row">
     <div class="col-md-12">
         <div class="btn-group btn-group-toggle btnToggle radio-group">
@@ -304,7 +292,7 @@
      id="FG_resourceId"
      #FG_resourceId="bsFormGroup" bs-group
       *ngIf="!model.specialPermission">
-    <label>{{'Columns.CreatePageDTO__ResourceId' | translate }} <span style="color:red">*</span></label>
+    <label>{{'Columns.Page__ResourceId' | translate }} <span style="color:red">*</span></label>
     
 <select class="form-control"
         name="Form__resourceId" 
@@ -317,7 +305,7 @@
     <p *ngIf="!FG_resourceId.Write">{{FG_resourceId.Value}}</p>
 
     <span *ngIf="Form.controls['Form__resourceId'] && Form.controls['Form__resourceId'].invalid">
-        <small *ngIf="Form.controls['Form__resourceId'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.CreatePageDTO__ResourceId' | translate } }}</small>
+        <small *ngIf="Form.controls['Form__resourceId'].errors!.required" class="form-text text-danger">{{'Messages.field_required' | translate : {p0:'Columns.Page__ResourceId' | translate } }}</small>
 </span>
 </div>
 
@@ -326,7 +314,7 @@
      id="FG_actionType"
      #FG_actionType="bsFormGroup" bs-group
       *ngIf="!model.specialPermission">
-    <label>{{'Columns.CreatePageDTO__ActionType' | translate }} </label>
+    <label>{{'Columns.Page__ActionType' | translate }} </label>
     <div class="row">
     <div class="col-md-12">
         <div class="btn-group btn-group-toggle btnToggle radio-group">
@@ -377,7 +365,7 @@
      id="FG_layout"
      #FG_layout="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__Layout' | translate }} </label>
+    <label>{{'Columns.Page__Layout' | translate }} </label>
     
 <select class="form-control"
         name="Form__layout" 
@@ -393,36 +381,12 @@
 </div>
 
         
-<div class="form-group col-md-2 "
-     id="FG_navigationGroup"
-     #FG_navigationGroup="bsFormGroup" bs-group
-      *ngIf="model.usage!='E'">
-    <label>{{'Columns.CreatePageDTO__NavigationGroup' | translate }} </label>
-    <input type="text"
-       class="form-control "
-       placeholder="{{'Columns.CreatePageDTO__NavigationGroup' | translate }}"
-       name="Form__navigationGroup"
-       [(ngModel)]="model.navigationGroup"
-       title="{{'Columns.CreatePageDTO__NavigationGroup' | translate }}"
-       [li-watch]="model"
-
-       autocomplete="off" list="AC__Form__navigationGroup"
-        >
-    <p *ngIf="!FG_navigationGroup.Write">{{FG_navigationGroup.Value}}</p>
-
-    <datalist id="AC__Form__navigationGroup">
-        <option *ngFor="let op of Lookups.NavigationGroup">{{op}}</option>
-    </datalist>
-
-    
-</div>
-
         
 <div class="form-group col-md-2 "
      id="FG_collectionId"
      #FG_collectionId="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__CollectionId' | translate }} </label>
+    <label>{{'Columns.Page__CollectionId' | translate }} </label>
     
 <select class="form-control"
         name="Form__collectionId" 
@@ -442,7 +406,7 @@
      id="FG_defaultAccessibility"
      #FG_defaultAccessibility="bsFormGroup" bs-group
      >
-    <label>{{'Columns.CreatePageDTO__DefaultAccessibility' | translate }} </label>
+    <label>{{'Columns.Page__DefaultAccessibility' | translate }} </label>
     <div class="row">
     <div class="col-md-12">
         <div class="btn-group btn-group-toggle btnToggle radio-group">

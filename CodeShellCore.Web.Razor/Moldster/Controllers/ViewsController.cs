@@ -1,5 +1,5 @@
-﻿using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Pages.Dtos;
+﻿using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;

@@ -6,10 +6,10 @@
 
     Layout = "~/ShellComponents/Angular/Layout/EditLayout.cshtml";
 
-    Html.Config().Controls["user__name"] = new ControlDTO { Accessibilty = 2 };
-    Html.Config().Controls["user__appid"] = new ControlDTO { Accessibilty = 2 };
-    Html.Config().Controls["user__birthdate"] = new ControlDTO { Accessibilty = 2 };
-    Html.Config().Controls["cell__isactive"] = new ControlDTO { Accessibilty = 1 };
+    Html.Config().Controls["user__name"] = new ControlRenderDto { Accessibilty = 2 };
+    Html.Config().Controls["user__appid"] = new ControlRenderDto { Accessibilty = 2 };
+    Html.Config().Controls["user__birthdate"] = new ControlRenderDto { Accessibilty = 2 };
+    Html.Config().Controls["cell__isactive"] = new ControlRenderDto { Accessibilty = 1 };
 
     Html.GetViewParams().Other["step_back"] = "Auth/Users";
     Html.GetViewParams().ListUrl = "/Users/UserList";

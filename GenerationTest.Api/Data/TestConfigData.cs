@@ -6,6 +6,7 @@ using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster.Tenants;
 
 namespace GenerationTest.Api.Data
 {

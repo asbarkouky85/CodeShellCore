@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeShellCore.Moldster.Pages.Dtos
+namespace CodeShellCore.Moldster.Pages
 {
     public class PageRenderDTO
     {

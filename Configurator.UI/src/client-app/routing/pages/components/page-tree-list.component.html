@@ -13,7 +13,7 @@
                         
     <a class="btn btn-success"
        [routerLink]="'/routing/pages/page-create'"
-        *ngIf="Permission.insert"
+        *ngIf="Permission.insert" automationid="btnAdd"
        >
         <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Page' | translate } }}
     </a>
@@ -55,7 +55,7 @@
 
     <a class="btn btn-success buttonGra-sm"
        [routerLink]="'/routing/pages/page-create'"
-        *ngIf="Permission.insert"
+        *ngIf="Permission.insert" automationid="btnAdd"
        >
         <i class="fa fa-plus"></i> {{'Words.AddEntity' | translate : {p0:'Words.Page' | translate } }}
     </a>

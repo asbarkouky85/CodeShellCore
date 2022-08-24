@@ -1,29 +1,22 @@
 ﻿using CodeShellCore.Caching;
 using CodeShellCore.Data.Services;
 using CodeShellCore.DependencyInjection;
-using CodeShellCore.Moldster.Builder.Services;
+using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Data.Internal;
-using CodeShellCore.Moldster.Data.Repositories;
-using CodeShellCore.Moldster.Data.Repositories.Internal;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Domains.Services;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Moldster.Navigation;
-using CodeShellCore.Moldster.Navigation.Services;
 using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Resources;
-using CodeShellCore.Moldster.Resources.Services;
 using CodeShellCore.Moldster.Services;
+using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Security.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +46,7 @@ namespace CodeShellCore.Moldster
             }
             else
             {
-                coll.AddDbContext<MoldsterContext>();
+                coll.AddScoped<MoldsterContext>();
             }
 
             //coll.AddCodeShellEntityFramework();
@@ -104,20 +97,21 @@ namespace CodeShellCore.Moldster
         {
             coll.AddMoldsterCodeGeneration(legacy);
 
-            coll.AddTransient<ConfiguratorLookupService>();
+            coll.AddTransient<MoldsterLookupService>();
 
             coll.AddServiceFor<Domain, DomainService>();
-            coll.AddServiceFor<PageCategory, PageCategoryService>();
-            coll.AddServiceFor<Page, PagesService>();
+
+            coll.AddTransient<IPagesDataService, PagesDataService>();
             coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
             coll.AddServiceFor<PageControl, PageControlService>();
             coll.AddServiceFor<NavigationGroup, NavigationGroupService>();
 
             coll.AddTransient<ITenantService, TenantsService>();
+
             coll.AddTransient<IUserDataService, UserDataService>();
             coll.AddTransient<ICacheProvider, MemoryCacheProvider>();
 
-            coll.AddLookupsService<ConfiguratorLookupService>();
+            coll.AddLookupsService<MoldsterLookupService>();
         }
 
         public static void AddMoldsterCodeGeneration(this IServiceCollection coll, bool legacy = false)
@@ -153,6 +147,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IModulesService, ModulesService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
+            coll.AddTransient<IMoldsterLookupService, MoldsterLookupService>();
             coll.AddTransient<IPreviewService, PreviewService>();
             coll.AddTransient<IPublisherHttpService, PublisherHttpService>();
 
@@ -168,9 +163,11 @@ namespace CodeShellCore.Moldster
 
             coll.AddTransient<IPageControlDataService, PageControlDataService>();
             coll.AddTransient<IPageParameterDataService, PageParameterDataService>();
-            coll.AddTransient<IPageCategoryParameterService, PageCategoryParameterService>();
-            coll.AddTransient<IPagesDataService, PagesService>();
+            coll.AddTransient<IPageCategoryParameterDomainService, PageCategoryParameterDomainService>();
+            coll.AddTransient<IPagesDataService, PagesDataService>();
             coll.AddTransient<ITenantService, TenantsService>();
+            coll.AddTransient<IPageCategoryService, PageCategoryService>();
+            coll.AddTransient<IPageEntityService, PageEntityService>();
 
             coll.AddTransient<IViewsService, DefaultViewsService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();
@@ -180,7 +177,10 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IResourceScriptGenerationService, ResourceScriptGenerationService>();
             coll.AddTransient<IPageCategoryHtmlService, PageCategoryHtmlService>();
             coll.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
-            coll.AddAutoMapper(Assembly.GetCallingAssembly());
+
+            coll.AddCodeShellApplication();
+            
+            coll.AddAutoMapper(typeof(MoldsterService).Assembly);
         }
 
         public static void AddMoldsterCli(this IServiceCollection coll, bool legacy = false)

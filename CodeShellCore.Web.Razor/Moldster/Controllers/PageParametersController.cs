@@ -1,6 +1,5 @@
 ﻿using CodeShellCore.Linq;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +14,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             this.service = service;
         }
 
-        public IActionResult GetReferences([FromBody] ParameterRequestDTO req, [FromQuery] LoadOptions opt)
+        public IActionResult GetReferences([FromBody] ParameterRequest req, [FromQuery] LoadOptions opt)
         {
             LoadResult<PageReferenceDTO> lst = service.GetReferences(req, opt);
             return Respond(lst);

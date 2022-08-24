@@ -4,17 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeShellCore.Moldster.Pages.Services;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     public class PageControlsController : EntityController<PageControl, long>
     {
         PageControlService _service;
-        PagesService pages => GetService<PagesService>();
-        ConfiguratorLookupService lookups => GetService<ConfiguratorLookupService>();
+        PagesDataService pages => GetService<PagesDataService>();
+        MoldsterLookupService lookups => GetService<MoldsterLookupService>();
         public PageControlsController(PageControlService service) : base(service)
         {
             _service = service;

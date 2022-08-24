@@ -1,0 +1,13 @@
+﻿@model TestDto
+@{
+    Layout = Html.Config().Layout;
+}
+<div>
+    <form #Form="ngForm">
+        @Html.ControlGroup(e => e.Name)
+    </form>
+</div>
+
+@section buttons{
+    @Html.SubmitButton()
+}

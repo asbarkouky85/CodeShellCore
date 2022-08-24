@@ -66,55 +66,19 @@
 <table class="table table-striped">
     <thead>
         <tr>
-                <th class="cursorPointer" [ngClass]="GetHeaderClass('Name')"  >
-        {{'Columns.PageCategoryListDTO__Name' | translate }}
-        <i class="fa fa-sort" (click)="SortBy('Name')"></i>
-    </th>
-
-                <th class="cursorPointer" [ngClass]="GetHeaderClass('BaseComponent')"  >
-        {{'Columns.PageCategoryListDTO__BaseComponent' | translate }}
-        <i class="fa fa-sort" (click)="SortBy('BaseComponent')"></i>
-    </th>
-
-                <th class="cursorPointer" [ngClass]="GetHeaderClass('DomainName')"  >
-        {{'Columns.PageCategoryListDTO__DomainName' | translate }}
-        <i class="fa fa-sort" (click)="SortBy('DomainName')"></i>
-    </th>
-
-                <th class="cursorPointer" [ngClass]="GetHeaderClass('ResourceName')"  >
-        {{'Columns.PageCategoryListDTO__ResourceName' | translate }}
-        <i class="fa fa-sort" (click)="SortBy('ResourceName')"></i>
-    </th>
-
+            
+            
+            
+            
             <th></th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let model of list">
-            <td  >
-    {{model.name}}
-    <div style="position:relative">
-        
-    </div>
-</td>
-            <td  >
-    {{model.baseComponent}}
-    <div style="position:relative">
-        
-    </div>
-</td>
-            <td  >
-    {{model.domainName}}
-    <div style="position:relative">
-        
-    </div>
-</td>
-            <td  >
-    {{model.resourceName}}
-    <div style="position:relative">
-        
-    </div>
-</td>
+            
+            
+            
+            
             <td>
                 <div class="btn-group btnResponsive ">
             <a *ngIf="Permission.update" class="btn btn-primary btn-sm" [routerLink]="'/razor/templates/page-category-edit/' +model.id">

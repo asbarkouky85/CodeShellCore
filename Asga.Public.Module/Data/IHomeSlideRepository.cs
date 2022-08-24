@@ -5,6 +5,6 @@ namespace Asga.Public.Data
 {
     public interface IHomeSlideRepository : IRepository<HomeSlide>
     {
-        LoadResult GetLocalized(LoadOptions opts, string collectionId = null);
+        LoadResult<HomeSlide> GetLocalized(LoadOptions opts, string collectionId = null);
     }
 }

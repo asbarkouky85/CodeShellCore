@@ -47,11 +47,11 @@ namespace Asga.Public.Data.Internal
             }
         }
 
-        public virtual LoadResult GetLocalized(LoadOptions opts, string collectionId = null)
+        public virtual LoadResult<HomeSlide> GetLocalized(LoadOptions opts, string collectionId = null)
         {
             var q = collectionId == null ? Loader : QueryCollection(collectionId);
             var data = QueryLocalized(q).LoadWith(opts.GetOptionsFor<HomeSlide>());
-            _fixUrls((IEnumerable<HomeSlide>)data.List);
+            _fixUrls(data.List);
             return data;
         }
 

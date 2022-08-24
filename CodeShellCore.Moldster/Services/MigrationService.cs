@@ -1,10 +1,10 @@
 ﻿using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.CodeGeneration.Models;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
-using CodeShellCore.Moldster.Resources.Services;
+using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Text;
 using System;

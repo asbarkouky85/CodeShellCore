@@ -230,7 +230,7 @@
 <div class="form-group col-md-6 "
      id="FG_entity_useParentUI"
      #FG_entity_useParentUI="bsFormGroup" bs-group
-     >
+      *ngIf="model.entity.parentId">
     <label>{{'Columns.Tenant__UseParentUI' | translate }} </label>
     
 <label  class="check-label ">
@@ -253,7 +253,7 @@
 </div>
 
     </div>
-    <div class="row">
+    <div class="row" *ngIf="canRender()">
         <div class="col-md-6">
             <div class="form-group"
      id="MainComponentBase" bs-group #MainComponentBase="bsFormGroup"     >

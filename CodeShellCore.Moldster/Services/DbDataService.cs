@@ -1,10 +1,8 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Services;
 using System;
@@ -90,12 +88,11 @@ namespace CodeShellCore.Moldster.Services
 
         public TenantPageGuideDTO GetAppGuide(long id)
         {
-            return _unit.TenantRepository.FindSingleAndMap<TenantPageGuideDTO>( id);
+            return _unit.TenantRepository.FindSingleAndMap<TenantPageGuideDTO>(id);
         }
 
         public PageOptions GetPageOptionsById(long pageId)
         {
-            List<ControlDTO> lst = new List<ControlDTO>();
 
             PageOptions opts = _unit.PageRepository.FindSingleAs(d => new PageOptions
             {
@@ -106,9 +103,10 @@ namespace CodeShellCore.Moldster.Services
                 ViewPath = d.PageCategory.ViewPath,
                 DefaultAccessibility = d.DefaultAccessibility,
             }, e => e.Id == pageId);
-            lst = _unit.PageControlRepository.GetDtos(e => e.PageId == pageId);
 
-            opts.Controls = new Dictionary<string, ControlDTO>();
+            var lst = _unit.PageControlRepository.GetDtos<ControlRenderDto>(e => e.PageId == pageId);
+
+            opts.Controls = new Dictionary<string, ControlRenderDto>();
             var rep = new List<string>();
             foreach (var d in lst)
             {

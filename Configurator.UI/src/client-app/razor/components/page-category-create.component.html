@@ -23,26 +23,10 @@
         <thead>
             <tr>
                 <th></th>
-                    <th class="cursorPointer" [ngClass]="GetHeaderClass('CreatedOn')"  >
-        {{'Columns.PageCategory__CreatedOn' | translate }}
-        <i class="fa fa-sort" (click)="SortBy('CreatedOn')"></i>
-    </th>
-
-                    <th class="cursorPointer" [ngClass]="GetHeaderClass('ViewPath')"  >
-        {{'Columns.PageCategory__ViewPath' | translate }}
-        <i class="fa fa-sort" (click)="SortBy('ViewPath')"></i>
-    </th>
-
-                    <th class="cursorPointer" [ngClass]="GetHeaderClass('ResourceName')"  >
-        {{'Columns.PageCategory__ResourceName' | translate }}
-        <i class="fa fa-sort" (click)="SortBy('ResourceName')"></i>
-    </th>
-
-                    <th class="cursorPointer" [ngClass]="GetHeaderClass('BaseComponent')"  >
-        {{'Columns.PageCategory__BaseComponent' | translate }}
-        <i class="fa fa-sort" (click)="SortBy('BaseComponent')"></i>
-    </th>
-
+                
+                
+                
+                
             </tr>
         </thead>
         <tbody>
@@ -62,48 +46,10 @@
         
     </div>
 </td>
-                <td  >
-    {{model.createdOn | date : &#x27;MM/dd h:m a&#x27;}}
-    <div style="position:relative">
-        
-    </div>
-</td>
-                <td  >
-    {{model.viewPath}}
-    <div style="position:relative">
-        
-    </div>
-</td>
-                <td  >
-    
-<select class="form-control"
-        name="Form__resourceId{{i}}" 
-        [li-watch]="model"
-        [(ngModel)]="model.resourceId"
-         >
-        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
-    <option *ngFor="let item of Lookups.Resources" [ngValue]="item.id">{{item.name}}</option>
-</select>
-
-    <div style="position:relative">
-        
-    </div>
-</td>
-                <td  >
-    
-<select class="form-control"
-        name="Form__baseComponent{{i}}" 
-        [li-watch]="model"
-        [(ngModel)]="model.baseComponent"
-         >
-        <option [ngValue]="null">--({{'Words.Empty' | translate }})--</option>
-    <option *ngFor="let item of Lookups.BaseComponent" [ngValue]="item.name">{{item.name}}</option>
-</select>
-
-    <div style="position:relative">
-        
-    </div>
-</td>
+                
+                
+                
+                
             </tr>
         </tbody>
     </table>

@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Resources.Dtos;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Web.Razor.General.Moldster;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -12,10 +11,10 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
     public class MoldsterCellWriter<T> : CellWriter
     {
 
-        protected ControlDTO Parent { get; set; }
+        protected ControlRenderDto Parent { get; set; }
         protected string Identifier { get; set; }
 
-        public MoldsterCellWriter(IHtmlHelper<T> helper, ControlDTO parent = null, string identifier = null) : base(helper)
+        public MoldsterCellWriter(IHtmlHelper<T> helper, ControlRenderDto parent = null, string identifier = null) : base(helper)
         {
             Parent = parent;
             if (identifier != null)
@@ -23,7 +22,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
 
         }
 
-        public void UseExpression<TValue>(Expression<Func<T, TValue>> exp, ControlDTO parent = null)
+        public void UseExpression<TValue>(Expression<Func<T, TValue>> exp, ControlRenderDto parent = null)
         {
             Parent = parent;
             Identifier = (parent != null ? parent.Identifier?.ToLower() + "__" : "cell__") + RazorUtils.GetIdentifier(exp);
@@ -33,7 +32,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
 
         public void AddToControls(string type, Lister lister = null)
         {
-            var ctrl = new ControlDTO
+            var ctrl = new ControlRenderDto
             {
                 ControlType = type,
                 Identifier = Identifier?.ToLower()

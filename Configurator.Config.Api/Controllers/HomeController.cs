@@ -19,7 +19,7 @@ namespace Configurator.Config.Api.Controllers
 
                 return res;
             }
-            catch (Exception ex)
+            catch 
             {
 
                 throw;

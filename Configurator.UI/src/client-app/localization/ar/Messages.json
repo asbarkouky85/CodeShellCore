@@ -1,8 +1,8 @@
 {
   "delete_confirm_message": "delete confirm message",
   "field_required": "field required",
-  "already_rendered": "already rendered",
-  "bundling_failed": "bundling failed",
+  "already_rendered": "Already rendered",
+  "bundling_failed": "Bundling failed",
   "bundling_successful": "bundling successful",
   "delete_error_message": "delete error message",
   "delete_success": "delete success",

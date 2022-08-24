@@ -25,6 +25,7 @@ namespace CodeShellCore.UnitTest.Auth
         {
             Shell.Start(new UnitTestShell(context =>
             {
+                //context.Services.AddCodeShellApplication
                 context.Services.AddAsgaAuthModule(context.Configuration);
                 context.Services.AddAsgaAuthWeb();
 

@@ -1,69 +1,107 @@
-﻿using CodeShellCore.Linq;
+﻿using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Lookups;
+using CodeShellCore.Linq;
+using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using CodeShellCore.Moldster.PageCategories.Services;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.PageCategories;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
 
-    public class PageCategoriesController : EntityController<PageCategory, long>, IEntityController<PageCategory, long>, ILookupLoaderController
+    public class PageCategoriesController : BaseApiController, IPageCategoryService
     {
-        PageCategoryService _service;
-        ConfiguratorLookupService Lookups => GetService<ConfiguratorLookupService>();
-        public PageCategoriesController(PageCategoryService configPageCategoryService) : base(configPageCategoryService)
+        IPageCategoryService _service;
+
+        public PageCategoriesController(IPageCategoryService configPageCategoryService)
         {
             _service = configPageCategoryService;
         }
 
-        public IActionResult Post([FromBody] PageCategory obj)
+        public List<TemplateDTO> GetTemplate()
         {
-            return DefaultPost(obj);
+            return _service.GetTemplates();
         }
 
-        public IActionResult Put([FromBody] PageCategory obj)
+        public SubmitResult CreatPageCategory([FromBody] List<PageCategoryDto> pageCategories)
         {
-            return DefaultPut(obj);
+            return _service.Create(pageCategories);
         }
 
-
-        public override IActionResult Get([FromQuery] LoadOptions opt)
+        public SubmitResult<PageCategoryDto> EditPageCategory([FromBody] PageCategoryDto pageCategory)
         {
-            return Respond(_service.GetAll(opt));
+            return _service.Put(pageCategory);
         }
 
-        public IActionResult GetPagesCategoryByDomain([FromQuery] LoadOptions opts, [FromQuery] long domainId)
+        public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups([FromQuery] Dictionary<string, string> data)
         {
-            return Respond(_service.GetPagesCategoryByDomain(domainId, opts));
+
+            return _service.GetEditLookups(data);
         }
 
-        public IActionResult GetTemplate()
+        public Dictionary<string, IEnumerable<Named<object>>> GetListLookups([FromQuery] Dictionary<string, string> data)
         {
-            return Respond(_service.GetTemplates());
+            return _service.GetListLookups(data);
         }
 
-        public IActionResult CreatPageCategory([FromBody] List<PageCategory> pageCategories)
+        public SubmitResult Create([FromBody] List<PageCategoryDto> list)
         {
-            return Respond(_service.Create(pageCategories));
+            return _service.Create(list);
         }
 
-        public IActionResult EditPageCategory([FromBody] PageCategory pageCategory)
+        public LoadResult<PageCategoryListDTO> GetAll([FromQuery] LoadOptions opt)
         {
-            return Respond(_service.Update(pageCategory));
+            return _service.GetAll(opt);
         }
 
-        public IActionResult GetEditLookups([FromQuery] Dictionary<string, string> data)
+        public List<TemplateDTO> GetLocalTemplate([FromBody] IEnumerable<string> files)
         {
-            object lu = Lookups.PageCategoryEdit(data);
-            return Respond(lu);
+            return _service.GetLocalTemplate(files);
         }
 
-        public IActionResult GetListLookups([FromQuery] Dictionary<string, string> data)
+        public LoadResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, [FromQuery] LoadOptions opt)
         {
-            object lu = Lookups.PageCategoryEdit(data);
-            return Respond(lu);
+            return _service.GetPagesCategoryByDomain(domainId, opt);
+        }
+
+        public List<TemplateDTO> GetTemplates()
+        {
+            return _service.GetTemplates();
+        }
+
+        public DeleteResult Delete(long id)
+        {
+            return _service.Delete(id);
+        }
+
+        public SubmitResult<PageCategoryDto> Post([FromBody] PageCategoryDto dto)
+        {
+            return _service.Post(dto);
+        }
+
+        public SubmitResult<PageCategoryDto> Put([FromBody] PageCategoryDto dto)
+        {
+            return _service.Put(dto);
+        }
+
+        public LoadResult<PageCategoryListDTO> Get([FromQuery] LoadOptions options)
+        {
+            return _service.Get(options);
+        }
+
+        public PageCategoryDto GetSingle(long id)
+        {
+            return _service.GetSingle(id);
+        }
+
+        public bool IsUnique([FromQuery] IsUniqueDto dto)
+        {
+            return _service.IsUnique(dto);
+        }
+
+        public LoadResult<PageCategoryListDTO> GetCollection(string id, [FromQuery] LoadOptions options)
+        {
+            return _service.GetCollection(id, options);
         }
     }
 }

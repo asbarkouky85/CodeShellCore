@@ -9,6 +9,7 @@ namespace CodeShellCore.Data
 {
     public interface IUnitOfWork : IDisposable
     {
+        bool TrackChanges { get; set; }
         string TranslateIfMobile(string message_code, params string[] parameters);
         bool IgnorePermissions { get; set; }
         ChangeLists GetChangeSet();
@@ -42,7 +43,7 @@ namespace CodeShellCore.Data
         IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>;
         IRepository GetRepository(Type t);
         IRepository GetRepositoryFor(Type t);
-        SubmitResult SaveChanges(string successMessage = null, string faileMessage = null);
+        SubmitResult SaveChanges(string successMessage = null, string faileMessage = null, bool throwException = false);
         T GetRepository<T>() where T : class, IRepository;
     }
 }

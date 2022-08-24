@@ -37,19 +37,20 @@ namespace CodeShellCore.Web.Moldster
         public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseStaticFiles();
-            var hot = getConfig("UseHotUpdate")?.Value == "True";
+           
+            base.ConfigureHttp(app, env);
 
+            var hot = getConfig("UseHotUpdate")?.Value == "True";
             if (hot)
             {
 #pragma warning disable CS0618 // Type or member is obsolete
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true,
+
                 });
 #pragma warning restore CS0618 // Type or member is obsolete
             }
-
-            base.ConfigureHttp(app, env);
         }
     }
 }

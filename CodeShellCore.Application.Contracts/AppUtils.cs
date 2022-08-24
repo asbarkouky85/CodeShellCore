@@ -8,12 +8,12 @@ namespace CodeShellCore
 {
     public class AppUtils
     {
-        public static List<Named<int>> GetNamedList<T>(string prefix = "")
+        public static List<Named<object>> GetNamedList<T>(string prefix = "")
         {
-            var lst = new List<Named<int>>();
+            var lst = new List<Named<object>>();
             foreach (Enum cond in Enum.GetValues(typeof(T)))
             {
-                lst.Add(new Named<int>
+                lst.Add(new Named<object>
                 {
                     Id = Convert.ToInt32(cond),
                     Name = prefix + EnumExtensions.GetString(cond)

@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
     public class DomainsController : EntityController<Domain, long>, ILookupLoaderController
     {
         DomainService _service;
-        ConfiguratorLookupService _lookups => GetService<ConfiguratorLookupService>();
+        MoldsterLookupService _lookups => GetService<MoldsterLookupService>();
         IModulesService _modules => GetService<IModulesService>();
         IConfigUnit Unit => GetService<IConfigUnit>();
         public DomainsController(DomainService configDomainService) : base(configDomainService)

@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Moldster.Razor;
+﻿using CodeShellCore.Moldster;
 using CodeShellCore.Types;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +8,7 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
     public static class MoldsterElementHelperExtensions 
     {
         
-        public static IHtmlContent CustomFieldGroup<T>(this IHtmlHelper<T> helper, FieldDefinition define, CodeShellCore.Moldster.Razor.Accessibility acc, string modelName = null)
+        public static IHtmlContent CustomFieldGroup<T>(this IHtmlHelper<T> helper, FieldDefinition define, Accessibility acc, string modelName = null)
         {
             if (!acc.Read)
                 return null;

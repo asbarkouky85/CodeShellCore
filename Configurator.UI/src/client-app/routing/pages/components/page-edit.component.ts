@@ -10,7 +10,7 @@ export class PageEdit extends PageCreateBase {
 	@ViewChild("Form")
 	Form?:NgForm;
 
-	ViewParams = {"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":"/routing/pages/page-tree-list","Fields":[],"Other":{"DomainModal":"Shared/DomainTreeSelect","CustomizeLink":"Routing/PageControls/PageCustomization"}};
+	ViewParams = {"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":"/routing/pages/page-tree-list","Fields":[{"Name":"dasd23","Type":"dfdfdf"}],"Other":{"DomainModal":"Shared/DomainTreeSelect","CustomizeLink":"routing/page-controls/page-customization"}};
 	LookupOptions = {
   "TemplatePath": "C0",
   "TenantCode": "C0",

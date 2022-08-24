@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Resources.Dtos;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Types;
 using CodeShellCore.Web.Razor.Containers;
 using Microsoft.AspNetCore.Html;
@@ -134,14 +133,14 @@ namespace CodeShellCore.Web.Razor.General.Moldster
                 helper.ViewData["PageControls"] = new TemplateDataCollector
                 {
                     EntityName = t == null ? "None" : t.GetEntityName(true),
-                    Controls = new List<ControlDTO>()
+                    Controls = new List<ControlRenderDto>()
                 };
                 PageControls = (TemplateDataCollector)helper.ViewData["PageControls"];
             }
             return PageControls;
         }
 
-        public static void AddToViewControls(this IHtmlHelper helper, ControlDTO cont)
+        public static void AddToViewControls(this IHtmlHelper helper, ControlRenderDto cont)
         {
             if (!helper.CollectingData())
                 return;
@@ -153,7 +152,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
 
         public static string GetCollectionName(this IHtmlHelper helper, string identifier)
         {
-            if (helper.Config().Controls.TryGetValue(identifier.ToLower(), out ControlDTO dto))
+            if (helper.Config().Controls.TryGetValue(identifier.ToLower(), out ControlRenderDto dto))
             {
                 if (dto.Collection != null)
                 {
@@ -170,7 +169,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
 
             if (identifier != null)
             {
-                var ctrl = new ControlDTO
+                var ctrl = new ControlRenderDto
                 {
                     ControlType = "DataSource",
                     Identifier = identifier?.ToLower()
@@ -181,7 +180,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
                     Name = lst.CollecionName,
                 };
 
-                if (helper.Config().Controls.TryGetValue(identifier.ToLower(), out ControlDTO dto))
+                if (helper.Config().Controls.TryGetValue(identifier.ToLower(), out ControlRenderDto dto))
                 {
                     if (dto.Collection != null)
                     {
