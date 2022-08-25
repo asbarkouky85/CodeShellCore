@@ -35,7 +35,7 @@ namespace CodeShellCore.Cli.Routing
                     {
                         valueFor = item;
                     }
-                   
+
                 }
                 else if (TryGetArgumentItem(i, out ArgumentItem<T> itemByOrder))
                 {
@@ -47,6 +47,8 @@ namespace CodeShellCore.Cli.Routing
             {
                 throw new Exception(lst[0]);
             }
+
+            Builder.UseDefaultsForUnset(requestInstance);
             return requestInstance;
         }
 

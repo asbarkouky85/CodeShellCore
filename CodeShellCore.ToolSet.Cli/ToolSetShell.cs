@@ -27,6 +27,7 @@ namespace CodeShellCore.ToolSet
             builder.AddHandler<CopyRequestHandler>("copy");
             builder.AddHandler<DtoGenerationHandler>("gen-dto");
             builder.AddHandler<HelpRequestHandler>("help");
+            builder.AddHandler<Replace.ReplaceParametersRequestHandler>("replace");
         }
     }
 }

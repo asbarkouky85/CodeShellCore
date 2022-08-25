@@ -43,8 +43,11 @@ namespace CodeShellCore.ToolSet
                         case FunctionTypes.GenerateDto:
                             args = new[] { @"gen-dto", @"C:\_git\Asga\FMS_git", "FMS.Assets.Domain", "Item", "gcul", "-o", "FMS.Assets.Application.Contracts" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
                             break;
+                        case FunctionTypes.ReplaceParameters:
+                            args = new[] { "replace", @"D:\Work\Common\tests\replace_test.json", "{\"userName\":\"abarkouky\",\"password\":\"123456\"}" };
+                            break;
                         case FunctionTypes.Help:
-                            args = new[] { @"help"};
+                            args = new[] { @"help" };
                             break;
 
                     }

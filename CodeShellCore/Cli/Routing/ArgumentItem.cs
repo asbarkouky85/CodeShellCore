@@ -24,6 +24,11 @@ namespace CodeShellCore.Cli.Routing
         protected ArgumentItem() { }
 
         public abstract void SetMemberValue(T obj, string v);
+
+        public virtual string GetDefault()
+        {
+            return null;
+        }
     }
 
     public class ArgumentItem<T, TVal> : ArgumentItem<T>
@@ -31,7 +36,7 @@ namespace CodeShellCore.Cli.Routing
         protected Expression<Func<T, TVal>> _action;
         private bool _isBool;
         public override bool IsBool => _isBool;
-        
+        public TVal DefautValue { get; private set; }
 
         public ArgumentItem(Expression<Func<T, TVal>> t, string key = null, char? ch = null, int? order = null, bool required = false) : base()
         {
@@ -46,7 +51,11 @@ namespace CodeShellCore.Cli.Routing
             _isBool = typeof(TVal).RealType() == typeof(bool);
         }
 
-
+        public ArgumentItem<T, TVal> SetDefault(TVal def)
+        {
+            DefautValue = def;
+            return this;
+        }
 
         public override void SetMemberValue(T obj, string v)
         {
@@ -56,6 +65,11 @@ namespace CodeShellCore.Cli.Routing
             var val = v.ConvertTo(mem.PropertyType);
             mem.SetValue(obj, val);
             IsSet = true;
+        }
+
+        public override string GetDefault()
+        {
+            return DefautValue == null ? null : DefautValue.ToString();
         }
     }
 }
