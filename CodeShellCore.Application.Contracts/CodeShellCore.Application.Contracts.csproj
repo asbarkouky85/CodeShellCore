@@ -7,6 +7,7 @@
 		<AssemblyVersion>5.2.0.0</AssemblyVersion>
 		<FileVersion>5.2.0.0</FileVersion>
 		<RootNamespace>CodeShellCore</RootNamespace>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

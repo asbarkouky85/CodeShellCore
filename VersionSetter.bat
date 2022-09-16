@@ -28,7 +28,13 @@ toolset set-version Asga.Mobile.Module 						5.2.0 %cd%
 
 toolset set-version Asga.Dashboard 							5.2.0 %cd%
 
-toolset set-version CodeShellCore.Moldster 					5.2.1.0 %cd%
+toolset set-version CodeShellCore.Moldster 							5.2.1.0 %cd%
+toolset set-version CodeShellCore.Moldster.Application.Contracts 	5.2.1.0 %cd%
+toolset set-version CodeShellCore.Moldster.Domain					5.2.1.0 %cd%
+toolset set-version CodeShellCore.Moldster.Domain.Shared			5.2.1.0 %cd%
+toolset set-version CodeShellCore.Moldster.EntityFramework			5.2.1.0 %cd%
+toolset set-version CodeShellCore.Moldster.Ng11						5.2.1.0 %cd%
+toolset set-version CodeShellCore.Moldster.Ng6						5.2.1.0 %cd%
 
 toolset set-version CodeShellCore.Web 						5.2.0 %cd%
 toolset set-version CodeShellCore.Web.Razor 				5.2.1.0 %cd%
