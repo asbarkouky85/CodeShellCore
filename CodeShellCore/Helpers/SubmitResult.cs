@@ -26,6 +26,12 @@ namespace CodeShellCore.Data.Helpers
             Message = message;
         }
 
+        public SubmitResult<T> ToSubmitResult<T>() where T : class
+        {
+            var res = MapToResult<SubmitResult<T>>();
+            res.AffectedRows = AffectedRows;
+            return res;
+        }
 
     }
 }

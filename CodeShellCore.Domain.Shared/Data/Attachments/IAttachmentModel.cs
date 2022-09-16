@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CodeShellCore.Data.Attachments
 {
-    public interface IAttachmentModel : IHasUploads, IEditable
+    public interface IAttachmentModel : IHasUploads, IEditable<long>
     {
         TmpFileData File { get; set; }
         string EntityType { get; set; }

@@ -5,8 +5,8 @@ using System.Net;
 using System;
 using CodeShellCore.Text;
 using System.Collections.Generic;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
 
 namespace CodeShellCore.Moldster.Razor
 {
@@ -23,7 +23,7 @@ namespace CodeShellCore.Moldster.Razor
         public TemplateDataCollector GetTemplateData(long id)
         {
             string data = Get("GetTemplateData/" + id).Content.ReadAsStringAsync().GetTaskResult();
-            return data.FromJson<TemplateDataCollector>() ?? new TemplateDataCollector { Controls = new List<ControlDTO>() };
+            return data.FromJson<TemplateDataCollector>() ?? new TemplateDataCollector { Controls = new List<ControlRenderDto>() };
         }
 
         public RenderedPageResult GetPage(PageAcquisitorDTO pageAcquisitorDTO)

@@ -6,9 +6,6 @@ namespace CodeShellCore.Data.Helpers
 {
     public abstract class ChangeSet
     {
-        protected abstract void SetAdded(IEnumerable lst);
-        protected abstract void SetUpdated(IEnumerable lst);
-        protected abstract void SetDeleted(IEnumerable lst);
         public static ChangeSet<T> Create<T>(IEnumerable<T> lst) where T : class, IEditable
         {
             ChangeSet<T> set = new ChangeSet<T>();
@@ -16,34 +13,37 @@ namespace CodeShellCore.Data.Helpers
             {
                 lst = new List<T>();
             }
-               
-            set.SetAdded(lst.Where(d => d.State == "Added"));
-            set.SetUpdated(lst.Where(d => d.State == "Modified"));
-            set.SetDeleted(lst.Where(d => d.State == "Removed"));
-
+            foreach(var item in lst)
+            {
+                switch (item.State)
+                {
+                    case ChangeStates.Added:
+                        set.Added.Add(item);
+                        break;
+                    case ChangeStates.Modified:
+                        set.Updated.Add(item);
+                        break;
+                    case ChangeStates.Removed:
+                        set.Deleted.Add(item);
+                        break;
+                }
+            }
             return set;
         }
+
+
     }
-    public class ChangeSet<T> : ChangeSet where T : class, IEditable
+    public class ChangeSet<T> : ChangeSet where T : class
     {
-        public IEnumerable<T> Added { get; private set; }
-        public IEnumerable<T> Updated { get; private set; }
-        public IEnumerable<T> Deleted { get; private set; }
-
-        protected override void SetAdded(IEnumerable lst)
+        public ChangeSet()
         {
-            Added = lst as IEnumerable<T>;
+            Added = new List<T>();
+            Updated = new List<T>();
+            Deleted = new List<T>();
         }
-
-        protected override void SetUpdated(IEnumerable lst)
-        {
-            Updated = lst as IEnumerable<T>;
-        }
-
-        protected override void SetDeleted(IEnumerable lst)
-        {
-            Deleted = lst as IEnumerable<T>;
-        }
+        public List<T> Added { get; private set; }
+        public List<T> Updated { get; private set; }
+        public List<T> Deleted { get; private set; }
 
         public void Apply(IRepository<T> repo)
         {
@@ -56,5 +56,7 @@ namespace CodeShellCore.Data.Helpers
             foreach (T item in Deleted)
                 repo.Delete(item);
         }
+
+
     }
 }

@@ -1,12 +1,10 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.Localization.Services;
-using CodeShellCore.Moldster.PageCategories.Services;
-using CodeShellCore.Moldster.Pages.Dtos;
-using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Text;

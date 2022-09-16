@@ -51,7 +51,7 @@ namespace Asga.Public.Data.Internal
         {
             var q = collectionId == null ? Loader : QueryCollection(collectionId);
             var data = QueryLocalized(q).LoadWith(opts.GetOptionsFor<HomeSlide>());
-            _fixUrls((IEnumerable<HomeSlide>)data.List);
+            _fixUrls(data.List);
             return data;
         }
 

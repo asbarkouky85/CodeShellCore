@@ -17,9 +17,10 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Services;
 using CodeShellCore.Http;
 using CodeShellCore.Files.Logging;
-using CodeShellCore.Moldster.PageCategories.Dtos;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
 
 namespace CodeShellCore.Web.Razor.Services
 {
@@ -50,7 +51,7 @@ namespace CodeShellCore.Web.Razor.Services
                 viewDictionary["PageControls"] = new TemplateDataCollector
                 {
                     EntityName = null,
-                    Controls = new List<ControlDTO>()
+                    Controls = new List<ControlRenderDto>()
                 };
                 viewDictionary["LocalizationDataCollector"] = new LocalizationDataCollector();
 

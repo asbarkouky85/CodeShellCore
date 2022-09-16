@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using CodeShellCore.Moldster.Environments;
-using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.PageCategories;
 
 namespace CodeShellCore.Moldster
 {

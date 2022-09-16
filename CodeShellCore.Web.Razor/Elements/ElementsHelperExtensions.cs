@@ -302,7 +302,7 @@ namespace CodeShellCore.Web.Razor.Elements
             ControlGroupWriter wt = Provider.CustomInputGroup(helper, exp, componentName, required, size, attrs, inputAttrs, classes);
             if (readonlyComponent != null && !wt.Accessibility.Write)
             {
-                wt.Accessibility = new CodeShellCore.Moldster.Razor.Accessibility(2);
+                wt.Accessibility = new Accessibility(2);
                 return wt.Write(readonlyComponent);
             }
             return wt.Write(componentName);
@@ -321,7 +321,7 @@ namespace CodeShellCore.Web.Razor.Elements
             var wt = Provider.RichTextBox(helper, exp, modules, size, attrs, inputAttrs, classes);
             if (wt.Accessibility.Write == false)
             {
-                wt.Accessibility = new CodeShellCore.Moldster.Razor.Accessibility(2);
+                wt.Accessibility = new Accessibility(2);
                 return wt.Write(InputControls.RichTextLabel);
             }
 

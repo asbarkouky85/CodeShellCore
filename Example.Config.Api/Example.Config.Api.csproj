@@ -55,6 +55,7 @@
     <ProjectReference Include="$(CODESHELL_HOME)\Asga.Public.Molds\Asga.Public.Molds.csproj" />
     <ProjectReference Include="$(CODESHELL_HOME)\Asga.Public\Asga.Public.csproj" />
     <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
+    <ProjectReference Include="..\Example\Example.csproj" />
   </ItemGroup>
 
   <ItemGroup>

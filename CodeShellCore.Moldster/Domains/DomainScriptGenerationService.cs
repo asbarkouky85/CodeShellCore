@@ -1,11 +1,11 @@
 ﻿using CodeShellCore.Data.Mapping;
 using CodeShellCore.Helpers;
+using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Models;
 using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Data;
-using CodeShellCore.Moldster.Localization.Services;
-using CodeShellCore.Moldster.Navigation.Dtos;
-using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Navigation;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using CodeShellCore.Text.ResourceReader;
@@ -61,10 +61,11 @@ namespace CodeShellCore.Moldster.Domains
                 return;
             }
 
-            long modId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            long tenantId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
 
-            IEnumerable<DomainWithPagesDTO> domains = _unit.DomainRepository.GetParentModules(modId);
-            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs(modId);
+            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(tenantId);
+            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs<NavigationGroupDTO>(tenantId);
+
             string routesTemplate = _molds.GetResourceByNameAsString(MoldNames.Routes_ts);//RoutesMold;
 
             var tempModel = new RoutesTsModel
@@ -90,10 +91,12 @@ namespace CodeShellCore.Moldster.Domains
                 string dom = domain.DomainName;
                 tempModel.Routes += Names.GetDomainLazyLoadingRoute(domain.DomainName) + ",";
             }
+
             string sep = "";
             foreach (var nav in navs)
             {
-                tempModel.DomainsData += sep + GetNavigationObject(nav);
+                var pages = _unit.NavigationPageRepository.FindAndMap<NavigationPageDTO>(e => e.Page.TenantId == tenantId && e.NavigationGroupId == nav.Id);
+                tempModel.DomainsData += sep + GetNavigationObject(nav.Name, pages);
                 sep = ",\n\t\t\t";
             }
 
@@ -110,15 +113,14 @@ namespace CodeShellCore.Moldster.Domains
 
         public virtual void GenerateDomainModuleById(string moduleCode, long? domId)
         {
-            var doms = new List<DomainWithPagesDTO>();
+            var doms = new List<DomainDto>();
             if (!_unit.DomainRepository.FindSingleOrAdd(e => e.Id == 1, new Domain { Id = 1, Name = "Shared" }, out Domain shared))
             {
                 _unit.SaveChanges();
             }
-            doms = _unit.DomainRepository.GetByTenantCodeForRouting(moduleCode, domId);
+            doms = _unit.DomainRepository.GetByTenantCodeForRouting<DomainDto>(moduleCode, domId);
 
-
-            var newList = new List<DomainWithPagesDTO>();
+            var newList = new List<DomainDto>();
             if (domId == null)
                 newList = doms.Where(d => d.ParentId == null).ToList();
             else
@@ -150,7 +152,7 @@ namespace CodeShellCore.Moldster.Domains
             GenerateDomainModuleById(moduleCode, id);
         }
 
-        protected virtual void _generateDomainRecursive(DomainWithPagesDTO dom, string tenantCode, string parentDomain = null)
+        protected virtual void _generateDomainRecursive(DomainDto dom, string tenantCode, string parentDomain = null)
         {
             string filePath = Names.GetModuleFilePath(tenantCode, dom.DomainName, parentDomain) + ".ts";
             Out.Write($"Generating {dom.DomainName}Module : ");
@@ -159,12 +161,12 @@ namespace CodeShellCore.Moldster.Domains
             if (!Options.ReplaceDomainRoutes && File.Exists(filePath))
             {
                 WriteColored("Exists", ConsoleColor.Cyan);
-                dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
+                var domPages = _unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>(tenantCode, dom.Id, true);
 
                 if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
                 {
-                    var pages = dom.Pages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
-                    if (dom.Pages.Any())
+                    var pages = domPages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
+                    if (domPages.Any())
                         _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
                 }
                 Out.WriteLine();
@@ -174,12 +176,11 @@ namespace CodeShellCore.Moldster.Domains
             bool shared = dom.DomainName == "Shared";
             string template = shared ? _molds.GetResourceByNameAsString(MoldNames.SharedModule_ts) : _molds.GetDomainModuleMold();
 
-            var domainPages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id, true);
-            dom.Pages = _unit.PageRepository.GetDomainPagesForRouting(tenantCode, dom.Id);
+            var domainPages = _unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>(tenantCode, dom.Id);
 
-            if (dom.Pages.Any())
+            if (domainPages.Any())
             {
-                var pages = dom.Pages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
+                var pages = domainPages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
                 if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
                     _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
             }
@@ -209,7 +210,7 @@ namespace CodeShellCore.Moldster.Domains
                 ParentModules = parentDomain == null ? "" : parentDomain + "Module,"
             };
 
-            foreach (PageDetailsDto p in dom.Pages)
+            foreach (PageDetailsDto p in domainPages)
             {
                 string component = p.ComponentName;
 
@@ -225,7 +226,7 @@ namespace CodeShellCore.Moldster.Domains
 
             if (dom.SubDomains != null)
             {
-                foreach (DomainWithPagesDTO dp in dom.SubDomains)
+                foreach (DomainDto dp in dom.SubDomains)
                 {
                     model.Routes += Names.GetDomainLazyLoadingRoute(dp.DomainName) + ",";
                 }
@@ -257,10 +258,10 @@ namespace CodeShellCore.Moldster.Domains
             }
         }
 
-        protected string GetNavigationObject(NavigationGroupDTO dto)
+        protected string GetNavigationObject(string groupName, IEnumerable<NavigationPageDTO> pages)
         {
             string children = "";
-            foreach (var p in dto.Pages)
+            foreach (var p in pages)
             {
                 string param = p.RouteParameters ?? "";
                 string action = p.ActionName == null ? "ResourceActions." + p.PrivilegeType : "\"" + p.ActionName + "\"";
@@ -282,7 +283,7 @@ namespace CodeShellCore.Moldster.Domains
                     route.Apps,
                     route.Url);
             }
-            return string.Format("{{\n\t\t\t\tname: \"{0}\" ,\n\t\t\t\tchildren: [{1}]\n\t\t\t}}", dto.Name, children);
+            return string.Format("{{\n\t\t\t\tname: \"{0}\" ,\n\t\t\t\tchildren: [{1}]\n\t\t\t}}", groupName, children);
         }
 
         protected string HomeRoute(string name)

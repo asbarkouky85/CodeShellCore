@@ -46,14 +46,14 @@ namespace CodeShellCore.Extensions.Data
             return ApplyChangesGeneric<TEntity, TDto, int>(repo, items, mapper);
         }
 
-        public static List<TEntity> ApplyChangesLong<TEntity, TDto>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
+        public static List<TEntity> ApplyChanges<TEntity, TDto>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
             where TEntity : class, IModel<long>
             where TDto : class, IEditable<long>
         {
             return ApplyChangesGeneric<TEntity, TDto, long>(repo, items, mapper);
         }
 
-        public static List<TEntity> ApplyChanges<TEntity, TDto>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
+        public static List<TEntity> ApplyChangesGuid<TEntity, TDto>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
             where TEntity : class, IModel<Guid>
             where TDto : class, IEditable<Guid>
         {
@@ -95,6 +95,39 @@ namespace CodeShellCore.Extensions.Data
             return lst;
         }
 
+        internal static List<TEntity> ApplyToRepoGeneric<TEntity, TDto, TPrime>(this IRepository<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
+             where TEntity : class, IModel<TPrime>
+             where TDto : class, IEditable<TPrime>
+        {
+            List<TEntity> lst = new List<TEntity>();
+            foreach (var item in items)
+            {
+                switch (item.State)
+                {
+                    case ChangeStates.Added:
+                        var added = mapper.Map<TDto, TEntity>(item);
+                        repo.Add(added);
+                        lst.Add(added);
+                        break;
+                    case ChangeStates.Modified:
+                        var updated = repo.FindSingle(e => e.Id.Equals(item.Id));
+                        if (updated != null)
+                        {
+                            mapper.Map(item, updated);
+                            lst.Add(updated);
+                        }
+                        break;
+                    case ChangeStates.Removed:
+                        repo.DeleteById(item.Id);
+                        break;
+                    case ChangeStates.Attached:
+                        var noAction = mapper.Map<TDto, TEntity>(item);
+                        lst.Add(noAction);
+                        break;
+                }
+            }
+            return lst;
+        }
 
         internal static List<TEntity> ApplyChangesGeneric<TEntity, TDto, TPrime>(this ICollection<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
              where TEntity : class, IModel<TPrime>

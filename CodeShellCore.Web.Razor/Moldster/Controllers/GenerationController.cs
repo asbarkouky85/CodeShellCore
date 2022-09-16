@@ -4,17 +4,13 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Builder;
-using CodeShellCore.Moldster.Builder.Dtos;
-using CodeShellCore.Moldster.Builder.Services;
 using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Environments;
-using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.PageCategories.Services;
-using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Sql;
-using CodeShellCore.Moldster.Sql.Dtos;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Razor;
 using Microsoft.AspNetCore.Mvc;
@@ -101,7 +97,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Respond();
         }
 
-        private static void OnTaskCompleted(BundlingTask tsk, bool success, string message, IOutputWriter output = null)
+        private static void OnBundlingTaskCompleted(BundlingTask tsk, bool success, string message, IOutputWriter output = null)
         {
             using (var sc = Shell.GetScope())
             {
@@ -187,13 +183,13 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
                 {
                     tsk.Environment = req.Environment;
 
-                    tsk.OnComplete = (t, res) => OnTaskCompleted(tsk, res.IsSuccess, res.Message, outwriter);
+                    tsk.OnComplete = (t, res) => OnBundlingTaskCompleted(tsk, res.IsSuccess, res.Message, outwriter);
                     SubmitResult.Message = "started_new_task";
                     BundlingTask.Add(tsk);
                 }
                 else
                 {
-                    OnTaskCompleted(new BundlingTask
+                    OnBundlingTaskCompleted(new BundlingTask
                     {
                         Status = "NULL",
                         TenantCode = req.TenantCode,

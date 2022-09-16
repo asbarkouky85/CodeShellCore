@@ -10,7 +10,7 @@ export class TenantCreate extends TenantCreateBase {
 	@ViewChild("Form")
 	Form?:NgForm;
 
-	ViewParams = {"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":"/generations/tenants/tenant-list","Fields":[],"Other":{"OutputListener":"app-generations/generation-inof-list","SelectTemplateModel":"Generations/PageCategorySelect"}};
+	ViewParams = {"AddUrl":null,"EditUrl":null,"DetailsUrl":null,"ListUrl":"/generations/tenants/tenant-list","Fields":[],"Other":{"OutputListener":"Generations/GenerationInofList","SelectTemplateModel":"Generations/PageCategorySelect"}};
 	LookupOptions = {
   "tenants": "C0"
 };

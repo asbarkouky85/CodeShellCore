@@ -127,9 +127,10 @@ export abstract class AppBaseComponent {
     }
 
     ShowPromptTranslate(data: string): void {
-        this.promptMessage = Shell.Message(data);
+        this.promptMessage = Shell.Message('Messages.'+data);
         this.promptShow = true;
     }
+    
     i = 0;
     ShowLoading() {
         this.ShowLoader = true;

@@ -43,11 +43,18 @@ namespace CodeShellCore.Data.EntityFramework
         public virtual Action<ChangeLists> OnSaveSuccess { get { return null; } }
 
         public override event EventHandler<ChangeLists> Saving;
+        public override bool TrackChanges
+        {
+            get => DbContext.ChangeTracker.AutoDetectChangesEnabled;
+            set => DbContext.ChangeTracker.AutoDetectChangesEnabled = true;
+        }
+
 
         public UnitOfWork(IServiceProvider provider) : base(provider)
         {
             DbContext = _provider.GetService<TContext>();
             Projector = _provider.GetService<IQueryProjector>();
+            DbContext.ChangeTracker.AutoDetectChangesEnabled = true;
         }
 
         private bool _hasCollections(string res)
@@ -78,7 +85,8 @@ namespace CodeShellCore.Data.EntityFramework
 
         public override void EnableJsonLoading()
         {
-            DbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+
+           // DbContext.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
         public override IRepository GetRepositoryFor(Type i)
@@ -100,7 +108,7 @@ namespace CodeShellCore.Data.EntityFramework
             IKeyRepository<T, TPrime> inst;
             if (GenericKeyRepositoryType != null)
             {
-                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T), typeof(TContext),typeof(TPrime));
+                var t = GenericKeyRepositoryType.MakeGenericType(typeof(T), typeof(TContext), typeof(TPrime));
                 inst = (IKeyRepository<T, TPrime>)Store.GetInstance(t);
             }
             else
@@ -217,7 +225,7 @@ namespace CodeShellCore.Data.EntityFramework
         /// Attempts to submit changes to the data source
         /// </summary>
         /// <returns>if success <see cref="SubmitResult.Code"/> is 0</returns>
-        public override SubmitResult SaveChanges(string successMessage = null, string failMessage = null)
+        public override SubmitResult SaveChanges(string successMessage = null, string failMessage = null, bool throwException = false)
         {
             SubmitResult res = new SubmitResult();
             string def = Strings.Word(MessageIds.success_message);
@@ -252,8 +260,11 @@ namespace CodeShellCore.Data.EntityFramework
                 }
                 catch (Exception ex)
                 {
+
                     res.SetException(ex);
                     res.Code = 0;
+                    if (throwException)
+                        throw;
                 }
 
 
@@ -261,6 +272,8 @@ namespace CodeShellCore.Data.EntityFramework
             catch (Exception ex)
             {
                 res = CustomizeException(ex, failMessage);
+                if (throwException)
+                    throw;
             }
             return res;
         }

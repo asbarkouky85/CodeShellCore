@@ -12,7 +12,7 @@ namespace Asga.Dashboard.Web.Controllers
         {
             query.Process();
             var res = Service.GetItem(listName, query);
-            foreach (var it in res.ListT)
+            foreach (var it in res.List)
                 it.ListName = it.ListName ?? listName;
             return Respond(res);
         }

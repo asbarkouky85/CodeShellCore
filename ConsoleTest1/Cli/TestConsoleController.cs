@@ -1,29 +1,22 @@
-﻿using CodeShellCore;
+﻿using Asga.Auth.Services;
+using CodeShellCore;
 using CodeShellCore.Cli;
+using CodeShellCore.Files;
 using CodeShellCore.Files.Logging;
-using CodeShellCore.Tasks;
+using CodeShellCore.Helpers;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Linq;
-using CodeShellCore.Linq.Filtering;
-using CodeShellCore.Text;
+using CodeShellCore.Localization;
+using CodeShellCore.Moldster.Builder;
+using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Services.Email;
+using ConsoleTest1.Models;
 using ExampleProject.Commander.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeShellCore.Services.Email;
-using ConsoleTest1.Models;
-using CodeShellCore.Helpers;
-using CodeShellCore.Files;
-using Asga.Auth.Services;
-using Asga.Auth;
-using CodeShellCore.Moldster;
-using CodeShellCore.Moldster.Environments;
-using CodeShellCore.Moldster.Builder.Services;
-using CodeShellCore.Moldster.Localization.Services;
-using CodeShellCore.Localization;
 
 namespace ConsoleTest1
 {
@@ -91,7 +84,7 @@ namespace ConsoleTest1
 
         public void TestAttributes()
         {
-            var attrs = (EntityNameAttribute)typeof(TestDto).GetCustomAttributes(true).FirstOrDefault(e=>e.GetType().IsAssignableFrom(typeof(EntityNameAttribute)));
+            var attrs = (EntityNameAttribute)typeof(TestDto).GetCustomAttributes(true).FirstOrDefault(e => e.GetType().IsAssignableFrom(typeof(EntityNameAttribute)));
             if (attrs != null)
                 Console.WriteLine(attrs.EntityName);
         }

@@ -5,6 +5,7 @@ import { AppBaseComponent } from "codeshell/base-components";
 import { ComponentLoader } from "codeshell/directives";
 import { SessionManager, UserDTO } from "codeshell/security";
 import { Stored } from "codeshell/services";
+import { BehaviorSubject } from "rxjs";
 import { GenerationInofBase } from "./generations/generation-inof-base.component";
 import { TenantsService } from "./http";
 import { AccountService } from "./http/account.service";
@@ -25,6 +26,7 @@ export class AppComponentBase extends AppBaseComponent {
 
     OnAppChanged: EventEmitter<AppInfo> = new EventEmitter<AppInfo>();
     OnTenantChanged: EventEmitter<Tenant | undefined> = new EventEmitter<Tenant | undefined>();
+    OnTenantSelected: EventEmitter<Tenant> = new EventEmitter<Tenant>();
 
     UseState: UseState = new UseState;
 
@@ -48,7 +50,6 @@ export class AppComponentBase extends AppBaseComponent {
         this.OnAppChanged.subscribe((d: AppInfo) => this.onAppInfoChanged(d));
         if (window["APP_VERSION"])
             this.version = window["APP_VERSION"];
-        console.log(this.version)
     }
 
     ngOnInit() {
@@ -90,7 +91,8 @@ export class AppComponentBase extends AppBaseComponent {
         else {
             await SessionManager.Current.GetUserAsync();
             this.AppList = await this.getAppListAsync();
-            this.TenantList = await this.loadTenants()
+            this.TenantList = await this.loadTenants();
+            
             this.ready = true;
             return this.TenantList;
         }

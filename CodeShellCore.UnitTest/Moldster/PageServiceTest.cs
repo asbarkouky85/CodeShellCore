@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.UnitTest.Data;
 using CodeShellCore.Web.Razor;
 using CodeShellCore.Web.UnitTest;
@@ -20,6 +19,7 @@ namespace CodeShellCore.UnitTest.Moldster
         {
             Shell.Start(new UnitTestShell(coll =>
             {
+                coll.Services.AddMoldsterDbData(coll.Configuration);
                 coll.Services.AddMoldsterServerGeneration();
                 coll.Services.AddMoldsterWeb();
                 coll.Services.AddDbContext<MoldsterContext>(d => d.UseInMemoryDatabase("moldster"));
@@ -36,8 +36,8 @@ namespace CodeShellCore.UnitTest.Moldster
 
 
         [Test]
-        [TestCase("Main", "Auth/Users/UserCreate", "Auth/Users/UserEdit", "Users", "insert", null, 1)]
-        [TestCase("Main", "Auth/Users/UserCreate", "Auth/Users/UserEdit", "Users", "Kill", null, 2)]
+        [TestCase("Main", "Auth/Users/UserCreate1", "Auth/Users/UserEdit", "Users", "insert", null, 1)]
+        [TestCase("Main", "Auth/Users/UserCreate2", "Auth/Users/UserEdit", "Users", "Kill", null, 2)]
         [TestCase("Main", "Auth/Users/Modals/UserEditModal", "Auth/Users/UserEdit", "Users", "insert", null, 2)]
         [TestCase("Main", "Auth/Users/UserDetails", "Auth/Users/UserEdit", "Users", "insert", "TopBar", 2)]
         [TestCase("Main", "Auth/Users/UserInfo", "Auth/Users/UserEdit", "Users", "insert", "SideBar", 3)]
@@ -58,14 +58,14 @@ namespace CodeShellCore.UnitTest.Moldster
                     NavigationGroup = navGroup,
                     Apps = new[] { "Admin" }
                 };
-                var service = p.GetService<PagesService>();
+                var service = p.GetService<IPageEntityService>();
                 var unit = p.GetService<IConfigUnit>();
                 Page page = null;
                 unit.Saving += (u, lst) =>
                 {
                     page = (Page)lst.Added.Where(d => d is Page).FirstOrDefault();
                 };
-                var res = service.Create(dto);
+                var res = service.Post(dto);
 
                 var existingDomains = unit.DomainRepository.GetValues(d => d.Id).ToList();
                 TestContext.WriteLine(res.Message);

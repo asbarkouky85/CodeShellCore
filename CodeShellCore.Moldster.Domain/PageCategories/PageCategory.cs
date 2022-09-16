@@ -5,5 +5,4 @@ using System;using System.Collections.Generic;using System.ComponentModel.Data
         [System.Runtime.Serialization.IgnoreDataMember]
         public Domain Domain { get; set; }        [ForeignKey("ResourceId")]        [InverseProperty("PageCategories")]
         [System.Runtime.Serialization.IgnoreDataMember]
-        public Resource Resource { get; set; }        [InverseProperty("PageCategory")]        public ICollection<Control> Controls { get; set; }        [InverseProperty("PageCategory")]        public ICollection<PageCategoryParameter> PageCategoryParameters { get; set; }        [InverseProperty("PageCategory")]        public ICollection<Page> Pages { get; set; }        [NotMapped]
-        public string ResourceName { get; set; }    }}
+        public Resource Resource { get; set; }        [InverseProperty("PageCategory")]        public ICollection<Control> Controls { get; set; }        [InverseProperty("PageCategory")]        public ICollection<PageCategoryParameter> PageCategoryParameters { get; set; }        [InverseProperty("PageCategory")]        public ICollection<Page> Pages { get; set; }    }}

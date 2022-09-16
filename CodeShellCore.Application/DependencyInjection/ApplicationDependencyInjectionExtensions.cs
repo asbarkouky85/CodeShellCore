@@ -29,7 +29,7 @@ namespace CodeShellCore.DependencyInjection
         }
         public static void AddCodeShellAutoMapper(this IServiceCollection collection)
         {
-
+            collection.AddAutoMapper(e=> { });
             collection.AddTransient<Data.Mapping.IObjectMapper, AutoMapperObjectMapper>();
             collection.AddTransient<Data.Mapping.IQueryProjector, AutoMapperObjectMapper>();
         }

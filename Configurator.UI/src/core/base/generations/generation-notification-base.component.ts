@@ -12,7 +12,7 @@ import { RecursionModel } from "codeshell/recursion";
 import { NoteType } from "codeshell/results";
 import { GenerationInofBase } from "./generation-inof-base.component";
 
-@Component({template:''})
+@Component({ template: '' })
 export abstract class GenerationNotificationBase extends TenantComponentBase {
     ServerGen: ServerGenerationService = new ServerGenerationService();
 
@@ -45,18 +45,7 @@ export abstract class GenerationNotificationBase extends TenantComponentBase {
     OnReady() {
         this.ServerGen.Silent = true;
 
-        if (this.DomainTree) {
 
-            this.DomainTree.tenantId = this.getTenantId();
-
-            this.DomainTree.AllowEdit = false;
-            this.DomainTree.HideHeader = true;
-            this.DomainTree.isGeneration = true;
-            this.DomainTree.CountMode = DomainCountMode.All;
-            this.DomainTree.RenderRequest.subscribe((d: RecursionModel) => this.render("domain", d));
-            this.DomainTree.ProcessRequest.subscribe((d: RecursionModel) => this.process(d));
-            this.DomainTree.LoadData();
-        }
 
         Shell.Main.SideBarStatus.emit(false);
 
@@ -64,6 +53,23 @@ export abstract class GenerationNotificationBase extends TenantComponentBase {
             this.environments = d;
             this.environments.push({ id: 0, name: "(Current Machine)" })
         });
+    }
+
+    ngAfterViewInit(): void {
+        if (this.DomainTree) {
+            this.App.AppDataReady().then(res => {
+                this.DomainTree.tenantId = this.getTenantId();
+
+                this.DomainTree.AllowEdit = false;
+                this.DomainTree.HideHeader = true;
+                this.DomainTree.isGeneration = true;
+                this.DomainTree.CountMode = DomainCountMode.All;
+                this.DomainTree.RenderRequest.subscribe((d: RecursionModel) => this.render("domain", d));
+                this.DomainTree.ProcessRequest.subscribe((d: RecursionModel) => this.process(d));
+                this.DomainTree.LoadData();
+            })
+
+        }
     }
 
     tenantChanged(ten: any) {

@@ -4,7 +4,7 @@
     Layout = Html.Config().Layout;
 
     Html.AddModal("PageSelector");
-    var Par = Html.For<PageParameterDTO>("par", "parForm");
+    var Par = Html.For<PageParameterEditDto>("par", "parForm");
     var Rou = Html.For<PageRouteDTO>("pageRoute", "rouForm");
     var mod = Html.For<PageCustomizationDTO>("page", "Form");
     var fld = Html.For<CustomField>("field", "fieldForm");

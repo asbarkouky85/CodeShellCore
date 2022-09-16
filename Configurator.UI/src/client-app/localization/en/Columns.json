@@ -129,5 +129,17 @@
   "TenantDto__UseParentUI": "Use parent ui",
   "TenantDto__Version": "Version",
   "Tenant__ParentId": "Parent id",
-  "Tenant__UseParentUI": "Use parent ui"
+  "Tenant__UseParentUI": "Use parent ui",
+  "Page__TemplatePath": "Template path",
+  "Page__ComponentDomain": "Component domain",
+  "Page__ComponentName": "Component name",
+  "Page__RouteParameters": "Route parameters",
+  "Page__ComponentPath": "Component path",
+  "Page__Usage": "Usage",
+  "Page__Apps": "Apps",
+  "Page__ResourceId": "Resource id",
+  "Page__ActionType": "Action type",
+  "Page__NavigationGroup": "Navigation group",
+  "Page__CollectionId": "Collection id",
+  "Page__DefaultAccessibility": "Default accessibility"
 }

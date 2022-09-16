@@ -3,8 +3,7 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Files.Uploads;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
-using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.CodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 
@@ -28,18 +27,22 @@ namespace CodeShellCore.Moldster.Tenants
 
         public override SubmitResult<TenantEditDTO> Post(TenantDto dto)
         {
-            if (dto.Id == 0)
-            {
-                long id = unit.TenantRepository.GetMax(d => d.Id);
-                dto.Id = id + 1;
-            }
+            var entity = Mapper.Map<TenantDto, Tenant>(dto);
 
+            long id = unit.TenantRepository.GetMax(d => d.Id);
+            entity.Id = id + 1;
             if (!unit.TenantRepository.Exist(d => true))
             {
-                dto.IsActive = true;
+                entity.IsActive = true;
             }
-
-            return base.Post(dto);
+            Repository.Add(entity);
+            var res = Unit.SaveChanges().MapToResult<SubmitResult<TenantEditDTO>>();
+            if (res.IsSuccess)
+            {
+                AfterCreate(dto, entity);
+                res.Result = GetSingle(entity.Id);
+            }
+            return res;
         }
 
         protected override void AfterCreate(TenantDto dto, Tenant entity)

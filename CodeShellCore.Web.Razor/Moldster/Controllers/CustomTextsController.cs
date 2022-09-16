@@ -1,13 +1,13 @@
-﻿using CodeShellCore.Linq;
+﻿using CodeShellCore.Data.Helpers;
+using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
-    public class CustomTextsController : BaseApiController
+    public class CustomTextsController : BaseApiController,ICustomTextService
     {
         private readonly ICustomTextService service;
 
@@ -16,14 +16,14 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             service = serv;
         }
 
-        public IActionResult Get([FromBody] CustomTextRequest req, [FromQuery] LoadOptions opts)
+        public LoadResult<CustomTextDto> Get([FromBody] CustomTextRequest req, [FromQuery] LoadOptions opts)
         {
-            return Respond(service.Get(req, opts));
+            return service.Get(req, opts);
         }
 
-        public IActionResult SaveChanges([FromBody] IEnumerable<CustomText> lst)
+        public SubmitResult SaveChanges(IEnumerable<CustomTextDto> lst)
         {
-            return Respond(service.SaveChanges(lst));
+            return service.SaveChanges(lst);
         }
     }
 }

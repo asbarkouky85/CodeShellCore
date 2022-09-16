@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using CodeShellCore.Moldster.PageCategories.Dtos;
+using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Text;
 
 namespace CodeShellCore.Web.Razor.Services

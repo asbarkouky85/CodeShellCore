@@ -12,9 +12,11 @@ namespace Asga.Auth
             if (!optionsBuilder.IsConfigured)
             {
                 base.OnConfiguring(optionsBuilder);
-                optionsBuilder.UseSqlServer(CodeShellCore.Shell.GetConfigAs<string>("ConnectionStrings:Auth"));
+                var connectionString = CodeShellCore.Shell.GetConfigAs<string>("ConnectionStrings:Auth", false);
+                if (!string.IsNullOrEmpty(connectionString))
+                    optionsBuilder.UseSqlServer(connectionString);
             }
-            
+
         }
     }
 }
