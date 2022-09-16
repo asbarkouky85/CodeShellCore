@@ -18,8 +18,8 @@ namespace CodeShellCore.FileServer.Business.Internal
         private readonly IPathProvider _paths;
         private readonly IFileServerUnit unit;
 
-        protected override string SaveRoot => _paths.RootFolderPath;
-        protected override string TempRoot => _paths.TempFolder;
+        public override string SaveRoot => _paths.RootFolderPath;
+        public override string TempRoot => _paths.TempFolder;
         protected virtual int DefaultAttachmentType => 1;
 
         public AttachmentFileService(IFileServerUnit unit, IPathProvider paths)

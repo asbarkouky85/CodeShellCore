@@ -19,10 +19,10 @@ namespace Asga.Public.Business.Internal
             uploaded = _uploaded;
         }
 
-        public override LoadResult LoadObjects(LoadOptions opts)
+        public override LoadResult<HomeSlide> LoadObjects(LoadOptions opts)
         {
             var data = base.LoadObjects(opts);
-            FixUrls((IEnumerable<HomeSlide>)data.List);
+            FixUrls(data.List);
             return data;
         }
 
@@ -37,7 +37,7 @@ namespace Asga.Public.Business.Internal
         public override LoadResult<HomeSlide> LoadCollection(string collectionId, LoadOptions opts)
         {
             var res = base.LoadCollection(collectionId, opts);
-            FixUrls(res.ListT);
+            FixUrls(res.List);
             return res;
         }
 

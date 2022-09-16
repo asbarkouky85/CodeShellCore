@@ -3,6 +3,7 @@ using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster.Tenants;
 
 namespace CodeShellCore.UnitTest.Data
 {

@@ -40,7 +40,7 @@ namespace Asga.Mobile.Business.Internal
             }
             var res = Unit.UserReminderRepository.FindAs(ReminderListDTO.ReminderExpression, opts, d => d.UserId == userId);
 
-            prov.FillAutoData(res.ListT);
+            prov.FillAutoData(res.List);
 
             return res;
         }
