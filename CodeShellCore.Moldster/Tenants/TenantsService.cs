@@ -36,7 +36,7 @@ namespace CodeShellCore.Moldster.Tenants
                 entity.IsActive = true;
             }
             Repository.Add(entity);
-            var res = Unit.SaveChanges().MapToResult<SubmitResult<TenantEditDTO>>();
+            var res = unit.SaveChanges().MapToResult<SubmitResult<TenantEditDTO>>();
             if (res.IsSuccess)
             {
                 AfterCreate(dto, entity);

@@ -19,12 +19,12 @@ namespace Asga.Public.Business.Internal
             uploaded = _uploaded;
         }
 
-        //public override LoadResult LoadObjects(LoadOptions opts)
-        //{
-        //    var data = base.LoadObjects(opts);
-        //    FixUrls((IEnumerable<HomeSlide>)data.List);
-        //    return data;
-        //}
+        public override LoadResult<HomeSlide> LoadObjects(LoadOptions opts)
+        {
+            var data = base.LoadObjects(opts);
+            FixUrls(data.List);
+            return data;
+        }
 
         protected virtual void FixUrls(IEnumerable<HomeSlide> list)
         {
