@@ -19,6 +19,7 @@ toolset set-version CodeShellCore.FileServer.Module 		5.2.0 %cd%
 
 toolset set-version Asga.Auth 								5.2.0 %cd%
 toolset set-version Asga.Auth.Module 						5.2.0 %cd%
+toolset set-version Asga.Auth.Module.Contracts 				5.2.0 %cd%
 
 toolset set-version Asga.Public 							5.2.0 %cd%
 toolset set-version Asga.Public.Module 						5.2.0 %cd%
