@@ -25,6 +25,7 @@ namespace CodeShellCore.ToolSet.Replace
             builder.FillProperty(e => e.TargetFile, "target", 't', order: 1, isRequired: true);
             builder.FillProperty(e => e.Parameters, "source-string", 'd');
             builder.FillProperty(e => e.ReplacePattern, "pattern", 'p', order: 3).SetDefault("%{}%");
+            builder.FillProperty(e => e.UseRegex, "regex", 'r');
         }
 
         protected override Task<Result> HandleAsync(ReplaceParametersRequest request)
@@ -50,8 +51,15 @@ namespace CodeShellCore.ToolSet.Replace
             foreach (var par in data)
             {
                 var pattern = request.ReplacePattern.Replace("{}", par.Key);
-                var reg = new Regex(pattern);
-                fileContent = reg.Replace(fileContent, par.Value);
+                if (request.UseRegex)
+                {
+                    var reg = new Regex(pattern);
+                    fileContent = reg.Replace(fileContent, par.Value);
+                }
+                else
+                {
+                    fileContent = fileContent.Replace(pattern, par.Value);
+                }
             }
             File.WriteAllText(request.TargetFile, fileContent);
             return Task.FromResult(new Result());

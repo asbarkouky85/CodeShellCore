@@ -11,5 +11,6 @@ namespace CodeShellCore.ToolSet.Replace
         public string TargetFile { get; set; }
         public string InputFormat { get; set; }
         public string ReplacePattern { get; set; }
+        public bool UseRegex { get; set; }
     }
 }
