@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Moldster.Db;
-using System;
+﻿using CodeShellCore.Moldster;
 using Microsoft.EntityFrameworkCore;
-using CodeShellCore.Moldster;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GenerationTest.Api.Data
 {
@@ -47,7 +45,7 @@ namespace GenerationTest.Api.Data
 
         public static void PageCategories(MoldsterContext cont)
         {
-            
+
             cont.PageCategories.Add(new PageCategory
             {
                 Id = 1,
@@ -75,7 +73,7 @@ namespace GenerationTest.Api.Data
                 HasRoute = true,
                 IsHomePage = true
             });
-            
+
 
         }
 
