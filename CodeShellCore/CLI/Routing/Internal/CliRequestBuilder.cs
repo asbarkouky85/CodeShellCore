@@ -14,10 +14,11 @@ namespace CodeShellCore.Cli.Routing.Internal
 
         public IEnumerable<ArgumentItem<T>> KeyList => _keys;
 
-        public void FillProperty<TVal>(Expression<Func<T, TVal>> t, string key, char? ch = null, int? order = null, bool isRequired = false)
+        public ArgumentItem<T, TVal> FillProperty<TVal>(Expression<Func<T, TVal>> t, string key, char? ch = null, int? order = null, bool isRequired = false)
         {
             var item = new ArgumentItem<T, TVal>(t, key, ch, order, isRequired);
             _keys.Add(item);
+            return item;
         }
 
         public void Document()
@@ -25,11 +26,11 @@ namespace CodeShellCore.Cli.Routing.Internal
             var keys = _keys.OrderBy(e => e.Order ?? 30).ToList();
             foreach (var item in keys)
             {
-                var charSymb = item.CharacterSymbol.HasValue ? ("-" + item.CharacterSymbol)+", " : "";
+                var charSymb = item.CharacterSymbol.HasValue ? ("-" + item.CharacterSymbol) + ", " : "";
                 var ord = item.Order.HasValue ? "[" + (item.Order).ToString() + "]" : "";
                 var req = item.IsRequired ? " *" : "";
                 var isBool = item.IsBool ? "" : " [value]";
-                Console.Write($"{ord}[{charSymb}--{item.Key}]{isBool}{req}\t:\t" );
+                Console.Write($"{ord}[{charSymb}--{item.Key}]{isBool}{req}\t:\t");
                 using (ColorSetter.Set(ConsoleColor.White))
                 {
                     Console.WriteLine(item.Description);
