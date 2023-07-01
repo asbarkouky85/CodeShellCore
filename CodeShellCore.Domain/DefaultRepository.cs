@@ -160,6 +160,11 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
+        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<T> GetList()
         {
             throw new NotImplementedException();

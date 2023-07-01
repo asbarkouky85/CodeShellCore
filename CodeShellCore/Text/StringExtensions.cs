@@ -44,6 +44,23 @@ namespace CodeShellCore.Text
 
         }
 
+        public static string ToMD5WithSalt(this string input)
+        {
+            var salt = Encoding.UTF8.GetBytes("iNNRcq$T='8GULqT)!1P|g63O;d;gCX0C,HpzV?wADhcd,-l1VrFr|+3)>aYMv=");
+            var password = Encoding.UTF8.GetBytes(input);
+
+            var hmacMD5 = new HMACMD5(salt);
+            var saltedHash = hmacMD5.ComputeHash(password);
+
+
+            StringBuilder sBuilder = new StringBuilder();
+            for (int i = 0; i < saltedHash.Length; i++)
+                sBuilder.Append(saltedHash[i].ToString("x2"));
+
+            return sBuilder.ToString();
+
+        }
+
         /// <summary>
         /// Serializes object to json string
         /// </summary>

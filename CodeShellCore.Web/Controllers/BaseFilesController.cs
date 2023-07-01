@@ -16,7 +16,7 @@ namespace CodeShellCore.Web.Controllers
             Dictionary<string, IFormFile> dictionary = new Dictionary<string, IFormFile>();
             foreach (var f in Request.Form.Files)
             {
-                dictionary[f.Name] = f;
+                dictionary[f.FileName] = f;
             }
             return Service.Upload(dictionary);
         }

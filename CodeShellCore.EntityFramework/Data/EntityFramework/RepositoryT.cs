@@ -439,8 +439,31 @@ namespace CodeShellCore.Data.EntityFramework
             var q = Loader.Where(expression);
             return QueryDto<TR>(q).FirstOrDefault();
         }
+        //
+        // Summary:
+        //     Used to get a IQueryable that is used to retrieve entities from entire table.
+        //     One or more
+        //
+        // Parameters:
+        //   includes:
+        //     A list of include expressions.
+        //
+        // Returns:
+        //     IQueryable to be used to select entities from database
+        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes)
+        {
+           
+           var dbSet = DbContext.Set<T>();
 
-        
+            IQueryable<T> query = null;
+            foreach (var include in includes)
+            {
+                query = dbSet.Include(include);
+            }
+
+            return query ?? dbSet;
+
+        }
     }
 }
 

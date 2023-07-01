@@ -17,7 +17,15 @@ namespace CodeShellCore.Files.Uploads
         public UploadedFileHandler()
         {
             TempRoot = Path.Combine(Shell.AppRootPath, Shell.PublicRoot);
-            SaveRoot = Path.Combine(Shell.AppRootPath, Shell.PublicRoot);
+            
+            if (!string.IsNullOrEmpty(Shell.SharedPathRoot))
+            {
+                SaveRoot = Path.Combine(Shell.SharedPathRoot);
+            }
+            else
+            {
+                SaveRoot = Path.Combine(Shell.AppRootPath, Shell.PublicRoot);
+            }
         }
         public virtual string GetUrlById(string id)
         {

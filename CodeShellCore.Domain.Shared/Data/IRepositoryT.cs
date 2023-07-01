@@ -4,6 +4,7 @@ using CodeShellCore.Data.Mapping;
 using CodeShellCore.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace CodeShellCore.Data
@@ -48,6 +49,17 @@ namespace CodeShellCore.Data
         void DeleteById(object id);
         void Merge(T obj);
         void Update(T obj);
-
+        //
+        // Summary:
+        //     Used to get a IQueryable that is used to retrieve entities from entire table.
+        //     One or more
+        //
+        // Parameters:
+        //   includes:
+        //     A list of include expressions.
+        //
+        // Returns:
+        //     IQueryable to be used to select entities from database
+        IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes);
     }
 }

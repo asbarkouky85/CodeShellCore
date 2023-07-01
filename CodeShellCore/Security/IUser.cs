@@ -12,7 +12,7 @@ namespace CodeShellCore.Security
         string Name { get; }
         string LogonName { get; }
         string App { get; }
-
+        bool? IsActiveDirectory { get; }
 
         long? GetUserIdAsLong();
         string GetPersonId();

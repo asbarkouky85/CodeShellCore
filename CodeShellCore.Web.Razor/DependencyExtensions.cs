@@ -64,6 +64,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddServiceFor<Domain, DomainService>();
 
             coll.AddTransient<RazorViewsService>();
+
             coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
 
             coll.AddSingleton<DefaultPathsService>();
@@ -75,6 +76,7 @@ namespace CodeShellCore.Web.Razor
             {
                 coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
             }
+
 
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();

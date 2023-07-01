@@ -10,6 +10,15 @@ using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using CodeShellCore.Moldster.Pages.Dtos;
+using CodeShellCore.Moldster.PageCategories.Services;
+using CodeShellCore.Moldster.Pages.Services;
+using CodeShellCore.Moldster.Builder.Services;
+using CodeShellCore.Moldster.Environments;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Moldster.Sql.Dtos;
+using CodeShellCore.Moldster.Domains;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
@@ -46,6 +55,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
 
         public SubmitResult TenantCreated([FromBody] DbCreationRequest req)
         {
+
             acc.CurrentEnvironment = paths.GetEnvironments().Find(d => d.Name == req.Environment);
 
             if (acc.CurrentEnvironment != null)
@@ -101,7 +111,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         }
 
         public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
-        {
+            {
             return pageService.GetEditLookups(data);
         }
 
@@ -111,8 +121,9 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         }
 
         public LoadResult<PageListDTO> GetCollection(string id, LoadOptions options)
-        {
+            {
             return pageService.GetCollection(id, options);
         }
+
     }
 }

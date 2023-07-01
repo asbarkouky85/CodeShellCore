@@ -17,6 +17,8 @@ namespace CodeShellCore.UnitTest
 
         protected override IConfiguration Configuration => _configRoot;
 
+        protected override string sharedPathRoot => throw new NotImplementedException();
+
         private readonly Action<CodeshellAppContext> _otherRegistration;
 
         public static IServiceScope CurrentScope;

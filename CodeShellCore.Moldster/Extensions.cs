@@ -4,17 +4,25 @@ using CodeShellCore.DependencyInjection;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.Data;
+using CodeShellCore.Moldster.Data.Internal;
+using CodeShellCore.Moldster.Data.Repositories;
+using CodeShellCore.Moldster.Data.Repositories.Internal;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Domains.Services;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Localization.Services;
 using CodeShellCore.Moldster.Navigation;
+using CodeShellCore.Moldster.Navigation.Services;
 using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.PageCategories.Services;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Pages.Services;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster.Resources.Services;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Moldster.Tenants;
@@ -46,7 +54,7 @@ namespace CodeShellCore.Moldster
             }
             else
             {
-                coll.AddScoped<MoldsterContext>();
+                coll.AddDbContext<MoldsterContext>();
             }
 
             //coll.AddCodeShellEntityFramework();

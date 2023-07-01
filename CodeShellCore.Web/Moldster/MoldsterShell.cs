@@ -37,7 +37,8 @@ namespace CodeShellCore.Web.Moldster
         public override void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseStaticFiles();
-           
+            var hot = getConfig("UseHotUpdate")?.Value == "True";
+
             base.ConfigureHttp(app, env);
 
             var hot = getConfig("UseHotUpdate")?.Value == "True";
@@ -51,6 +52,8 @@ namespace CodeShellCore.Web.Moldster
                 });
 #pragma warning restore CS0618 // Type or member is obsolete
             }
+
+            base.ConfigureHttp(app, env);
         }
     }
 }

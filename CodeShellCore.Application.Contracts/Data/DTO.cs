@@ -15,6 +15,7 @@ namespace CodeShellCore.Data
 
     public abstract class DTO<T, TPrim> : EntityDto<TPrim>,IEditable<TPrim>//, IDTO<T> where T : class
     {
+        public TPrim Id { get; set; }
         public T Entity { get; set; }
         public string State { get; set; }
     }

@@ -16,6 +16,22 @@ namespace CodeShellCore.Http.Pushing
                 Headers["Sender"] = "id=" + Configuration.SenderId;
         }
 
+        public FirebasePushResult SendNotificationToFlutter(FirebaseFlutterRequest request)
+        {
+            FirebasePushResult res = new FirebasePushResult();
+
+            try
+            {
+                res = PostAs<FirebasePushResult>("send", request);
+            }
+            catch (Exception ex)
+            {
+                res.SetException(ex);
+            }
+            return res;
+
+        }
+
         public FirebasePushResult SendNotification(FirebaseRequest data)
         {
             FirebasePushResult res = new FirebasePushResult();

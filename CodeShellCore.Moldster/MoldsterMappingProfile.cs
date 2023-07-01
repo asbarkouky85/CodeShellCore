@@ -95,7 +95,7 @@ namespace CodeShellCore.Moldster
 
         void LocalizationMapping()
         {
-
+            CreateMap<CustomField, CustomFieldDto>();
         }
 
         void PagesMapping()

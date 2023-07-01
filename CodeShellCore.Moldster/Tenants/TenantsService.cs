@@ -29,7 +29,7 @@ namespace CodeShellCore.Moldster.Tenants
         {
             var entity = Mapper.Map<TenantDto, Tenant>(dto);
 
-            long id = unit.TenantRepository.GetMax(d => d.Id);
+                long id = unit.TenantRepository.GetMax(d => d.Id);
             entity.Id = id + 1;
             if (!unit.TenantRepository.Exist(d => true))
             {

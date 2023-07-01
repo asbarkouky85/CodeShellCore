@@ -1,9 +1,9 @@
-﻿using AspNetCore.Reporting;
+﻿//using AspNetCore.Reporting;
 using CodeShellCore.Files;
 using CodeShellCore.Files.Reporting;
-using System.Collections;
-using System.Collections.Generic;
+using Microsoft.Reporting.NETCore;
 using System.IO;
+
 
 namespace CodeShellCore.Reporting
 {
@@ -11,14 +11,15 @@ namespace CodeShellCore.Reporting
     {
         public LocalReport LocalReport { get; private set; }
         public DeviceInfoXML DeviceInfo { get; private set; }
-        protected Dictionary<string, IEnumerable> _datasources;
+       // protected Dictionary<string, IEnumerable> _datasources;
+        protected ReportDataSource _datasources;
         protected ReportTypes reportType;
-        public Dictionary<string, IEnumerable> DataSources
+        public ReportDataSource DataSources
         {
             get
             {
                 if (_datasources == null)
-                    _datasources = new Dictionary<string, IEnumerable>();
+                    _datasources = new ReportDataSource();
                 return _datasources;
             }
         }
@@ -28,7 +29,8 @@ namespace CodeShellCore.Reporting
             if (!File.Exists(path))
                 throw new FileNotFoundException("File Not Found", path);
 
-            LocalReport = new LocalReport(path);
+            LocalReport = new LocalReport();
+            LocalReport.ReportPath= path;
             reportType = type;
 
             DeviceInfo = DeviceInfoXML.Make(type);
@@ -41,20 +43,20 @@ namespace CodeShellCore.Reporting
 
         protected virtual void AddDataSources()
         {
-            foreach (var kvp in DataSources)
-            {
-                LocalReport.AddDataSource(kvp.Key, kvp.Value);
-            }
+           
+                LocalReport.DataSources.Add(DataSources);
+            
+        }
         }
 
         public virtual FileBytes GetFile(string downloadName = null)
         {
             AddDataSources();
-            var rep = LocalReport.Execute(ConvertType());
+            var rep = LocalReport.Render(reportType.ToString());
             return new FileBytes
             {
                 FileName = downloadName,
-                Bytes = rep.MainStream,
+                Bytes = rep,
                 Extension = reportType.GetExtension(),
                 MimeType = reportType.GetMime()
             };

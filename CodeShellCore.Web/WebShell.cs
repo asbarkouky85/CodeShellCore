@@ -22,6 +22,7 @@ namespace CodeShellCore.Web
     public abstract class WebShell : Shell
     {
         private string _appRoot;
+        private string _sharedPathRoot;
         private IServiceProvider _appProvider;
 
         public static string AppRootUrl { get { return ((WebShell)App).urlRoot; } }
@@ -31,6 +32,7 @@ namespace CodeShellCore.Web
         /// </summary>
         protected virtual string urlRoot { get { return "~"; } }
         protected override string appRoot { get { return _appRoot; } }
+        protected override string sharedPathRoot { get { return _sharedPathRoot; } }
         /// <summary>
         /// public folder (Default : 'wwwroot')
         /// </summary>
@@ -142,6 +144,7 @@ namespace CodeShellCore.Web
         public virtual void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             _appRoot = env.ContentRootPath;
+            _sharedPathRoot = _config.GetValue<string>("SharedPathRoot");
             _appProvider = app.ApplicationServices;
 
             if (env.IsDevelopment())

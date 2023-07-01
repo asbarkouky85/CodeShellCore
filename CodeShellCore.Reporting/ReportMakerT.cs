@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Files.Reporting;
+using Microsoft.Reporting.NETCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace CodeShellCore.Reporting
             foreach (var p in inf)
             {
                 if (p.Name != "Template")
-                    LocalReport.AddDataSource(p.Name, p.GetValue(Data));
+                    LocalReport.DataSources.Add(new ReportDataSource { Name= p.Name, Value= p.GetValue(Data) });
             }
         }
     }

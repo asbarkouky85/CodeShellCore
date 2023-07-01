@@ -63,6 +63,7 @@ namespace CodeShellCore
         public static string LocalizationAssembly { get { return App.localizationAssembly ?? ProjectAssembly.GetName().Name; } }
         public static string PublicRoot { get { return App.publicRelativePath; } }
         public static string ReportsRoot { get { return App.reportsRoot; } }
+        public static string SharedPathRoot { get { return App.sharedPathRoot; } }
 
 
         public static Encryptor Encryptor
@@ -124,6 +125,7 @@ namespace CodeShellCore
         protected abstract bool useLocalization { get; }
 
         protected abstract string appRoot { get; }
+        protected abstract string sharedPathRoot { get; }
         protected abstract CultureInfo defaultCulture { get; }
         protected abstract IServiceProvider _scopedProvider { get; }
 
