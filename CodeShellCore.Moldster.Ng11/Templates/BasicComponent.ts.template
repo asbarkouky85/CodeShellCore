@@ -1,0 +1,10 @@
+﻿import { Component } from "@angular/core";
+import { %BaseClass% } from "%BaseClassLocation%";
+
+@Component({ templateUrl : "./%TemplateName%.html", selector : "%Selector%" })
+export class %ComponentName% extends %BaseClass% {
+	public get CollectionId(): string | null { return %CollectionId%; }
+
+	ViewParams = %ViewParams%;
+	LookupOptions = %Sources%;
+}

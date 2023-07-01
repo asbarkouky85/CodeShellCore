@@ -1,0 +1,40 @@
+﻿import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { AuthFilter, ResourceActions } from "codeshell/security";
+import { DomainData } from 'codeshell/moldster';
+import { Translator } from "codeshell/localization";
+
+import { Login } from "@base/main/login.component";
+
+%ComponentImports%
+%LocalizationImports%
+
+Translator.SetLoaders({
+    %LocalizationLoaders%
+});
+
+const routes: Routes = [
+    { path: 'login', component: Login, data: { action: 'anonymous', name:"Login" } },
+%Routes%
+    %DefaultRoute%
+    { path: '**', redirectTo: '/' }
+
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}
+
+let data: DomainData[] | null = null;
+
+export function GetDomainsData(): DomainData[] {
+    if (!data) {
+        data = [
+			%DomainsData%
+		];
+    }
+    return data;
+}

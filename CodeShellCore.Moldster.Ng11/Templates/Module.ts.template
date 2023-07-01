@@ -1,0 +1,39 @@
+import { NgModule } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
+import { CodeShellModule } from 'codeshell';
+import { DomainDataProvider } from 'codeshell/moldster';
+
+import { %BaseAppModuleName% } from '%BaseAppModulePath%';
+
+import { %MainComponentName% } from '%MainComponentPath%';
+import { SharedModule } from './shared/shared.module';
+import { AppRoutingModule, GetDomainsData } from '%RoutesModulePath%';
+%ModuleImports%
+window["APP_VERSION"] = "%Version%";
+
+@NgModule({
+    bootstrap: [%MainComponentName%],
+	declarations: [%MainComponentName%, %Declarations%],
+    imports: [
+		ToastrModule.forRoot(),
+        CodeShellModule.forRoot(),
+        %BaseAppModuleName%.forRoot(),
+        SharedModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule
+    ],
+    providers: [
+        { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) },
+        %BaseHref%
+    ]
+})
+export class %Code%Module {
+	
+}
+
+%Registrations%

@@ -1,0 +1,17 @@
+﻿import { Component, Injector } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+
+import { Shell } from 'codeshell/main';
+import { %BaseComponentName% } from '%BaseComponentPath%';
+
+@Component({
+    selector: 'app',
+    templateUrl: './%TemplateName%.html'
+})
+export class %Name% extends %BaseComponentName% {
+
+    constructor(inj: Injector, trans: Title) {
+        super(inj, trans);
+        Shell.Main = this;
+    }
+}

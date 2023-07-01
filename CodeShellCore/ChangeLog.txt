@@ -1,0 +1,6 @@
+﻿v1.1.1
+	- Hijri to greg update
+	- added login by id to all authentication services
+v1.1.2
+	- not all localization pages required
+	- added log to upload HttpService

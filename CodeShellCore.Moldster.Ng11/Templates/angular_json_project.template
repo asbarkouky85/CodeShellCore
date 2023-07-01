@@ -1,0 +1,119 @@
+{
+  "projectType": "application",
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "root": "",
+  "sourceRoot": "src",
+  "prefix": "app",
+  "architect": {
+    "build": {
+      "builder": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "wwwroot/%Name%",
+        "index": "src/index.html",
+        "main": "src/main-%Name%.ts",
+        "polyfills": "src/polyfills.ts",
+        "tsConfig": "tsconfig.json",
+        "aot": true,
+        "allowedCommonJsDependencies": [
+          "@ant-design/colors",
+          "chart.js",
+          "cookie-js",
+          "js-sha256",
+          "@uppy/xhr-upload",
+          "@uppy/dashboard",
+          "@uppy/core"
+        ],
+        "assets": [
+          "src/favicon.ico",
+          "src/assets"
+        ],
+        "styles": [
+          {
+            "bundleName": "primeicons",
+            "input": "node_modules/primeicons/primeicons.css",
+            "inject": true
+          },
+          {
+            "bundleName": "primeng.min",
+            "input": "node_modules/primeng/resources/primeng.min.css",
+            "inject": true
+          },
+          {
+            "bundleName": "primeng.theme",
+            "input": "node_modules/primeng/resources/themes/saga-blue/theme.css",
+            "inject": true
+          },
+          {
+            "input": "node_modules/@danielmoncada/angular-datetime-picker/assets/style/picker.min.css",
+            "bundleName": "angular-datetime.min",
+            "inject": true
+          }
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "src/core/base/server-config.ts",
+              "with": "src/core/base/server-config.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "builder": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "browserTarget": "%Name%:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "%Name%:build:production"
+        }
+      }
+    },
+    "extract-i18n": {
+      "builder": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "%Name%:build"
+      }
+    },
+    "lint": {
+      "builder": "@angular-devkit/build-angular:tslint",
+      "options": {
+        "tsConfig": [
+          "tsconfig.app.json",
+          "tsconfig.spec.json",
+          "e2e/tsconfig.json"
+        ],
+        "exclude": [
+          "**/node_modules/**"
+        ]
+      }
+    }
+  }
+}

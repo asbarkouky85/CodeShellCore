@@ -1,0 +1,22 @@
+﻿import { NgModule } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { %BaseAppModuleName% } from '%BaseAppModulePath%';
+import { ServerConfigBase, Registry } from "codeshell/main";
+%ComponentImports%
+
+@NgModule({
+    declarations: [%Components%],
+    exports: [
+		%Components%
+		%BaseAppModuleName%
+	],
+    imports: [
+        %BaseAppModuleName%
+    ],
+	entryComponents:[%EmbeddedComponents%]
+})
+export class %Name%Module {
+
+}
+
+%Registrations%

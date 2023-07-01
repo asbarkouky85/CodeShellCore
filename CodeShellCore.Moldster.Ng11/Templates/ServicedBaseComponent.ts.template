@@ -1,0 +1,8 @@
+﻿import { %Parent% } from "%ParentPath%";
+import { %Resource%Service } from "%ServicePath%";
+import { Component } from "@angular/core";
+
+@Component({ template : "" })
+export abstract class %Name% extends %Parent%{
+	Service = new %Resource%Service();
+}
