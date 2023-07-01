@@ -20,10 +20,22 @@ namespace Asga.Auth
 {
     public static class AsgaAuthModule
     {
-        public static void AddAuthData(this IServiceCollection coll, bool asDefaultModule, IConfiguration config = null)
+        public static void AddAuthData(this IServiceCollection coll, bool asDefaultModule, IConfiguration config)
         {
 
             coll.AddCodeshellDbContext<AuthContext>(asDefaultModule, config, "Auth");
+            coll.AddAuthData(asDefaultModule);
+        }
+
+        public static void AddAuthData(this IServiceCollection coll, bool asDefaultModule, Action<DbContextOptionsBuilder> opts)
+        {
+
+            coll.AddDbContext<AuthContext>(opts);
+            coll.AddAuthData(asDefaultModule);
+        }
+
+        public static void AddAuthData(this IServiceCollection coll, bool asDefaultModule)
+        {
             coll.AddUnitOfWork<AuthUnit, IAuthUnit>(asDefaultModule);
 
             coll.AddScoped<ISecurityUnit>(d => d.GetService<AuthUnit>());
@@ -47,29 +59,39 @@ namespace Asga.Auth
 
             coll.AddConfiguredCollections(typeof(AsgaRepository<,>));
             coll.AddTransient(typeof(AsgaRepository<,>));
-
         }
 
-        public static void AddAsgaAuthModule(this IServiceCollection coll, IConfiguration config, bool defaultModule = true)
+        public static void AddAsgaAuthModule(this IServiceCollection coll)
         {
-            coll.AddAuthData(defaultModule, config);
             coll.AddCodeShellApplication();
             coll.AddTransient<IAuthLookupService, AuthLookupService>();
             coll.AddTransient<IAuthenticationMailService, AsgaAuthMailService>();
             coll.AddTransient<AuthorizationService>();
             coll.AddServiceFor<Role, RolesService, IRolesService>();
             coll.AddServiceFor<User, UsersService, IUsersService>();
-            
+
             coll.AddDataSeeders<AuthContext>(e =>
             {
                 e.AddSeeder<AuthDataSeeder>();
             });
         }
 
-        public static void MigrateAuthDb(this IServiceProvider prov,bool seed=true)
+        public static void AddAsgaAuthModule(this IServiceCollection coll, IConfiguration config, bool defaultModule = true)
+        {
+            coll.AddAuthData(defaultModule, config);
+            coll.AddAsgaAuthModule();
+        }
+
+        public static void AddAsgaAuthModule(this IServiceCollection coll, bool defaultModule,Action<DbContextOptionsBuilder> builder)
+        {
+            coll.AddAuthData(defaultModule, builder);
+            coll.AddAsgaAuthModule();
+        }
+
+        public static void MigrateAuthDb(this IServiceProvider prov, bool seed = true)
         {
             prov.MigrateContext<AuthContext>(seed);
-            
+
         }
     }
 }

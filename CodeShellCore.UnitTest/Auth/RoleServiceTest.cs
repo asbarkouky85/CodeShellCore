@@ -21,10 +21,9 @@ namespace CodeShellCore.UnitTest.Auth
         {
             var sd = new UnitTestShell(context =>
             {
-                context.Services.AddAsgaAuthModule(context.Configuration, false);
+                context.Services.AddAsgaAuthModule( false, d => d.UseInMemoryDatabase("mydb"));
                 context.Services.AddAsgaAuthWeb();
                 context.Services.AddTransient<AuthDataInit>();
-                context.Services.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
             });
             Shell.Start(sd);
             RunScoped(prov =>

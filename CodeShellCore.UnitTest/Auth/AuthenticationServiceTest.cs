@@ -26,12 +26,11 @@ namespace CodeShellCore.UnitTest.Auth
             Shell.Start(new UnitTestShell(context =>
             {
                 //context.Services.AddCodeShellApplication
-                context.Services.AddAsgaAuthModule(context.Configuration);
+                context.Services.AddAsgaAuthModule(true, d => d.UseInMemoryDatabase("mydb"));
                 context.Services.AddAsgaAuthWeb();
 
                 context.Services.AddScoped<IHttpContextAccessor>(d => new TestHttpContextAccessor(d));
 
-                context.Services.AddDbContext<AuthContext>(d => d.UseInMemoryDatabase("mydb"));
                 context.Services.AddScoped<AuthDataInit>();
             }));
             RunScoped(sc => sc.GetService<AuthDataInit>().IntitializeUsersData());

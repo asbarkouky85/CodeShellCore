@@ -31,24 +31,19 @@ namespace CodeShellCore.Moldster
     {
         public static void AddMoldsterDbData(this IServiceCollection coll, IConfiguration config = null)
         {
-            if (config != null)
-            {
-                var conn = config.GetConnectionString("Moldster") ?? config.GetConnectionString("Default");
-                if (string.IsNullOrEmpty(conn))
-                {
-                    throw new Exception("Moldster Connection string is not found in appsettings");
-                }
-                else if (conn != "TEST")
-                {
-                    coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(conn));
-                }
-            }
-            else
-            {
-                coll.AddDbContext<MoldsterContext>();
-            }
+            coll.AddCodeshellDbContext<MoldsterContext>(false, config, "Moldster");
 
-            //coll.AddCodeShellEntityFramework();
+            _registerDataLayer(coll);
+        }
+
+        public static void AddMoldsterDbData(this IServiceCollection coll, Action<DbContextOptionsBuilder> builderOptions)
+        {
+            coll.AddDbContext<MoldsterContext>(builderOptions);
+            _registerDataLayer(coll);
+        }
+
+        private static void _registerDataLayer(IServiceCollection coll)
+        {
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
             coll.AddCodeShellEntityFramework();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));

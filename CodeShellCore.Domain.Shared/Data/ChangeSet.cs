@@ -17,18 +17,18 @@ namespace CodeShellCore.Data.Helpers
                 lst = new List<T>();
             }
                
-            set.SetAdded(lst.Where(d => d.State == "Added"));
-            set.SetUpdated(lst.Where(d => d.State == "Modified"));
-            set.SetDeleted(lst.Where(d => d.State == "Removed"));
+            set.SetAdded(lst.Where(d => d.State == ChangeStates.Added).ToList());
+            set.SetUpdated(lst.Where(d => d.State == ChangeStates.Modified).ToList());
+            set.SetDeleted(lst.Where(d => d.State == ChangeStates.Removed).ToList());
 
             return set;
         }
     }
     public class ChangeSet<T> : ChangeSet where T : class
     {
-        public ICollection<T> Added { get; private set; }
-        public ICollection<T> Updated { get; private set; }
-        public ICollection<T> Deleted { get; private set; }
+        public ICollection<T> Added { get; private set; } = new List<T>();
+        public ICollection<T> Updated { get; private set; } = new List<T>();
+        public ICollection<T> Deleted { get; private set; } = new List<T>();
 
         protected override void SetAdded(IEnumerable lst)
         {
