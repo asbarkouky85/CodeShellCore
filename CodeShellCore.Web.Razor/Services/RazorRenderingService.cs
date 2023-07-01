@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Http;
+using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -13,15 +13,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
-using CodeShellCore.Helpers;
-using CodeShellCore.Services;
-using CodeShellCore.Http;
-using CodeShellCore.Files.Logging;
-using CodeShellCore.Moldster.PageCategories.Dtos;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.Pages;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Razor.Services
 {
@@ -97,14 +93,14 @@ namespace CodeShellCore.Web.Razor.Services
             {
                 using (var c = SW.Measure())
                 {
-                    
+
                     ViewEngineResult viewResult = _razorViewEngine.FindView(actionContext, viewName, false);
-                    
+
                     if (viewResult.View == null)
                         throw new Exception($"{viewName} does not match any available view");
 
                     var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
-                    
+
                     if (model != null)
                         viewDictionary.Model = model;
 
@@ -124,7 +120,7 @@ namespace CodeShellCore.Web.Razor.Services
                         sw,
                         opts
                     );
-                    
+
                     var t = RenderAsync(viewResult, viewContext);
                     t.Wait();
                     if (t.Result.Code != 200)

@@ -11,10 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CodeGeneration\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj" />
   </ItemGroup>
 

@@ -31,6 +31,7 @@ namespace CodeShellCore.Cli.Routing
         protected Expression<Func<T, TVal>> _action;
         private bool _isBool;
         public override bool IsBool => _isBool;
+        protected TVal Default;
         
 
         public ArgumentItem(Expression<Func<T, TVal>> t, string key = null, char? ch = null, int? order = null, bool required = false) : base()
@@ -46,7 +47,11 @@ namespace CodeShellCore.Cli.Routing
             _isBool = typeof(TVal).RealType() == typeof(bool);
         }
 
-
+        public virtual ArgumentItem<T, TVal> SetDefault(TVal val)
+        {
+            Default = val;
+            return this;
+        }
 
         public override void SetMemberValue(T obj, string v)
         {

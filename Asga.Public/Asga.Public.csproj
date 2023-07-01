@@ -17,8 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
-    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
   </ItemGroup>
 
 </Project>

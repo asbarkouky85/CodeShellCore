@@ -17,8 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-    <ProjectReference Include="$(CODESHELL_HOME)\Asga.Mobile.Module\Asga.Mobile.Module.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+    <ProjectReference Include="..\Asga.Mobile.Module\Asga.Mobile.Module.csproj" />
   </ItemGroup>
 
 </Project>

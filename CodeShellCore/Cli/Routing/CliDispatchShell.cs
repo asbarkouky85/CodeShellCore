@@ -26,6 +26,7 @@ namespace CodeShellCore.Cli.Routing
         protected override CultureInfo defaultCulture => new CultureInfo("en");
         protected override IServiceProvider _scopedProvider => __scoped;
         protected override IConfiguration Configuration => configRoot;
+        protected override string sharedPathRoot => ".";
 
         protected override IServiceProvider buildRootProvider()
         {
@@ -114,18 +115,18 @@ namespace CodeShellCore.Cli.Routing
                 Console.WriteLine("No function provided");
                 return;
             }
-                
+
 
             using (var sc = GetScope())
             {
                 __scoped = sc.ServiceProvider;
                 var h = Builder.GetHandler(Arguments[0], sc.ServiceProvider);
-                if (h == null) 
+                if (h == null)
                 {
                     Console.WriteLine("Unknow function : " + Arguments[0]);
                     return;
                 }
-                
+
                 await h.HandleAsync(Arguments);
             }
 

@@ -4,9 +4,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Net;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace CodeShellCore.Moldster.Builder
 {

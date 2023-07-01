@@ -185,7 +185,7 @@ namespace CodeShellCore.Moldster.Builder
 
                 string zipFile = Names.GetOutputBundlePath(tenant, version, true);
                 string zipFileTarget = Utils.CombineUrl(path, BundleFolder, Path.GetFileName(zipFile));
-                
+
                 Utils.CreateFolderForFile(zipFileTarget);
                 if (File.Exists(zipFileTarget))
                 {

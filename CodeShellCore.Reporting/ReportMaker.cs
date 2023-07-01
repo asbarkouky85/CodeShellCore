@@ -11,7 +11,7 @@ namespace CodeShellCore.Reporting
     {
         public LocalReport LocalReport { get; private set; }
         public DeviceInfoXML DeviceInfo { get; private set; }
-       // protected Dictionary<string, IEnumerable> _datasources;
+        // protected Dictionary<string, IEnumerable> _datasources;
         protected ReportDataSource _datasources;
         protected ReportTypes reportType;
         public ReportDataSource DataSources
@@ -30,24 +30,24 @@ namespace CodeShellCore.Reporting
                 throw new FileNotFoundException("File Not Found", path);
 
             LocalReport = new LocalReport();
-            LocalReport.ReportPath= path;
+            LocalReport.ReportPath = path;
             reportType = type;
 
             DeviceInfo = DeviceInfoXML.Make(type);
         }
 
-        public static GenericReportMaker<T> CreateFor<T>(T model,ReportTypes type=ReportTypes.PDF) where T : ReportModel
-        { 
+        public static GenericReportMaker<T> CreateFor<T>(T model, ReportTypes type = ReportTypes.PDF) where T : ReportModel
+        {
             return new GenericReportMaker<T>(model, type);
         }
 
         protected virtual void AddDataSources()
         {
-           
-                LocalReport.DataSources.Add(DataSources);
-            
+
+            LocalReport.DataSources.Add(DataSources);
+
         }
-        }
+
 
         public virtual FileBytes GetFile(string downloadName = null)
         {
@@ -62,27 +62,6 @@ namespace CodeShellCore.Reporting
             };
         }
 
-        protected RenderType ConvertType()
-        {
-            switch (reportType)
-            {
-                case ReportTypes.Image:
-                    return RenderType.Image;
-                case ReportTypes.PDF:
-                    return RenderType.Pdf;
-                case ReportTypes.Excel:
-                    return RenderType.Excel;
-                case ReportTypes.ExcelXML:
-                    return RenderType.ExcelOpenXml;
-                case ReportTypes.Word:
-                    return RenderType.Word;
-                case ReportTypes.WordXML:
-                    return RenderType.WordOpenXml;
-
-            }
-            return RenderType.Pdf;
-        }
-
         public void SetPortrait()
         {
             DeviceInfo.PageHeight = 11.69;
@@ -95,4 +74,5 @@ namespace CodeShellCore.Reporting
             DeviceInfo.PageHeight = 8.27;
         }
     }
+
 }

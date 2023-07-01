@@ -1,6 +1,5 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
-using CodeShellCore.Moldster.Data;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
@@ -94,8 +93,6 @@ namespace CodeShellCore.Moldster.Services
 
         public PageOptions GetPageOptionsById(long pageId)
         {
-            List<ControlDTO> lst = new List<ControlDTO>();
-
             PageOptions opts = _unit.PageRepository.FindSingleAs(d => new PageOptions
             {
                 PageId = pageId,

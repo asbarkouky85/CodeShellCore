@@ -24,26 +24,25 @@ namespace CodeShellCore.Data.Helpers
             return set;
         }
     }
-    public class ChangeSet<T> : ChangeSet where T : class, IEditable
+    public class ChangeSet<T> : ChangeSet where T : class
     {
-        public IEnumerable<T> Added { get; private set; }
-        public IEnumerable<T> Updated { get; private set; }
-        public IEnumerable<T> Deleted { get; private set; }
+        public ICollection<T> Added { get; private set; }
+        public ICollection<T> Updated { get; private set; }
+        public ICollection<T> Deleted { get; private set; }
 
         protected override void SetAdded(IEnumerable lst)
         {
-            Added = lst as IEnumerable<T>;
+            Added = lst as ICollection<T>;
         }
-    public class ChangeSet<T> : ChangeSet where T : class
 
         protected override void SetUpdated(IEnumerable lst)
         {
-            Updated = lst as IEnumerable<T>;
+            Updated = lst as ICollection<T>;
         }
 
         protected override void SetDeleted(IEnumerable lst)
         {
-            Deleted = lst as IEnumerable<T>;
+            Deleted = lst as ICollection<T>;
         }
 
         public void Apply(IRepository<T> repo)
