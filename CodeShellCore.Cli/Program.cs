@@ -9,7 +9,7 @@ namespace CodeShellCore.Cli
         {
             if (Debugger.IsAttached)
             {
-                args = new[] { "migrate", "-p", @"C:\_git\Asga\FMS_git\FMS.Configuration.Api", "--tenant", "ASGA" };
+                args = new[] { "migrate", "-p", @"C:\_git\Asga\FMS_net5\FMS.Configuration.Api", "--tenant", "BaseLine" };
             }
             var sh = new CliShell(args);
             var t = sh.DispatchAsync();

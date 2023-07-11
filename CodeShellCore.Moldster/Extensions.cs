@@ -46,7 +46,7 @@ namespace CodeShellCore.Moldster
             }
             else
             {
-                coll.AddScoped<MoldsterContext>();
+                coll.AddDbContext<MoldsterContext>();
             }
 
             //coll.AddCodeShellEntityFramework();

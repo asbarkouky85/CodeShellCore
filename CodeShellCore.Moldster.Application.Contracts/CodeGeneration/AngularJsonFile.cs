@@ -27,7 +27,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
             }
             else
             {
-                var add = (JObject)JsonConvert.DeserializeObject("[]");
+                var add = (JObject)JsonConvert.DeserializeObject("{}");
                 ob.Add("projects", add);
             }
 
