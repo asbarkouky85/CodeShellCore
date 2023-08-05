@@ -11,10 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Navigation\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
     <ProjectReference Include="..\CodeShellCore.Moldster.Domain.Shared\CodeShellCore.Moldster.Domain.Shared.csproj" />
   </ItemGroup>
