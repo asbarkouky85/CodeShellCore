@@ -96,13 +96,13 @@ namespace CodeShellCore.Moldster.Pages
                 return;
             }
 
-            string mainCompBase = Unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == mod);
+            string mainCompBase = Paths.CoreAppName + "App";
             string temp = Molds.GetResourceByNameAsString(MoldNames.AppComponent_ts);
             var model = new AppComponentModel
             {
                 Name = "AppComponent",
                 TemplateName = Names.ApplyConvension("AppComponent", AppParts.Component),
-                BaseComponentName = mainCompBase.GetAfterLast("/") + "Base",
+                BaseComponentName = mainCompBase.GetAfterLast("/") + "BaseComponent",
                 BaseComponentPath = Names.GetBaseComponentFilePath(mainCompBase, true)
             };
             string contents = Writer.FillStringParameters(temp, model);

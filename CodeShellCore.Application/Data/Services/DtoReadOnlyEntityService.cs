@@ -5,10 +5,12 @@ using CodeShellCore.Text;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Data.Localization;
+using CodeShellCore.Security;
+using CodeShellCore.MultiTenant;
 
 namespace CodeShellCore.Data.Services
 {
-    public class DtoReadOnlyEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto>: IDtoReadOnlyEntityService<TPrime, TOptionsDto, TListDto, TSingleDto>
+    public class DtoReadOnlyEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto> : IDtoReadOnlyEntityService<TPrime, TOptionsDto, TListDto, TSingleDto>
         where T : class, IModel<TPrime>
         where TSingleDto : class
         where TListDto : class
@@ -18,6 +20,8 @@ namespace CodeShellCore.Data.Services
         public IKeyRepository<T, TPrime> Repository { get; private set; }
         public IObjectMapper Mapper { get; private set; }
         public ILookupsService LookupsService { get; private set; }
+        public IUserAccessor UserAccessor { get; private set; }
+        public CurrentTenant CurrentTenant { get; private set; }
         private ILocalizationDataService _localizationDataService;
         protected ILocalizationDataService LocalizationDataService
         {
@@ -35,12 +39,14 @@ namespace CodeShellCore.Data.Services
             }
         }
 
-        public DtoReadOnlyEntityService(IUnitOfWork unit) 
+        public DtoReadOnlyEntityService(IUnitOfWork unit)
         {
             DefaultUnit = unit;
             Repository = unit.GetRepositoryFor<T, TPrime>();
             Mapper = unit.ServiceProvider.GetService<IObjectMapper>();
             LookupsService = unit.ServiceProvider.GetService<ILookupsService>();
+            UserAccessor = unit.ServiceProvider.GetService<IUserAccessor>();
+            CurrentTenant = unit.ServiceProvider.GetService<CurrentTenant>();
         }
 
         public virtual LoadResult<TListDto> Get(TOptionsDto options)

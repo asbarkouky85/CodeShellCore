@@ -132,7 +132,7 @@ namespace CodeShellCore.Moldster
 
             CreateMap<PageControl, ControlRenderDto>()
                 .ForMember(e => e.Identifier, e => e.MapFrom(d => d.Control.Identifier))
-                .ForMember(e => e.Accessibilty, e => e.MapFrom(d => d.Accessability))
+                .ForMember(e => e.Accessibilty, e => e.MapFrom(d => (int)d.Accessability))
                 .ForMember(e => e.Collection, e => e.MapFrom(
                     d => d.SourceCollection != null ? new CollectionDTO
                     {

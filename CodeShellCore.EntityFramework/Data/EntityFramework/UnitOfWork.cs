@@ -3,6 +3,8 @@ using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.DependencyInjection;
+using CodeShellCore.EntityFramework;
+using CodeShellCore.MultiTenant;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Text.Localization;
@@ -19,7 +21,7 @@ namespace CodeShellCore.Data.EntityFramework
     /// <summary>
     /// Unit of work is a container for all the repositories
     /// </summary>
-    public abstract class UnitOfWork<TContext> : DefaultUnitOfWork, IUnitOfWork where TContext : DbContext
+    public abstract class UnitOfWork<TContext> : DefaultUnitOfWork, IUnitOfWork where TContext : CodeShellDbContext<TContext>
     {
         bool _userObtained = false;
         bool _obtainingUser = false;
@@ -52,7 +54,9 @@ namespace CodeShellCore.Data.EntityFramework
 
         public UnitOfWork(IServiceProvider provider) : base(provider)
         {
+            var tenant = _provider.GetService<CurrentTenant>();
             DbContext = _provider.GetService<TContext>();
+            DbContext.SetCurrentTenant(tenant);
             Projector = _provider.GetService<IQueryProjector>();
             DbContext.ChangeTracker.AutoDetectChangesEnabled = true;
         }
@@ -86,7 +90,7 @@ namespace CodeShellCore.Data.EntityFramework
         public override void EnableJsonLoading()
         {
 
-           // DbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+            // DbContext.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
         public override IRepository GetRepositoryFor(Type i)

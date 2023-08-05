@@ -118,16 +118,30 @@ namespace CodeShellCore.Text.Localization
         {
             Regex r = new Regex("[A-Z]");
             MatchCollection col = r.Matches(id);
+            string result = id;
             int i = 0;
 
             foreach (Match d in col)
             {
                 if (d.Index != 0)
                 {
-                    id = id.Insert(d.Index + (i++), separator);
+                    var isTransition = true;
+
+                    if (id.Length > (d.Index + 1))
+                        isTransition = !r.IsMatch(id[d.Index + 1].ToString());
+                    else
+                        isTransition = false;
+
+                    if (id.Length > 0)
+                        isTransition = isTransition || !r.IsMatch(id[d.Index - 1].ToString());
+
+                    if (isTransition)
+                        result = result.Insert(d.Index + (i++), separator);
                 }
             }
-            return id;
+            if (separator != "_")
+                result = result.Replace("_", "");
+            return result;
         }
 
         public static string IdToPhrase(string id)

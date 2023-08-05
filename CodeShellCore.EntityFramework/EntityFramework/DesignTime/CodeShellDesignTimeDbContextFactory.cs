@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CodeShellCore.Text.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,7 +12,9 @@ namespace CodeShellCore.EntityFramework.DesignTime
     public abstract class CodeShellDesignTimeDbContextFactory<TContext> : IDesignTimeDbContextFactory<TContext>
         where TContext : DbContext
     {
+
         protected abstract string ConnectionStringKey { get; }
+
         public TContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -23,9 +26,16 @@ namespace CodeShellCore.EntityFramework.DesignTime
             conn = configuration.GetConnectionString(ConnectionStringKey) ?? conn;
 
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
-            optionsBuilder.UseSqlServer(conn);
+
+            if (DesignTimeMigrationsAssemblies.Store.TryGetValue(typeof(TContext).Name, out var assembly))
+            {
+                optionsBuilder.UseSqlServer(conn, e => e.MigrationsAssembly(assembly));
+            }
+            else
+            {
+                optionsBuilder.UseSqlServer(conn);
+            }
             return (TContext)Activator.CreateInstance(typeof(TContext), new[] { optionsBuilder.Options });
-            //return new AssetsContext(optionsBuilder.Options);
         }
     }
 }

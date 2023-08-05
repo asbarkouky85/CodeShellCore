@@ -28,7 +28,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
         string _angular_convesion(string path)
         {
             path = path.Replace("\\", "/");
-            string[] parts = path.Split("/").Select(e => LangUtils.CamelCaseToWords(e.LCFirst(), "-").ToLower()).ToArray();
+            string[] parts = path.Split("/").Select(e => LangUtils.CamelCaseToWords(e, "-").ToLower()).ToArray();
             return string.Join("/", parts);
         }
 

@@ -5,10 +5,8 @@ using System.Text;
 
 namespace CodeShellCore.Data.Lookups
 {
-    public class NamedChildren
+    public class NamedChildren : Named<object>
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
         public IEnumerable Children { get; set; }
     }
 }

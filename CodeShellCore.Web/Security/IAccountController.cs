@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Security.Authentication;
+﻿using CodeShellCore.Security;
+using CodeShellCore.Security.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,8 @@ namespace CodeShellCore.Web.Security
 {
     public interface IAccountController
     {
-        IActionResult Login([FromBody]LoginModel model);
-        IActionResult GetUserData();
-        IActionResult RefreshToken([FromBody]RefreshTokenDTO refresh);
+        LoginResult Login(LoginModel model);
+        object GetUserData();
+        LoginResult RefreshToken(RefreshTokenDTO refresh);
     }
 }

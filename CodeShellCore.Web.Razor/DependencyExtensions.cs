@@ -56,6 +56,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddSignalR();
             coll.AddSignalRHub<IOutputMessageSender, GenerationHub>();
             coll.AddSignalRHub<IBundlingTasksNotifications, TasksHub>();
+            coll.AddAutoMapper(typeof(MoldsterMappingProfile).Assembly);
         }
 
         public static void AddMoldsterWeb(this IServiceCollection coll, bool legacy = false)

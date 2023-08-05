@@ -54,6 +54,7 @@ namespace CodeShellCore
         public static string SolutionFolder { get; private set; }
         public static Assembly ProjectAssembly { get; private set; }
         public static bool UseLocalization { get { return App.useLocalization; } }
+        public static bool UseMultiTenancy { get; set; }
         public static CultureInfo DefaultCulture { get { return App.defaultCulture; } }
         public static IEnumerable<string> SupportedLanguages { get { return App.Supordedlanguage; } }
         public static IServiceProvider RootInjector { get { return App.rootProvider; } }
@@ -89,6 +90,7 @@ namespace CodeShellCore
         #region Optional Properties
         protected virtual bool useTransporter => false;
         protected virtual bool useTimedJobs => false;
+        
         protected virtual IEnumerable<string> Supordedlanguage { get { return new[] { "ar", "en" }; } }
         protected virtual string publicRelativePath { get { return ""; } }
         protected virtual string localizationAssembly { get { return null; } }
@@ -123,21 +125,20 @@ namespace CodeShellCore
 
         #region Required Properties
         protected abstract bool useLocalization { get; }
-
         protected abstract string appRoot { get; }
         protected abstract string sharedPathRoot { get; }
         protected abstract CultureInfo defaultCulture { get; }
         protected abstract IServiceProvider _scopedProvider { get; }
-
-
         #endregion
 
         #region Methods
 
         public virtual void RegisterServices(IServiceCollection coll)
         {
-            
+            //coll.AddTransient(e => { return Configuration; });
+            UseMultiTenancy = Configuration.GetSection(ConfigNames.UseMultiTenancy).Get<bool?>() ?? true;
             coll.AddLogging();
+
             coll.AddSingleton<IFileHandler, FileSystemHandler>();
             coll.AddTransient<ILocaleTextProvider, ResxTextProvider>();
 
@@ -148,7 +149,7 @@ namespace CodeShellCore
 
             coll.AddScoped<ClientData>();
 
-            
+
 
         }
         protected abstract IConfigurationSection getConfig(string key);

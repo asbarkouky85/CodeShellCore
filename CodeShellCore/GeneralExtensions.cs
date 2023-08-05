@@ -1,7 +1,12 @@
 ﻿using CodeShellCore.Http;
 using CodeShellCore.Text;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
@@ -51,6 +56,36 @@ namespace CodeShellCore
 
         }
 
+        public static T GetSingletonInstanceOrNull<T>(this IServiceCollection services)
+        {
+            
+            var ins = services.FirstOrDefault(d => d.ServiceType == typeof(T));
+            return (T)services
+                .FirstOrDefault(d => d.ServiceType == typeof(T))
+                ?.ImplementationInstance;
+        }
+
+        [NotNull]
+        public static IConfiguration GetConfiguration(this IServiceCollection services)
+        {
+            var conf = services.GetConfigurationOrNull();
+            if (conf == null)
+                throw new Exception("Could not find an implementation of " + typeof(IConfiguration).AssemblyQualifiedName + " in the service collection.");
+            return conf;
+        }
+
+        [CanBeNull]
+        public static IConfiguration GetConfigurationOrNull(this IServiceCollection services)
+        {
+            var hostBuilderContext = services.GetSingletonInstanceOrNull<HostBuilderContext>();
+            if (hostBuilderContext?.Configuration != null)
+            {
+                return hostBuilderContext.Configuration as IConfigurationRoot;
+            }
+
+            return services.GetSingletonInstanceOrNull<IConfiguration>();
+        }
+
         public static int AsInt(this Enum val)
         {
             return (int)Convert.ChangeType(val, typeof(int));
@@ -82,7 +117,7 @@ namespace CodeShellCore
                 if (ex.InnerException != null)
                 {
                     var inner = ex.InnerException.GetStackTrace(recurse, ignorInvocationException);
-                    
+
                     message.Add("-------");
                     message.Add("");
                     message.AddRange(inner);

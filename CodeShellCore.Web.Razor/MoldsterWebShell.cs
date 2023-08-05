@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Moldster;
+﻿using CodeShellCore.DependencyInjection;
+using CodeShellCore.Moldster;
 using CodeShellCore.Web.Razor.Moldster;
 using CodeShellCore.Web.Razor.SignalR;
 using CodeShellCore.Web.Razor.Themes;
@@ -38,8 +39,9 @@ namespace CodeShellCore.Web.Razor
             coll.AddMoldsterConfigurator(UseLegacy);
             coll.AddMoldsterServerGeneration(UseLegacy);
             coll.AddMoldsterRazorHelpers();
+            
             coll.AddRazorPages().AddRazorRuntimeCompilation();
-
+            
             coll.Configure<MoldsterModuleOptions>(e =>
             {
                 e.ReplaceComponentHtml = true;
@@ -71,8 +73,8 @@ namespace CodeShellCore.Web.Razor
         protected override void OnApplicationStarted(IServiceProvider prov)
         {
             base.OnApplicationStarted(prov);
-            if (MigrateOnStartup)
-                prov.MigrateContext<MoldsterContext>();
+            //if (MigrateOnStartup)
+            //    prov.MigrateContext<MoldsterContext>();
             SearchExpressions.RegisterExpressions();
         }
     }

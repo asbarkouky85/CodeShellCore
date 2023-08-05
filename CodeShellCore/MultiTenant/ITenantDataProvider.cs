@@ -13,5 +13,6 @@ namespace CodeShellCore.MultiTenant
         string GenerateToken(long userId, long tenantId);
         Dictionary<long, string> GetContectionStringDictionary();
         void ClearCache();
+        
     }
 }
