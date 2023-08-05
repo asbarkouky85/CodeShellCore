@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CodeShellCore.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CodeShellCore.FileServer.Data
 {
-    public class FileServerDbContext : DbContext
+    public class FileServerDbContext : CodeShellDbContext<FileServerDbContext>
     {
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<AttachmentCategory> AttachmentCategories { get; set; }

@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Asga.Auth.Seeding;
+using CodeShellCore.Extensions.DependencyInjection;
 
 namespace Asga.Auth
 {
@@ -70,10 +71,7 @@ namespace Asga.Auth
             coll.AddServiceFor<Role, RolesService, IRolesService>();
             coll.AddServiceFor<User, UsersService, IUsersService>();
 
-            coll.AddDataSeeders<AuthContext>(e =>
-            {
-                e.AddSeeder<AuthDataSeeder>();
-            });
+            coll.AddDataSeeders(typeof(IAuthUnit).Assembly);
         }
 
         public static void AddAsgaAuthModule(this IServiceCollection coll, IConfiguration config, bool defaultModule = true)
@@ -82,7 +80,7 @@ namespace Asga.Auth
             coll.AddAsgaAuthModule();
         }
 
-        public static void AddAsgaAuthModule(this IServiceCollection coll, bool defaultModule,Action<DbContextOptionsBuilder> builder)
+        public static void AddAsgaAuthModule(this IServiceCollection coll, bool defaultModule, Action<DbContextOptionsBuilder> builder)
         {
             coll.AddAuthData(defaultModule, builder);
             coll.AddAsgaAuthModule();
@@ -90,7 +88,7 @@ namespace Asga.Auth
 
         public static void MigrateAuthDb(this IServiceProvider prov, bool seed = true)
         {
-            prov.MigrateContext<AuthContext>(seed);
+            
 
         }
     }
