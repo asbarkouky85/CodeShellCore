@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Mapping;
@@ -206,6 +207,11 @@ namespace CodeShellCore.Data
         }
 
         public T Merge(Expression<Func<T, bool>> ex, T obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MergeAsync(IEnumerable<T> list, Action<T, T> updateAction = null)
         {
             throw new NotImplementedException();
         }

@@ -11,6 +11,10 @@ namespace CodeShellCore.MQ.Events
     {
         public T Data { get; private set; }
 
+        private CrudEvent()
+        {
+
+        }
 
         public CrudEvent(T data, ActionType type, long? tenant = null)
         {

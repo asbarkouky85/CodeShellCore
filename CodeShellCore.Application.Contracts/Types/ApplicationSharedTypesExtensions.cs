@@ -29,11 +29,12 @@ namespace CodeShellCore.Types
                 var ints = type.GetInterfaces();
                 var t = ints.Where(d => d.Name == "IDTO`1").FirstOrDefault();
                 var gens = t.GetGenericArguments();
-                ret = gens[0];
+                return gens[0].GetEntityName(fullName);
             }
             else
             {
-                var attribute = (EntityNameAttribute)type.GetCustomAttributes(true).FirstOrDefault(e => e.GetType().IsAssignableFrom(typeof(EntityNameAttribute)));
+                var attrs = type.GetCustomAttributes(false);
+                var attribute = (EntityNameAttribute)attrs.FirstOrDefault(e => e is EntityNameAttribute);
                 if (attribute != null)
                     return attribute.EntityName;
             }

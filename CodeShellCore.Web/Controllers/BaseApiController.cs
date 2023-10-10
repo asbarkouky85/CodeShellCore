@@ -6,6 +6,8 @@ using CodeShellCore.Security.Authentication;
 using CodeShellCore.Web.Filters;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
+using CodeShellCore.Types;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CodeShellCore.Web.Controllers
 {
@@ -73,5 +75,18 @@ namespace CodeShellCore.Web.Controllers
             return new JsonResult(res);
         }
 
+
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            base.OnActionExecuted(context);
+            if (context.Result is ObjectResult)
+            {
+                var obj = (ObjectResult)context.Result;
+                if (obj.DeclaredType.Implements(typeof(IResult)) && !((IResult)obj.Value).IsSuccess)
+                {
+                    obj.StatusCode = (int)HttpStatusCode.ExpectationFailed;
+                }
+            }
+        }
     }
 }

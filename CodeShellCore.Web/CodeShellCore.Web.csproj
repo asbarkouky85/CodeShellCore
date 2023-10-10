@@ -19,12 +19,15 @@
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.23" />
 		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting" Version="4.2.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Moldster\Dtos\" />
 	</ItemGroup>
 
 </Project>

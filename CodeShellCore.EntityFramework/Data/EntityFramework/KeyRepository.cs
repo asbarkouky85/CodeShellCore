@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.EntityFramework
 {
@@ -138,5 +139,27 @@ namespace CodeShellCore.Data.EntityFramework
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="updateAction">args-->(fromList,fromDb)</param>
+        /// <returns></returns>
+        public override async Task MergeAsync(IEnumerable<T> list, Action<T, T> updateAction = null)
+        {
+            var dbList = await Loader.ToListAsync();
+            foreach (var item in list)
+            {
+                var entity = dbList.FirstOrDefault(e => e.Id.Equals(item.Id));
+                if (entity == null)
+                {
+                    Add(item);
+                }
+                else
+                {
+                    updateAction?.Invoke(item, entity);
+                }
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 import { RouterModule } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 
-import { CodeShellModule, Registry, ServerConfigBase } from "codeshell";
+import { CodeShellModule, Registry } from "codeshell";
 import { AuthFilter, ResourceActions } from "codeshell/security";
 
 import { SharedModule } from "%PathToRoot%shared/shared.module";

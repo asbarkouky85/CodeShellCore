@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace CodeShellCore.Moldster.Environments
 {
-    public class EnvironmentService : StandAloneService, IEnvironmentsService
+    public class EnvironmentService : ApplicationService, IEnvironmentsService
     {
         private readonly IPathsService paths;
 

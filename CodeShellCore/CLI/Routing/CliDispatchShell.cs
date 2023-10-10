@@ -53,7 +53,21 @@ namespace CodeShellCore.Cli.Routing
 
         public CliDispatchShell(string[] args)
         {
-            Arguments = args;
+            var argList = new List<string>();
+            foreach(var arg in args)
+            {
+                if (arg.StartsWith("env="))
+                {
+                    EnvironmentName = arg.Replace("env=", "");
+                    Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentName);
+                }
+                else
+                {
+                    argList.Add(arg);
+                }
+            }
+            Arguments = argList.ToArray();
+            
         }
 
         private static void ConfigureCurrent()

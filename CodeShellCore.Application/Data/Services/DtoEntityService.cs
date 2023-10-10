@@ -13,7 +13,7 @@ using CodeShellCore.Data.Localization;
 namespace CodeShellCore.Data.Services
 {
 
-    public class DtoEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto, TCreateDto, TUpdateDto> : 
+    public class DtoEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto, TCreateDto, TUpdateDto> :
         DtoReadOnlyEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto>, IDtoEntityService<TPrime, TOptionsDto, TListDto, TSingleDto, TCreateDto, TUpdateDto>
         where T : class, IModel<TPrime>
         where TSingleDto : class
@@ -22,12 +22,12 @@ namespace CodeShellCore.Data.Services
         where TUpdateDto : class, IEntityDto<TPrime>
         where TOptionsDto : LoadOptions
     {
-        
+
         public virtual bool ProjectGetSingle => true;
 
-        public DtoEntityService(IUnitOfWork unit):base(unit) 
+        public DtoEntityService(IUnitOfWork unit) : base(unit)
         {
-            
+
         }
 
         public virtual DeleteResult Delete(TPrime id)
@@ -45,7 +45,7 @@ namespace CodeShellCore.Data.Services
             return DefaultUnit.SaveChanges().MapToResult<DeleteResult>();
         }
 
-        
+
 
         protected virtual void AfterUpdate(TUpdateDto dto, T entity)
         {

@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Data.Attachments;
+using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.CustomFields;
 using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Data.Localization;
@@ -19,6 +20,34 @@ namespace CodeShellCore.DependencyInjection
         {
             coll.AddTransient(typeof(Repository<,>), t);
             coll.AddTransient(t);
+        }
+
+
+        /// <summary>
+        /// Registers classes used for configured collections that integrates with moldster
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="repository">Must implement <see cref="CodeShellCore.Data.ConfiguredCollections.ICollectionEFRepository{T, TContext}"/></param>
+        public static void AddConfiguredCollections(this IServiceCollection coll, Type repository)
+        {
+            coll.AddSingleton<ICollectionConfigService, CollectionConfigService>();
+            coll.AddTransient(typeof(ICollectionEFRepository<,>), repository);
+        }
+
+        /// <summary>
+        /// Registers classes used for configured collections that integrates with moldster while specifying a different collection service
+        /// </summary>
+        /// <typeparam name="TUnit"></typeparam>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="coll"></param>
+        /// <param name="repository">Must implement <see cref="CodeShellCore.Data.ConfiguredCollections.ICollectionEFRepository{T, TContext}"/></param>
+        public static void AddConfiguredCollections<TService>(this IServiceCollection coll, Type repository)
+            where TService : class, ICollectionConfigService
+        {
+            coll.AddSingleton<TService>();
+            coll.AddSingleton<ICollectionConfigService, TService>();
+            coll.AddTransient(repository);
+            coll.AddTransient(typeof(ICollectionEFRepository<,>), repository);
         }
 
         public static void AddCodeShellEntityFramework(this IServiceCollection coll)
@@ -53,25 +82,12 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<ILocalizablesRepository<T>, LocalizableRepository<T, TContext>>();
         }
 
-        public static void AddCodeshellDbContext<T>(this IServiceCollection coll, string key, IConfiguration configuration = null, bool asDefault = false, string migrationAssembly = null)
-            where T : DbContext
-        {
-            if (configuration != null)
-                coll.AddCodeshellDbContext<T>(configuration, key, asDefault, migrationAssembly);
-            else
-                coll.AddCodeshellDbContext<T>(asDefault);
-        }
-
-        public static void AddCodeshellDbContext<T>(this IServiceCollection coll, IConfiguration config, string connectionStringKey, bool setAsDefault = false, string migrationAssembly = null) where T : DbContext
+        public static void AddCodeshellDbContext<T>(this IServiceCollection coll, bool setAsDefault = false, string migrationAssembly = null, Action<DbContextOptionsBuilder> optionsAction = null) where T : DbContext
         {
             if (migrationAssembly != null)
                 DesignTimeMigrationsAssemblies.Store[typeof(T).Name] = migrationAssembly;
 
-            var conn = _getConnectionStringOrDefault(config, connectionStringKey);
-            if (conn != null)
-                coll.AddDbContext<T>(e => e.UseSqlServer(conn));
-            else
-                coll.AddDbContext<T>();
+            coll.AddDbContext<T>(optionsAction);
 
             if (setAsDefault)
             {

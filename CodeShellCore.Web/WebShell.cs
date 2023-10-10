@@ -1,6 +1,6 @@
 ﻿using CodeShellCore.DependencyInjection;
-using CodeShellCore.Files.Logging;
 using CodeShellCore.Text;
+using CodeShellCore.Web.Conventions;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -13,8 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.Web
@@ -112,19 +112,14 @@ namespace CodeShellCore.Web
             services.AddCodeShellApplication();
             var mvc = services.AddControllers();
 
-            services.AddRouting(options =>
+            services.Configure<MvcOptions>(e =>
             {
-                options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
+                e.Conventions.Add(new CodeShellApplicationModelConvention());
             });
 
             if (UseSwagger)
             {
                 services.AddSwaggerGen();
-                services.AddSwaggerGenWithConventionalRoutes(options =>
-                {
-                    //options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
-                    // options.SkipDefaults = true;
-                });
             }
 
 
@@ -170,7 +165,10 @@ namespace CodeShellCore.Web
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                    var apiName = Assembly.GetEntryAssembly().GetName().Name;
+
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", apiName);
+                    c.DocumentTitle = apiName;
                 });
             }
 
@@ -188,7 +186,6 @@ namespace CodeShellCore.Web
             app.UseEndpoints(e =>
             {
                 RegisterEndpointRoutes(e);
-                ConventionalRoutingSwaggerGen.UseRoutes(e);
             });
 
             if (IsSpa)

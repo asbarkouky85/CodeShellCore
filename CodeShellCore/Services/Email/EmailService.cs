@@ -11,7 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace CodeShellCore.Services.Email
 {
-    public class EmailService : ServiceBase
+    public class EmailService : ServiceBase, IEmailService
     {
         public virtual SmtpConfig Config { get; protected set; }
         public event EventHandler<MailMessage> BeforeSend;

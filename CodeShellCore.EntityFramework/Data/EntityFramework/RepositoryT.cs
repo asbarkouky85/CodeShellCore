@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Transactions;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
@@ -464,6 +465,8 @@ namespace CodeShellCore.Data.EntityFramework
             return query ?? dbSet;
 
         }
+
+        public abstract Task MergeAsync(IEnumerable<T> list, Action<T, T> updateAction = null);
     }
 }
 

@@ -20,7 +20,7 @@ namespace CodeShellCore.Data.Helpers
         EntityDto Entity { get; set; }
     }
 
-    public class EditingDTO<T> : DTO<T, long> where T : class
+    public class EditingDTO<T> : DTO<T, long>, IDTO<T> where T : class
     {
 
     }
