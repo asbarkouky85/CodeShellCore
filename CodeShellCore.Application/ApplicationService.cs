@@ -1,4 +1,6 @@
-﻿using CodeShellCore.Types;
+﻿
+using CodeShellCore.Data.Mapping;
+using CodeShellCore.Types;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -6,14 +8,15 @@ using System.Text;
 
 namespace CodeShellCore.Services
 {
-    public class StandAloneService : ServiceBase, IDisposable
+    public class ApplicationService : ServiceBase, IDisposable
     {
-
+        protected IObjectMapper Mapper { get; private set; }
         protected InstanceStore<object> Store { get; private set; }
 
-        public StandAloneService(IServiceProvider provider)
+        public ApplicationService(IServiceProvider provider)
         {
             Store = new InstanceStore<object>(provider);
+            Mapper = provider.GetRequiredService<IObjectMapper>();
         }
 
         protected T GetService<T>()

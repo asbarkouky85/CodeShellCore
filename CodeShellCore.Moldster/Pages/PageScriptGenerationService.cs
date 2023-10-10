@@ -5,6 +5,7 @@ using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -26,7 +27,11 @@ namespace CodeShellCore.Moldster.Pages
 
         protected virtual string GetViewParamsJson(long pageId, ViewParams json)
         {
-            return json.ToJson(new Newtonsoft.Json.JsonSerializerSettings { StringEscapeHandling = Newtonsoft.Json.StringEscapeHandling.EscapeHtml });
+            return json.ToJson(new JsonSerializerSettings
+            {
+                StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                Formatting = Formatting.Indented
+            });
         }
 
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)

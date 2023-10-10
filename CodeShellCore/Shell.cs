@@ -25,6 +25,7 @@ using CodeShellCore.Files.Uploads;
 using CodeShellCore.Tasks;
 using CodeShellCore.Modularity;
 using System.Linq;
+using CodeShellCore.Security.Authorization;
 
 namespace CodeShellCore
 {
@@ -147,6 +148,10 @@ namespace CodeShellCore
             coll.AddTransient<IUploadedFilesHandler, UploadedFileHandler>();
             coll.AddScoped<Language>();
 
+            coll.AddTransient<IUserDataService, NullUserDataService>();
+            coll.AddScoped<IUserAccessor, UserAccessor>();
+            coll.AddScoped<UserAccessor>();
+
             coll.AddScoped<ClientData>();
 
 
@@ -216,6 +221,7 @@ namespace CodeShellCore
                 Transporter.Start();
             if (App.useTimedJobs)
                 App.StartJobs();
+
             cont.OnReady();
             using (var sc = GetScope())
             {

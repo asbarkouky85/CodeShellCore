@@ -355,7 +355,6 @@ namespace CodeShellCore.Helpers
                 + t.DayOfYear.ToString("D3")
                 + currentSecond.ToString("D5")
                 + Addition.ToString("D3");
-            Console.WriteLine(st);
             return long.Parse(st);
         }
 

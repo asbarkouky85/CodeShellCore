@@ -1,4 +1,5 @@
-﻿using CodeShellCore.MultiTenant;
+﻿using CodeShellCore.EntityFramework.DesignTime;
+using CodeShellCore.MultiTenant;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,19 +27,31 @@ namespace CodeShellCore.EntityFramework
             if (!optionsBuilder.IsConfigured)
             {
                 string connectionString;
-                if (CurrentTenant?.TenantId == null)
+                if (CurrentTenant == null || CurrentTenant.TenantId == 0)
                 {
-                    connectionString = Shell.GetConfigAs<string>($"ConnectionStrings:{ConnectionStringKey}");
+                    connectionString = Shell.GetConfigAs<string>($"ConnectionStrings:{ConnectionStringKey}", false);
                     if (connectionString == null)
                     {
-                        connectionString = Shell.GetConfigAs<string>($"ConnectionStrings:Default");
+                        connectionString = Shell.GetConfigAs<string>($"ConnectionStrings:Default", false);
                     }
                 }
                 else
                 {
                     connectionString = CurrentTenant.GetConnectionString();
                 }
-                optionsBuilder.UseSqlServer(connectionString);
+
+                if (connectionString != null && DesignTimeMigrationsAssemblies.Store.TryGetValue(typeof(T).Name, out string assembly))
+                {
+                    optionsBuilder.UseSqlServer(connectionString, e => e.MigrationsAssembly(assembly));
+                }
+                else if (connectionString != null)
+                {
+                    optionsBuilder.UseSqlServer(connectionString);
+                }
+                else
+                {
+                    
+                }
             }
         }
     }

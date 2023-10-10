@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace CodeShellCore.Data.EntityFramework
 {
@@ -33,6 +34,7 @@ namespace CodeShellCore.Data.EntityFramework
         protected virtual bool UseChangeColumns { get { return false; } }
         protected virtual bool UseCollectionPermission => false;
 
+        public CurrentTenant CurrentTenant { get; private set; }
         protected virtual TContext DbContext { get; private set; }
         protected virtual IQueryProjector Projector { get; private set; }
         /// <summary>
@@ -54,9 +56,9 @@ namespace CodeShellCore.Data.EntityFramework
 
         public UnitOfWork(IServiceProvider provider) : base(provider)
         {
-            var tenant = _provider.GetService<CurrentTenant>();
+            CurrentTenant = _provider.GetService<CurrentTenant>();
             DbContext = _provider.GetService<TContext>();
-            DbContext.SetCurrentTenant(tenant);
+            DbContext.SetCurrentTenant(CurrentTenant);
             Projector = _provider.GetService<IQueryProjector>();
             DbContext.ChangeTracker.AutoDetectChangesEnabled = true;
         }
@@ -229,7 +231,7 @@ namespace CodeShellCore.Data.EntityFramework
         /// Attempts to submit changes to the data source
         /// </summary>
         /// <returns>if success <see cref="SubmitResult.Code"/> is 0</returns>
-        public override SubmitResult SaveChanges(string successMessage = null, string failMessage = null, bool throwException = false)
+        public override SubmitResult SaveChanges(string successMessage = null, string failMessage = null, bool throwException = true)
         {
             SubmitResult res = new SubmitResult();
             string def = Strings.Word(MessageIds.success_message);
@@ -268,7 +270,7 @@ namespace CodeShellCore.Data.EntityFramework
                     res.SetException(ex);
                     res.Code = 0;
                     if (throwException)
-                        throw;
+                        throw new SubmissionFailedException(res);
                 }
 
 

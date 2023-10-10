@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data
 {
@@ -38,6 +39,7 @@ namespace CodeShellCore.Data
         T FindSingle(Expression<Func<T, bool>> expression);
         T FindSingle(object id);
         T Merge(Expression<Func<T, bool>> ex, T obj);
+        Task MergeAsync(IEnumerable<T> list, Action<T, T> updateAction = null);
         TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> expression) where TR : class;
         TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
         TVal GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null);

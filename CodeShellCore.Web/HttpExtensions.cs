@@ -48,7 +48,7 @@ namespace Microsoft.AspNetCore.Mvc
                  op.Listen(IPAddress.Any, httpsPort, lop =>
                  {
                      lop.Protocols = HttpProtocols.Http1AndHttp2;
-                     lop.UseHttps(StoreName.Root, "localhost");
+                     lop.UseHttps(StoreName.Root, "localhost", true);
                  });
                  if (httpPort != httpsPort)
                  {
