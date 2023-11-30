@@ -2,6 +2,7 @@
 using CodeShellCore.Data;
 using CodeShellCore.Files;
 using CodeShellCore.Moldster.Domains;
+using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Navigation;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
@@ -96,6 +97,7 @@ namespace CodeShellCore.Moldster
         void LocalizationMapping()
         {
             CreateMap<CustomField, CustomFieldDto>();
+            CreateMap<CustomTextRequestDto, CustomTextRequest>();
         }
 
         void PagesMapping()
@@ -166,14 +168,14 @@ namespace CodeShellCore.Moldster
                 .ForMember(e => e.Entity, e => e.MapFrom(d => d));
 
             CreateMap<Tenant, TenantDto>()
-                .ForMember(e => e.LogoFile, e => e.MapFrom(d => new TmpFileData(d.Logo)));
+                .ForMember(e => e.LogoFile, e => e.MapFrom(d => new TempFileDto(d.Logo, d.Logo)));
 
             CreateMap<TenantDto, Tenant>()
                 .IgnoreId()
                 .ForMember(e => e.Logo, e =>
                 {
-                    e.PreCondition(d => d.LogoFile?.TmpPath != null);
-                    e.MapFrom(d => "logos/" + d.LogoFile.Name);
+                    e.PreCondition(d => d.LogoFile?.FileTempPath != null);
+                    e.MapFrom(d => "logos/" + d.LogoFile.FileName);
                 });
 
 

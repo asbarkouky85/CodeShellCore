@@ -14,4 +14,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="NewFolder\" />
+	</ItemGroup>
 </Project>

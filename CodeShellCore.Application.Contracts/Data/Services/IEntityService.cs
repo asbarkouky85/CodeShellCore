@@ -25,7 +25,7 @@ namespace CodeShellCore.Data.Services
         SubmitResult Update(T obj);
         DeleteResult Delete(T prime);
         DeleteResult CanDelete(object Id);
-        IRepository<T> Repository { get; }
+        //IRepository<T> Repository { get; }
 
         LoadResult<T> Load(LoadOptions opts);
         LoadResult<TDTO> LoadDTO<TDTO>(Expression<Func<T, TDTO>> ex, LoadOptions opts) where TDTO : class;

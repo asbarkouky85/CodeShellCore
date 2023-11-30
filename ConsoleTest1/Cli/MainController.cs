@@ -29,12 +29,6 @@ namespace ConsoleTest1
             var data = unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>("tenant_1", 2116407100007);
         }
 
-        public void Tests()
-        {
-            var con = new TestConsoleController();
-            con.Run();
-        }
-
         public void SendEvent()
         {
             Transporter.Publish(new SimpleEvent { Id = 1, Message = "hiiiii" });

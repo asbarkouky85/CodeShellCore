@@ -69,7 +69,7 @@ namespace CodeShellCore.DependencyInjection
 
         public static void AddMultiTenantData<T>(this IServiceCollection coll) where T : class, ITenantDataProvider
         {
-            coll.AddScoped<CurrentTenant>();
+
             coll.AddTransient<ITenantDataProvider, T>();
         }
     }

@@ -12,6 +12,9 @@ import { %BaseAppModuleName% } from '%BaseAppModulePath%';
 import { %MainComponentName% } from '%MainComponentPath%';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule, GetDomainsData } from '%RoutesModulePath%';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Translator } from 'codeshell/localization';
+import { BASE_TENANT_URL } from 'codeshell/initialize-shell';
 %ModuleImports%
 window["APP_VERSION"] = "%Version%";
 
@@ -22,6 +25,7 @@ window["APP_VERSION"] = "%Version%";
 		ToastrModule.forRoot(),
         CodeShellModule.forRoot(),
         %BaseAppModuleName%.forRoot(),
+        TranslateModule.forRoot({ loader: { provide: TranslateLoader, useClass: Translator } }),
         SharedModule,
         BrowserModule,
         BrowserAnimationsModule,
@@ -29,7 +33,7 @@ window["APP_VERSION"] = "%Version%";
     ],
     providers: [
         { provide: DomainDataProvider, useValue: new DomainDataProvider(GetDomainsData()) },
-        %BaseHref%
+        { provide: APP_BASE_HREF, useFactory: () => { return "/" + BASE_TENANT_URL; } }
     ]
 })
 export class %Code%Module {

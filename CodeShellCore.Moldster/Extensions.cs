@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Caching;
 using CodeShellCore.Data.Services;
 using CodeShellCore.DependencyInjection;
+using CodeShellCore.Extensions.DependencyInjection;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
@@ -31,7 +32,7 @@ namespace CodeShellCore.Moldster
     {
         public static void AddMoldsterDbData(this IServiceCollection coll, IConfiguration config = null)
         {
-            coll.AddCodeshellDbContext<MoldsterContext>(false, config, "Moldster");
+            coll.AddCodeshellDbContext<MoldsterContext>(false);
 
             _registerDataLayer(coll);
         }

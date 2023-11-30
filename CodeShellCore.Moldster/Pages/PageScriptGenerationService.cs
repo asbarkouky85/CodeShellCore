@@ -13,10 +13,10 @@ namespace CodeShellCore.Moldster.Pages
 {
     public class PageScriptGenerationService : ScriptGenerationServiceBase, IPageScriptGenerationService
     {
-        protected IMoldProvider Molds => Store.GetInstance<IMoldProvider>();
-        protected INamingConventionService Names => Store.GetInstance<INamingConventionService>();
-        protected IPathsService Paths => Store.GetInstance<IPathsService>();
-        protected IConfigUnit Unit => Store.GetInstance<IConfigUnit>();
+        protected IMoldProvider Molds => Store.GetRequiredService<IMoldProvider>();
+        protected INamingConventionService Names => Store.GetRequiredService<INamingConventionService>();
+        protected IPathsService Paths => Store.GetRequiredService<IPathsService>();
+        protected IConfigUnit Unit => Store.GetRequiredService<IConfigUnit>();
 
         public PageScriptGenerationService(
             IServiceProvider prov,

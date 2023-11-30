@@ -43,12 +43,14 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Respond(_service.GetCategoriesTree());
         }
 
+        [HttpGet]
         public IActionResult PageCategoryCounters()
         {
             Dictionary<long, int> dic = _service.PageCategoryCounters();
             return Respond(dic);
         }
 
+        [HttpGet]
         public IActionResult PageCounters(long id)
         {
             Dictionary<long, int> dic = _service.PageCounters(id);

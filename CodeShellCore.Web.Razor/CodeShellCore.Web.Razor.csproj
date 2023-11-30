@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\common.props" />
 
-  <PropertyGroup>
+	<PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Version>5.2.1.0</Version>
     <AssemblyName>CodeShellCore.Web.Razor</AssemblyName>
@@ -25,6 +26,10 @@
     <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
     <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
     <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Moldster\Controllers\" />
   </ItemGroup>
 
 

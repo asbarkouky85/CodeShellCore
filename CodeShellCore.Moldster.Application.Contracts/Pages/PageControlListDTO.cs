@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public class PageControlListDTO : EntityDto<long>, IEditable<long>
+    public class PageControlListDTO : EntityDto<long>, IDetailObject<long>
     {
         public string PageName { get; set; }
         public string ControlType { get; set; }
@@ -16,7 +16,6 @@ namespace CodeShellCore.Moldster.Pages
 
         public bool? Persistent { get; set; }
         public string State { get; set; }
-        public bool Selected { get; set; }
 
         public long PageId { get; set; }
         public long ControlId { get; set; }

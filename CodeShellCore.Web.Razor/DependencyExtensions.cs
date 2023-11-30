@@ -1,5 +1,4 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.DependencyInjection;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Builder;

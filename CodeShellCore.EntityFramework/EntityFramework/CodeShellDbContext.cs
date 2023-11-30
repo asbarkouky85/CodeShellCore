@@ -24,6 +24,7 @@ namespace CodeShellCore.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            
             if (!optionsBuilder.IsConfigured)
             {
                 string connectionString;
@@ -39,7 +40,7 @@ namespace CodeShellCore.EntityFramework
                 {
                     connectionString = CurrentTenant.GetConnectionString();
                 }
-
+                
                 if (connectionString != null && DesignTimeMigrationsAssemblies.Store.TryGetValue(typeof(T).Name, out string assembly))
                 {
                     optionsBuilder.UseSqlServer(connectionString, e => e.MigrationsAssembly(assembly));

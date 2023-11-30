@@ -13,7 +13,7 @@ namespace CodeShellCore.Data.Lookups
     {
          string Name { get; set; }
     }
-    public interface INamed<T> : IModel<T>, INamed
+    public interface INamed<T> : IEntity<T>, INamed
     {
 
     }

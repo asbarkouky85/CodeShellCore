@@ -11,7 +11,7 @@ namespace CodeShellCore.Data.CustomFields
     public class CustomFieldRepository<T, TContext> :
         Repository_Int64<T, TContext>,
         ICustomFieldRepository where TContext : DbContext
-        where T : class, ICustomField, IModel<long>
+        where T : class, ICustomField, IEntity<long>
     {
         public CustomFieldRepository(TContext con) : base(con)
         {

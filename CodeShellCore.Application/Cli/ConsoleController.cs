@@ -14,7 +14,7 @@ namespace CodeShellCore.Cli
     public abstract class ConsoleController
     {
         private int? last;
-        private InstanceStore<object> store;
+        private InstanceStore store;
         protected ConsoleService writer;
         protected IServiceProvider Injector { get { return _scope.ServiceProvider; } }
         public bool IsMain { get; set; }
@@ -50,7 +50,7 @@ namespace CodeShellCore.Cli
 
         protected T GetService<T>()
         {
-            return store.GetInstance<T>();
+            return store.GetRequiredService<T>();
         }
 
         public string GetStringFromUser(string v)

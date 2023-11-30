@@ -24,11 +24,12 @@ namespace CodeShellCore.EntityFramework.DesignTime
 
             var conn = configuration.GetConnectionString("Default");
             conn = configuration.GetConnectionString(ConnectionStringKey) ?? conn;
-
+            
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
 
             if (DesignTimeMigrationsAssemblies.Store.TryGetValue(typeof(TContext).Name, out var assembly))
             {
+                
                 optionsBuilder.UseSqlServer(conn, e => e.MigrationsAssembly(assembly));
             }
             else

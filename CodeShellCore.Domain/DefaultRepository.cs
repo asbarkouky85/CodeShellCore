@@ -61,6 +61,11 @@ namespace CodeShellCore.Data
             _storedData.Remove(obj);
         }
 
+        public Task DeleteAsync(T tmpFile)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteById(object id)
         {
            
@@ -166,7 +171,17 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
+        public Task<T> GetAsync(Expression<Func<T, bool>> value)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<T> GetList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<T>> GetListAsync(Expression<Func<T, bool>> value)
         {
             throw new NotImplementedException();
         }
@@ -197,6 +212,11 @@ namespace CodeShellCore.Data
         }
 
         public bool IdExists(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task InsertAsync(T tmp)
         {
             throw new NotImplementedException();
         }

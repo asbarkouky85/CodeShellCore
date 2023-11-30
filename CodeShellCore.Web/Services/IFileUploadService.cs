@@ -6,6 +6,6 @@ namespace CodeShellCore.Web.Services
 {
     public interface IFileUploadService
     {
-        List<TmpFileData> Upload(Dictionary<string, IFormFile> files);
+        List<TempFileDto> Upload(Dictionary<string, IFormFile> files);
     }
 }

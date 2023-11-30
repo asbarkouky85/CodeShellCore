@@ -32,6 +32,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         IDomainScriptGenerationService sc => GetService<IDomainScriptGenerationService>();
         IScriptModelMappingService map => GetService<IScriptModelMappingService>();
 
+        [HttpGet]
         public IActionResult ProcessForPage([FromQuery] MoldsterRequest req)
         {
             if (req.PageId == null)
@@ -41,6 +42,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Respond();
         }
 
+        [HttpGet]
         public IActionResult RenderPage(long id)
         {
             var dto = new PageRenderDTO { Id = id };

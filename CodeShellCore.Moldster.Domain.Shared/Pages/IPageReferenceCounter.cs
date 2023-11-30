@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public interface IPageReferenceCounter : IModel<long>
+    public interface IPageReferenceCounter : IEntity<long>
     {
         int ReferencedBy { get; set; }
         int References { get; set; }

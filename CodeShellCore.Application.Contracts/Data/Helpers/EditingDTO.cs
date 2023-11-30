@@ -6,21 +6,7 @@ using System.Text;
 
 namespace CodeShellCore.Data.Helpers
 {
-    public class EditingDTO
-    {
-        public static Expression<Func<T, EditingDTO<T>>> GetExpression<T>() where T : class, IModel<long>
-        {
-
-            return d => new EditingDTO<T> { Entity = d, Id = d.Id };
-        }
-    }
-
-    public interface IEditingDto<EntityDto>
-    {
-        EntityDto Entity { get; set; }
-    }
-
-    public class EditingDTO<T> : DTO<T, long>, IDTO<T> where T : class
+    public class EditingDTO<T> : EntityWrapperDto<T, long>, IEntityWrapperDto<T> where T : class
     {
 
     }

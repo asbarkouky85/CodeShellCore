@@ -1,5 +1,4 @@
-﻿using CodeShellCore.DependencyInjection;
-using CodeShellCore.Security.Authorization;
+﻿using CodeShellCore.Security.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;

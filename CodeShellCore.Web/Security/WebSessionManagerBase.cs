@@ -13,13 +13,13 @@ namespace CodeShellCore.Web.Security
     public abstract class WebSessionManagerBase : SessionManagerBase, ISessionManager
     {
         protected readonly IHttpContextAccessor _accessor;
-        protected readonly IServiceProvider provider;
+        protected IServiceProvider ServiceProvider { get; private set; }
 
         public virtual TimeSpan DefaultSessionTime => new TimeSpan(1, 0, 0, 0, 0);
 
         public WebSessionManagerBase(IServiceProvider prov) : base(prov)
         {
-            provider = prov;
+            ServiceProvider = prov;
             _accessor = prov.GetService<IHttpContextAccessor>();
         }
 
@@ -30,14 +30,24 @@ namespace CodeShellCore.Web.Security
 
         protected virtual void SetIdentity(JWTData jwt)
         {
-            _accessor.HttpContext.User = new DefaultPrincipal(jwt.UserId);
-            provider.SetCurrentUserId(jwt.UserId);
+            var id = jwt.UserId;
+            if (!string.IsNullOrEmpty(jwt.TenantId) && long.TryParse(jwt.TenantId, out long tenantId))
+            {
+                id = jwt.TenantId + "_" + jwt.UserId;
+                ServiceProvider.SetCurrentTenant(tenantId);
+            }
+            ServiceProvider.SetCurrentUserId(id);
+            _accessor.HttpContext.User = new DefaultPrincipal(id);
         }
 
         protected virtual void SetIdentity(ClientJwt jwt)
         {
             _accessor.HttpContext.User = new DefaultPrincipal(jwt.ClientId);
-            provider.SetCurrentUserId(jwt.ClientId, true);
+            ServiceProvider.SetCurrentUserId(jwt.ClientId, true);
+            if (!string.IsNullOrEmpty(jwt.TenantId) && long.TryParse(jwt.TenantId, out long tenantId))
+            {
+                ServiceProvider.SetCurrentTenant(tenantId);
+            }
         }
 
         public virtual void SetContextItem(string index, object value)

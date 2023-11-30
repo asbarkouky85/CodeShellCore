@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CodeShellCore.Data.EntityFramework
 {
     public class Repository_Int64<T, TContext> : KeyRepository<T, TContext,long>
-        where T : class, IModel<long>
+        where T : class, IEntity<long>
         where TContext : DbContext
     {
 

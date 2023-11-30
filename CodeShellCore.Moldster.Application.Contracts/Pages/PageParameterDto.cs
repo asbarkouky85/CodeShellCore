@@ -4,7 +4,7 @@ using CodeShellCore.Localization;
 namespace CodeShellCore.Moldster.Pages
 {
     [EntityName("PageParameter")]
-    public class PageParameterDto : EntityDto<long>, IEditable<long>
+    public class PageParameterDto : EntityDto<long>, IDetailObject<long>
     {
         public long PageCategoryParameterId { get; set; }
         public long PageId { get; set; }

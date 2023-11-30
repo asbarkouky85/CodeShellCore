@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\common.props" />
+	
 	<PropertyGroup Label="Globals">
 		<SccProjectName>SAK</SccProjectName>
 		<SccProvider>SAK</SccProvider>
@@ -26,6 +28,10 @@
 		<ProjectReference Include="..\CodeShellCore.Moldster.Ng11\CodeShellCore.Moldster.Ng11.csproj" />
 		<ProjectReference Include="..\CodeShellCore.Moldster.Ng6\CodeShellCore.Moldster.Ng6.csproj" />
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 
 </Project>

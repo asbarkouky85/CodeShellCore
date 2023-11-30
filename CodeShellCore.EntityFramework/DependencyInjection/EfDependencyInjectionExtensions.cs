@@ -56,7 +56,7 @@ namespace CodeShellCore.DependencyInjection
         }
 
         public static void AddAttachmentsEntity<T, TContext>(this IServiceCollection coll)
-            where T : class, IAttachmentModel, IModel<long>
+            where T : class, IAttachmentEntity, IEntity<long>
             where TContext : DbContext
         {
             coll.AddTransient<IAttachmentRepository<T>, DefaultAttachmentRepository<T, TContext>>();
@@ -96,34 +96,6 @@ namespace CodeShellCore.DependencyInjection
             }
         }
 
-        private static string _getConnectionStringOrDefault(IConfiguration config, string connectionStringKey)
-        {
-            var conn = config.GetConnectionString("Default");
-            if (connectionStringKey != null)
-                conn = config.GetConnectionString(connectionStringKey) ?? conn;
-            return conn;
-        }
-
-        public static void AddCodeshellDbContext<T>(this IServiceCollection coll, bool setAsDefault = true, IConfiguration config = null, string connectionStringKey = null) where T : DbContext
-        {
-            if (config != null)
-            {
-                var conn = _getConnectionStringOrDefault(config, connectionStringKey);
-                if (conn != null)
-                    coll.AddDbContext<T>(e => e.UseSqlServer(conn));
-                else
-                    coll.AddDbContext<T>();
-            }
-            else
-            {
-                coll.AddDbContext<T>();
-            }
-
-            if (setAsDefault)
-            {
-                coll.AddScoped<DbContext, T>();
-                coll.AddScoped(typeof(T), d => (T)d.GetRequiredService<DbContext>());
-            }
-        }
+        
     }
 }

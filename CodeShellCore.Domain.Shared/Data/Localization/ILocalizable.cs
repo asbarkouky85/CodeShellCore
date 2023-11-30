@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CodeShellCore.Data.Localization
 {
-    public interface ILocalizable : IModel<long>, IEditable
+    public interface ILocalizable : IEntity<long>, IEditable
     {
         long EntityId { get; set; }
         string EntityType { get; set; }

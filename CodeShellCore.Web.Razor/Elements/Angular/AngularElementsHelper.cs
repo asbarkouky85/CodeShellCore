@@ -37,7 +37,7 @@ namespace CodeShellCore.Web.Razor.Elements.Angular
 
             if (change == "Default")
             {
-                sel.ChangeFunction = mutli ? "item.Tag.ApplyTo(" + mod.InputModel.NgModelName + "." + mod.InputModel.MemberName + ")" : "item.Tag.SelectOnly(" + mod.InputModel.NgModelName + "." + mod.InputModel.MemberName + ")";
+                sel.ChangeFunction = mutli ? "Tracker.ApplyTo(item.Tag," + mod.InputModel.NgModelName + "." + mod.InputModel.MemberName + ")" : "Tracker.SelectOnly(item.Tag," + mod.InputModel.NgModelName + "." + mod.InputModel.MemberName + ")";
             }
             else if (change != null)
             {
@@ -54,7 +54,7 @@ namespace CodeShellCore.Web.Razor.Elements.Angular
 
             if (onChange == "Default")
             {
-                sel.ChangeFunction = mutli ? "item.Tag.ApplyTo(" + mod.InputModel.NgModelName + "." + mod.InputModel.MemberName + ")" : "item.Tag.SelectOnly(" + mod.InputModel.NgModelName + "." + mod.InputModel.MemberName + ")";
+                sel.ChangeFunction = mutli ? "Tracker.ApplyTo(item.Tag," + mod.InputModel.NgModelName + "." + mod.InputModel.MemberName + ")" : "Tracker.SelectOnly(item.Tag," + mod.InputModel.NgModelName + "." + mod.InputModel.MemberName + ")";
             }
             else if (onChange != null)
             {

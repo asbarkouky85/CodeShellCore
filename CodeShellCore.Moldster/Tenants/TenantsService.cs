@@ -58,10 +58,10 @@ namespace CodeShellCore.Moldster.Tenants
         protected virtual void SaveLogo(TenantDto dto)
         {
             IPathsService paths = unit.ServiceProvider.GetService<IPathsService>();
-            if (paths != null && dto.LogoFile?.TmpPath != null)
+            if (paths != null && dto.LogoFile?.FileTempPath != null)
             {
-                var newFilePath = naming.GetLogoFilePath(dto.Code, dto.LogoFile.Name);
-                var path = Path.Combine(uploaded.TempRoot, dto.LogoFile.TmpPath);
+                var newFilePath = naming.GetLogoFilePath(dto.Code, dto.LogoFile.FileName);
+                var path = Path.Combine(uploaded.TempRoot, dto.LogoFile.FileTempPath);
                 Utils.CreateFolderForFile(newFilePath);
                 File.Move(path, newFilePath);
             }

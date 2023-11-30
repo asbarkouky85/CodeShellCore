@@ -21,9 +21,9 @@ namespace CodeShellCore.Moldster.PageCategories
     public class PageCategoryScriptGenerationService : ScriptGenerationServiceBase, IPageCategoryScriptGenerationService
     {
         protected static string[] baseComponents => new[] { "Edit", "List", "Tree", "Select" };
-        private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
-        private INamingConventionService _fileNameService => Store.GetInstance<INamingConventionService>();
-        private IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
+        private IMoldProvider _molds => Store.GetRequiredService<IMoldProvider>();
+        private INamingConventionService _fileNameService => Store.GetRequiredService<INamingConventionService>();
+        private IConfigUnit _unit => Store.GetRequiredService<IConfigUnit>();
 
         public PageCategoryScriptGenerationService(
             IServiceProvider prov,

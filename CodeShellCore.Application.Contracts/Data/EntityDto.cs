@@ -7,5 +7,6 @@ namespace CodeShellCore.Data
     public class EntityDto<TPrime> : IEntityDto<TPrime>
     {
         public TPrime Id { get; set; }
+        public bool Selected { get; set; }
     }
 }

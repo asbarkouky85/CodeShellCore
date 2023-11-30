@@ -1,12 +1,10 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.MQ;
-using Asga.Auth;
-using MassTransit;
-using Microsoft.Extensions.DependencyInjection;
-using ExampleProject.Commander.Services;
 using CodeShellCore.DependencyInjection;
-using CodeShellCore.Services.Email;
 using CodeShellCore.Moldster;
+using CodeShellCore.MQ;
+using CodeShellCore.Services.Email;
+using ExampleProject.Commander.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ExampleProject.Commander
 {
@@ -21,7 +19,6 @@ namespace ExampleProject.Commander
             coll.AddTransient<InjectionTest>();
             coll.AddScoped<ScopedClass>();
             coll.AddTransient<EmailService>();
-            coll.AddAsgaAuthModule(Configuration, true);
             coll.AddRabbitMQServiceBus(d =>
             {
 

@@ -1,11 +1,9 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Data.Helpers;
-using CodeShellCore.Data.Mapping;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages.Views;
-using CodeShellCore.Services;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
@@ -15,15 +13,12 @@ namespace CodeShellCore.Moldster.Pages
 {
     public class PagesDataService : DataService<IConfigUnit>, IPagesDataService
     {
-        private readonly IObjectMapper Mapper;
         private readonly IOutputWriter output;
 
         public PagesDataService(
             IConfigUnit unit,
-            IObjectMapper mapper,
             IOutputWriter output) : base(unit)
         {
-            Mapper = mapper;
             this.output = output;
         }
 

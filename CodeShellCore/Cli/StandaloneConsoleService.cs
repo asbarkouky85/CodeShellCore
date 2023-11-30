@@ -8,13 +8,13 @@ namespace CodeShellCore.Cli
 {
     public class StandaloneConsoleService : ConsoleService
     {
-        protected InstanceStore<object> Store;
+        protected InstanceStore Store;
         public StandaloneConsoleService(IServiceProvider provider)
         {
-            Store = new InstanceStore<object>(provider);
-            Out = Store.GetInstance<IOutputWriter>();
+            Store = new InstanceStore(provider);
+            Out = Store.GetRequiredService<IOutputWriter>();
         }
 
-        protected virtual T GetService<T>() => Store.GetInstance<T>();
+        protected virtual T GetService<T>() => Store.GetRequiredService<T>();
     }
 }

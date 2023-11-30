@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.MQ
 {
@@ -20,6 +21,16 @@ namespace CodeShellCore.MQ
         public static void Publish<T>(T ob, Type t = null)
         {
             Bus.Publish(ob, t ?? typeof(T));
+        }
+
+        public static Task PublishAsync(object ob, Type t = null)
+        {
+            return Bus.PublisAsync(ob, t ?? ob.GetType());
+        }
+
+        public static Task PublishAsync<T>(T ob, Type t = null)
+        {
+            return Bus.PublisAsync(ob, t ?? typeof(T));
         }
 
         public static void Start()

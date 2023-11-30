@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asga.Auth\Asga.Auth.csproj" />
     <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
 
@@ -43,7 +42,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

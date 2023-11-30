@@ -1,10 +1,11 @@
 ﻿using CodeShellCore.Data.Auditing;
 using CodeShellCore.Data.ConfiguredCollections;
+using CodeShellCore.Data.Events;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.EntityFramework;
-using CodeShellCore.MultiTenant;
+using CodeShellCore.MQ.Events;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Text.Localization;
@@ -15,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Xml.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.EntityFramework
 {
@@ -34,29 +35,17 @@ namespace CodeShellCore.Data.EntityFramework
         protected virtual bool UseChangeColumns { get { return false; } }
         protected virtual bool UseCollectionPermission => false;
 
-        public CurrentTenant CurrentTenant { get; private set; }
+        private ChangeLists _lastChanges = new ChangeLists();
+        public override ChangeLists LastChanges => _lastChanges;
+        public ChangeLists Changes { get { return GetChangeSet(); } }
         protected virtual TContext DbContext { get; private set; }
         protected virtual IQueryProjector Projector { get; private set; }
-        /// <summary>
-        /// override to process changes before saving
-        /// </summary>
-        public virtual Action<ChangeLists> OnBeforeSave { get { return null; } }
-        /// <summary>
-        /// override to proccess changes after saving
-        /// </summary>
-        public virtual Action<ChangeLists> OnSaveSuccess { get { return null; } }
 
         public override event EventHandler<ChangeLists> Saving;
-        public override bool TrackChanges
-        {
-            get => DbContext.ChangeTracker.AutoDetectChangesEnabled;
-            set => DbContext.ChangeTracker.AutoDetectChangesEnabled = true;
-        }
 
 
         public UnitOfWork(IServiceProvider provider) : base(provider)
         {
-            CurrentTenant = _provider.GetService<CurrentTenant>();
             DbContext = _provider.GetService<TContext>();
             DbContext.SetCurrentTenant(CurrentTenant);
             Projector = _provider.GetService<IQueryProjector>();
@@ -87,12 +76,6 @@ namespace CodeShellCore.Data.EntityFramework
                 Added = entries.Where(d => d.State == EntityState.Added).Select(d => d.Entity).ToList(),
                 Deleted = entries.Where(d => d.State == EntityState.Deleted).Select(d => d.Entity).ToList()
             };
-        }
-
-        public override void EnableJsonLoading()
-        {
-
-            // DbContext.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
         public override IRepository GetRepositoryFor(Type i)
@@ -227,11 +210,17 @@ namespace CodeShellCore.Data.EntityFramework
             }
         }
 
-        /// <summary>
-        /// Attempts to submit changes to the data source
-        /// </summary>
-        /// <returns>if success <see cref="SubmitResult.Code"/> is 0</returns>
-        public override SubmitResult SaveChanges(string successMessage = null, string failMessage = null, bool throwException = true)
+        protected virtual Task SavingChanges(ChangeLists lists)
+        {
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task ChangesSaved(ChangeLists lists)
+        {
+            return Task.CompletedTask;
+        }
+
+        public override async Task<SubmitResult> SaveChangesAsync(string successMessage = null, string failMessage = null, bool throwException = true)
         {
             SubmitResult res = new SubmitResult();
             string def = Strings.Word(MessageIds.success_message);
@@ -239,41 +228,25 @@ namespace CodeShellCore.Data.EntityFramework
             successMessage = successMessage ?? def;
             failMessage = failMessage ?? defFail;
 
-            ChangeLists lst = null;
+            _lastChanges = GetChangeSet();
 
-            if (OnBeforeSave != null || OnSaveSuccess != null || Saving != null || UseChangeColumns)
-            {
-                lst = GetChangeSet();
-                OnBeforeSave?.Invoke(lst);
-                Saving?.Invoke(this, lst);
-                FillChangeColumns(lst);
-            }
+            Saving?.Invoke(this, _lastChanges);
+            FillChangeColumns(_lastChanges);
 
             try
             {
-                int rows = DbContext.SaveChanges();
+                await SavingChanges(_lastChanges);
 
                 res = new SubmitResult
                 {
-                    AffectedRows = rows,
+                    AffectedRows = await DbContext.SaveChangesAsync(),
                     Code = 0,
                     Message = successMessage
                 };
 
-                try
-                {
-                    OnSaveSuccess?.Invoke(lst);
-                }
-                catch (Exception ex)
-                {
-
-                    res.SetException(ex);
-                    res.Code = 0;
-                    if (throwException)
-                        throw new SubmissionFailedException(res);
-                }
-
-
+                await SendChangeEvents(_lastChanges);
+                await SendDistributedEvents();
+                await ChangesSaved(_lastChanges);
             }
             catch (Exception ex)
             {
@@ -282,6 +255,48 @@ namespace CodeShellCore.Data.EntityFramework
                     throw;
             }
             return res;
+        }
+
+        protected virtual async Task SendChangeEvents(ChangeLists lsts)
+        {
+            var sender = Store.GetService<ICrudEventSender>();
+            if (sender != null && sender.IsEnabled)
+            {
+                if (lsts.Added.Any())
+                {
+                    foreach (object o in lsts.Added)
+                    {
+                        await sender.PublishEvent(o.GetType(), o, ActionType.Add, CurrentTenant?.TenantId);
+                    }
+                }
+
+                if (lsts.Updated.Any())
+                {
+                    foreach (object o in lsts.Updated)
+                    {
+                        await sender.PublishEvent(o.GetType(), o, ActionType.Update, CurrentTenant?.TenantId);
+                    }
+                }
+
+                if (lsts.Deleted.Any())
+                {
+                    foreach (object o in lsts.Deleted)
+                    {
+                        await sender.PublishEvent(o.GetType(), o, ActionType.Delete, CurrentTenant?.TenantId);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Attempts to submit changes to the data source
+        /// </summary>
+        /// <returns>if success <see cref="SubmitResult.Code"/> is 0</returns>
+        public override SubmitResult SaveChanges(string successMessage = null, string failMessage = null, bool throwException = true)
+        {
+            var t = SaveChangesAsync(successMessage, failMessage, throwException);
+            t.Wait();
+            return t.Result;
         }
 
         public override void Dispose()

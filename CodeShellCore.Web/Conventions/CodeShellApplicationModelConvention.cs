@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using CodeShellCore.Types;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodeShellCore.Types;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using static System.Collections.Specialized.BitVector32;
 
 
 namespace CodeShellCore.Web.Conventions
@@ -19,7 +14,7 @@ namespace CodeShellCore.Web.Conventions
     {
         static Dictionary<string, string[]> methodToActionNames = new Dictionary<string, string[]>
         {
-            { "GET" ,new []{ "Get","Index" } },
+            { "GET" ,new []{ "Get","Index","IsUnique","Has","Can","Count" } },
             { "PUT",new []{ "Put", "Update" } },
             { "DELETE",new []{ "Delete"} }
         };
@@ -30,8 +25,8 @@ namespace CodeShellCore.Web.Conventions
             {
                 foreach (var action in controller.Actions)
                 {
-                    AddRouteAttribute(action);
                     var method = GetHttpMethod(action);
+                    AddRouteAttribute(action);
                     foreach (var param in action.Parameters)
                     {
                         if (param.Name == "id")
@@ -52,6 +47,7 @@ namespace CodeShellCore.Web.Conventions
                                 param.BindingInfo = BindingInfo.GetBindingInfo(new[] { new FromBodyAttribute() });
                             }
                         }
+
                     }
                 }
             }
@@ -73,17 +69,31 @@ namespace CodeShellCore.Web.Conventions
                 }
             };
 
+            string method = "POST";
+
+
             foreach (var m in methodToActionNames)
             {
                 foreach (var prefix in m.Value)
                 {
                     if (model.ActionName.StartsWith(prefix))
                     {
-                        return m.Key;
+                        method = m.Key;
+                        break;
                     }
                 }
             }
-            return "POST";
+
+            foreach (var param in model.Parameters)
+            {
+                if (param.Attributes.Any(e => e is FromBodyAttribute) && (new[] { "GET", "DELETE" }).Contains(method))
+                {
+                    method = "POST";
+                    break;
+                }
+            }
+
+            return method;
         }
 
         protected virtual void AddRouteAttribute(ActionModel action)
@@ -138,7 +148,7 @@ namespace CodeShellCore.Web.Conventions
 
         private string RouteUrl(ActionModel model)
         {
-            string id = model.Parameters.Any(e => e.Name.ToLower() == "id") ? "/{id}" : "";
+            string id = model.Parameters.Any(e => e.Name.ToLower() == "id") ? "/{id?}" : "";
             string actionName = model.ActionName == "Index" ? "" : $"/{model.ActionName}";
             string controller = model.Controller.ControllerName == "Home" && model.ActionName == "Index" ? "" : $"apiAction/{model.Controller.ControllerName}";
             return $"{controller}{actionName}{id}";

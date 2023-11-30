@@ -12,7 +12,7 @@ using CodeShellCore.Web.Controllers;
 namespace CodeShellCore.Web.Moldster.Controllers
 {
     public abstract class MoldsterEntityController<T, TPrime> : EntityController<T, TPrime>, ILookupLoaderController
-        where T : class, IModel<TPrime>
+        where T : class, IEntity<TPrime>
     {
         ILocalizationDataService LocService => GetService<ILocalizationDataService>();
         ILookupsService lookupsService => GetService<ILookupsService>();

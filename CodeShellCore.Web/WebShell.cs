@@ -1,5 +1,4 @@
-﻿using CodeShellCore.DependencyInjection;
-using CodeShellCore.Text;
+﻿using CodeShellCore.Text;
 using CodeShellCore.Web.Conventions;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +15,7 @@ using Newtonsoft.Json;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using CodeShellCore.Types;
 
 namespace CodeShellCore.Web
 {
@@ -110,6 +110,7 @@ namespace CodeShellCore.Web
         {
             base.RegisterServices(services);
             services.AddCodeShellApplication();
+            services.ConfigureUploads(Configuration);
             var mvc = services.AddControllers();
 
             services.Configure<MvcOptions>(e =>
@@ -133,7 +134,6 @@ namespace CodeShellCore.Web
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ISpaFallbackHandler, SpaFallbackHandler>();
-            services.AddTransient<IFileUploadService, FileService>();
         }
 
         public virtual void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
@@ -165,7 +165,9 @@ namespace CodeShellCore.Web
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    var apiName = Assembly.GetEntryAssembly().GetName().Name;
+                    var assembly = Assembly.GetEntryAssembly();
+                    var apiName = $"{assembly.GetName().Name}-v{assembly.GetVersionString()}";
+
 
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", apiName);
                     c.DocumentTitle = apiName;

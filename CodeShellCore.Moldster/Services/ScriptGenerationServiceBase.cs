@@ -18,9 +18,9 @@ namespace CodeShellCore.Moldster.Services
         protected MoldsterModuleOptions Options;
         protected WriterService Writer;
 
-        private IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
-        private INamingConventionService _fileNameService => Store.GetInstance<INamingConventionService>();
-        private IPathsService _paths => Store.GetInstance<IPathsService>();
+        private IMoldProvider _molds => Store.GetRequiredService<IMoldProvider>();
+        private INamingConventionService _fileNameService => Store.GetRequiredService<INamingConventionService>();
+        private IPathsService _paths => Store.GetRequiredService<IPathsService>();
 
         public ScriptGenerationServiceBase(
             IServiceProvider prov,
