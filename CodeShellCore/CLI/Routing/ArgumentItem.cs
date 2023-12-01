@@ -24,6 +24,8 @@ namespace CodeShellCore.Cli.Routing
         protected ArgumentItem() { }
 
         public abstract void SetMemberValue(T obj, string v);
+        public abstract void UseDefaultValue(T requestInstance);
+
     }
 
     public class ArgumentItem<T, TVal> : ArgumentItem<T>
@@ -61,6 +63,20 @@ namespace CodeShellCore.Cli.Routing
             var val = v.ConvertTo(mem.PropertyType);
             mem.SetValue(obj, val);
             IsSet = true;
+        }
+
+        public void SetMemberValue(T obj, TVal val)
+        {
+            var b = _action.Body as MemberExpression;
+            var mem = obj.GetType().GetProperty(b.Member.Name);
+            MemberName = Key ?? mem.Name;
+            mem.SetValue(obj, val);
+            IsSet = true;
+        }
+
+        public override void UseDefaultValue(T requestInstance)
+        {
+            SetMemberValue(requestInstance, Default);
         }
     }
 }
