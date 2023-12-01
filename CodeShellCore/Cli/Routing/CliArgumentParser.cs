@@ -43,10 +43,19 @@ namespace CodeShellCore.Cli.Routing
                 }
             }
 
+            foreach(var item in Builder.KeyList)
+            {
+                if (!item.IsSet)
+                {
+                    item.UseDefaultValue(requestInstance);
+                }
+            }
+
             if (Builder.IsInvalid(out string[] lst))
             {
                 throw new Exception(lst[0]);
             }
+
             return requestInstance;
         }
 
