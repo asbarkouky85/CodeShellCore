@@ -13,7 +13,7 @@ namespace CodeShellCore.ToolSet
             {
                 if (Debugger.IsAttached)
                 {
-                    var testing = FunctionTypes.ReplaceParameters;
+                    var testing = FunctionTypes.Download;
 
                     switch (testing)
                     {
@@ -45,9 +45,9 @@ namespace CodeShellCore.ToolSet
                             break;
                         case FunctionTypes.ReplaceParameters:
                             //args = new[] { "replace", @"D:\Work\Common\tests\replace_test.json", "{\"userName\":\"abarkouky\",\"password\":\"123456\"}" };
-                            args = new[] { 
-                                "replace", 
-                                @"C:\_git\Mahmoud\Databoat-Ecommerce-Frontend\src\index.html", 
+                            args = new[] {
+                                "replace",
+                                @"C:\_git\Mahmoud\Databoat-Ecommerce-Frontend\src\index.html",
                                 "-p",
                                 "<base href=\"/\" />",
                                 "-d",
@@ -57,7 +57,9 @@ namespace CodeShellCore.ToolSet
                         case FunctionTypes.Help:
                             args = new[] { @"help" };
                             break;
-
+                        case FunctionTypes.Download:
+                            args = new[] { "download", "https://nodejs.org/dist/v16.16.0/node-v16.16.0-x64.msi","./Downloads" };
+                            break;
                     }
                 }
 
