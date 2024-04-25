@@ -7,6 +7,7 @@ using CodeShellCore.ToolSet.Localization;
 using CodeShellCore.ToolSet.Nuget;
 using CodeShellCore.ToolSet.Replace;
 using CodeShellCore.ToolSet.Sql;
+using CodeShellCore.ToolSet.TsProxy;
 using CodeShellCore.ToolSet.Versions;
 using CodeShellCore.ToolSet.Zip;
 
@@ -28,6 +29,7 @@ namespace CodeShellCore.ToolSet
             builder.AddHandler<ZipRequestHandler>("zip");
             builder.AddHandler<CopyRequestHandler>("copy");
             builder.AddHandler<DtoGenerationHandler>("gen-dto");
+            builder.AddHandler<TsProxyRequestHandler>("gen-proxy");
             builder.AddHandler<HelpRequestHandler>("help");
             builder.AddHandler<ReplaceParametersRequestHandler>("replace");
             builder.AddHandler<DownloadHandler>("download");

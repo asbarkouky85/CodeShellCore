@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CodeShellCore.Files.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -121,8 +122,9 @@ namespace CodeShellCore.Text
                 data = JsonConvert.DeserializeObject<T>(st);
                 return data != null;
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.WriteException(ex);
                 data = null;
                 return false;
             }

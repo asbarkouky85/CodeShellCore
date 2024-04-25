@@ -19,6 +19,7 @@ namespace CodeShellCore.ToolSet
         SyncLocAbp,
         GenerateDto,
         ReplaceParameters,
-        Download
+        Download,
+        Proxy
     }
 }
