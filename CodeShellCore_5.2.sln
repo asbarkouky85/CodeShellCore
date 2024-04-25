@@ -31,11 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerationTest.Api", "Gener
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.EntityFramework", "CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj", "{B6035ADE-FB69-4C62-A6C2-07CFBC726DA1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 FileServer", "03 FileServer", "{ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileServer", "FileServer", "{ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.FileServer.Web", "CodeShellCore.FileServer.Web\CodeShellCore.FileServer.Web.csproj", "{8CF6FACF-26AE-4E38-B256-1F0E304A6C50}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Moldster", "02 Moldster", "{2B246CE5-FB1A-4453-A5D1-BFB6A09D7EB0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Moldster", "Moldster", "{2B246CE5-FB1A-4453-A5D1-BFB6A09D7EB0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Cli", "CodeShellCore.Cli\CodeShellCore.Cli.csproj", "{84B37E04-C5D7-4DFB-9D5A-B9F8EE8E89D8}"
 EndProject
@@ -47,15 +47,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Application.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Domain.Shared", "CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj", "{F3B7138D-00D9-46CA-85EE-DB7B492D22EB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Helpers", "01 Helpers", "{F23398E3-4A1C-4F6D-ACBD-F4CE5F884B10}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{F23398E3-4A1C-4F6D-ACBD-F4CE5F884B10}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Modules", "02 Modules", "{A6C5E4CD-BAF7-4B6D-B7BA-3F46A85F18E7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 ToolSet", "05 ToolSet", "{9D767BE2-3B5C-4478-80AA-D6629AC33393}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToolSet", "ToolSet", "{9D767BE2-3B5C-4478-80AA-D6629AC33393}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.ToolSet.Cli", "CodeShellCore.ToolSet.Cli\CodeShellCore.ToolSet.Cli.csproj", "{C29C139F-D9F7-46CF-AAD2-BB9894A1714B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Configurator", "04 Configurator", "{149F6204-2BD0-43A6-927E-19223594B92D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurator", "Configurator", "{149F6204-2BD0-43A6-927E-19223594B92D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Configurator", "Configurator\Configurator.csproj", "{C1B22C0F-C278-4CE9-AEE7-4C4681AD4216}"
 EndProject
@@ -86,6 +86,24 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.FileServer.Domain.Shared", "CodeShellCore.FileServer.Domain.Shared\CodeShellCore.FileServer.Domain.Shared.csproj", "{2EAB261C-298A-4471-831D-2926A404CAAD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.FileServer.EntityFramework", "CodeShellCore.FileServer.EntityFramework\CodeShellCore.FileServer.EntityFramework.csproj", "{004B6065-9DFE-4A60-A831-E4FD96229194}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{317EE1CE-423F-4EA9-9AAA-1C392DD8CF6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HealthChecker", "HealthChecker", "{5862CCC1-359A-4EA5-933D-34522AFB975F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Notifications.Application", "CodeShellCore.Notifications.Application\CodeShellCore.Notifications.Application.csproj", "{7C444A9D-375E-4B42-91DC-C78022A10C4E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Notifications.Application.Contracts", "CodeShellCore.Notifications.Application.Contracts\CodeShellCore.Notifications.Application.Contracts.csproj", "{DB13F93D-7591-45AB-AFEA-ECAF17B9213A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Notifications.Domain", "CodeShellCore.Notifications.Domain\CodeShellCore.Notifications.Domain.csproj", "{5F6BCE0D-40B5-4173-8C8A-7C63F6E2B536}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Notifications.EntityFramework", "CodeShellCore.Notifications.EntityFramework\CodeShellCore.Notifications.EntityFramework.csproj", "{3DC714BA-A5AC-472A-A925-0CB861E5D817}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.Notifications.Web", "CodeShellCore.Notifications.Web\CodeShellCore.Notifications.Web.csproj", "{5B110F2C-B965-4561-9351-7CA4FBB40ECA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.HealthCheck.Domain", "CodeshellCore.HealthCheck.Domain\CodeShellCore.HealthCheck.Domain.csproj", "{E9279566-4C5E-4701-992C-BCBC2914B6FE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeShellCore.HealthCheck.EntityFramework", "CodeshellCore.HealthCheck.EntityFramework\CodeShellCore.HealthCheck.EntityFramework.csproj", "{55B65599-6F0F-4ADE-826C-E26223EA2701}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -229,6 +247,34 @@ Global
 		{004B6065-9DFE-4A60-A831-E4FD96229194}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{004B6065-9DFE-4A60-A831-E4FD96229194}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{004B6065-9DFE-4A60-A831-E4FD96229194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C444A9D-375E-4B42-91DC-C78022A10C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C444A9D-375E-4B42-91DC-C78022A10C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C444A9D-375E-4B42-91DC-C78022A10C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C444A9D-375E-4B42-91DC-C78022A10C4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB13F93D-7591-45AB-AFEA-ECAF17B9213A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB13F93D-7591-45AB-AFEA-ECAF17B9213A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB13F93D-7591-45AB-AFEA-ECAF17B9213A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB13F93D-7591-45AB-AFEA-ECAF17B9213A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F6BCE0D-40B5-4173-8C8A-7C63F6E2B536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F6BCE0D-40B5-4173-8C8A-7C63F6E2B536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F6BCE0D-40B5-4173-8C8A-7C63F6E2B536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F6BCE0D-40B5-4173-8C8A-7C63F6E2B536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC714BA-A5AC-472A-A925-0CB861E5D817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC714BA-A5AC-472A-A925-0CB861E5D817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC714BA-A5AC-472A-A925-0CB861E5D817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC714BA-A5AC-472A-A925-0CB861E5D817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B110F2C-B965-4561-9351-7CA4FBB40ECA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B110F2C-B965-4561-9351-7CA4FBB40ECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B110F2C-B965-4561-9351-7CA4FBB40ECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B110F2C-B965-4561-9351-7CA4FBB40ECA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9279566-4C5E-4701-992C-BCBC2914B6FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9279566-4C5E-4701-992C-BCBC2914B6FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9279566-4C5E-4701-992C-BCBC2914B6FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9279566-4C5E-4701-992C-BCBC2914B6FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55B65599-6F0F-4ADE-826C-E26223EA2701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55B65599-6F0F-4ADE-826C-E26223EA2701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55B65599-6F0F-4ADE-826C-E26223EA2701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55B65599-6F0F-4ADE-826C-E26223EA2701}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -273,6 +319,15 @@ Global
 		{99EFB26D-6A2E-4CBB-B9F0-59E67682BB2F} = {ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}
 		{2EAB261C-298A-4471-831D-2926A404CAAD} = {ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}
 		{004B6065-9DFE-4A60-A831-E4FD96229194} = {ACDC6E5B-3CDE-4F6B-93D4-F6430CE20FE1}
+		{317EE1CE-423F-4EA9-9AAA-1C392DD8CF6B} = {A6C5E4CD-BAF7-4B6D-B7BA-3F46A85F18E7}
+		{5862CCC1-359A-4EA5-933D-34522AFB975F} = {A6C5E4CD-BAF7-4B6D-B7BA-3F46A85F18E7}
+		{7C444A9D-375E-4B42-91DC-C78022A10C4E} = {317EE1CE-423F-4EA9-9AAA-1C392DD8CF6B}
+		{DB13F93D-7591-45AB-AFEA-ECAF17B9213A} = {317EE1CE-423F-4EA9-9AAA-1C392DD8CF6B}
+		{5F6BCE0D-40B5-4173-8C8A-7C63F6E2B536} = {317EE1CE-423F-4EA9-9AAA-1C392DD8CF6B}
+		{3DC714BA-A5AC-472A-A925-0CB861E5D817} = {317EE1CE-423F-4EA9-9AAA-1C392DD8CF6B}
+		{5B110F2C-B965-4561-9351-7CA4FBB40ECA} = {317EE1CE-423F-4EA9-9AAA-1C392DD8CF6B}
+		{E9279566-4C5E-4701-992C-BCBC2914B6FE} = {5862CCC1-359A-4EA5-933D-34522AFB975F}
+		{55B65599-6F0F-4ADE-826C-E26223EA2701} = {5862CCC1-359A-4EA5-933D-34522AFB975F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C8836DA-E4F6-4A43-9CC5-7D0388147EFD}
