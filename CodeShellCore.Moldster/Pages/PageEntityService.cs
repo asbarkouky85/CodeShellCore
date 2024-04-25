@@ -19,7 +19,7 @@ using System.Net;
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public class PageEntityService : DtoEntityService<Page, long, LoadOptions, PageListDTO, CreatePageDTO, CreatePageDTO, CreatePageDTO>, IPageEntityService
+    public class PageEntityService : DtoEntityService<Page, long, PagedListRequestDto, PageListDTO, CreatePageDTO, CreatePageDTO, CreatePageDTO>, IPageEntityService
     {
         private readonly IConfigUnit Unit;
 
@@ -34,13 +34,13 @@ namespace CodeShellCore.Moldster.Pages
             this.Unit = unit;
         }
 
-        public LoadResult<PageListDTO> FindPages(LoadOptions opts, FindPageRequest request)
+        public PagedResult<PageListDTO> FindPages(PagedListRequestDto opts, FindPageRequest request)
         {
-            return Unit.PageRepository.FindUsing<PageListDTO>(request, opts);
+            return Unit.PageRepository.FindUsing<PageListDTO>(request, Mapper.Map(opts, new PagedListRequest()));
 
         }
 
-        public override Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> dto)
+        public override Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> dto)
         {
             return Lookups.PageEdit(dto);
         }
@@ -410,7 +410,7 @@ namespace CodeShellCore.Moldster.Pages
             return submitResult;
         }
 
-        public LoadResult<PageListDTO> GetPagesByDomain(long domainId, LoadOptions opt)
+        public PagedResult<PageListDTO> GetPagesByDomain(long domainId, PagedListRequestDto opt)
         {
             var op = opt.GetOptionsFor<PageListDTO>();
             if (domainId == -1)

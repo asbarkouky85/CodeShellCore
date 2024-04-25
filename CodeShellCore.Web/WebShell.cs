@@ -127,6 +127,7 @@ namespace CodeShellCore.Web
             if (UseHealthChecks)
             {
                 services.AddHealthChecks();
+                
             }
 
             AddMvcFeatures(mvc);
@@ -182,6 +183,7 @@ namespace CodeShellCore.Web
                 app.UseCors(d => d.WithOrigins(originArray)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
+                    .WithExposedHeaders("Content-Disposition")
                     .AllowCredentials());
             }
 
@@ -199,7 +201,7 @@ namespace CodeShellCore.Web
 
             if (UseHealthChecks)
             {
-                app.UseHealthChecks("/hc", new HealthCheckOptions()
+                app.UseHealthChecks("/health", new HealthCheckOptions()
                 {
                     Predicate = reg =>
                     {

@@ -34,7 +34,7 @@ namespace CodeShellCore.Security.Sessions
             throw new NotImplementedException();
         }
 
-        public void AuthorizationRequest(string token)
+        public void UseToken(string token)
         {
             throw new NotImplementedException();
         }

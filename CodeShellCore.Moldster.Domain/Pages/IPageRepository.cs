@@ -12,8 +12,8 @@ namespace CodeShellCore.Moldster.Pages
         IEnumerable<Page> GetReferencing(long pageId, long tenantId);
         IEnumerable<T> GetDomainPagesForRouting<T>(string tenantCode, long domainId, bool chldren = false);
         List<PageIdentifierView> GetDistinctIdentifiers();
-        LoadResult<T> FindUsing<T>(FindPageRequest request, LoadOptions opts) where T : class;
-        LoadResult<T> GetUnderDomain<T>(long domainId, LoadOptions opt) where T : class;
+        PagedResult<T> FindUsing<T>(FindPageRequest request, PagedListRequest opts) where T : class;
+        PagedResult<T> GetUnderDomain<T>(long domainId, PagedListRequest opt) where T : class;
         Page GetForCustomization(long id);
         PageAndType FindLinkedPage(string paramName, string val, long tenantId, ref List<string> add);
         PageAndType FindLinkedPageByName(string paramName, string val, long tenantId, ref List<string> add);

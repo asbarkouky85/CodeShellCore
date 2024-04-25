@@ -11,6 +11,7 @@ using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Sql;
+using CodeShellCore.Notifications;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Razor;
 using Microsoft.AspNetCore.Mvc;
@@ -124,8 +125,8 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
                 BundlingTask.ClearCompleted();
                 if (tsk.Status != "NULL")
                 {
-                    var pusher = sc.ServiceProvider.GetService<IMessagePusher<IBundlingTasksNotifications>>();
-                    pusher.Publish(d => d.TaskChanged(tsk));
+                    var pusher = sc.ServiceProvider.GetService<IEmitter<IBundlingTasksNotifications>>();
+                    pusher.Emit(d => d.TaskChanged(tsk));
                 }
 
             }

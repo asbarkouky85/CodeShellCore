@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CodeShellCore.Web.Filters
 {
     /// <summary>
-    /// Uses query parameter "Token" to identify user, makes the call to <see cref="ISessionManager.AuthorizationRequest(string)"/> then calls <see cref="IAuthorizationService.IsAuthorized(AuthorizationRequest)"/> where the <see cref="AuthorizationRequest"/> is filled from the route information and the <see cref="QueryAuthorizeFilter"/> instance itself
+    /// Uses query parameter "Token" to identify user, makes the call to <see cref="ISessionManager.UseToken(string)"/> then calls <see cref="IAuthorizationService.IsAuthorized(AuthorizationRequest)"/> where the <see cref="AuthorizationRequest"/> is filled from the route information and the <see cref="QueryAuthorizeFilter"/> instance itself
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
     

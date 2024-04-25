@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Data.Helpers;
+﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.MQ.Events;
 using CodeShellCore.Services;
@@ -27,10 +26,10 @@ namespace CodeShellCore.Data.Services
         DeleteResult CanDelete(object Id);
         //IRepository<T> Repository { get; }
 
-        LoadResult<T> Load(LoadOptions opts);
-        LoadResult<TDTO> LoadDTO<TDTO>(Expression<Func<T, TDTO>> ex, LoadOptions opts) where TDTO : class;
-        LoadResult<T> LoadCollection(string collectionId, LoadOptions opts);
-        LoadResult<TDto> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, LoadOptions opts) where TDto : class;
+        PagedResult<T> Load(PagedListRequestDto opts);
+        PagedResult<TDTO> LoadDTO<TDTO>(Expression<Func<T, TDTO>> ex, PagedListRequestDto opts) where TDTO : class;
+        PagedResult<T> LoadCollection(string collectionId, PagedListRequestDto opts);
+        PagedResult<TDto> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, PagedListRequestDto opts) where TDto : class;
         bool IsUnique(PropertyUniqueDTO dto);
     }
 

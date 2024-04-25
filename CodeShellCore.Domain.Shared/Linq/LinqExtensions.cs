@@ -93,83 +93,8 @@ namespace CodeShellCore.Linq
             return Expression.Lambda<Func<T, bool>>(combinedExpression, para);
         }
 
-        public static List<T> ToListWith<T>(this IQueryable<T> q, FilterCollection coll) where T : class
-        {
-            var fils = coll.GetFiltersFor<T>();
-            foreach (var ex in fils)
-                q = q.Where(ex);
-            return q.ToList();
-        }
+        
 
-        public static IQueryable<T> SortWith<T, TVal>(this IQueryable<T> q, Expression<Func<T, TVal>> exp, SortDir dir) where T : class
-        {
-            return (dir == SortDir.ASC) ? q.OrderBy(exp) : q.OrderByDescending(exp);
-        }
-
-        public static int Count<T>(this IQueryable<T> q, FilterCollection coll) where T : class
-        {
-            var fils = coll.GetFiltersFor<T>();
-            foreach (var ex in fils)
-                q = q.Where(ex);
-            return q.Count(e => true);
-        }
-
-        public static List<T> ToListWith<T>(this IQueryable<T> q, ListOptions<T> opts) where T : class
-        {
-            ExpressionGenerator<T> gen = new ExpressionGenerator<T>();
-
-            if (opts.Filters != null)
-            {
-                for (int i = 0; i < opts.Filters.Count; i++)
-                {
-                    Expression<Func<T, bool>> e = (Expression<Func<T, bool>>)opts.Filters[i];
-                    q = q.Where(e);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(opts.OrderProperty))
-                q = gen.SortWith(q, opts.OrderProperty, opts.Direction);
-
-            if (opts.Showing > 0)
-                q = q.Skip(opts.Skip).Take(opts.Showing);
-
-            return q.ToList();
-
-        }
-
-        public static LoadResult<T> LoadWith<T>(this IQueryable<T> q, ListOptions<T> opts) where T : class
-        {
-            LoadResult<T> res = new LoadResult<T>();
-
-            ExpressionGenerator<T> gen = new ExpressionGenerator<T>();
-
-            if (opts == null)
-                opts = new ListOptions<T>();
-
-            if (opts.Filters != null)
-            {
-                for (int i = 0; i < opts.Filters.Count; i++)
-                {
-                    Expression<Func<T, bool>> e = (Expression<Func<T, bool>>)opts.Filters[i];
-                    q = q.Where(e);
-                }
-
-                res.TotalCount = q.Count(v => true);
-            }
-            else
-            {
-                res.TotalCount = q.Count(d => true);
-            }
-
-
-            if (!string.IsNullOrEmpty(opts.OrderProperty))
-                q = gen.SortWith(q, opts.OrderProperty, opts.Direction);
-
-            if (opts.Showing > 0)
-                q = q.Skip(opts.Skip).Take(opts.Showing);
-
-            res.List = q.ToList();
-            return res;
-        }
+        
     }
 }

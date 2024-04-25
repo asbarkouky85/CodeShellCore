@@ -14,17 +14,17 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             _service = service;
         }
 
-        public override IActionResult Get([FromQuery] LoadOptions opt)
+        public override IActionResult Get([FromQuery] PagedListRequestDto opt)
         {
             return Respond(_service.GetAll(opt));
         }
 
-        public IActionResult GetPageToAdd([FromQuery] LoadOptions opt)
+        public IActionResult GetPageToAdd([FromQuery] PagedListRequestDto opt)
         {
             var x = _service.GetPageToAdd(opt);
             return Respond(x);
         }
-        public IActionResult GetPagesByNav([FromQuery] LoadOptions opts, [FromQuery] long naveId)
+        public IActionResult GetPagesByNav([FromQuery] PagedListRequestDto opts, [FromQuery] long naveId)
         {
             var ps = _service.GetPagesByNav(naveId, opts);
             return Respond(ps);

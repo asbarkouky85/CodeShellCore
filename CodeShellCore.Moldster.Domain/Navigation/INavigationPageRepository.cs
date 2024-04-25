@@ -8,7 +8,7 @@ namespace CodeShellCore.Moldster.Navigation
 {
     public interface INavigationPageRepository : IRepository<NavigationPage>
     {
-        LoadResult<T> GetUnderNave<T>(long navId, LoadOptions opt) where T : class;
+        PagedResult<T> GetUnderNave<T>(long navId, PagedListRequest opt) where T : class;
         void SetDisplayOrder(long naveId);
     }
 }

@@ -6,7 +6,7 @@ namespace CodeShellCore.Data.Services
 {
     public interface ILocalizableEntityService<TPrime>
     {
-        Dictionary<string, LocalizablesDTO> GetLocalizationData(TPrime id);
-        SubmitResult SetLocalizationData(TPrime id, Dictionary<string, LocalizablesDTO> data);
+        Dictionary<string, LocalizablesDto> GetLocalizationData(TPrime id);
+        SubmitResult SetLocalizationData(TPrime id, Dictionary<string, LocalizablesDto> data);
     }
 }

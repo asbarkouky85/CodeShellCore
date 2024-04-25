@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<RootNamespace>CodeShellCore.Notifications</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
+	  <ProjectReference Include="..\CodeShellCore.Notifications.Domain\CodeShellCore.Notifications.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

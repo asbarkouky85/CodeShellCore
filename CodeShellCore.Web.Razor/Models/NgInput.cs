@@ -19,6 +19,7 @@ namespace CodeShellCore.Web.Razor.Models
         public string CalendarOptions { get; set; }
         public string Attributes { get; set; }
         public object AttributeObject { get; set; }
+        public bool Enabled { get; set; }
         public string NgOptions { get; set; }
         public virtual string FieldName
         {

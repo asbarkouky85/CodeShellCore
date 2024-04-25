@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\common.props" />
+	<Import Project="..\..\common.props" />
 	
 	<PropertyGroup Label="Globals">
 		<SccProjectName>SAK</SccProjectName>
@@ -27,6 +27,7 @@
 		<ProjectReference Include="..\CodeShellCore.Moldster.EntityFramework\CodeShellCore.Moldster.EntityFramework.csproj" />
 		<ProjectReference Include="..\CodeShellCore.Moldster.Ng11\CodeShellCore.Moldster.Ng11.csproj" />
 		<ProjectReference Include="..\CodeShellCore.Moldster.Ng6\CodeShellCore.Moldster.Ng6.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Notifications.Application.Contracts\CodeShellCore.Notifications.Application.Contracts.csproj" />
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
 	</ItemGroup>
 

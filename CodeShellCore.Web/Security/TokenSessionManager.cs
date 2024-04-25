@@ -77,22 +77,21 @@ namespace CodeShellCore.Web.Security
             return false;
         }
 
-        public override void AuthorizationRequest(string token)
+        public override void UseToken(string token)
         {
             string data = TokenToJWT(token);
             if (ValidateUserJWT(data, out JWTData user))
                 SetIdentity(user);
         }
 
+        
         public override void AuthorizationRequest()
         {
+            ReadAppVersion();
             string head = GetTokenFromHeader();
             string cl = GetClientTokenFromHeader();
 
-            if (_accessor.HttpContext.Request.Headers.TryGetValue(HttpHeaderKeys.TenantId, out StringValues tenantId) && long.TryParse(tenantId.First(), out long id))
-            {
-                ServiceProvider.GetRequiredService<CurrentTenant>().TenantId = id;
-            }
+            ReadTenantId();
 
             if (!string.IsNullOrEmpty(cl))
             {

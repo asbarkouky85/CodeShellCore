@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="..\common.props" />
+	<Import Project="..\..\common.props" />
 
 	<PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -24,6 +24,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Notifications.Web\CodeShellCore.Notifications.Web.csproj" />
     <ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
     <!--<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />-->
   </ItemGroup>

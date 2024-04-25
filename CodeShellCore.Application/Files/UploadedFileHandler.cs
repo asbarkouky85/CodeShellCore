@@ -111,7 +111,6 @@ namespace CodeShellCore.Files.Uploads
                 Url = tmpPath,
                 Size = bts.Size ?? 0,
                 FileTempPath = tmpPath,
-                UploadId = key,
                 FileName = bts.FileName,
                 MimeType = bts.MimeType
             };

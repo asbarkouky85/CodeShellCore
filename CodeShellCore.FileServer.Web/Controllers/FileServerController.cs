@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace CodeShellCore.FileServer.Web.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
-    public class FileServerController : BaseApiController, IAttachmentFileService
+    public class FileServerController : FileServerBaseController, IAttachmentFileService
     {
         IAttachmentFileService service;
         private readonly IInternalAttachmentFileService internalService;

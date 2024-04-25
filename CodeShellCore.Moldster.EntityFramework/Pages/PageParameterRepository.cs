@@ -71,7 +71,6 @@ namespace CodeShellCore.Moldster.Pages
                             item.Value = names.ApplyConvension(item.Value, AppParts.Route);
                             break;
                     }
-
                 }
             }
             return data;
@@ -80,10 +79,27 @@ namespace CodeShellCore.Moldster.Pages
         public IEnumerable<PageParameterForJson> FindForJson(long tenantId, long? pageCategoryId = null)
         {
             var q = Loader.Where(d => (d.Page.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.Page.TenantId == tenantId);
-            return QueryPageParameterForJson(q).ToList();
+
+            var data= QueryPageParameterForJson(q).ToList();
+            foreach (var item in data)
+            {
+                if (item.Value != null && item.Type != (int)PageParameterTypes.Text)
+                {
+                    switch ((PageParameterTypes)item.Type)
+                    {
+                        case PageParameterTypes.Embedded:
+                            item.Value = names.GetComponentSelector(item.Value);
+                            break;
+                        case PageParameterTypes.PageLink:
+                            item.Value = names.ApplyConvension(item.Value, AppParts.Route);
+                            break;
+                    }
+                }
+            }
+            return data;
         }
 
-        public LoadResult<PageReferenceView> FindReferences(ParameterRequest req, ListOptions<PageReferenceView> o)
+        public PagedResult<PageReferenceView> FindReferences(ParameterRequest req, PagedListRequest<PageReferenceView> o)
         {
             var q = Loader.Where(d => d.Page.Tenant.Code == req.TenantCode);
 
@@ -116,7 +132,7 @@ namespace CodeShellCore.Moldster.Pages
             else if (req.ReferencedPageId != null)
                 q = q.Where(d => d.LinkedPageId == req.ReferencedPageId.Value);
 
-            return QueryPageReferenceDTO(q).LoadWith(o);
+            return QueryPageReferenceDTO(q).ToPagedResult(o);
         }
 
         public List<PageReference> GetReferencesByPage(long id)

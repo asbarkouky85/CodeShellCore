@@ -15,5 +15,6 @@ namespace CodeShellCore
         public const string IsMobile = "is-mobile";
         public const string MobileDeviceId = "device-id";
 
+        public const string AppVersion = "ui-version";
     }
 }

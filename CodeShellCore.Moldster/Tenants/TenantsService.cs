@@ -9,7 +9,7 @@ using System.IO;
 
 namespace CodeShellCore.Moldster.Tenants
 {
-    public class TenantsService : DtoEntityService<Tenant, long, TenantDto, LoadOptions, TenantEditDTO, TenantDto>, ITenantService
+    public class TenantsService : DtoEntityService<Tenant, long, TenantDto, PagedListRequestDto, TenantEditDTO, TenantDto>, ITenantService
     {
         private readonly IConfigUnit unit;
         private readonly INamingConventionService naming;

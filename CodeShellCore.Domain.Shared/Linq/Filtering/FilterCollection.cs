@@ -13,9 +13,9 @@ namespace CodeShellCore.Linq.Filtering
 
         public IEnumerable<Expression<Func<T, bool>>> GetFiltersFor<T>() where T : class
         {
-            var gen = new ExpressionGenerator<T>();
+            //var gen = new ExpressionGenerator<T>();
 
-            List<Expression<Func<T, bool>>> opts = gen.ToStrongExpressions(Filters);
+            List<Expression<Func<T, bool>>> opts = Expressions.ToStrongExpressions<T>(Filters);
 
             if (!string.IsNullOrEmpty(SearchTerm))
             {

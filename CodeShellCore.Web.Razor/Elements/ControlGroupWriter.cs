@@ -143,28 +143,27 @@ namespace CodeShellCore.Web.Razor.Elements
                 GroupModel.IsRequired = false;
                 switch (cont)
                 {
-
-                    case InputControls.CheckBox:
-                        ((CheckNgInput)InputModel).Enabled = false;
-                        break;
-                    case InputControls.Radio:
-                        ((RadioNgInput)InputModel).Enabled = false;
-                        break;
                     case InputControls.CalendarTextBox:
                     case InputControls.DateTimeTextBox:
                         InputModel.MemberName = InputModel.MemberName + " | date :'dd-MM-yyyy'";
                         return WriteLabel();
+
+                    case InputControls.Radio:
+                    case InputControls.CheckBox:
                     case InputControls.FileTextBox:
-                        ((FileNgInput)InputModel).Enabled = false;
+                        InputModel.Enabled = false;
                         break;
+
                     default:
                         InputModel.AttributeObject = null;
                         return WriteLabel(localizable);
                 }
 
             }
+            InputModel.Enabled = Accessibility.Write;
             string template = Helper.GetTheme().GetControlGroupTemplate(cont, localizable);
             GroupModel.InputControl = GetInputControl(cont);
+
             return Partial(template, GroupModel);
         }
 

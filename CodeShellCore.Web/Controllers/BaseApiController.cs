@@ -15,7 +15,7 @@ namespace CodeShellCore.Web.Controllers
     [ApiAuthorize]
     public abstract class BaseApiController : BaseController
     {
-        protected virtual IActionResult Respond<T>(LoadResult<T> ob) where T : class
+        protected virtual IActionResult Respond<T>(PagedResult<T> ob) where T : class
         {
             if (ClientData.IsMobile)
             {

@@ -18,7 +18,7 @@ namespace CodeShellCore.Moldster.Navigation
             _unit = unit;
         }
 
-        public LoadResult<NavigationGroupDTO> GetAll(LoadOptions opt)
+        public PagedResult<NavigationGroupDTO> GetAll(PagedListRequestDto opt)
         {
             var opts = opt.GetOptionsFor<NavigationGroupDTO>();
             return _unit.NavigationGroupRepository.FindAs(a => new NavigationGroupDTO { Id = a.Id, Name = a.Name }, opts);
@@ -40,7 +40,7 @@ namespace CodeShellCore.Moldster.Navigation
             return _unit.SaveChanges();
         }
 
-        public LoadResult<NavigationPageListDTO> GetPagesByNav(long naveId, LoadOptions opts)
+        public PagedResult<NavigationPageListDTO> GetPagesByNav(long naveId, PagedListRequestDto opts)
         {
             CheckForUnorderedNavigationPages(naveId);
             var op = opts.GetOptionsFor<NavigationPageListDTO>();
@@ -49,7 +49,7 @@ namespace CodeShellCore.Moldster.Navigation
             return _unit.NavigationPageRepository.FindAndMap(op);
         }
 
-        public LoadResult<PageListDTO> GetPageToAdd(LoadOptions opt)
+        public PagedResult<PageListDTO> GetPageToAdd(PagedListRequestDto opt)
         {
             var opts = opt.GetOptionsFor<PageListDTO>();
             opts.AddFilter(a => a.HasRoute == true);

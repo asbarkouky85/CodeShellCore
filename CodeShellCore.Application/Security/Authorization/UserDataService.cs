@@ -1,20 +1,25 @@
 ﻿using CodeShellCore.Caching;
+using CodeShellCore.Helpers;
+using CodeShellCore.MultiTenant;
 using CodeShellCore.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace CodeShellCore.Security.Authorization
 {
     public class UserDataService : ServiceBase, IUserDataService
     {
-        protected readonly ICacheProvider cache;
+        protected ICacheProvider Cache { get; private set; }
+        protected CurrentTenant CurrentTenant { get; private set; }
 
-        public UserDataService(ICacheProvider cache)
+        public UserDataService(ICacheProvider cache, CurrentTenant currentTenant)
         {
-            this.cache = cache;
+            Cache = cache;
+            CurrentTenant = currentTenant;
         }
 
 
@@ -38,7 +43,7 @@ namespace CodeShellCore.Security.Authorization
                 var roleFromCache = GetRoleFromCache(role);
                 if (roleFromCache != null)
                 {
-                    ret = Append(ret, roleFromCache);
+                    ret = AppendPermissions(ret, roleFromCache);
                 }
                 else
                 {
@@ -52,21 +57,21 @@ namespace CodeShellCore.Security.Authorization
                 foreach (var fromSrc in find)
                 {
                     SaveRoleInCache(fromSrc);
-                    ret = Append(ret, fromSrc);
+                    ret = AppendPermissions(ret, fromSrc);
                 }
             }
 
             return ret;
         }
 
-        protected virtual Dictionary<string, DataAccessPermission> Append(Dictionary<string, DataAccessPermission> permissions, RoleCacheItem roleItem)
+        protected virtual Dictionary<string, DataAccessPermission> AppendPermissions(Dictionary<string, DataAccessPermission> permissions, RoleCacheItem roleItem)
         {
             foreach (var r in roleItem.Resources)
             {
                 if (!permissions.TryGetValue(r.Key, out DataAccessPermission perm))
                     perm = new DataAccessPermission(0);
-                
-                if (roleItem.Collections!=null && roleItem.Collections.TryGetValue(r.Key, out string coll))
+
+                if (roleItem.Collections != null && roleItem.Collections.TryGetValue(r.Key, out string coll))
                     perm.CollectionId = coll;
 
                 perm.Append(r.Value);
@@ -80,12 +85,27 @@ namespace CodeShellCore.Security.Authorization
 
         public virtual void SaveRoleInCache(RoleCacheItem item)
         {
-            cache.Store(item.RoleId.ToString(), item);
+            Cache.Store(AddTenantToKey(item.RoleId.ToString()), item);
+        }
+
+        protected virtual object RemoveTenantFromKey(object key)
+        {
+            var split = Utils.SplitTenantEntity(key.ToString());
+            return split.EntityId;
+        }
+
+        protected virtual string AddTenantToKey(string key)
+        {
+            if (CurrentTenant.TenantId != 0 && !key.StartsWith(CurrentTenant.TenantId + "_"))
+            {
+                return (CurrentTenant.TenantId + "_" + key);
+            }
+            return key;
         }
 
         protected virtual RoleCacheItem GetRoleFromCache(string role)
         {
-            return cache.Get<RoleCacheItem>(role);
+            return Cache.Get<RoleCacheItem>(AddTenantToKey(role));
         }
 
         protected virtual void AppendPermissions(IUser user)
@@ -119,17 +139,17 @@ namespace CodeShellCore.Security.Authorization
 
         protected virtual IUser GetUserFromCache(string userId)
         {
-            return cache.Get<IUser>(userId);
+            return Cache.Get<IUser>(AddTenantToKey(userId));
         }
 
         public virtual void Save(string userId, IUser user)
         {
-            cache.Store(userId, user);
+            Cache.Store(AddTenantToKey(userId), user);
         }
 
         public virtual void ClearUserData(string id)
         {
-            cache.Remove<IUser>(id);
+            Cache.Remove<IUser>(AddTenantToKey(id));
         }
 
 

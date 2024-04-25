@@ -11,7 +11,7 @@ namespace CodeShellCore.Web.Controllers
 {
     public interface IReadOnlyEntityController<T, TPrime> where T : class, IEntity<TPrime>
     {
-        IActionResult Get([FromQuery] LoadOptions opt);
+        IActionResult Get([FromQuery] PagedListRequestDto opt);
         IActionResult GetSingle([FromRoute] TPrime id);
         IActionResult Delete(TPrime id);
     }

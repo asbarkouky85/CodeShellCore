@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Caching;
+using CodeShellCore.MultiTenant;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
 using System;
@@ -10,7 +11,7 @@ namespace CodeShellCore.Web.Moldster.Configurator
 {
     public class UIUserDataService : UserDataService
     {
-        public UIUserDataService(ICacheProvider cache) : base(cache)
+        public UIUserDataService(ICacheProvider cache, CurrentTenant tenant) : base(cache, tenant)
         {
         }
 

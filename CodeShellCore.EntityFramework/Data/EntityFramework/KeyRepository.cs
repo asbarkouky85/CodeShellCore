@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
+using CodeShellCore.Linq;
 using CodeShellCore.Types;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -170,6 +171,12 @@ namespace CodeShellCore.Data.EntityFramework
         public Task<T> FindAsync(TPrime id)
         {
             return FindSingleAsync(id);
+        }
+
+        public override PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
+        {
+            var req = request.GetOptionsFor<Named<object>>();
+            return QueryNamed().ToPagedResult(req);
         }
     }
 }

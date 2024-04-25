@@ -1,7 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Mapping;
-using CodeShellCore.Linq;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using CodeShellCore.Data.Localization;
 using CodeShellCore.Data.Events;
 using CodeShellCore.MQ.Events;
 using System.Threading.Tasks;
+using CodeShellCore.Linq;
 
 namespace CodeShellCore.Data.Services
 {
@@ -25,7 +25,7 @@ namespace CodeShellCore.Data.Services
         where TListDto : class
         where TCreateDto : class
         where TUpdateDto : class, IEntityDto<TPrime>
-        where TOptionsDto : LoadOptions
+        where TOptionsDto : PagedListRequestDto
     {
 
         public virtual bool ProjectGetSingle => true;
@@ -99,14 +99,17 @@ namespace CodeShellCore.Data.Services
             return res;
         }
 
-        public virtual Dictionary<string, LocalizablesDTO> GetLocalizationData(long id)
+        public virtual Dictionary<string, LocalizablesDto> GetLocalizationData(long id)
         {
-            return LocalizationDataService.GetDataFor<T>(id);
+            var data = LocalizationDataService.GetDataFor<T>(id);
+            return Mapper.Map(data, new Dictionary<string, LocalizablesDto>());
         }
 
-        public virtual SubmitResult SetLocalizationData(long id, Dictionary<string, LocalizablesDTO> data)
+        public virtual SubmitResult SetLocalizationData(long id, Dictionary<string, LocalizablesDto> data)
         {
-            return LocalizationDataService.SetDataFor<T>(id, data);
+            var locData = Mapper.Map(data, new Dictionary<string, LocalizablesData>());
+            return LocalizationDataService.SetDataFor<T>(id, locData);
+
         }
 
 

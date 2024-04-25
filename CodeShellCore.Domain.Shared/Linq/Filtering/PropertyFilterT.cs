@@ -10,7 +10,7 @@ namespace CodeShellCore.Linq.Filtering
 {
 
     /// <summary>
-    /// Used to create <see cref="PropertyFilter"/> object with the correct data
+    /// Used to create <see cref="PropertyFilterDto"/> object with the correct data
     /// </summary>
     public class PropertyFilter<T, TValue> : PropertyFilter
     {

@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.DependencyInjection;
+using CodeShellCore.Extensions;
 using CodeShellCore.MultiTenant;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

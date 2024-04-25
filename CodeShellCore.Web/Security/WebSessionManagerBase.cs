@@ -7,6 +7,9 @@ using System;
 using CodeShellCore.Security.Authorization;
 using Microsoft.Extensions.Primitives;
 using CodeShellCore.Security.Authentication;
+using CodeShellCore.MultiTenant;
+using CodeShellCore.Extensions;
+using System.Linq;
 
 namespace CodeShellCore.Web.Security
 {
@@ -27,6 +30,26 @@ namespace CodeShellCore.Web.Security
         {
 
         }
+
+        protected void ReadAppVersion()
+        {
+            var headers = _accessor.HttpContext?.Request?.Headers;
+            if (headers != null && headers.ContainsKey(HttpHeaderKeys.AppVersion))
+            {
+                var ver = headers[HttpHeaderKeys.AppVersion];
+                _accessor.HttpContext.RequestServices.SetCurrentTenantVersion(ver);
+            }
+        }
+
+        protected virtual void ReadTenantId()
+        {
+            var headers = _accessor.HttpContext?.Request?.Headers;
+            if (headers != null && headers.TryGetValue(HttpHeaderKeys.TenantId, out StringValues tenantId) && long.TryParse(tenantId.First(), out long id))
+            {
+                ServiceProvider.GetRequiredService<CurrentTenant>().TenantId = id;
+            }
+        }
+
 
         protected virtual void SetIdentity(JWTData jwt)
         {
@@ -92,7 +115,6 @@ namespace CodeShellCore.Web.Security
         }
 
         public abstract void AuthorizationRequest();
-
-        public abstract void AuthorizationRequest(string token);
+        public abstract void UseToken(string token);
     }
 }

@@ -74,17 +74,17 @@ namespace CodeShellCore.Moldster.Pages
             return null;
         }
 
-        public LoadResult<T> GetUnderDomain<T>(long domainId, LoadOptions opt) where T : class
+        public PagedResult<T> GetUnderDomain<T>(long domainId, PagedListRequest opt) where T : class
         {
             var opts = opt.GetOptionsFor<T>();
             var q = from p in Loader
                     where p.Domain.Chain.Contains("|" + domainId.ToString() + "|")
                     select p;
             var qq = QueryDto<T>(q);
-            return qq.LoadWith(opts);
+            return qq.ToPagedResult(opts);
         }
 
-        public LoadResult<T> FindUsing<T>(FindPageRequest request, LoadOptions opts) where T : class
+        public PagedResult<T> FindUsing<T>(FindPageRequest request, PagedListRequest opts) where T : class
         {
             var q = Loader.Where(d => d.TenantId == request.TenantId);
             switch (request.TypeEnum)
@@ -102,7 +102,7 @@ namespace CodeShellCore.Moldster.Pages
                     q = q.Where(d => d.CanEmbed);
                     break;
             }
-            return QueryDto<T>(q).LoadWith(opts.GetOptionsFor<T>());
+            return QueryDto<T>(q).ToPagedResult(opts.GetOptionsFor<T>());
         }
 
         public void UpdatePageViewParamsJson(Page p, PageParameterForJson[] ps, PageRouteView pageRoute, FieldDefinition[] customFields)

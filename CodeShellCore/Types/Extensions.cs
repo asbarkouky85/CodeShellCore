@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -17,6 +18,13 @@ namespace CodeShellCore.Types
                 return null;
             return (string)asem.ConstructorArguments.FirstOrDefault().Value;
         }
+
+        public static string GetRootNamespace(this Assembly assembly)
+        {
+            var attrs = assembly.GetCustomAttributes(true);
+            return "";
+        }
+
         public static bool IsNullable(this Type type)
         {
             if (type.IsGenericType)
@@ -33,7 +41,21 @@ namespace CodeShellCore.Types
             return type;
         }
 
-
+        public static byte[] GetEmbeddedResource(this Assembly assembly, string key)
+        {
+            var resourceNames = assembly.GetManifestResourceNames();
+            var resourceWithName = resourceNames.FirstOrDefault(e => e.Contains(key));
+            if (resourceWithName != null)
+            {
+                using (var resStream = assembly.GetManifestResourceStream(resourceWithName))
+                {
+                    var st = new MemoryStream();
+                    resStream.CopyTo(st);
+                    return st.ToArray();
+                }
+            }
+            throw new Exception($"Could not find '{key}'");
+        }
 
         public static IEnumerable<PropertyInfo> GetValueProperties(this Type type, bool ignoreId = true, string[] ignore = null)
         {
@@ -82,11 +104,11 @@ namespace CodeShellCore.Types
             if (type == typeof(byte))
                 return "byte";
             return type.Name;
-        } 
+        }
 
         public static string ToPropertyTypeString(this Type type)
         {
-           
+
             var typeString = "";
             if (type.IsGenericType)
             {

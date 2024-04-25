@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using CodeShellCore.Data.Events;
+using CodeShellCore.Data.Localization;
+using CodeShellCore.Data.Lookups;
 using CodeShellCore.Linq;
+using CodeShellCore.Linq.Filtering;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore
 {
@@ -12,7 +14,19 @@ namespace CodeShellCore
         public CodeShellAutoMapperProfile()
         {
             CreateMap(typeof(CrudEvent<>), typeof(CrudEvent<>));
-            CreateMap(typeof(LoadResult<>), typeof(LoadResult<>));
+            CreateMap(typeof(PagedResult<>), typeof(PagedResult<>));
+            CreateMap(typeof(Named<>), typeof(NamedDto<>));
+            CreateMap(typeof(NamedDto<>), typeof(Named<>));
+
+            CreateMap<PagedListRequestDto, PagedListRequest>()
+                .ForMember(e => e.Direction, e => e.MapFrom(d => Enum.Parse<SortDir>(d.Direction)));
+            CreateMap<PropertyFilterDto, PropertyFilter>();
+
+            CreateMap<LocalizablesData, LocalizablesDto>();
+            CreateMap<LocalizablesDto, LocalizablesData>();
+
+
+
         }
     }
 }

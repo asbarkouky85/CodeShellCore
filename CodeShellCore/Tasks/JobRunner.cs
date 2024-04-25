@@ -19,7 +19,7 @@ namespace CodeShellCore.Tasks
             }
         }
         public Timer Timer { get; private set; }
-        bool fistRun = true;
+        bool _firstRun = true;
 
         void _setJob(ITimedJob val)
         {
@@ -29,9 +29,14 @@ namespace CodeShellCore.Tasks
                 Timer.Stop();
                 Timer.Dispose();
             }
-            fistRun = true;
+            _firstRun = true;
             Timer = new Timer();
-            Timer.Elapsed += (s, e) => RunJob();
+            Timer.Elapsed += (s, e) =>
+            {
+                CheckFirstRun();
+                RunJob();
+            };
+
             if (_job.StartOn != null)
             {
                 Timer.Interval = _getFirstInterval(_job.StartOn.Value);
@@ -54,16 +59,16 @@ namespace CodeShellCore.Tasks
 
         protected virtual void CheckFirstRun()
         {
-            if (fistRun)
+            if (_firstRun)
             {
                 Timer.Interval = Job.Interval.TotalMilliseconds;
-                fistRun = false;
+                _firstRun = false;
             }
         }
 
         protected virtual void RunJob()
         {
-            CheckFirstRun();
+
             using (var sc = Shell.GetScope())
             {
                 Job.Run(sc.ServiceProvider);

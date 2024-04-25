@@ -1,8 +1,10 @@
-﻿using CodeShellCore.Moldster;
+﻿using CodeShellCore.Data.Helpers;
+using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
 using CodeShellCore.Moldster.Localization;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -59,23 +61,25 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Respond();
         }
 
-        public IActionResult ClearOlderBundles([FromBody] DbCreationRequest req)
+        public SubmitResult ClearOlderBundles([FromBody] DbCreationRequest req)
         {
+            var service = GetService<IPageParameterDataService>();
+            return service.UpdateTemplatePagesViewParamsJson(req.TenantCode);
+            
+            //var envs = paths.GetEnvironments();
+            //MoldsterEnvironment env = null;
+            //if (req.Environment == "(Current Machine)")
+            //{
+            //    env = MoldsterEnvironment.Development;
+            //}
+            //else
+            //{
+            //    env = envs.Where(d => d.Name == req.Environment).First();
+            //}
 
-            var envs = paths.GetEnvironments();
-            MoldsterEnvironment env = null;
-            if (req.Environment == "(Current Machine)")
-            {
-                env = MoldsterEnvironment.Development;
-            }
-            else
-            {
-                env = envs.Where(d => d.Name == req.Environment).First();
-            }
-
-            GetService<EnvironmentAccessor>().CurrentEnvironment = env;
-            Publisher.DeleteOtherBundlesForTenant(req.TenantCode);
-            return Respond();
+            //GetService<EnvironmentAccessor>().CurrentEnvironment = env;
+            //Publisher.DeleteOtherBundlesForTenant(req.TenantCode);
+            //return Respond();
         }
 
         public IActionResult InitializeResx()

@@ -2,6 +2,7 @@
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Mapping;
+using CodeShellCore.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -227,9 +228,9 @@ namespace CodeShellCore.Extensions.Data
         }
 
 
-        public static List<Named<TPrime>> GetNamedList<T, TPrime>(this IRepository<T> repo, Expression<Func<T, TPrime>> expression) where T : class, INamed<TPrime>
+        public static List<NamedDto<TPrime>> GetNamedList<T, TPrime>(this IRepository<T> repo, Expression<Func<T, TPrime>> expression) where T : class, INamed<TPrime>
         {
-            return repo.FindAs(e => new Named<TPrime> { Id = e.Id, Name = e.Name }).OrderBy(d => d.Name).ToList();
+            return repo.FindAs(e => new NamedDto<TPrime> { Id = e.Id, Name = e.Name }).OrderBy(d => d.Name).ToList();
         }
 
 
@@ -260,24 +261,24 @@ namespace CodeShellCore.Extensions.Data
             foreach (TDto item in set.Updated)
             {
                 var update = repo.FindSingle(item.Id);
-                if(update != null)
+                if (update != null)
                 {
                     mapper.Map(item, update);
                     repo.Update(update);
                     entitySet.Updated.Add(update);
                 }
-                
+
             }
 
             foreach (TDto item in set.Deleted)
             {
                 var deleted = repo.FindSingle(item.Id);
-                if(deleted != null)
+                if (deleted != null)
                 {
                     repo.Delete(deleted);
                     entitySet.Deleted.Add(deleted);
                 }
-                
+
             }
 
             if (set.Added.Count() == 0 && set.Updated.Count() == 0 && set.Deleted.Count() == 0)

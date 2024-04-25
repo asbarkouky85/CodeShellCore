@@ -11,7 +11,7 @@ namespace CodeShellCore.Security.Sessions
         string GetCurrentUserId();
         string GetConnectionId();
         void AuthorizationRequest();
-        void AuthorizationRequest(string token);
+        void UseToken(string token);
         //void ClearUserCache(object id);
         //IUser GetUserData();
     }

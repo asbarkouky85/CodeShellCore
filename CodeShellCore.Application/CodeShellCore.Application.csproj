@@ -13,10 +13,13 @@
   <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
     <ProjectReference Include="..\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
+    <ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Filtering\" />
     <Folder Include="Data\Localization\Internal\" />
+    <Folder Include="Localization\" />
   </ItemGroup>
 
   <ItemGroup>

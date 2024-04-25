@@ -27,11 +27,12 @@ namespace CodeShellCore.Moldster.Pages
 
         protected virtual string GetViewParamsJson(long pageId, ViewParams json)
         {
-            return json.ToJson(new JsonSerializerSettings
+            var res= json.ToJson(new JsonSerializerSettings
             {
                 StringEscapeHandling = StringEscapeHandling.EscapeHtml,
                 Formatting = Formatting.Indented
             });
+            return res;
         }
 
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)

@@ -195,12 +195,12 @@ namespace CodeShellCore.Moldster.Localization
             }
         }
 
-        public virtual LoadResult<CustomText> LoadForTenant(CustomTextRequestDto req, LoadOptions opts)
+        public virtual PagedResult<CustomText> LoadForTenant(CustomTextRequestDto req, PagedListRequestDto opts)
         {
             string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", ((TextTypes)req.Type).ToString() + "." + req.Locale + ".resx");
 
             ResxXmlReader reader = new ResxXmlReader();
-            var res = new LoadResult<CustomText>();
+            var res = new PagedResult<CustomText>();
 
             if (reader.TryRead(resLang1, out ResourceContainer cont1))
             {

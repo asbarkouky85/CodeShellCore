@@ -24,7 +24,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         }
 
         [HttpGet]
-        public LoadResult<MoldsterEnvironment> Get()
+        public PagedResult<MoldsterEnvironment> Get()
         {
             return service.Get();
         }

@@ -10,6 +10,6 @@ namespace CodeShellCore.Web.Controllers
     public interface ILocalizableEntityController
     {
         IActionResult GetLocalizationData(object id);
-        IActionResult SetLocalizationData(object id, [FromBody]Dictionary<string, LocalizablesDTO> data);
+        IActionResult SetLocalizationData(object id, [FromBody]Dictionary<string, LocalizablesDto> data);
     }
 }

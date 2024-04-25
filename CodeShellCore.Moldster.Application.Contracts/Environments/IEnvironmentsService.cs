@@ -6,7 +6,7 @@ namespace CodeShellCore.Moldster.Environments.Services
 {
     public interface IEnvironmentsService
     {
-        LoadResult<MoldsterEnvironment> Get();
+        PagedResult<MoldsterEnvironment> Get();
         MoldsterEnvironment Post(MoldsterEnvironment dto);
         MoldsterEnvironment Put(MoldsterEnvironment env);
         IEnumerable<string> GetDatabaseList(string name);

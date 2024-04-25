@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CodeShellCore.Data.Lookups
 {
-    public class NamedChildren : Named<object>
+    public class NamedChildren : NamedDto<object>
     {
         public IEnumerable Children { get; set; }
     }

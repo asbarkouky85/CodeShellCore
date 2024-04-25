@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
-    public interface IPageCategoryService : IDtoEntityService<long, PageCategoryListDTO, LoadOptions, PageCategoryDto>
+    public interface IPageCategoryService : IDtoEntityService<long, PageCategoryListDTO, PagedListRequestDto, PageCategoryDto>
     {
         SubmitResult Create(List<PageCategoryDto> list);
-        LoadResult<PageCategoryListDTO> GetAll(LoadOptions opt);
+        PagedResult<PageCategoryListDTO> GetAll(PagedListRequestDto opt);
         List<TemplateDTO> GetLocalTemplate(IEnumerable<string> files);
-        LoadResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, LoadOptions opt);
+        PagedResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, PagedListRequestDto opt);
         List<TemplateDTO> GetTemplates();
     }
 }

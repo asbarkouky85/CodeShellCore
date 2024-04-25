@@ -16,7 +16,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             service = serv;
         }
 
-        public LoadResult<CustomTextDto> Get([FromBody] CustomTextRequestDto req, [FromQuery] LoadOptions opts)
+        public PagedResult<CustomTextDto> Get([FromBody] CustomTextRequestDto req, [FromQuery] PagedListRequestDto opts)
         {
             return service.Get(req, opts);
         }

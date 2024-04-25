@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Security.Authentication;
+﻿using CodeShellCore.MultiTenant;
+using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Text;
 using Newtonsoft.Json;
@@ -25,6 +26,23 @@ namespace CodeShellCore.Helpers
         {
             return CreatePropertyDictionary(typeof(T), folderPath);
 
+        }
+
+        public static TenantUser SplitTenantEntity(string id)
+        {
+            var dto = new TenantUser();
+            string[] sp = id.Split('_');
+            if (sp.Length > 1)
+            {
+                long.TryParse(sp[0], out dto.TenantId);
+                long.TryParse(sp[1], out dto.EntityId);
+            }
+            else
+            {
+                long.TryParse(id, out dto.EntityId);
+            }
+
+            return dto;
         }
 
         public static int CompareVersions(string v1, string v2)

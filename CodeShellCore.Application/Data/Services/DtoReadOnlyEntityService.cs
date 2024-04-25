@@ -9,6 +9,8 @@ using CodeShellCore.Security;
 using CodeShellCore.MultiTenant;
 using CodeShellCore.Types;
 using CodeShellCore.Files.Uploads;
+using CodeShellCore.Extensions.Data;
+using CodeShellCore.Text.Localization;
 
 namespace CodeShellCore.Data.Services
 {
@@ -16,13 +18,14 @@ namespace CodeShellCore.Data.Services
         where T : class, IEntity<TPrime>
         where TSingleDto : class
         where TListDto : class
-        where TOptionsDto : LoadOptions
+        where TOptionsDto : PagedListRequestDto
     {
         protected IUnitOfWork DefaultUnit { get; }
         protected IKeyRepository<T, TPrime> Repository { get; private set; }
         protected IObjectMapper Mapper { get; private set; }
         protected ILookupsService LookupsService { get; private set; }
         protected IUserAccessor UserAccessor { get; private set; }
+        protected Language Language => Store.GetRequiredService<Language>();
         protected CurrentTenant CurrentTenant { get; private set; }
         private ILocalizationDataService _localizationDataService;
         protected InstanceStore Store { get; private set; }
@@ -53,24 +56,24 @@ namespace CodeShellCore.Data.Services
             Store = new InstanceStore(() => unit.ServiceProvider);
         }
 
-        public virtual LoadResult<TListDto> Get(TOptionsDto options)
+        public virtual PagedResult<TListDto> Get(TOptionsDto options)
         {
             var mapped = options.GetOptionsFor<TListDto>();
             return Repository.FindAndMap(mapped);
         }
 
-        public virtual LoadResult<TListDto> GetCollection(string id, TOptionsDto options)
+        public virtual PagedResult<TListDto> GetCollection(string id, TOptionsDto options)
         {
             var mapped = options.GetOptionsFor<TListDto>();
             return DefaultUnit.GetCollectionRepositoryFor<T>().LoadCollectionAndMap(id, mapped);
         }
 
-        public virtual Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> dto)
+        public virtual Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> dto)
         {
             return LookupsService.GetRequestedLookups(dto);
         }
 
-        public virtual Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> dto)
+        public virtual Dictionary<string, IEnumerable<NamedDto<object>>> GetListLookups(Dictionary<string, string> dto)
         {
             return LookupsService.GetRequestedLookups(dto);
         }

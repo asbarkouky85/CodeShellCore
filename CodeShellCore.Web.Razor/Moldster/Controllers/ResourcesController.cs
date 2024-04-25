@@ -19,7 +19,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             this.unit = unit;
         }
 
-        public override IActionResult Get([FromQuery] LoadOptions opt)
+        public override IActionResult Get([FromQuery] PagedListRequestDto opt)
         {
             var res = unit.ResourceRepository.FindAndMap(opt.GetOptionsFor<ResourceListDTO>());
             return Respond(res);

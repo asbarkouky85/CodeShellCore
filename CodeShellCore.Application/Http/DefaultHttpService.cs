@@ -7,7 +7,7 @@ namespace CodeShellCore.Http
     public class DefaultHttpService : HttpService
     {
         string _baseUrl;
-        public DefaultHttpService(string baseUrl)
+        public DefaultHttpService(string baseUrl = null)
         {
             _baseUrl = baseUrl;
         }

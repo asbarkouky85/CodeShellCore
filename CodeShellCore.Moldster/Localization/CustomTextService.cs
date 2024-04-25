@@ -1,5 +1,4 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Data.Helpers;
+﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Extensions.Data;
 using CodeShellCore.Linq;
@@ -19,9 +18,9 @@ namespace CodeShellCore.Moldster.Localization
             this.loc = loc;
         }
 
-        public LoadResult<CustomTextDto> Get(CustomTextRequestDto req, LoadOptions opts)
+        public PagedResult<CustomTextDto> Get(CustomTextRequestDto req, PagedListRequestDto opts)
         {
-            LoadResult<CustomText> data;
+            PagedResult<CustomText> data;
             if (req.ModifiedOnly)
             {
                 var op = opts.GetOptionsFor<CustomText>();
@@ -55,7 +54,7 @@ namespace CodeShellCore.Moldster.Localization
                 data.List = lst;
             }
 
-            return new LoadResult<CustomTextDto>
+            return new PagedResult<CustomTextDto>
             {
                 TotalCount = data.TotalCount,
                 List = Mapper.Map(data.List, new List<CustomTextDto>())

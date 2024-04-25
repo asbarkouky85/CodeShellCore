@@ -25,8 +25,7 @@ namespace CodeShellCore.Linq
 
         static ExpressionStore()
         {
-            RegisterSearchExpression<Named<long>>(term => { return e => e.Name.Contains(term); });
-            RegisterSearchExpression<Described<long>>(term => { return e => e.Name.Contains(term) || e.Description.Contains(term); });
+
         }
 
         public static Expression<Func<T, bool>> GetSearchExpression<T>(string str)

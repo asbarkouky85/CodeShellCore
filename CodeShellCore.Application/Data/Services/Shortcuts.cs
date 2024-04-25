@@ -3,7 +3,7 @@
 namespace CodeShellCore.Data.Services
 {
     public class DtoEntityService<T, TPrime, TDto> :
-       DtoEntityService<T, TPrime, LoadOptions, TDto, TDto, TDto, TDto>
+       DtoEntityService<T, TPrime, PagedListRequestDto, TDto, TDto, TDto, TDto>
         where T : class, IEntity<TPrime>
         where TDto : class, IEntityDto<TPrime>
     {
@@ -16,7 +16,7 @@ namespace CodeShellCore.Data.Services
         DtoEntityService<T, TPrime, TOptionsDto, TDto, TDto, TDto, TDto>
         where T : class, IEntity<TPrime>
         where TDto : class, IEntityDto<TPrime>
-        where TOptionsDto : LoadOptions
+        where TOptionsDto : PagedListRequestDto
     {
         public DtoEntityService(IUnitOfWork unit) : base(unit)
         {
@@ -28,7 +28,7 @@ namespace CodeShellCore.Data.Services
         where T : class, IEntity<TPrime>
         where TDto : class
         where TSingleDto : class, IEntityDto<TPrime>
-        where TOptionsDto : LoadOptions
+        where TOptionsDto : PagedListRequestDto
     {
         public DtoEntityService(IUnitOfWork unit) : base(unit)
         {
@@ -41,7 +41,7 @@ namespace CodeShellCore.Data.Services
         where TDto : class
         where TSingleDto : class
         where TCreateUpdateDto : class, IEntityDto<TPrime>
-        where TOptionsDto : LoadOptions
+        where TOptionsDto : PagedListRequestDto
     {
         public DtoEntityService(IUnitOfWork unit) : base(unit)
         {

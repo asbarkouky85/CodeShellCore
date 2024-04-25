@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Cli;
 using CodeShellCore.Http.Pushing;
+using CodeShellCore.Notifications;
 using System;
 using System.Drawing;
 
@@ -10,11 +11,11 @@ namespace CodeShellCore.Moldster.Tracing
         ColorSetter setter;
 
         int cursorLeft = 0;
-        private readonly IMessagePusher<IOutputMessageSender> pusher;
+        private readonly IEmitter<IOutputMessageSender> pusher;
         private readonly IPushingSessionManager man;
         string connectionId;
 
-        public MessagePusherOutputService(IMessagePusher<IOutputMessageSender> pusher, IPushingSessionManager man)
+        public MessagePusherOutputService(IEmitter<IOutputMessageSender> pusher, IPushingSessionManager man)
         {
             this.pusher = pusher;
             this.man = man;
@@ -28,7 +29,7 @@ namespace CodeShellCore.Moldster.Tracing
             notificationDTO.IsNew = false;
             notificationDTO.Color = GetColor();
             notificationDTO.ReplaceLast = replaceLast;
-            pusher.Publish(d => d.SendMessage(notificationDTO), new[] { connectionId });
+            pusher.Emit(d => d.SendMessage(notificationDTO), new[] { connectionId });
         }
 
         public void WriteLine(bool replaceLast = false)
@@ -39,7 +40,7 @@ namespace CodeShellCore.Moldster.Tracing
             notificationDTO.IsNew = true;
             notificationDTO.Color = GetColor();
             notificationDTO.ReplaceLast = replaceLast;
-            pusher.Publish(d => d.SendMessage(notificationDTO), new[] { connectionId });
+            pusher.Emit(d => d.SendMessage(notificationDTO), new[] { connectionId });
         }
 
         public void WriteLine(string v, bool replaceLast = false)
@@ -52,7 +53,7 @@ namespace CodeShellCore.Moldster.Tracing
             notificationDTO.Color = GetColor();
             notificationDTO.ReplaceLast = replaceLast;
 
-            pusher.Publish(d => d.SendMessage(notificationDTO), new[] { connectionId });
+            pusher.Emit(d => d.SendMessage(notificationDTO), new[] { connectionId });
             cursorLeft = 0;
         }
 

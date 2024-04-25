@@ -4,8 +4,8 @@ namespace CodeShellCore.Data.Services
 {
     public interface IDtoCollectionsEntityService<TPrime, TOptionsDto, TListDto>
         where TListDto : class
-        where TOptionsDto : LoadOptions
+        where TOptionsDto : PagedListRequestDto
     {
-        LoadResult<TListDto> GetCollection(string id, TOptionsDto options);
+        PagedResult<TListDto> GetCollection(string id, TOptionsDto options);
     }
 }

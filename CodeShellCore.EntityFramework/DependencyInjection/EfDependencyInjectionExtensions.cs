@@ -52,6 +52,7 @@ namespace CodeShellCore.DependencyInjection
 
         public static void AddCodeShellEntityFramework(this IServiceCollection coll)
         {
+            coll.AddGenericRepository(typeof(Repository_Int64<,>));
             coll.AddTransient(typeof(KeyRepository<,,>));
         }
 

@@ -15,7 +15,7 @@ namespace CodeShellCore.Moldster.Pages
             _unit = unit;
         }
 
-        public LoadResult<PageControlListDTO> GetControlByPageId(LoadOptions opt)
+        public PagedResult<PageControlListDTO> GetControlByPageId(PagedListRequestDto opt)
         {
             var opts = opt.GetOptionsFor<PageControlListDTO>();
             opts.SetOrderProperty(e => e.ControlIdentifier);

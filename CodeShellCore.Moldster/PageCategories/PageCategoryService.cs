@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
-    public class PageCategoryService : DtoEntityService<PageCategory, long, PageCategoryListDTO, LoadOptions, PageCategoryDto>, IPageCategoryService
+    public class PageCategoryService : DtoEntityService<PageCategory, long, PageCategoryListDTO, PagedListRequestDto, PageCategoryDto>, IPageCategoryService
     {
         private readonly IFileHandler fileHandler;
         private readonly IPathsService conf;
@@ -92,15 +92,15 @@ namespace CodeShellCore.Moldster.PageCategories
 
         }
 
-        public LoadResult<PageCategoryListDTO> GetAll(LoadOptions opt)
+        public PagedResult<PageCategoryListDTO> GetAll(PagedListRequestDto opt)
         {
             var opts = opt.GetOptionsFor<PageCategoryListDTO>();
             return Unit.PageCategoryRepository.FindAndMap(opts);
         }
 
-        public LoadResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, LoadOptions opt)
+        public PagedResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, PagedListRequestDto opt)
         {
-            return Unit.PageCategoryRepository.GetUnderDomain<PageCategoryListDTO>(domainId, opt);
+            return Unit.PageCategoryRepository.GetUnderDomain<PageCategoryListDTO>(domainId, Mapper.Map(opt, new PagedListRequest()));
         }
 
         public List<TemplateDTO> GetTemplates()
@@ -150,7 +150,7 @@ namespace CodeShellCore.Moldster.PageCategories
             return DefaultUnit.SaveChanges();
         }
 
-        public override Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
+        public override Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> data)
         {
             return Lookups.PageCategoryEdit(data);
         }

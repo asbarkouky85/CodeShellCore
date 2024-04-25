@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Linq;
 using CodeShellCore.Data;
 using CodeShellCore;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace Microsoft.AspNetCore.Mvc
 {
@@ -36,6 +37,17 @@ namespace Microsoft.AspNetCore.Mvc
             if (res.FileName != null)
                 x.FileDownloadName = res.FileName + res.Extension;
             return x;
+        }
+
+        public static string GetArea(this ControllerModel model)
+        {
+            var selectorWithArea = model.Selectors.FirstOrDefault(e => e.EndpointMetadata.Any(d => d.GetType() == typeof(AreaAttribute)));
+            if (selectorWithArea != null)
+            {
+                var areaAtt = (AreaAttribute)selectorWithArea.EndpointMetadata.Where(e => e.GetType() == typeof(AreaAttribute)).FirstOrDefault();
+                return areaAtt.RouteValue;
+            }
+            return null;
         }
 
         public static HttpResult HandleRequestError(this HttpContext context, Exception excep)
@@ -207,7 +219,7 @@ namespace Microsoft.AspNetCore.Mvc
             if (token != null)
             {
                 var _manager = http.RequestServices.GetService<ISessionManager>();
-                _manager?.AuthorizationRequest(token);
+                _manager?.UseToken(token);
             }
         }
 

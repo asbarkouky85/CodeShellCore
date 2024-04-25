@@ -82,6 +82,7 @@ namespace CodeShellCore.Web.Razor.Elements.Moldster
         {
             var d = base.FileGroup(helper, exp, formFieldName, uploadAction, required, multiple, size, alternateLabel, attrs, inputAttr, inputClasses, groupClasses);
             d.Accessibility = proc.Process(helper, exp, InputControls.FileTextBox);
+            
             return d;
         }
 

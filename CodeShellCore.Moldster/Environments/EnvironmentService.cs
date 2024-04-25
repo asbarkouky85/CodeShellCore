@@ -33,10 +33,10 @@ namespace CodeShellCore.Moldster.Environments
             }
         }
 
-        public LoadResult<MoldsterEnvironment> Get()
+        public PagedResult<MoldsterEnvironment> Get()
         {
             var envs = paths.GetEnvironments();
-            return new LoadResult<MoldsterEnvironment> { List = envs, TotalCount = envs.Count };
+            return new PagedResult<MoldsterEnvironment> { List = envs, TotalCount = envs.Count };
         }
 
         public IEnumerable<string> GetDatabaseList(string name)

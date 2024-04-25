@@ -81,12 +81,12 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public LoadResult<T> Find(ListOptions<T> opts)
+        public PagedResult<T> Find(PagedListRequest<T> opts)
         {
             throw new NotImplementedException();
         }
 
-        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
+        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             throw new NotImplementedException();
         }
@@ -96,17 +96,17 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public LoadResult<TR> FindAndMap<TR>(ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        public PagedResult<TR> FindAndMap<TR>(PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
+        public List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public LoadResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        public PagedResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
         {
             throw new NotImplementedException();
         }
@@ -126,7 +126,12 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public LoadResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
+        public PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PagedResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, PagedListRequest<TR> opts) where TR : class
         {
             throw new NotImplementedException();
         }

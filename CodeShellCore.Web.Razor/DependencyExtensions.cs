@@ -9,6 +9,7 @@ using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Tracing;
+using CodeShellCore.Notifications;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Web.Razor.Elements;
@@ -55,6 +56,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddSignalR();
             coll.AddSignalRHub<IOutputMessageSender, GenerationHub>();
             coll.AddSignalRHub<IBundlingTasksNotifications, TasksHub>();
+            
             coll.AddAutoMapper(typeof(MoldsterMappingProfile).Assembly);
         }
 

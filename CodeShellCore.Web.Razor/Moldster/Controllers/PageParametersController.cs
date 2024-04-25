@@ -14,9 +14,9 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             this.service = service;
         }
 
-        public IActionResult GetReferences([FromBody] ParameterRequest req, [FromQuery] LoadOptions opt)
+        public IActionResult GetReferences([FromBody] ParameterRequest req, [FromQuery] PagedListRequestDto opt)
         {
-            LoadResult<PageReferenceDTO> lst = service.GetReferences(req, opt);
+            PagedResult<PageReferenceDTO> lst = service.GetReferences(req, opt);
             return Respond(lst);
         }
     }

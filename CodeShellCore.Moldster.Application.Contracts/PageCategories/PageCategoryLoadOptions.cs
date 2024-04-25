@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
-   public class PageCategoryLoadOptions : LoadOptions
+    public class PageCategoryLoadOptions : PagedListRequestDto
     {
         public long? DomainId { get; set; }
     }

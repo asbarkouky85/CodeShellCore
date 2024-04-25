@@ -8,7 +8,7 @@ namespace CodeShellCore.Moldster.Localization
 {
     public interface ICustomTextService
     {
-        LoadResult<CustomTextDto> Get(CustomTextRequestDto req, LoadOptions opts);
+        PagedResult<CustomTextDto> Get(CustomTextRequestDto req, PagedListRequestDto opts);
         SubmitResult SaveChanges(IEnumerable<CustomTextDto> lst);
     }
 }

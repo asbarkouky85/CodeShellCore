@@ -215,7 +215,7 @@ namespace CodeShellCore.Data.EntityFramework
         }
 
         /// <summary>
-        /// to retrieve all records from the data source using conditions specified in the <see cref="LoadOptions"/> instance 
+        /// to retrieve all records from the data source using conditions specified in the <see cref="PagedListRequestDto"/> instance 
         /// </summary>
         /// <param name="exp"></param>
         /// <returns>should not be a queryable object</returns>
@@ -225,12 +225,12 @@ namespace CodeShellCore.Data.EntityFramework
             return Loader.Where(exp).ToList();
         }
 
-        public virtual LoadResult<T> Find(ListOptions<T> opts)
+        public virtual PagedResult<T> Find(PagedListRequest<T> opts)
         {
-            return Loader.LoadWith(opts);
+            return Loader.ToPagedResult(opts);
         }
 
-        public virtual List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
+        public virtual List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             try
             {
@@ -250,13 +250,13 @@ namespace CodeShellCore.Data.EntityFramework
 
         }
 
-        public virtual LoadResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        public virtual PagedResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
         {
             var q = Loader;
             if (cond != null)
                 q = q.Where(cond);
 
-            return q.Select(exp).LoadWith(opts);
+            return q.Select(exp).ToPagedResult(opts);
         }
 
         public virtual T FindSingle(Expression<Func<T, bool>> expression)
@@ -346,12 +346,12 @@ namespace CodeShellCore.Data.EntityFramework
                 }
             }
         }
-        public virtual LoadResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, ListOptions<TR> opts) where TR : class
+        public virtual PagedResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, PagedListRequest<TR> opts) where TR : class
         {
             if (dir == SortDir.ASC)
-                return Loader.OrderBy(sort).Select(exp).LoadWith(opts);
+                return Loader.OrderBy(sort).Select(exp).ToPagedResult(opts);
             else
-                return Loader.OrderByDescending(sort).Select(exp).LoadWith(opts);
+                return Loader.OrderByDescending(sort).Select(exp).ToPagedResult(opts);
         }
 
         public TVal GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null)
@@ -402,7 +402,7 @@ namespace CodeShellCore.Data.EntityFramework
             return Projector.Project<T, TDto>(q ?? Loader);
         }
 
-        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
+        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             var q = Loader;
             if (cond != null)
@@ -425,14 +425,14 @@ namespace CodeShellCore.Data.EntityFramework
             return QueryDto<TR>(q).ToList();
         }
 
-        public LoadResult<TR> FindAndMap<TR>(ListOptions<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        public PagedResult<TR> FindAndMap<TR>(PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
         {
             var q = Loader;
             if (cond != null)
             {
                 q = q.Where(cond);
             }
-            return QueryDto<TR>(q).LoadWith(opts);
+            return QueryDto<TR>(q).ToPagedResult(opts);
         }
 
         public TR FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class
@@ -490,6 +490,8 @@ namespace CodeShellCore.Data.EntityFramework
         {
             return Loader.Where(value).ToListAsync();
         }
+
+        public abstract PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null);
     }
 }
 

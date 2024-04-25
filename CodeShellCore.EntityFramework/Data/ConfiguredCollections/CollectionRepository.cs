@@ -56,15 +56,15 @@ namespace CodeShellCore.Data.ConfiguredCollections
             return QueryCollection(collectionId).Select(exp).ToList();
         }
 
-        public virtual LoadResult<T> LoadCollection(string collectionId, ListOptions<T> opts)
+        public virtual PagedResult<T> LoadCollection(string collectionId, PagedListRequest<T> opts)
         {
-            return QueryCollection(collectionId).LoadWith(opts);
+            return QueryCollection(collectionId).ToPagedResult(opts);
         }
 
-        public virtual LoadResult<TObject> LoadCollectionAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp, ListOptions<TObject> opts) where TObject : class
+        public virtual PagedResult<TObject> LoadCollectionAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp, PagedListRequest<TObject> opts) where TObject : class
         {
 
-            return QueryCollection(collectionId).Select(exp).LoadWith(opts);
+            return QueryCollection(collectionId).Select(exp).ToPagedResult(opts);
         }
 
         public override IEnumerable<Named<object>> FindAsLookup(string collectionId = null)
@@ -86,10 +86,17 @@ namespace CodeShellCore.Data.ConfiguredCollections
             return QueryDto<TObject>(q).ToList();
         }
 
-        public LoadResult<TObject> LoadCollectionAndMap<TObject>(string collectionId, ListOptions<TObject> opts) where TObject : class
+        public PagedResult<TObject> LoadCollectionAndMap<TObject>(string collectionId, PagedListRequest<TObject> opts) where TObject : class
         {
             var q = QueryCollection(collectionId);
-            return QueryDto<TObject>(q).LoadWith(opts);
+            return QueryDto<TObject>(q).ToPagedResult(opts);
+        }
+
+        public override PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
+        {
+            var req = request.GetOptionsFor<Named<object>>();
+            var cQ = collectionId == null ? Loader : QueryCollection(collectionId);
+            return QueryNamed(cQ).ToPagedResult(req);
         }
     }
 }

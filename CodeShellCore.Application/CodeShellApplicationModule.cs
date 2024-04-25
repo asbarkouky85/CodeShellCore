@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using CodeShellCore.Data.Events;
 using CodeShellCore.MultiTenant;
 using CodeShellCore.Security;
+using CodeShellCore.Linq;
 
 namespace CodeShellCore
 {
@@ -47,6 +48,7 @@ namespace CodeShellCore
             coll.AddSingleton<IClientProvider, DefaultClientProvider>();
             coll.AddScoped<CurrentTenant>();
             coll.AddTransient<ITenantDataProvider, NullTenantDataProvider>();
+            coll.AddTransient<ILookupsAppService, LookupsAppService>();
 
             coll.AddOptions<CrudEventSenderOptions>();
             coll.AddOptions<FileUploadOptions>("Uploads");
@@ -69,6 +71,8 @@ namespace CodeShellCore
             });
 
             coll.AddCodeShellAutoMapper();
+
+
         }
 
         public static void ConfigureUploads(this IServiceCollection coll, IConfiguration conf)

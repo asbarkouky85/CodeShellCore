@@ -13,7 +13,7 @@ namespace CodeShellCore.Data.Services
         where TListDto : class
         where TCreateDto : class
         where TUpdateDto : class
-        where TOptionsDto : LoadOptions
+        where TOptionsDto : PagedListRequestDto
     {
         DeleteResult Delete(TPrime id);
         SubmitResult<TSingleDto> Post(TCreateDto dto);

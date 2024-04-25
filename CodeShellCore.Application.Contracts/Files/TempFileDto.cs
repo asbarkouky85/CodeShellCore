@@ -13,7 +13,6 @@ namespace CodeShellCore.Files
         public string FileTempPath { get; set; }
         public int? Size { get; set; }
         public string FileName { get; set; }
-        public string UploadId { get; set; }
         public string MimeType { get; set; }
 
         public FileData ToFileData(string fieldName)

@@ -33,13 +33,13 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.Put(pageCategory);
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups([FromQuery] Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups([FromQuery] Dictionary<string, string> data)
         {
 
             return _service.GetEditLookups(data);
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetListLookups([FromQuery] Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<NamedDto<object>>> GetListLookups([FromQuery] Dictionary<string, string> data)
         {
             return _service.GetListLookups(data);
         }
@@ -49,7 +49,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.Create(list);
         }
 
-        public LoadResult<PageCategoryListDTO> GetAll([FromQuery] LoadOptions opt)
+        public PagedResult<PageCategoryListDTO> GetAll([FromQuery] PagedListRequestDto opt)
         {
             return _service.GetAll(opt);
         }
@@ -59,7 +59,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.GetLocalTemplate(files);
         }
 
-        public LoadResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, [FromQuery] LoadOptions opt)
+        public PagedResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, [FromQuery] PagedListRequestDto opt)
         {
             return _service.GetPagesCategoryByDomain(domainId, opt);
         }
@@ -84,7 +84,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.Put(dto);
         }
 
-        public LoadResult<PageCategoryListDTO> Get([FromQuery] LoadOptions options)
+        public PagedResult<PageCategoryListDTO> Get([FromQuery] PagedListRequestDto options)
         {
             return _service.Get(options);
         }
@@ -99,7 +99,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.IsUnique(dto);
         }
 
-        public LoadResult<PageCategoryListDTO> GetCollection(string id, [FromQuery] LoadOptions options)
+        public PagedResult<PageCategoryListDTO> GetCollection(string id, [FromQuery] PagedListRequestDto options)
         {
             return _service.GetCollection(id, options);
         }

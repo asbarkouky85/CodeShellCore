@@ -3,32 +3,22 @@ using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
-using CodeShellCore.Services.Notifications;
 using CodeShellCore.Web.Features;
 using CodeShellCore.Web.Moldster.Configurator;
-using CodeShellCore.Web.Notifiers;
 using CodeShellCore.Web.Security;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using System;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace CodeShellCore.Web
 {
     public static class DependecyExtensions
     {
-        
-        public static void AddSignalRHub<TContract, THub>(this IServiceCollection coll) where THub : Hub<TContract> where TContract : class
-        {
-            coll.AddTransient<IMessagePusher<TContract>, SignalRNotifier<THub, TContract>>();
-        }
-
         public static void AddTokenSecurity(this IServiceCollection coll, AuthorizationType type)
         {
             coll.AddCodeShellSecurity(type);

@@ -1,13 +1,9 @@
 ﻿using CodeShellCore.Moldster.Tracing;
-using CodeShellCore.Web.Notifiers;
+using CodeShellCore.Notifications.Devices;
 
 namespace CodeShellCore.Web.Razor.SignalR
 {
     public class GenerationHub : SignalRHub<IOutputMessageSender>
     {
-        public override string GetConnectionId()
-        {
-            return base.GetConnectionId();
-        }
     }
 }

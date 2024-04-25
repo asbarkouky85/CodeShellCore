@@ -56,12 +56,12 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return SubmitResult;
         }
 
-        public LoadResult<PageListDTO> Get([FromQuery] LoadOptions opt)
+        public PagedResult<PageListDTO> Get([FromQuery] PagedListRequestDto opt)
         {
             return pageService.Get(opt);
         }
 
-        public LoadResult<PageListDTO> GetPagesByDomain([FromQuery] long domainId, [FromQuery] LoadOptions opts)
+        public PagedResult<PageListDTO> GetPagesByDomain([FromQuery] long domainId, [FromQuery] PagedListRequestDto opts)
         {
             return pageService.GetPagesByDomain(domainId, opts);
         }
@@ -81,7 +81,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return pageService.ApplyCustomization(dto);
         }
 
-        public LoadResult<PageListDTO> FindPages([FromQuery] LoadOptions opts, [FromBody] FindPageRequest request)
+        public PagedResult<PageListDTO> FindPages([FromQuery] PagedListRequestDto opts, [FromBody] FindPageRequest request)
         {
             return pageService.FindPages(opts, request);
         }
@@ -101,17 +101,17 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return pageService.IsUnique(dto);
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> data)
         {
             return pageService.GetEditLookups(data);
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<NamedDto<object>>> GetListLookups(Dictionary<string, string> data)
         {
             return pageService.GetListLookups(data);
         }
 
-        public LoadResult<PageListDTO> GetCollection(string id, LoadOptions options)
+        public PagedResult<PageListDTO> GetCollection(string id, PagedListRequestDto options)
         {
             return pageService.GetCollection(id, options);
         }

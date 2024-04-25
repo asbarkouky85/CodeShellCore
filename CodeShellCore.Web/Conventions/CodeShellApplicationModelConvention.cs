@@ -104,7 +104,7 @@ namespace CodeShellCore.Web.Conventions
             {
                 action.Selectors.Add(new SelectorModel
                 {
-                    AttributeRouteModel = CreateAbpServiceAttributeRouteModel(action.Controller.ControllerName, action, httpMethod),
+                    AttributeRouteModel = CreateServiceAttributeRouteModel(action.Controller.ControllerName, action, httpMethod),
                     ActionConstraints = { new HttpMethodActionConstraint(new[] { httpMethod }) }
                 });
             }
@@ -125,7 +125,7 @@ namespace CodeShellCore.Web.Conventions
 
                     if (selector.AttributeRouteModel == null)
                     {
-                        selector.AttributeRouteModel = CreateAbpServiceAttributeRouteModel(action.Controller.ControllerName, action, httpMethod);
+                        selector.AttributeRouteModel = CreateServiceAttributeRouteModel(action.Controller.ControllerName, action, httpMethod);
                     }
 
                     if (!selector.ActionConstraints.OfType<HttpMethodActionConstraint>().Any())
@@ -137,7 +137,7 @@ namespace CodeShellCore.Web.Conventions
 
         }
 
-        protected virtual AttributeRouteModel CreateAbpServiceAttributeRouteModel(string controllerName, ActionModel action, string httpMethod)
+        protected virtual AttributeRouteModel CreateServiceAttributeRouteModel(string controllerName, ActionModel action, string httpMethod)
         {
             return new AttributeRouteModel(
                 new RouteAttribute(
@@ -148,10 +148,14 @@ namespace CodeShellCore.Web.Conventions
 
         private string RouteUrl(ActionModel model)
         {
+            string area = model.Controller.GetArea();
             string id = model.Parameters.Any(e => e.Name.ToLower() == "id") ? "/{id?}" : "";
             string actionName = model.ActionName == "Index" ? "" : $"/{model.ActionName}";
-            string controller = model.Controller.ControllerName == "Home" && model.ActionName == "Index" ? "" : $"apiAction/{model.Controller.ControllerName}";
-            return $"{controller}{actionName}{id}";
+            string prefix = model.Controller.ControllerName == "Home" ? "" : "api/";
+            string controller = model.Controller.ControllerName == "Home" && model.ActionName == "Index" ? "" : $"{model.Controller.ControllerName}";
+
+            area = string.IsNullOrEmpty(area) ? "" : $"{area}/";
+            return $"{prefix}{area}{controller}{actionName}{id}";
         }
 
         private bool IsQueryParameterType(ParameterModel model)

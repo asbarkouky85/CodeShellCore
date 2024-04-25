@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Tenants
 {
-    public class TenantLookupDto : Named<object>
+    public class TenantLookupDto : NamedDto<object>
     {
         public string Code { get; set; }
     }

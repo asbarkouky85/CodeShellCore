@@ -12,6 +12,7 @@ using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Text.TextProviders;
 using CodeShellCore.Types;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -41,6 +42,7 @@ namespace CodeShellCore
             ProjectAssembly = GetType().Assembly;
             SolutionFolder = AppDomain.CurrentDomain.BaseDirectory.GetBeforeFirst("\\" + ProjectAssembly.GetName().Name);
             EnvironmentName = GetEnvironmentName();
+            App = this;
         }
 
         #region Static Properties
@@ -49,7 +51,7 @@ namespace CodeShellCore
         {
             get
             {
-                return Shell.GetConfigAs<string>("AuthServer",false);
+                return Shell.GetConfigAs<string>("AuthServer", false);
             }
         }
         public static string EnvironmentName { get; protected set; }
@@ -61,7 +63,7 @@ namespace CodeShellCore
         public static IEnumerable<string> SupportedLanguages { get { return App.Supordedlanguage; } }
         public static IServiceProvider RootInjector { get { return App.rootProvider; } }
         // public static IServiceProvider ScopedInjector { get { return App._scopedProvider; } }
-        public static IUser User { get { return App._scopedProvider.GetCurrentUser(); } }
+
         public static string AppRootPath { get { return App.appRoot; } }
         public static string LocalizationAssembly { get { return App.localizationAssembly ?? ProjectAssembly.GetName().Name; } }
         public static string PublicRoot { get { return App.publicRelativePath; } }

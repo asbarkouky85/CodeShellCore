@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.DependencyInjection;
 using CodeShellCore.Moldster;
+using CodeShellCore.Notifications;
 using CodeShellCore.Web.Razor.Moldster;
 using CodeShellCore.Web.Razor.SignalR;
 using CodeShellCore.Web.Razor.Themes;
@@ -38,6 +39,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddMoldsterWeb(UseLegacy);
             coll.AddMoldsterConfigurator(UseLegacy);
             coll.AddMoldsterServerGeneration(UseLegacy);
+            coll.AddCodeShellNotificationsWeb();
             coll.AddMoldsterRazorHelpers();
             
             coll.AddRazorPages().AddRazorRuntimeCompilation();

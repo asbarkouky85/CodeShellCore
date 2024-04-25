@@ -1,7 +1,7 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Data.ConfiguredCollections;
+﻿using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.Events;
 using CodeShellCore.Data.Helpers;
+using CodeShellCore.Extensions.Data;
 using CodeShellCore.Linq;
 using CodeShellCore.MQ.Events;
 using CodeShellCore.Services;
@@ -25,9 +25,9 @@ namespace CodeShellCore.Data.Services
             UnitOfWork = unit;
         }
 
-        public LoadResult<T> Load(LoadOptions opts)
+        public PagedResult<T> Load(PagedListRequestDto opts)
         {
-            ListOptions<T> op = opts.GetOptionsFor<T>();
+            PagedListRequest<T> op = opts.GetOptionsFor<T>();
             return Repository.Find(op);
         }
 
@@ -98,25 +98,25 @@ namespace CodeShellCore.Data.Services
             return Repository.CanDelete(id);
         }
 
-        public virtual LoadResult<T> LoadObjects(LoadOptions opts)
+        public virtual PagedResult<T> LoadObjects(PagedListRequestDto opts)
         {
             return Load(opts);
         }
 
-        public LoadResult<TDTO> LoadDTO<TDTO>(System.Linq.Expressions.Expression<Func<T, TDTO>> ex, LoadOptions opts) where TDTO : class
+        public PagedResult<TDTO> LoadDTO<TDTO>(System.Linq.Expressions.Expression<Func<T, TDTO>> ex, PagedListRequestDto opts) where TDTO : class
         {
             var op = opts.GetOptionsFor<TDTO>();
             return Repository.FindAs(ex, op);
         }
 
-        public virtual LoadResult<T> LoadCollection(string collectionId, LoadOptions opts)
+        public virtual PagedResult<T> LoadCollection(string collectionId, PagedListRequestDto opts)
         {
             if (string.IsNullOrEmpty(collectionId))
                 return CollectionRepository.Find(opts.GetOptionsFor<T>());
             return CollectionRepository.LoadCollection(collectionId, opts.GetOptionsFor<T>());
         }
 
-        public virtual LoadResult<TDto> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, LoadOptions opts) where TDto : class
+        public virtual PagedResult<TDto> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, PagedListRequestDto opts) where TDto : class
         {
             if (string.IsNullOrEmpty(collectionId))
                 return CollectionRepository.FindAs(ex, opts.GetOptionsFor<TDto>());

@@ -146,28 +146,6 @@ namespace CodeShellCore.Moldster.Services
                         File.Delete(tsFile);
                     }
                 }
-
-                var codeShellPath = Path.Combine(Paths.UIRoot, "Core", "codeshell");
-                var codeShellFiles = Directory.GetFiles(codeShellPath, "*.ts", SearchOption.AllDirectories);
-
-                foreach (var fl in codeShellFiles)
-                {
-                    var name = fl.Replace(codeShellPath + "\\", "").Replace("\\", "/").GetBeforeFirst(".");
-                    var tsFile = Path.Combine(codeShellPath, name + ".ts");
-                    var part = AppParts.Route;
-                    if (File.Exists(tsFile))
-                    {
-                        var tsContent = File.ReadAllText(tsFile);
-
-                        if (name.ToLower().Contains("service"))
-                        {
-                            part = AppParts.Service;
-                            name = name.Replace("Service", "");
-                        }
-                        AddToUI(Names.ApplyConvension("src/core/codeshell/" + name, part) + ".ts", tsContent, true);
-                        File.Delete(tsFile);
-                    }
-                }
                 Utils.DeleteEmptyDirectories(oldBasePath);
             }
 
@@ -196,8 +174,8 @@ namespace CodeShellCore.Moldster.Services
             foreach (var f in packing)
                 File.Delete(f);
 
-            //Utils.DeleteDirectory(Path.Combine(Paths.UIRoot, "Core/codeshell"));
-            //Init.AddCodeShell(true);
+            Utils.DeleteDirectory(Path.Combine(Paths.UIRoot, "Core/codeshell"));
+            Init.AddCodeShell(true);
             Init.AddUiBasicFiles(true);
             TenantTs.AddAngularJson(tenant);
             TenantTs.UpdateAngularJsonFromDatabase();

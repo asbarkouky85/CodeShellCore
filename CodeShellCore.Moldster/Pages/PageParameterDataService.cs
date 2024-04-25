@@ -16,11 +16,11 @@ namespace CodeShellCore.Moldster.Pages.Services
 
         }
 
-        public LoadResult<PageReferenceDTO> GetReferences(ParameterRequest req, LoadOptions opt)
+        public PagedResult<PageReferenceDTO> GetReferences(ParameterRequest req, PagedListRequestDto opt)
         {
             var o = opt.GetOptionsFor<PageReferenceView>();
             var result = Unit.PageParameterRepository.FindReferences(req, o);
-            return new LoadResult<PageReferenceDTO>
+            return new PagedResult<PageReferenceDTO>
             {
                 TotalCount = result.TotalCount,
                 List = Mapper.Map(result.List, new List<PageReferenceDTO>())
@@ -84,6 +84,12 @@ namespace CodeShellCore.Moldster.Pages.Services
                 Unit.PageRepository.UpdatePageViewParamsJson(page, pageParameters, pageRoutes, pageFields);
             }
             return Unit.SaveChanges();
+        }
+
+        public SubmitResult UpdateTemplatePagesViewParamsJson(string tenantCode)
+        {
+            var tenantId = Unit.TenantRepository.GetSingleValue(e => e.Id, e => e.Code == tenantCode);
+            return UpdateTemplatePagesViewParamsJson(tenantId);
         }
     }
 }

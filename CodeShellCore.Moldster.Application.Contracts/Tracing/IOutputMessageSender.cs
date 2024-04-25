@@ -1,9 +1,8 @@
-﻿using CodeShellCore.Services.Notifications;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Tracing
 {
-    public interface IOutputMessageSender : IPushingContract
+    public interface IOutputMessageSender
     {
         Task SendMessage(NotificationDTO notificationDTO);  //string type, string payload
     }

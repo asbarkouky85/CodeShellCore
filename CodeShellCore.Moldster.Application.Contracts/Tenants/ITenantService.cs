@@ -8,7 +8,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Tenants
 {
-    public interface ITenantService : IDtoEntityService<long, TenantDto, LoadOptions,TenantEditDTO,TenantDto>
+    public interface ITenantService : IDtoEntityService<long, TenantDto, PagedListRequestDto,TenantEditDTO,TenantDto>
     {
         //SubmitResult Create(Tenant model);
     }

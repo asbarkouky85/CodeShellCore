@@ -67,7 +67,7 @@ namespace CodeShellCore.Web.Security
             _accessor.HttpContext.Response.Cookies.Append("UserId", st, new CookieOptions { Expires = data.ExpireTime });
         }
 
-        public override void AuthorizationRequest(string token)
+        public override void UseToken(string token)
         {
             AuthorizationRequest();
         }

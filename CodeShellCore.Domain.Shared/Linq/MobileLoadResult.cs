@@ -3,7 +3,7 @@ using CodeShellCore.Helpers;
 
 namespace CodeShellCore.Linq
 {
-    public class MobileLoadResult<T> : LoadResult<T>, IResult
+    public class MobileLoadResult<T> : PagedResult<T>, IResult
         where T : class
     {
         public int Code { get; set; }
@@ -12,7 +12,7 @@ namespace CodeShellCore.Linq
 
         public bool IsSuccess => Code == 0;
         private Exception exception;
-        public MobileLoadResult(LoadResult<T> res)
+        public MobileLoadResult(PagedResult<T> res)
         {
             Code = 0;
             Message = "Success";

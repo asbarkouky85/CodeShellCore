@@ -9,7 +9,7 @@ namespace CodeShellCore.Moldster.Pages
     {
         IEnumerable<PageParameterForJson> FindForJson(long tenantId, long? pageCategoryId = null);
         IEnumerable<PageParameterForJson> FindForJsonByPage(long pageId);
-        LoadResult<PageReferenceView> FindReferences(ParameterRequest req, ListOptions<PageReferenceView> o);
+        PagedResult<PageReferenceView> FindReferences(ParameterRequest req, PagedListRequest<PageReferenceView> o);
         List<PageReference> GetReferencesByPage(long id);
     }
 }

@@ -8,13 +8,13 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public interface IPageEntityService : IDtoEntityService<long, LoadOptions, PageListDTO, CreatePageDTO, CreatePageDTO, CreatePageDTO>
+    public interface IPageEntityService : IDtoEntityService<long, PagedListRequestDto, PageListDTO, CreatePageDTO, CreatePageDTO, CreatePageDTO>
     {
         SubmitResult SetViewParams(ViewParamsSetter @params);
-        LoadResult<PageListDTO> GetPagesByDomain(long domainId, LoadOptions opt);
+        PagedResult<PageListDTO> GetPagesByDomain(long domainId, PagedListRequestDto opt);
         IEnumerable<PageParameterEditDto> GetViewParameters(long id);
         PageCustomizationDTO GetCustomizationData(long id);
         SubmitResult ApplyCustomization(PageCustomizationDTO dto);
-        LoadResult<PageListDTO> FindPages(LoadOptions opts, FindPageRequest request);
+        PagedResult<PageListDTO> FindPages(PagedListRequestDto opts, FindPageRequest request);
     }
 }

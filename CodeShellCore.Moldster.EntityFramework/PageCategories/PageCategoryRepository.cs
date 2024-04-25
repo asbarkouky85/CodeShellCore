@@ -54,7 +54,7 @@ namespace CodeShellCore.Moldster.PageCategories
                 .Select(d => d.Id).ToList();
         }
 
-        public LoadResult<T> GetUnderDomain<T>(long domainId, LoadOptions opt) where T : class
+        public PagedResult<T> GetUnderDomain<T>(long domainId, PagedListRequest opt) where T : class
         {
             var opts = opt.GetOptionsFor<T>();
 
@@ -62,7 +62,7 @@ namespace CodeShellCore.Moldster.PageCategories
                     where pc.Domain.Chain.Contains("|" + domainId.ToString() + "|")
                     select pc;
 
-            return QueryDto<T>(q).LoadWith(opts);
+            return QueryDto<T>(q).ToPagedResult(opts);
         }
     }
 }

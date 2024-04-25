@@ -19,7 +19,7 @@ namespace CodeShellCore.Web.Controllers
 
         [HttpGet]
         [ApiAuthorize(Actions = new[] { DefaultActions.View })]
-        public virtual IActionResult Get([FromQuery] LoadOptions opt)
+        public virtual IActionResult Get([FromQuery] PagedListRequestDto opt)
         {
             return Respond(EntityService.Load(opt));
         }

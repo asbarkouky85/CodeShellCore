@@ -17,7 +17,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             _service = service;
         }
 
-        public IActionResult GetControlByPageId([FromQuery] LoadOptions opt)
+        public IActionResult GetControlByPageId([FromQuery] PagedListRequestDto opt)
         {
             return Respond(_service.GetControlByPageId(opt));
         }

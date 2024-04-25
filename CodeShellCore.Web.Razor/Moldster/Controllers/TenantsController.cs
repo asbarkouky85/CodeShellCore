@@ -24,22 +24,22 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         }
 
         
-        public LoadResult<TenantDto> Get(LoadOptions opts)
+        public PagedResult<TenantDto> Get(PagedListRequestDto opts)
         {
             return _service.Get(opts);
         }
 
-        public LoadResult<TenantDto> GetCollection(string id, LoadOptions opts)
+        public PagedResult<TenantDto> GetCollection(string id, PagedListRequestDto opts)
         {
             return _service.GetCollection(id, opts);
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> data)
         {
             return _service.GetEditLookups(data);
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<NamedDto<object>>> GetListLookups(Dictionary<string, string> data)
         {
             return _service.GetListLookups(data);
         }

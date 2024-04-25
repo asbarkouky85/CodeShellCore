@@ -21,8 +21,4 @@
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Data\Localization\" />
-	</ItemGroup>
-
 </Project>

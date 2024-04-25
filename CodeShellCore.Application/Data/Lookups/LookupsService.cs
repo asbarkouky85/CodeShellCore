@@ -10,6 +10,8 @@ using CodeShellCore.Data.ConfiguredCollections;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Data.Mapping;
+using System.Linq;
+using CodeShellCore.Linq;
 
 namespace CodeShellCore.Data.Lookups
 {
@@ -17,7 +19,6 @@ namespace CodeShellCore.Data.Lookups
         where T : class, IUnitOfWork
     {
         protected abstract string EntitiesAssembly { get; }
-        protected virtual string EntitiesNameSpace => EntitiesAssembly;
         protected T Unit;
         protected readonly IObjectMapper Mapper;
         public LookupsService(T unit)
@@ -42,15 +43,15 @@ namespace CodeShellCore.Data.Lookups
             }
             else
             {
-                var ent = EntitiesNameSpace + "." + name.Singularize();
-                var tt = Assembly.Load(EntitiesAssembly).GetType(ent);
-                return tt;
+                var ent = name.Singularize();
+                var tt = Assembly.Load(EntitiesAssembly).GetTypes();
+                return tt.FirstOrDefault(e => e.Name == name.Singularize());
             }
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetRequestedLookups(Dictionary<string, string> requested)
+        public Dictionary<string, IEnumerable<NamedDto<object>>> GetRequestedLookups(Dictionary<string, string> requested)
         {
-            Dictionary<string, IEnumerable<Named<object>>> res = new Dictionary<string, IEnumerable<Named<object>>>();
+            Dictionary<string, IEnumerable<NamedDto<object>>> res = new Dictionary<string, IEnumerable<NamedDto<object>>>();
             foreach (var x in requested)
             {
                 res[x.Key] = GetListNamed(x.Key, x.Value);
@@ -59,15 +60,24 @@ namespace CodeShellCore.Data.Lookups
             return res;
         }
 
-        protected virtual IEnumerable<Named<object>> GetListNamed(string name, string collection = null)
+        public virtual IEnumerable<NamedDto<object>> GetListNamed(string entityName, string collection = null)
         {
-            var t = GetEntityByResource(name);
+            var t = GetEntityByResource(entityName);
             if (t == null)
-                return new List<Named<object>>();
+                return new List<NamedDto<object>>();
             return GetLookupNamed(t, collection);
         }
 
-        public IEnumerable<Named<object>> GetLookupNamed(Type t, string identifier)
+        public PagedResult<NamedDto<object>> GetListNamedPaged(string entityName, PagedListRequestDto dto, string identifier = null)
+        {
+            var t = GetEntityByResource(entityName);
+            if (t == null)
+                return new PagedResult<NamedDto<object>>();
+
+            return GetLookupNamedPaged(t, dto, identifier);
+        }
+
+        public IEnumerable<NamedDto<object>> GetLookupNamed(Type t, string identifier)
         {
             IRepository repo = Unit.GetRepositoryFor(t);
 
@@ -76,12 +86,27 @@ namespace CodeShellCore.Data.Lookups
             {
                 collectionId = identifier.GetAfterLast("__");
             }
-            return repo.FindAsLookup(collectionId);
+            var data = repo.FindAsLookup(collectionId);
+            return Mapper.Map(data, new List<NamedDto<object>>());
         }
 
-        public IEnumerable<Named<object>> GetLookupNamed<TObject>(string identifier) where TObject : class
+        public PagedResult<NamedDto<object>> GetLookupNamedPaged(Type t, PagedListRequestDto req, string identifier)
         {
-            return GetLookupNamed(typeof(TObject), identifier);
+            IRepository repo = Unit.GetRepositoryFor(t);
+
+            string collectionId = null;
+            if (identifier != null && identifier.Contains("__"))
+            {
+                collectionId = identifier.GetAfterLast("__");
+            }
+            var data = repo.FindAsLookupPaged(Mapper.Map(req, new PagedListRequest()), collectionId);
+            return Mapper.Map(data, new PagedResult<NamedDto<object>>());
+        }
+
+        public IEnumerable<NamedDto<object>> GetLookupNamed<TObject>(string identifier) where TObject : class
+        {
+            var data = GetLookupNamed(typeof(TObject), identifier);
+            return Mapper.Map(data, new List<NamedDto<object>>());
         }
 
         public IEnumerable<TObject> GetLookup<TObject>(string identifier) where TObject : class
@@ -135,7 +160,7 @@ namespace CodeShellCore.Data.Lookups
             return collectionId;
         }
 
-        public IEnumerable<Named<object>> GetLookupNamed<TObject>(string identifier, Expression<Func<TObject, bool>> ex) where TObject : class
+        public IEnumerable<NamedDto<object>> GetLookupNamed<TObject>(string identifier, Expression<Func<TObject, bool>> ex) where TObject : class
         {
             IRepository<TObject> repo = Unit.GetRepositoryFor<TObject>();
 
@@ -144,7 +169,10 @@ namespace CodeShellCore.Data.Lookups
             {
                 collectionId = identifier.GetAfterLast("__");
             }
-            return repo.FindAsLookup(collectionId, ex);
+            var data = repo.FindAsLookup(collectionId, ex);
+            return Mapper.Map(data, new List<NamedDto<object>>());
         }
+
+
     }
 }

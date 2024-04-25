@@ -31,7 +31,7 @@ namespace CodeShellCore.Data.Localization
             this.unit = unit;
             _lang = lang;
         }
-        public Dictionary<string, LocalizablesDTO> GetDataFor<TEntity>(object Id) where TEntity : class
+        public Dictionary<string, LocalizablesData> GetDataFor<TEntity>(object Id) where TEntity : class
         {
             return GetDataFor(typeof(TEntity), Id);
         }
@@ -47,19 +47,19 @@ namespace CodeShellCore.Data.Localization
         {
             return AllCulturelanguage.Where(s => s.Value.Equals(lang)).Select(s => s.Key).FirstOrDefault();
         }
-        public SubmitResult SetDataFor<TEntity>(object id, Dictionary<string, LocalizablesDTO> dto) where TEntity : class
+        public SubmitResult SetDataFor<TEntity>(object id, Dictionary<string, LocalizablesData> dto) where TEntity : class
         {
             return SetDataFor(typeof(TEntity), id, dto);
         }
 
-        public Dictionary<string, LocalizablesDTO> GetDataFor(Type t, object Id)
+        public Dictionary<string, LocalizablesData> GetDataFor(Type t, object Id)
         {
-            Dictionary<string, LocalizablesDTO> res = new Dictionary<string, LocalizablesDTO>();
+            Dictionary<string, LocalizablesData> res = new Dictionary<string, LocalizablesData>();
             var dat = _Loc.Get(t.Name, Id, AllCulturelanguage.Keys);
 
             res = dat.ToDictionary(
                 group => ConvertLangintToStr(group.LocaleId),
-                group => new LocalizablesDTO
+                group => new LocalizablesData
                 {
                     LangId = group.LocaleId,
                     Data = group.Items.ToDictionary(f => f.ColumnName, f => f.Value)
@@ -68,17 +68,17 @@ namespace CodeShellCore.Data.Localization
             foreach (var s in Shell.SupportedLanguages)
             {
                 if (!res.ContainsKey(s))
-                    res[s] = new LocalizablesDTO();
+                    res[s] = new LocalizablesData();
             }
             return res;
         }
 
-        public virtual SubmitResult SetDataFor(Type type, object id, Dictionary<string, LocalizablesDTO> dto)
+        public virtual SubmitResult SetDataFor(Type type, object id, Dictionary<string, LocalizablesData> dto)
         {
             return SetDataFor(type.Name, id, dto);
         }
 
-        public virtual SubmitResult SetDataFor(string type, object id, Dictionary<string, LocalizablesDTO> dto)
+        public virtual SubmitResult SetDataFor(string type, object id, Dictionary<string, LocalizablesData> dto)
         {
             foreach (var item in dto)
             {

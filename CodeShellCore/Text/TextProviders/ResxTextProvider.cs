@@ -8,6 +8,7 @@ using System;
 using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
+using CodeShellCore.Types;
 
 namespace CodeShellCore.Text.TextProviders
 {
@@ -48,14 +49,15 @@ namespace CodeShellCore.Text.TextProviders
         static void _readCultureResources(string cult)
         {
             string assembly = Shell.LocalizationAssembly;
+            string root = Shell.LocalizationAssembly.Replace(".Domain.Shared", "");
 
-            string wordsType = assembly + ".Localization.Words";
-            string colsType = assembly + ".Localization.Columns";
-            string messType = assembly + ".Localization.Messages";
-            string pageType = assembly + ".Localization.Pages";
+            string wordsType = root + ".Localization.Words";
+            string colsType = root + ".Localization.Columns";
+            string messType = root + ".Localization.Messages";
+            string pageType = root + ".Localization.Pages";
 
             Assembly ass = Assembly.Load(assembly);
-
+            
             ResourceManager wordRes = new ResourceManager(wordsType, ass);
             ResourceManager colRes = new ResourceManager(colsType, ass);
             ResourceManager messRes = new ResourceManager(messType, ass);

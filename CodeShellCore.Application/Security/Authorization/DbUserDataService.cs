@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Caching;
+using CodeShellCore.MultiTenant;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,14 +9,14 @@ namespace CodeShellCore.Security.Authorization
     {
         private readonly ISecurityUnit unit;
 
-        public DbUserDataService(ISecurityUnit unit, ICacheProvider cache) : base(cache)
+        public DbUserDataService(ISecurityUnit unit, ICacheProvider cache, CurrentTenant tenant) : base(cache, tenant)
         {
             this.unit = unit;
         }
 
         protected override IUser GetUserFromDataSource(string c)
         {
-            var u = unit.UserRepository.GetByUserId(c);
+            var u = unit.UserRepository.GetByUserId(RemoveTenantFromKey(c).ToString());
             if (u != null && u is IEntityLinkedUser)
                 ((IEntityLinkedUser)u).EntityLinks = unit.UsersEntityLinkRepository.GetUserLinks(u.UserId);
             return u;
@@ -26,11 +27,12 @@ namespace CodeShellCore.Security.Authorization
             List<RoleCacheItem> res = new List<RoleCacheItem>();
             foreach (var role in roles)
             {
-                var roleResources = unit.ResourceRepository.GetRoleResources(role);
+                var roleId = RemoveTenantFromKey(role);
+                var roleResources = unit.ResourceRepository.GetRoleResources(RemoveTenantFromKey(roleId));
                 res.Add(new RoleCacheItem
                 {
-                    RoleId = role,
-                    Actions = unit.ResourceRepository.GetRoleResourceActions(role),
+                    RoleId = roleId,
+                    Actions = unit.ResourceRepository.GetRoleResourceActions(roleId),
                     Resources = CompressResourceData(roleResources),
                     Collections = CompressCollectionIds(roleResources)
                 });

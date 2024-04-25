@@ -12,7 +12,7 @@ namespace CodeShellCore.Moldster.Navigation
         {
         }
 
-        public LoadResult<T> GetUnderNave<T>(long navId, LoadOptions opt) where T : class
+        public PagedResult<T> GetUnderNave<T>(long navId, PagedListRequest opt) where T : class
         {
             var opts = opt.GetOptionsFor<T>();
 
@@ -20,7 +20,7 @@ namespace CodeShellCore.Moldster.Navigation
                     where np.NavigationGroupId == navId
                     orderby np.DisplayOrder
                     select np;
-            return QueryDto<T>().LoadWith(opts);
+            return QueryDto<T>().ToPagedResult(opts);
         }
 
         public void SetDisplayOrder(long naveId)

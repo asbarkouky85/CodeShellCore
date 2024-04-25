@@ -23,7 +23,7 @@ namespace CodeShellCore.Caching
 
         public T Get<T>(string key) where T : class
         {
-            if (getList<T>().TryGetValue(key, out object ob))
+            if (key != null && getList<T>().TryGetValue(key, out object ob))
                 return (T)ob;
 
             return null;

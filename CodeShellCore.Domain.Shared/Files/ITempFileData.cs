@@ -15,7 +15,6 @@ namespace CodeShellCore.Files
         string FileTempPath { get; set; }
         int? Size { get; set; }
         string FileName { get; set; }
-        string UploadId { get; set; }
         string MimeType { get; set; }
         //FileData ToFileData(string fieldName);
         //void DeleteTmp();

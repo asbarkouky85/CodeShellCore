@@ -5,6 +5,7 @@ using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.DependencyInjection;
 using CodeShellCore.EntityFramework;
+using CodeShellCore.Extensions;
 using CodeShellCore.MQ.Events;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
