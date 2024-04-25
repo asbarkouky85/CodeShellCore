@@ -1,6 +1,5 @@
-﻿using CodeShellCore.DependencyInjection;
-using CodeShellCore.Files.Logging;
-using CodeShellCore.Text;
+﻿using CodeShellCore.Text;
+using CodeShellCore.Web.Conventions;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -13,15 +12,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
+using CodeShellCore.Types;
 
 namespace CodeShellCore.Web
 {
     public abstract class WebShell : Shell
     {
         private string _appRoot;
+        private string _sharedPathRoot;
         private IServiceProvider _appProvider;
 
         public static string AppRootUrl { get { return ((WebShell)App).urlRoot; } }
@@ -31,6 +32,7 @@ namespace CodeShellCore.Web
         /// </summary>
         protected virtual string urlRoot { get { return "~"; } }
         protected override string appRoot { get { return _appRoot; } }
+        protected override string sharedPathRoot { get { return _sharedPathRoot; } }
         /// <summary>
         /// public folder (Default : 'wwwroot')
         /// </summary>
@@ -108,21 +110,17 @@ namespace CodeShellCore.Web
         {
             base.RegisterServices(services);
             services.AddCodeShellApplication();
+            services.ConfigureUploads(Configuration);
             var mvc = services.AddControllers();
 
-            services.AddRouting(options =>
+            services.Configure<MvcOptions>(e =>
             {
-                options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
+                e.Conventions.Add(new CodeShellApplicationModelConvention());
             });
 
             if (UseSwagger)
             {
                 services.AddSwaggerGen();
-                services.AddSwaggerGenWithConventionalRoutes(options =>
-                {
-                    //options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
-                    // options.SkipDefaults = true;
-                });
             }
 
 
@@ -136,12 +134,12 @@ namespace CodeShellCore.Web
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ISpaFallbackHandler, SpaFallbackHandler>();
-            services.AddTransient<IFileUploadService, FileService>();
         }
 
         public virtual void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             _appRoot = env.ContentRootPath;
+            _sharedPathRoot = _config.GetValue<string>("SharedPathRoot");
             _appProvider = app.ApplicationServices;
 
             if (env.IsDevelopment())
@@ -167,7 +165,12 @@ namespace CodeShellCore.Web
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                    var assembly = Assembly.GetEntryAssembly();
+                    var apiName = $"{assembly.GetName().Name}-v{assembly.GetVersionString()}";
+
+
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", apiName);
+                    c.DocumentTitle = apiName;
                 });
             }
 
@@ -185,7 +188,6 @@ namespace CodeShellCore.Web
             app.UseEndpoints(e =>
             {
                 RegisterEndpointRoutes(e);
-                ConventionalRoutingSwaggerGen.UseRoutes(e);
             });
 
             if (IsSpa)

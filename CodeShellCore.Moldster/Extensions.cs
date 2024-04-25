@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Caching;
 using CodeShellCore.Data.Services;
 using CodeShellCore.DependencyInjection;
+using CodeShellCore.Extensions.DependencyInjection;
 using CodeShellCore.Moldster.Builder;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
@@ -23,7 +24,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Reflection;
 
 namespace CodeShellCore.Moldster
 {
@@ -32,24 +32,19 @@ namespace CodeShellCore.Moldster
     {
         public static void AddMoldsterDbData(this IServiceCollection coll, IConfiguration config = null)
         {
-            if (config != null)
-            {
-                var conn = config.GetConnectionString("Moldster") ?? config.GetConnectionString("Default");
-                if (string.IsNullOrEmpty(conn))
-                {
-                    throw new Exception("Moldster Connection string is not found in appsettings");
-                }
-                else if (conn != "TEST")
-                {
-                    coll.AddDbContext<MoldsterContext>(e => e.UseSqlServer(conn));
-                }
-            }
-            else
-            {
-                coll.AddDbContext<MoldsterContext>();
-            }
+            coll.AddCodeshellDbContext<MoldsterContext>(false);
 
-            //coll.AddCodeShellEntityFramework();
+            _registerDataLayer(coll);
+        }
+
+        public static void AddMoldsterDbData(this IServiceCollection coll, Action<DbContextOptionsBuilder> builderOptions)
+        {
+            coll.AddDbContext<MoldsterContext>(builderOptions);
+            _registerDataLayer(coll);
+        }
+
+        private static void _registerDataLayer(IServiceCollection coll)
+        {
             coll.AddUnitOfWork<ConfigUnit, IConfigUnit>();
             coll.AddCodeShellEntityFramework();
             coll.AddGenericRepository(typeof(MoldsterRepository<,>));
@@ -179,7 +174,7 @@ namespace CodeShellCore.Moldster
             coll.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
 
             coll.AddCodeShellApplication();
-            
+
             coll.AddAutoMapper(typeof(MoldsterService).Assembly);
         }
 

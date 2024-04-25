@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster
 {
-    public interface IMoldsterModel : IModel<long>, IChangeColumns
+    public interface IMoldsterModel : IEntity<long>, IChangeColumns
     {
     }
 }

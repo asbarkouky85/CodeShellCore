@@ -36,6 +36,11 @@ namespace CodeShellCore.DependencyInjection
             return false;
         }
 
+        public static void SetCurrentTenant(this IServiceProvider provider, long tenantId)
+        {
+            provider.GetRequiredService<CurrentTenant>().TenantId = tenantId;
+        }
+
         public static void SetCurrentUser(this IServiceProvider provider, IUser user)
         {
             var acc = provider.GetService<IUserAccessor>();
@@ -59,12 +64,12 @@ namespace CodeShellCore.DependencyInjection
             return provider.GetService<IUserAccessor>().User;
         }
 
-        
+
 
 
         public static void AddMultiTenantData<T>(this IServiceCollection coll) where T : class, ITenantDataProvider
         {
-            coll.AddScoped<CurrentTenant>();
+
             coll.AddTransient<ITenantDataProvider, T>();
         }
     }

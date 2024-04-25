@@ -155,11 +155,8 @@ namespace CodeShellCore.Web.Razor.Elements
                         InputModel.MemberName = InputModel.MemberName + " | date :'dd-MM-yyyy'";
                         return WriteLabel();
                     case InputControls.FileTextBox:
-                        var mem = InputModel.NgModelName + "." + InputModel.MemberName;
-                        var url = mem + ".url" + "?'/'+" + mem + ".url:null";
-                        InputModel = InputModel.GetLabelInput(url: url, blank: true);
-                        InputModel.MemberName = InputModel.MemberName + ".name";
-                        return WriteLabel();
+                        ((FileNgInput)InputModel).Enabled = false;
+                        break;
                     default:
                         InputModel.AttributeObject = null;
                         return WriteLabel(localizable);

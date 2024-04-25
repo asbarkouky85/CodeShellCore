@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace CodeShellCore.Files.Logging
 {
-    public class FileLocation
+    public class FileLocationService
     {
         private static string PublicFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
 
@@ -15,7 +15,7 @@ namespace CodeShellCore.Files.Logging
         public string FolderPath { get; private set; }
         public string FilePath { get; private set; }
 
-        private FileLocation(string app, string folder)
+        private FileLocationService(string app, string folder)
         {
             AppName = app;
             FolderPath = UseLogFolder(folder);
@@ -36,11 +36,11 @@ namespace CodeShellCore.Files.Logging
             return f.FullName;
         }
 
-        public static FileLocation Make(string app, string folder)
+        public static FileLocationService Make(string app, string folder)
         {
             if (string.IsNullOrEmpty(folder))
                 return null;
-            var loc = new FileLocation(app, folder);
+            var loc = new FileLocationService(app, folder);
             if (loc.FolderPath == null || loc.FilePath == null)
                 return null;
             return loc;

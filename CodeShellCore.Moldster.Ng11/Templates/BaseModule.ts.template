@@ -1,5 +1,4 @@
-﻿import { ModuleWithProviders } from "@angular/compiler/src/core";
-import { NgModule } from "@angular/core";
+﻿import { NgModule } from "@angular/core";
 import { CodeShellModule } from "codeshell/main";
 import { TokenStorage, SessionTokenData } from "codeshell/security";
 import { AccountServiceBase } from 'codeshell/http';
@@ -19,17 +18,13 @@ import { ServerConfig } from "./server-config";
     exports: [
         CodeShellModule,
         Login, TopBar, NavigationSideBar
-    ]
-})
-export class %Name%Module {
-    static forRoot(): ModuleWithProviders {
-        return {
-            ngModule: %Name%Module,
-            providers: [
+    ],
+    providers: [
                 { provide: AccountServiceBase, useClass: AccountService },
                 { provide: TokenStorage, useClass: SessionTokenData },
                 { provide: ServerConfigBase, useClass: ServerConfig }
             ]
-        }
-    }
+})
+export class %Name%Module {
+
 }

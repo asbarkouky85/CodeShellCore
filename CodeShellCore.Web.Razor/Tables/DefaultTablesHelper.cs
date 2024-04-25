@@ -114,7 +114,7 @@ namespace CodeShellCore.Web.Razor.Tables
             writer.InputModel.MemberName = helper.GetModelName() + "." + ngModel;
             writer.InputModel.FieldName = "'" + field + "'+" + rowIndex;
 
-            writer.InputModelExtraAttrs.evnt__change = helper.GetModelName() + $".Tag.ApplyTo({listName})";
+            writer.InputModelExtraAttrs.evnt__change = $"Tracker.ApplyTo({helper.GetModelName()}.Tag,{listName})";
 
             return writer;
         }

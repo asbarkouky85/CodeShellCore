@@ -44,20 +44,22 @@ namespace CodeShellCore.ToolSet
                             args = new[] { @"gen-dto", @"C:\_git\Asga\FMS_git", "FMS.Assets.Domain", "Item", "gcul", "-o", "FMS.Assets.Application.Contracts" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
                             break;
                         case FunctionTypes.ReplaceParameters:
-                            //args = new[] { "replace", @"D:\Work\Common\tests\replace_test.json", "{\"userName\":\"abarkouky\",\"password\":\"123456\"}" };
-                            args = new[] { 
-                                "replace", 
-                                @"C:\_git\Mahmoud\Databoat-Ecommerce-Frontend\src\index.html", 
-                                "-p",
-                                "<base href=\"/\" />",
-                                "-d",
-                                @"{""key"":""<base href='/ds/\' />""}",
-                            };
+                            args = new[] { "replace", @"D:\Work\Common\tests\replace_test.json","-d", "{\"userName\":\"abarkouky\",\"password\":\"123456\"}" };
+                            //args = new[] {
+                            //    "replace",
+                            //    @"C:\_git\Mahmoud\Databoat-Ecommerce-Frontend\src\index.html",
+                            //    "-p",
+                            //    "<base href=\"/\" />",
+                            //    "-d",
+                            //    @"{""key"":""<base href='/ds/\' />""}",
+                            //};
                             break;
                         case FunctionTypes.Help:
                             args = new[] { @"help" };
                             break;
-
+                        case FunctionTypes.Download:
+                            args = new[] { "download", "https://nodejs.org/dist/v16.16.0/node-v16.16.0-x64.msi","./Downloads" };
+                            break;
                     }
                 }
 

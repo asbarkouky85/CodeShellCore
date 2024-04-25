@@ -195,7 +195,7 @@ namespace CodeShellCore.Moldster.Localization
             }
         }
 
-        public virtual LoadResult<CustomText> LoadForTenant(CustomTextRequest req, LoadOptions opts)
+        public virtual LoadResult<CustomText> LoadForTenant(CustomTextRequestDto req, LoadOptions opts)
         {
             string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", ((TextTypes)req.Type).ToString() + "." + req.Locale + ".resx");
 

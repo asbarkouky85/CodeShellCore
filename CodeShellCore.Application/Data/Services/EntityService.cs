@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Data.ConfiguredCollections;
+using CodeShellCore.Data.Events;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.MQ.Events;
@@ -26,14 +27,12 @@ namespace CodeShellCore.Data.Services
 
         public LoadResult<T> Load(LoadOptions opts)
         {
-            UnitOfWork.EnableJsonLoading();
             ListOptions<T> op = opts.GetOptionsFor<T>();
             return Repository.Find(op);
         }
 
         public virtual T GetSingle(object id)
         {
-            UnitOfWork.EnableJsonLoading();
             return Repository.FindSingle(id);
         }
 
@@ -50,28 +49,6 @@ namespace CodeShellCore.Data.Services
         {
             Repository.Update(obj);
             return UnitOfWork.SaveChanges();
-        }
-
-        public virtual SubmitResult Merge(T obj)
-        {
-            if (obj is IModel<long>)
-            {
-                IModel<long> ent = obj as IModel<long>;
-                if (Repository.IdExists(ent.Id))
-                {
-                    return Update(obj);
-                }
-                else
-                {
-                    return Create(obj);
-                }
-            }
-            else
-            {
-                Repository.Merge(obj);
-                return UnitOfWork.SaveChanges();
-            }
-
         }
 
         public object GetSingleObject(object id)
@@ -108,23 +85,7 @@ namespace CodeShellCore.Data.Services
             return x;
         }
 
-        public SubmitResult Handle(CrudEvent<T> command)
-        {
-            switch (command.Type)
-            {
-                case ActionType.Add:
-                    Merge(command.Data);
-                    break;
-                case ActionType.Update:
-                    Merge(command.Data);
-                    break;
-                case ActionType.Delete:
-                    Delete(command.Data);
-                    break;
-            }
-            return UnitOfWork.SaveChanges();
-
-        }
+        
 
         public bool IsUnique(PropertyUniqueDTO dto)
         {

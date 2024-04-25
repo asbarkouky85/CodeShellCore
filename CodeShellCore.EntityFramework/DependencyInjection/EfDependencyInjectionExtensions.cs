@@ -1,11 +1,12 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Data.Attachments;
+using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.CustomFields;
 using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Data.Localization;
-using CodeShellCore.Data.Localization.Internal;
+using CodeShellCore.EntityFramework;
+using CodeShellCore.EntityFramework.DesignTime;
 using CodeShellCore.Localizables;
-using CodeShellCore.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,13 +22,41 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient(t);
         }
 
+
+        /// <summary>
+        /// Registers classes used for configured collections that integrates with moldster
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="repository">Must implement <see cref="CodeShellCore.Data.ConfiguredCollections.ICollectionEFRepository{T, TContext}"/></param>
+        public static void AddConfiguredCollections(this IServiceCollection coll, Type repository)
+        {
+            coll.AddSingleton<ICollectionConfigService, CollectionConfigService>();
+            coll.AddTransient(typeof(ICollectionEFRepository<,>), repository);
+        }
+
+        /// <summary>
+        /// Registers classes used for configured collections that integrates with moldster while specifying a different collection service
+        /// </summary>
+        /// <typeparam name="TUnit"></typeparam>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="coll"></param>
+        /// <param name="repository">Must implement <see cref="CodeShellCore.Data.ConfiguredCollections.ICollectionEFRepository{T, TContext}"/></param>
+        public static void AddConfiguredCollections<TService>(this IServiceCollection coll, Type repository)
+            where TService : class, ICollectionConfigService
+        {
+            coll.AddSingleton<TService>();
+            coll.AddSingleton<ICollectionConfigService, TService>();
+            coll.AddTransient(repository);
+            coll.AddTransient(typeof(ICollectionEFRepository<,>), repository);
+        }
+
         public static void AddCodeShellEntityFramework(this IServiceCollection coll)
         {
             coll.AddTransient(typeof(KeyRepository<,,>));
         }
 
         public static void AddAttachmentsEntity<T, TContext>(this IServiceCollection coll)
-            where T : class, IAttachmentModel, IModel<long>
+            where T : class, IAttachmentEntity, IEntity<long>
             where TContext : DbContext
         {
             coll.AddTransient<IAttachmentRepository<T>, DefaultAttachmentRepository<T, TContext>>();
@@ -39,39 +68,26 @@ namespace CodeShellCore.DependencyInjection
             coll.AddTransient<CustomFieldRepository<T, TContext>>();
         }
 
-        public static void AddDataSeeders<T>(this IServiceCollection coll, Action<DataSeederCollection<T>> seeders) where T : DbContext
-        {
-            var seeds = new DataSeederCollection<T>();
-            seeders(seeds);
-            coll.AddSingleton(typeof(DataSeederCollection<T>), seeds);
-            foreach (var t in seeds.Seeders)
-                coll.AddTransient(t);
-        }
-
-        public static void AddLocalizableData<TContext>(this IServiceCollection coll) where TContext : DbContext, IHasLocalizablesDbContext
+        public static void AddLocalizableData<TContext>(this IServiceCollection coll) where TContext : CodeShellDbContext<TContext>, IHasLocalizablesDbContext
         {
             coll.AddScoped<ILocalizablesUnitOfWork, LocalizablesUnitOfWork<TContext>>();
             coll.AddTransient<ILocalizationDataService, LocalizationDataService<Localizable>>();
             coll.AddTransient<ILocalizablesRepository<Localizable>, LocalizableRepository<Localizable, TContext>>();
         }
 
-        public static void AddLocalizableData<T, TContext>(this IServiceCollection coll) where T : class, ILocalizable where TContext : DbContext, IGetLocalizedDbContext
+        public static void AddLocalizableData<T, TContext>(this IServiceCollection coll) where T : class, ILocalizable where TContext : CodeShellDbContext<TContext>, IGetLocalizedDbContext
         {
             coll.AddScoped<ILocalizablesUnitOfWork, LocalizablesUnitOfWork<TContext>>();
             coll.AddTransient<ILocalizationDataService, LocalizationDataService<T>>();
             coll.AddTransient<ILocalizablesRepository<T>, LocalizableRepository<T, TContext>>();
         }
 
-        public static void AddCodeshellDbContext<T>(this IServiceCollection coll, IConfiguration config, string connectionStringKey, bool setAsDefault = false) where T : DbContext
+        public static void AddCodeshellDbContext<T>(this IServiceCollection coll, bool setAsDefault = false, string migrationAssembly = null, Action<DbContextOptionsBuilder> optionsAction = null) where T : DbContext
         {
+            if (migrationAssembly != null)
+                DesignTimeMigrationsAssemblies.Store[typeof(T).Name] = migrationAssembly;
 
-            var conn = config.GetConnectionString("Default");
-            if (connectionStringKey != null)
-                conn = config.GetConnectionString(connectionStringKey) ?? conn;
-            if (string.IsNullOrEmpty(conn))
-                throw new Exception($"Connot find connection string '{connectionStringKey}' or 'Default' in appsettings");
-            coll.AddDbContext<T>(e => e.UseSqlServer(conn));
-
+            coll.AddDbContext<T>(optionsAction);
 
             if (setAsDefault)
             {
@@ -80,27 +96,6 @@ namespace CodeShellCore.DependencyInjection
             }
         }
 
-        public static void AddCodeshellDbContext<T>(this IServiceCollection coll, bool setAsDefault = true, IConfiguration config = null, string connectionStringKey = null) where T : DbContext
-        {
-            if (config != null)
-            {
-                var conn = config.GetConnectionString("Default");
-                if (connectionStringKey != null)
-                    conn = config.GetConnectionString(connectionStringKey) ?? conn;
-                if (string.IsNullOrEmpty(conn))
-                    throw new Exception($"Connot find connection string '{connectionStringKey}' or 'Default' in appsettings");
-                coll.AddDbContext<T>(e => e.UseSqlServer(conn));
-            }
-            else
-            {
-                coll.AddScoped<T>();
-            }
-
-            if (setAsDefault)
-            {
-                coll.AddScoped<DbContext, T>();
-                coll.AddScoped(typeof(T), d => (T)d.GetRequiredService<DbContext>());
-            }
-        }
+        
     }
 }

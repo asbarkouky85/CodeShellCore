@@ -21,8 +21,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web\CodeShellCore.Web.csproj" />
-		<ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore\CodeShellCore.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
 	</ItemGroup>
 
 </Project>

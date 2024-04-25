@@ -23,7 +23,7 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             if (changeFunction != null)
                 writer.InputModelExtraAttrs.evnt__change = changeFunction;
             else if (listName != null)
-                writer.InputModelExtraAttrs.evnt__change = helper.GetModelName() + $".Tag.ApplyTo({listName})";
+                writer.InputModelExtraAttrs.evnt__change =   $"Tracker.ApplyTo({helper.GetModelName()}.Tag,{listName})";
 
             return writer;
         }
@@ -79,7 +79,7 @@ namespace CodeShellCore.Web.Razor.Tables.Angular
             if (changeFunction != null)
                 writer.InputModelExtraAttrs.evnt__change = changeFunction;
             else if (asArray)
-                writer.InputModelExtraAttrs.evnt__change = helper.GetModelName() + $".Tag.SelectOnly({property})";
+                writer.InputModelExtraAttrs.evnt__change = $"Tracker.SelectOnly({helper.GetModelName()},{property})";
             return writer;
         }
 

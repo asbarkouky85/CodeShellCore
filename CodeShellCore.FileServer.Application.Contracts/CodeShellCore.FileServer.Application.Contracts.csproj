@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	  <RootNamespace>CodeShellCore.FileServer</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
+    <ProjectReference Include="..\CodeShellCore.FileServer.Domain.Shared\CodeShellCore.FileServer.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

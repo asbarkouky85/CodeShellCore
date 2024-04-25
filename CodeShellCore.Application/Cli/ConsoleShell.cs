@@ -1,5 +1,4 @@
-﻿using CodeShellCore.DependencyInjection;
-using CodeShellCore.Security.Authorization;
+﻿using CodeShellCore.Security.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -26,7 +25,7 @@ namespace CodeShellCore.Cli
 
         protected override bool useLocalization { get { return false; } }
         protected virtual JsonSerializerSettings JsonSerializerSettings => _getJsonSettings();
-
+        protected override string sharedPathRoot => ".";
         public ConsoleShell()
         {
             var conf = new ConfigurationBuilder();

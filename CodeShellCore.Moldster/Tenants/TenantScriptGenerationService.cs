@@ -15,10 +15,10 @@ namespace CodeShellCore.Moldster.Tenants
 {
     public class TenantScriptGenerationService : ScriptGenerationServiceBase, ITenantScriptGenerationService
     {
-        protected IMoldProvider Molds => Store.GetInstance<IMoldProvider>();
-        protected IPathsService Paths => Store.GetInstance<IPathsService>();
-        protected INamingConventionService Names => Store.GetInstance<INamingConventionService>();
-        protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
+        protected IMoldProvider Molds => Store.GetRequiredService<IMoldProvider>();
+        protected IPathsService Paths => Store.GetRequiredService<IPathsService>();
+        protected INamingConventionService Names => Store.GetRequiredService<INamingConventionService>();
+        protected IConfigUnit _unit => Store.GetRequiredService<IConfigUnit>();
 
         public TenantScriptGenerationService(IServiceProvider provider, IOptions<MoldsterModuleOptions> opts) : base(provider, opts)
         {
@@ -121,7 +121,7 @@ namespace CodeShellCore.Moldster.Tenants
                 BaseAppModulePath = Names.GetBaseModuleFilePath(true),
                 Version = version,
                 RoutesModulePath = "./" + Names.ApplyConvension("AppRouting", AppParts.Module),
-                BaseHref = otherTen ? "{ provide: APP_BASE_HREF, useValue: '/" + Names.ApplyConvension(tenantCode, AppParts.Project) + "'}" : ""
+                BaseHref = otherTen ? "{ provide: APP_BASE_HREF, useValue: '/" + Names.ApplyConvension(tenantCode, AppParts.Route) + "'}" : ""
             };
 
             var homePage = _unit.PageRepository.GetHomePagePath(tenantCode);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Mapping;
@@ -58,6 +59,11 @@ namespace CodeShellCore.Data
         public void Delete(T obj)
         {
             _storedData.Remove(obj);
+        }
+
+        public Task DeleteAsync(T tmpFile)
+        {
+            throw new NotImplementedException();
         }
 
         public void DeleteById(object id)
@@ -160,7 +166,22 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
+        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> GetAsync(Expression<Func<T, bool>> value)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<T> GetList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<T>> GetListAsync(Expression<Func<T, bool>> value)
         {
             throw new NotImplementedException();
         }
@@ -195,12 +216,22 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
+        public Task InsertAsync(T tmp)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Merge(T obj)
         {
             throw new NotImplementedException();
         }
 
         public T Merge(Expression<Func<T, bool>> ex, T obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MergeAsync(IEnumerable<T> list, Action<T, T> updateAction = null)
         {
             throw new NotImplementedException();
         }

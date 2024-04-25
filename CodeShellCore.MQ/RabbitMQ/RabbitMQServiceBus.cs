@@ -1,11 +1,10 @@
-﻿using CodeShellCore.Files.Logging;
-using CodeShellCore.Helpers;
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.MQ.Events;
 using CodeShellCore.Tasks;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
+using RabbitMQ.Client.Events;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +17,9 @@ namespace CodeShellCore.MQ.RabbitMQ
 
         public RabbitMQServiceBus(Action<IRabbitMqReceiveEndpointConfigurator> consumers)
         {
+
             this.registerConsumers = consumers;
+
         }
 
         public override Task PublisAsync(object ob, Type t = null, CancellationToken? token = null)
@@ -31,6 +32,7 @@ namespace CodeShellCore.MQ.RabbitMQ
         {
             BusConfig _config = BusConfig.Current;
 
+
             Control = Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
                 var host = cfg.Host(new Uri(_config.Uri), h =>
@@ -41,11 +43,18 @@ namespace CodeShellCore.MQ.RabbitMQ
 
                 if (_config.EndPointId != null)
                 {
-                    cfg.ReceiveEndpoint(host, _config.EndPointId, e => registerConsumers(e));
+                    cfg.ReceiveEndpoint(host, _config.EndPointId, e => Configure(e));
+
                 }
+
             });
             Control.StartAsync();
 
+        }
+
+        private void Configure(IRabbitMqReceiveEndpointConfigurator configurator)
+        {
+            registerConsumers(configurator);
         }
 
         public override void Exit()

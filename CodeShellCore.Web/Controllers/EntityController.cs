@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodeShellCore.Web.Controllers
 {
-    public abstract class EntityController<T, TPrime> : BaseApiController, IReadOnlyEntityController<T, TPrime> where T : class, IModel<TPrime>
+    public abstract class EntityController<T, TPrime> : BaseApiController, IReadOnlyEntityController<T, TPrime> where T : class, IEntity<TPrime>
     {
 
         protected IEntityService<T> EntityService;

@@ -1,8 +1,7 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthFilter, ResourceActions } from "codeshell/security";
-import { DomainData } from 'codeshell/moldster';
+import { AuthFilter, ResourceActions, DomainData } from "codeshell/security";
 import { Translator } from "codeshell/localization";
 
 import { Login } from "@base/main/login.component";

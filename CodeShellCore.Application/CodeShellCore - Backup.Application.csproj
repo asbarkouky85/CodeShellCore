@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>5.2.0.0</Version>
+    <AssemblyName>CodeShellCore.Application</AssemblyName>
+    <AssemblyVersion>5.2.0.0</AssemblyVersion>
+    <FileVersion>5.2.0.0</FileVersion>
+    <RootNamespace>CodeShellCore</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
+    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Localization\Internal\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+  </ItemGroup>
+
+</Project>

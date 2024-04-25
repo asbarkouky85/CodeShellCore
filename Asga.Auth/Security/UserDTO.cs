@@ -26,6 +26,9 @@ namespace Asga.Security
         public IEnumerable<string> Apps { get; set; }
         public Dictionary<string, DataAccessPermission> Permissions { get; set; }
         public Dictionary<string, IEnumerable<long>> EntityLinks { get; set; }
+
+        public bool? IsActiveDirectory { get; set; }
+
         public UserDTO()
         {
             Permissions = new Dictionary<string, DataAccessPermission>();

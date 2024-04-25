@@ -29,6 +29,6 @@ namespace CodeShellCore.Moldster.Tenants
         public long? ParentId { get; set; }
         public bool UseParentUI { get; set; }
 
-        public TmpFileData LogoFile { get; set; }
+        public TempFileDto LogoFile { get; set; }
     }
 }

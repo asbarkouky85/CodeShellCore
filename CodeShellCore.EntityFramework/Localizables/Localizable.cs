@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CodeShellCore.Localizables
 {
-    public class Localizable : IModel<long>, ILocalizable, IChangeColumns
+    public class Localizable : IEntity<long>, ILocalizable, IChangeColumns
     {
         public long EntityId { get; set; }
         public string EntityType { get; set; }

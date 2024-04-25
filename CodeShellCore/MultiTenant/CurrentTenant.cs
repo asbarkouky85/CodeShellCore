@@ -12,6 +12,7 @@ namespace CodeShellCore.MultiTenant
             _provider = prov;
         }
         public long TenantId { get; set; }
+        public string TenantLogo { get { return _provider.GetTenantLogo(TenantId); } }
         public string Code { get { return _provider.GetTenantCode(TenantId); } }
         public string Version { get; set; }
 

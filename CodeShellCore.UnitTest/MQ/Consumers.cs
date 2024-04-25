@@ -1,10 +1,6 @@
-﻿using Asga.Auth;
-using CodeShellCore.MQ;
+﻿using CodeShellCore.MQ;
 using CodeShellCore.MQ.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.UnitTest.MQ
 {

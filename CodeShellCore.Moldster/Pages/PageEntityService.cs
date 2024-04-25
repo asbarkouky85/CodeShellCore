@@ -142,7 +142,7 @@ namespace CodeShellCore.Moldster.Pages
             {
                 Controls = Unit.PageControlRepository.FindAndMap<PageControlListDTO>(d => d.PageId == id),
                 Parameters = GetViewParameters(id),
-                Route = Mapper.Map(routeView, new PageRouteDTO()),
+                Route = routeView == null ? new PageRouteDTO() : Mapper.Map(routeView, new PageRouteDTO()),
                 Fields = Unit.CustomFieldRepository.FindAndMap<CustomFieldDto>(d => d.PageId == id),
                 ViewPath = p.ViewPath,
                 Id = id,

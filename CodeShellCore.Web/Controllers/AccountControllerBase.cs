@@ -9,6 +9,7 @@ namespace CodeShellCore.Web.Controllers
 {
     [ApiAuthorize(AllowAnonymous = true)]
     public abstract class AccountControllerBase : BaseApiController, IAccountController
+
     {
         protected IAuthenticationService AuthenticationService => GetService<IAuthenticationService>();
         protected ISessionManager SessionManager => GetService<ISessionManager>();
@@ -21,13 +22,13 @@ namespace CodeShellCore.Web.Controllers
 
         [HttpPost]
         [ApiAuthorize(AllowAnonymous = true)]
-        public virtual IActionResult Login([FromBody]LoginModel model)
+        public virtual LoginResult Login([FromBody] LoginModel model)
         {
-            return Respond(AuthenticationService.Login(model.UserName, model.Password, model.RememberMe ?? false));
+            return AuthenticationService.Login(model.UserName, model.Password, model.RememberMe ?? false);
         }
 
         [ApiAuthorize(AllowAnonymous = true)]
-        public virtual IActionResult RefreshToken([FromBody]RefreshTokenDTO refresh)
+        public virtual LoginResult RefreshToken([FromBody] RefreshTokenDTO refresh)
         {
             var uid = SessionManager.CheckRefreshTokenWEB(refresh.Token);
             LoginResult res = new LoginResult(false, "InvalidToken");
@@ -35,18 +36,18 @@ namespace CodeShellCore.Web.Controllers
             {
                 res = AuthenticationService.LoginById(uid);
             }
-            return Respond(res);
+            return res;
         }
 
         [ApiAuthorize(AllowAll = true, AllowAnonymous = false)]
-        public virtual IActionResult GetUserData()
+        public virtual object GetUserData()
         {
             var res = UserDataService.GetUserDataForUI(SessionManager.GetCurrentUserId());
-            return Respond(res);
+            return res;
         }
 
         [ApiAuthorize(AllowAll = true, AllowAnonymous = false)]
-        public virtual IActionResult ChangePassword([FromBody]ChangePasswordDTO dto)
+        public virtual IActionResult ChangePassword([FromBody] ChangePasswordDTO dto)
         {
             SubmitResult = AuthenticationService.ChangePassword(dto);
             return Respond();

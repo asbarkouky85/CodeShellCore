@@ -18,6 +18,7 @@ namespace CodeShellCore.ToolSet
         SqlBackup,
         SyncLocAbp,
         GenerateDto,
-        ReplaceParameters
+        ReplaceParameters,
+        Download
     }
 }

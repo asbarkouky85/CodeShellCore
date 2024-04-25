@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CodeShellCore.Data.Recursion
 {
-    public interface IRecursiveModel : IModel<long>
+    public interface IRecursiveModel : IEntity<long>
     {
         string Name { get; set; }
         long? ParentId { get; set; }

@@ -93,7 +93,6 @@ namespace CodeShellCore.Moldster.Services
 
         public PageOptions GetPageOptionsById(long pageId)
         {
-
             PageOptions opts = _unit.PageRepository.FindSingleAs(d => new PageOptions
             {
                 PageId = pageId,

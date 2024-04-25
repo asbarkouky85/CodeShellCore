@@ -10,6 +10,9 @@ namespace CodeShellCore.Cli
     {
         
         public static string ConfigurationApiPath { get; set; }
+
+        protected override string sharedPathRoot => "./";
+
         public CliShell(string[] args) : base(args)
         {
         }

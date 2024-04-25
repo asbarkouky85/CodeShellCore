@@ -1,12 +1,9 @@
-﻿using CodeShellCore.Data.Services;
-using CodeShellCore.Moldster.Services;
+﻿using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
@@ -46,12 +43,14 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Respond(_service.GetCategoriesTree());
         }
 
+        [HttpGet]
         public IActionResult PageCategoryCounters()
         {
             Dictionary<long, int> dic = _service.PageCategoryCounters();
             return Respond(dic);
         }
 
+        [HttpGet]
         public IActionResult PageCounters(long id)
         {
             Dictionary<long, int> dic = _service.PageCounters(id);

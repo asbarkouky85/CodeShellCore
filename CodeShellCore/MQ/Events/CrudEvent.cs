@@ -7,6 +7,6 @@ namespace CodeShellCore.MQ.Events
     public abstract class CrudEventBase
     {
         public long? TenantId { get; set; }
-        public ActionType Type { get; protected set; }
+        public ActionType Type { get;  set; }
     }
 }

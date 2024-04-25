@@ -20,17 +20,17 @@ namespace CodeShellCore.Moldster.Domains
 {
     public class DomainScriptGenerationService : ScriptGenerationServiceBase, IDomainScriptGenerationService
     {
-        protected IMoldProvider _molds => Store.GetInstance<IMoldProvider>();
-        protected INamingConventionService Names => Store.GetInstance<INamingConventionService>();
-        protected IPathsService _paths => Store.GetInstance<IPathsService>();
-        protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
-        protected ILocalizationService _localization => Store.GetInstance<ILocalizationService>();
+        protected IMoldProvider _molds => Store.GetRequiredService<IMoldProvider>();
+        protected INamingConventionService Names => Store.GetRequiredService<INamingConventionService>();
+        protected IPathsService _paths => Store.GetRequiredService<IPathsService>();
+        protected IConfigUnit _unit => Store.GetRequiredService<IConfigUnit>();
+        protected ILocalizationService _localization => Store.GetRequiredService<ILocalizationService>();
         protected IObjectMapper Mapper;
         public DomainScriptGenerationService(
             IServiceProvider prov,
             IOptions<MoldsterModuleOptions> opt) : base(prov, opt)
         {
-            Mapper = Store.GetInstance<IObjectMapper>();
+            Mapper = Store.GetRequiredService<IObjectMapper>();
         }
 
         public virtual void GenerateModuleDefinitionByPage(PageRenderDTO dto)

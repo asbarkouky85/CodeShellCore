@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CodeShellCore.Web.Controllers
 {
-    public interface IEntityController<T, TPrime> : IReadOnlyEntityController<T,TPrime> where T : class, IModel<TPrime>
+    public interface IEntityController<T, TPrime> : IReadOnlyEntityController<T,TPrime> where T : class, IEntity<TPrime>
     {
         
         IActionResult Post([FromBody] T obj);

@@ -5,20 +5,27 @@ using CodeShellCore.Text;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Data.Localization;
+using CodeShellCore.Security;
+using CodeShellCore.MultiTenant;
+using CodeShellCore.Types;
+using CodeShellCore.Files.Uploads;
 
 namespace CodeShellCore.Data.Services
 {
-    public class DtoReadOnlyEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto>: IDtoReadOnlyEntityService<TPrime, TOptionsDto, TListDto, TSingleDto>
-        where T : class, IModel<TPrime>
+    public class DtoReadOnlyEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto> : IDtoReadOnlyEntityService<TPrime, TOptionsDto, TListDto, TSingleDto>
+        where T : class, IEntity<TPrime>
         where TSingleDto : class
         where TListDto : class
         where TOptionsDto : LoadOptions
     {
-        public IUnitOfWork DefaultUnit { get; }
-        public IKeyRepository<T, TPrime> Repository { get; private set; }
-        public IObjectMapper Mapper { get; private set; }
-        public ILookupsService LookupsService { get; private set; }
+        protected IUnitOfWork DefaultUnit { get; }
+        protected IKeyRepository<T, TPrime> Repository { get; private set; }
+        protected IObjectMapper Mapper { get; private set; }
+        protected ILookupsService LookupsService { get; private set; }
+        protected IUserAccessor UserAccessor { get; private set; }
+        protected CurrentTenant CurrentTenant { get; private set; }
         private ILocalizationDataService _localizationDataService;
+        protected InstanceStore Store { get; private set; }
         protected ILocalizationDataService LocalizationDataService
         {
             get
@@ -35,12 +42,15 @@ namespace CodeShellCore.Data.Services
             }
         }
 
-        public DtoReadOnlyEntityService(IUnitOfWork unit) 
+        public DtoReadOnlyEntityService(IUnitOfWork unit)
         {
             DefaultUnit = unit;
             Repository = unit.GetRepositoryFor<T, TPrime>();
             Mapper = unit.ServiceProvider.GetService<IObjectMapper>();
             LookupsService = unit.ServiceProvider.GetService<ILookupsService>();
+            UserAccessor = unit.ServiceProvider.GetService<IUserAccessor>();
+            CurrentTenant = unit.ServiceProvider.GetService<CurrentTenant>();
+            Store = new InstanceStore(() => unit.ServiceProvider);
         }
 
         public virtual LoadResult<TListDto> Get(TOptionsDto options)

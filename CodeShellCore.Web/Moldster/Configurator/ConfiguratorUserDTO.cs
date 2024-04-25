@@ -16,6 +16,8 @@ namespace CodeShellCore.Web.Moldster.Configurator
 
         public string App => "Admin";
 
+        public bool? IsActiveDirectory => null;
+
         public string GetPersonId()
         {
             return null;

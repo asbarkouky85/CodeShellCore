@@ -11,7 +11,7 @@ namespace CodeShellCore.Types
     {
         public static Type RealModelType(this Type type)
         {
-            if (type.Implements(typeof(IDTO)))
+            if (type.Implements(typeof(IEntityWrapperDto)))
             {
                 var ints = type.GetInterfaces();
                 var t = ints.Where(d => d.Name == "IDTO`1").FirstOrDefault();
@@ -24,16 +24,20 @@ namespace CodeShellCore.Types
         public static string GetEntityName(this Type type, bool fullName = false)
         {
             Type ret = type;
-            if (type.Implements(typeof(IDTO)))
+            if (type.Implements(typeof(IEntityWrapperDto)))
             {
                 var ints = type.GetInterfaces();
-                var t = ints.Where(d => d.Name == "IDTO`1").FirstOrDefault();
-                var gens = t.GetGenericArguments();
-                ret = gens[0];
+                var t = ints.Where(d => d.IsGenericType && d.Implements(typeof(IEntityWrapperDto))).FirstOrDefault();
+                if (t != null)
+                {
+                    var gens = t.GetGenericArguments();
+                    return gens[0].GetEntityName(fullName);
+                }
             }
             else
             {
-                var attribute = (EntityNameAttribute)type.GetCustomAttributes(true).FirstOrDefault(e => e.GetType().IsAssignableFrom(typeof(EntityNameAttribute)));
+                var attrs = type.GetCustomAttributes(false);
+                var attribute = (EntityNameAttribute)attrs.FirstOrDefault(e => e is EntityNameAttribute);
                 if (attribute != null)
                     return attribute.EntityName;
             }

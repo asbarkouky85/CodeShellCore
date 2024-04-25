@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Data;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Services;
+using CodeShellCore.Extensions.Data;
 using CodeShellCore.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace CodeShellCore.Moldster.Localization
             this.loc = loc;
         }
 
-        public LoadResult<CustomTextDto> Get(CustomTextRequest req, LoadOptions opts)
+        public LoadResult<CustomTextDto> Get(CustomTextRequestDto req, LoadOptions opts)
         {
             LoadResult<CustomText> data;
             if (req.ModifiedOnly)
@@ -35,7 +36,8 @@ namespace CodeShellCore.Moldster.Localization
             else
             {
                 data = loc.LoadForTenant(req, opts);
-                List<CustomText> db = Unit.CustomTextRepository.GetBy(req);
+                var customTextReq = Mapper.Map(req, new CustomTextRequest());
+                List<CustomText> db = Unit.CustomTextRepository.GetBy(customTextReq);
                 var lst = new List<CustomText>();
                 foreach (var item in data.List)
                 {

@@ -11,6 +11,8 @@ namespace CodeShellCore.Web.Razor.Models
         public string FormFieldName { get; set; }
         public string UploadUrl { get; set; }
         public bool Multiple { get; set; }
-        
+        public bool Enabled { get; set; }
+        public string Design { get; set; }
+
     }
 }

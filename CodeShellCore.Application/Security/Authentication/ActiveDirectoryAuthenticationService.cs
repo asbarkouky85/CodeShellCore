@@ -16,6 +16,11 @@ namespace CodeShellCore.Security.Authentication.Internal
             _securityUnit = unit;
         }
 
+        protected virtual void OnLoginAttempt(IUser user)
+        {
+
+        }
+
         public SubmitResult ChangePassword(ChangePasswordDTO dto)
         {
             throw new NotImplementedException();

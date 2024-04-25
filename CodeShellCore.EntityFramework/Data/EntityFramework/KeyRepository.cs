@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.EntityFramework
 {
     public class KeyRepository<T, TContext, TPrime> : Repository<T, TContext>, IKeyRepository<T, TPrime>
-         where T : class, IModel<TPrime>
+         where T : class, IEntity<TPrime>
 
         where TContext : DbContext
     {
@@ -53,6 +54,11 @@ namespace CodeShellCore.Data.EntityFramework
         public override T FindSingle(object id)
         {
             return Loader.Where(d => d.Id.Equals(id)).FirstOrDefault();
+        }
+
+        public virtual Task<T> FindSingleAsync(object id)
+        {
+            return Loader.Where(d => d.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
         public override TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id)
@@ -138,5 +144,32 @@ namespace CodeShellCore.Data.EntityFramework
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="updateAction">args-->(fromList,fromDb)</param>
+        /// <returns></returns>
+        public override async Task MergeAsync(IEnumerable<T> list, Action<T, T> updateAction = null)
+        {
+            var dbList = await Loader.ToListAsync();
+            foreach (var item in list)
+            {
+                var entity = dbList.FirstOrDefault(e => e.Id.Equals(item.Id));
+                if (entity == null)
+                {
+                    Add(item);
+                }
+                else
+                {
+                    updateAction?.Invoke(item, entity);
+                }
+            }
+        }
+
+        public Task<T> FindAsync(TPrime id)
+        {
+            return FindSingleAsync(id);
+        }
     }
 }

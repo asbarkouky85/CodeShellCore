@@ -1,58 +1,102 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Files;
-using CodeShellCore.Files.Uploads;
-using CodeShellCore.FileServer.Business;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.FileServer.Web.Controllers
 {
-    [ApiAuthorize]
+    [ApiAuthorize(AllowAnonymous = true)]
     public class FileServerController : BaseApiController, IAttachmentFileService
     {
-        IAttachmentFileService service => GetService<IAttachmentFileService>();
+        IAttachmentFileService service;
+        private readonly IInternalAttachmentFileService internalService;
 
-        public virtual FileBytes GetBytes(long id) => service.GetBytes(id);
-        public virtual string GetFileName(long id) => service.GetFileName(id);
-        public virtual FileBytes GetTempBytes(string path) => service.GetTempBytes(path);
-        public virtual SubmitResult SaveAttachment([FromBody] SaveAttachmentRequest req) => service.SaveAttachment(req);
-        public virtual IEnumerable<TmpFileData> Upload([FromForm] UploadRequestDto dto)
+        public FileServerController(IAttachmentFileService service, IInternalAttachmentFileService internalService)
         {
-            dto.Files = new List<FileBytes>();
+            this.service = service;
+            this.internalService = internalService;
+        }
+
+        public Task<TempFileDto> ChunkUpload(ChunkUploadRequestDto dto)
+        {
+            return service.ChunkUpload(dto);
+        }
+
+        public Task<AttachmentCategoryDto> GetCategoryInfo(int id)
+        {
+            return service.GetCategoryInfo(id);
+        }
+
+        public Task<UploadedFileInfoDto> GetFileName(long id)
+        {
+            return service.GetFileName(id);
+        }
+
+        public Task<List<UploadedFileInfoDto>> GetFilesInfo(UploadedFileInfoRequestDto dto)
+        {
+            return service.GetFilesInfo(dto);
+        }
+
+        public Task<SubmitResult> SaveAttachment(SaveAttachmentRequestDto req)
+        {
+            return service.SaveAttachment(req);
+        }
+
+        public Task<SubmitResult> ValidateFile(FileValidationRequest req)
+        {
+            return service.ValidateFile(req);
+        }
+
+        public async Task<object> Get(string id)
+        {
+            var f = await internalService.GetBytes(id);
+            return File(f.Bytes, f.MimeType, f.FileName);
+        }
+
+        public async Task<object> GetTemp(string path)
+        {
+            var f = await internalService.GetTempBytes(path);
+            return File(f.Bytes, f.MimeType, f.FileName);
+        }
+
+        public Task<UploadResult> Upload([FromForm] UploadRequestDto dto) => (dto.Files == null) ? UploadMultiPart(dto.AttachmentTypeId) : internalService.Upload(dto);
+
+        [Consumes("multipart/form-data")]
+        public Task<UploadResult> UploadMultiPart(long catId)
+        {
+            var req = new UploadRequestDto
+            {
+                AttachmentTypeId = catId,
+                Files = new List<FileBytes>()
+            };
 
             foreach (var f in Request.Form.Files)
             {
-                using (MemoryStream str = new MemoryStream())
+                using MemoryStream str = new MemoryStream();
+                f.CopyTo(str);
+                var byts = new FileBytes(f.FileName, str.ToArray());
+                if (byts.MimeType.ToLower().StartsWith("image"))
                 {
-                    f.CopyTo(str);
-                    dto.Files.Add(new FileBytes(f.FileName, str.ToArray()));
+                    try
+                    {
+                        using var im = Image.FromStream(str);
+                        byts.Dimesion = new FileDimesion { Width = im.Width, Height = im.Height };
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
                 }
+                req.Files.Add(byts);
             }
-            return service.Upload(dto);
-        }
-        public virtual SubmitResult ValidateFile([FromBody] FileValidationRequest req) => service.ValidateFile(req);
-        public virtual FileBytes GetBytesByUrl(string path) => service.GetBytesByUrl(path);
-        public virtual FileResult GetFile(long id)
-        {
-            var b = service.GetBytes(id);
-            return File(b.Bytes, b.MimeType);
-        }
-
-        public virtual FileResult GetTempFile(string path)
-        {
-            var b = service.GetTempBytes(path);
-            return File(b.Bytes, b.MimeType);
-        }
-
-        public virtual FileResult GetByPath(string path)
-        {
-            var b = service.GetBytesByUrl(path);
-            return File(b.Bytes, b.MimeType);
+            return internalService.Upload(req);
         }
     }
 }

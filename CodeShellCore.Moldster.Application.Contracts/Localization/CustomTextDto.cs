@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Localization
 {
-    public class CustomTextDto : EntityDto<long>, IEditable<long>
+    public class CustomTextDto : EntityDto<long>, IDetailObject<long>
     {
         public string Code { get; set; }
         [StringLength(50)]

@@ -5,7 +5,7 @@ using CodeShellCore.Text;
 namespace CodeShellCore.Moldster.Pages
 {
     [EntityName("Page")]
-    public class PageDetailsDto
+    public class PageDetailsDto 
     {
         public long TenantId { get; set; }
         public string TenantCode { get; set; }

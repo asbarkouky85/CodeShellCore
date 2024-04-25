@@ -1,16 +1,26 @@
 ﻿using CodeShellCore.Data.Helpers;
+using CodeShellCore.Data.Lookups;
+using CodeShellCore.Data.Mapping;
 using CodeShellCore.Linq;
+using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 using System.Collections;
 using CodeShellCore.Data.Localization;
+using CodeShellCore.Data.Events;
+using CodeShellCore.MQ.Events;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Services
 {
 
-    public class DtoEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto, TCreateDto, TUpdateDto> : DtoReadOnlyEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto>, IDtoEntityService<TPrime, TOptionsDto, TListDto, TSingleDto, TCreateDto, TUpdateDto>
-        where T : class, IModel<TPrime>
+    public class DtoEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto, TCreateDto, TUpdateDto> :
+        DtoReadOnlyEntityService<T, TPrime, TOptionsDto, TListDto, TSingleDto>,
+        IDtoEntityService<TPrime, TOptionsDto, TListDto, TSingleDto, TCreateDto, TUpdateDto>,
+        IEntityHandler<T>
+        where T : class, IEntity<TPrime>
         where TSingleDto : class
         where TListDto : class
         where TCreateDto : class
@@ -27,9 +37,20 @@ namespace CodeShellCore.Data.Services
 
         public virtual DeleteResult Delete(TPrime id)
         {
-            Repository.DeleteByKey(id);
+            var can = Repository.CanDeleteById(id);
+            if (can.IsSuccess)
+            {
+                Repository.DeleteByKey(id);
+            }
+            else
+            {
+                return can;
+            }
+
             return DefaultUnit.SaveChanges().MapToResult<DeleteResult>();
         }
+
+
 
         protected virtual void AfterUpdate(TUpdateDto dto, T entity)
         {
@@ -72,6 +93,7 @@ namespace CodeShellCore.Data.Services
             if (res.IsSuccess)
             {
                 AfterUpdate(dto, entity);
+                res.Result = Repository.FindSingleAndMapById<TSingleDto>(entity.Id);
             }
 
             return res;
@@ -86,5 +108,38 @@ namespace CodeShellCore.Data.Services
         {
             return LocalizationDataService.SetDataFor<T>(id, data);
         }
+
+
+        public async Task<SubmitResult> Handle(CrudEvent<T> command)
+        {
+            switch (command.Type)
+            {
+                case ActionType.Add:
+                    await Merge(command.Data);
+                    break;
+                case ActionType.Update:
+                    await Merge(command.Data);
+                    break;
+                case ActionType.Delete:
+                    Delete(command.Data.Id);
+                    break;
+            }
+            return await DefaultUnit.SaveChangesAsync();
+        }
+
+        public virtual async Task<SubmitResult> Merge(T obj)
+        {
+            IEntity<long> ent = obj as IEntity<long>;
+            if (Repository.IdExists(ent.Id))
+            {
+                Repository.Update(obj);
+            }
+            else
+            {
+                Repository.Add(obj);
+            }
+            return await DefaultUnit.SaveChangesAsync();
+        }
+
     }
 }

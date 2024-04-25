@@ -1,16 +1,22 @@
-﻿using CodeShellCore.Helpers;
-using CodeShellCore.Seeding;
+﻿using CodeShellCore.Data;
+using CodeShellCore.Data.Seed;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Asga.Auth.Seeding
 {
-    public class AuthDataSeeder : IDataSeedContributor<AuthContext>
+    public class AuthDataSeeder : IDataSeedContributor
     {
-        public void SeedAsync(AuthContext context)
+        readonly AuthContext context;
+
+        public AuthDataSeeder(AuthContext context)
+        {
+            this.context = context;
+        }
+
+        public void SeedAsync()
         {
             if (context.Users.Any())
                 return;
@@ -51,10 +57,10 @@ namespace Asga.Auth.Seeding
             context.SaveChanges();
         }
 
-        public void SeedAsync(DbContext context)
+        public Task SeedAsync(DataSeedContext context)
         {
-            if (context is AuthContext)
-                SeedAsync((AuthContext)context);
+            SeedAsync(context);
+            return Task.CompletedTask;
         }
     }
 }

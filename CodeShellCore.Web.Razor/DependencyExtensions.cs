@@ -1,5 +1,4 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.DependencyInjection;
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Builder;
@@ -56,6 +55,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddSignalR();
             coll.AddSignalRHub<IOutputMessageSender, GenerationHub>();
             coll.AddSignalRHub<IBundlingTasksNotifications, TasksHub>();
+            coll.AddAutoMapper(typeof(MoldsterMappingProfile).Assembly);
         }
 
         public static void AddMoldsterWeb(this IServiceCollection coll, bool legacy = false)
@@ -64,6 +64,7 @@ namespace CodeShellCore.Web.Razor
             coll.AddServiceFor<Domain, DomainService>();
 
             coll.AddTransient<RazorViewsService>();
+
             coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
 
             coll.AddSingleton<DefaultPathsService>();
@@ -75,6 +76,7 @@ namespace CodeShellCore.Web.Razor
             {
                 coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
             }
+
 
             coll.AddTransient<ILocalizationService, LocalizationService>();
             coll.AddTransient<IMoldsterService, MoldsterService>();

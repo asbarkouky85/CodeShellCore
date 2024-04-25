@@ -18,6 +18,6 @@ namespace CodeShellCore.Moldster.Localization
         void AddLocalizationFiles();
         void UpdateFiles(LocalizationDataCollector localization);
 
-        LoadResult<CustomText> LoadForTenant(CustomTextRequest req, LoadOptions opts);
+        LoadResult<CustomText> LoadForTenant(CustomTextRequestDto req, LoadOptions opts);
     }
 }

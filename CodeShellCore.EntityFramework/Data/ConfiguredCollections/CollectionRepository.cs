@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 namespace CodeShellCore.Data.ConfiguredCollections
 {
     public class CollectionRepository<T, TContext, TPrime> : KeyRepository<T, TContext, TPrime>, ICollectionEFRepository<T, TContext>
-        where T : class, IModel<TPrime>
+        where T : class, IEntity<TPrime>
         where TContext : DbContext
 
     {

@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(CODESHELL_HOME)\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
+    <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

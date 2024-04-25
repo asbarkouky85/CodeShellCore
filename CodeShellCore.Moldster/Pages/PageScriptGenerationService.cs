@@ -5,6 +5,7 @@ using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -12,10 +13,10 @@ namespace CodeShellCore.Moldster.Pages
 {
     public class PageScriptGenerationService : ScriptGenerationServiceBase, IPageScriptGenerationService
     {
-        protected IMoldProvider Molds => Store.GetInstance<IMoldProvider>();
-        protected INamingConventionService Names => Store.GetInstance<INamingConventionService>();
-        protected IPathsService Paths => Store.GetInstance<IPathsService>();
-        protected IConfigUnit Unit => Store.GetInstance<IConfigUnit>();
+        protected IMoldProvider Molds => Store.GetRequiredService<IMoldProvider>();
+        protected INamingConventionService Names => Store.GetRequiredService<INamingConventionService>();
+        protected IPathsService Paths => Store.GetRequiredService<IPathsService>();
+        protected IConfigUnit Unit => Store.GetRequiredService<IConfigUnit>();
 
         public PageScriptGenerationService(
             IServiceProvider prov,
@@ -26,7 +27,11 @@ namespace CodeShellCore.Moldster.Pages
 
         protected virtual string GetViewParamsJson(long pageId, ViewParams json)
         {
-            return json.ToJson(new Newtonsoft.Json.JsonSerializerSettings { StringEscapeHandling = Newtonsoft.Json.StringEscapeHandling.EscapeHtml });
+            return json.ToJson(new JsonSerializerSettings
+            {
+                StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                Formatting = Formatting.Indented
+            });
         }
 
         public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
@@ -96,13 +101,13 @@ namespace CodeShellCore.Moldster.Pages
                 return;
             }
 
-            string mainCompBase = Unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == mod);
+            string mainCompBase = Paths.CoreAppName + "App";
             string temp = Molds.GetResourceByNameAsString(MoldNames.AppComponent_ts);
             var model = new AppComponentModel
             {
                 Name = "AppComponent",
                 TemplateName = Names.ApplyConvension("AppComponent", AppParts.Component),
-                BaseComponentName = mainCompBase.GetAfterLast("/") + "Base",
+                BaseComponentName = mainCompBase.GetAfterLast("/") + "BaseComponent",
                 BaseComponentPath = Names.GetBaseComponentFilePath(mainCompBase, true)
             };
             string contents = Writer.FillStringParameters(temp, model);

@@ -8,6 +8,6 @@ namespace CodeShellCore.Data.Attachments
 {
     public interface IHasUploads
     {
-        void LoadFile(IUploadedFilesHandler handl, string serviceUrl = null);
+
     }
 }

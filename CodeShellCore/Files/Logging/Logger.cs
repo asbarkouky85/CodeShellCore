@@ -11,7 +11,7 @@ namespace CodeShellCore.Files.Logging
     public class Logger : IDisposable, IOutputWriter
     {
         public static Logger Default { get; private set; }
-        public FileLocation Location { get; private set; }
+        public FileLocationService Location { get; private set; }
         public AsyncFileHandler TextWriter { get; private set; }
         public int DaysToKeepFiles { get; set; } = 7;
         public string ClassName { get; set; }
@@ -33,7 +33,7 @@ namespace CodeShellCore.Files.Logging
         {
 
             folder = string.IsNullOrEmpty(folder) ? Path.Combine(Shell.AppRootPath, "Logs") : folder;
-            Location = FileLocation.Make(app, folder);
+            Location = FileLocationService.Make(app, folder);
             _startFile();
         }
 

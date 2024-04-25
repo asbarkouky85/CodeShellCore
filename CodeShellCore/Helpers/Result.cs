@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CodeShellCore.Helpers
 {
-    public class Result
+    public class Result : IResult
     {
         public Dictionary<string, object> Data { get; set; }
         public int Code { get; set; }
@@ -79,7 +79,7 @@ namespace CodeShellCore.Helpers
                     return;
                 }
             }
-
+            
             if (_exception.InnerException != null && _exception.InnerException is CodeShellHttpException)
             {
                 try
@@ -113,5 +113,5 @@ namespace CodeShellCore.Helpers
         }
     }
 
-    
+
 }

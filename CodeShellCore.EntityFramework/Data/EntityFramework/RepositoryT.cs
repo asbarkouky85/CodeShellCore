@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Transactions;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
@@ -117,12 +118,12 @@ namespace CodeShellCore.Data.EntityFramework
 
         #endregion
 
-        
+
         public virtual T FindSingle(object id)
         {
             return DbContext.Set<T>().Find(id);
         }
-        
+
         public virtual void DeleteById(object ob)
         {
             var d = DbContext.Set<T>().Find(ob);
@@ -398,7 +399,7 @@ namespace CodeShellCore.Data.EntityFramework
 
         protected virtual IQueryable<TDto> QueryDto<TDto>(IQueryable<T> q = null)
         {
-            return Projector.Project<T, TDto>(q);
+            return Projector.Project<T, TDto>(q ?? Loader);
         }
 
         public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, ListOptions<TR> opts = null) where TR : class
@@ -439,8 +440,56 @@ namespace CodeShellCore.Data.EntityFramework
             var q = Loader.Where(expression);
             return QueryDto<TR>(q).FirstOrDefault();
         }
+        //
+        // Summary:
+        //     Used to get a IQueryable that is used to retrieve entities from entire table.
+        //     One or more
+        //
+        // Parameters:
+        //   includes:
+        //     A list of include expressions.
+        //
+        // Returns:
+        //     IQueryable to be used to select entities from database
+        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes)
+        {
 
-        
+            var dbSet = DbContext.Set<T>();
+
+            IQueryable<T> query = null;
+            foreach (var include in includes)
+            {
+                query = dbSet.Include(include);
+            }
+
+            return query ?? dbSet;
+
+        }
+
+        public abstract Task MergeAsync(IEnumerable<T> list, Action<T, T> updateAction = null);
+
+        public async Task InsertAsync(T tmp)
+        {
+            if (tmp == null)
+                throw new ArgumentNullException("entity");
+            await Saver.AddAsync(tmp);
+        }
+
+        public async Task<T> GetAsync(Expression<Func<T, bool>> value)
+        {
+            return await Loader.Where(value).FirstOrDefaultAsync();
+        }
+
+        public Task DeleteAsync(T entity)
+        {
+            Delete(entity);
+            return Task.CompletedTask;
+        }
+
+        public Task<List<T>> GetListAsync(Expression<Func<T, bool>> value)
+        {
+            return Loader.Where(value).ToListAsync();
+        }
     }
 }
 

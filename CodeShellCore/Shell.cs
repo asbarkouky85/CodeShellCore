@@ -1,30 +1,25 @@
-﻿using System;
+﻿using CodeShellCore.Cli;
+using CodeShellCore.DependencyInjection;
+using CodeShellCore.Files.Logging;
+using CodeShellCore.Helpers;
+using CodeShellCore.Http;
+using CodeShellCore.MQ;
+using CodeShellCore.Security;
+using CodeShellCore.Security.Authorization;
+using CodeShellCore.Security.Cryptography;
+using CodeShellCore.Tasks;
+using CodeShellCore.Text;
+using CodeShellCore.Text.Localization;
+using CodeShellCore.Text.TextProviders;
+using CodeShellCore.Types;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Globalization;
-using System.Collections.Generic;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-using CodeShellCore.Security;
-using CodeShellCore.Files.Logging;
-using CodeShellCore.Security.Cryptography;
-using CodeShellCore.Types;
-using CodeShellCore.Http;
-using CodeShellCore.DependencyInjection;
-using CodeShellCore.Text.Localization;
-using CodeShellCore.Files;
-using CodeShellCore.Text.TextProviders;
-using CodeShellCore.Text;
-using CodeShellCore.Helpers;
-using CodeShellCore.Cli;
-using CodeShellCore.MQ;
-using CodeShellCore.Files.Uploads;
-using CodeShellCore.Tasks;
-using CodeShellCore.Modularity;
-using System.Linq;
 
 namespace CodeShellCore
 {
@@ -49,11 +44,19 @@ namespace CodeShellCore
         }
 
         #region Static Properties
-
+        private static string _serviceUrl;
+        public static string AuthServiceProvider
+        {
+            get
+            {
+                return Shell.GetConfigAs<string>("AuthServer",false);
+            }
+        }
         public static string EnvironmentName { get; protected set; }
         public static string SolutionFolder { get; private set; }
         public static Assembly ProjectAssembly { get; private set; }
         public static bool UseLocalization { get { return App.useLocalization; } }
+        public static bool UseMultiTenancy { get; set; }
         public static CultureInfo DefaultCulture { get { return App.defaultCulture; } }
         public static IEnumerable<string> SupportedLanguages { get { return App.Supordedlanguage; } }
         public static IServiceProvider RootInjector { get { return App.rootProvider; } }
@@ -63,6 +66,7 @@ namespace CodeShellCore
         public static string LocalizationAssembly { get { return App.localizationAssembly ?? ProjectAssembly.GetName().Name; } }
         public static string PublicRoot { get { return App.publicRelativePath; } }
         public static string ReportsRoot { get { return App.reportsRoot; } }
+        public static string SharedPathRoot { get { return App.sharedPathRoot; } }
 
 
         public static Encryptor Encryptor
@@ -88,6 +92,7 @@ namespace CodeShellCore
         #region Optional Properties
         protected virtual bool useTransporter => false;
         protected virtual bool useTimedJobs => false;
+
         protected virtual IEnumerable<string> Supordedlanguage { get { return new[] { "ar", "en" }; } }
         protected virtual string publicRelativePath { get { return ""; } }
         protected virtual string localizationAssembly { get { return null; } }
@@ -122,31 +127,34 @@ namespace CodeShellCore
 
         #region Required Properties
         protected abstract bool useLocalization { get; }
-
         protected abstract string appRoot { get; }
+        protected abstract string sharedPathRoot { get; }
         protected abstract CultureInfo defaultCulture { get; }
         protected abstract IServiceProvider _scopedProvider { get; }
-
-
         #endregion
 
         #region Methods
 
         public virtual void RegisterServices(IServiceCollection coll)
         {
-            
+            //coll.AddTransient(e => { return Configuration; });
+            UseMultiTenancy = Configuration.GetSection(ConfigNames.UseMultiTenancy).Get<bool?>() ?? true;
             coll.AddLogging();
-            coll.AddSingleton<IFileHandler, FileSystemHandler>();
+
             coll.AddTransient<ILocaleTextProvider, ResxTextProvider>();
 
             coll.AddTransient<IOutputWriter, ConsoleOutputWriter>();
 
-            coll.AddTransient<IUploadedFilesHandler, UploadedFileHandler>();
+
             coll.AddScoped<Language>();
+
+            coll.AddTransient<IUserDataService, NullUserDataService>();
+            coll.AddScoped<IUserAccessor, UserAccessor>();
+            coll.AddScoped<UserAccessor>();
 
             coll.AddScoped<ClientData>();
 
-            
+
 
         }
         protected abstract IConfigurationSection getConfig(string key);
@@ -213,6 +221,7 @@ namespace CodeShellCore
                 Transporter.Start();
             if (App.useTimedJobs)
                 App.StartJobs();
+
             cont.OnReady();
             using (var sc = GetScope())
             {

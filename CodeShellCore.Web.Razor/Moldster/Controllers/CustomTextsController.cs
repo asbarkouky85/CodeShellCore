@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
-    public class CustomTextsController : BaseApiController,ICustomTextService
+    public class CustomTextsController : BaseApiController, ICustomTextService
     {
         private readonly ICustomTextService service;
 
@@ -16,7 +16,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             service = serv;
         }
 
-        public LoadResult<CustomTextDto> Get([FromBody] CustomTextRequest req, [FromQuery] LoadOptions opts)
+        public LoadResult<CustomTextDto> Get([FromBody] CustomTextRequestDto req, [FromQuery] LoadOptions opts)
         {
             return service.Get(req, opts);
         }

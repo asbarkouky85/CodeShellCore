@@ -127,7 +127,7 @@ namespace CodeShellCore.Moldster.CodeGeneration
 
         public void GenerateDtos(string assembly, bool listItem = false)
         {
-            var dtos = Assembly.Load(assembly).GetTypes().Where(d => d.GetInterfaces().Contains(typeof(IDTO)));
+            var dtos = Assembly.Load(assembly).GetTypes().Where(d => d.GetInterfaces().Contains(typeof(IEntityWrapperDto)));
 
             IEnumerable<string> domains = unit.DomainRepository.GetValues(d => d.Name, d => d.ParentId == null);
 

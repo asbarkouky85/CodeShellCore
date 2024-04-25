@@ -14,20 +14,20 @@ namespace ConsoleTest2.Consumers
     {
         public Task Consume(ConsumeContext<SimpleEvent> context)
         {
-            return ConsumeEvent<SimpleEvent>(context, d =>
+            return ConsumeEvent<SimpleEvent>(context.Message, d =>
             {
                 Console.WriteLine();
                 Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d}");
-                return new SubmitResult(0);
+                return Task.FromResult(new SubmitResult(0));
             });
         }
 
         public Task Consume(ConsumeContext<SimpleEvent2> context)
         {
-            return ConsumeEvent<SimpleEvent2>(context, d =>
+            return ConsumeEvent<SimpleEvent2>(context.Message, d =>
             {
                 Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d}");
-                return new SubmitResult(1);
+                return Task.FromResult(new SubmitResult(1));
             });
         }
 
@@ -36,7 +36,7 @@ namespace ConsoleTest2.Consumers
             return ConsumeEvent(notification, d =>
             {
                 Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Consumed [{d.Id}] : {d.Message}");
-                return new SubmitResult();
+                return Task.FromResult(new SubmitResult());
             });
 
         }

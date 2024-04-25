@@ -10,10 +10,19 @@ namespace CodeShellCore.Web.Controllers
     [Produces("text/html")]
     public abstract class HomeControllerBase : Controller
     {
+        protected virtual bool UseSwagger => false;
         public virtual IActionResult Index()
         {
-            Response.ContentType = "text/html";
-            return Content(WebUtils.GetAssemblyInfoHtml());
+            if (UseSwagger)
+            {
+                return Redirect("/swagger");
+            }
+            else
+            {
+                Response.ContentType = "text/html";
+                return Content(WebUtils.GetAssemblyInfoHtml());
+            }
+            
         }
     }
 }

@@ -9,12 +9,17 @@ using CodeShellCore.Helpers;
 using System.Collections.Generic;
 using CodeShellCore.Text;
 using System.Reflection;
+using System.Threading.Tasks;
+using CodeShellCore.Data.Events;
+using CodeShellCore.MQ;
+using CodeShellCore.MultiTenant;
 
 namespace CodeShellCore.Data
 {
     public class DefaultUnitOfWork : IUnitOfWork
     {
 
+        protected List<QueuedEvent> DistibutedEvents { get; set; } = new List<QueuedEvent>();
         protected InstanceStore<IRepository> Store;
         protected IServiceProvider _provider;
         private ILocaleTextProvider _textProvider;
@@ -31,6 +36,7 @@ namespace CodeShellCore.Data
         /// Should return a type that inherits from <see cref="Repository{T, TContext}"/>
         /// </summary>
         protected virtual Type GenericRepositoryType { get; }
+        public CurrentTenant CurrentTenant { get; private set; }
 
         /// <summary>
         /// Should return a type that implements from <see cref="ICollectionEFRepository{T, TContext}"/>
@@ -73,10 +79,13 @@ namespace CodeShellCore.Data
 
         public IServiceProvider ServiceProvider => _provider;
 
-        public virtual bool TrackChanges { get;set; }
+        public virtual bool TrackChanges { get; set; }
+
+        public virtual ChangeLists LastChanges => new ChangeLists();
 
         public DefaultUnitOfWork(IServiceProvider prov)
         {
+            CurrentTenant = prov.GetRequiredService<CurrentTenant>();
             _provider = prov;
             Store = new InstanceStore<IRepository>(_provider);
             EntitiesAssembly = GetType().Assembly.GetName().Name;
@@ -87,11 +96,6 @@ namespace CodeShellCore.Data
         public virtual void Dispose()
         {
             Store.Clear();
-        }
-
-        public virtual void EnableJsonLoading()
-        {
-
         }
 
         public virtual ChangeLists GetChangeSet()
@@ -159,7 +163,7 @@ namespace CodeShellCore.Data
             return Store.GetInstance<IRepository<T>>();
         }
 
-        public virtual IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IModel<TPrime>
+        public virtual IKeyRepository<T, TPrime> GetRepositoryFor<T, TPrime>() where T : class, IEntity<TPrime>
         {
             IKeyRepository<T, TPrime> inst;
             if (GenericKeyRepositoryType != null)
@@ -178,7 +182,17 @@ namespace CodeShellCore.Data
         public virtual SubmitResult SaveChanges(string successMessage = null, string faileMessage = null, bool throwException = false)
         {
             Saving?.Invoke(this, new ChangeLists());
+
             return new SubmitResult();
+        }
+
+        protected async Task SendDistributedEvents()
+        {
+            foreach (var ev in DistibutedEvents)
+            {
+                await Transporter.PublishAsync(ev.EventData, ev.EventType);
+            }
+            DistibutedEvents.Clear();
         }
 
         public virtual T GetRepository<T>() where T : class, IRepository
@@ -193,6 +207,15 @@ namespace CodeShellCore.Data
             return message_code;
         }
 
+        public virtual async Task<SubmitResult> SaveChangesAsync(string successMessage = null, string failMessage = null, bool throwException = true)
+        {
+            await SendDistributedEvents();
+            return SaveChanges();
+        }
 
+        public virtual void AddDistributedEvent(object eventData, Type type = null)
+        {
+            DistibutedEvents.Add(new QueuedEvent(type ?? eventData.GetType(), eventData));
+        }
     }
 }

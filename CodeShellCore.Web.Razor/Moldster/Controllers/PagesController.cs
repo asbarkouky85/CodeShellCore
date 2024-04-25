@@ -46,6 +46,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
 
         public SubmitResult TenantCreated([FromBody] DbCreationRequest req)
         {
+
             acc.CurrentEnvironment = paths.GetEnvironments().Find(d => d.Name == req.Environment);
 
             if (acc.CurrentEnvironment != null)
@@ -114,5 +115,6 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         {
             return pageService.GetCollection(id, options);
         }
+
     }
 }

@@ -61,7 +61,7 @@ namespace CodeShellCore.Text
         /// </summary>
         /// <param name="ob"></param>
         /// <returns></returns>
-        public static string ToJsonIndent(this object ob)
+        public static string ToJsonIndent(this object ob, JsonSerializerSettings sett = null)
         {
             return JsonConvert.SerializeObject(ob, Formatting.Indented);
         }

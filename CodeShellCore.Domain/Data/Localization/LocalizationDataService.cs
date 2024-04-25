@@ -7,7 +7,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Services;
 using CodeShellCore.Text.Localization;
 
-namespace CodeShellCore.Data.Localization.Internal
+namespace CodeShellCore.Data.Localization
 {
     public class LocalizationDataService<T> : ServiceBase, ILocalizationDataService where T : class, ILocalizable
     {
@@ -26,7 +26,7 @@ namespace CodeShellCore.Data.Localization.Internal
             }
         }
         ILocalizablesRepository<T> _Loc { get { return unit.GetRepository<ILocalizablesRepository<T>>(); } }
-        public LocalizationDataService(ILocalizablesUnitOfWork unit, Language lang) 
+        public LocalizationDataService(ILocalizablesUnitOfWork unit, Language lang)
         {
             this.unit = unit;
             _lang = lang;

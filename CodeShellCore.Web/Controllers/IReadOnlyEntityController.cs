@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Controllers
 {
-    public interface IReadOnlyEntityController<T, TPrime> where T : class, IModel<TPrime>
+    public interface IReadOnlyEntityController<T, TPrime> where T : class, IEntity<TPrime>
     {
         IActionResult Get([FromQuery] LoadOptions opt);
         IActionResult GetSingle([FromRoute] TPrime id);

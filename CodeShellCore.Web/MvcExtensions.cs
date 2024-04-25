@@ -23,7 +23,8 @@ using CodeShellCore.Helpers;
 using Microsoft.Extensions.Primitives;
 using System.ComponentModel;
 using System.Linq;
-using CodeShellCore.Web;
+using CodeShellCore.Data;
+using CodeShellCore;
 
 namespace Microsoft.AspNetCore.Mvc
 {
@@ -40,17 +41,15 @@ namespace Microsoft.AspNetCore.Mvc
         public static HttpResult HandleRequestError(this HttpContext context, Exception excep)
         {
             HttpRequest req = context.Request;
-            string url = req.GetFullUrl();
-            HttpResult res = new HttpResult
-            {
-                Code = 1,
-                RequestUrl = url,
-                Method = req.Method
-            };
+            HttpResult res = new HttpResult();
 
             res.SetException(excep);
 
-            if (excep is UnauthorizedAccessException)
+            if (excep is SubmissionFailedException)
+            {
+                res = ((SubmissionFailedException)excep).Result.MapToResult<HttpResult>();
+            }
+            else if (excep is UnauthorizedAccessException)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 res.Message = "unauthorized_operation";
@@ -58,7 +57,6 @@ namespace Microsoft.AspNetCore.Mvc
                 foreach (var d in excep.Data.Keys)
                     res.Data[d.ToString()] = excep.Data[d];
             }
-
             else if (excep is CodeShellHttpException)
                 context.Response.StatusCode = (int)((CodeShellHttpException)excep).Status;
             else if (excep is ArgumentOutOfRangeException)
@@ -68,6 +66,9 @@ namespace Microsoft.AspNetCore.Mvc
             else
                 context.Response.StatusCode = 500;
 
+            res.Code = res.Code != 0 ? res.Code : 1;
+            res.RequestUrl = req.GetFullUrl();
+            res.Method = req.Method;
             Logger.WriteException(excep);
             return res;
         }

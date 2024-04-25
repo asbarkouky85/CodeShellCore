@@ -8,14 +8,19 @@ using CodeShellCore.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+using CodeShellCore.DependecyInjection;
+using CodeShellCore.MultiTenant;
+using CodeShellCore.Security;
 
 namespace CodeShellCore.Web.Security
 {
     public class TokenSessionManager : WebSessionManagerBase, ISessionManager
     {
-        protected virtual AppClient[] Clients => new AppClient[0];
+        protected static AppClient[] Clients { get; set; } = new AppClient[0];
         public TokenSessionManager(IServiceProvider prov) : base(prov)
         {
+            Clients = prov.GetRequiredService<IClientProvider>().Get().ToArray();
         }
 
         public override TimeSpan DefaultSessionTime { get { return new TimeSpan(24, 0, 0); } }
@@ -49,9 +54,11 @@ namespace CodeShellCore.Web.Security
         {
             if (jwt != null && jwt.TryRead(out ClientJwt obj))
             {
-                var currentHost = _accessor.HttpContext?.Request.GetHostUrl();
+                var currentProvider = Shell.AuthServiceProvider;
                 clientId = obj;
-                return obj.ExpireTime > DateTime.Now && Clients.Any(e => e.ClientId == obj.ClientId) && (string.IsNullOrEmpty(obj.Provider) || obj.Provider.ToLower() == currentHost.ToLower());
+                return obj.ExpireTime > DateTime.Now &&
+                    (!Clients.Any() || Clients.Any(e => e.ClientId == obj.ClientId)) &&
+                    (string.IsNullOrEmpty(obj.Provider) || string.IsNullOrEmpty(currentProvider) || obj.Provider.ToLower() == currentProvider.ToLower());
             }
             clientId = null;
             return false;
@@ -61,9 +68,10 @@ namespace CodeShellCore.Web.Security
         {
             if (jwt != null && jwt.TryRead(out JWTData obj))
             {
-                var currentHost = _accessor.HttpContext?.Request.GetHostUrl();
+                var provider = Shell.AuthServiceProvider;
                 userId = obj;
-                return obj.ExpireTime > DateTime.Now && (string.IsNullOrEmpty(obj.Provider) || obj.Provider.ToLower() == currentHost.ToLower());
+                return obj.ExpireTime > DateTime.Now
+                    && (string.IsNullOrEmpty(obj.Provider) || string.IsNullOrEmpty(provider) || obj.Provider.ToLower() == provider.ToLower());
             }
             userId = null;
             return false;
@@ -80,6 +88,11 @@ namespace CodeShellCore.Web.Security
         {
             string head = GetTokenFromHeader();
             string cl = GetClientTokenFromHeader();
+
+            if (_accessor.HttpContext.Request.Headers.TryGetValue(HttpHeaderKeys.TenantId, out StringValues tenantId) && long.TryParse(tenantId.First(), out long id))
+            {
+                ServiceProvider.GetRequiredService<CurrentTenant>().TenantId = id;
+            }
 
             if (!string.IsNullOrEmpty(cl))
             {
