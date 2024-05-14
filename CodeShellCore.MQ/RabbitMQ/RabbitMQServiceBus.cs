@@ -35,7 +35,8 @@ namespace CodeShellCore.MQ.RabbitMQ
 
             Control = Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
-                var host = cfg.Host(new Uri(_config.Uri), h =>
+
+                cfg.Host(new Uri(_config.Uri), h =>
                 {
                     h.Username(_config.User);
                     h.Password(_config.Password);
@@ -43,8 +44,7 @@ namespace CodeShellCore.MQ.RabbitMQ
 
                 if (_config.EndPointId != null)
                 {
-                    cfg.ReceiveEndpoint(host, _config.EndPointId, e => Configure(e));
-
+                    cfg.ReceiveEndpoint(_config.EndPointId, e => Configure(e));
                 }
 
             });
@@ -69,14 +69,6 @@ namespace CodeShellCore.MQ.RabbitMQ
             Uri uri = new Uri(Utils.CombineUrl(BusConfig.Current.Uri, target));
             ISendEndpoint endpoint = Control.GetSendEndpoint(uri).GetTaskResult();
             endpoint.Send(message, messageType);
-        }
-
-        public Task<TR> SendRequest<T, TR>(string target, T message, int secoonds = 10) where T : class where TR : class
-        {
-            Uri uri = new Uri(Utils.CombineUrl(BusConfig.Current.Uri, target));
-            IRequestClient<T, TR> client =
-                Control.CreateRequestClient<T, TR>(uri, TimeSpan.FromSeconds(secoonds));
-            return client.Request(message);
         }
     }
 }

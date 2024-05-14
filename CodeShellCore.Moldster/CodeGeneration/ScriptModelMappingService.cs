@@ -21,7 +21,6 @@ namespace CodeShellCore.Moldster.CodeGeneration
         protected const int resultcol = 8;
 
         public ScriptModelMappingService(
-            IMoldProvider mold,
             IPathsService paths,
             IConfigUnit unit,
             IOutputWriter output) : base(output)

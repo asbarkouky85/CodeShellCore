@@ -131,7 +131,7 @@ namespace CodeShellCore.Web
             }
 
             AddMvcFeatures(mvc);
-            mvc.AddNewtonsoftJson(e => e.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local);
+            //mvc.AddJsonOptions(e => e.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ISpaFallbackHandler, SpaFallbackHandler>();

@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.MQ.MediatR;
 using CodeShellCore.MQ.RabbitMQ;
+using MassTransit;
 using MassTransit.RabbitMqTransport;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,8 +25,11 @@ namespace CodeShellCore.MQ
 
         public static void AddMediateRServiceBus(this IServiceCollection coll, Action<MediatRServiceConfiguration> conf, Assembly[] assemblies = null)
         {
-            assemblies = assemblies ?? new[] { Shell.ProjectAssembly };
-            coll.AddMediatR(conf, assemblies);
+            coll.AddMediatR(e =>
+            {
+                assemblies = assemblies ?? new[] { Shell.ProjectAssembly };
+                e.RegisterServicesFromAssemblies(assemblies);
+            });
             coll.AddTransient<IServiceBus, MediatRServiceBus>();
         }
 

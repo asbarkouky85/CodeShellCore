@@ -5,6 +5,7 @@ using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Web.Features;
 using CodeShellCore.Web.Moldster.Configurator;
+using CodeShellCore.Web.Proxy;
 using CodeShellCore.Web.Security;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,11 @@ namespace CodeShellCore.Web
 {
     public static class DependecyExtensions
     {
+        public static void AddCodeShellApiDocumentation(this IServiceCollection coll)
+        {
+            coll.AddTransient<IProxyDocumentationService, ProxyDocumentationService>();
+        }
+
         public static void AddTokenSecurity(this IServiceCollection coll, AuthorizationType type)
         {
             coll.AddCodeShellSecurity(type);

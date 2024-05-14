@@ -16,6 +16,7 @@ using CodeShellCore.Data.Events;
 using CodeShellCore.MultiTenant;
 using CodeShellCore.Security;
 using CodeShellCore.Linq;
+using CodeShellCore.Proxy;
 
 namespace CodeShellCore
 {
@@ -49,6 +50,7 @@ namespace CodeShellCore
             coll.AddScoped<CurrentTenant>();
             coll.AddTransient<ITenantDataProvider, NullTenantDataProvider>();
             coll.AddTransient<ILookupsAppService, LookupsAppService>();
+            coll.AddTransient<ITypeScriptGenerationService, TypeScriptGenerationService>();
 
             coll.AddOptions<CrudEventSenderOptions>();
             coll.AddOptions<FileUploadOptions>("Uploads");

@@ -9,9 +9,4 @@
 	  <ProjectReference Include="..\CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Events\" />
-	  <Folder Include="Extensions\" />
-	</ItemGroup>
-
 </Project>

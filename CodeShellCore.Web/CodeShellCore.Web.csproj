@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\common.props" />
+
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<Version>5.2.0.0</Version>
 		<AssemblyName>CodeShellCore.Web</AssemblyName>
 		<AssemblyVersion>5.2.0.0</AssemblyVersion>
@@ -10,22 +12,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-		<PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.23" />
-		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+		
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.4" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Moldster\Dtos\" />
 	</ItemGroup>
 
 </Project>

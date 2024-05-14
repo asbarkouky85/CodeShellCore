@@ -3,10 +3,7 @@ using CodeShellCore.Data.Attachments;
 using CodeShellCore.Data.Auditing;
 using CodeShellCore.Files;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
-using static AutoMapper.Internal.ExpressionFactory;
 
 namespace AutoMapper
 {

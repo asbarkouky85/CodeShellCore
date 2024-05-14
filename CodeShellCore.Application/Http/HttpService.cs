@@ -362,9 +362,9 @@ namespace CodeShellCore.Http
                 Task.WaitAll(obj);
                 return obj.Result;
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
+                throw;
             }
 
         }
