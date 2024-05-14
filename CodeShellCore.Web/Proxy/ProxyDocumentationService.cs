@@ -52,10 +52,16 @@ namespace CodeShellCore.Web.Proxy
                     }
 
                     var props = type.GetProperties();
+                    if (type.IsGenericType)
+                    {
+                        props = type.GetGenericTypeDefinition().GetProperties();
+                    }
                     foreach (var prop in props)
                     {
                         var schemaProp = new PropertyDto();
                         _fillType(schemaProp, prop.PropertyType, false);
+                        if (prop.Name == "Id")
+                            schemaProp.Nullable = false;
                         result[schemaName].Properties[prop.Name] = schemaProp;
                     }
                 }
@@ -69,6 +75,14 @@ namespace CodeShellCore.Web.Proxy
             if (!_usedModels.Exists(e => e == type))
             {
                 _usedModels.Add(type);
+                if (type.IsGenericType)
+                {
+                    foreach (var item in type.GetGenericArguments())
+                    {
+                        _addToSchema(item);
+                    }
+                }
+
                 var tsService = Store.GetRequiredService<ITypeScriptGenerationService>();
                 var props = type.GetProperties();
 
@@ -78,6 +92,13 @@ namespace CodeShellCore.Web.Proxy
                     if (tsType == "reference")
                     {
                         _addToSchema(prop.PropertyType);
+                    }
+                    else if (prop.PropertyType.IsGenericType)
+                    {
+                        foreach (var item in prop.PropertyType.GetGenericArguments())
+                        {
+                            _addToSchema(item);
+                        }
                     }
                 }
 
@@ -92,7 +113,7 @@ namespace CodeShellCore.Web.Proxy
             parameterProp.Type = tsService.GetTsType(type);
             parameterProp.Namespace = type.Namespace;
             parameterProp.SchemaName = $"{type.Namespace}.{type.Name}";
-
+            parameterProp.Nullable = !tsService.IsRequired(type);
             if (type.IsGenericType)
             {
                 parameterProp.GenericArguments = new List<PropertyDto>();
