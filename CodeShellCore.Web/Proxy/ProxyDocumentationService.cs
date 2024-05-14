@@ -47,7 +47,8 @@ namespace CodeShellCore.Web.Proxy
                     }
                     else if (type.IsGenericType)
                     {
-                        result[schemaName].GenericArgumentCount = type.GetGenericArguments().Length;
+                        result[schemaName].GenericArguments = type.GetGenericTypeDefinition().GetGenericArguments()
+                            .Select(e => e.Name).ToList();
                     }
 
                     var props = type.GetProperties();

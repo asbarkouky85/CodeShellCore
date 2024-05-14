@@ -61,7 +61,7 @@ namespace CodeShellCore.ToolSet
                             args = new[] { "download", "https://nodejs.org/dist/v16.16.0/node-v16.16.0-x64.msi","./Downloads" };
                             break;
                         case FunctionTypes.Proxy:
-                            args = new[] { "gen-proxy", "https://localhost:44300"};
+                            args = new[] { "gen-proxy", "https://localhost:44300", "C:\\_git\\Asga\\WebAndBackEnd\\FMS.Frontend\\src\\core" };
                             break;
                     }
                 }

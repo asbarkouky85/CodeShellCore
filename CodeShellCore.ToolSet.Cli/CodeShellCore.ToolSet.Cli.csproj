@@ -1,16 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>CodeShellCore.ToolSet</RootNamespace>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<Version>5.3.1.0</Version>
 		<AssemblyName>ToolSet</AssemblyName>
 		<AssemblyVersion>5.3.1.0</AssemblyVersion>
 		<FileVersion>5.3.1.0</FileVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackAsTool>true</PackAsTool>
-		<ToolCommandName>toolset</ToolCommandName>
+		<ToolCommandName>codeshell</ToolCommandName>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\CodeShellCore.ToolSet\CodeShellCore.ToolSet.csproj" />

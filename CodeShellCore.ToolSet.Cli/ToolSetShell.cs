@@ -10,6 +10,7 @@ using CodeShellCore.ToolSet.Sql;
 using CodeShellCore.ToolSet.TsProxy;
 using CodeShellCore.ToolSet.Versions;
 using CodeShellCore.ToolSet.Zip;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.ToolSet
 {
@@ -17,6 +18,12 @@ namespace CodeShellCore.ToolSet
     {
         public ToolSetShell(string[] args) : base(args)
         {
+        }
+
+        public override void RegisterServices(IServiceCollection coll)
+        {
+            base.RegisterServices(coll);
+            coll.AddCodeShellApplication();
         }
 
         protected override void RegisterHandlers(ICliDispatcherBuilder builder)

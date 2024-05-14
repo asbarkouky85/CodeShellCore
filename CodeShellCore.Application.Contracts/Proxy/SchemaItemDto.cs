@@ -7,6 +7,6 @@ namespace CodeShellCore.Proxy
         public string Name { get; set; }
         public Dictionary<string, PropertyDto> Properties { get; set; } = new Dictionary<string, PropertyDto>();
         public Dictionary<string, long> Items { get; set; }
-        public int? GenericArgumentCount { get; set; }
+        public List<string> GenericArguments { get; set; }
     }
 }
