@@ -10,7 +10,7 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
     public class DomainsController : EntityController<Domain, long>, ILookupLoaderController
     {
         DomainService _service;
-        MoldsterLookupService _lookups => GetService<MoldsterLookupService>();
+        IMoldsterLookupService _lookups => GetService<IMoldsterLookupService>();
         IModulesService _modules => GetService<IModulesService>();
         IConfigUnit Unit => GetService<IConfigUnit>();
         public DomainsController(DomainService configDomainService) : base(configDomainService)

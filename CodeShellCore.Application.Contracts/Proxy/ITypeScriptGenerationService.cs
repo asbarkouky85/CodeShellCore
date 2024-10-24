@@ -9,8 +9,11 @@ namespace CodeShellCore.Proxy
         bool IsRequired(Type t);
         string MapEnum(string name, Dictionary<string, long> values);
         string MapEntity(SchemaItemDto schema);
+        string MapService(string name, ServiceDefinitionDto value);
+        string ApplyNamingConvension(string path);
         string GetFolderPathFromNamespace(string name_space);
-        void ExtractDependencies(SchemaItemDto schema, ref Dictionary<string, PropertyDto> dependencies);
-        string GenerateImportation(Dictionary<string, PropertyDto> props, string ignoreNs);
+        Dictionary<string, PropertyDto> ExtractDependencies(SchemaItemDto schema, Dictionary<string, PropertyDto> dependencies);
+        string GenerateImportation(Dictionary<string, PropertyDto> props, string ignoreNs = null);
+        Dictionary<string, PropertyDto> ExtractDependencies(ServiceDefinitionDto value, Dictionary<string, PropertyDto> dictionary);
     }
 }

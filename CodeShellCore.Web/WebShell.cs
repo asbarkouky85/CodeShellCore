@@ -25,7 +25,6 @@ namespace CodeShellCore.Web
         private string _sharedPathRoot;
         private IServiceProvider _appProvider;
 
-        public static string AppRootUrl { get { return ((WebShell)App).urlRoot; } }
         protected virtual bool UseHealthChecks => false;
         /// <summary>
         /// (Default : "~")
@@ -49,29 +48,10 @@ namespace CodeShellCore.Web
         /// </summary>
         protected virtual string DefaultCorsOrigins => "http://localhost,http://localhost:4200";
 
-        private IConfiguration _config;
-        protected override IConfiguration Configuration => _config;
 
-        protected override IServiceProvider _scopedProvider
-        {
-            get
-            {
-                var acc = RootInjector.GetService<IHttpContextAccessor>();
 
-                if (acc.HttpContext == null)
-                    return null;
-
-                return acc.HttpContext.RequestServices;
-            }
-        }
-
-        /// <summary>
-        /// Service provider created on <see cref="IConfigurationBuilder.Build"/>
-        /// </summary>
-        protected override IServiceProvider rootProvider { get { return _appProvider; } }
         public WebShell(IConfiguration config)
         {
-            _config = config;
         }
 
         protected virtual void HandleSystemErrors(HttpContext cont, Exception ex)
@@ -109,8 +89,8 @@ namespace CodeShellCore.Web
         public override void RegisterServices(IServiceCollection services)
         {
             base.RegisterServices(services);
-            services.AddCodeShellApplication();
-            services.ConfigureUploads(Configuration);
+            //services.AddCodeShellApplication();
+            //services.ConfigureUploads(Configuration);
             var mvc = services.AddControllers();
 
             services.Configure<MvcOptions>(e =>
@@ -137,10 +117,14 @@ namespace CodeShellCore.Web
             services.AddTransient<ISpaFallbackHandler, SpaFallbackHandler>();
         }
 
+        private string cspHeader()
+        {
+            return $"default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'unsafe-inline' 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; frame-src 'self'; object-src 'self'; connect-src 'self';";
+        }
+
         public virtual void ConfigureHttp(IApplicationBuilder app, IWebHostEnvironment env)
         {
             _appRoot = env.ContentRootPath;
-            _sharedPathRoot = _config.GetValue<string>("SharedPathRoot");
             _appProvider = app.ApplicationServices;
 
             if (env.IsDevelopment())
@@ -159,7 +143,17 @@ namespace CodeShellCore.Web
                     });
                 }
             });
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Append("Content-Security-Policy", cspHeader());
+
+                await next();
+            });
+
             app.UseRouting();
+
+            
 
             if (UseSwagger)
             {
@@ -191,6 +185,8 @@ namespace CodeShellCore.Web
             {
                 RegisterEndpointRoutes(e);
             });
+
+            
 
             if (IsSpa)
             {
@@ -232,10 +228,6 @@ namespace CodeShellCore.Web
                 );
         }
 
-        protected override IConfigurationSection getConfig(string key)
-        {
-            return Configuration.GetSection(key);
-        }
 
 
     }

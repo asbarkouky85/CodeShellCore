@@ -2,13 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Tasks
 {
     public interface ITimedJob
     {
+        bool RunOnStartUp { get; }
         TimeOfDay? StartOn { get; }
         TimeSpan Interval { get; }
-        SubmitResult Run(IServiceProvider provider);
+        Task<SubmitResult> Run(IServiceProvider provider);
     }
 }

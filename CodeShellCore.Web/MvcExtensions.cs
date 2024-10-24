@@ -25,6 +25,8 @@ using System.ComponentModel;
 using System.Linq;
 using CodeShellCore.Data;
 using CodeShellCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace Microsoft.AspNetCore.Mvc
@@ -95,6 +97,16 @@ namespace Microsoft.AspNetCore.Mvc
 
             mes.Content = new StringContent(data.ToJson());
             return mes;
+        }
+
+        public static IApplicationBuilder GetApplicationBuilder(this CodeShellApplicationInitializationContext context)
+        {
+            return context.GetItem<IApplicationBuilder>();
+        }
+
+        public static IWebHostEnvironment GetEnvironment(this CodeShellApplicationInitializationContext context)
+        {
+            return context.GetItem<IWebHostEnvironment>();
         }
 
         public static HttpResponseMessage ToWebResponse(this LoginResult data)

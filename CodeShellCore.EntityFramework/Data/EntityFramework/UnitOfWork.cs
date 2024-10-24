@@ -3,7 +3,6 @@ using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Data.Events;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
-using CodeShellCore.DependencyInjection;
 using CodeShellCore.EntityFramework;
 using CodeShellCore.Extensions;
 using CodeShellCore.MQ.Events;

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Linq;
-using CodeShellCore.Helpers;
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Text;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
-using CodeShellCore.DependecyInjection;
-using CodeShellCore.MultiTenant;
-using CodeShellCore.Security;
+using System;
+using System.Linq;
 
 namespace CodeShellCore.Web.Security
 {
@@ -84,7 +80,7 @@ namespace CodeShellCore.Web.Security
                 SetIdentity(user);
         }
 
-        
+
         public override void AuthorizationRequest()
         {
             ReadAppVersion();

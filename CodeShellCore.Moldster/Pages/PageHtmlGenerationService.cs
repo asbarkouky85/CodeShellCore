@@ -3,8 +3,8 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Moldster.Services;
+using CodeShellCore.Moldster.Views;
 using CodeShellCore.Types;
 using Microsoft.Extensions.Options;
 using System;
@@ -35,7 +35,7 @@ namespace CodeShellCore.Moldster.Pages
             WriteSuccess();
         }
 
-        private RenderedPageResult GeneratePageHtml(long id)
+        private RenderedPageResultDto GeneratePageHtml(long id)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace CodeShellCore.Moldster.Pages
             }
         }
 
-        private RenderedPageResult GetPage(string module, string viewPath)
+        private RenderedPageResultDto GetPage(string module, string viewPath)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace CodeShellCore.Moldster.Pages
             }
         }
 
-        protected bool RenderPage(long id, out RenderedPageResult res)
+        protected bool RenderPage(long id, out RenderedPageResultDto res)
         {
 
             using (var x = SW.Measure())
@@ -109,7 +109,7 @@ namespace CodeShellCore.Moldster.Pages
 
         public virtual PageJsonData GenerateComponentTemplate(string moduleName, PageRenderDTO dto)
         {
-            if (RenderPage(dto.Id, out RenderedPageResult res))
+            if (RenderPage(dto.Id, out RenderedPageResultDto res))
             {
                 return res;
             }

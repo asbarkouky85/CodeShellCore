@@ -1,18 +1,16 @@
-﻿using System;
-using System.Threading.Tasks;
-using MassTransit;
-using CodeShellCore.Data.Helpers;
-using CodeShellCore.DependencyInjection;
-using CodeShellCore.Services;
-using CodeShellCore.Files.Logging;
-using CodeShellCore.Types;
-using CodeShellCore.Files.Storage;
-using System.IO;
-using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Data.Events;
-using CodeShellCore.MultiTenant;
-using System.Collections.Generic;
+﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
+using CodeShellCore.Files.Logging;
+using CodeShellCore.MultiTenant;
+using CodeShellCore.Services;
+using CodeShellCore.Types;
+using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using CodeShellCore.Extensions;
 
 namespace CodeShellCore.MQ
 {

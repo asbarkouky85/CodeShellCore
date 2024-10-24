@@ -4,6 +4,7 @@ using CodeShellCore.Moldster.Pages.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
@@ -22,5 +23,6 @@ namespace CodeShellCore.Moldster.Pages
         void FillReferencedBy(IEnumerable<IPageReferenceCounter> listT);
         void FillReferences(IEnumerable<IPageReferenceCounter> listT);
         void UpdatePageViewParamsJson(Page p, PageParameterForJson[] ps, PageRouteView r, FieldDefinition[] def);
+        Task<List<PageOptions>> GetPageOptionsByCategory(long categoryId, long tenantId);
     }
 }

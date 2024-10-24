@@ -101,6 +101,11 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
+        public Task<List<TR>> FindAndMapAsync<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             throw new NotImplementedException();

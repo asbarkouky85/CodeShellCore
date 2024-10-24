@@ -50,23 +50,27 @@ namespace CodeShellCore.Web.Proxy
                         result[schemaName].GenericArguments = type.GetGenericTypeDefinition().GetGenericArguments()
                             .Select(e => e.Name).ToList();
                     }
-
-                    var props = type.GetProperties();
-                    if (type.IsGenericType)
-                    {
-                        props = type.GetGenericTypeDefinition().GetProperties();
-                    }
-                    foreach (var prop in props)
-                    {
-                        var schemaProp = new PropertyDto();
-                        _fillType(schemaProp, prop.PropertyType, false);
-                        if (prop.Name == "Id")
-                            schemaProp.Nullable = false;
-                        result[schemaName].Properties[prop.Name] = schemaProp;
-                    }
+                    _addProperties(type, result[schemaName]);
                 }
             }
             return result;
+        }
+
+        private void _addProperties(Type type, IHasProperties dto)
+        {
+            var props = type.GetProperties();
+            if (type.IsGenericType)
+            {
+                props = type.GetGenericTypeDefinition().GetProperties();
+            }
+            foreach (var prop in props)
+            {
+                var schemaProp = new PropertyDto();
+                _fillType(schemaProp, prop.PropertyType, false);
+                if (prop.Name == "Id")
+                    schemaProp.Nullable = false;
+                dto.Properties[prop.Name] = schemaProp;
+            }
         }
 
         private void _addToSchema(Type type)
@@ -178,11 +182,11 @@ namespace CodeShellCore.Web.Proxy
 
         }
 
-        private Dictionary<string, PropertyDto> _getQueryParameters(ControllerActionDescriptor actionData, ApiDescription parameterDesc)
+        private Dictionary<string, ParameterPropertyDto> _getQueryParameters(ControllerActionDescriptor actionData, ApiDescription parameterDesc)
         {
-            var result = new Dictionary<string, PropertyDto>();
+            var result = new Dictionary<string, ParameterPropertyDto>();
             var queryParameterTypes = parameterDesc.ParameterDescriptions.Where(e => e.Source == BindingSource.Query)
-                            .GroupBy(e => e.ModelMetadata.ContainerType)
+                            .GroupBy(e => e.ModelMetadata.ContainerType ?? e.Type)
                             .Select(e => e.Key)
                             .ToList();
 
@@ -191,8 +195,9 @@ namespace CodeShellCore.Web.Proxy
                 var methodParameter = actionData.MethodInfo.GetParameters().FirstOrDefault(e => e.ParameterType == parameterType);
                 if (methodParameter != null)
                 {
-                    var parameterProp = new PropertyDto();
+                    var parameterProp = new ParameterPropertyDto();
                     _fillType(parameterProp, parameterType);
+                    _addProperties(parameterType, parameterProp);
                     result[methodParameter.Name] = parameterProp;
                 }
             }
@@ -238,7 +243,10 @@ namespace CodeShellCore.Web.Proxy
                             module = area;
                         if (!result.Modules.ContainsKey(module))
                             result.Modules[module] = new GroupDto();
+                        if (actionData.ActionName == "MakeQRCode")
+                        {
 
+                        }
                         var resultAction = new ActionDto();
 
                         resultAction.Path = item.RelativePath;

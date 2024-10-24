@@ -7,17 +7,21 @@ using CodeShellCore.Text;
 using System.Collections.Generic;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
+using System.Threading.Tasks;
+using CodeShellCore.Moldster.Views;
 
 namespace CodeShellCore.Moldster.Razor
 {
     public class DefaultViewsService : HttpService, IViewsService
     {
         readonly IPathsService Paths;
-        protected override string BaseUrl { get { return "/Views"; } }
+        private string _baseUrl;
+        protected override string BaseUrl => _baseUrl;
 
         public DefaultViewsService(IPathsService paths)
         {
             Paths = paths;
+            _baseUrl = Utils.CombineUrl(paths.ConfigUrl, "api/Views");
         }
 
         public TemplateDataCollector GetTemplateData(long id)
@@ -26,10 +30,10 @@ namespace CodeShellCore.Moldster.Razor
             return data.FromJson<TemplateDataCollector>() ?? new TemplateDataCollector { Controls = new List<ControlRenderDto>() };
         }
 
-        public RenderedPageResult GetPage(PageAcquisitorDTO pageAcquisitorDTO)
+        public RenderedPageResultDto GetPage(PageAcquisitorDTO pageAcquisitorDTO)
         {
             var s = Get("GetPage", pageAcquisitorDTO);
-            return new RenderedPageResult { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
+            return new RenderedPageResultDto { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
         }
 
         public string GetPage(string viewPath)
@@ -50,11 +54,20 @@ namespace CodeShellCore.Moldster.Razor
             return s.Content.ReadAsStringAsync().GetTaskResult();
         }
 
-        public RenderedPageResult GetPageById(long id)
+        public RenderedPageResultDto GetPageById(long id)
         {
             var s = Get("GetPageById/" + id);
-            return new RenderedPageResult { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
+            return new RenderedPageResultDto { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
         }
 
+        public async Task<RenderedPageResultDto> GetPageCategoryById(long id)
+        {
+            return await GetAsyncAs<RenderedPageResultDto>("GetPageCategoryById/" + id);
+        }
+
+        public async Task<List<PageConfigurationDto>> GetPagesByCategory(long id)
+        {
+            return await GetAsyncAs<List<PageConfigurationDto>>("GetPagesByCategory/" + id);
+        }
     }
 }

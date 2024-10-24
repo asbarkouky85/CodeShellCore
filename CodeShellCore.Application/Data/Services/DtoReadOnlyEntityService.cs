@@ -68,12 +68,12 @@ namespace CodeShellCore.Data.Services
             return DefaultUnit.GetCollectionRepositoryFor<T>().LoadCollectionAndMap(id, mapped);
         }
 
-        public virtual Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> dto)
+        public virtual Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> dto)
         {
             return LookupsService.GetRequestedLookups(dto);
         }
 
-        public virtual Dictionary<string, IEnumerable<NamedDto<object>>> GetListLookups(Dictionary<string, string> dto)
+        public virtual Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> dto)
         {
             return LookupsService.GetRequestedLookups(dto);
         }

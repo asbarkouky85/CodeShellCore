@@ -40,12 +40,12 @@ namespace CodeShellCore.Moldster.Pages
 
         }
 
-        public override Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> dto)
+        public override Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> dto)
         {
             return Lookups.PageEdit(dto);
         }
 
-        public override SubmitResult<CreatePageDTO> Put(CreatePageDTO dto)
+        public override EntitySubmitResult<CreatePageDTO> Put(CreatePageDTO dto)
         {
             bool pathChanged = false;
             string oldPath = null;
@@ -266,11 +266,11 @@ namespace CodeShellCore.Moldster.Pages
             return p;
         }
 
-        public override SubmitResult<CreatePageDTO> Post(CreatePageDTO dto)
+        public override EntitySubmitResult<CreatePageDTO> Post(CreatePageDTO dto)
         {
             string domainPath = dto.ComponentPath.GetBeforeLast("/");
             var domain = Unit.DomainRepository.GetOrCreatePath(domainPath);
-            var submitResult = new SubmitResult<CreatePageDTO>();
+            var submitResult = new EntitySubmitResult<CreatePageDTO>();
 
             if (dto.Usage == null)
             {

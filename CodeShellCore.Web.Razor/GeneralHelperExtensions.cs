@@ -2,7 +2,6 @@
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
@@ -149,14 +148,14 @@ namespace CodeShellCore.Web.Razor
             return data;
 
         }
-        public static PageOptions Config(this IHtmlHelper helper)
+        public static PageOptionsDto Config(this IHtmlHelper helper)
         {
-            PageOptions conf = helper.GetViewData<PageOptions>();
+            PageOptionsDto conf = helper.GetViewData<PageOptionsDto>();
 
             helper.GetModelTypeName();
             if (conf == null)
             {
-                conf = new PageOptions();
+                conf = new PageOptionsDto();
                 helper.SetViewData(conf);
             }
             else

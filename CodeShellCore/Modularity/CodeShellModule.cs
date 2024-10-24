@@ -8,8 +8,8 @@ namespace CodeShellCore.Modularity
     public class CodeShellModule
     {
         public virtual void RegisterServices(CodeshellAppContext context) { }
-        public virtual void OnApplicationStarted(IServiceProvider provider) { }
-        public virtual void RegisterJobs(params ITimedJob[] jobs) { }
-        public virtual void Configure(CodeshellAppContext context) { }
+        public virtual void Configure(CodeShellApplicationInitializationContext context) { }
+        public virtual void OnApplicationStarted(CodeShellApplicationInitializationContext context) { }
+        public virtual void OnApplicationStopped() { }
     }
 }

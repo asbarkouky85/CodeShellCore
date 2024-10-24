@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Caching;
 using CodeShellCore.MultiTenant;
+using CodeShellCore.Security.Authentication;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -1,6 +1,10 @@
-﻿using CodeShellCore.Data;
+﻿using CodeShellCore.Cli;
+using CodeShellCore.Data;
 using CodeShellCore.Data.Seed;
+using CodeShellCore.Modularity;
 using CodeShellCore.MultiTenant;
+using CodeShellCore.Reporting;
+using CodeShellCore.Security;
 using CodeShellCore.Types;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,6 +17,16 @@ namespace CodeShellCore.Extensions.DependencyInjection
 {
     public static class DomainDependencyInjectionExtensions
     {
+        public static void AddRdlcGenerator(this IServiceCollection coll)
+        {
+            coll.AddTransient<RdlcDataSetGenerator>();
+        }
+
+        public static IServiceCollection AddSecurityUnit<TUnit>(this IServiceCollection services) where TUnit : class, ISecurityUnit
+        {
+            services.AddScoped<ISecurityUnit, TUnit>();
+            return services;
+        }
         public static IServiceCollection AddDataSeeders<T>(
             this IServiceCollection services,
             Assembly assembly,
@@ -31,7 +45,12 @@ namespace CodeShellCore.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddDataSeeders(
+        public static IServiceCollection AddDataSeeders<TMod>(this IServiceCollection services, Action<CodeshellDataSeedOptions> action = null) where TMod : CodeShellModule
+        {
+            return services.AddDataSeeders(typeof(TMod).Assembly, action);
+        }
+
+        private static IServiceCollection AddDataSeeders(
             this IServiceCollection services,
             Assembly assembly,
             Action<CodeshellDataSeedOptions> action = null)
@@ -73,21 +92,18 @@ namespace CodeShellCore.Extensions.DependencyInjection
             coll.AddTransient<TRepo>();
             coll.AddTransient<IRepository<T>, TRepo>();
         }
-        public static void AddUnitOfWork<T, IT>(this IServiceCollection coll, bool setAsDefault = true) where T : class, IUnitOfWork, IT where IT : class
+        public static void AddUnitOfWork<T, IT>(this IServiceCollection coll) where T : class, IUnitOfWork, IT where IT : class
         {
             coll.AddScoped<T>();
             coll.AddScoped<IT>(d => d.GetRequiredService<T>());
-
-            if (setAsDefault)
-                coll.AddScoped<IUnitOfWork>(d => d.GetRequiredService<T>());
         }
 
-        public static void AddUnitOfWork<T>(this IServiceCollection coll, bool setAsDefault = true) where T : class, IUnitOfWork
+        public static void AddUnitOfWork<T>(this IServiceCollection coll) where T : class, IUnitOfWork
         {
             coll.AddScoped<T>();
-            if (setAsDefault)
-                coll.AddScoped<IUnitOfWork>(e => e.GetRequiredService<T>());
         }
+
+        
 
     }
 }

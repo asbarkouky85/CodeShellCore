@@ -1,60 +1,52 @@
-﻿using CodeShellCore.Data.Lookups;
-using CodeShellCore.Data.Mapping;
+﻿using CodeShellCore.Data;
+using CodeShellCore.Data.Events;
+using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Services;
-using CodeShellCore.Data;
-using CodeShellCore.Files.Uploads;
 using CodeShellCore.Files;
+using CodeShellCore.Files.Uploads;
 using CodeShellCore.Http;
 using CodeShellCore.Modularity;
+using CodeShellCore.MultiTenant;
+using CodeShellCore.Proxy;
+using CodeShellCore.Security;
+using CodeShellCore.Security.Authentication;
+using CodeShellCore.Security.Authorization;
 using CodeShellCore.Services.Email;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using CodeShellCore.Data.Events;
-using CodeShellCore.MultiTenant;
-using CodeShellCore.Security;
-using CodeShellCore.Linq;
-using CodeShellCore.Proxy;
 
 namespace CodeShellCore
 {
-    public static class CodeShellApplicationModule
+    [DependsOn(typeof(CodeShellCoreModule), typeof(CodeShellDomainModule))]
+    public class CodeShellApplicationModule : CodeShellModule
     {
-
-        public static void AddServiceFor<T, TService>(this IServiceCollection coll) where T : class where TService : class, IEntityService<T>
-        {
-            coll.AddTransient<TService>();
-            coll.AddTransient<IEntityService<T>, TService>();
-        }
-        public static void AddCodeShellAutoMapper(this IServiceCollection collection)
+        public override void RegisterServices(CodeshellAppContext context)
         {
 
-            collection.AddAutoMapper(typeof(CodeShellAutoMapperProfile).Assembly);
-            collection.AddTransient<Data.Mapping.IObjectMapper, AutoMapperObjectMapper>();
-            collection.AddTransient<IQueryProjector, AutoMapperObjectMapper>();
-        }
+            context.Services.AddSingleton<IFileHandler, FileSystemHandler>();
+            context.Services.AddSingleton<IClientProvider, DefaultClientProvider>();
 
-        public static void AddCodeShellApplication(this IServiceCollection coll)
-        {
-            coll.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
-            coll.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
-            coll.AddTransient<IHttpService, DefaultHttpService>();
-            coll.AddTransient<IEmailService, EmailService>();
-            coll.AddTransient<IUploadedFilesHandler, UploadedFileHandler>();
-            coll.AddTransient<IBlobContainerFactory, DefaultBlobContainerFactory>();
-            coll.AddTransient<ICrudEventSender, CrudEventSender>();
-            coll.AddSingleton<IFileHandler, FileSystemHandler>();
-            coll.AddSingleton<IClientProvider, DefaultClientProvider>();
-            coll.AddScoped<CurrentTenant>();
-            coll.AddTransient<ITenantDataProvider, NullTenantDataProvider>();
-            coll.AddTransient<ILookupsAppService, LookupsAppService>();
-            coll.AddTransient<ITypeScriptGenerationService, TypeScriptGenerationService>();
+            context.Services.AddScoped<CurrentTenant>();
 
-            coll.AddOptions<CrudEventSenderOptions>();
-            coll.AddOptions<FileUploadOptions>("Uploads");
-            coll.Configure<FileUploadOptions>(e =>
+            context.Services.AddTransient<IAuthenticationService, DbAuthenticationWithPermissionService>();
+            context.Services.AddTransient<IUserDataService, DbUserDataService>();
+
+            context.Services.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
+            context.Services.AddTransient<IBlobContainerFactory, DefaultBlobContainerFactory>();
+            context.Services.AddTransient<ICrudEventSender, CrudEventSender>();
+            context.Services.AddTransient<IEmailService, EmailService>();
+            context.Services.AddTransient<IHttpService, DefaultHttpService>();
+            context.Services.AddTransient<ILookupsAppService, LookupsAppService>();
+            context.Services.AddTransient<ISchemasGenerationService, SchemasGenerationService>();
+            
+            context.Services.AddTransient<ITypeScriptGenerationService, TypeScriptGenerationService>();
+            context.Services.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
+            context.Services.AddTransient<IUploadedFilesHandler, UploadedFileHandler>();
+
+            context.Services.AddOptions<CrudEventSenderOptions>();
+            context.Services.AddOptions<FileUploadOptions>("Uploads");
+
+            context.Services.Configure<FileUploadOptions>(e =>
             {
                 if (e.Default == null)
                 {
@@ -72,38 +64,7 @@ namespace CodeShellCore
 
             });
 
-            coll.AddCodeShellAutoMapper();
-
-
-        }
-
-        public static void ConfigureUploads(this IServiceCollection coll, IConfiguration conf)
-        {
-            coll.Configure<FileUploadOptions>(conf.GetSection("Uploads"));
-
-        }
-
-        public static void AddServiceFor<T, TService, ITService>(this IServiceCollection coll)
-            where T : class
-            where TService : class, ITService
-            where ITService : class, IEntityService<T>
-        {
-            coll.AddTransient<TService>();
-            coll.AddTransient<IEntityService<T>, TService>();
-            coll.AddTransient<ITService, TService>();
-        }
-
-        public static void AddLookupsService<T>(this IServiceCollection coll) where T : class, ILookupsService
-        {
-            coll.AddTransient<ILookupsService, T>();
-        }
-
-        public static void AddLookupsService<T, IT>(this IServiceCollection coll)
-            where IT : class, ILookupsService
-            where T : class, IT
-        {
-            coll.AddTransient<ILookupsService, T>();
-            coll.AddTransient<IT, T>();
+            context.Services.AddCodeShellAutoMapper();
         }
     }
 }

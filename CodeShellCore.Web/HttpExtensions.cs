@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Mvc
 {
@@ -82,6 +84,11 @@ namespace Microsoft.AspNetCore.Mvc
             return !req.Path.HasValue || req.Path.Value.Length == 0 || req.Path.Value == "/";
         }
 
-
+        public static async Task HandleErrorAsync(this HttpContext context, Exception exception)
+        {
+            var res = context.HandleRequestError(exception);
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(res.ToJson());
+        }
     }
 }

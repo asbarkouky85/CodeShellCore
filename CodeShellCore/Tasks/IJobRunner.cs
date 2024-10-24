@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System.Threading.Tasks;
+using System.Timers;
 
 namespace CodeShellCore.Tasks
 {
@@ -6,5 +7,6 @@ namespace CodeShellCore.Tasks
     {
         Timer Timer { get; }
         ITimedJob Job { get; set; }
+        Task RunJob();
     }
 }

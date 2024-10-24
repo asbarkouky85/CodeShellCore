@@ -10,7 +10,7 @@ namespace CodeShellCore.Moldster.PageCategories
         public int Accessibilty { get; set; }
         public string Identifier { get; set; }
         public string ControlType { get; set; }
-        public CollectionDTO Collection { get; set; }
+        public CollectionDto Collection { get; set; }
         public List<ControlRenderDto> Children { get; set; }
         //public List<Validator> DefaultValidators { get; set; }
         //public List<Validator> CustomValidators { get; set; }

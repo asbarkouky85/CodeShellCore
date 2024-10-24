@@ -28,13 +28,13 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         }
 
         [HttpPut]
-        public SubmitResult<CreatePageDTO> Put([FromBody] CreatePageDTO obj)
+        public EntitySubmitResult<CreatePageDTO> Put([FromBody] CreatePageDTO obj)
         {
             return pageService.Put(obj);
         }
 
         [HttpPost]
-        public SubmitResult<CreatePageDTO> Post([FromBody] CreatePageDTO obj)
+        public EntitySubmitResult<CreatePageDTO> Post([FromBody] CreatePageDTO obj)
         {
             return pageService.Post(obj);
         }
@@ -101,12 +101,12 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return pageService.IsUnique(dto);
         }
 
-        public Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
         {
             return pageService.GetEditLookups(data);
         }
 
-        public Dictionary<string, IEnumerable<NamedDto<object>>> GetListLookups(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> data)
         {
             return pageService.GetListLookups(data);
         }

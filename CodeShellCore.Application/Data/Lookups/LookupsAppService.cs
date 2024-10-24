@@ -15,12 +15,12 @@ namespace CodeShellCore.Data.Lookups
         {
         }
 
-        public List<NamedDto<object>> Get(string entity, string collectionId = null)
+        public List<Named<object>> Get(string entity, string collectionId = null)
         {
             return Lookups.GetListNamed(entity, collectionId).ToList();
         }
 
-        public PagedResult<NamedDto<object>> GetPaged(string entity, LookupsPagedResultRequestDto dto)
+        public PagedResult<Named<object>> GetPaged(string entity, LookupsPagedResultRequestDto dto)
         {
             return Lookups.GetListNamedPaged(entity, dto, dto.CollectionId);
         }

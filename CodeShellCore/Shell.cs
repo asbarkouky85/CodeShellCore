@@ -1,17 +1,10 @@
-﻿using CodeShellCore.Cli;
-using CodeShellCore.DependencyInjection;
-using CodeShellCore.Files.Logging;
+﻿using CodeShellCore.Files.Logging;
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.MQ;
-using CodeShellCore.Security;
-using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Cryptography;
-using CodeShellCore.Tasks;
 using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
-using CodeShellCore.Text.TextProviders;
-using CodeShellCore.Types;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,49 +20,52 @@ namespace CodeShellCore
     public abstract class Shell : IDisposable
     {
 
-        #region Fields
-
-        private IServiceProvider _rootProvider;
         private string _reportRoot;
         private static Encryptor _encryptor;
+        private static CodeShellAppOptions _appOptions;
         private static readonly object _locker = new object();
 
-        protected static Shell App;
-        #endregion
-
-        public Shell()
-        {
-            ProjectAssembly = GetType().Assembly;
-            SolutionFolder = AppDomain.CurrentDomain.BaseDirectory.GetBeforeFirst("\\" + ProjectAssembly.GetName().Name);
-            EnvironmentName = GetEnvironmentName();
-            App = this;
-        }
-
-        #region Static Properties
-        private static string _serviceUrl;
-        public static string AuthServiceProvider
-        {
-            get
-            {
-                return Shell.GetConfigAs<string>("AuthServer", false);
-            }
-        }
+        //protected static Shell App;
         public static string EnvironmentName { get; protected set; }
         public static string SolutionFolder { get; private set; }
         public static Assembly ProjectAssembly { get; private set; }
-        public static bool UseLocalization { get { return App.useLocalization; } }
-        public static bool UseMultiTenancy { get; set; }
-        public static CultureInfo DefaultCulture { get { return App.defaultCulture; } }
-        public static IEnumerable<string> SupportedLanguages { get { return App.Supordedlanguage; } }
-        public static IServiceProvider RootInjector { get { return App.rootProvider; } }
+        public static IServiceProvider RootInjector { get; private set; }
+        public static IConfiguration RootConfiguration { get; private set; }
+        public static string LocalizationAssembly => _getOptions().LocalizationAssembly;
+        public static bool UseLocalization => _getOptions().UseLocalization;
+        public static bool UseMultiTenancy => _getOptions().UseMultiTenancy;
+        public static CultureInfo DefaultCulture => new CultureInfo(_getOptions().DefaultCulture);
+        public static IEnumerable<string> SupportedLanguages => _getOptions().SupportedLanguages;
+        public static string AppRootPath { get; private set; } = ".";
+        public static string PublicRoot => _getOptions().PublicRoot;
+        public static string ReportsRoot => _getOptions().ReportsRoot;
+        public static string SharedPathRoot => _getOptions().SharedPathRoot;
+        public static string AuthServiceProvider => GetConfigAs<string>("AuthServer", false);
+
+        static Shell()
+        {
+            ProjectAssembly = Assembly.GetEntryAssembly();
+            EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            SolutionFolder = AppDomain.CurrentDomain.BaseDirectory.GetBeforeFirst("\\" + ProjectAssembly.GetName().Name);
+        }
+
+
         // public static IServiceProvider ScopedInjector { get { return App._scopedProvider; } }
 
-        public static string AppRootPath { get { return App.appRoot; } }
-        public static string LocalizationAssembly { get { return App.localizationAssembly ?? ProjectAssembly.GetName().Name; } }
-        public static string PublicRoot { get { return App.publicRelativePath; } }
-        public static string ReportsRoot { get { return App.reportsRoot; } }
-        public static string SharedPathRoot { get { return App.sharedPathRoot; } }
 
+        private static CodeShellAppOptions _getOptions()
+        {
+            var section = RootConfiguration.GetSection(ConfigNames.CodeShellApp);
+            if (section.Exists())
+            {
+                _appOptions = section.Get<CodeShellAppOptions>();
+            }
+            else
+            {
+                _appOptions = new CodeShellAppOptions();
+            }
+            return _appOptions;
+        }
 
         public static Encryptor Encryptor
         {
@@ -79,7 +75,7 @@ namespace CodeShellCore
                 {
                     if (_encryptor == null)
                     {
-                        var key = App.getConfig(ConfigNames.AuthenticationEncKey);
+                        var key = GetConfig(ConfigNames.AuthenticationEncKey);
                         if (key.Value == null)
                             throw new CodeShellHttpException(HttpStatusCode.InternalServerError, "Encryption requires AuthenticationEncKey in configuration");
                         _encryptor = new Encryptor(key.Value);
@@ -89,9 +85,7 @@ namespace CodeShellCore
             }
         }
 
-        #endregion
 
-        #region Optional Properties
         protected virtual bool useTransporter => false;
         protected virtual bool useTimedJobs => false;
 
@@ -115,48 +109,15 @@ namespace CodeShellCore
             }
         }
 
-        protected abstract IConfiguration Configuration { get; }
-        protected virtual IServiceProvider rootProvider
-        {
-            get
-            {
-                if (_rootProvider == null)
-                    _rootProvider = buildRootProvider();
-                return _rootProvider;
-            }
-        }
-        #endregion
-
-        #region Required Properties
         protected abstract bool useLocalization { get; }
         protected abstract string appRoot { get; }
         protected abstract string sharedPathRoot { get; }
         protected abstract CultureInfo defaultCulture { get; }
         protected abstract IServiceProvider _scopedProvider { get; }
-        #endregion
 
-        #region Methods
 
         public virtual void RegisterServices(IServiceCollection coll)
         {
-            //coll.AddTransient(e => { return Configuration; });
-            UseMultiTenancy = Configuration.GetSection(ConfigNames.UseMultiTenancy).Get<bool?>() ?? true;
-            coll.AddLogging();
-
-            coll.AddTransient<ILocaleTextProvider, ResxTextProvider>();
-
-            coll.AddTransient<IOutputWriter, ConsoleOutputWriter>();
-
-
-            coll.AddScoped<Language>();
-
-            coll.AddTransient<IUserDataService, NullUserDataService>();
-            coll.AddScoped<IUserAccessor, UserAccessor>();
-            coll.AddScoped<UserAccessor>();
-
-            coll.AddScoped<ClientData>();
-
-
 
         }
         protected abstract IConfigurationSection getConfig(string key);
@@ -165,35 +126,12 @@ namespace CodeShellCore
 
         }
 
-        protected virtual string GetEnvironmentName()
-        {
-            return Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        }
-
         public virtual void Dispose()
         {
             Logger.Default?.Dispose();
             if (useTransporter)
                 Transporter.Exit();
 
-        }
-
-        protected void StartJobs()
-        {
-            var jobs = RootInjector.GetService<JobConfig>().Jobs;
-            foreach (var job in jobs)
-            {
-                IJobRunner runner = RootInjector.GetService<IJobRunner>();
-                runner.Job = job;
-                runner.Timer.Start();
-            }
-        }
-
-        protected virtual IServiceProvider buildRootProvider()
-        {
-            ServiceCollection collection = new ServiceCollection();
-            App.RegisterServices(collection);
-            return collection.BuildServiceProvider();
         }
 
         /// <summary>
@@ -205,41 +143,17 @@ namespace CodeShellCore
 
         }
 
-        #endregion
 
         #region Static Methods
         public static void Start(Shell cont)
         {
-            App = cont;
 
-            Logger.Set(ProjectAssembly.GetName().Name);
-            AppDomain.CurrentDomain.ProcessExit += (e, s) =>
-            {
-                App.Dispose();
-            };
-            string envName = EnvironmentName == null ? "" : "-" + EnvironmentName;
-            Console.Title = ProjectAssembly.GetName().Name + "-v" + ProjectAssembly.GetVersionString() + envName;
-            if (App.useTransporter)
-                Transporter.Start();
-            if (App.useTimedJobs)
-                App.StartJobs();
-
-            cont.OnReady();
-            using (var sc = GetScope())
-            {
-                cont.OnApplicationStarted(sc.ServiceProvider);
-            }
-        }
-
-        public static void Exit()
-        {
-            App.Dispose();
         }
 
 
         public static IConfigurationSection GetConfig(string key, bool required = true)
         {
-            var val = App.getConfig(key);
+            var val = RootConfiguration.GetSection(key);
             if (val.Value == null && required)
                 throw new Exception("Config '" + key + "' is required to be present in appsettings.json");
 
@@ -267,16 +181,33 @@ namespace CodeShellCore
             return sec.Get<T>();
         }
 
-        public static IServiceScope GetScope()
+        public static IServiceScope GetScope(CultureInfo cult = null)
         {
             var sc = RootInjector.CreateScope();
-            if (App._scopedProvider != null)
-            {
-                Language lang = App._scopedProvider.GetService<Language>();
-                if (lang != null)
-                    sc.ServiceProvider.GetService<Language>().SetCulture(lang.Culture.TwoLetterISOLanguageName);
-            }
+            if (cult != null)
+                sc.ServiceProvider.GetService<Language>().SetCulture(cult.TwoLetterISOLanguageName);
+
             return sc;
+        }
+
+        public static void SetRootProvider(IServiceProvider rootProvider)
+        {
+            RootInjector = rootProvider;
+        }
+
+        internal static void SetConfigRoot(IConfiguration configuration)
+        {
+            RootConfiguration = configuration;
+        }
+
+        internal static void SetEnvironmentName(string name)
+        {
+            EnvironmentName = name;
+        }
+
+        public static void SetRootPath(string path)
+        {
+            AppRootPath = path;
         }
 
 

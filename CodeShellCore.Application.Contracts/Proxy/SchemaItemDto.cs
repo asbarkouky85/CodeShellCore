@@ -2,7 +2,7 @@
 
 namespace CodeShellCore.Proxy
 {
-    public class SchemaItemDto
+    public class SchemaItemDto : IHasProperties
     {
         public string Name { get; set; }
         public Dictionary<string, PropertyDto> Properties { get; set; } = new Dictionary<string, PropertyDto>();

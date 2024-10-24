@@ -1,14 +1,11 @@
 ﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.DependencyInjection;
 using CodeShellCore.Helpers;
 using CodeShellCore.Security;
-using CodeShellCore.Services;
 using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using System.Globalization;
 using System.Net;
 
 namespace CodeShellCore.Web.Controllers
@@ -17,7 +14,7 @@ namespace CodeShellCore.Web.Controllers
     {
         protected InstanceStore<object> Store;
         protected SubmitResult SubmitResult { get; set; }
-        
+
         public ClientData ClientData
         {
             get

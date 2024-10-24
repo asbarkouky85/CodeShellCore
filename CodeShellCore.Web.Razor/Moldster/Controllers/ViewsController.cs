@@ -1,9 +1,11 @@
 ﻿using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Pages;
-using CodeShellCore.Moldster.Razor;
+using CodeShellCore.Moldster.Views;
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Razor.Moldster.Controllers
 {
@@ -46,11 +48,19 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return Content(html.TemplateContent);
         }
 
-        public virtual IActionResult GetMainComponent([FromQuery] PageAcquisitorDTO dto)
+        public virtual string GetMainComponent([FromQuery] PageAcquisitorDTO dto)
         {
-            var html = service.GetMainComponent(dto.ViewPath);
-            return Content(html);
+            return service.GetMainComponent(dto.ViewPath);
         }
 
+        public virtual async Task<RenderedPageResultDto> GetPageCategoryById(long id)
+        {
+            return await service.GetPageCategoryById(id);
+        }
+
+        public virtual async Task<List<PageConfigurationDto>> GetPagesByCategory(long id)
+        {
+            return await service.GetPagesByCategory(id);
+        }
     }
 }

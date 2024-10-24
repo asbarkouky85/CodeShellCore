@@ -11,9 +11,5 @@ namespace CodeShellCore.Notifications
             coll.AddTransient<IEmitter<TContract>, SignalREmitter<THub, TContract>>();
         }
 
-        public static void AddCodeShellNotificationsWeb(this IServiceCollection services)
-        {
-            services.AddTransient<IDeviceService, NullDeviceService>();
-        }
     }
 }

@@ -4,6 +4,7 @@ using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Services
 {
@@ -14,11 +15,13 @@ namespace CodeShellCore.Moldster.Services
         string[] GetTemplatePaths(string modCode, string domain = null);
         string[] GetAppCodes(bool? active = null);
         IEnumerable<DomainRecursive> GetModuleDomains(string modCode);
-        PageOptions GetPageOptions(string moduleCode, string viewPath);
+        PageOptionsDto GetPageOptions(string moduleCode, string viewPath);
         TenantPageGuideDTO GetAppGuide(long id);
-        PageOptions GetPageOptionsById(long id);
+        PageOptionsDto GetPageOptionsById(long id);
+        Task<PageOptionsDto> GetCategoryPageOptions(long pageCategoryId);
         string GetAppStyle(string modCode);
         string GetAppVersion(string code);
         SubmitResult SetAppVersion(string code, string version);
+        Task<IEnumerable<PageOptionsDto>> GetPageOptionsByCategory(long categoryId, long tenantId);
     }
 }

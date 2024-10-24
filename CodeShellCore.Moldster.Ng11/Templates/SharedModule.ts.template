@@ -7,7 +7,7 @@ import { Registry } from "codeshell";
 @NgModule({
     declarations: [%Components%],
     exports: [
-		%Components%
+		%Components%,
 		%BaseAppModuleName%
 	],
     imports: [

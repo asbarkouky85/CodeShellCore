@@ -5,10 +5,10 @@ namespace CodeShellCore.Moldster
 {
     public interface IMoldsterLookupService
     {
-        Dictionary<string, IEnumerable<NamedDto<object>>> Modules(Dictionary<string, string> data);
-        Dictionary<string, IEnumerable<NamedDto<object>>> PageCategoryEdit(Dictionary<string, string> data);
-        Dictionary<string, IEnumerable<NamedDto<object>>> PageControlList(Dictionary<string, string> data);
-        Dictionary<string, IEnumerable<NamedDto<object>>> PageEdit(Dictionary<string, string> data);
-        Dictionary<string, IEnumerable<NamedDto<object>>> ResourceEdit(Dictionary<string, string> data);
+        Dictionary<string, IEnumerable<Named<object>>> Modules(Dictionary<string, string> data);
+        Dictionary<string, IEnumerable<Named<object>>> PageCategoryEdit(Dictionary<string, string> data);
+        Dictionary<string, IEnumerable<Named<object>>> PageControlList(Dictionary<string, string> data);
+        Dictionary<string, IEnumerable<Named<object>>> PageEdit(Dictionary<string, string> data);
+        Dictionary<string, IEnumerable<Named<object>>> ResourceEdit(Dictionary<string, string> data);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Helpers;
+using CodeShellCore.MultiTenant;
 using CodeShellCore.Security;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -7,6 +8,20 @@ namespace CodeShellCore.Extensions
 {
     public static class ServiceProviderExtensions
     {
+        public static void SetCurrentTenant(this IServiceProvider provider, long tenantId)
+        {
+            provider.GetRequiredService<CurrentTenant>().TenantId = tenantId;
+        }
+
+        public static void SetCurrentTenantVersion(this IServiceProvider provider, string version)
+        {
+            provider.GetRequiredService<CurrentTenant>().Version = version;
+        }
+
+        public static long GetCurrentTenant(this IServiceProvider provider)
+        {
+            return provider.GetRequiredService<CurrentTenant>().TenantId;
+        }
 
         public static void SetCurrentUser(this IServiceProvider provider, IUser user)
         {

@@ -15,7 +15,10 @@
 		
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.4" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
-		<ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
 	</ItemGroup>
 

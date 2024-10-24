@@ -14,6 +14,6 @@ namespace CodeShellCore.Web.Razor.Models
         public bool Multi { get; set; }
         public string ChangeFunction { get; set; }
         public bool Nullable { get; set; }
-        public IEnumerable<NamedDto<long>> Choices { get; set; }
+        public IEnumerable<Named<long>> Choices { get; set; }
     }
 }

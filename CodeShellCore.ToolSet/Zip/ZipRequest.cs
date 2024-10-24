@@ -4,10 +4,11 @@ using System.IO.Compression;
 
 namespace CodeShellCore.ToolSet.Zip
 {
-    public class ZipRequest 
+    public class ZipRequest
     {
-        public string TargetLocation { get; set; }
-        public string FolderLocation { get; set; }
+        public string Target { get; set; }
+        public string Source { get; set; }
         public string Pattern { get; set; }
+        public bool? DeleteExisting { get; set; }
     }
 }

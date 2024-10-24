@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CodeShellCore.Moldster.Resources
 {
-    public class CollectionDTO
+    public class CollectionDto
     {
         public long Id { get; set; }
         public string Name { get; set; }

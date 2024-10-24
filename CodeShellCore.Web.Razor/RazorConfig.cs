@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Moldster.CodeGeneration;
+using CodeShellCore.Text.Localization;
 using CodeShellCore.Web.Razor.Text;
 using CodeShellCore.Web.Razor.Themes;
 using CodeShellCore.Web.Razor.Validation;
@@ -114,6 +115,46 @@ namespace CodeShellCore.Web.Razor
             _stringifier = new DefaultExpressionStringifier();
             _theme = new DefaultTheme();
             _nameService = Shell.RootInjector.GetService<INamingConventionService>();
+        }
+
+        public static void UseAngular2Razor(IRazorTheme theme = null)
+        {
+            theme = theme ?? new AngularTheme();
+
+            SetCollectionType<AngularValidationCollection>();
+
+            FieldErrorMessagesTemplate = "<span *ngIf=\"{0}.controls['{1}'] && {0}.controls['{1}'].invalid && ({0}.controls['{1}'].dirty || {0}.controls['{1}'].touched)\">\r{2}</span>";
+            ErrorMessageTemplate = "<small *ngIf=\"{0}.controls['{1}'].errors!.{2}\" class=\"form-text text-danger\">{3}</small>\r";
+            LocaleTextProvider = new AngularTextProvider();
+            ExpressionStringifier = new AngularExpressionStringifier();
+
+            Theme = theme;
+        }
+
+        public static void ConfigureAngularApbRazor(IRazorTheme theme = null)
+        {
+            theme = theme ?? new AbpLeptonTheme();
+
+            SetCollectionType<AngularValidationCollection>();
+
+            LocaleTextProvider = new AbpTextProvider();
+            ExpressionStringifier = new AngularExpressionStringifier();
+
+            Theme = theme;
+        }
+
+        public static void ConfigureMvcRazor(IRazorTheme theme = null)
+        {
+            theme = theme ?? new MvcTheme();
+
+            SetCollectionType<ValidationCollection>();
+
+            FieldErrorMessagesTemplate = "<span>\r{2}</span>";
+            ErrorMessageTemplate = "<small class=\"form-text text-danger\">{3}</small>\r";
+            LocaleTextProvider = new MvcTextProvider(new Language());
+            ExpressionStringifier = new DefaultExpressionStringifier();
+
+            Theme = theme;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace CodeShellCore.Security.Authentication
         public string Token { get; set; }
         public string RefreshToken { get; set; }
         public DateTime TokenExpiry { get; set; }
+        public override bool IsSuccess => _success;
 
         public LoginResult(bool success, string message, IUser userData = null)
         {

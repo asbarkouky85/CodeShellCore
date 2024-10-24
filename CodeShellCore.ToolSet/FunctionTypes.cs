@@ -12,6 +12,7 @@ namespace CodeShellCore.ToolSet
         Help,
         UploadNuget,
         Zip,
+        UnZip,
         Copy,
         SqlRestore,
         SqlExec,
@@ -20,6 +21,7 @@ namespace CodeShellCore.ToolSet
         GenerateDto,
         ReplaceParameters,
         Download,
-        Proxy
+        Proxy,
+        GenerateModuleClasses
     }
 }

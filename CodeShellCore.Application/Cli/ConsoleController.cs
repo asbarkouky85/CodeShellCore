@@ -37,9 +37,9 @@ namespace CodeShellCore.Cli
             return _scope.ServiceProvider;
         }
 
-        public void Run()
+        public async Task Run()
         {
-            StartRouting("Function", Functions);
+            await StartRouting("Function", Functions);
         }
 
         public T WaitForTask<T>(Task<T> task)
@@ -118,7 +118,7 @@ Enter Your Choice (0: Exit) : ", v, choices));
             return null;
         }
 
-        protected void StartRouting(string name, Dictionary<int, string> functions, bool nameToPhrase = true)
+        protected async Task StartRouting(string name, Dictionary<int, string> functions, bool nameToPhrase = true)
         {
             int function = 0;
             bool restart = false;
@@ -151,6 +151,7 @@ Enter Your Choice (0: Exit{2}) : ", name, data, IsMain ? " | r: Restart" : ""));
 
 
                 MethodInfo info = GetType().GetMethod(Functions[function]);
+
                 OnMethodSelected(Functions[function]);
                 CurrentMethod = Functions[function];
 
@@ -161,14 +162,22 @@ Enter Your Choice (0: Exit{2}) : ", name, data, IsMain ? " | r: Restart" : ""));
                     using (var sc = Shell.GetScope())
                     {
                         _scope = sc;
-                        ConsoleShell.CurrentScope = _scope;
-                        info.Invoke(this, new object[] { });
-                        ConsoleShell.CurrentScope = null;
+                        if (info.ReturnType.IsAssignableFrom(typeof(Task)))
+                        {
+                            await (Task)info.Invoke(this, new object[0]);
+                        }
+                        else
+                        {
+                            await Task.Run(() =>
+                            {
+                                info.Invoke(this, new object[] { });
+                            });
+                        }
+
                     }
                 }
                 catch (Exception ex)
                 {
-                    ConsoleShell.CurrentScope = null;
                     writer.WriteException(ex);
                 }
                 store.Clear();

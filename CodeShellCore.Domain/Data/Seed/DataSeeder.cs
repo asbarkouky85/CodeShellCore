@@ -1,11 +1,8 @@
-﻿using CodeShellCore.DependencyInjection;
-using CodeShellCore.Extensions;
+﻿using CodeShellCore.Extensions;
 using CodeShellCore.MultiTenant;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Seed

@@ -195,12 +195,12 @@ namespace CodeShellCore.Moldster.Localization
             }
         }
 
-        public virtual PagedResult<CustomText> LoadForTenant(CustomTextRequestDto req, PagedListRequestDto opts)
+        public virtual PagedResult<CustomTextDto> LoadForTenant(CustomTextRequestDto req, PagedListRequestDto opts)
         {
             string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", ((TextTypes)req.Type).ToString() + "." + req.Locale + ".resx");
 
             ResxXmlReader reader = new ResxXmlReader();
-            var res = new PagedResult<CustomText>();
+            var res = new PagedResult<CustomTextDto>();
 
             if (reader.TryRead(resLang1, out ResourceContainer cont1))
             {
@@ -222,7 +222,7 @@ namespace CodeShellCore.Moldster.Localization
                     q = items;
                 }
 
-                res.List = q.Select(e => new CustomText
+                res.List = q.Select(e => new CustomTextDto
                 {
                     Code = e.Name,
                     Value = e.Value,

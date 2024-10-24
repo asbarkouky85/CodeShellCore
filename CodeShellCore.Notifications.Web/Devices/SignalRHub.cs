@@ -1,4 +1,4 @@
-﻿using CodeShellCore.MultiTenant;
+﻿using CodeShellCore.Extensions;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 

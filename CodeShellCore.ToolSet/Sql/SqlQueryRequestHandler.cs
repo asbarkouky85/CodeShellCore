@@ -1,11 +1,9 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Cli.Routing;
+using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Sql
@@ -20,8 +18,8 @@ namespace CodeShellCore.ToolSet.Sql
 
         protected override void Build(ICliRequestBuilder<SqlQueryRequest> builder)
         {
-            builder.FillProperty(e => e.ConnectionString, "connection-string", 'c', 1, isRequired: true);
-            builder.FillProperty(e => e.SqlQuery, "query-string", 'q', 2, isRequired: true);
+            builder.Property(e => e.ConnectionString, "connection-string", "c", 1, isRequired: true);
+            builder.Property(e => e.SqlQuery, "query-string", "q", 2, isRequired: true);
         }
 
         protected override Task<Result> HandleAsync(SqlQueryRequest request)

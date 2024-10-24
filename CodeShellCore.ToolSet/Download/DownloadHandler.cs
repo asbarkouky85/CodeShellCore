@@ -1,14 +1,10 @@
-﻿using CodeShellCore.Cli.Routing;
-using CodeShellCore.Files;
+﻿using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
-using CodeShellCore.Http;
 using CodeShellCore.Text;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Download
@@ -23,9 +19,9 @@ namespace CodeShellCore.ToolSet.Download
 
         protected override void Build(ICliRequestBuilder<DownloadCliRequest> builder)
         {
-            builder.FillProperty(e => e.Url, "url", 'u', 1, true);
-            builder.FillProperty(e => e.TargetFolder, "directory", 'd',2).SetDefault(".");
-            builder.FillProperty(e => e.TargetFileName, "name", 'n');
+            builder.Property(e => e.Url, "url", "u", 1, true);
+            builder.Property(e => e.TargetFolder, "directory", "d", 2).SetDefault(".");
+            builder.Property(e => e.TargetFileName, "name", "n");
 
         }
 

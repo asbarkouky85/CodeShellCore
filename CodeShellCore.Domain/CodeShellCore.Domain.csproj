@@ -14,4 +14,8 @@
     <ProjectReference Include="..\CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Lookups\" />
+  </ItemGroup>
+
 </Project>

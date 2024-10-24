@@ -1,4 +1,6 @@
-﻿using CodeShellCore.Cli.Routing;
+﻿using CodeShellCore.CliDispatch.Routing;
+using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
 using CodeShellCore.Text.Localization;
 using Newtonsoft.Json;
@@ -21,10 +23,10 @@ namespace CodeShellCore.ToolSet.Localization
 
         protected override void Build(ICliRequestBuilder<AbpSyncLanguagesRequest> builder)
         {
-            builder.FillProperty(e => e.MainDirectory, "folder", 'd', 2, isRequired: true);
-            builder.FillProperty(e => e.LocalizationRoot, "project", 'p', 1, isRequired: true);
-            builder.FillProperty(e => e.Lang1, "lang1, 's'");
-            builder.FillProperty(e => e.Lang2, "lang2", 't');
+            builder.Property(e => e.MainDirectory, "folder", "d", 2, isRequired: true);
+            builder.Property(e => e.LocalizationRoot, "project", "p", 1, isRequired: true);
+            builder.Property(e => e.Lang1, "lang1", "s");
+            builder.Property(e => e.Lang2, "lang2", "t");
         }
 
         protected override Task<Result> HandleAsync(AbpSyncLanguagesRequest request)

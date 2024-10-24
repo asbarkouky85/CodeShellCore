@@ -34,12 +34,12 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
             return _service.GetCollection(id, opts);
         }
 
-        public Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
         {
             return _service.GetEditLookups(data);
         }
 
-        public Dictionary<string, IEnumerable<NamedDto<object>>> GetListLookups(Dictionary<string, string> data)
+        public Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> data)
         {
             return _service.GetListLookups(data);
         }
@@ -57,13 +57,13 @@ namespace CodeShellCore.Web.Razor.Moldster.Controllers
         }
 
         [HttpPost]
-        public SubmitResult<TenantEditDTO> Post([FromBody]TenantDto obj)
+        public EntitySubmitResult<TenantEditDTO> Post([FromBody]TenantDto obj)
         {
             return _service.Post(obj);
         }
 
         [HttpPut]
-        public SubmitResult<TenantEditDTO> Put([FromBody]TenantDto obj)
+        public EntitySubmitResult<TenantEditDTO> Put([FromBody]TenantDto obj)
         {
             return _service.Put(obj);
         }

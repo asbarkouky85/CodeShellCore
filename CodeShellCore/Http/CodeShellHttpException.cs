@@ -13,6 +13,10 @@ namespace CodeShellCore.Http
         public HttpStatusCode Status { get; private set; }
         public HttpResult HttpResult { get; private set; }
         public override string Message { get { return _message; } }
+        public string GetFullMessage()
+        {
+            return this.GetMessageRecursive() + $" E: {HttpResult?.ExceptionMessage}";
+        }
         public CodeShellHttpException(HttpResponseMessage mes, Uri uri = null, string method = null)
         {
             Status = mes.StatusCode;

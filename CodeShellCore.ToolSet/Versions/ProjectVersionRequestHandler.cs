@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Cli.Routing;
+using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Files.CsProject;
 using System;
 using System.IO;
@@ -17,11 +18,11 @@ namespace CodeShellCore.ToolSet.Versions
 
         protected override void Build(ICliRequestBuilder<ProjectVersionRequest> builder)
         {
-            builder.FillProperty(e => e.Project, "project", order: 1, isRequired: true);
-            builder.FillProperty(e => e.Version, "version", order: 2, isRequired: true);
-            builder.FillProperty(e => e.MainDirectory, "folder", order: 3, isRequired: true);
-            builder.FillProperty(e => e.IsWeb, "web", 'w');
-            builder.FillProperty(e => e.PublishProfile, "publish-profile", 'u');
+            builder.Property(e => e.Project, "project", order: 1, isRequired: true);
+            builder.Property(e => e.Version, "version", order: 2, isRequired: true);
+            builder.Property(e => e.MainDirectory, "folder", order: 3, isRequired: true);
+            builder.Property(e => e.IsWeb, "web", "w");
+            builder.Property(e => e.PublishProfile, "publish-profile", "u");
         }
 
         protected override Task<CodeShellCore.Helpers.Result> HandleAsync(ProjectVersionRequest request)

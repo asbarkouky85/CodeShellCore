@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Cli.Routing;
+﻿using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
 using System;
@@ -16,9 +17,9 @@ namespace CodeShellCore.ToolSet.Sql
 
         protected override void Build(ICliRequestBuilder<SqlRestoreRequest> builder)
         {
-            builder.FillProperty(e => e.ConnectionString, "connection-string", 'c', 1, isRequired: true);
-            builder.FillProperty(e => e.BackupPath, "backup-path", 'b', isRequired: true);
-            builder.FillProperty(e => e.DbName, "database", 'd', isRequired: true);
+            builder.Property(e => e.ConnectionString, "connection-string", "c", 1, isRequired: true);
+            builder.Property(e => e.BackupPath, "backup-path", "b", isRequired: true);
+            builder.Property(e => e.DbName, "database", "d", isRequired: true);
         }
 
         protected override Task<Result> HandleAsync(SqlRestoreRequest request)

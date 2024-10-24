@@ -127,62 +127,25 @@ namespace CodeShellCore.Moldster.Services
 
         public SyncResult SyncTenants(long src, long tar)
         {
-            var con = GetService<MoldsterContext>();
-            var wt = new ConsoleService(Out);
+            var consoleSrv = new ConsoleService(Out);
             using (var s = SW.Measure())
             {
-                var d = con.SyncTenants(src, tar);
-                if (d != null)
-                {
-                    Out.WriteLine();
-                    using (Out.Set(ConsoleColor.DarkCyan))
-                    {
-                        Out.WriteLine("Synced tenant '" + d.SourceTenant + "' to '" + d.TargetTenant + "'");
-                    }
-                    Out.WriteLine("------------------------------------");
-                    Out.WriteLine();
+                var syncRes = Unit.TenantRepository.SyncTenants(src, tar);
 
-                    Out.Write("Added Pages : ");
-
-                    Out.GotoColumn(5);
-                    Out.WriteLine(d.AddedPages.ToString());
-
-                    Out.Write("Added Controls : ");
-                    Out.GotoColumn(5);
-                    Out.WriteLine(d.AddedPageControls.ToString());
-
-                    Out.Write("Updated Pages : ");
-                    Out.GotoColumn(5);
-                    Out.WriteLine(d.UpdatedPages.ToString());
-
-                    Out.Write("Updated Controls : ");
-                    Out.GotoColumn(5);
-                    Out.WriteLine(d.UpdatedPageControls.ToString());
-
-                    Out.Write("Added Navigation Pages : ");
-                    Out.GotoColumn(5);
-                    Out.WriteLine(d.NavigationPages.ToString());
-
-                    Out.WriteLine();
-
-                }
-                Out.Write("Updating viewparams");
                 SubmitResult res = PageParameterSrv.UpdateTemplatePagesViewParamsJson(tar);
-                wt.GotoColumn(wt.SuccessCol);
+                consoleSrv.GotoColumn(consoleSrv.SuccessCol);
                 if (res.IsSuccess)
                 {
-                    wt.WriteSuccess();
+                    consoleSrv.WriteSuccess();
                     Out.Write("Affected : " + res.AffectedRows);
                 }
                 else
                 {
-                    wt.WriteFailed();
+                    consoleSrv.WriteFailed();
                 }
                 Out.WriteLine();
-                return d;
+                return syncRes;
             }
-
-
         }
 
 

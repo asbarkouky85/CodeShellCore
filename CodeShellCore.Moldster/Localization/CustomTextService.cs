@@ -20,14 +20,15 @@ namespace CodeShellCore.Moldster.Localization
 
         public PagedResult<CustomTextDto> Get(CustomTextRequestDto req, PagedListRequestDto opts)
         {
-            PagedResult<CustomText> data;
+            PagedResult<CustomTextDto> data;
             if (req.ModifiedOnly)
             {
                 var op = opts.GetOptionsFor<CustomText>();
                 op.AddFilter(e => e.TenantId == req.TenantId);
                 op.AddFilter(e => e.Type == req.Type);
                 op.AddFilter(e => e.Locale == req.Locale);
-                data = Unit.CustomTextRepository.Find(op);
+                var sdata = Unit.CustomTextRepository.Find(op);
+                data = Mapper.Map(sdata, new PagedResult<CustomTextDto>());
                 foreach (var x in data.List)
                     x.State = "Attached";
 
@@ -37,14 +38,14 @@ namespace CodeShellCore.Moldster.Localization
                 data = loc.LoadForTenant(req, opts);
                 var customTextReq = Mapper.Map(req, new CustomTextRequest());
                 List<CustomText> db = Unit.CustomTextRepository.GetBy(customTextReq);
-                var lst = new List<CustomText>();
+                var lst = new List<CustomTextDto>();
                 foreach (var item in data.List)
                 {
                     var ex = db.Where(e => e.Code == item.Code).FirstOrDefault();
                     if (ex != null)
                     {
                         ex.State = "Attached";
-                        lst.Add(ex);
+                        lst.Add(Mapper.Map(ex, new CustomTextDto()));
                     }
                     else
                     {

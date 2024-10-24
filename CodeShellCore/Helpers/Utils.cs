@@ -2,6 +2,8 @@
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
 using CodeShellCore.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -26,6 +28,39 @@ namespace CodeShellCore.Helpers
         {
             return CreatePropertyDictionary(typeof(T), folderPath);
 
+        }
+
+        public static IConfigurationRoot LoadConfigurationFrom(string path, string environment = null)
+        {
+            environment = environment ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var conf = new ConfigurationBuilder();
+            //BuildConfiguration(conf);
+            Console.WriteLine("Reading config from [" + path + "\\appsettings." + (environment == null ? "" : environment) + ".json");
+            conf.AddJsonFile(Path.Combine(path, $"appsettings.json"), true, true);
+            if (environment != null)
+            {
+                conf.AddJsonFile(Path.Combine(path, $"appsettings.{environment}.json"), true, true);
+            }
+            Environment.SetEnvironmentVariable("CODESHELL_SETTINGS_PATH", path);
+            return conf.Build();
+        }
+
+        public static string[] SetEnvironmentFromArguments(string[] args)
+        {
+            var argList = new List<string>();
+            foreach (var arg in args)
+            {
+                if (arg.StartsWith("env="))
+                {
+                    var environmentName = arg.Replace("env=", "");
+                    Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", environmentName);
+                }
+                else
+                {
+                    argList.Add(arg);
+                }
+            }
+            return argList.ToArray();
         }
 
         public static TenantUser SplitTenantEntity(string id)

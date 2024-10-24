@@ -15,6 +15,7 @@ using CodeShellCore.Text;
 using System.Text;
 using CodeShellCore.Helpers;
 using CodeShellCore.Services;
+using System.Security.Cryptography;
 
 namespace CodeShellCore.Http
 {
@@ -240,30 +241,18 @@ namespace CodeShellCore.Http
 
             Uri uri = GetUri(url, query);
 
-            try
+            var st = data.ToJson();
+            HttpResponseMessage res = await Client.PostAsync(uri, new StringContent(st, Encoding.UTF8, "application/json"));
+
+            if (res.IsSuccessStatusCode)
             {
-                var st = data.ToJson();
-                HttpResponseMessage mes = await Client.PostAsync(uri, new StringContent(st, Encoding.UTF8, "application/json"));
-                if (LogToFile != null)
-                {
-                    string res = await mes.Content.ReadAsStringAsync();
-                    AppendLog(uri.AbsoluteUri, mes.StatusCode, res, data);
-                }
-                return new HttpResponseMessage()
-                {
-                    RequestMessage = mes.RequestMessage,
-                    StatusCode = mes.StatusCode,
-                    Content = mes.Content
-                };
+                return res;
             }
-            catch (Exception ex)
+            else
             {
-                if (LogToFile != null)
-                {
-                    AppendException(uri.AbsoluteUri, ex, data);
-                }
-                return ExceptionToResponse(ex);
+                throw new CodeShellHttpException(res);
             }
+
         }
 
         public HttpResponseMessage Get(string url, object query = null)

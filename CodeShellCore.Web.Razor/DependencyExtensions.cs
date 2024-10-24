@@ -2,12 +2,7 @@
 using CodeShellCore.Http.Pushing;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.Builder;
-using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.CodeGeneration.Services;
-using CodeShellCore.Moldster.Domains;
-using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Tracing;
 using CodeShellCore.Notifications;
 using CodeShellCore.Security.Sessions;
@@ -34,59 +29,6 @@ namespace CodeShellCore.Web.Razor
     public static class DependencyExtensions
     {
 
-        public static void AddMoldsterServerGeneration(this IServiceCollection coll, bool legacy = false)
-        {
-            coll.AddMoldsterCodeGeneration(legacy);
-
-            if (legacy)
-            {
-                coll.AddTransient<IViewsService, LegacyRazorViewsService>();
-            }
-            else
-            {
-                coll.AddTransient<IViewsService, RazorViewsService>();
-            }
-
-            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
-            coll.AddScoped<IOutputWriter, MessagePusherOutputService>();
-            coll.AddTransient<IPushingSessionManager, ConfigSessionManager>();
-            coll.AddTransient<ISessionManager, ConfigSessionManager>();
-            coll.AddTransient<IPathsService, RazorPathsProvider>();
-
-            coll.AddSignalR();
-            coll.AddSignalRHub<IOutputMessageSender, GenerationHub>();
-            coll.AddSignalRHub<IBundlingTasksNotifications, TasksHub>();
-            
-            coll.AddAutoMapper(typeof(MoldsterMappingProfile).Assembly);
-        }
-
-        public static void AddMoldsterWeb(this IServiceCollection coll, bool legacy = false)
-        {
-
-            coll.AddServiceFor<Domain, DomainService>();
-
-            coll.AddTransient<RazorViewsService>();
-
-            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
-
-            coll.AddSingleton<DefaultPathsService>();
-            if (legacy)
-            {
-                coll.AddSingleton<IMoldProvider, LegacyAngularMoldProvider>();
-            }
-            else
-            {
-                coll.AddSingleton<IMoldProvider, AngularMoldProvider>();
-            }
-
-
-            coll.AddTransient<ILocalizationService, LocalizationService>();
-            coll.AddTransient<IMoldsterService, MoldsterService>();
-
-            coll.AddTransient<IDataService, DbDataService>();
-            coll.AddTransient<IMoldsterRazorRenderingService, RazorRenderingService>();
-        }
-
         public static void AddMvcRazorHelpers(this IServiceCollection coll)
         {
             coll.AddSingleton<IRazorLocaleTextProvider, MvcTextProvider>();
@@ -97,25 +39,13 @@ namespace CodeShellCore.Web.Razor
 
         public static void AddAngularRazorHelpers(this IServiceCollection coll)
         {
-            coll.AddSingleton<IRazorLocaleTextProvider, AngularTextProvider>();
-            coll.AddScoped<IElementsHelper, AngularElementsHelper>();
-            coll.AddScoped<IAngularElementsHelper, AngularElementsHelper>();
-            coll.AddScoped<ITablesHelper, AngularTablesHelper>();
-            coll.AddScoped<IAngularTablesHelper, AngularTablesHelper>();
-            coll.AddScoped<IGeneralHelper, DefaultGeneralHelper>();
-        }
 
-        public static void AddAbpCustomization(this IServiceCollection coll)
-        {
-            coll.AddSingleton<IRazorLocaleTextProvider, AbpTextProvider>();
-            coll.AddTransient<ILocalizationService, AbpLocalizationService>();
         }
 
 
         public static void AddMoldsterHubs(this IEndpointRouteBuilder builder)
         {
-            builder.MapHub<GenerationHub>("/generationHub");
-            builder.MapHub<TasksHub>("/tasksHub");
+            
         }
 
         public static void AddMoldsterRazorHelpers(this IServiceCollection coll)
@@ -133,44 +63,6 @@ namespace CodeShellCore.Web.Razor
             coll.AddScoped<IMoldsterTableHelper, MoldsterTableHelper>();
         }
 
-        public static void ConfigureAngular2Razor(this Shell shell, IRazorTheme theme = null)
-        {
-            theme = theme ?? new AngularTheme();
-
-            RazorConfig.SetCollectionType<AngularValidationCollection>();
-
-            RazorConfig.FieldErrorMessagesTemplate = "<span *ngIf=\"{0}.controls['{1}'] && {0}.controls['{1}'].invalid && ({0}.controls['{1}'].dirty || {0}.controls['{1}'].touched)\">\r{2}</span>";
-            RazorConfig.ErrorMessageTemplate = "<small *ngIf=\"{0}.controls['{1}'].errors!.{2}\" class=\"form-text text-danger\">{3}</small>\r";
-            RazorConfig.LocaleTextProvider = new AngularTextProvider();
-            RazorConfig.ExpressionStringifier = new AngularExpressionStringifier();
-
-            RazorConfig.Theme = theme;
-        }
-
-        public static void ConfigureAngularApbRazor(this Shell shell, IRazorTheme theme = null)
-        {
-            theme = theme ?? new AbpLeptonTheme();
-
-            RazorConfig.SetCollectionType<AngularValidationCollection>();
-
-            RazorConfig.LocaleTextProvider = new AbpTextProvider();
-            RazorConfig.ExpressionStringifier = new AngularExpressionStringifier();
-
-            RazorConfig.Theme = theme;
-        }
-
-        public static void ConfigureMvcRazor(this Shell shell, IRazorTheme theme = null)
-        {
-            theme = theme ?? new MvcTheme();
-
-            RazorConfig.SetCollectionType<ValidationCollection>();
-
-            RazorConfig.FieldErrorMessagesTemplate = "<span>\r{2}</span>";
-            RazorConfig.ErrorMessageTemplate = "<small class=\"form-text text-danger\">{3}</small>\r";
-            RazorConfig.LocaleTextProvider = new MvcTextProvider(new Language());
-            RazorConfig.ExpressionStringifier = new DefaultExpressionStringifier();
-
-            RazorConfig.Theme = theme;
-        }
+        
     }
 }

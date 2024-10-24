@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using System.Timers;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Tasks
 {
@@ -66,12 +67,12 @@ namespace CodeShellCore.Tasks
             }
         }
 
-        protected virtual void RunJob()
+        public virtual async Task RunJob()
         {
 
             using (var sc = Shell.GetScope())
             {
-                Job.Run(sc.ServiceProvider);
+                await Job.Run(sc.ServiceProvider);
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace CodeShellCore.Types
 {
@@ -17,6 +18,16 @@ namespace CodeShellCore.Types
             if (asem.ConstructorArguments.Count == 0)
                 return null;
             return (string)asem.ConstructorArguments.FirstOrDefault().Value;
+        }
+
+        public static string GetEmbeddedResourceAsString(this Assembly assembly, string key)
+        {
+            var bytes = assembly.GetEmbeddedResource(key);
+            if (bytes != null)
+            {
+                return Encoding.UTF8.GetString(bytes);
+            }
+            return null;
         }
 
         public static string GetRootNamespace(this Assembly assembly)

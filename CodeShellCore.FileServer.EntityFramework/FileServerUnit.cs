@@ -2,7 +2,7 @@
 using CodeShellCore.Data.EntityFramework;
 using System;
 
-namespace CodeShellCore.FileServer.Data
+namespace CodeShellCore.FileServer
 {
     public class FileServerUnit : UnitOfWork<FileServerDbContext>, IFileServerUnit
     {

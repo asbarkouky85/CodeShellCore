@@ -1,8 +1,8 @@
-﻿using CodeShellCore.Cli.Routing;
+﻿using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
 using System;
 using System.Threading.Tasks;
-using CodeShellCore.ToolSet.Nuget;
 
 namespace CodeShellCore.ToolSet.Ftp
 {
@@ -16,9 +16,9 @@ namespace CodeShellCore.ToolSet.Ftp
 
         protected override void Build(ICliRequestBuilder<CopyRequest> builder)
         {
-            builder.FillProperty(e => e.FromPath, "source", 's', order: 1, isRequired: true);
-            builder.FillProperty(e => e.ToPath, "target", 't', order: 2, isRequired: true);
-            builder.FillProperty(e => e.DestinationIsAFile, "dest-is-file", 'f');
+            builder.Property(e => e.FromPath, "source", "s", order: 1, isRequired: true);
+            builder.Property(e => e.ToPath, "target", "t", order: 2, isRequired: true);
+            builder.Property(e => e.DestinationIsAFile, "dest-is-file", "f");
         }
 
         public IToolSetFileHandler GetHandler(string nugetPath, bool isFile = false)

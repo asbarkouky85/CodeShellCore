@@ -1,10 +1,10 @@
-﻿using CodeShellCore.Cli.Routing;
+﻿using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
+using CodeShellCore.Files.CsProject;
 using CodeShellCore.Helpers;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using CodeShellCore.ToolSet.Versions;
-using CodeShellCore.Files.CsProject;
 
 namespace CodeShellCore.ToolSet.Nuget
 {
@@ -18,8 +18,8 @@ namespace CodeShellCore.ToolSet.Nuget
 
         protected override void Build(ICliRequestBuilder<NugetPublishRequest> builder)
         {
-            builder.FillProperty(e => e.MainDirectory, "source", order: 1, isRequired: true);
-            builder.FillProperty(e => e.NugetPath, "target", order: 2, isRequired: true);
+            builder.Property(e => e.MainDirectory, "source", order: 1, isRequired: true);
+            builder.Property(e => e.NugetPath, "target", order: 2, isRequired: true);
         }
 
         public string[] GetHelp()

@@ -1,14 +1,13 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Cli.Routing;
+using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Help
 {
-    public class HelpRequestHandler : CodeShellCore.Cli.Routing.CliRequestHandler<HelpRequest>
+    public class HelpRequestHandler : CliRequestHandler<HelpRequest>
     {
         public override string FunctionDescription => "";
         public HelpRequestHandler(IServiceProvider provider) : base(provider)
@@ -22,7 +21,7 @@ namespace CodeShellCore.ToolSet.Help
 
         protected override Task<Result> HandleAsync(HelpRequest request)
         {
-            var build = GetService<ICliDispatcherBuilder>();
+            var build = GetService<ICliRouteBuilder>();
             foreach (var item in build.HandlerDictionary)
             {
                 if (item.Value == GetType())
@@ -30,13 +29,13 @@ namespace CodeShellCore.ToolSet.Help
                 ICliRequestHandler handler = (ICliRequestHandler)Activator.CreateInstance(item.Value, ServiceProvider);
                 using (ColorSetter.Set(ConsoleColor.Yellow))
                 {
-                    Console.Write(item.Key );
+                    Console.Write(item.Key);
                 }
                 using (ColorSetter.Set(ConsoleColor.White))
                 {
                     Console.WriteLine(" :\t" + handler.FunctionDescription);
                 }
-                
+
                 Console.WriteLine("------------------------------------------------");
                 handler.Document();
                 Console.WriteLine();

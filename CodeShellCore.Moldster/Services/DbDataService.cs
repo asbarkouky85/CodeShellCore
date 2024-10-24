@@ -9,17 +9,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Services
 {
-    public class DbDataService : ServiceBase, IDataService
+    public class DbDataService : ApplicationService, IDataService
     {
         private readonly IConfigUnit _unit;
 
-        public DbDataService(IConfigUnit unit)
+        public DbDataService(IServiceProvider provider, IConfigUnit unit) : base(provider)
         {
             _unit = unit;
         }
+
         public PageRenderDTO[] GetDomainPagesForRendering(string mod, string domain, bool recursive = true)
         {
             if (string.IsNullOrEmpty(domain))
@@ -68,7 +70,7 @@ namespace CodeShellCore.Moldster.Services
             return _unit.TenantRepository.GetValues(d => d.Code, d => d.IsActive == active || active == null).ToArray();
         }
 
-        public PageOptions GetPageOptions(string moduleCode, string viewPath)
+        public PageOptionsDto GetPageOptions(string moduleCode, string viewPath)
         {
             long pageId = _unit.PageRepository.GetSingleValue(
                 d => d.Id,
@@ -91,9 +93,15 @@ namespace CodeShellCore.Moldster.Services
             return _unit.TenantRepository.FindSingleAndMap<TenantPageGuideDTO>(id);
         }
 
-        public PageOptions GetPageOptionsById(long pageId)
+        public async Task<IEnumerable<PageOptionsDto>> GetPageOptionsByCategory(long categoryId, long tenantId)
         {
-            PageOptions opts = _unit.PageRepository.FindSingleAs(d => new PageOptions
+            List<PageOptions> pages = await _unit.PageRepository.GetPageOptionsByCategory(categoryId, 9);
+            return Mapper.Map(pages, new List<PageOptionsDto>());
+        }
+
+        public PageOptionsDto GetPageOptionsById(long pageId)
+        {
+            PageOptionsDto opts = _unit.PageRepository.FindSingleAs(d => new PageOptionsDto
             {
                 PageId = pageId,
                 PageIdentifier = d.Domain.Name + "__" + d.Name,
@@ -117,6 +125,45 @@ namespace CodeShellCore.Moldster.Services
             opts.RepeatedIds = rep;
 
             return opts;
+        }
+
+        public Task<PageOptionsDto> GetCategoryPageOptions(long pageCategoryId)
+        {
+            return Task.Run(async () =>
+            {
+                PageOptionsDto opts = _unit.PageCategoryRepository.FindSingleAs(d => new PageOptionsDto
+                {
+                    PageId = 0,
+                    PageIdentifier = d.Domain.Name + "__" + d.Name,
+                    //Layout = !string.IsNullOrEmpty(d.Layout) ? $"Layout/{d.Layout}Layout.cshtml" : "Layout/DefaultLayout.cshtml",
+                    Layout = "Layout/DynamicLayout.cshtml",
+                    ViewPath = d.ViewPath,
+                    DefaultAccessibility = 2,
+                }, e => e.Id == pageCategoryId);
+
+                var lst = _unit.ControlRepository.FindAndMap<ControlRenderDto>(e => e.PageCategoryId == pageCategoryId);
+                var defaultEmbedded = await _unit.PageCategoryParameterRepository.GetListAsync(e => e.PageCategoryId == pageCategoryId && e.Type == 2);
+
+                var prms = new ViewParams();
+                foreach (var item in defaultEmbedded)
+                {
+                    prms.Other[item.Name] = item.DefaultValue;
+                }
+                opts.SetViewParams(prms);
+                opts.Controls = new Dictionary<string, ControlRenderDto>();
+                var rep = new List<string>();
+                foreach (var d in lst)
+                {
+                    if (opts.Controls.ContainsKey(d.Identifier))
+                        rep.Add(d.Identifier);
+
+                    opts.Controls[d.Identifier] = d;
+                }
+                opts.RepeatedIds = rep;
+
+                return opts;
+            });
+
         }
 
         public string GetAppStyle(string modCode)

@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Cli;
+﻿using CodeShellCore.Extensions.Hosting;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Diagnostics;
 
@@ -8,98 +9,78 @@ namespace CodeShellCore.ToolSet
     {
         static void Main(string[] args)
         {
-
-            try
+            if (Debugger.IsAttached)
             {
-                if (Debugger.IsAttached)
+                var testing = FunctionTypes.GenerateModuleClasses;
+
+                switch (testing)
                 {
-                    var testing = FunctionTypes.Proxy;
-
-                    switch (testing)
-                    {
-                        case FunctionTypes.SetVersion:
-                            args = new[] { "set-version", "SASO.Attachments.Domain", "1.0.0.2", @"C:\_abdelrahman\Dev\Maneh\ManehBackend\modules" };
-                            break;
-                        case FunctionTypes.UploadNuget:
-                            args = new[] { "upload-nuget", @"C:\_abdelrahman\Personal\_gitHub\CodeShellCore", @"C:\_abdelrahman\Personal\Nuget" };
-                            args = new[] { "upload-nuget", @"C:\_abdelrahman\Personal\_gitHub\CodeShellCore\CodeShellCore.ToolSet.Cli", @"ftp:genial\ftp_user/Genial963258741@196.202.126.106:21::P::/NugetServer/Packages" };
-                            break;
-                        case FunctionTypes.Zip:
-                            args = new[] { "zip", @"C:\_abdelrahman\Work\ziptest", @"C:\_abdelrahman\Work\ziptest.zip" };
-                            break;
-                        case FunctionTypes.Copy:
-                            //args = new[] { "copy", @"C:\_abdelrahman\Work\ziptest\Info.txt", @"ftp:genial\ftp_user/Genial963258741@196.202.126.106:21::P::/" };
-                            args = new[] { "copy", @"D:\Work\Common\tests\file.txt", @"D:\Work\Common\tests\copy\file_copy.txt", "-f" };
-                            break;
-                        case FunctionTypes.SqlRestore:
-                            args = new[] { $"sql-restore", "User Id=app;Server=.;Password=123456;", "-d", "Configurator.Config_2", "-b", "C:\\ASGA_TFS\\Libraries\\Moldster\\master\\Configurator.Config.Api\\Backups\\Configurator.Config.bak" };
-                            break;
-                        case FunctionTypes.SqlExec:
-                            args = new[] { "sql-exec", "-c", "Server=.;User Id=app;Password=123456;Database=FMS.Configuration_v2.6", "-q", "update Resources set Name=Name" };
-                            break;
-                        case FunctionTypes.SyncLocAbp:
-                            args = new[] { @"sync-loc-abp", @"modules\Maneh.IEC\src\Maneh.IEC.Domain.Shared\Localization\IEC" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
-                            break;
-                        case FunctionTypes.GenerateDto:
-                            args = new[] { @"gen-dto", @"C:\_git\Asga\FMS_git", "FMS.Assets.Domain", "Item", "gcul", "-o", "FMS.Assets.Application.Contracts" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
-                            break;
-                        case FunctionTypes.ReplaceParameters:
-                            args = new[] { "replace", @"D:\Work\Common\tests\replace_test.json","-d", "{\"userName\":\"abarkouky\",\"password\":\"123456\"}" };
-                            //args = new[] {
-                            //    "replace",
-                            //    @"C:\_git\Mahmoud\Databoat-Ecommerce-Frontend\src\index.html",
-                            //    "-p",
-                            //    "<base href=\"/\" />",
-                            //    "-d",
-                            //    @"{""key"":""<base href='/ds/\' />""}",
-                            //};
-                            break;
-                        case FunctionTypes.Help:
-                            args = new[] { @"help" };
-                            break;
-                        case FunctionTypes.Download:
-                            args = new[] { "download", "https://nodejs.org/dist/v16.16.0/node-v16.16.0-x64.msi","./Downloads" };
-                            break;
-                        case FunctionTypes.Proxy:
-                            args = new[] { "gen-proxy", "https://localhost:44300", "C:\\_git\\Asga\\WebAndBackEnd\\FMS.Frontend\\src\\core" };
-                            break;
-                    }
-                }
-
-                var sh = new ToolSetShell(args);
-                var t = sh.DispatchAsync();
-                t.Wait();
-                if (Debugger.IsAttached)
-                {
-                    using (ColorSetter.Set(ConsoleColor.Green))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine(" Request Completed");
-                        Console.WriteLine();
-                    }
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                using (ColorSetter.Set(ConsoleColor.DarkRed))
-                {
-                    Console.WriteLine(" Request Failed");
-                    Console.WriteLine(ex.GetMessageRecursive());
-                    var stackRec = ex.GetStackTrace(true);
-                    foreach (var l in stackRec)
-                    {
-                        Console.WriteLine(l);
-                    }
-
+                    case FunctionTypes.SetVersion:
+                        args = new[] { "set-version", "SASO.Attachments.Domain", "1.0.0.2", @"C:\_abdelrahman\Dev\Maneh\ManehBackend\modules" };
+                        break;
+                    case FunctionTypes.UploadNuget:
+                        args = new[] { "upload-nuget", @"C:\_abdelrahman\Personal\_gitHub\CodeShellCore", @"C:\_abdelrahman\Personal\Nuget" };
+                        args = new[] { "upload-nuget", @"C:\_abdelrahman\Personal\_gitHub\CodeShellCore\CodeShellCore.ToolSet.Cli", @"ftp:genial\ftp_user/Genial963258741@196.202.126.106:21::P::/NugetServer/Packages" };
+                        break;
+                    case FunctionTypes.Zip:
+                        args = new[] { "zip", @"C:\_abdelrahman\Work\ziptest", @"C:\_abdelrahman\Work\ziptest.zip" };
+                        break;
+                    case FunctionTypes.UnZip:
+                        args = new[] { "extract", @"C:\_abdelrahman\Work\Common\tests\zip_*.zip", @"c:\_abdelrahman\Work\Common\tests\extracted" };
+                        break;
+                    case FunctionTypes.Copy:
+                        //args = new[] { "copy", @"C:\_abdelrahman\Work\ziptest\Info.txt", @"ftp:genial\ftp_user/Genial963258741@196.202.126.106:21::P::/" };
+                        args = new[] { "copy", @"D:\Work\Common\tests\file.txt", @"D:\Work\Common\tests\copy\file_copy.txt", "-f" };
+                        break;
+                    case FunctionTypes.SqlRestore:
+                        args = new[] { $"sql-restore", "User Id=app;Server=.;Password=123456;", "-d", "Configurator.Config_2", "-b", "C:\\ASGA_TFS\\Libraries\\Moldster\\master\\Configurator.Config.Api\\Backups\\Configurator.Config.bak" };
+                        break;
+                    case FunctionTypes.SqlExec:
+                        args = new[] { "sql-exec", "-c", "Server=.;User Id=app;Password=123456;Database=FMS.Configuration_v2.6", "-q", "update Resources set Name=Name" };
+                        break;
+                    case FunctionTypes.SyncLocAbp:
+                        args = new[] { @"sync-loc-abp", @"modules\Maneh.IEC\src\Maneh.IEC.Domain.Shared\Localization\IEC" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
+                        break;
+                    case FunctionTypes.GenerateDto:
+                        args = new[] { @"gen-dto", @"C:\_git\Asga\FMS_git", "FMS.Assets.Domain", "Item", "gcul", "-o", "FMS.Assets.Application.Contracts" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
+                        break;
+                    case FunctionTypes.ReplaceParameters:
+                        args = new[] { "replace", @"D:\Work\Common\tests\replace_test.json", "-d", "{\"userName\":\"abarkouky\",\"password\":\"123456\"}" };
+                        //args = new[] {
+                        //    "replace",
+                        //    @"C:\_git\Mahmoud\Databoat-Ecommerce-Frontend\src\index.html",
+                        //    "-p",
+                        //    "<base href=\"/\" />",
+                        //    "-d",
+                        //    @"{""key"":""<base href='/ds/\' />""}",
+                        //};
+                        break;
+                    case FunctionTypes.Help:
+                        args = new[] { @"help" };
+                        break;
+                    case FunctionTypes.Download:
+                        args = new[] { "download", "https://nodejs.org/dist/v16.16.0/node-v16.16.0-x64.msi", "./Downloads" };
+                        break;
+                    case FunctionTypes.Proxy:
+                        args = new[] { "gen-proxy", "https://localhost:44300", "C:\\_git\\Asga\\WebAndBackEnd\\FMS.Frontend\\src\\core" };
+                        break;
+                    case FunctionTypes.GenerateModuleClasses:
+                        args = new[] { "gen-modules", "C:\\_git\\Asga\\WebAndBackEnd" };
+                        break;
                 }
             }
+
+            BuildConsoleHost(args).Run();
 
             if (Debugger.IsAttached)
             {
                 Console.ReadLine();
             }
         }
+
+        public static IHost BuildConsoleHost(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseModule<ToolSetCliModule>(args)
+                .Build();
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-
+﻿using CodeShellCore.Helpers;
+using CodeShellCore.Http;
+using CodeShellCore.Services;
+using CodeShellCore.Web.Razor.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -13,10 +11,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
-using CodeShellCore.Helpers;
-using CodeShellCore.Services;
-using CodeShellCore.Http;
-using CodeShellCore.Web.Razor.Services;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Services
 {

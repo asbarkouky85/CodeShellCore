@@ -1,4 +1,4 @@
-﻿using CodeShellCore.Helpers;
+﻿using CodeShellCore.Extensions;
 using CodeShellCore.Linq.Filtering;
 using CodeShellCore.Types;
 using System;

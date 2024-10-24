@@ -15,8 +15,7 @@ namespace CodeShellCore
         {
             CreateMap(typeof(CrudEvent<>), typeof(CrudEvent<>));
             CreateMap(typeof(PagedResult<>), typeof(PagedResult<>));
-            CreateMap(typeof(Named<>), typeof(NamedDto<>));
-            CreateMap(typeof(NamedDto<>), typeof(Named<>));
+            CreateMap(typeof(Named<>), typeof(Named<>));
 
             CreateMap<PagedListRequestDto, PagedListRequest>()
                 .ForMember(e => e.Direction, e => e.MapFrom(d => Enum.Parse<SortDir>(d.Direction)));

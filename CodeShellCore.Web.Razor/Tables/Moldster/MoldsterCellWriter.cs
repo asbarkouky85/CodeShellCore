@@ -39,7 +39,7 @@ namespace CodeShellCore.Web.Razor.Tables.Moldster
             };
             if (lister != null)
             {
-                ctrl.Collection = new CollectionDTO
+                ctrl.Collection = new CollectionDto
                 {
                     Name = lister.CollecionName,
                 };

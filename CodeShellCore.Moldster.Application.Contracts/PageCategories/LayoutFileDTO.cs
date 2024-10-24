@@ -2,7 +2,7 @@
 
 namespace CodeShellCore.Moldster.PageCategories
 {
-    public class LayoutFileDTO : NamedDto<object>
+    public class LayoutFileDTO : Named<object>
     {
         public string ViewPath { get; set; }
     }

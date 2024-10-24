@@ -1,0 +1,12 @@
+﻿using CodeShellCore.Modularity;
+%Usings%
+
+namespace %Namespace%
+{
+    [DependsOn(
+        %Dependencies%
+        )]
+    public class %ClassName% : CodeShellModule
+    {
+    }
+}

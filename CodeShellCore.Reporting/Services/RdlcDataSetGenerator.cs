@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using CodeShellCore.Files.Reporting;
 
 namespace CodeShellCore.Reporting.Services
 {

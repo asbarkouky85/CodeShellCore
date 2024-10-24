@@ -25,7 +25,7 @@ namespace CodeShellCore.Moldster.Tenants
             this.uploaded = uploaded;
         }
 
-        public override SubmitResult<TenantEditDTO> Post(TenantDto dto)
+        public override EntitySubmitResult<TenantEditDTO> Post(TenantDto dto)
         {
             var entity = Mapper.Map<TenantDto, Tenant>(dto);
 
@@ -36,7 +36,7 @@ namespace CodeShellCore.Moldster.Tenants
                 entity.IsActive = true;
             }
             Repository.Add(entity);
-            var res = unit.SaveChanges().MapToResult<SubmitResult<TenantEditDTO>>();
+            var res = unit.SaveChanges().MapToResult<EntitySubmitResult<TenantEditDTO>>();
             if (res.IsSuccess)
             {
                 AfterCreate(dto, entity);

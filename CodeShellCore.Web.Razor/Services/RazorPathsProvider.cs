@@ -1,16 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Text;
 
 namespace CodeShellCore.Web.Razor.Services
 {
-    public class RazorPathsProvider : CodeShellCore.Moldster.DefaultPathsService
+    public class RazorPathsProvider : ILayoutsService
     {
-        public override List<LayoutFileDTO> GetLayouts(bool nameOnly = false)
+        IPathsService _pathsService;
+
+        public RazorPathsProvider(IPathsService pathsService)
+        {
+            _pathsService = pathsService;
+        }
+
+        public List<LayoutFileDTO> GetLayouts(bool nameOnly = false)
         {
             var l = RazorConfig.Theme.BasePath.Replace("~/", "");
-            var configPath = Path.Combine(ConfigRoot, l,"Layout");
+            var configPath = Path.Combine(_pathsService.ConfigRoot, l, "Layout");
 
             List<LayoutFileDTO> templateList = new List<LayoutFileDTO>();
 

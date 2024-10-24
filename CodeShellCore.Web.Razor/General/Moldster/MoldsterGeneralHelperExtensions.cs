@@ -175,7 +175,7 @@ namespace CodeShellCore.Web.Razor.General.Moldster
                     Identifier = identifier?.ToLower()
                 };
 
-                ctrl.Collection = new CollectionDTO
+                ctrl.Collection = new CollectionDto
                 {
                     Name = lst.CollecionName,
                 };

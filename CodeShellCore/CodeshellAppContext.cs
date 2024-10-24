@@ -10,24 +10,15 @@ namespace CodeShellCore
     {
         public IServiceCollection Services { get; private set; }
         public IConfiguration Configuration { get; private set; }
-        private Dictionary<string, object> _extraProperties = new Dictionary<string, object>();
+        public string[] Arguments { get; private set; }
 
-        public CodeshellAppContext(IServiceCollection coll, IConfiguration conf)
+        public CodeshellAppContext(IServiceCollection coll, IConfiguration conf, string[] args = null)
         {
             Services = coll;
             Configuration = conf;
+            Arguments = args ?? new string[0];
         }
 
-        public void AddItem<T>(T item) where T : class
-        {
-            _extraProperties[typeof(T).Name] = item;
-        }
 
-        public T GetItem<T>() where T : class
-        {
-            if (_extraProperties.TryGetValue(typeof(T).Name, out object item))
-                return (T)item;
-            return null;
-        }
     }
 }

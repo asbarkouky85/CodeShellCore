@@ -6,7 +6,7 @@ namespace CodeShellCore.Moldster
 {
     public class Lister
     {
-        public string ListName { get; protected set; }
+        public string ListName { get; set; }
         public string CollectionIdentifier { get; set; }
         public string CollecionName { get { return "C0" + (CollectionIdentifier == null ? "" : "__" + CollectionIdentifier); } }
         public virtual bool IsLookup { get; set; }

@@ -10,6 +10,7 @@ namespace CodeShellCore.Configuration
         public string TenantCode { get; set; }
         public long TenantId { get; set; }
         public string Version { get; set; }
+        public string TenantLogo { get; set; }
         public Dictionary<string, string> Urls { get; set; }
         public Dictionary<string, string> Settings { get; set; }
     }

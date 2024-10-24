@@ -13,11 +13,8 @@ namespace CodeShellCore.UnitTest
         protected override string appRoot => ".";
         protected override CultureInfo defaultCulture => new CultureInfo("en");
         protected override IServiceProvider _scopedProvider => CurrentScope?.ServiceProvider;
-        protected override IServiceProvider rootProvider => _rootProv;
 
-        protected override IConfiguration Configuration => _configRoot;
-
-        protected override string sharedPathRoot => throw new NotImplementedException();
+        protected override string sharedPathRoot { get; }
 
         private readonly Action<CodeshellAppContext> _otherRegistration;
 

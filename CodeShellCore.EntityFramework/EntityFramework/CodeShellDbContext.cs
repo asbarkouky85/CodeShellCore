@@ -1,9 +1,6 @@
 ﻿using CodeShellCore.EntityFramework.DesignTime;
 using CodeShellCore.MultiTenant;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.EntityFramework
 {
@@ -24,7 +21,7 @@ namespace CodeShellCore.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+
             if (!optionsBuilder.IsConfigured)
             {
                 string connectionString;
@@ -40,7 +37,7 @@ namespace CodeShellCore.EntityFramework
                 {
                     connectionString = CurrentTenant.GetConnectionString();
                 }
-                
+
                 if (connectionString != null && DesignTimeMigrationsAssemblies.Store.TryGetValue(typeof(T).Name, out string assembly))
                 {
                     optionsBuilder.UseSqlServer(connectionString, e => e.MigrationsAssembly(assembly));
@@ -51,7 +48,7 @@ namespace CodeShellCore.EntityFramework
                 }
                 else
                 {
-                    
+
                 }
             }
         }

@@ -59,6 +59,9 @@ namespace CodeShellCore.Moldster
             CreateMap<PageCategory, PageCategoryListDTO>();
             CreateMap<Control, ControlDto>();
 
+            CreateMap<Control, ControlRenderDto>()
+                .ForMember(e => e.Accessibilty, e => e.MapFrom(d => 2));
+
             CreateMap<PageCategoryParameter, PageCategoryParameterDto>()
                 .MapChangeState();
 
@@ -136,7 +139,20 @@ namespace CodeShellCore.Moldster
                 .ForMember(e => e.Identifier, e => e.MapFrom(d => d.Control.Identifier))
                 .ForMember(e => e.Accessibilty, e => e.MapFrom(d => (int)d.Accessability))
                 .ForMember(e => e.Collection, e => e.MapFrom(
-                    d => d.SourceCollection != null ? new CollectionDTO
+                    d => d.SourceCollection != null ? new CollectionDto
+                    {
+                        Id = d.SourceCollection.Id,
+                        Name = d.SourceCollection.Name
+                    } : null))
+                .ForMember(e => e.ParentId, e => e.MapFrom(d => d.Control.ParentControl))
+                .ForMember(e => e.ControlType, e => e.MapFrom(d => d.Control.ControlType));
+
+
+            CreateMap<PageControl, ControlRenderDataObject>()
+                .ForMember(e => e.Identifier, e => e.MapFrom(d => d.Control.Identifier))
+                .ForMember(e => e.Accessibilty, e => e.MapFrom(d => (int)d.Accessability))
+                .ForMember(e => e.Collection, e => e.MapFrom(
+                    d => d.SourceCollection != null ? new CollectionDataObject
                     {
                         Id = d.SourceCollection.Id,
                         Name = d.SourceCollection.Name
@@ -160,6 +176,14 @@ namespace CodeShellCore.Moldster
             CreateMap<PageRouteView, PageRouteDTO>().MapChangeState();
             CreateMap<PageReferenceView, PageReferenceDTO>();
 
+            CreateMap<PageOptions, PageOptionsDto>();
+            CreateMap<PageOptionsDto, PageOptions>();
+
+            CreateMap<ControlRenderDataObject, ControlRenderDto>();
+            CreateMap<ControlRenderDto, ControlRenderDataObject>();
+
+            CreateMap<CollectionDataObject, CollectionDto>();
+            CreateMap<CollectionDto, CollectionDataObject>();
         }
 
         void TenantsMapping()

@@ -10,8 +10,7 @@ namespace CodeShellCore.MQ
     {
         public static void AddDefaultServiceBus(this IServiceCollection coll, Action<ServiceBusConfig> consumersAction)
         {
-            var bus = new DefaultServiceBus(consumersAction);
-            coll.AddSingleton<IServiceBus>(bus);
+            
         }
     }
 }

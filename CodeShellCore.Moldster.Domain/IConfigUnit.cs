@@ -11,7 +11,7 @@ namespace CodeShellCore.Moldster
 {
     public interface IConfigUnit : IConfigDomainUnit
     {
-        IRepository<Tenant> TenantRepository { get; }
+        ITenantRepository TenantRepository { get; }
         IRepository<Control> ControlRepository { get; }
         IRepository<App> AppRepository { get; }
         IRepository<ResourceAction> ResourceActionRepository { get; }

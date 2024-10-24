@@ -31,7 +31,7 @@ namespace CodeShellCore.Web.Razor
 
         public ViewDataDictionary<T> ViewData { get { return dic; } }
 
-        public Html5DateRenderingMode Html5DateRenderingMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Html5DateRenderingMode Html5DateRenderingMode { get ; set ; }
 
         public string IdAttributeDotReplacement { get { return ""; } }
 

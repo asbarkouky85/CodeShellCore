@@ -1,14 +1,24 @@
 ﻿using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
+using CodeShellCore.Http;
 using CodeShellCore.Moldster.CodeGeneration.Models;
+using CodeShellCore.Moldster.CodeGeneration.Services;
+using CodeShellCore.Moldster.Domains.DataObjects;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Moldster.Tenants;
+using CodeShellCore.Services;
 using CodeShellCore.Text;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.Intrinsics.Arm;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Services
 {
@@ -19,6 +29,7 @@ namespace CodeShellCore.Moldster.Services
 
         IInitializationService Init => GetService<IInitializationService>();
         ITenantScriptGenerationService TenantTs => GetService<ITenantScriptGenerationService>();
+
         public MigrationService(IServiceProvider provider) : base(provider)
         {
         }
@@ -190,6 +201,199 @@ namespace CodeShellCore.Moldster.Services
             string bootPath = Names.GetSrcFolderPath("main-" + Names.ApplyConvension(tenant, AppParts.Project), ".ts", keepNameformat: true);
             File.WriteAllText(bootPath, boot);
             return new Result();
+        }
+
+        private bool CheckConfigImport(string line, string configVariableName)
+        {
+            return line.Contains(configVariableName) && line.Contains("import");
+        }
+
+        public async Task<Result> RestructureApp(string tenantCode)
+        {
+            var pageCategories = unit.PageCategoryRepository.GetList();
+            var htmlService = GetService<IViewsService>();
+            var domains = new Dictionary<string, PageCategoryDomainDataObject>();
+            foreach (var category in pageCategories)
+            {
+                var oldPath = Names.GetBaseComponentFilePath(category.ViewPath);
+                var newPath = oldPath.Replace("-base", "");
+                var newClassName = category.Name + "Component";
+                var jsonFilePath = newPath + ".config.ts";
+                var domainPath = newPath.GetBeforeLast("/");
+                var configVariableName = category.Name.LCFirst() + "Pages";
+                try
+                {
+
+                    var template = await htmlService.GetPageCategoryById(category.Id);
+                    var newHtmlPath = newPath + ".html";
+                    await File.WriteAllTextAsync(newHtmlPath, template.TemplateContent);
+
+                    var pagesJson = new Dictionary<string, PageConfigurationDto>();
+                    var pages = await htmlService.GetPagesByCategory(category.Id);
+                    foreach (var page in pages)
+                    {
+                        pagesJson[page.PageIdentifier] = page;
+                    }
+                    var pagesJsonString = pagesJson.ToJsonIndent();
+
+                    var pagesJsonContent = $"const {configVariableName} = {pagesJsonString};\r\n\r\n";
+                    pagesJsonContent += $"export {{ {configVariableName} }}";
+                    await File.WriteAllTextAsync(jsonFilePath, pagesJsonContent);
+
+                }
+                catch (CodeShellHttpException ex)
+                {
+                    Out.WriteLine(ex.GetFullMessage());
+                }
+
+                if (!domains.ContainsKey(domainPath))
+                {
+                    domains[domainPath] = new PageCategoryDomainDataObject
+                    {
+                        DomainName = category.ViewPath.GetBeforeLast("/").GetAfterLast("/")
+                    };
+                }
+
+                domains[domainPath].Components.Add(new PageCategoryDataObject
+                {
+                    Path = "./" + Names.ApplyConvension(newClassName, AppParts.Component),
+                    Name = newClassName
+                });
+
+                var oldTsPath = oldPath + ".ts";
+
+                Console.WriteLine(newPath);
+
+                var oldClassName = category.Name + "Base";
+                var content = new string[0];
+                if (File.Exists(oldTsPath))
+                {
+                    content = File.ReadAllLines(oldTsPath);
+                }
+                else if (File.Exists(newPath + ".ts"))
+                {
+                    content = File.ReadAllLines(newPath + ".ts");
+                }
+
+                var newContent = new List<string>();
+
+                var configImportation = $"import {{ {configVariableName} }} from \"./{newPath.GetAfterLast("/")}.config\";";
+                var configFn = new string[] {
+                    "\tprotected registerPageConfig(): void {",
+                    $"\t\tthis.PageConfig.addPages(\"{category.Name}\", {configVariableName});",
+                    "\t}"
+                };
+
+                var oldDeclaration = $"export abstract class {oldClassName}";
+                var newDeclaration = $"export class {newClassName}";
+                var componentData = $"@Component({{ templateUrl : './{Names.ApplyConvension(category.Name, AppParts.Component)}.html',selector : '{Names.GetComponentSelector(category.Name)}'}})";
+                var ignore = false;
+                var configIsAdded = false;
+                var addConfigFn = false;
+
+                foreach (var line in content)
+                {
+                    if (!configIsAdded)
+                    {
+                        if (CheckConfigImport(line, configVariableName))
+                        {
+                            configIsAdded = true;
+                            addConfigFn = false;
+                        }
+                    }
+
+                    if (line.Contains("@Component"))
+                    {
+                        ignore = true;
+                        if (!configIsAdded)
+                        {
+                            newContent.Add(configImportation);
+                            newContent.Add("");
+                            configIsAdded = true;
+                            addConfigFn = true;
+                        }
+                        continue;
+                    }
+
+                    if (line.Contains(oldDeclaration) || line.Contains(newDeclaration))
+                    {
+                        ignore = false;
+                        newContent.Add(componentData);
+                        if (line.Contains(oldDeclaration))
+                        {
+                            newContent.Add(line.Replace(oldDeclaration, newDeclaration));
+                        }
+                        else
+                        {
+                            newContent.Add(line);
+                        }
+
+                        if (addConfigFn)
+                        {
+                            newContent.Add("");
+                            foreach (var cLine in configFn)
+                                newContent.Add(cLine);
+                            newContent.Add("");
+                        }
+                    }
+                    else if (!ignore)
+                    {
+                        newContent.Add(line);
+                    }
+                }
+                if (!ignore)
+                    await File.WriteAllLinesAsync(newPath + ".ts", newContent);
+                if (File.Exists(oldTsPath))
+                    File.Delete(oldTsPath);
+                //}
+
+
+            }
+
+            await _generateDomains(domains);
+
+            return new Result();
+        }
+
+        private async Task _generateDomains(Dictionary<string, PageCategoryDomainDataObject> domains)
+        {
+            var mold = Molds.GetResourceByNameAsString(MoldNames.SharedModule_ts);
+            foreach (var domain in domains)
+            {
+                var moduleName = domain.Value.DomainName + "Base";
+                var path = $"{domain.Key}/{Names.ApplyConvension(moduleName, AppParts.Module)}.ts";
+                if (!File.Exists(path))
+                {
+                    var model = new DomainTsModel
+                    {
+                        BaseAppModuleName = "FMSBaseModule",
+                        BaseAppModulePath = "@base/fms-base.module",
+                        Name = moduleName,
+                        ComponentImports = "",
+                        Registrations = "",
+                        EmbeddedComponents = "",
+                        Components = ""
+                    };
+
+                    foreach (var module in domain.Value.Components)
+                    {
+                        model.ComponentImports += $"import {{ {module.Name} }} from \"{module.Path}\";\n";
+                    }
+                    if (domain.Value.Components.Any())
+                        model.Components = string.Join(", ", domain.Value.Components.Select(e => e.Name));
+
+                    var data = Writer.FillStringParameters(mold, model);
+                    var files = Directory.GetFiles(domain.Key, "*.module.ts");
+                    foreach (var file in files)
+                    {
+                        File.Delete(file);
+                    }
+
+
+                    await File.WriteAllTextAsync(path, data);
+                }
+
+            }
         }
     }
 }

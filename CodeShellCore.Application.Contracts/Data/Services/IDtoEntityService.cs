@@ -16,8 +16,8 @@ namespace CodeShellCore.Data.Services
         where TOptionsDto : PagedListRequestDto
     {
         DeleteResult Delete(TPrime id);
-        SubmitResult<TSingleDto> Post(TCreateDto dto);
-        SubmitResult<TSingleDto> Put(TUpdateDto dto);
+        EntitySubmitResult<TSingleDto> Post(TCreateDto dto);
+        EntitySubmitResult<TSingleDto> Put(TUpdateDto dto);
     }
 
 

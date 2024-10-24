@@ -7,7 +7,7 @@ namespace CodeShellCore.Data.Lookups
 {
     public interface ILookupsAppService
     {
-        List<NamedDto<object>> Get(string entity, string collectionId = null);
-        PagedResult<NamedDto<object>> GetPaged(string entity, LookupsPagedResultRequestDto dto);
+        List<Named<object>> Get(string entity, string collectionId = null);
+        PagedResult<Named<object>> GetPaged(string entity, LookupsPagedResultRequestDto dto);
     }
 }

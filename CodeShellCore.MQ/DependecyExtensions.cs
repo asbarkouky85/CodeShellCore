@@ -1,13 +1,9 @@
 ﻿using CodeShellCore.MQ.MediatR;
 using CodeShellCore.MQ.RabbitMQ;
 using MassTransit;
-using MassTransit.RabbitMqTransport;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace CodeShellCore.MQ
 {

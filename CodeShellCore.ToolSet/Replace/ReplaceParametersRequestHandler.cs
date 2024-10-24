@@ -1,12 +1,12 @@
-﻿using CodeShellCore.Cli.Routing;
+﻿using CodeShellCore.CliDispatch.Parsing;
+using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
+using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using CodeShellCore.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Replace
 {
@@ -20,12 +20,12 @@ namespace CodeShellCore.ToolSet.Replace
 
         protected override void Build(ICliRequestBuilder<ReplaceParametersRequest> builder)
         {
-            builder.FillProperty(e => e.InputFormat, "input-format", 'f').SetDefault("json");
-            builder.FillProperty(e => e.ParameterFile, "source", 's', order: 2);
-            builder.FillProperty(e => e.TargetFile, "target", 't', order: 1, isRequired: true);
-            builder.FillProperty(e => e.Parameters, "source-string", 'd');
-            builder.FillProperty(e => e.ReplacePattern, "pattern", 'p', order: 3).SetDefault("%{}%");
-            builder.FillProperty(e => e.UseRegex, "regex", 'r');
+            builder.Property(e => e.InputFormat, "input-format", "f").SetDefault("json");
+            builder.Property(e => e.ParameterFile, "source", "s", order: 2);
+            builder.Property(e => e.TargetFile, "target", "t", order: 1, isRequired: true);
+            builder.Property(e => e.Parameters, "source-string", "d");
+            builder.Property(e => e.ReplacePattern, "pattern", "p", order: 3).SetDefault("%{}%");
+            builder.Property(e => e.UseRegex, "regex", "r");
         }
 
         protected override Task<Result> HandleAsync(ReplaceParametersRequest request)

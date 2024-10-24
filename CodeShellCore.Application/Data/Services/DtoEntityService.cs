@@ -62,7 +62,7 @@ namespace CodeShellCore.Data.Services
 
         }
 
-        public virtual SubmitResult<TSingleDto> Post(TCreateDto dto)
+        public virtual EntitySubmitResult<TSingleDto> Post(TCreateDto dto)
         {
             var entity = Mapper.Map<TCreateDto, T>(dto);
             Repository.Add(entity);
@@ -74,7 +74,7 @@ namespace CodeShellCore.Data.Services
             return res;
         }
 
-        protected virtual SubmitResult<TSingleDto> SaveAndGetSingle(T entity)
+        protected virtual EntitySubmitResult<TSingleDto> SaveAndGetSingle(T entity)
         {
             var res = DefaultUnit.SaveChanges().ToSubmitResult<TSingleDto>();
             if (res.IsSuccess)
@@ -84,7 +84,7 @@ namespace CodeShellCore.Data.Services
             return res;
         }
 
-        public virtual SubmitResult<TSingleDto> Put(TUpdateDto dto)
+        public virtual EntitySubmitResult<TSingleDto> Put(TUpdateDto dto)
         {
             var entity = GetSingleById(dto.Id);
             Mapper.Map(dto, entity);

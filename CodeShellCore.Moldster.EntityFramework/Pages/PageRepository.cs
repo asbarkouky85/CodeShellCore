@@ -1,10 +1,13 @@
-﻿using CodeShellCore.Data.EntityFramework;
+﻿using Azure;
+using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Linq;
+using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages.Views;
 using CodeShellCore.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
@@ -211,6 +214,37 @@ namespace CodeShellCore.Moldster.Pages
                 .Include(e => e.PageRoutes)
                 .Include(e => e.CustomFields);
             return q.FirstOrDefault(e => e.Id == id);
+        }
+
+        private IQueryable<PageOptions> _queryPageOptions(IQueryable<Page> q = null)
+        {
+            q = q ?? Loader;
+            return q.Select(d => new PageOptions
+            {
+                PageId = d.Id,
+                PageIdentifier = d.Domain.Name + "__" + d.Name,
+                ViewParamsString = d.ViewParams,
+                Layout = d.Layout + ".cshtml",
+                ViewPath = d.PageCategory.ViewPath,
+                DefaultAccessibility = d.DefaultAccessibility,
+            });
+        }
+
+        public async Task<List<PageOptions>> GetPageOptionsByCategory(long categoryId, long tenantId)
+        {
+            var q = _queryPageOptions(Loader.Where(e => e.PageCategoryId == categoryId && e.TenantId == tenantId && e.HasRoute));
+            var res = await q.ToListAsync();
+            var controls_query = DbContext.PageControls.Where(e => e.Page.TenantId == tenantId && e.Page.PageCategoryId == categoryId);
+            var map = await Projector.Project<PageControl, ControlRenderDataObject>(controls_query).ToListAsync();
+            foreach (var p in res)
+            {
+                var pageControls = map.Where(e => e.PageId == p.PageId).ToList();
+                foreach (var c in pageControls)
+                {
+                    p.Controls[c.Identifier] = c;
+                }
+            }
+            return res;
         }
     }
 }

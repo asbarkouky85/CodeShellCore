@@ -6,10 +6,15 @@ namespace CodeShellCore.Tasks
 {
     public class JobConfig
     {
-        public IEnumerable<ITimedJob> Jobs { get; private set; }
-        public JobConfig(IEnumerable<ITimedJob> jobs)
+        private List<ITimedJob> _jobs = new List<ITimedJob>();
+        public IReadOnlyCollection<ITimedJob> Jobs => _jobs;
+        public JobConfig()
         {
-            Jobs = jobs;
+        }
+
+        public void AddJobs(params ITimedJob[] jobs)
+        {
+            _jobs.AddRange(jobs);
         }
     }
 }

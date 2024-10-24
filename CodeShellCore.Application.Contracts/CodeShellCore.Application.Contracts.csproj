@@ -15,4 +15,10 @@
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="DependecyInjection\" />
+	  <Folder Include="Linq\Filtering\" />
+	  <Folder Include="Localization\" />
+	</ItemGroup>
+
 </Project>

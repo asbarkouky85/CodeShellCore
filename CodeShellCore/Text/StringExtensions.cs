@@ -150,6 +150,41 @@ namespace CodeShellCore.Text
             return st.Substring(0, 1).ToUpper() + st.Substring(1, st.Length - 1);
         }
 
+        public static string ApplyClassNameConvension(this string input)
+        {
+            var result = input.Substring(0, 1).ToUpper() + input.Substring(1, input.Length - 1);
+            result = result.Replace(" ", "");
+            result = result.Replace("-", "");
+            result = result.Replace("_", "");
+            Regex r = new Regex("[A-Z]");
+            MatchCollection col = r.Matches(input);
+            int i = 0;
+
+            foreach (Match d in col)
+            {
+                if (d.Index != 0)
+                {
+                    var isTransition = true;
+
+                    if (input.Length > (d.Index + 1))
+                        isTransition = !r.IsMatch(input[d.Index + 1].ToString());
+                    else
+                        isTransition = false;
+
+                    if (input.Length > 0)
+                        isTransition = isTransition || !r.IsMatch(input[d.Index - 1].ToString());
+
+                    if (!isTransition)
+                    {
+                        result = result.Remove(d.Index, 1);
+                        result = result.Insert(d.Index, input[d.Index].ToString().ToLower());
+                    }
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Substracts the string after the last occurance of the given string
         /// </summary>

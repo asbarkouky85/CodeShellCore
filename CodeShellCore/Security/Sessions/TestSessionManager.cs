@@ -11,7 +11,7 @@ namespace CodeShellCore.Security.Sessions
     {
         private string currentUserId;
 
-        //public TimeSpan DefaultSessionTime => throw new NotImplementedException();
+        //public TimeSpan DefaultSessionTime ;
         public TimeSpan DefaultSessionTime { get { return new TimeSpan(1, 0, 0); } set { } }//DefaultSessionTime= value;
 
         public override string GetCurrentUserId()

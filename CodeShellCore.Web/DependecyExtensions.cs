@@ -25,35 +25,32 @@ namespace CodeShellCore.Web
             coll.AddTransient<IProxyDocumentationService, ProxyDocumentationService>();
         }
 
-        public static void AddTokenSecurity(this IServiceCollection coll, AuthorizationType type)
+        public static void AddCodeShellWebSecurity()
         {
-            coll.AddCodeShellSecurity(type);
+
+        }
+        public static void AddTokenSecurity(this IServiceCollection coll)
+        {
             coll.AddTransient<ISessionManager, TokenSessionManager>();
-            coll.AddTransient<IAuthenticationService, TokenAuthenticationService>();
         }
 
-        public static void AddTokenSecurity<TUnit>(this IServiceCollection coll, AuthorizationType type = AuthorizationType.AuthorizeAuthenticated) where TUnit : class, ISecurityUnit
+        public static void AddTokenSecurity(this IServiceCollection coll, AuthorizationType type = AuthorizationType.AuthorizeAuthenticated)
         {
-            coll.AddCodeShellSecurity<TUnit, TokenSessionManager>(type);
-            coll.AddTransient<IAuthenticationService, TokenAuthenticationService>();
+            coll.AddTransient<ISessionManager, TokenSessionManager>();
         }
 
         public static void AddSOASecurity<TSessions>(this IServiceCollection coll)
             where TSessions : TokenSessionManager
         {
-            coll.AddCodeShellSecurity();
             coll.AddTransient<ISessionManager, TSessions>();
         }
 
         public static void AddModsterSecurity(this IServiceCollection coll)
         {
-            coll.AddCodeShellSecurity();
             coll.AddScoped<CurrentConfig>();
-            coll.AddTransient<IAuthorizationService, UIAuthorizationService>();
-            coll.AddTransient<IAuthenticationService, UIAuthenticationService>();
+
             coll.AddTransient<ISessionManager, UISessionManager>();
             coll.AddTransient<IPushingSessionManager, UISessionManager>();
-            coll.AddTransient<IUserDataService, UIUserDataService>();
 
         }
 

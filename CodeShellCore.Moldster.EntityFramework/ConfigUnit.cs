@@ -40,7 +40,7 @@ namespace CodeShellCore.Moldster
 
         public IRepository<ResourceAction> ResourceActionRepository { get { return GetRepositoryFor<ResourceAction>(); } }
         public IRepository<ResourceCollection> ResourceCollectionRepository => GetRepositoryFor<ResourceCollection>();
-        public IRepository<Tenant> TenantRepository { get { return GetRepositoryFor<Tenant>(); } }
+        public ITenantRepository TenantRepository { get { return GetRepository<TenantRepository>(); } }
 
     }
 }

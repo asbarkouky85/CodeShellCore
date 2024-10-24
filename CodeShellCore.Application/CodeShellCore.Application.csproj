@@ -17,8 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
+    <Folder Include="Data\Filtering\" />
+    <Folder Include="Data\Localization\Internal\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
   </ItemGroup>
 
 </Project>

@@ -44,9 +44,9 @@ namespace CodeShellCore.Moldster.PageCategories
             return cat;
         }
 
-        public override SubmitResult<PageCategoryDto> Post(PageCategoryDto dto)
+        public override EntitySubmitResult<PageCategoryDto> Post(PageCategoryDto dto)
         {
-            SubmitResult<PageCategoryDto> returned = new SubmitResult<PageCategoryDto>();
+            EntitySubmitResult<PageCategoryDto> returned = new EntitySubmitResult<PageCategoryDto>();
 
             if (string.IsNullOrEmpty(dto.Name))
                 dto.Name = dto.ViewPath?.GetAfterLast("/");
@@ -150,7 +150,7 @@ namespace CodeShellCore.Moldster.PageCategories
             return DefaultUnit.SaveChanges();
         }
 
-        public override Dictionary<string, IEnumerable<NamedDto<object>>> GetEditLookups(Dictionary<string, string> data)
+        public override Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
         {
             return Lookups.PageCategoryEdit(data);
         }

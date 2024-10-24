@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CodeShellCore.Cli;
+using System;
 using System.IO;
-using System.ComponentModel;
-using CodeShellCore.Helpers;
 using System.Linq;
-using CodeShellCore.Cli;
 
 namespace CodeShellCore.Files.Logging
 {

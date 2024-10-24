@@ -9,6 +9,7 @@ using System.Transactions;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Mapping;
+using CodeShellCore.Extensions.DependencyInjection;
 using CodeShellCore.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -415,6 +416,21 @@ namespace CodeShellCore.Data.EntityFramework
                 return dtoq.ToListWith(opts);
             }
             return dtoq.ToList();
+        }
+
+        public async Task<List<TR>> FindAndMapAsync<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
+        {
+            var q = Loader;
+            if (cond != null)
+            {
+                q = q.Where(cond);
+            }
+            var dtoq = QueryDto<TR>(q);
+            if (opts != null)
+            {
+                return await dtoq.ToPagedListAsync(opts);
+            }
+            return await dtoq.ToListAsync();
         }
 
         public List<TR> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class

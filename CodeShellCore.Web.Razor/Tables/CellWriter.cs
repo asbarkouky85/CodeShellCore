@@ -1,6 +1,4 @@
 ﻿using CodeShellCore.Moldster.Localization;
-using CodeShellCore.Moldster.Razor;
-using CodeShellCore.Text;
 using CodeShellCore.Web.Razor.Models;
 using CodeShellCore.Web.Razor.Validation;
 using CodeShellCore.Web.Razor.Validation.Internal;

@@ -14,10 +14,13 @@ namespace CodeShellCore.Modularity
             var attrs = type.GetCustomAttributes<DependsOnAttribute>();
             foreach (var attr in attrs)
             {
-                types.AddRange(attr.Modules);
                 foreach (var t in attr.Modules)
                 {
-                    types.AddRange(t.GetDependsOnModules());
+                    if (!types.Any(e => e == t) && t != type)
+                    {
+                        types.Add(t);
+                        types.AddRange(t.GetDependsOnModules());
+                    }
                 }
             }
             return types.Distinct().ToList();

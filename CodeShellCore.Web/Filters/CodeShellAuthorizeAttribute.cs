@@ -1,10 +1,12 @@
-﻿using CodeShellCore.Security;
+﻿using CodeShellCore.Http;
+using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace CodeShellCore.Web.Filters
@@ -29,7 +31,7 @@ namespace CodeShellCore.Web.Filters
 
             if (_authService == null)
                 return;
-            
+
             if (AllowAll && _authService.IsLoggedIn)
                 return;
 
@@ -42,7 +44,24 @@ namespace CodeShellCore.Web.Filters
             con.Clients = Clients;
 
             if (!_authService.IsAuthorized(con))
-                _authService?.OnUserIsUnauthorized(con);
+                onUserIsUnAuthorized(con);
+        }
+
+        protected virtual void onUserIsUnAuthorized(AuthorizationRequest<AuthorizationFilterContext> args)
+        {
+            HttpResult res = new HttpResult
+            {
+                RequestUrl = args.Context.HttpContext.Request.GetFullUrl(),
+                Method = args.Context.HttpContext.Request.Method
+            };
+            res.SetStatusCode(HttpStatusCode.Unauthorized);
+            res.Message = "UnAuthorized";
+            res.Data["creds"] = new
+            {
+                DeviceId = args.Context.HttpContext.Request.GetDeviceIdFromCookie(),
+                CurrentHost = args.Context.HttpContext.Request.GetHostUrl()
+            };
+            args.Context.Result = args.Context.Respond(res);
         }
     }
 }

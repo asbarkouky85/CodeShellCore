@@ -1,14 +1,13 @@
-﻿using CodeShellCore.Security;
+﻿using CodeShellCore.Extensions;
+using CodeShellCore.MultiTenant;
+using CodeShellCore.Security;
+using CodeShellCore.Security.Authentication;
+using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
-using CodeShellCore.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using CodeShellCore.Security.Authorization;
 using Microsoft.Extensions.Primitives;
-using CodeShellCore.Security.Authentication;
-using CodeShellCore.MultiTenant;
-using CodeShellCore.Extensions;
+using System;
 using System.Linq;
 
 namespace CodeShellCore.Web.Security

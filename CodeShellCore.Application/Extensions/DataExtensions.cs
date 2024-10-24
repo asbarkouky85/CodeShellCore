@@ -228,9 +228,9 @@ namespace CodeShellCore.Extensions.Data
         }
 
 
-        public static List<NamedDto<TPrime>> GetNamedList<T, TPrime>(this IRepository<T> repo, Expression<Func<T, TPrime>> expression) where T : class, INamed<TPrime>
+        public static List<Named<TPrime>> GetNamedList<T, TPrime>(this IRepository<T> repo, Expression<Func<T, TPrime>> expression) where T : class, INamed<TPrime>
         {
-            return repo.FindAs(e => new NamedDto<TPrime> { Id = e.Id, Name = e.Name }).OrderBy(d => d.Name).ToList();
+            return repo.FindAs(e => new Named<TPrime> { Id = e.Id, Name = e.Name }).OrderBy(d => d.Name).ToList();
         }
 
 
