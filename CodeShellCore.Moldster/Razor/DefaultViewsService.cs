@@ -1,14 +1,10 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Http;
-using CodeShellCore.Tasks;
-using System.Net;
-using System;
-using CodeShellCore.Text;
-using System.Collections.Generic;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
-using System.Threading.Tasks;
 using CodeShellCore.Moldster.Views;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Razor
 {
@@ -24,40 +20,37 @@ namespace CodeShellCore.Moldster.Razor
             _baseUrl = Utils.CombineUrl(paths.ConfigUrl, "api/Views");
         }
 
-        public TemplateDataCollector GetTemplateData(long id)
+        public async Task<TemplateDataCollector> GetTemplateData(long id)
         {
-            string data = Get("GetTemplateData/" + id).Content.ReadAsStringAsync().GetTaskResult();
-            return data.FromJson<TemplateDataCollector>() ?? new TemplateDataCollector { Controls = new List<ControlRenderDto>() };
+            var data = await GetAsyncAs<TemplateDataCollector>("GetTemplateData/" + id);
+            return data ?? new TemplateDataCollector { Controls = new List<ControlRenderDto>() };
         }
 
-        public RenderedPageResultDto GetPage(PageAcquisitorDTO pageAcquisitorDTO)
+        public async Task<RenderedPageResultDto> GetPage(PageAcquisitorDTO pageAcquisitorDTO)
         {
-            var s = Get("GetPage", pageAcquisitorDTO);
-            return new RenderedPageResultDto { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
+            var s = await GetAsyncAsString("GetPage", pageAcquisitorDTO);
+            return new RenderedPageResultDto { TemplateContent = s };
         }
 
-        public string GetPage(string viewPath)
+        public async Task<string> GetPage(string viewPath)
         {
-            var s = Get("GetPage/?ViewPath=" + viewPath);
-            return s.Content.ReadAsStringAsync().GetTaskResult();
+            return await GetAsyncAsString("GetPage/?ViewPath=" + viewPath);
         }
 
-        public string GetMainComponent(string baseComponent)
+        public async Task<string> GetMainComponent(string baseComponent)
         {
-            var s = Get("GetMainComponent/?ViewPath=" + baseComponent);
-            return s.Content.ReadAsStringAsync().GetTaskResult();
+            return await GetAsyncAsString("GetMainComponent/?ViewPath=" + baseComponent);
         }
 
-        public string GetGuide(string moduleCode)
+        public Task<string> GetGuide(string moduleCode)
         {
-            var s = Get("GetGuide/" + moduleCode);
-            return s.Content.ReadAsStringAsync().GetTaskResult();
+            return GetAsyncAsString("GetGuide/" + moduleCode);
         }
 
-        public RenderedPageResultDto GetPageById(long id)
+        public async Task<RenderedPageResultDto> GetPageById(long id)
         {
-            var s = Get("GetPageById/" + id);
-            return new RenderedPageResultDto { TemplateContent = s.Content.ReadAsStringAsync().GetTaskResult() };
+            var s = await GetAsyncAsString("GetPageById/" + id);
+            return new RenderedPageResultDto { TemplateContent = s };
         }
 
         public async Task<RenderedPageResultDto> GetPageCategoryById(long id)

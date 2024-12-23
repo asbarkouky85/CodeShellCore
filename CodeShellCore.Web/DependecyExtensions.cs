@@ -25,10 +25,7 @@ namespace CodeShellCore.Web
             coll.AddTransient<IProxyDocumentationService, ProxyDocumentationService>();
         }
 
-        public static void AddCodeShellWebSecurity()
-        {
-
-        }
+        
         public static void AddTokenSecurity(this IServiceCollection coll)
         {
             coll.AddTransient<ISessionManager, TokenSessionManager>();
@@ -43,15 +40,6 @@ namespace CodeShellCore.Web
             where TSessions : TokenSessionManager
         {
             coll.AddTransient<ISessionManager, TSessions>();
-        }
-
-        public static void AddModsterSecurity(this IServiceCollection coll)
-        {
-            coll.AddScoped<CurrentConfig>();
-
-            coll.AddTransient<ISessionManager, UISessionManager>();
-            coll.AddTransient<IPushingSessionManager, UISessionManager>();
-
         }
 
 

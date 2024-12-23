@@ -14,8 +14,6 @@ namespace CodeShellCore.UnitTest
         protected override CultureInfo defaultCulture => new CultureInfo("en");
         protected override IServiceProvider _scopedProvider => CurrentScope?.ServiceProvider;
 
-        protected override string sharedPathRoot { get; }
-
         private readonly Action<CodeshellAppContext> _otherRegistration;
 
         public static IServiceScope CurrentScope;

@@ -11,7 +11,7 @@ namespace CodeShellCore.ToolSet
         {
             if (Debugger.IsAttached)
             {
-                var testing = FunctionTypes.GenerateModuleClasses;
+                var testing = FunctionTypes.ReplaceParameters;
 
                 switch (testing)
                 {
@@ -45,7 +45,7 @@ namespace CodeShellCore.ToolSet
                         args = new[] { @"gen-dto", @"C:\_git\Asga\FMS_git", "FMS.Assets.Domain", "Item", "gcul", "-o", "FMS.Assets.Application.Contracts" };// @"C:\_abdelrahman\Dev\Maneh\ManehBackend" };
                         break;
                     case FunctionTypes.ReplaceParameters:
-                        args = new[] { "replace", @"D:\Work\Common\tests\replace_test.json", "-d", "{\"userName\":\"abarkouky\",\"password\":\"123456\"}" };
+                        args = new[] { "replace", @".\Tests\Replace\settings_file.json", "-s", ".\\Tests\\Replace\\values_file.json" };
                         //args = new[] {
                         //    "replace",
                         //    @"C:\_git\Mahmoud\Databoat-Ecommerce-Frontend\src\index.html",
@@ -62,18 +62,19 @@ namespace CodeShellCore.ToolSet
                         args = new[] { "download", "https://nodejs.org/dist/v16.16.0/node-v16.16.0-x64.msi", "./Downloads" };
                         break;
                     case FunctionTypes.Proxy:
-                        args = new[] { "gen-proxy", "https://localhost:44300", "C:\\_git\\Asga\\WebAndBackEnd\\FMS.Frontend\\src\\core" };
+                        args = new[] { "gen-proxy", "https://localhost:44300", "C:\\_git\\Asga\\craft_frontend\\src\\core" };
                         break;
                     case FunctionTypes.GenerateModuleClasses:
                         args = new[] { "gen-modules", "C:\\_git\\Asga\\WebAndBackEnd" };
                         break;
                 }
             }
-
+            
             BuildConsoleHost(args).Run();
 
             if (Debugger.IsAttached)
             {
+                Console.WriteLine(args[0] + " Complete");
                 Console.ReadLine();
             }
         }

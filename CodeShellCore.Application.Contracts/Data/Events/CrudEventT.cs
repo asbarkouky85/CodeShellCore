@@ -1,10 +1,10 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Data.Helpers;
+﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
 using CodeShellCore.MQ.Events;
-using CodeShellCore.Services;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Events
 {
@@ -12,16 +12,18 @@ namespace CodeShellCore.Data.Events
     {
         public T Data { get; private set; }
 
-        private CrudEvent()
+
+        public CrudEvent()
         {
 
         }
 
-        public CrudEvent(T data, ActionType type, long? tenant = null)
+        [JsonConstructor]
+        public CrudEvent(T data, ActionType type, long? tenantId = null)
         {
             Data = data;
             Type = type;
-            TenantId = tenant;
+            TenantId = tenantId;
         }
 
         public CrudEvent<TObject> GetEventFor<TObject>(bool ignorId = false) where TObject : class
@@ -38,20 +40,20 @@ namespace CodeShellCore.Data.Events
             return ev;
         }
 
-        public SubmitResult Apply(IEntityService<T> service)
+        public async Task<SubmitResult> Apply(IEntityService<T> service)
         {
 
             SubmitResult res = new SubmitResult(0);
             switch (Type)
             {
                 case ActionType.Add:
-                    res = service.Create(Data);
+                    res = await service.Create(Data);
                     break;
                 case ActionType.Update:
-                    res = service.Update(Data);
+                    res = await service.Update(Data);
                     break;
                 case ActionType.Delete:
-                    res = service.Delete(Data);
+                    res = await service.Delete(Data);
                     break;
             }
             return res;

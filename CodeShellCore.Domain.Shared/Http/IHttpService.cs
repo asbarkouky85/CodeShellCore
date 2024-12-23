@@ -15,7 +15,9 @@ namespace CodeShellCore.Http
         HttpResponseMessage Get(string url, object query = null);
         Task<HttpResponseMessage> GetAsync(string url, object query = null);
         Task<T> GetAsyncAs<T>(string url, object query = null) where T : class;
+        Task<string> GetAsyncAsString(string url, object query = null);
         HttpResponseMessage Post<T>(string url, T data, object query = null) where T : class;
+        Task<T> PostAsAsync<T>(string url, object data, object query = null) where T : class;
         Task<HttpResponseMessage> PostAsync<T>(string url, T data, object query = null) where T : class;
         Task<HttpResponseMessage> UploadFiles(string url, IEnumerable<FileData> files, object query = null);
     }

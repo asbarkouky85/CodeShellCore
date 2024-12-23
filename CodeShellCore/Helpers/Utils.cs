@@ -8,7 +8,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -411,6 +413,29 @@ namespace CodeShellCore.Helpers
             return long.Parse(st);
         }
 
+        public static bool TryParseDate(string str, string[] formats, out DateTime t)
+        {
+
+            if (!DateTime.TryParse(str, out t))
+            {
+                if (formats == null)
+                    return false;
+                return DateTime.TryParseExact(str, formats, DateTimeFormatInfo.CurrentInfo, DateTimeStyles.AdjustToUniversal, out t);
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static bool ValidateModel(object obj, out List<ValidationResult> res)
+        {
+            var cont = new ValidationContext(obj);
+            var results = new List<ValidationResult>();
+            var valid = Validator.TryValidateObject(obj, cont, results, true);
+            res = results;
+            return valid;
+        }
 
     }
 }

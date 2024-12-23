@@ -6,19 +6,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Localization
 {
-    public class CustomTextService : DataService<IConfigUnit>, ICustomTextService
+    public class CustomTextService : DataService<IMoldsterUnit>, ICustomTextService
     {
         private readonly ILocalizationService loc;
 
-        public CustomTextService(IConfigUnit unit, ILocalizationService loc) : base(unit)
+        public CustomTextService(IMoldsterUnit unit, ILocalizationService loc) : base(unit)
         {
             this.loc = loc;
         }
 
-        public PagedResult<CustomTextDto> Get(CustomTextRequestDto req, PagedListRequestDto opts)
+        public async Task<PagedResult<CustomTextDto>> Get(CustomTextRequestDto req, PagedListRequestDto opts)
         {
             PagedResult<CustomTextDto> data;
             if (req.ModifiedOnly)
@@ -27,7 +28,7 @@ namespace CodeShellCore.Moldster.Localization
                 op.AddFilter(e => e.TenantId == req.TenantId);
                 op.AddFilter(e => e.Type == req.Type);
                 op.AddFilter(e => e.Locale == req.Locale);
-                var sdata = Unit.CustomTextRepository.Find(op);
+                var sdata = await Unit.CustomTextRepository.Find(op);
                 data = Mapper.Map(sdata, new PagedResult<CustomTextDto>());
                 foreach (var x in data.List)
                     x.State = "Attached";
@@ -35,9 +36,9 @@ namespace CodeShellCore.Moldster.Localization
             }
             else
             {
-                data = loc.LoadForTenant(req, opts);
+                data = await loc.LoadForTenant(req, opts);
                 var customTextReq = Mapper.Map(req, new CustomTextRequest());
-                List<CustomText> db = Unit.CustomTextRepository.GetBy(customTextReq);
+                List<CustomText> db = await Unit.CustomTextRepository.GetBy(customTextReq);
                 var lst = new List<CustomTextDto>();
                 foreach (var item in data.List)
                 {
@@ -62,10 +63,10 @@ namespace CodeShellCore.Moldster.Localization
             };
         }
 
-        public SubmitResult SaveChanges(IEnumerable<CustomTextDto> lst)
+        public async Task<SubmitResult> SaveChanges(IEnumerable<CustomTextDto> lst)
         {
-            Unit.CustomTextRepository.ApplyChanges(lst, Mapper);
-            return Unit.SaveChanges();
+            await Unit.CustomTextRepository.ApplyChanges(lst, Mapper);
+            return await Unit.SaveChanges();
         }
     }
 }

@@ -3,23 +3,23 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Pages.Views;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages.Services
 {
-    public class PageParameterDataService : DataService<IConfigUnit>, IPageParameterDataService
+    public class PageParameterDataService : DataService<IMoldsterUnit>, IPageParameterDataService
     {
-        public PageParameterDataService(IConfigUnit unit) : base(unit)
+        public PageParameterDataService(IMoldsterUnit unit) : base(unit)
         {
 
         }
 
-        public PagedResult<PageReferenceDTO> GetReferences(ParameterRequest req, PagedListRequestDto opt)
+        public async Task<PagedResult<PageReferenceDTO>> GetReferences(ParameterRequest req, PagedListRequestDto opt)
         {
             var o = opt.GetOptionsFor<PageReferenceView>();
-            var result = Unit.PageParameterRepository.FindReferences(req, o);
+            var result = await Unit.PageParameterRepository.FindReferences(req, o);
             return new PagedResult<PageReferenceDTO>
             {
                 TotalCount = result.TotalCount,
@@ -27,12 +27,12 @@ namespace CodeShellCore.Moldster.Pages.Services
             };
         }
 
-        public SubmitResult UpdateTemplatePages(long id, long tenantId)
+        public async Task<SubmitResult> UpdateTemplatePages(long id, long tenantId)
         {
             var textType = (long)PageParameterTypes.Text;
-            var pages = Unit.PageRepository.GetValues(d => d.Id, d => d.TenantId == tenantId && d.PageCategoryId == id);
-            IEnumerable<PageCategoryParameterWithPageId> categoryValues = Unit.PageCategoryParameterRepository.FindForPageParameterUpdate(id, tenantId);
-            IEnumerable<PageParameter> all = Unit.PageParameterRepository.Find(d => d.Page.PageCategoryId == id && d.Page.TenantId == tenantId);
+            var pages = await Unit.PageRepository.GetValues(d => d.Id, d => d.TenantId == tenantId && d.PageCategoryId == id);
+            IEnumerable<PageCategoryParameterWithPageId> categoryValues = await Unit.PageCategoryParameterRepository.FindForPageParameterUpdate(id, tenantId);
+            IEnumerable<PageParameter> all = await Unit.PageParameterRepository.Find(d => d.Page.PageCategoryId == id && d.Page.TenantId == tenantId);
 
             foreach (var p in pages)
             {
@@ -61,18 +61,18 @@ namespace CodeShellCore.Moldster.Pages.Services
                     }
                 }
             }
-            return Unit.SaveChanges();
+            return await Unit.SaveChanges();
         }
 
 
 
-        public SubmitResult UpdateTemplatePagesViewParamsJson(long tenantId, long? pageCategoryId = null)
+        public async Task<SubmitResult> UpdateTemplatePagesViewParamsJson(long tenantId, long? pageCategoryId = null)
         {
 
-            var pagesByCategoryAndTenant = Unit.PageRepository.Find(d => (d.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.TenantId == tenantId);
-            IEnumerable<PageParameterForJson> pageParametersByTenantAndCategory = Unit.PageParameterRepository.FindForJson(tenantId, pageCategoryId);
-            IEnumerable<PageRouteView> pageRoutesByTenantAndCategory = Unit.PageRouteRepository.FindForJson(tenantId, pageCategoryId);
-            IEnumerable<CustomField> fieldsByTenantAndCategory = Unit.CustomFieldRepository.Find(d => (d.Page.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.Page.TenantId == tenantId);
+            var pagesByCategoryAndTenant = await Unit.PageRepository.Find(d => (d.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.TenantId == tenantId);
+            IEnumerable<PageParameterForJson> pageParametersByTenantAndCategory = await Unit.PageParameterRepository.FindForJson(tenantId, pageCategoryId);
+            IEnumerable<PageRouteView> pageRoutesByTenantAndCategory = await Unit.PageRouteRepository.FindForJson(tenantId, pageCategoryId);
+            IEnumerable<CustomField> fieldsByTenantAndCategory = await Unit.CustomFieldRepository.Find(d => (d.Page.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.Page.TenantId == tenantId);
 
             foreach (var page in pagesByCategoryAndTenant)
             {
@@ -81,15 +81,15 @@ namespace CodeShellCore.Moldster.Pages.Services
                 var pageParameters = pageParametersByTenantAndCategory.Where(d => d.PageId == page.Id).ToArray();
                 var pageRoutes = pageRoutesByTenantAndCategory.FirstOrDefault(d => d.PageId == page.Id);
                 var pageFields = fieldsByTenantAndCategory.Where(d => d.PageId == page.Id).Select(e => new FieldDefinition { Name = e.Name, Type = e.Type }).ToArray();
-                Unit.PageRepository.UpdatePageViewParamsJson(page, pageParameters, pageRoutes, pageFields);
+                await Unit.PageRepository.UpdatePageViewParamsJson(page, pageParameters, pageRoutes, pageFields);
             }
-            return Unit.SaveChanges();
+            return await Unit.SaveChanges();
         }
 
-        public SubmitResult UpdateTemplatePagesViewParamsJson(string tenantCode)
+        public async Task<SubmitResult> UpdateTemplatePagesViewParamsJson(string tenantCode)
         {
-            var tenantId = Unit.TenantRepository.GetSingleValue(e => e.Id, e => e.Code == tenantCode);
-            return UpdateTemplatePagesViewParamsJson(tenantId);
+            var tenantId = await Unit.TenantRepository.GetSingleValue(e => e.Id, e => e.Code == tenantCode);
+            return await UpdateTemplatePagesViewParamsJson(tenantId);
         }
     }
 }

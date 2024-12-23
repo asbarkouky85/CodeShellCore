@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Extensions.Data
 {
@@ -99,7 +100,7 @@ namespace CodeShellCore.Extensions.Data
             return lst;
         }
 
-        internal static List<TEntity> ApplyToRepoGeneric<TEntity, TDto, TPrime>(this IRepository<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
+        internal static async Task<List<TEntity>> ApplyToRepoGeneric<TEntity, TDto, TPrime>(this IRepository<TEntity> repo, IEnumerable<TDto> items, IObjectMapper mapper)
              where TEntity : class, IEntity<TPrime>
              where TDto : class, IDetailObject<TPrime>
         {
@@ -114,7 +115,7 @@ namespace CodeShellCore.Extensions.Data
                         lst.Add(added);
                         break;
                     case ChangeStates.Modified:
-                        var updated = repo.FindSingle(e => e.Id.Equals(item.Id));
+                        var updated = await repo.FindSingle(e => e.Id.Equals(item.Id));
                         if (updated != null)
                         {
                             mapper.Map(item, updated);
@@ -228,9 +229,9 @@ namespace CodeShellCore.Extensions.Data
         }
 
 
-        public static List<Named<TPrime>> GetNamedList<T, TPrime>(this IRepository<T> repo, Expression<Func<T, TPrime>> expression) where T : class, INamed<TPrime>
+        public static async Task<List<Named<TPrime>>> GetNamedList<T, TPrime>(this IRepository<T> repo, Expression<Func<T, TPrime>> expression) where T : class, INamed<TPrime>
         {
-            return repo.FindAs(e => new Named<TPrime> { Id = e.Id, Name = e.Name }).OrderBy(d => d.Name).ToList();
+            return (await repo.FindAs(e => new Named<TPrime> { Id = e.Id, Name = e.Name })).OrderBy(d => d.Name).ToList();
         }
 
 
@@ -244,7 +245,7 @@ namespace CodeShellCore.Extensions.Data
             return set;
         }
 
-        public static ChangeSet<TEntity> ApplyChanges<TDto, TEntity>(this IRepository<TEntity> repo, IEnumerable<TDto> lst, IObjectMapper mapper)
+        public static async Task<ChangeSet<TEntity>> ApplyChanges<TDto, TEntity>(this IRepository<TEntity> repo, IEnumerable<TDto> lst, IObjectMapper mapper)
             where TDto : class, IDetailObject<long>
             where TEntity : class, IEntity<long>
         {
@@ -260,7 +261,7 @@ namespace CodeShellCore.Extensions.Data
 
             foreach (TDto item in set.Updated)
             {
-                var update = repo.FindSingle(item.Id);
+                var update = await repo.FindSingle(item.Id);
                 if (update != null)
                 {
                     mapper.Map(item, update);
@@ -272,7 +273,7 @@ namespace CodeShellCore.Extensions.Data
 
             foreach (TDto item in set.Deleted)
             {
-                var deleted = repo.FindSingle(item.Id);
+                var deleted = await repo.FindSingle(item.Id);
                 if (deleted != null)
                 {
                     repo.Delete(deleted);

@@ -16,9 +16,9 @@ namespace CodeShellCore.Web.Moldster.Configurator
         {
         }
 
-        protected override IUser GetUserFromDataSource(string c)
+        protected override Task<IUser> GetUserFromDataSource(string c)
         {
-            return new ConfiguratorUserDTO();
+            return Task.FromResult((IUser)new ConfiguratorUserDTO());
         }
     }
 }

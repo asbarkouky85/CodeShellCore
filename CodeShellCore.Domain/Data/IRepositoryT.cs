@@ -12,42 +12,43 @@ namespace CodeShellCore.Data
 {
     public interface IRepository<T> : IRepository where T : class
     {
-        bool Exist(Expression<Func<T, bool>> exp);
         bool FindSingleOrAdd(Expression<Func<T, bool>> ex, T obj, out T existing);
-        bool IdExists(object id);
 
-        DeleteResult CanDelete(object id);
-        IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex);
-        IEnumerable<TValue> GetValues<TValue, TOrder>(Expression<Func<T, TValue>> ex, Expression<Func<T, TOrder>> order, Expression<Func<T, bool>> filter = null);
-        IEnumerable<TValue> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter = null);
-        int Count(Expression<Func<T, bool>> exp);
-        List<T> Find(Expression<Func<T, bool>> exp);
-        List<T> GetList();
+        Task<bool> Exist(Expression<Func<T, bool>> exp);
+        Task<bool> IdExists(object id);
 
-        List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class;
+        Task<DeleteResult> CanDelete(object id);
+        Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex);
+        Task<IEnumerable<TValue>> GetValues<TValue, TOrder>(Expression<Func<T, TValue>> ex, Expression<Func<T, TOrder>> order, Expression<Func<T, bool>> filter = null);
+        Task<IEnumerable<TValue>> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter = null);
+        Task<int> Count(Expression<Func<T, bool>> exp);
+        Task<List<T>> Find(Expression<Func<T, bool>> exp);
+        Task<List<T>> GetList();
+
+        Task<List<TR>> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class;
         Task<List<TR>> FindAndMapAsync<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class;
-        List<TR> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class;
-        PagedResult<TR> FindAndMap<TR>(PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class;
+        Task<List<TR>> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class;
+        Task<PagedResult<TR>> FindAndMap<TR>(PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class;
 
-        TR FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class;
-        TR FindSingleAndMap<TR>(object id) where TR : class;
+        Task<TR> FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class;
+        Task<TR> FindSingleAndMap<TR>(object id) where TR : class;
 
-        List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class;
-        List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class;
-        PagedResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, PagedListRequest<TR> opts) where TR : class;
-        PagedResult<T> Find(PagedListRequest<T> opts);
-        PagedResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class;
-        T FindSingle(Expression<Func<T, bool>> expression);
-        T FindSingle(object id);
-        T Merge(Expression<Func<T, bool>> ex, T obj);
+        Task<List<TR>> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class;
+        Task<List<TR>> FindAs<TR>(Expression<Func<T, TR>> exp, IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class;
+        Task<PagedResult<TR>> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, PagedListRequest<TR> opts) where TR : class;
+        Task<PagedResult<T>> Find(PagedListRequest<T> opts);
+        Task<PagedResult<TR>> FindAs<TR>(Expression<Func<T, TR>> exp, PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class;
+        Task<T> FindSingle(Expression<Func<T, bool>> expression);
+        Task<T> FindSingle(object id);
+        Task<T> Merge(Expression<Func<T, bool>> ex, T obj);
         Task MergeAsync(IEnumerable<T> list, Action<T, T> updateAction = null);
-        TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> expression) where TR : class;
-        TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
-        TVal GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null);
-        TValue GetSingleValue<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter);
-        TValue GetValue<TValue>(object id, Expression<Func<T, TValue>> ex);
+        Task<TR> FindSingleAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> expression) where TR : class;
+        Task<TR> FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
+        Task<TVal> GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null);
+        Task<TValue> GetSingleValue<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter);
+        Task<TValue> GetValue<TValue>(object id, Expression<Func<T, TValue>> ex);
         void Add(T obj);
-        void Delete(Expression<Func<T, bool>> ex);
+        Task Delete(Expression<Func<T, bool>> ex);
         void Delete(T obj);
         void DeleteById(object id);
         void Merge(T obj);

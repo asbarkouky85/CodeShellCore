@@ -2,15 +2,16 @@
 using CodeShellCore.Data.Services;
 using CodeShellCore.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
     public interface IPageCategoryService : IDtoEntityService<long, PageCategoryListDTO, PagedListRequestDto, PageCategoryDto>
     {
-        SubmitResult Create(List<PageCategoryDto> list);
-        PagedResult<PageCategoryListDTO> GetAll(PagedListRequestDto opt);
-        List<TemplateDTO> GetLocalTemplate(IEnumerable<string> files);
-        PagedResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, PagedListRequestDto opt);
-        List<TemplateDTO> GetTemplates();
+        Task<SubmitResult> Create(List<PageCategoryDto> list);
+        Task<PagedResult<PageCategoryListDTO>> GetAll(PagedListRequestDto opt);
+        Task<List<TemplateDTO>> GetLocalTemplate(IEnumerable<string> files);
+        Task<PagedResult<PageCategoryListDTO>> GetPagesCategoryByDomain(long domainId, PagedListRequestDto opt);
+        Task<List<TemplateDTO>> GetTemplates();
     }
 }

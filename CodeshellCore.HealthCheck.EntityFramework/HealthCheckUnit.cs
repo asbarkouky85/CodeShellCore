@@ -25,7 +25,7 @@ namespace CodeShellCore.HealthCheck
                 await DbContext.Database.ExecuteSqlRawAsync($"delete from CheckItems where CreatedOn<'{date}' AND StatusCode=200");
 
             }
-            catch (Exception ex)
+            catch
             {
 
             }

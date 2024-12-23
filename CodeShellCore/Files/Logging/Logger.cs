@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Cli;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
@@ -26,10 +27,9 @@ namespace CodeShellCore.Files.Logging
             }
         }
 
-        private Logger(string app, string folder = null)
+        private Logger(string app, string logKey)
         {
-
-            folder = string.IsNullOrEmpty(folder) ? Path.Combine(Shell.AppRootPath, "Logs") : folder;
+            var folder = Path.Combine(Shell.AppRootPath, "Logs", logKey);
             Location = FileLocationService.Make(app, folder);
             _startFile();
         }
@@ -37,14 +37,14 @@ namespace CodeShellCore.Files.Logging
 
         #region Static Methods
 
-        public static Logger Create(string AppName, string logFolder)
+        public static Logger Create(string AppName, string logKey)
         {
-            return new Logger(AppName, logFolder);
+            return new Logger(AppName, logKey);
         }
 
-        public static void Set(string AppName, string logFolder = null)
+        public static void Set(string AppName, string logKey)
         {
-            Default = new Logger(AppName, logFolder);
+            Default = new Logger(AppName, logKey);
         }
 
         public static void WriteLine(object ob)

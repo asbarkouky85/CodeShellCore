@@ -2,20 +2,19 @@
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Moldster.CodeGeneration;
-using CodeShellCore.Moldster.Localization;
 using CodeShellCore.Moldster.Services;
 using CodeShellCore.Moldster.Views;
-using CodeShellCore.Types;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
     public class PageHtmlGenerationService : RazorViewsServiceBase, IPageHtmlGenerationService
     {
         protected IPathsService _paths => Store.GetInstance<IPathsService>();
-        protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
+        protected IMoldsterUnit _unit => Store.GetInstance<IMoldsterUnit>();
         private INamingConventionService _names => Store.GetInstance<INamingConventionService>();
         protected IViewsService _dbViews => Store.GetInstance<IViewsService>();
 
@@ -23,24 +22,12 @@ namespace CodeShellCore.Moldster.Pages
         {
         }
 
-        public void GenerateGuidTemplate(string moduleCode)
-        {
-            using (Out.Set(ConsoleColor.Cyan))
-                Out.Write(" Html: ");
-            var contents = _dbViews.GetGuide(moduleCode);
-            string path = Path.Combine(_paths.UIRoot, moduleCode, "app", "Guide/Guide.html"); ;
-
-            Utils.CreateFolderForFile(path);
-            File.WriteAllText(path, contents);
-            WriteSuccess();
-        }
-
-        private RenderedPageResultDto GeneratePageHtml(long id)
+        private async Task<RenderedPageResultDto> GeneratePageHtml(long id)
         {
             try
             {
 
-                return _dbViews.GetPageById(id);
+                return await _dbViews.GetPageById(id);
             }
             catch (CodeShellHttpException ex)
             {
@@ -54,7 +41,7 @@ namespace CodeShellCore.Moldster.Pages
             }
         }
 
-        private RenderedPageResultDto GetPage(string module, string viewPath)
+        private Task<RenderedPageResultDto> GetPage(string module, string viewPath)
         {
             try
             {
@@ -82,14 +69,17 @@ namespace CodeShellCore.Moldster.Pages
                 using (Out.Set(ConsoleColor.Cyan))
                     Out.Write(" Html: ");
 
-                PageDetailsDto p = _unit.PageRepository.FindSingleAndMap<PageDetailsDto>(e => e.Id == id);
+                var tsk = _unit.PageRepository.FindSingleAndMap<PageDetailsDto>(e => e.Id == id);
+                tsk.Wait();
+                PageDetailsDto p = tsk.Result;
                 string templatePath = _names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".html";
                 if (!opts.ReplaceComponentHtml && File.Exists(templatePath))
                 {
                     WriteColored("Exists", ConsoleColor.Cyan);
                     return true;
                 }
-                res = GeneratePageHtml(p.Page.Id);
+                var generateTask = GeneratePageHtml(p.Page.Id);
+                res = generateTask.Result;
                 string template = res.TemplateContent;
                 if (template == null)
                 {
@@ -107,16 +97,19 @@ namespace CodeShellCore.Moldster.Pages
 
 
 
-        public virtual PageJsonData GenerateComponentTemplate(string moduleName, PageRenderDTO dto)
+        public virtual Task<PageJsonData> GenerateComponentTemplate(string moduleName, PageRenderDTO dto)
         {
-            if (RenderPage(dto.Id, out RenderedPageResultDto res))
+            return Task.Run(() =>
             {
-                return res;
-            }
-            return null;
+                if (RenderPage(dto.Id, out RenderedPageResultDto res))
+                {
+                    return (PageJsonData)res;
+                }
+                return null;
+            });
         }
 
-        public virtual void GenerateMainComponentTemplate(string moduleCode)
+        public virtual async Task GenerateMainComponentTemplate(string moduleCode)
         {
             using (var m = SW.Measure())
             {
@@ -131,9 +124,9 @@ namespace CodeShellCore.Moldster.Pages
                     return;
                 }
 
-                string baseComponent = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == moduleCode);
+                string baseComponent = await _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == moduleCode);
 
-                string contents = _dbViews.GetMainComponent(baseComponent);
+                string contents = await _dbViews.GetMainComponent(baseComponent);
 
 
                 Utils.CreateFolderForFile(filePath);
@@ -143,24 +136,30 @@ namespace CodeShellCore.Moldster.Pages
 
         }
 
-        public void MoveHtmlTemplate(MovePageRequest r)
+        public Task MoveHtmlTemplate(MovePageRequest r)
         {
-            string fromPath = _names.GetComponentFilePath(r.TenantCode, r.FromPath) + ".html";
-            string toPath = _names.GetComponentFilePath(r.TenantCode, r.ToPath) + ".html";
-            if (File.Exists(fromPath))
+            return Task.Run(() =>
             {
-                Utils.CreateFolderForFile(toPath);
-                File.Move(fromPath, toPath);
-            }
+                string fromPath = _names.GetComponentFilePath(r.TenantCode, r.FromPath) + ".html";
+                string toPath = _names.GetComponentFilePath(r.TenantCode, r.ToPath) + ".html";
+                if (File.Exists(fromPath))
+                {
+                    Utils.CreateFolderForFile(toPath);
+                    File.Move(fromPath, toPath);
+                }
+            });
         }
 
-        public void DeleteHtmlTemplate(string tenantCode, string fromPath)
+        public Task DeleteHtmlTemplate(string tenantCode, string fromPath)
         {
-            string path = _names.GetComponentFilePath(tenantCode, fromPath) + ".html";
-            if (File.Exists(path))
+            return Task.Run(() =>
             {
-                File.Delete(path);
-            }
+                string path = _names.GetComponentFilePath(tenantCode, fromPath) + ".html";
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            });
         }
     }
 }

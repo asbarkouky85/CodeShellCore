@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Data.Lookups;
+using CodeShellCore.Extensions.DependencyInjection;
 using CodeShellCore.Linq;
 using CodeShellCore.Security;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.ConfiguredCollections
 {
@@ -46,57 +48,57 @@ namespace CodeShellCore.Data.ConfiguredCollections
             return Loader.Where(exp);
         }
 
-        public virtual IEnumerable<T> GetCollectionList(string collectionId)
+        public virtual async Task<IEnumerable<T>> GetCollectionList(string collectionId)
         {
-            return QueryCollection(collectionId).ToList();
+            return await QueryCollection(collectionId).ToListAsync();
         }
 
-        public virtual IEnumerable<TObject> GetCollectionListAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp)
+        public virtual async Task<IEnumerable<TObject>> GetCollectionListAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp)
         {
-            return QueryCollection(collectionId).Select(exp).ToList();
+            return await QueryCollection(collectionId).Select(exp).ToListAsync();
         }
 
-        public virtual PagedResult<T> LoadCollection(string collectionId, PagedListRequest<T> opts)
+        public virtual async Task<PagedResult<T>> LoadCollection(string collectionId, PagedListRequest<T> opts)
         {
-            return QueryCollection(collectionId).ToPagedResult(opts);
+            return await QueryCollection(collectionId).ToPagedResultAsync(opts);
         }
 
-        public virtual PagedResult<TObject> LoadCollectionAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp, PagedListRequest<TObject> opts) where TObject : class
+        public virtual async Task<PagedResult<TObject>> LoadCollectionAs<TObject>(string collectionId, Expression<Func<T, TObject>> exp, PagedListRequest<TObject> opts) where TObject : class
         {
 
-            return QueryCollection(collectionId).Select(exp).ToPagedResult(opts);
+            return await QueryCollection(collectionId).Select(exp).ToPagedResultAsync(opts);
         }
 
-        public override IEnumerable<Named<object>> FindAsLookup(string collectionId = null)
+        public override async Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId = null)
         {
             var l = collectionId == null ? Loader : QueryCollection(collectionId);
-            return QueryNamed(l).OrderBy(d => d.Name).ToList();
+            return await QueryNamed(l).OrderBy(d => d.Name).ToListAsync();
         }
 
-        public override IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
+        public override async Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
         {
             var l = collectionId == null ? Loader : QueryCollection(collectionId);
             l = l.Where(ex);
-            return QueryNamed(l).OrderBy(d => d.Name).ToList();
+            return await QueryNamed(l).OrderBy(d => d.Name).ToListAsync();
         }
 
-        public IEnumerable<TObject> GetCollectionListAndMap<TObject>(string collectionId)
+        public async Task<IEnumerable<TObject>> GetCollectionListAndMap<TObject>(string collectionId)
         {
             var q = QueryCollection(collectionId);
-            return QueryDto<TObject>(q).ToList();
+            return await QueryDto<TObject>(q).ToListAsync();
         }
 
-        public PagedResult<TObject> LoadCollectionAndMap<TObject>(string collectionId, PagedListRequest<TObject> opts) where TObject : class
+        public async Task<PagedResult<TObject>> LoadCollectionAndMap<TObject>(string collectionId, PagedListRequest<TObject> opts) where TObject : class
         {
             var q = QueryCollection(collectionId);
-            return QueryDto<TObject>(q).ToPagedResult(opts);
+            return await QueryDto<TObject>(q).ToPagedResultAsync(opts);
         }
 
-        public override PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
+        public override async Task<PagedResult<Named<object>>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
         {
             var req = request.GetOptionsFor<Named<object>>();
             var cQ = collectionId == null ? Loader : QueryCollection(collectionId);
-            return QueryNamed(cQ).ToPagedResult(req);
+            return await QueryNamed(cQ).ToPagedResultAsync(req);
         }
     }
 }

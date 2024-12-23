@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Services
 {
@@ -15,9 +16,9 @@ namespace CodeShellCore.Data.Services
         where TUpdateDto : class
         where TOptionsDto : PagedListRequestDto
     {
-        DeleteResult Delete(TPrime id);
-        EntitySubmitResult<TSingleDto> Post(TCreateDto dto);
-        EntitySubmitResult<TSingleDto> Put(TUpdateDto dto);
+        Task<DeleteResult> Delete(TPrime id);
+        Task<EntitySubmitResult<TSingleDto>> Post(TCreateDto dto);
+        Task<EntitySubmitResult<TSingleDto>> Put(TUpdateDto dto);
     }
 
 

@@ -1,16 +1,17 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using CodeShellCore.Data.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeShellCore.Data.EntityFramework;
-using CodeShellCore.Data.Lookups;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 
 namespace CodeShellCore.Data.Recursion
 {
-    public class DefaultRecursiveRepository<T, TContext> : Repository_Int64<T, TContext>, IRecursiveRepository<T>
-         where T : class, IRecursiveModel
+    public class DefaultRecursiveRepository<T, TRec, TContext> : Repository_Int64<T, TContext>, IRecursiveRepository<T, TRec>
+         where T : class, IRecursiveModel<T>
+        where TRec : class, IRecursiveModel<TRec>
          where TContext : DbContext
     {
         protected virtual bool UpdateChildrenOnUpdate { get { return true; } }
@@ -27,38 +28,24 @@ namespace CodeShellCore.Data.Recursion
                    select tn;
         }
 
-        protected virtual Expression<Func<T, RecursionModel>> RecusiveModelExpression
+        public virtual async Task DeleteAllSubs(object prime)
         {
-            get
-            {
-                return x => new RecursionModel()
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ParentId = x.ParentId,
-                    Chain = x.Chain,
-                    NameChain = x.NameChain,
-
-                };
-            }
-        }
-
-        public virtual void DeleteAllSubs(object prime)
-        {
-            var del = Loader.Where(d => d.Chain.Contains("|" + prime + "|") && d.Id != (long)prime).ToList();
+            var del = await Loader.Where(d => d.Chain.Contains("|" + prime + "|") && d.Id != (long)prime).ToListAsync();
             foreach (var it in del)
                 Saver.Remove(it);
         }
 
-        public virtual IEnumerable<T> GetChildren(object prime)
+        public virtual async Task<IEnumerable<T>> GetChildren(object prime)
         {
             var q = Loader.Where(d => d.Chain != null && d.Chain.Contains("|" + prime + "|") && !d.Id.Equals(prime));
-            return q.ToList();
+            return await q.ToListAsync();
         }
 
         public override void Delete(T obj)
         {
-            var children = GetChildren(obj.Id);
+            var t = GetChildren(obj.Id);
+            t.Wait();
+            var children = t.Result;
             foreach (var ch in children)
                 DbContext.Entry(ch).State = EntityState.Deleted;
             base.Delete(obj);
@@ -68,10 +55,11 @@ namespace CodeShellCore.Data.Recursion
         {
             obj.Chain = null;
             obj.NameChain = null;
-
             if (UpdateChildrenOnUpdate)
             {
-                var children = GetChildren(obj.Id);
+                var t = GetChildren(obj.Id);
+                t.Wait();
+                var children = t.Result;
                 foreach (var ch in children)
                     DbContext.Entry(ch).State = EntityState.Modified;
             }
@@ -79,28 +67,28 @@ namespace CodeShellCore.Data.Recursion
             base.Update(obj);
         }
 
-        public virtual IEnumerable<RecursionModel> GetRecursionModels()
+        public virtual async Task<IEnumerable<TRec>> GetRecursionModels()
         {
-            return Loader.Select(RecusiveModelExpression).ToList();
+            return await Projector.Project<T, TRec>(Loader).ToListAsync();
         }
 
-        public virtual IEnumerable<T> GetRooted(Expression<Func<T, bool>> filter)
+        public virtual async Task<IEnumerable<T>> GetRooted(Expression<Func<T, bool>> filter)
         {
             var required = filter == null ? Loader : Loader.Where(filter).AsQueryable();
-            return QueryRooted(required).ToList();
+            return await QueryRooted(required).ToListAsync();
         }
 
-        public virtual IEnumerable<RecursionModel> GetRecursionModels(Expression<Func<T, bool>> filter)
+        public virtual async Task<IEnumerable<TRec>> GetRecursionModels(Expression<Func<T, bool>> filter)
         {
-            return Loader.Where(filter).Select(RecusiveModelExpression).ToList();
+            return await Projector.Project<T, TRec>(Loader.Where(filter)).ToListAsync();
         }
 
-        public virtual IEnumerable<T> GetChildren(object prime, Expression<Func<T, bool>> filter)
+        public virtual async Task<IEnumerable<T>> GetChildren(object prime, Expression<Func<T, bool>> filter)
         {
             var q = Loader.Where(d => d.Chain != null && d.Chain.Contains("|" + prime + "|") && !d.Id.Equals(prime));
             q = q.Where(filter);
 
-            return q.ToList();
+            return await q.ToListAsync();
         }
     }
 }

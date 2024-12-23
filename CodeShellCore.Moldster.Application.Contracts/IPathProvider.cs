@@ -2,6 +2,7 @@
 using CodeShellCore.Services;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.PageCategories;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster
 {
@@ -22,8 +23,8 @@ namespace CodeShellCore.Moldster
 
         List<MoldsterEnvironment> GetEnvironments();
         MoldsterEnvironment GetEnvironmentByName(string name);
-        List<MoldsterEnvironment> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs);
-        
-        
+        Task<List<MoldsterEnvironment>> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs);
+
+
     }
 }

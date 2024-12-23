@@ -3,16 +3,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Security.Authorization
 {
     public interface IUserDataService : IServiceBase
     {
-        Dictionary<string, DataAccessPermission> GetRolesPermissions(IEnumerable<string> lst);
-        IUser GetUserData(string userId);
-        IUser GetUserDataForUI(string userId);
-        void ClearUserData(string id);
-        void Save(string userId, IUser user);
-        void SaveRoleInCache(RoleCacheItem item);
+        Task<Dictionary<string, DataAccessPermission>> GetRolesPermissions(IEnumerable<string> lst);
+        Task<IUser> GetUserData(string userId);
+        Task<IUser> GetUserDataForUI(string userId);
+        Task ClearUserData(string id);
+        Task Save(string userId, IUser user);
+        Task SaveRoleInCache(RoleCacheItem item);
     }
 }

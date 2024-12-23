@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\common.props" />
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>CodeShellCore.Moldster</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CodeShellCore.Moldster.Application.Contracts\CodeShellCore.Moldster.Application.Contracts.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Notifications.Web\CodeShellCore.Notifications.Web.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Web\CodeShellCore.Web.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -9,6 +9,7 @@ using CodeShellCore.Http;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Security.Authorization;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Filters
 {
@@ -16,21 +17,18 @@ namespace CodeShellCore.Web.Filters
     /// Makes the call to <see cref="ISessionManager.AuthorizationRequest()"/> then calls <see cref="IAuthorizationService.IsAuthorized(AuthorizationRequest)"/> where the <see cref="AuthorizationRequest"/> is filled from the route information and the <see cref="QueryAuthorizeFilter"/> instance itself
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
-    public class ApiAuthorizeAttribute : CodeShellAuthorizeAttribute, IAuthorizationFilter
+    public class ApiAuthorizeAttribute : CodeShellAuthorizeAttribute, IAsyncAuthorizationFilter
     {
-        
-
-
         public ApiAuthorizeAttribute()
         {
 
         }
 
-        public virtual void OnAuthorization(AuthorizationFilterContext context)
+        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             try
             {
-                context.HttpContext.ProcessOnce();
+                await context.HttpContext.ProcessOnce();
                 Authorize(context);
             }
             catch (Exception ex)

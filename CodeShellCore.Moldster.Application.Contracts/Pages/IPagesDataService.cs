@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
     public interface IPagesDataService
     {
-        IEnumerable<long> GetPagesWithJsonParams(string modCode);
-        SubmitResult ViewParamsToData(long id);
+        Task<IEnumerable<long>> GetPagesWithJsonParams(string modCode);
+        Task<SubmitResult> ViewParamsToData(long id);
     }
 }

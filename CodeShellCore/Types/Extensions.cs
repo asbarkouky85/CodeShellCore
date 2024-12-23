@@ -22,7 +22,7 @@ namespace CodeShellCore.Types
 
         public static string GetEmbeddedResourceAsString(this Assembly assembly, string key)
         {
-            var bytes = assembly.GetEmbeddedResource(key);
+            var bytes = assembly.GetEmbeddedResourceBytes(key);
             if (bytes != null)
             {
                 return Encoding.UTF8.GetString(bytes);
@@ -52,20 +52,25 @@ namespace CodeShellCore.Types
             return type;
         }
 
-        public static byte[] GetEmbeddedResource(this Assembly assembly, string key)
+        public static Stream GetEmbeddedResourceStream(this Assembly assembly, string key)
         {
             var resourceNames = assembly.GetManifestResourceNames();
             var resourceWithName = resourceNames.FirstOrDefault(e => e.Contains(key));
             if (resourceWithName != null)
             {
-                using (var resStream = assembly.GetManifestResourceStream(resourceWithName))
-                {
-                    var st = new MemoryStream();
-                    resStream.CopyTo(st);
-                    return st.ToArray();
-                }
+                return assembly.GetManifestResourceStream(resourceWithName);
             }
             throw new Exception($"Could not find '{key}'");
+        }
+
+        public static byte[] GetEmbeddedResourceBytes(this Assembly assembly, string key)
+        {
+            using (var resStream = assembly.GetEmbeddedResourceStream(key))
+            {
+                var st = new MemoryStream();
+                resStream.CopyTo(st);
+                return st.ToArray();
+            }
         }
 
         public static IEnumerable<PropertyInfo> GetValueProperties(this Type type, bool ignoreId = true, string[] ignore = null)
@@ -161,7 +166,7 @@ namespace CodeShellCore.Types
         {
             if (includeNullable)
                 type = type.RealType();
-            return type.Equals(typeof(sbyte)) || type.Equals(typeof(byte)) || type.Equals(typeof(int)) || type.Equals(typeof(long)) || type.Equals(typeof(uint)) || type.Equals(typeof(ulong));
+            return type.Equals(typeof(sbyte)) || type.Equals(typeof(byte)) || type.Equals(typeof(short)) || type.Equals(typeof(int)) || type.Equals(typeof(long)) || type.Equals(typeof(uint)) || type.Equals(typeof(ulong));
         }
     }
 }

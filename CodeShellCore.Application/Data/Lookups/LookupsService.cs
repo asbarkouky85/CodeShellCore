@@ -1,17 +1,17 @@
-﻿using System;
+﻿using CodeShellCore.Data.ConfiguredCollections;
+using CodeShellCore.Data.Mapping;
+using CodeShellCore.Http;
+using CodeShellCore.Linq;
+using CodeShellCore.Services;
+using CodeShellCore.Text;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using CodeShellCore.Data.Lookups;
-using CodeShellCore.Services;
-using CodeShellCore.Http;
-using CodeShellCore.Text;
-using CodeShellCore.Data.ConfiguredCollections;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Data.Mapping;
-using System.Linq;
-using CodeShellCore.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Lookups
 {
@@ -49,35 +49,35 @@ namespace CodeShellCore.Data.Lookups
             }
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> GetRequestedLookups(Dictionary<string, string> requested)
+        public async Task<Dictionary<string, IEnumerable<Named<object>>>> GetRequestedLookups(Dictionary<string, string> requested)
         {
             Dictionary<string, IEnumerable<Named<object>>> res = new Dictionary<string, IEnumerable<Named<object>>>();
             foreach (var x in requested)
             {
-                res[x.Key] = GetListNamed(x.Key, x.Value);
+                res[x.Key] = await GetListNamed(x.Key, x.Value);
             }
 
             return res;
         }
 
-        public virtual IEnumerable<Named<object>> GetListNamed(string entityName, string collection = null)
+        public virtual async Task<IEnumerable<Named<object>>> GetListNamed(string entityName, string collection = null)
         {
             var t = GetEntityByResource(entityName);
             if (t == null)
                 return new List<Named<object>>();
-            return GetLookupNamed(t, collection);
+            return await GetLookupNamed(t, collection);
         }
 
-        public PagedResult<Named<object>> GetListNamedPaged(string entityName, PagedListRequestDto dto, string identifier = null)
+        public async Task<PagedResult<Named<object>>> GetListNamedPaged(string entityName, PagedListRequestDto dto, string identifier = null)
         {
             var t = GetEntityByResource(entityName);
             if (t == null)
                 return new PagedResult<Named<object>>();
 
-            return GetLookupNamedPaged(t, dto, identifier);
+            return await GetLookupNamedPaged(t, dto, identifier);
         }
 
-        public IEnumerable<Named<object>> GetLookupNamed(Type t, string identifier)
+        public async Task<IEnumerable<Named<object>>> GetLookupNamed(Type t, string identifier)
         {
             IRepository repo = Unit.GetRepositoryFor(t);
 
@@ -86,11 +86,11 @@ namespace CodeShellCore.Data.Lookups
             {
                 collectionId = identifier.GetAfterLast("__");
             }
-            var data = repo.FindAsLookup(collectionId);
+            var data = await repo.FindAsLookup(collectionId);
             return Mapper.Map(data, new List<Named<object>>());
         }
 
-        public PagedResult<Named<object>> GetLookupNamedPaged(Type t, PagedListRequestDto req, string identifier)
+        public async Task<PagedResult<Named<object>>> GetLookupNamedPaged(Type t, PagedListRequestDto req, string identifier)
         {
             IRepository repo = Unit.GetRepositoryFor(t);
 
@@ -99,17 +99,17 @@ namespace CodeShellCore.Data.Lookups
             {
                 collectionId = identifier.GetAfterLast("__");
             }
-            var data = repo.FindAsLookupPaged(Mapper.Map(req, new PagedListRequest()), collectionId);
+            var data = await repo.FindAsLookupPaged(Mapper.Map(req, new PagedListRequest()), collectionId);
             return Mapper.Map(data, new PagedResult<Named<object>>());
         }
 
-        public IEnumerable<Named<object>> GetLookupNamed<TObject>(string identifier) where TObject : class
+        public async Task<IEnumerable<Named<object>>> GetLookupNamed<TObject>(string identifier) where TObject : class
         {
-            var data = GetLookupNamed(typeof(TObject), identifier);
+            var data = await GetLookupNamed(typeof(TObject), identifier);
             return Mapper.Map(data, new List<Named<object>>());
         }
 
-        public IEnumerable<TObject> GetLookup<TObject>(string identifier) where TObject : class
+        public async Task<IEnumerable<TObject>> GetLookup<TObject>(string identifier) where TObject : class
         {
             IRepository<TObject> repo = Unit.GetRepositoryFor<TObject>();
             if (identifier.Contains("__"))
@@ -121,16 +121,16 @@ namespace CodeShellCore.Data.Lookups
 
                 var AsgaRepo = (ICollectionRepository<TObject>)repo;
 
-                return AsgaRepo.GetCollectionList(collectionId);
+                return await AsgaRepo.GetCollectionList(collectionId);
             }
             else
             {
-                return repo.Find(e => true);
+                return await repo.Find(e => true);
             }
         }
 
 
-        public IEnumerable<TResult> GetLookupAs<TObject, TResult>(string identifier, Expression<Func<TObject, TResult>> ex) where TObject : class where TResult : class
+        public async Task<IEnumerable<TResult>> GetLookupAs<TObject, TResult>(string identifier, Expression<Func<TObject, TResult>> ex) where TObject : class where TResult : class
         {
             IRepository<TObject> repo = Unit.GetRepositoryFor<TObject>();
             if (identifier != null && identifier.Contains("__"))
@@ -142,11 +142,11 @@ namespace CodeShellCore.Data.Lookups
 
                 var AsgaRepo = (ICollectionRepository<TObject>)repo;
 
-                return AsgaRepo.GetCollectionListAs(collectionId, ex);
+                return await AsgaRepo.GetCollectionListAs(collectionId, ex);
             }
             else
             {
-                return repo.FindAs(ex, d => true);
+                return await repo.FindAs(ex, d => true);
             }
         }
 
@@ -160,7 +160,7 @@ namespace CodeShellCore.Data.Lookups
             return collectionId;
         }
 
-        public IEnumerable<Named<object>> GetLookupNamed<TObject>(string identifier, Expression<Func<TObject, bool>> ex) where TObject : class
+        public async Task<IEnumerable<Named<object>>> GetLookupNamed<TObject>(string identifier, Expression<Func<TObject, bool>> ex) where TObject : class
         {
             IRepository<TObject> repo = Unit.GetRepositoryFor<TObject>();
 
@@ -169,7 +169,7 @@ namespace CodeShellCore.Data.Lookups
             {
                 collectionId = identifier.GetAfterLast("__");
             }
-            var data = repo.FindAsLookup(collectionId, ex);
+            var data = await repo.FindAsLookup(collectionId, ex);
             return Mapper.Map(data, new List<Named<object>>());
         }
 

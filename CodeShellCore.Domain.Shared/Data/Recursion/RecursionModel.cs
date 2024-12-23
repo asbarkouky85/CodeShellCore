@@ -7,12 +7,12 @@ using System.Text;
 
 namespace CodeShellCore.Data.Recursion
 {
-    public class RecursionModel : IRecursiveModel
+    public class RecursionModel<T> : IRecursiveModel<T> where T : class, IRecursiveModel<T>
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<IRecursiveModel> Children { get; set; }
-        
+        public IEnumerable<T> Children { get; set; }
+
         public long? ParentId { get; set; }
         public string Chain { get; set; }
         public string NameChain { get; set; }

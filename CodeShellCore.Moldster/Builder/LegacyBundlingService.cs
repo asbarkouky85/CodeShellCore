@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Builder
 {
@@ -14,23 +15,23 @@ namespace CodeShellCore.Moldster.Builder
         {
         }
 
-        public override bool IsBundled(string moduleName, string version)
+        public override async Task<bool> IsBundled(string moduleName, string version)
         {
             string bundleVersion = AddVToVersion ? "v" + version : version;
             string mainScript = Path.Combine(Paths.UIRoot, "wwwroot\\dist", moduleName + "-" + bundleVersion + ".js");
             if (File.Exists(mainScript))
             {
                 Out.WriteLine($"Version {bundleVersion} is already bundled for {moduleName}");
-                UpdateTenantVersionInDataSource(moduleName, version);
+                await UpdateTenantVersionInDataSource(moduleName, version);
                 return true;
             }
             return false;
         }
 
-        public override Result ProductionPack(string moduleName, string version = null, bool trace = false)
+        public override async Task<Result> ProductionPack(string moduleName, string version = null, bool trace = false)
         {
-            version = version ?? GetAppVersion(moduleName, true);
-            if (IsBundled(moduleName, version))
+            version = version ?? await GetAppVersion(moduleName, true);
+            if (await IsBundled(moduleName, version))
             {
                 return new Result { Code = 0, Message = "No Changes" };
             }
@@ -66,20 +67,20 @@ namespace CodeShellCore.Moldster.Builder
 
         }
 
-        public override void PrepEnvironment(bool prod = false)
+        public override async Task PrepEnvironment(bool prod = false)
         {
             string args = "install --force";
-            RunCommand(Paths.UIRoot, "npm", args, true);
+            await RunCommand(Paths.UIRoot, "npm", args, true);
             args = "node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --progress";
-            RunCommand(Paths.UIRoot, "node", args);
+            await RunCommand(Paths.UIRoot, "node", args);
             if (prod)
             {
                 args = "node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod --progress";
-                RunCommand(Paths.UIRoot, "node", args);
+                await RunCommand(Paths.UIRoot, "node", args);
             }
         }
 
-        public void GenerateDevWebPackFiles(IEnumerable<string> modules, IEnumerable<string> activeMods = null)
+        public async Task GenerateDevWebPackFiles(IEnumerable<string> modules, IEnumerable<string> activeMods = null)
         {
             IEnumerable<string> apps = modules;
             activeMods = activeMods ?? apps;
@@ -94,7 +95,7 @@ namespace CodeShellCore.Moldster.Builder
             }
             string contents = Writer.FillStringParameters(packTemplate, mod);
             string packPath = Path.Combine(Paths.UIRoot, "webpack.config.js");
-            File.WriteAllText(packPath, contents);
+            await File.WriteAllTextAsync(packPath, contents);
             WriteSuccess(null);
             Out.WriteLine();
 
@@ -133,13 +134,13 @@ namespace CodeShellCore.Moldster.Builder
 
         }
 
-        public override void WriteWebpackConfigFiles()
+        public override async Task WriteWebpackConfigFiles()
         {
             using (var x = SW.Measure())
             {
-                string[] modules = Data.GetAppCodes();
-                string[] act = Data.GetAppCodes(true);
-                GenerateDevWebPackFiles(modules, act);
+                string[] modules = await Data.GetAppCodes();
+                string[] act = await Data.GetAppCodes(true);
+                await GenerateDevWebPackFiles(modules, act);
                 foreach (var t in modules)
                 {
                     string[] others = modules.Where(d => d != t).ToArray();

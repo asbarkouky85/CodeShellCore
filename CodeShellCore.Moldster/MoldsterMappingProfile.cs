@@ -30,9 +30,13 @@ namespace CodeShellCore.Moldster
 
         void NavigationMapping()
         {
-            CreateMap<NavigationGroup, NavigationGroupDTO>();
+            CreateMap<NavigationGroup, NavigationGroupDto>();
+            CreateMap<NavigationGroupDto, NavigationGroup>();
+            CreateMap<NavigationPage, NavigationPageDto>().MapChangeState();
+            CreateMap<NavigationPageDto, NavigationPage>();
+            CreateMap<NavigationGroup, NavigationGroupLookupDto>();
 
-            CreateMap<NavigationPage, NavigationPageDTO>()
+            CreateMap<NavigationPage, NavigationPageRouteDto>()
                 .ForMember(e => e.ActionName, d => d.MapFrom(e => e.Page.SpecialPermission != null ? e.Page.SpecialPermission : (e.Page.ResourceActionId != null ? e.Page.ResourceAction.Name : null)))
                 .ForMember(e => e.PrivilegeType, d => d.MapFrom(e => e.Page.PrivilegeType))
                 .ForMember(e => e.Apps, d => d.MapFrom(e => e.Page.Apps))
@@ -82,19 +86,22 @@ namespace CodeShellCore.Moldster
 
         void ResourcesMapping()
         {
+            CreateMap<Resource, ResourceDto>();
+            CreateMap<ResourceDto, Resource>();
             CreateMap<Resource, ResourceListDTO>()
                 .ForMember(e => e.Domain, d => d.MapFrom(e => e.Domain.Name));
         }
 
         void DomainsMapping()
         {
-            CreateMap<Domain, DomainDto>()
+            CreateMap<Domain, DomainModuleDto>()
                 .ForMember(e => e.DomainName, d => d.MapFrom(e => e.Name));
 
             CreateMap<Domain, DomainWithPagesDTO>()
                 .ForMember(e => e.DomainName, e => e.MapFrom(d => d.Name))
                 .ForMember(e => e.Pages, d => d.MapFrom(e => e.Pages));
 
+            CreateMap<Domain, DomainDto>();
         }
 
         void LocalizationMapping()
@@ -184,6 +191,9 @@ namespace CodeShellCore.Moldster
 
             CreateMap<CollectionDataObject, CollectionDto>();
             CreateMap<CollectionDto, CollectionDataObject>();
+
+            CreateMap<PageControl, PageControlDto>();
+            CreateMap<PageControlDto, PageControl>();
         }
 
         void TenantsMapping()

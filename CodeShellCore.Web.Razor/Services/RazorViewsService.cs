@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Helpers;
+﻿using CodeShellCore.Data.Mapping;
+using CodeShellCore.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Moldster;
 using CodeShellCore.Moldster.PageCategories;
@@ -15,23 +16,21 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Razor.Services
 {
-    public class RazorViewsService : ApplicationService, IViewsService
+    public class RazorViewsService : IViewsService
     {
         private readonly IMoldsterRazorRenderingService razor;
-        private readonly IConfigUnit _unit;
         private readonly IDataService data;
         private readonly IHttpContextAccessor contextAccessor;
-
+        private readonly IObjectMapper Mapper;
         public RazorViewsService(
-            IServiceProvider serviceProvider,
+            IObjectMapper mapper,
             IMoldsterRazorRenderingService razor,
-            IConfigUnit unit,
             IDataService Data,
             IHttpContextAccessor contextAccessor
-            ) : base(serviceProvider)
+            )
         {
+            Mapper = mapper;
             this.razor = razor;
-            _unit = unit;
             data = Data;
             this.contextAccessor = contextAccessor;
         }
@@ -42,10 +41,11 @@ namespace CodeShellCore.Web.Razor.Services
             return true;
         }
 
-        public virtual string GetGuide(string moduleCode)
+        public virtual async Task<string> GetGuide(string moduleCode)
         {
-            long id = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == moduleCode);
-            TenantPageGuideDTO sin = data.GetAppGuide(id);
+            long id = await data.GetTenantIdByCode(moduleCode);
+
+            TenantPageGuideDTO sin = await data.GetAppGuide(id);
             var def = new string[] { "view", "details", "update", "insert" };
             foreach (var d in sin.Domains)
             {
@@ -69,24 +69,24 @@ namespace CodeShellCore.Web.Razor.Services
                     r.Pages = null;
                 }
             }
-            return razor.RenderPartial(contextAccessor.HttpContext, "Auth/Guide", sin);
+            return await razor.RenderPartial(contextAccessor.HttpContext, "Auth/Guide", sin);
         }
 
-        public virtual string GetMainComponent(string baseComponent)
+        public virtual async Task<string> GetMainComponent(string baseComponent)
         {
             PageOptionsDto p = new PageOptionsDto();
 
-            var html = razor.RenderPartial(contextAccessor.HttpContext, baseComponent, null, new Dictionary<string, object> { { nameof(PageOptionsDto), p } });
+            var html = await razor.RenderPartial(contextAccessor.HttpContext, baseComponent, null, new Dictionary<string, object> { { nameof(PageOptionsDto), p } });
             html += $"\n<div style='display:none' #lookupOptionsContainer values='{p.SourcesString}'></div>";
             html += $"\n<div style='display:none' #viewParamsContainer values='{p.ViewParamsString}'></div>";
             return html;
         }
 
-        public virtual RenderedPageResultDto GetPage(PageAcquisitorDTO dto)
+        public virtual async Task<RenderedPageResultDto> GetPage(PageAcquisitorDTO dto)
         {
-            PageOptionsDto p = data.GetPageOptions(dto.ModuleCode, dto.ViewPath);
+            PageOptionsDto p = await data.GetPageOptions(dto.ModuleCode, dto.ViewPath);
             p.Layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, p.Layout);
-            var html = razor.RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { nameof(PageOptionsDto), p } });
+            var html = await razor.RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { nameof(PageOptionsDto), p } });
             return new RenderedPageResultDto
             {
                 TemplateContent = html,
@@ -95,11 +95,11 @@ namespace CodeShellCore.Web.Razor.Services
             };
         }
 
-        public virtual RenderedPageResultDto GetPageById(long id)
+        public virtual async Task<RenderedPageResultDto> GetPageById(long id)
         {
-            PageOptionsDto p = data.GetPageOptionsById(id);
+            PageOptionsDto p = await data.GetPageOptionsById(id);
             p.Layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, p.Layout);
-            var html = razor.RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { nameof(PageOptionsDto), p } });
+            var html = await razor.RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { nameof(PageOptionsDto), p } });
             return new RenderedPageResultDto
             {
                 TemplateContent = html,
@@ -112,7 +112,7 @@ namespace CodeShellCore.Web.Razor.Services
         {
             PageOptionsDto p = await data.GetCategoryPageOptions(id);
             p.Layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, p.Layout);
-            var html = razor.RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { nameof(PageOptionsDto), p } });
+            var html = await razor.RenderPartial(contextAccessor.HttpContext, p.ViewPath, null, new Dictionary<string, object> { { nameof(PageOptionsDto), p } });
             return new RenderedPageResultDto
             {
                 TemplateContent = html,
@@ -146,16 +146,16 @@ namespace CodeShellCore.Web.Razor.Services
             return lst;
         }
 
-        public virtual TemplateDataCollector GetTemplateData(long id)
+        public virtual async Task<TemplateDataCollector> GetTemplateData(long id)
         {
-            var path = _unit.PageCategoryRepository.GetValue(id, d => new { d.ViewPath, d.BaseComponent, d.Layout });
+            var basicData = await data.GetPageCategoryBasicData(id);
 
             string layout = null;
-            if (path.Layout != null)
-                layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, "Layout", path.Layout + "Layout.cshtml");
-            else if ((new string[] { "Edit", "List" }).Contains(path.BaseComponent))
-                layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, "Layout", path.BaseComponent + "Layout.cshtml");
-            return razor.GetCollector(contextAccessor.HttpContext, path.ViewPath, layout);
+            if (basicData.Layout != null)
+                layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, "Layout", basicData.Layout + "Layout.cshtml");
+            else if ((new string[] { "Edit", "List" }).Contains(basicData.BaseComponent))
+                layout = Utils.CombineUrl(RazorConfig.Theme.BasePath, "Layout", basicData.BaseComponent + "Layout.cshtml");
+            return razor.GetCollector(contextAccessor.HttpContext, basicData.ViewPath, layout);
         }
 
     }

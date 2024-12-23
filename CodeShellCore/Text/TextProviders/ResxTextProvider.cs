@@ -1,14 +1,10 @@
 ﻿using CodeShellCore.Text.Localization;
-using CodeShellCore.Text;
-using CodeShellCore.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Resources;
-using System;
-using System.Globalization;
-using Microsoft.Extensions.DependencyInjection;
-using System.Text;
-using CodeShellCore.Types;
 
 namespace CodeShellCore.Text.TextProviders
 {
@@ -23,10 +19,14 @@ namespace CodeShellCore.Text.TextProviders
         protected static Dictionary<string, Dictionary<string, string>> PageDictionary = new Dictionary<string, Dictionary<string, string>>();
 
         public CultureInfo Culture => _lang.Culture;
+        static bool _isDev = false;
+
+        static Dictionary<string, DateTime> _lastRead = new Dictionary<string, DateTime>();
 
         public ResxTextProvider(Language lang)
         {
             _lang = lang;
+            _isDev = Environment.GetEnvironmentVariable("FMS_HOME", EnvironmentVariableTarget.User) != null;
         }
 
         static void _initCulture(string cult)
@@ -46,6 +46,67 @@ namespace CodeShellCore.Text.TextProviders
 
         }
 
+        void _checkCultureRead(string cult)
+        {
+            if (_isDev)
+            {
+                _readCultureResourcesDev(cult);
+            }
+            else
+            {
+                if (!WordsDictionary.ContainsKey(cult))
+                    _initCulture(cult);
+            }
+
+        }
+
+        static void _readCultureResourcesDev(string cult)
+        {
+            string[] types = new[] { "Words", "Pages", "Columns", "Messages" };
+
+            var solutionFolder = Environment.GetEnvironmentVariable("FMS_HOME", EnvironmentVariableTarget.User);
+            foreach (var type in types)
+            {
+                var fileName = Path.Combine(solutionFolder, $"FMS.Domain.Shared\\Localization\\{type}.{cult}.resx");
+                if (File.Exists(fileName))
+                {
+                    var isRead = false;
+                    var info = new FileInfo(fileName);
+                    if (_lastRead.TryGetValue($"{type}_{cult}", out DateTime lastRead))
+                    {
+                        if (info.LastWriteTime > lastRead)
+                            isRead = true;
+
+                    }
+                    if (!isRead)
+                    {
+                        _readFileDev(type, cult, fileName);
+                    }
+                    _lastRead[$"{type}_{cult}"] = info.LastWriteTime;
+                }
+            }
+        }
+
+        static void _readFileDev(string type, string cult, string fileName)
+        {
+            switch (type)
+            {
+                case "Words":
+                    WordsDictionary[cult] = LangUtils.ResourceToDictionary(fileName);
+                    break;
+                case "Pages":
+                    PageDictionary[cult] = LangUtils.ResourceToDictionary(fileName);
+                    break;
+                case "Messages":
+                    MessDictionary[cult] = LangUtils.ResourceToDictionary(fileName);
+                    break;
+                case "Columns":
+                    ColsDictionary[cult] = LangUtils.ResourceToDictionary(fileName);
+                    break;
+            }
+
+        }
+
         static void _readCultureResources(string cult)
         {
             string assembly = Shell.LocalizationAssembly;
@@ -57,7 +118,7 @@ namespace CodeShellCore.Text.TextProviders
             string pageType = root + ".Localization.Pages";
 
             Assembly ass = Assembly.Load(assembly);
-            
+
             ResourceManager wordRes = new ResourceManager(wordsType, ass);
             ResourceManager colRes = new ResourceManager(colsType, ass);
             ResourceManager messRes = new ResourceManager(messType, ass);
@@ -72,10 +133,7 @@ namespace CodeShellCore.Text.TextProviders
         public string Word(string index, string cult = null)
         {
             cult = cult ?? _lang.Culture.TwoLetterISOLanguageName;
-
-            if (!WordsDictionary.ContainsKey(cult))
-                _initCulture(cult);
-
+            _checkCultureRead(cult);
             string word;
             if (WordsDictionary[cult].TryGetValue(index, out word))
                 return word;
@@ -86,8 +144,8 @@ namespace CodeShellCore.Text.TextProviders
         public string Column(string index, string cult = null)
         {
             cult = cult ?? _lang.Culture.TwoLetterISOLanguageName;
-            if (!ColsDictionary.ContainsKey(cult))
-                _initCulture(cult);
+
+            _checkCultureRead(cult);
 
             string col;
             if (ColsDictionary[cult].TryGetValue(index, out col))
@@ -100,8 +158,7 @@ namespace CodeShellCore.Text.TextProviders
         {
             cult = cult ?? _lang.Culture.TwoLetterISOLanguageName;
 
-            if (!PageDictionary.ContainsKey(cult))
-                _initCulture(cult);
+            _checkCultureRead(cult);
 
             string word;
             if (PageDictionary[cult].TryGetValue(index, out word))
@@ -114,8 +171,7 @@ namespace CodeShellCore.Text.TextProviders
         {
             string cult = _lang.Culture.TwoLetterISOLanguageName;
 
-            if (!MessDictionary.ContainsKey(cult))
-                _initCulture(cult);
+            _checkCultureRead(cult);
 
             string mes;
             if (MessDictionary[cult].TryGetValue(index, out mes))
@@ -126,8 +182,7 @@ namespace CodeShellCore.Text.TextProviders
 
         public string MessageWithCulture(string index, string cult, params string[] formatElements)
         {
-            if (!MessDictionary.ContainsKey(cult))
-                _initCulture(cult);
+            _checkCultureRead(cult);
 
             string mes;
             if (MessDictionary[cult].TryGetValue(index, out mes))
@@ -140,8 +195,7 @@ namespace CodeShellCore.Text.TextProviders
         {
             string cult = _lang.Culture.TwoLetterISOLanguageName;
 
-            if (!WordsDictionary.ContainsKey(cult))
-                _initCulture(cult);
+            _checkCultureRead(cult);
 
             string mes;
             if (WordsDictionary[cult].TryGetValue(index, out mes))
@@ -152,8 +206,7 @@ namespace CodeShellCore.Text.TextProviders
 
         public string WordWithCulture(string index, string cult, params string[] args)
         {
-            if (!WordsDictionary.ContainsKey(cult))
-                _initCulture(cult);
+            _checkCultureRead(cult);
 
             string mes;
             if (WordsDictionary[cult].TryGetValue(index, out mes))
@@ -165,6 +218,30 @@ namespace CodeShellCore.Text.TextProviders
         public string Word(Enum en, string cult = null)
         {
             return Word(en.StringFormat(), cult);
+        }
+
+        public Dictionary<string, string> GetAllWords(string cult)
+        {
+            _checkCultureRead(cult);
+            return WordsDictionary[cult];
+        }
+
+        public Dictionary<string, string> GetAllMessages(string cult)
+        {
+            _checkCultureRead(cult);
+            return MessDictionary[cult];
+        }
+
+        public Dictionary<string, string> GetAllColumns(string cult)
+        {
+            _checkCultureRead(cult);
+            return ColsDictionary[cult];
+        }
+
+        public Dictionary<string, string> GetAllPages(string cult)
+        {
+            _checkCultureRead(cult);
+            return PageDictionary[cult];
         }
     }
 }

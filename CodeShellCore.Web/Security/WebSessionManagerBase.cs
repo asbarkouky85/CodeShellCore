@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Security
 {
@@ -40,13 +41,15 @@ namespace CodeShellCore.Web.Security
             }
         }
 
-        protected virtual void ReadTenantId()
+        protected virtual long? ReadTenantId()
         {
             var headers = _accessor.HttpContext?.Request?.Headers;
             if (headers != null && headers.TryGetValue(HttpHeaderKeys.TenantId, out StringValues tenantId) && long.TryParse(tenantId.First(), out long id))
             {
                 ServiceProvider.GetRequiredService<CurrentTenant>().TenantId = id;
+                return id;
             }
+            return null;
         }
 
 
@@ -113,7 +116,7 @@ namespace CodeShellCore.Web.Security
             return !string.IsNullOrEmpty(user);
         }
 
-        public abstract void AuthorizationRequest();
+        public abstract Task AuthorizationRequest();
         public abstract void UseToken(string token);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Localization
 {
@@ -11,14 +12,14 @@ namespace CodeShellCore.Moldster.Localization
         {
         }
 
-        public List<CustomText> GetBy(CustomTextRequest req)
+        public async Task<List<CustomText>> GetBy(CustomTextRequest req)
         {
-            return Find(e => e.Locale == req.Locale && e.TenantId == req.TenantId && e.Type == req.Type);
+            return await Find(e => e.Locale == req.Locale && e.TenantId == req.TenantId && e.Type == req.Type);
         }
 
-        public List<CustomText> GetForTenant(string moduleCode)
+        public async Task<List<CustomText>> GetForTenant(string moduleCode)
         {
-            return Find(e => e.Tenant.Code == moduleCode);
+            return await Find(e => e.Tenant.Code == moduleCode);
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Environments;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Environments.Services
 {
     public interface IEnvironmentsService
     {
-        PagedResult<MoldsterEnvironment> Get();
-        MoldsterEnvironment Post(MoldsterEnvironment dto);
-        MoldsterEnvironment Put(MoldsterEnvironment env);
-        IEnumerable<string> GetDatabaseList(string name);
-        void Delete(string name);
+        Task<PagedResult<MoldsterEnvironment>> Get();
+        Task<MoldsterEnvironment> Post(MoldsterEnvironment dto);
+        Task<MoldsterEnvironment> Put(MoldsterEnvironment env);
+        Task<IEnumerable<string>> GetDatabaseList(string name);
+        Task Delete(string name);
     }
 }

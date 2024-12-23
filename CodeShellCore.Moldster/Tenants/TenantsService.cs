@@ -6,17 +6,18 @@ using CodeShellCore.Linq;
 using CodeShellCore.Moldster.CodeGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Tenants
 {
     public class TenantsService : DtoEntityService<Tenant, long, TenantDto, PagedListRequestDto, TenantEditDTO, TenantDto>, ITenantService
     {
-        private readonly IConfigUnit unit;
+        private readonly IMoldsterUnit unit;
         private readonly INamingConventionService naming;
         private readonly IUploadedFilesHandler uploaded;
 
         public TenantsService(
-            IConfigUnit unit,
+            IMoldsterUnit unit,
             INamingConventionService naming,
             IUploadedFilesHandler uploaded) : base(unit)
         {
@@ -25,46 +26,49 @@ namespace CodeShellCore.Moldster.Tenants
             this.uploaded = uploaded;
         }
 
-        public override EntitySubmitResult<TenantEditDTO> Post(TenantDto dto)
+        public override async Task<EntitySubmitResult<TenantEditDTO>> Post(TenantDto dto)
         {
             var entity = Mapper.Map<TenantDto, Tenant>(dto);
 
-                long id = unit.TenantRepository.GetMax(d => d.Id);
+            long id = await unit.TenantRepository.GetMax(d => d.Id);
             entity.Id = id + 1;
-            if (!unit.TenantRepository.Exist(d => true))
+            if (!(await unit.TenantRepository.Exist(d => true)))
             {
                 entity.IsActive = true;
             }
             Repository.Add(entity);
-            var res = unit.SaveChanges().MapToResult<EntitySubmitResult<TenantEditDTO>>();
+            var res = (await unit.SaveChanges()).MapToResult<EntitySubmitResult<TenantEditDTO>>();
             if (res.IsSuccess)
             {
-                AfterCreate(dto, entity);
-                res.Result = GetSingle(entity.Id);
+                await AfterCreate(dto, entity);
+                res.Result = await GetSingle(entity.Id);
             }
             return res;
         }
 
-        protected override void AfterCreate(TenantDto dto, Tenant entity)
+        protected override async Task AfterCreate(TenantDto dto, Tenant entity)
         {
-            SaveLogo(dto);
+            await SaveLogo(dto);
         }
 
-        protected override void AfterUpdate(TenantDto dto, Tenant entity)
+        protected override async Task AfterUpdate(TenantDto dto, Tenant entity)
         {
-            SaveLogo(dto);
+            await SaveLogo(dto);
         }
 
-        protected virtual void SaveLogo(TenantDto dto)
+        protected virtual Task SaveLogo(TenantDto dto)
         {
-            IPathsService paths = unit.ServiceProvider.GetService<IPathsService>();
-            if (paths != null && dto.LogoFile?.FileTempPath != null)
+            return Task.Run(() =>
             {
-                var newFilePath = naming.GetLogoFilePath(dto.Code, dto.LogoFile.FileName);
-                var path = Path.Combine(uploaded.TempRoot, dto.LogoFile.FileTempPath);
-                Utils.CreateFolderForFile(newFilePath);
-                File.Move(path, newFilePath);
-            }
+                IPathsService paths = unit.ServiceProvider.GetService<IPathsService>();
+                if (paths != null && dto.LogoFile?.FileTempPath != null)
+                {
+                    var newFilePath = naming.GetLogoFilePath(dto.Code, dto.LogoFile.FileName);
+                    var path = Path.Combine(uploaded.TempRoot, dto.LogoFile.FileTempPath);
+                    Utils.CreateFolderForFile(newFilePath);
+                    File.Move(path, newFilePath);
+                }
+            });
         }
     }
 }

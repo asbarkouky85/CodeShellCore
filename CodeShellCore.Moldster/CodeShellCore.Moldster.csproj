@@ -16,8 +16,6 @@
 		<ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
 		<ProjectReference Include="..\CodeShellCore.Moldster.Application.Contracts\CodeShellCore.Moldster.Application.Contracts.csproj" />
 		<ProjectReference Include="..\CodeShellCore.Moldster.Domain\CodeShellCore.Moldster.Domain.csproj" />
-		<ProjectReference Include="..\CodeShellCore.Moldster.Ng11\CodeShellCore.Moldster.Ng11.csproj" />
-		<ProjectReference Include="..\CodeShellCore.Moldster.Ng6\CodeShellCore.Moldster.Ng6.csproj" />
 		<ProjectReference Include="..\CodeShellCore.Notifications.Application.Contracts\CodeShellCore.Notifications.Application.Contracts.csproj" />
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
 	</ItemGroup>

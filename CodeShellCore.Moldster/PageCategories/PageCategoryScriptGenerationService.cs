@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
@@ -23,19 +24,19 @@ namespace CodeShellCore.Moldster.PageCategories
         protected static string[] baseComponents => new[] { "Edit", "List", "Tree", "Select" };
         private IMoldProvider _molds => Store.GetRequiredService<IMoldProvider>();
         private INamingConventionService _fileNameService => Store.GetRequiredService<INamingConventionService>();
-        private IConfigUnit _unit => Store.GetRequiredService<IConfigUnit>();
+        private IMoldsterUnit _unit => Store.GetRequiredService<IMoldsterUnit>();
 
         public PageCategoryScriptGenerationService(
             IServiceProvider prov,
             IOptions<MoldsterModuleOptions> opt) : base(prov, opt)
         {
-            
+
         }
 
 
-        public virtual void GenerateBaseComponent(string viewPath)
+        public virtual async Task GenerateBaseComponent(string viewPath)
         {
-            PageCategoryEditDto p = _unit.PageCategoryRepository.FindSingleAndMap<PageCategoryEditDto>(d => d.ViewPath == viewPath);
+            PageCategoryEditDto p = await _unit.PageCategoryRepository.FindSingleAndMap<PageCategoryEditDto>(d => d.ViewPath == viewPath);
             if (p == null)
                 throw new ArgumentOutOfRangeException($"PageCategory '{viewPath}' doesn't exist");
 
@@ -97,12 +98,12 @@ namespace CodeShellCore.Moldster.PageCategories
 
         }
 
-        public virtual void GeneratePageCategory(long id)
+        public virtual async Task GeneratePageCategory(long id)
         {
             string serviceName = null;
             string baseComponent = null;
             bool serviceCreated = false;
-            var p = _unit.PageCategoryRepository.FindSingleAs(d => new CategoryBaseComponentDTO
+            var p = await _unit.PageCategoryRepository.FindSingleAs(d => new CategoryBaseComponentDTO
             {
                 ViewPath = d.ViewPath,
                 Name = d.Name,
@@ -121,7 +122,7 @@ namespace CodeShellCore.Moldster.PageCategories
 
             if (!File.Exists(baseComponentPath))
             {
-                GenerateBaseComponent(p.ViewPath);
+                await GenerateBaseComponent(p.ViewPath);
                 baseComponent = p.Name + "Base";
             }
 

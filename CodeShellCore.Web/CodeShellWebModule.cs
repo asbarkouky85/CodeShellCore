@@ -1,6 +1,9 @@
-﻿using CodeShellCore.Modularity;
+﻿using CodeShellCore.Files.Logging;
+using CodeShellCore.Modularity;
+using CodeShellCore.Proxy;
 using CodeShellCore.Text;
 using CodeShellCore.Types;
+using CodeShellCore.Web.AuditLogs;
 using CodeShellCore.Web.Conventions;
 using CodeShellCore.Web.Services;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -26,6 +30,7 @@ namespace CodeShellCore.Web
 
         public override void RegisterServices(CodeshellAppContext context)
         {
+            context.Services.AddSingleton<AuditLoggingMiddleware>();
             var mvc = context.Services.AddControllers();
 
             context.Services.Configure<MvcOptions>(e =>
@@ -39,7 +44,6 @@ namespace CodeShellCore.Web
             //mvc.AddJsonOptions(e => e.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local);
 
             context.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            context.Services.AddTransient<ISpaFallbackHandler, SpaFallbackHandler>();
         }
 
         public override void Configure(CodeShellApplicationInitializationContext context)
@@ -48,6 +52,8 @@ namespace CodeShellCore.Web
             var env = context.GetEnvironment();
             var webOptions = context.ServiceProvider.GetRequiredService<IOptions<CodeShellWebAppOptions>>();
 
+            if (webOptions.Value.UseAuditLogs)
+                app.UseMiddleware<AuditLoggingMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -84,6 +90,7 @@ namespace CodeShellCore.Web
             {
                 var origins = Shell.GetConfig("AllowedOrigins").Value ?? webOptions.Value.DefaultCorsOrigins;
                 var originArray = origins.Split(",");
+
                 app.UseCors(d => d.WithOrigins(originArray)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
@@ -95,11 +102,6 @@ namespace CodeShellCore.Web
             {
                 RegisterEndpointRoutes(e);
             });
-
-            if (webOptions.Value.IsSpa)
-            {
-                app.Use(FallbackMiddlewareHandler);
-            }
 
             app.UseStaticFiles();
 
@@ -137,10 +139,5 @@ namespace CodeShellCore.Web
                 );
         }
 
-        protected virtual async Task FallbackMiddlewareHandler(HttpContext context, Func<Task> next)
-        {
-            var s = context.RequestServices.GetRequiredService<ISpaFallbackHandler>();
-            await s.HandleRequestAsync(context, next);
-        }
     }
 }

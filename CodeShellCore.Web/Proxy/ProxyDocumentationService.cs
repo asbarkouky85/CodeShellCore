@@ -10,6 +10,7 @@ using CodeShellCore.Text;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
+using CodeShellCore.Data;
 
 namespace CodeShellCore.Web.Proxy
 {
@@ -63,6 +64,10 @@ namespace CodeShellCore.Web.Proxy
             {
                 props = type.GetGenericTypeDefinition().GetProperties();
             }
+
+            if (type.Implements(typeof(IEditable)))
+                dto.IsDetail = true;
+
             foreach (var prop in props)
             {
                 var schemaProp = new PropertyDto();
@@ -93,6 +98,8 @@ namespace CodeShellCore.Web.Proxy
                 foreach (var prop in props)
                 {
                     var tsType = tsService.GetTsType(prop.PropertyType);
+
+
                     if (tsType == "reference")
                     {
                         _addToSchema(prop.PropertyType);
@@ -124,7 +131,7 @@ namespace CodeShellCore.Web.Proxy
                 foreach (var t in type.GetGenericArguments())
                 {
                     var arg = new PropertyDto();
-                    _fillType(arg, type.GetGenericArguments()[0], isCollecting);
+                    _fillType(arg, t, isCollecting);
                     parameterProp.GenericArguments.Add(arg);
                 }
             }
@@ -147,7 +154,12 @@ namespace CodeShellCore.Web.Proxy
         private ResponsePropertyDto _getResponsePropertyDto(ApiResponseType parameterDesc)
         {
             var parameterProp = new ResponsePropertyDto();
+            if (parameterDesc.Type.Name.Contains("Dictionary"))
+            {
+
+            }
             _fillType(parameterProp, parameterDesc.Type);
+
             parameterProp.ContentTypes = parameterDesc.ApiResponseFormats.Select(e => e.MediaType).ToList();
             return parameterProp;
         }
@@ -243,10 +255,7 @@ namespace CodeShellCore.Web.Proxy
                             module = area;
                         if (!result.Modules.ContainsKey(module))
                             result.Modules[module] = new GroupDto();
-                        if (actionData.ActionName == "MakeQRCode")
-                        {
 
-                        }
                         var resultAction = new ActionDto();
 
                         resultAction.Path = item.RelativePath;

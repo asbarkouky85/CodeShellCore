@@ -5,6 +5,7 @@ using CodeShellCore.Net;
 using CodeShellCore.Net.Ftp;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Builder
 {
@@ -31,12 +32,12 @@ namespace CodeShellCore.Moldster.Builder
         }
         protected override string BaseUrl => _baseUrl;
 
-        public PublisherResult HandleRequest(PublisherRequest req)
+        public async Task<PublisherResult> HandleRequest(PublisherRequest req)
         {
-            return PostAs<PublisherResult>("HandleRequest", req);
+            return await PostAsAsync<PublisherResult>("HandleRequest", req);
         }
 
-        public Result UploadFile(string file, string folder)
+        public async Task<Result> UploadFile(string file, string folder)
         {
             Result res = new Result();
             var conf = Config;
@@ -52,7 +53,7 @@ namespace CodeShellCore.Moldster.Builder
                     return res;
                 }
                 var byts = File.ReadAllBytes(file);
-                res = client.UploadFile(byts, folder);
+                res = await client.UploadFile(byts, folder);
             }
             catch (Exception e)
             {
@@ -61,7 +62,7 @@ namespace CodeShellCore.Moldster.Builder
             return res;
         }
 
-        public Result UploadFile(byte[] byts, string folder)
+        public async Task<Result> UploadFile(byte[] byts, string folder)
         {
             Result res = new Result();
             try
@@ -71,7 +72,7 @@ namespace CodeShellCore.Moldster.Builder
                 FTPClient client = new FTPClient(conf.Server, conf.UserName, conf.Password);
                 client.Active = conf.Active;
 
-                res = client.UploadFile(byts, folder);
+                res = await client.UploadFile(byts, folder);
             }
             catch (Exception e)
             {
@@ -82,7 +83,7 @@ namespace CodeShellCore.Moldster.Builder
 
         }
 
-        public bool FileExists(string url)
+        public Task<bool> FileExists(string url)
         {
             Result res = new Result();
             try
@@ -97,7 +98,7 @@ namespace CodeShellCore.Moldster.Builder
             catch (Exception e)
             {
                 res.SetException(e);
-                throw e;
+                throw;
             }
         }
     }

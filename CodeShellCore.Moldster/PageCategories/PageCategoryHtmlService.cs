@@ -15,7 +15,7 @@ namespace CodeShellCore.Moldster.PageCategories
     public class PageCategoryHtmlService : RazorViewsServiceBase, IPageCategoryHtmlService
     {
         protected IPathsService _paths => Store.GetInstance<IPathsService>();
-        protected IConfigUnit _unit => Store.GetInstance<IConfigUnit>();
+        protected IMoldsterUnit _unit => Store.GetInstance<IMoldsterUnit>();
         protected IPageControlDataService _controls => Store.GetInstance<IPageControlDataService>();
         protected IPageCategoryParameterDomainService _categories => Store.GetInstance<IPageCategoryParameterDomainService>();
         protected IPageParameterDataService _pars => Store.GetInstance<IPageParameterDataService>();
@@ -26,23 +26,23 @@ namespace CodeShellCore.Moldster.PageCategories
         {
         }
 
-        public void ProcessForTenant(string templatePath, string modCode)
+        public async Task ProcessForTenant(string templatePath, string modCode)
         {
-            long tempId = _unit.PageCategoryRepository.GetSingleValue(d => d.Id, d => d.ViewPath == templatePath);
-            long tenantId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
-            ProcessForTenant(tempId, tenantId);
+            long tempId = await _unit.PageCategoryRepository.GetSingleValue(d => d.Id, d => d.ViewPath == templatePath);
+            long tenantId = await _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            await ProcessForTenant(tempId, tenantId);
         }
 
-        public bool CollectTemplateData(long id)
+        public async Task<bool> CollectTemplateData(long id)
         {
-            PageCategory p = _unit.PageCategoryRepository.FindSingle(id);
+            PageCategory p = await _unit.PageCategoryRepository.FindSingle(id);
             if (p == null)
                 throw new Exception("Not Found");
 
             Out.Write(p.ViewPath);
             GotoColumn(6);
             Out.Write(" View Data: ");
-            TemplateDataCollector dto = GetCollector(p.Id);
+            TemplateDataCollector dto = await GetCollector(p.Id);
             if (dto == null)
             {
                 WriteFailed();
@@ -50,31 +50,31 @@ namespace CodeShellCore.Moldster.PageCategories
             }
             WriteSuccess();
             Out.Write(" Controls: ");
-            _controls.UpdateTemplateControls(p, dto.Controls);
-            _controls.DeleteUnusedControls(p, dto.Controls);
+            await _controls.UpdateTemplateControls(p, dto.Controls);
+            await _controls.DeleteUnusedControls(p, dto.Controls);
             var @params = Store.GetInstance<IObjectMapper>().Map(dto.Parameters, new List<PageCategoryParameter>());
-            _categories.UpdateParameters(p, @params);
+            await _categories.UpdateParameters(p, @params);
             if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
-                _loc.UpdateFiles(dto.Localization);
+                await _loc.UpdateFiles(dto.Localization);
             WriteSuccess();
             return true;
         }
 
-        public void UpdateTemplatePages(long id, long tenantId)
+        public async Task UpdateTemplatePages(long id, long tenantId)
         {
             Out.Write(" Pages: ");
-            _controls.UpdateTemplatePages(id, tenantId);
-            _pars.UpdateTemplatePages(id, tenantId);
-            _pars.UpdateTemplatePagesViewParamsJson(tenantId, id);
+            await _controls.UpdateTemplatePages(id, tenantId);
+            await _pars.UpdateTemplatePages(id, tenantId);
+            await _pars.UpdateTemplatePagesViewParamsJson(tenantId, id);
             WriteSuccess();
         }
 
-        public bool ProcessForTenant(long id, long tenantId)
+        public async Task<bool> ProcessForTenant(long id, long tenantId)
         {
             using (var x = SW.Measure())
             {
-                CollectTemplateData(id);
-                UpdateTemplatePages(id, tenantId);
+                await CollectTemplateData(id);
+                await UpdateTemplatePages(id, tenantId);
                 using (Out.Set(ConsoleColor.Cyan))
                 {
                     Out.Write(" " + x.Elapsed.TotalSeconds.ToString("F4"));
@@ -84,11 +84,11 @@ namespace CodeShellCore.Moldster.PageCategories
             return true;
         }
 
-        private TemplateDataCollector GetCollector(long id)
+        private async Task<TemplateDataCollector> GetCollector(long id)
         {
             try
             {
-                return _dbViews.GetTemplateData(id);
+                return await _dbViews.GetTemplateData(id);
             }
             catch (CodeShellHttpException ex)
             {

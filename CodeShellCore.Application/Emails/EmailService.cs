@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Services.Email
 {
@@ -46,7 +47,7 @@ namespace CodeShellCore.Services.Email
             return mail;
         }
 
-        public virtual Result SendEmail(SmtpClient cl, MailMessage mail)
+        public virtual async Task<Result> SendEmail(SmtpClient cl, MailMessage mail)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace CodeShellCore.Services.Email
                         }
                     }
                     BeforeSend?.Invoke(this, mail);
-                    cl.Send(mail);
+                    await cl.SendMailAsync(mail);
 
                 }
                 return new Result(0);
@@ -73,14 +74,14 @@ namespace CodeShellCore.Services.Email
             }
         }
 
-        public virtual Result SendEmail(string To, string Subject, string MsgBody, bool html = false, string displayName = "no-Reply", IEnumerable<FileBytes> files = null)
+        public virtual async Task<Result> SendEmail(string To, string Subject, string MsgBody, bool html = false, string displayName = "no-Reply", IEnumerable<FileBytes> files = null)
         {
             using (var cl = CreateClient())
             {
                 var mail = CreateMessage(To, Subject, MsgBody, html, displayName);
                 if (files != null)
                     AppendAttachments(mail, files);
-                return SendEmail(cl, mail);
+                return await SendEmail(cl, mail);
             }
 
         }

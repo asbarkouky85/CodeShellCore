@@ -5,6 +5,7 @@ using CodeShellCore.Text;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Tenants
 {
@@ -14,22 +15,22 @@ namespace CodeShellCore.Moldster.Tenants
         {
         }
 
-        public override Result AddAngularJson(string tenant)
+        public override Task<Result> AddAngularJson(string tenant)
         {
-            return new Result();
+            return Task.FromResult(new Result());
         }
 
-        public override AngularJsonFile ReadAngularJsonFile()
+        public override Task<AngularJsonFile> ReadAngularJsonFile()
         {
-            return new AngularJsonFile();
+            return Task.FromResult(new AngularJsonFile());
         }
 
-        public override void UpdateAngularJsonFromDatabase()
+        public override Task UpdateAngularJsonFromDatabase()
         {
-
+            return Task.CompletedTask;
         }
 
-        public override void GenerateMainFile(string tenantCode, bool addStyle = false)
+        public override async Task GenerateMainFile(string tenantCode, bool addStyle = false)
         {
             Out.Write("Generating boot.ts...  \t\t\t");
 
@@ -41,20 +42,20 @@ namespace CodeShellCore.Moldster.Tenants
                 Code = tenantCode,
                 Style = addStyle ? "import \"./app.scss\"" : ""
             });
-            File.WriteAllText(bootPath, boot);
+            await File.WriteAllTextAsync(bootPath, boot);
 
             GotoColumn(SuccessCol);
             WriteSuccess();
             Out.WriteLine();
         }
 
-        public override void GenerateAppModule(string modCode)
+        public override async Task GenerateAppModule(string modCode)
         {
             string moduleName = modCode + "Module";
             string modulePath = Path.Combine(Paths.UIRoot, modCode, "app", moduleName + ".ts");
 
             Out.Write("Generating " + moduleName + ".ts : ");
-            var main = _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == modCode);
+            var main = await _unit.TenantRepository.GetSingleValue(d => d.MainComponentBase, d => d.Code == modCode);
             var tempModel = new ModuleTsModel
             {
                 Code = modCode,
@@ -67,7 +68,7 @@ namespace CodeShellCore.Moldster.Tenants
                 BaseAppModulePath = Paths.CoreAppName + "/" + Paths.CoreAppName + "BaseModule"
             };
 
-            var homePage = _unit.PageRepository.GetHomePagePath(modCode);
+            var homePage = await _unit.PageRepository.GetHomePagePath(modCode);
             if (homePage != null)
             {
                 var name = homePage.GetAfterLast("/");

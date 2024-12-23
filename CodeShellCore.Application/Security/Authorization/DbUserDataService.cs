@@ -3,6 +3,7 @@ using CodeShellCore.MultiTenant;
 using CodeShellCore.Security.Authentication;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Security.Authorization
 {
@@ -15,25 +16,25 @@ namespace CodeShellCore.Security.Authorization
             this.unit = unit;
         }
 
-        protected override IUser GetUserFromDataSource(string c)
+        protected override async Task<IUser> GetUserFromDataSource(string c)
         {
-            var u = unit.UserRepository.GetByUserId(RemoveTenantFromKey(c).ToString());
+            var u = await unit.UserRepository.GetByUserId(RemoveTenantFromKey(c).ToString());
             if (u != null && u is IEntityLinkedUser)
-                ((IEntityLinkedUser)u).EntityLinks = unit.UsersEntityLinkRepository.GetUserLinks(u.UserId);
+                ((IEntityLinkedUser)u).EntityLinks = await unit.UsersEntityLinkRepository.GetUserLinks(u.UserId);
             return u;
         }
 
-        protected override List<RoleCacheItem> GetRolesFromDataSource(IEnumerable<object> roles)
+        protected override async Task<List<RoleCacheItem>> GetRolesFromDataSource(IEnumerable<object> roles)
         {
             List<RoleCacheItem> res = new List<RoleCacheItem>();
             foreach (var role in roles)
             {
                 var roleId = RemoveTenantFromKey(role);
-                var roleResources = unit.ResourceRepository.GetRoleResources(RemoveTenantFromKey(roleId));
+                var roleResources = await unit.ResourceRepository.GetRoleResources(RemoveTenantFromKey(roleId));
                 res.Add(new RoleCacheItem
                 {
                     RoleId = roleId,
-                    Actions = unit.ResourceRepository.GetRoleResourceActions(roleId),
+                    Actions = await unit.ResourceRepository.GetRoleResourceActions(roleId),
                     Resources = CompressResourceData(roleResources),
                     Collections = CompressCollectionIds(roleResources)
                 });

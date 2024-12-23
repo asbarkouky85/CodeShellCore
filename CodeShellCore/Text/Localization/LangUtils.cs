@@ -8,6 +8,7 @@ using System.Linq;
 using System.Collections;
 using CodeShellCore.Text;
 using CodeShellCore.Text.ResourceReader;
+using System.IO;
 
 namespace CodeShellCore.Text.Localization
 {
@@ -78,6 +79,7 @@ namespace CodeShellCore.Text.Localization
             var dic = new Dictionary<string, string>();
             try
             {
+
                 ResourceSet st = man.GetResourceSet(info, true, true);
 
                 foreach (DictionaryEntry v in st)
@@ -85,6 +87,28 @@ namespace CodeShellCore.Text.Localization
                     dic[v.Key.ToString()] = v.Value.ToString();
                 }
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return dic;
+        }
+
+        public static Dictionary<string, string> ResourceToDictionary(string fileName)
+        {
+            var dic = new Dictionary<string, string>();
+            try
+            {
+                ResxXmlReader reader = new ResxXmlReader();
+
+                if (reader.TryRead(fileName, out ResourceContainer container))
+                {
+                    foreach (var item in container.DataItems)
+                    {
+                        dic[item.Name] = item.Value.ToString();
+                    }
+                }
             }
             catch (Exception ex)
             {

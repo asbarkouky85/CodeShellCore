@@ -6,6 +6,7 @@ namespace CodeShellCore.HealthCheck
 {
     public class CheckItem : ChangeColumnsEntity<long>
     {
+        static Dictionary<string, Guid?> _eventByService = new Dictionary<string, Guid?>();
         public CheckItem() { }
         public CheckItem(string name, string host, double totalMilliseconds) : this()
         {
@@ -20,12 +21,18 @@ namespace CodeShellCore.HealthCheck
         public int StatusCode { get; set; }
         public double ResponseTime { get; set; }
         public string Response { get; set; }
+        public Guid? EventId { get; set; }
 
         public void SetFailed(int statusCode, string response)
         {
             Success = false;
             Response = response;
             StatusCode = statusCode;
+            if (!_eventByService.TryGetValue(ServiceName, out Guid? id) || id == null)
+            {
+                _eventByService[ServiceName] = Guid.NewGuid();
+            }
+            EventId = _eventByService[ServiceName];
         }
 
         public void SetSuccess(int statusCode, string response)
@@ -33,6 +40,7 @@ namespace CodeShellCore.HealthCheck
             Success = true;
             Response = response;
             StatusCode = statusCode;
+            _eventByService[ServiceName] = null;
         }
     }
 }

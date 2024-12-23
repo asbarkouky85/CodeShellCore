@@ -4,6 +4,7 @@ using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Net;
 using CodeShellCore.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Builder
 {
@@ -11,11 +12,11 @@ namespace CodeShellCore.Moldster.Builder
     {
         IOutputWriter OutputWriter { get; set; }
 
-        PublisherResult UploadTenantBundle(string tenant, string version);
-        Result DeleteOtherBundlesForTenant(string tenant);
-        Dictionary<string, TenantInfoItem> GetAllTenantsInfo();
-        Result SetTenantInfo(string tenant, string version = null);
-        Result SetAllTenantsInfo(Dictionary<string, TenantInfoItem> dic);
+        Task<PublisherResult> UploadTenantBundle(string tenant, string version);
+        Task<Result> DeleteOtherBundlesForTenant(string tenant);
+        Task<Dictionary<string, TenantInfoItem>> GetAllTenantsInfo();
+        Task<Result> SetTenantInfo(string tenant, string version = null);
+        Task<Result> SetAllTenantsInfo(Dictionary<string, TenantInfoItem> dic);
 
 
     }

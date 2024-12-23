@@ -10,6 +10,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+
   <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
     <ProjectReference Include="..\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
@@ -17,12 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Filtering\" />
-    <Folder Include="Data\Localization\Internal\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
   </ItemGroup>
 

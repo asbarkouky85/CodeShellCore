@@ -87,5 +87,25 @@ namespace CodeShellCore.Web.Razor.Text
         {
             return _default(index, formatElements);
         }
+
+        public Dictionary<string, string> GetAllWords(string locale)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> GetAllMessages(string locale)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> GetAllColumns(string locale)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, string> GetAllPages(string locale)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

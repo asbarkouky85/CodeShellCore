@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
+using CodeShellCore.Extensions;
 using CodeShellCore.Files.Logging;
 using CodeShellCore.MultiTenant;
 using CodeShellCore.Services;
@@ -8,9 +9,7 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using CodeShellCore.Extensions;
 
 namespace CodeShellCore.MQ
 {
@@ -39,7 +38,7 @@ namespace CodeShellCore.MQ
             {
                 lock (_locker)
                 {
-                    _logger = Logger.Create(Shell.ProjectAssembly.GetName().Name, Path.Combine(Shell.AppRootPath, "MQLogs"));
+                    _logger = Logger.Create(Shell.ProjectAssembly.GetName().Name, "EventBus");
                 }
             }
             _logger.ClassName = GetType().Name;

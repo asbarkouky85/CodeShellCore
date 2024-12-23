@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Security
 {
     public interface IAccountController
     {
-        LoginResult Login(LoginModel model);
-        object GetUserData();
-        LoginResult RefreshToken(RefreshTokenDTO refresh);
+        Task<LoginResult> Login(LoginModel model);
+        Task<object> GetUserData();
+        Task<LoginResult> RefreshToken(RefreshTokenDTO refresh);
     }
 }

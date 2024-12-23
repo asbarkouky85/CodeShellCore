@@ -1,5 +1,6 @@
 ﻿using System;
 using System.DirectoryServices.AccountManagement;
+using System.Threading.Tasks;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Services;
 
@@ -16,30 +17,33 @@ namespace CodeShellCore.Security.Authentication.Internal
             _securityUnit = unit;
         }
 
-        protected virtual void OnLoginAttempt(IUser user)
+        protected virtual Task OnLoginAttempt(IUser user)
         {
-
+            return Task.CompletedTask;
         }
 
-        public SubmitResult ChangePassword(ChangePasswordDTO dto)
+        public Task<SubmitResult> ChangePassword(ChangePasswordDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public virtual bool Check(string name, string password)
+        public virtual Task<bool> Check(string name, string password)
         {
-            DomainUser user = new DomainUser(name);
-            if (user.Domain == null || user.UserName == null)
-                return false;
-
-            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, user.Domain))
+            return Task.Run(() =>
             {
-                return pc.ValidateCredentials(user.UserName, password);
+                DomainUser user = new DomainUser(name);
+                if (user.Domain == null || user.UserName == null)
+                    return false;
 
-            }
+                using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, user.Domain))
+                {
+                    return pc.ValidateCredentials(user.UserName, password);
+
+                }
+            });
         }
 
-        public virtual LoginResult Login(string name, string password, bool remember = false)
+        public virtual async Task<LoginResult> Login(string name, string password, bool remember = false)
         {
             if (_securityUnit == null)
                 throw new Exception("Unit must implement ISecurityUnit to be valid for this function");
@@ -54,7 +58,7 @@ namespace CodeShellCore.Security.Authentication.Internal
             string domain = unameArr[0];
             string userName = unameArr[1];
 
-            IUser CurrentUser = _securityUnit.UserRepository.GetByName(userName);
+            IUser CurrentUser = await _securityUnit.UserRepository.GetByName(userName);
 
             if (CurrentUser == null)
                 return new LoginResult(false, "المستخدم غير موجود أو غير مفعل");
@@ -70,19 +74,28 @@ namespace CodeShellCore.Security.Authentication.Internal
             }
         }
 
-        public virtual LoginResult LoginById(string id)
+        public virtual Task<LoginResult> LoginById(string id)
         {
-            return new LoginResult(false, "Not Supported");
+            return Task.Run(() =>
+            {
+                return new LoginResult(false, "Not Supported");
+            });
         }
 
-        public virtual SubmitResult RegisterUser(IRegisterModel model)
+        public virtual Task<SubmitResult> RegisterUser(IRegisterModel model)
         {
-            return new SubmitResult();
+            return Task.Run(() =>
+            {
+                return new SubmitResult();
+            });
         }
 
-        public SubmitResult RequestPasswordReset(ResetPasswordDTO dto)
+        public Task<SubmitResult> RequestPasswordReset(ResetPasswordDTO dto)
         {
-            return new SubmitResult();
+            return Task.Run(() =>
+            {
+                return new SubmitResult();
+            });
         }
     }
 }

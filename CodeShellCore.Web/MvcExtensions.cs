@@ -1,33 +1,30 @@
-﻿using System.IO;
+﻿using CodeShellCore;
+using CodeShellCore.Data;
+using CodeShellCore.Data.Helpers;
+using CodeShellCore.Files;
+using CodeShellCore.Files.Logging;
+using CodeShellCore.Helpers;
+using CodeShellCore.Http;
+using CodeShellCore.Security.Authentication;
+using CodeShellCore.Security.Sessions;
+using CodeShellCore.Text;
+using CodeShellCore.Text.Localization;
+using CodeShellCore.Web.Security;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-
-using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Data.Helpers;
-using CodeShellCore.Text.Localization;
-using CodeShellCore.Security.Authentication;
-using CodeShellCore.Text;
-using CodeShellCore.Security.Authorization;
-using CodeShellCore.Http;
-using Newtonsoft.Json;
-using CodeShellCore.Files;
-using CodeShellCore.Security.Sessions;
-using CodeShellCore.Web.Security;
-using System;
-using CodeShellCore.Files.Logging;
-using CodeShellCore.Helpers;
-using Microsoft.Extensions.Primitives;
-using System.ComponentModel;
-using System.Linq;
-using CodeShellCore.Data;
-using CodeShellCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace Microsoft.AspNetCore.Mvc
 {
@@ -196,7 +193,9 @@ namespace Microsoft.AspNetCore.Mvc
             string st;
             using (StreamReader reader = new StreamReader(req.Body))
             {
-                st = reader.ReadToEnd();
+                var t = reader.ReadToEndAsync();
+                t.Wait();
+                st = t.Result;
             }
             return st;
         }
@@ -216,7 +215,7 @@ namespace Microsoft.AspNetCore.Mvc
             con.Items["IsProccessed"] = true;
         }
 
-        public static void ProcessOnce(this HttpContext http, string token = null)
+        public static async Task ProcessOnce(this HttpContext http, string token = null)
         {
             if (!http.IsProccessed())
             {
@@ -224,7 +223,7 @@ namespace Microsoft.AspNetCore.Mvc
                 http.ReadClientData();
 
                 var _manager = http.RequestServices.GetService<ISessionManager>();
-                _manager?.AuthorizationRequest();
+                await _manager?.AuthorizationRequest();
                 http.SetProccessed();
             }
 

@@ -22,7 +22,6 @@
     <ProjectReference Include="..\CodeShellCore.CliDispatch\CodeShellCore.CliDispatch.csproj" />
     <ProjectReference Include="..\CodeShellCore.Moldster.EntityFramework\CodeShellCore.Moldster.EntityFramework.csproj" />
     <ProjectReference Include="..\CodeShellCore.Moldster\CodeShellCore.Moldster.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
 
 </Project>

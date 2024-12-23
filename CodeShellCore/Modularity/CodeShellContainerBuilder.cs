@@ -28,9 +28,14 @@ namespace CodeShellCore
                 StopModule(typeof(TModule));
             };
 
-            Logger.Set(Shell.ProjectAssembly.GetName().Name);
+            Logger.Set(Shell.ProjectAssembly.GetName().Name, "Application");
+            Logger.WriteLine("Initializing");
             string envName = Shell.EnvironmentName == null ? "" : "-" + Shell.EnvironmentName;
-            Console.Title = Shell.ProjectAssembly.GetName().Name + "-v" + Shell.ProjectAssembly.GetVersionString() + envName;
+            try
+            {
+                Console.Title = Shell.ProjectAssembly.GetName().Name + "-v" + Shell.ProjectAssembly.GetVersionString() + envName;
+            }
+            catch { }
 
             Configuration = configuration;
             Shell.SetConfigRoot(Configuration);

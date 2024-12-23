@@ -1,18 +1,20 @@
 ﻿using CodeShellCore.Data.Recursion;
 using CodeShellCore.Helpers;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Domains
 {
-    public class DomainRepository : MoldsterRepository<Domain, MoldsterContext>, IDomainRepository, IRecursiveRepository<Domain>
+    public class DomainRepository : MoldsterRepository<Domain, MoldsterContext>, IDomainRepository, IRecursiveRepository<Domain, DefaultRecursionModel>
     {
-        DefaultRecursiveRepository<Domain, MoldsterContext> _recRepo;
+        DefaultRecursiveRepository<Domain, DefaultRecursionModel, MoldsterContext> _recRepo;
         public DomainRepository(MoldsterContext con) : base(con)
         {
-            _recRepo = new DefaultRecursiveRepository<Domain, MoldsterContext>(con);
+            _recRepo = new DefaultRecursiveRepository<Domain, DefaultRecursionModel, MoldsterContext>(con);
         }
 
         internal IQueryable<Domain> ByTenantCode(string moduleCode, IQueryable<Domain> q = null)
@@ -45,7 +47,7 @@ namespace CodeShellCore.Moldster.Domains
                    select d;
         }
 
-        public List<T> GetByTenantCodeForRouting<T>(string moduleCode, long? domId = null) where T : class
+        public async Task<List<T>> GetByTenantCodeForRouting<T>(string moduleCode, long? domId = null) where T : class
         {
             //if (domId == 1)
             //{
@@ -58,10 +60,10 @@ namespace CodeShellCore.Moldster.Domains
 
 
 
-            return QueryDto<T>(q).ToList();
+            return await QueryDto<T>(q).ToListAsync();
         }
 
-        public Domain GetDomainByPath(string path)
+        public Task<Domain> GetDomainByPath(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException();
@@ -72,10 +74,10 @@ namespace CodeShellCore.Moldster.Domains
             return FindSingle(d => d.NameChain == path);
         }
 
-        public IEnumerable<T> GetParentModules<T>(long modId)
+        public async Task<List<T>> GetParentModules<T>(long modId)
         {
             var q = QueryByTenant(modId).Where(d => d.ParentId == null);
-            return QueryDto<T>(q).ToList();
+            return await QueryDto<T>(q).ToListAsync();
         }
 
         List<string> _partitionPath(string path)
@@ -95,7 +97,7 @@ namespace CodeShellCore.Moldster.Domains
         /// </summary>
         /// <param name="dom"></param>
         /// <returns></returns>
-        public Domain GetOrCreatePath(string dom)
+        public async Task<Domain> GetOrCreatePath(string dom)
         {
             if (dom[0] != '/')
                 dom = "/" + dom;
@@ -108,7 +110,7 @@ namespace CodeShellCore.Moldster.Domains
             foreach (var part in parts)
             {
                 searchTerm += "/" + part;
-                Domain domain = FindSingle(d => d.NameChain == searchTerm + "/");
+                Domain domain = await FindSingle(d => d.NameChain == searchTerm + "/");
                 if (domain == null)
                 {
                     domain = new Domain
@@ -126,7 +128,7 @@ namespace CodeShellCore.Moldster.Domains
 
         }
 
-        public Domain GetOrCreatePath(string dom, ref List<Domain> doms)
+        public async Task<Domain> GetOrCreatePath(string dom, List<Domain> doms)
         {
             if (dom[0] != '/')
                 dom = "/" + dom;
@@ -138,7 +140,7 @@ namespace CodeShellCore.Moldster.Domains
             foreach (var part in parts)
             {
                 searchTerm += "/" + part;
-                Domain domain = FindSingle(d => d.NameChain == searchTerm + "/");
+                Domain domain = await FindSingle(d => d.NameChain == searchTerm + "/");
                 domain = domain ?? doms.FirstOrDefault(d => d.Name == part);
                 if (domain == null)
                 {
@@ -158,44 +160,44 @@ namespace CodeShellCore.Moldster.Domains
 
         }
 
-        public IEnumerable<RecursionModel> GetRecursionModels()
+        public Task<IEnumerable<DefaultRecursionModel>> GetRecursionModels()
         {
             return _recRepo.GetRecursionModels();
         }
 
-        public IEnumerable<RecursionModel> GetRecursionModels(Expression<Func<Domain, bool>> filter)
+        public Task<IEnumerable<DefaultRecursionModel>> GetRecursionModels(Expression<Func<Domain, bool>> filter)
         {
             return _recRepo.GetRecursionModels();
         }
 
-        public IEnumerable<Domain> GetChildren(object prime)
+        public Task<IEnumerable<Domain>> GetChildren(object prime)
         {
             return _recRepo.GetChildren(prime);
         }
 
-        public IEnumerable<Domain> GetChildren(object prime, Expression<Func<Domain, bool>> filter)
+        public Task<IEnumerable<Domain>> GetChildren(object prime, Expression<Func<Domain, bool>> filter)
         {
             return _recRepo.GetChildren(prime, filter);
         }
 
-        public IEnumerable<Domain> GetRooted(Expression<Func<Domain, bool>> filter)
+        public Task<IEnumerable<Domain>> GetRooted(Expression<Func<Domain, bool>> filter)
         {
             return _recRepo.GetRooted(filter);
         }
 
-        public void DeleteAllSubs(object prime)
+        public async Task DeleteAllSubs(object prime)
         {
-            _recRepo.DeleteAllSubs(prime);
+            await _recRepo.DeleteAllSubs(prime);
         }
 
-        public IEnumerable<Domain> GetHavingPagesForTenant(long value)
+        public async Task<List<Domain>> GetHavingPagesForTenant(long value)
         {
-            return QueryByTenant(value).ToList();
+            return await QueryByTenant(value).ToListAsync();
         }
 
-        public IEnumerable<Domain> GetHavingCategories()
+        public async Task<List<Domain>> GetHavingCategories()
         {
-            return QueryHavingCategories().ToList();
+            return await QueryHavingCategories().ToListAsync();
         }
     }
 }

@@ -12,12 +12,12 @@ namespace CodeShellCore.CliDispatch.Parsing
 {
     public abstract class ArgumentItem<T>
     {
-        public string CharacterSymbol { get; protected set; }
-        public string Key { get; protected set; }
+        public string? CharacterSymbol { get; protected set; }
+        public string? Key { get; protected set; }
         public int? Order { get; protected set; }
         public bool IsRequired { get; protected set; }
         public bool IsSet { get; protected set; }
-        public string MemberName { get; protected set; }
+        public string? MemberName { get; protected set; }
         public virtual bool IsBool { get; }
         public virtual bool IsEnum { get; }
         public string Description { get; set; }
@@ -27,7 +27,7 @@ namespace CodeShellCore.CliDispatch.Parsing
         protected ArgumentItem() { }
 
         public abstract void SetMemberValue(T obj, string v);
-        public virtual string GetDefault()
+        public virtual string? GetDefault()
         {
             return null;
         }
@@ -40,13 +40,13 @@ namespace CodeShellCore.CliDispatch.Parsing
         private bool _isEnum;
         public override bool IsBool => _isBool;
         public override bool IsEnum => _isEnum;
-        protected TVal Default;
+        protected TVal? Default;
         private bool _defaultIsSet = false;
 
         public ArgumentItem(
             Expression<Func<T, TVal>> t,
-            string key = null,
-            string shortKey = null,
+            string? key = null,
+            string? shortKey = null,
             int? order = null,
             bool required = false) : base()
         {
@@ -88,6 +88,13 @@ namespace CodeShellCore.CliDispatch.Parsing
         {
             Options = options;
             return this;
+        }
+
+        public override string? GetDefault()
+        {
+            if (_defaultIsSet)
+                return Default?.ToString();
+            return default(TVal)?.ToString();
         }
 
         public override void SetMemberValue(T obj, string v)

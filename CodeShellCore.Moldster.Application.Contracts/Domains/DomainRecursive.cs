@@ -12,7 +12,7 @@ namespace CodeShellCore.Moldster.Domains
         public List<DomainRecursive> SubDomains = new List<DomainRecursive>();
         public string NameChain;
 
-        public static DomainRecursive ToDomainRecursive(IRecursiveModel dom)
+        public static DomainRecursive ToDomainRecursive<T>(T dom) where T : class, IRecursiveModel<T>
         {
             var rec = new DomainRecursive
             {

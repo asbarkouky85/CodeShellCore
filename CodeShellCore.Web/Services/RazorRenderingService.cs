@@ -29,7 +29,7 @@ namespace CodeShellCore.Web.Services
             _tempDataProvider = tmp;
         }
 
-        public virtual string RenderPartial(HttpContext context, string viewName, object model = null, Dictionary<string, object> viewData = null)
+        public virtual async Task<string> RenderPartial(HttpContext context, string viewName, object model = null, Dictionary<string, object> viewData = null)
         {
             ActionContext actionContext = new ActionContext(context, new RouteData(), new ActionDescriptor());
 
@@ -66,11 +66,10 @@ namespace CodeShellCore.Web.Services
                         opts
                     );
 
-                    var t = RenderAsync(viewResult, viewContext);
-                    t.Wait();
-                    if (t.Result.Code != 200)
+                    var result = await RenderAsync(viewResult, viewContext);
+                    if (result.Code != 200)
                     {
-                        throw new CodeShellHttpException(t.Result);
+                        throw new CodeShellHttpException(result);
                     }
                     return sw.ToString();
                 }

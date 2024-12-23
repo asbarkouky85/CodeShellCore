@@ -101,9 +101,9 @@ namespace CodeShellCore.Data.EntityFramework
             return DbContext.Set<T>();
         }
 
-        public abstract TValue GetValue<TValue>(object id, Expression<Func<T, TValue>> ex);
-        public abstract TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
-        public abstract TR FindSingleAndMap<TR>(object id) where TR : class;
+        public abstract Task<TValue> GetValue<TValue>(object id, Expression<Func<T, TValue>> ex);
+        public abstract Task<TR> FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class;
+        public abstract Task<TR> FindSingleAndMap<TR>(object id) where TR : class;
 
         protected T GetRepository<TRepo>() where TRepo : class, IRepository
         {
@@ -120,9 +120,9 @@ namespace CodeShellCore.Data.EntityFramework
         #endregion
 
 
-        public virtual T FindSingle(object id)
+        public virtual async Task<T> FindSingle(object id)
         {
-            return DbContext.Set<T>().Find(id);
+            return await DbContext.Set<T>().FindAsync(id);
         }
 
         public virtual void DeleteById(object ob)
@@ -131,21 +131,21 @@ namespace CodeShellCore.Data.EntityFramework
             if (d != null)
                 Saver.Remove(d);
         }
-        public abstract bool IdExists(object ob);
+        public abstract Task<bool> IdExists(object ob);
 
         /// <summary>
         /// to retrieve all records from the data source with the repository entity
         /// </summary>
         /// <returns>should not be a queryable object</returns>
-        public virtual IEnumerable All()
+        public virtual async Task<IEnumerable> All()
         {
-            return Loader.ToList();
+            return await Loader.ToListAsync();
         }
 
 
-        public virtual List<T> GetList()
+        public virtual async Task<List<T>> GetList()
         {
-            return Loader.ToList();
+            return await Loader.ToListAsync();
         }
 
 
@@ -190,9 +190,9 @@ namespace CodeShellCore.Data.EntityFramework
         /// counts all records in repository
         /// </summary>
         /// <returns></returns>
-        public virtual int Count()
+        public virtual async Task<int> Count()
         {
-            return Loader.Count(d => true);
+            return await Loader.CountAsync(d => true);
         }
 
         /// <summary>
@@ -200,9 +200,9 @@ namespace CodeShellCore.Data.EntityFramework
         /// </summary>
         /// <param name="exp"></param>
         /// <returns></returns>
-        public virtual int Count(Expression<Func<T, bool>> exp)
+        public virtual async Task<int> Count(Expression<Func<T, bool>> exp)
         {
-            return Loader.Where(exp).Count(d => true);
+            return await Loader.Where(exp).CountAsync(d => true);
         }
 
         /// <summary>
@@ -210,9 +210,9 @@ namespace CodeShellCore.Data.EntityFramework
         /// </summary>
         /// <param name="exp"></param>
         /// <returns></returns>
-        public virtual bool Exist(Expression<Func<T, bool>> exp)
+        public virtual async Task<bool> Exist(Expression<Func<T, bool>> exp)
         {
-            return Loader.Any(exp);
+            return await Loader.AnyAsync(exp);
         }
 
         /// <summary>
@@ -220,18 +220,18 @@ namespace CodeShellCore.Data.EntityFramework
         /// </summary>
         /// <param name="exp"></param>
         /// <returns>should not be a queryable object</returns>
-        public virtual List<T> Find(Expression<Func<T, bool>> exp)
+        public virtual async Task<List<T>> Find(Expression<Func<T, bool>> exp)
         {
 
-            return Loader.Where(exp).ToList();
+            return await Loader.Where(exp).ToListAsync();
         }
 
-        public virtual PagedResult<T> Find(PagedListRequest<T> opts)
+        public virtual async Task<PagedResult<T>> Find(PagedListRequest<T> opts)
         {
-            return Loader.ToPagedResult(opts);
+            return await Loader.ToPagedResultAsync(opts);
         }
 
-        public virtual List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
+        public virtual Task<List<TR>> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             try
             {
@@ -240,79 +240,79 @@ namespace CodeShellCore.Data.EntityFramework
                     q = q.Where(cond);
 
                 if (opts != null)
-                    return q.Select(exp).ToListWith(opts);
+                    return q.Select(exp).ToPagedListAsync(opts);
 
-                return q.Select(exp).ToList();
+                return q.Select(exp).ToListAsync();
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
 
         }
 
-        public virtual PagedResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        public virtual async Task<PagedResult<TR>> FindAs<TR>(Expression<Func<T, TR>> exp, PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
         {
             var q = Loader;
             if (cond != null)
                 q = q.Where(cond);
 
-            return q.Select(exp).ToPagedResult(opts);
+            return await q.Select(exp).ToPagedResultAsync(opts);
         }
 
-        public virtual T FindSingle(Expression<Func<T, bool>> expression)
+        public virtual async Task<T> FindSingle(Expression<Func<T, bool>> expression)
         {
-            return Loader.Where(expression).FirstOrDefault();
+            return await Loader.Where(expression).FirstOrDefaultAsync();
         }
 
-        public virtual TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> expression) where TR : class
+        public virtual async Task<TR> FindSingleAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> expression) where TR : class
         {
             try
             {
-                return Loader.Where(expression).Select(exp).FirstOrDefault();
+                return await Loader.Where(expression).Select(exp).FirstOrDefaultAsync();
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
 
         }
 
-        public virtual IEnumerable<TValue> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter)
+        public virtual async Task<IEnumerable<TValue>> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter)
         {
             var q = Loader;
             if (filter != null)
                 q = q.Where(filter);
-            return q.Select(ex).ToList();
+            return await q.Select(ex).ToListAsync();
         }
 
-        public virtual TValue GetSingleValue<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter)
+        public virtual async Task<TValue> GetSingleValue<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter)
         {
-            return Loader.Where(filter).Select(ex).FirstOrDefault();
+            return await Loader.Where(filter).Select(ex).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<TValue> GetValues<TValue, TOrder>(Expression<Func<T, TValue>> ex, Expression<Func<T, TOrder>> order, Expression<Func<T, bool>> filter = null)
+        public async Task<IEnumerable<TValue>> GetValues<TValue, TOrder>(Expression<Func<T, TValue>> ex, Expression<Func<T, TOrder>> order, Expression<Func<T, bool>> filter = null)
         {
             var q = Loader;
             if (filter != null)
                 q = q.Where(filter);
-            return q.OrderBy(order).Select(ex).ToList();
+            return await q.OrderBy(order).Select(ex).ToListAsync();
         }
 
-        public abstract void Delete(Expression<Func<T, bool>> ex);
+        public abstract Task Delete(Expression<Func<T, bool>> ex);
 
-        public List<TR> FindAs<TR>(Expression<Func<T, TR>> ex, IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
+        public async Task<List<TR>> FindAs<TR>(Expression<Func<T, TR>> ex, IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
         {
             var q = Loader;
             foreach (var filter in filtes)
                 q = q.Where(filter);
-            return q.Select(ex).ToList();
+            return await q.Select(ex).ToListAsync();
         }
 
 
-        public virtual DeleteResult CanDelete(object id)
+        public virtual async Task<DeleteResult> CanDelete(object id)
         {
-            if (!IdExists(id))
+            if (!await IdExists(id))
                 return new DeleteResult { CanDelete = true, Code = 0 };
             using (var txscope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
@@ -320,7 +320,7 @@ namespace CodeShellCore.Data.EntityFramework
                 try
                 {
                     DeleteById(id);
-                    DbContext.SaveChanges();
+                    await DbContext.SaveChangesAsync();
                     txscope.Dispose();
                     res.AffectedRows = 0;
                     res.CanDelete = true;
@@ -347,15 +347,15 @@ namespace CodeShellCore.Data.EntityFramework
                 }
             }
         }
-        public virtual PagedResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, PagedListRequest<TR> opts) where TR : class
+        public virtual async Task<PagedResult<TR>> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, PagedListRequest<TR> opts) where TR : class
         {
             if (dir == SortDir.ASC)
-                return Loader.OrderBy(sort).Select(exp).ToPagedResult(opts);
+                return await Loader.OrderBy(sort).Select(exp).ToPagedResultAsync(opts);
             else
-                return Loader.OrderByDescending(sort).Select(exp).ToPagedResult(opts);
+                return await Loader.OrderByDescending(sort).Select(exp).ToPagedResultAsync(opts);
         }
 
-        public TVal GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null)
+        public async Task<TVal> GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null)
         {
             var q = Loader;
             if (filter != null)
@@ -364,12 +364,12 @@ namespace CodeShellCore.Data.EntityFramework
             {
                 return Activator.CreateInstance<TVal>();
             }
-            return q.Max(exp);
+            return await q.MaxAsync(exp);
         }
 
-        public T Merge(Expression<Func<T, bool>> ex, T obj)
+        public async Task<T> Merge(Expression<Func<T, bool>> ex, T obj)
         {
-            var item = Loader.Where(ex).FirstOrDefault();
+            var item = await Loader.Where(ex).FirstOrDefaultAsync();
             if (item == null)
             {
                 item = obj;
@@ -378,13 +378,15 @@ namespace CodeShellCore.Data.EntityFramework
             return item;
         }
 
-        public abstract IEnumerable<Named<object>> FindAsLookup(string collectionId = null);
+        public abstract Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId = null);
 
-        public abstract IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex);
+        public abstract Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex);
 
         public virtual bool FindSingleOrAdd(Expression<Func<T, bool>> ex, T obj, out T existing)
         {
-            var item = FindSingle(ex);
+            var itemTsk = FindSingle(ex);
+            itemTsk.Wait();
+            var item = itemTsk.Result;
             if (item != null)
             {
                 existing = item;
@@ -403,7 +405,7 @@ namespace CodeShellCore.Data.EntityFramework
             return Projector.Project<T, TDto>(q ?? Loader);
         }
 
-        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
+        public async Task<List<TR>> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             var q = Loader;
             if (cond != null)
@@ -413,9 +415,9 @@ namespace CodeShellCore.Data.EntityFramework
             var dtoq = QueryDto<TR>(q);
             if (opts != null)
             {
-                return dtoq.ToListWith(opts);
+                return await dtoq.ToPagedListAsync(opts);
             }
-            return dtoq.ToList();
+            return await dtoq.ToListAsync();
         }
 
         public async Task<List<TR>> FindAndMapAsync<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
@@ -433,28 +435,28 @@ namespace CodeShellCore.Data.EntityFramework
             return await dtoq.ToListAsync();
         }
 
-        public List<TR> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
+        public Task<List<TR>> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
         {
             var q = Loader;
             foreach (var ex in filtes)
                 q = q.Where(ex);
-            return QueryDto<TR>(q).ToList();
+            return QueryDto<TR>(q).ToListAsync();
         }
 
-        public PagedResult<TR> FindAndMap<TR>(PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        public async Task<PagedResult<TR>> FindAndMap<TR>(PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
         {
             var q = Loader;
             if (cond != null)
             {
                 q = q.Where(cond);
             }
-            return QueryDto<TR>(q).ToPagedResult(opts);
+            return await QueryDto<TR>(q).ToPagedResultAsync(opts);
         }
 
-        public TR FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class
+        public async Task<TR> FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class
         {
             var q = Loader.Where(expression);
-            return QueryDto<TR>(q).FirstOrDefault();
+            return await QueryDto<TR>(q).FirstOrDefaultAsync();
         }
         //
         // Summary:
@@ -507,7 +509,7 @@ namespace CodeShellCore.Data.EntityFramework
             return Loader.Where(value).ToListAsync();
         }
 
-        public abstract PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null);
+        public abstract Task<PagedResult<Named<object>>> FindAsLookupPaged(PagedListRequest request, string collectionId = null);
     }
 }
 

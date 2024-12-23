@@ -5,6 +5,7 @@ using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.EntityFramework;
 using CodeShellCore.Extensions;
+using CodeShellCore.Files.Logging;
 using CodeShellCore.MQ.Events;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authorization;
@@ -52,14 +53,14 @@ namespace CodeShellCore.Data.EntityFramework
             DbContext.ChangeTracker.AutoDetectChangesEnabled = true;
         }
 
-        private bool _hasCollections(string res)
+        private async Task<bool> _hasCollections(string res)
         {
             if (!_resourcesObtained && !_obtainingResources)
             {
                 _obtainingResources = true;
                 var unit = _provider.GetService<ISecurityUnit>();
                 if (unit != null)
-                    _collectionResources = unit.ResourceRepository.GetResourcesWithCollections();
+                    _collectionResources = await unit.ResourceRepository.GetResourcesWithCollections();
 
                 _obtainingResources = false;
                 _resourcesObtained = true;
@@ -170,8 +171,9 @@ namespace CodeShellCore.Data.EntityFramework
 
             var repo = r as ICollectionRepository;
             var res = EntityToResource(repo.EntityName);
-
-            if (!_hasCollections(res))
+            var tsk = _hasCollections(res);
+            tsk.Wait();
+            if (!tsk.Result)
                 return;
 
             if (!_obtainUser())
@@ -253,6 +255,8 @@ namespace CodeShellCore.Data.EntityFramework
                 res = CustomizeException(ex, failMessage);
                 if (throwException)
                     throw;
+                else
+                    Logger.WriteException(ex);
             }
             return res;
         }
@@ -292,11 +296,9 @@ namespace CodeShellCore.Data.EntityFramework
         /// Attempts to submit changes to the data source
         /// </summary>
         /// <returns>if success <see cref="SubmitResult.Code"/> is 0</returns>
-        public override SubmitResult SaveChanges(string successMessage = null, string failMessage = null, bool throwException = true)
+        public override Task<SubmitResult> SaveChanges(string successMessage = null, string failMessage = null, bool throwException = true)
         {
-            var t = SaveChangesAsync(successMessage, failMessage, throwException);
-            t.Wait();
-            return t.Result;
+            return SaveChangesAsync(successMessage, failMessage, throwException);
         }
 
         public override void Dispose()

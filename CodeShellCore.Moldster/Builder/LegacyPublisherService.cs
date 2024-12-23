@@ -5,12 +5,13 @@ using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Net;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Builder
 {
     public class LegacyPublisherService : PublisherService
     {
-        public LegacyPublisherService(IServiceProvider prov, IPathsService paths, IPublisherHttpService http, EnvironmentAccessor envAccessor, IConfigUnit unit, IOutputWriter output) : base(prov, paths, http, envAccessor, unit, output)
+        public LegacyPublisherService(IServiceProvider prov, IPathsService paths, IPublisherHttpService http, EnvironmentAccessor envAccessor, IMoldsterUnit unit, IOutputWriter output) : base(prov, paths, http, envAccessor, unit, output)
         {
         }
 
@@ -53,44 +54,47 @@ namespace CodeShellCore.Moldster.Builder
             return dist + ".zip";
         }
 
-        protected override PublisherResult UploadFileSystem(UploadConfig upload, string tenant, string version)
+        protected override Task<PublisherResult> UploadFileSystem(UploadConfig upload, string tenant, string version)
         {
-            var res = new PublisherResult();
-            try
+            return Task.Run(() =>
             {
-                string[] files = GetSubModuleScriptPaths(tenant, version);
-
-                string subModuleTarget = Path.Combine(upload.PathOnServer, BundleFolder, version);
-
-                if (!Directory.Exists(subModuleTarget))
-                    Directory.CreateDirectory(subModuleTarget);
-                foreach (var f in files)
+                var res = new PublisherResult();
+                try
                 {
-                    File.Copy(f, Path.Combine(subModuleTarget, Path.GetFileName(f)), true);
-                    WriteFileOperation("Copied", Path.GetFileName(f));
-                }
+                    string[] files = GetSubModuleScriptPaths(tenant, version);
 
-                string mainModule = GetMainModuleScriptPath(tenant, version);
-                if (File.Exists(mainModule))
+                    string subModuleTarget = Path.Combine(upload.PathOnServer, BundleFolder, version);
+
+                    if (!Directory.Exists(subModuleTarget))
+                        Directory.CreateDirectory(subModuleTarget);
+                    foreach (var f in files)
+                    {
+                        File.Copy(f, Path.Combine(subModuleTarget, Path.GetFileName(f)), true);
+                        WriteFileOperation("Copied", Path.GetFileName(f));
+                    }
+
+                    string mainModule = GetMainModuleScriptPath(tenant, version);
+                    if (File.Exists(mainModule))
+                    {
+                        string mainModuleTarget = Path.Combine(upload.PathOnServer, BundleFolder, Path.GetFileName(mainModule));
+                        File.Copy(mainModule, mainModuleTarget);
+                        WriteFileOperation("Copied", Path.GetFileName(mainModule));
+                    }
+
+                    res.Message = "Success";
+                    res.Code = 0;
+                }
+                catch (Exception ex)
                 {
-                    string mainModuleTarget = Path.Combine(upload.PathOnServer, BundleFolder, Path.GetFileName(mainModule));
-                    File.Copy(mainModule, mainModuleTarget);
-                    WriteFileOperation("Copied", Path.GetFileName(mainModule));
+                    res.Code = 1;
+                    res.Message = "Failed";
+                    res.SetException(ex);
                 }
-
-                res.Message = "Success";
-                res.Code = 0;
-            }
-            catch (Exception ex)
-            {
-                res.Code = 1;
-                res.Message = "Failed";
-                res.SetException(ex);
-            }
-            return res;
+                return res;
+            });
         }
 
-        protected override PublisherResult UploadFtp(UploadConfig env, string tenant, string version)
+        protected override async Task<PublisherResult> UploadFtp(UploadConfig env, string tenant, string version)
         {
             using (var m = SW.Measure())
             {
@@ -102,7 +106,7 @@ namespace CodeShellCore.Moldster.Builder
 
                 WriteFileOperation("Uploading", $"{env.Server}/{zipFileTarget}", false);
 
-                var upl = http.UploadFile(zipFile, zipFileTarget);
+                var upl = await http.UploadFile(zipFile, zipFileTarget);
 
                 if (!upl.IsSuccess)
                 {
@@ -119,7 +123,7 @@ namespace CodeShellCore.Moldster.Builder
                     string mainFileTarget = Utils.CombineUrl(path, BundleFolder, Path.GetFileName(mainFile));
                     WriteFileOperation("Uploading", $"{env.Server}/{mainFileTarget}", false);
 
-                    upl = http.UploadFile(mainFile, mainFileTarget);
+                    upl = await http.UploadFile(mainFile, mainFileTarget);
 
                     if (!upl.IsSuccess)
                     {
@@ -133,7 +137,7 @@ namespace CodeShellCore.Moldster.Builder
 
                 WriteFileOperation("Sending extract command", env.ServerUrl, false);
 
-                var dec = http.HandleRequest(new PublisherRequest
+                var dec = await http.HandleRequest(new PublisherRequest
                 {
                     Type = ServerRequestTypes.Decompress,
                     DestinationFolder = Path.Combine(BundleFolder, version),

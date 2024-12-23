@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Security.Sessions
 {
@@ -10,7 +11,7 @@ namespace CodeShellCore.Security.Sessions
         bool IsLoggedIn();
         string GetCurrentUserId();
         string GetConnectionId();
-        void AuthorizationRequest();
+        Task AuthorizationRequest();
         void UseToken(string token);
         //void ClearUserCache(object id);
         //IUser GetUserData();

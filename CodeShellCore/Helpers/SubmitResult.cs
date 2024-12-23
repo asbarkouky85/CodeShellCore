@@ -26,10 +26,11 @@ namespace CodeShellCore.Data.Helpers
             Message = message;
         }
 
-        public EntitySubmitResult<T> ToSubmitResult<T>() where T : class
+        public EntitySubmitResult<T> ToSubmitResult<T>(T data = null) where T : class
         {
             var res = MapToResult<EntitySubmitResult<T>>();
             res.AffectedRows = AffectedRows;
+            res.Result = data;
             return res;
         }
 

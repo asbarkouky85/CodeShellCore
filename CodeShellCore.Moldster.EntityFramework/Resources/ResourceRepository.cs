@@ -1,7 +1,9 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Domains;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Resources
 {
@@ -11,7 +13,7 @@ namespace CodeShellCore.Moldster.Resources
         {
         }
 
-        public IEnumerable<string> GetByMoldsterModule(string installPath)
+        public async Task<IEnumerable<string>> GetByMoldsterModule(string installPath)
         {
             installPath = installPath.Replace("\\", "/");
             var q = from r in Loader
@@ -19,12 +21,12 @@ namespace CodeShellCore.Moldster.Resources
                         r.Domain.NameChain.StartsWith("/" + installPath) ||
                         r.PageCategories.Any(e => e.Domain.NameChain.StartsWith("/" + installPath))
                     select r.Name + (r.DomainId == null ? "" : ":" + r.Domain.Name);
-            return q.ToList();
+            return await q.ToListAsync();
         }
 
-        public Resource GetResource(string resourceName, string serviceName = null, List<Domain> doms = null)
+        public async Task<Resource> GetResource(string resourceName, string serviceName = null, List<Domain> doms = null)
         {
-            Resource res = FindSingle(d => d.Name == resourceName && (serviceName == null || d.Domain.Name == serviceName));
+            Resource res = await FindSingle(d => d.Name == resourceName && (serviceName == null || d.Domain.Name == serviceName));
             if (res == null)
             {
                 res = new Resource { Id = Utils.GenerateID(), Name = resourceName };

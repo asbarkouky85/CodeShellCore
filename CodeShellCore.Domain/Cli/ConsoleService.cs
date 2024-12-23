@@ -8,6 +8,7 @@ using System.Text;
 using System.Diagnostics;
 using CodeShellCore.Helpers;
 using CodeShellCore.Cli;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Cli
 {
@@ -210,18 +211,21 @@ namespace CodeShellCore.Cli
             return st.ToArray();
         }
 
-        public int RunCommand(string folder, string command, string arguments = null, bool useShell = false)
+        public Task<int> RunCommand(string folder, string command, string arguments = null, bool useShell = false)
         {
-            using (var x = SW.Measure())
+            return Task.Run(() =>
             {
-                var p = GetCommandProcess(folder, command, arguments, useShell);
-                p.Start();
-                p.WaitForExit();
-                Out.WriteLine();
-                WriteSuccess(x.Elapsed);
-                Out.WriteLine();
-                return p.ExitCode;
-            }
+                using (var x = SW.Measure())
+                {
+                    var p = GetCommandProcess(folder, command, arguments, useShell);
+                    p.Start();
+                    p.WaitForExit();
+                    Out.WriteLine();
+                    WriteSuccess(x.Elapsed);
+                    Out.WriteLine();
+                    return p.ExitCode;
+                }
+            });
         }
     }
 }

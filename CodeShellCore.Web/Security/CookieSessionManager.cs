@@ -5,6 +5,7 @@ using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Sessions;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Security
 {
@@ -35,22 +36,26 @@ namespace CodeShellCore.Web.Security
             return !GetCurrentUserId().Equals(0);
         }
 
-        public override void AuthorizationRequest()
+        public override Task AuthorizationRequest()
         {
-            var authCookie = _accessor.HttpContext.Request.Cookies["UserId"];
-
-            if (authCookie != null)
+            return Task.Run(() =>
             {
-                try
-                {
-                    string jwt = Shell.Encryptor.Decrypt(authCookie);
-                    JWTData data = jwt.FromJson<JWTData>();
-                    if (data != null)
-                        _accessor.HttpContext.User = new DefaultPrincipal(data.UserId.ToString());
-                }
-                catch { }
 
-            }
+                var authCookie = _accessor.HttpContext.Request.Cookies["UserId"];
+
+                if (authCookie != null)
+                {
+                    try
+                    {
+                        string jwt = Shell.Encryptor.Decrypt(authCookie);
+                        JWTData data = jwt.FromJson<JWTData>();
+                        if (data != null)
+                            _accessor.HttpContext.User = new DefaultPrincipal(data.UserId.ToString());
+                    }
+                    catch { }
+
+                }
+            });
         }
 
         public override void StartSession(IUser user, TimeSpan? length = null)

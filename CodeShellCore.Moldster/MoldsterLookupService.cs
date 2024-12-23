@@ -1,20 +1,19 @@
 ﻿using CodeShellCore.Data.Lookups;
-using System.Collections.Generic;
-using System.Dynamic;
-using CodeShellCore.Moldster.Resources;
-using System;
-using CodeShellCore.Moldster.Tenants;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.PageCategories;
-using System.Collections;
-using System.Linq;
+using CodeShellCore.Moldster.Resources;
+using CodeShellCore.Moldster.Tenants;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster
 {
-    public class MoldsterLookupService : LookupsService<IConfigUnit>, IMoldsterLookupService
+    public class MoldsterLookupService : LookupsService<IMoldsterUnit>, IMoldsterLookupService
     {
-        private readonly IConfigUnit _unit;
+        private readonly IMoldsterUnit _unit;
         private readonly IPathsService app;
         private readonly IModulesService mods;
         readonly ILayoutsService _layoutsService;
@@ -26,7 +25,7 @@ namespace CodeShellCore.Moldster
 
         protected override string EntitiesAssembly => "CodeShellCore.Moldster.Domain";
 
-        public MoldsterLookupService(IConfigUnit unit, IPathsService app, IModulesService mods) : base(unit)
+        public MoldsterLookupService(IMoldsterUnit unit, IPathsService app, IModulesService mods) : base(unit)
         {
             _unit = unit;
             this.app = app;
@@ -34,60 +33,60 @@ namespace CodeShellCore.Moldster
             _layoutsService = _unit.ServiceProvider.GetRequiredService<ILayoutsService>();
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> Modules(Dictionary<string, string> data)
+        public async Task<Dictionary<string, IEnumerable<Named<object>>>> Modules(Dictionary<string, string> data)
         {
             var mod = new Dictionary<string, IEnumerable<Named<object>>>();
             if (data.TryGetValue("modules", out string t))
-                mod["modules"] = mods.GetRegisteredModules().Select(e => new Named<object> { Name = e.Name });
+                mod["modules"] = (await mods.GetRegisteredModules()).Select(e => new Named<object> { Name = e.Name });
 
             return mod;
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> PageEdit(Dictionary<string, string> data)
+        public async Task<Dictionary<string, IEnumerable<Named<object>>>> PageEdit(Dictionary<string, string> data)
         {
             var mod = new Dictionary<string, IEnumerable<Named<object>>>();
             if (data.TryGetValue("TenantCode", out string t))
-                mod["TenantCode"] = _unit.TenantRepository.FindAs(e => new TenantLookupDto { Id = e.Code, Code = e.Code, Name = e.Name });
+                mod["TenantCode"] = await _unit.TenantRepository.FindAs(e => new TenantLookupDto { Id = e.Code, Code = e.Code, Name = e.Name });
             if (data.TryGetValue("Resources", out string r))
-                mod["Resources"] = Mapper.Map(_unit.ResourceRepository.FindAsLookup(r), new List<Named<object>>());
+                mod["Resources"] = Mapper.Map(await _unit.ResourceRepository.FindAsLookup(r), new List<Named<object>>());
             if (data.TryGetValue("Collection", out string c))
-                mod["Collection"] = Mapper.Map(_unit.ResourceCollectionRepository.FindAsLookup(c), new List<Named<object>>());
+                mod["Collection"] = Mapper.Map(await _unit.ResourceCollectionRepository.FindAsLookup(c), new List<Named<object>>());
             if (data.TryGetValue("Apps", out string a))
-                mod["Apps"] = Mapper.Map(_unit.AppRepository.FindAsLookup(c), new List<Named<object>>());
+                mod["Apps"] = Mapper.Map(await _unit.AppRepository.FindAsLookup(c), new List<Named<object>>());
             if (data.TryGetValue("NavigationGroup", out string n))
                 mod["NavigationGroup"] = new List<Named<object>>();
             if (data.TryGetValue("TemplatePath", out string tP))
-                mod["TemplatePath"] = Mapper.Map(_unit.PageCategoryRepository.FindAs(s => new Named<object> { Id = s.Id, Name = s.ViewPath }), new List<Named<object>>());
+                mod["TemplatePath"] = Mapper.Map(await _unit.PageCategoryRepository.FindAs(s => new Named<object> { Id = s.Id, Name = s.ViewPath }), new List<Named<object>>());
 
             if (data.TryGetValue("Layout", out string l))
                 mod["Layout"] = GetLayoutFiles();
             return mod;
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> PageCategoryEdit(Dictionary<string, string> data)
+        public async Task<Dictionary<string, IEnumerable<Named<object>>>> PageCategoryEdit(Dictionary<string, string> data)
         {
             var mod = new Dictionary<string, IEnumerable<Named<object>>>();
             if (data.TryGetValue("Resources", out string r))
-                mod["Resources"] = GetLookupNamed<Resource>(r);
+                mod["Resources"] = await GetLookupNamed<Resource>(r);
             if (data.TryGetValue("layouts", out string l))
                 mod["layouts"] = GetLayoutFiles(true);
             return mod;
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> ResourceEdit(Dictionary<string, string> data)
+        public async Task<Dictionary<string, IEnumerable<Named<object>>>> ResourceEdit(Dictionary<string, string> data)
         {
             var mod = new Dictionary<string, IEnumerable<Named<object>>>();
             if (data.TryGetValue("domains", out string l))
-                mod["domains"] = Mapper.Map(Unit.DomainRepository.FindAs(d => new Named<object> { Id = d.Id, Name = d.Name }, d => d.ParentId == null), new List<Named<object>>());
+                mod["domains"] = Mapper.Map(await Unit.DomainRepository.FindAs(d => new Named<object> { Id = d.Id, Name = d.Name }, d => d.ParentId == null), new List<Named<object>>());
             return mod;
         }
 
-        public Dictionary<string, IEnumerable<Named<object>>> PageControlList(Dictionary<string, string> data)
+        public async Task<Dictionary<string, IEnumerable<Named<object>>>> PageControlList(Dictionary<string, string> data)
         {
             var mod = new Dictionary<string, IEnumerable<Named<object>>>();
 
             if (data.TryGetValue("Collection", out string c))
-                mod["Collection"] = GetLookupNamed<ResourceCollection>(c);
+                mod["Collection"] = await GetLookupNamed<ResourceCollection>(c);
             if (data.TryGetValue("Layout", out string l))
                 mod["Layout"] = GetLayoutFiles();
             return mod;

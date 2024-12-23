@@ -17,7 +17,7 @@ namespace CodeShellCore.MQ.Events
 
         public virtual async Task<SubmitResult> Update(TDto dto)
         {
-            var entity = Unit.GetRepositoryFor<TEntity>().FindSingle(dto.Id);
+            var entity = await Unit.GetRepositoryFor<TEntity>().FindSingle(dto.Id);
             if (entity != null)
             {
                 Mapper.Map(dto, entity);

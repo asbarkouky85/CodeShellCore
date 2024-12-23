@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Navigation
 {
@@ -12,9 +14,9 @@ namespace CodeShellCore.Moldster.Navigation
         {
         }
 
-        public NavigationGroup GetNavigationGroup(string name)
+        public async Task<NavigationGroup> GetNavigationGroup(string name)
         {
-            var gr = Loader.FirstOrDefault(d => d.Name == name);
+            var gr = await Loader.FirstOrDefaultAsync(d => d.Name == name);
             if (gr == null)
             {
                 gr = new NavigationGroup { Name = name };
@@ -23,12 +25,12 @@ namespace CodeShellCore.Moldster.Navigation
             return gr;
         }
 
-        public IEnumerable<T> GetTenantNavs<T>(long modId)
+        public async Task<IEnumerable<T>> GetTenantNavs<T>(long modId)
         {
             var s = from n in Loader
                     where n.NavigationPages.Any(d => d.Page.TenantId == modId)
                     select n;
-            return QueryDto<T>(s).ToList();
+            return await QueryDto<T>(s).ToListAsync();
         }
     }
 }

@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
         protected InstanceStore<object> Store;
         protected SubmitResult SubmitResult { get; set; }
@@ -44,10 +45,10 @@ namespace CodeShellCore.Web.Controllers
             Store = new InstanceStore<object>(() => HttpContext.RequestServices);
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            context.HttpContext.ProcessOnce();
-            base.OnActionExecuting(context);
+            await context.HttpContext.ProcessOnce();
+            await base.OnActionExecutionAsync(context, next);
         }
 
         protected T GetService<T>() where T : class

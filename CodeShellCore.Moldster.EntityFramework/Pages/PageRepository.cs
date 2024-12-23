@@ -1,5 +1,6 @@
 ﻿using Azure;
 using CodeShellCore.Data.EntityFramework;
+using CodeShellCore.Extensions.DependencyInjection;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages.Views;
@@ -18,22 +19,22 @@ namespace CodeShellCore.Moldster.Pages
 
         }
 
-        public IEnumerable<T> GetDomainPagesForRouting<T>(string tenantCode, long domainId, bool chldren = false)
+        public async Task<IEnumerable<T>> GetDomainPagesForRouting<T>(string tenantCode, long domainId, bool chldren = false)
         {
             var q = Loader.Where(d => d.Tenant.Code == tenantCode && d.DomainId == domainId && d.IsHomePage != true);
             if (chldren)
             {
                 q = Loader.Where(d => d.Tenant.Code == tenantCode && d.Domain.Chain.Contains("|" + domainId + "|") && d.IsHomePage != true);
             }
-            return QueryDto<T>(q).ToList();
+            return await QueryDto<T>(q).ToListAsync();
         }
 
-        public string GetHomePagePath(string modCode)
+        public Task<string> GetHomePagePath(string modCode)
         {
             return GetSingleValue(d => d.ViewPath, d => d.IsHomePage == true && d.Tenant.Code == modCode);
         }
 
-        public override Page FindSingle(object id)
+        public override async Task<Page> FindSingle(object id)
         {
             var q = Loader.Include(e => e.Domain)
                 .Include(e => e.NavigationPages)
@@ -41,10 +42,10 @@ namespace CodeShellCore.Moldster.Pages
                 .Include(e => e.PageCategory)
                 .Include(e => e.Tenant);
 
-            return q.Where(e => e.Id.Equals(id)).FirstOrDefault();
+            return await q.Where(e => e.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public PageAndType FindLinkedPage(string paramName, string val, long tenantId, ref List<string> add)
+        public Task<PageAndType> FindLinkedPage(string paramName, string val, long tenantId, ref List<string> add)
         {
             if (val != null)
             {
@@ -62,7 +63,7 @@ namespace CodeShellCore.Moldster.Pages
             return null;
         }
 
-        public PageAndType FindLinkedPageByName(string paramName, string val, long tenantId, ref List<string> add)
+        public Task<PageAndType> FindLinkedPageByName(string paramName, string val, long tenantId, ref List<string> add)
         {
             if (val != null)
             {
@@ -77,17 +78,17 @@ namespace CodeShellCore.Moldster.Pages
             return null;
         }
 
-        public PagedResult<T> GetUnderDomain<T>(long domainId, PagedListRequest opt) where T : class
+        public async Task<PagedResult<T>> GetUnderDomain<T>(long domainId, PagedListRequest opt) where T : class
         {
             var opts = opt.GetOptionsFor<T>();
             var q = from p in Loader
                     where p.Domain.Chain.Contains("|" + domainId.ToString() + "|")
                     select p;
             var qq = QueryDto<T>(q);
-            return qq.ToPagedResult(opts);
+            return await qq.ToPagedResultAsync(opts);
         }
 
-        public PagedResult<T> FindUsing<T>(FindPageRequest request, PagedListRequest opts) where T : class
+        public async Task<PagedResult<T>> FindUsing<T>(FindPageRequest request, PagedListRequest opts) where T : class
         {
             var q = Loader.Where(d => d.TenantId == request.TenantId);
             switch (request.TypeEnum)
@@ -105,33 +106,36 @@ namespace CodeShellCore.Moldster.Pages
                     q = q.Where(d => d.CanEmbed);
                     break;
             }
-            return QueryDto<T>(q).ToPagedResult(opts.GetOptionsFor<T>());
+            return await QueryDto<T>(q).ToPagedResultAsync(opts.GetOptionsFor<T>());
         }
 
-        public void UpdatePageViewParamsJson(Page p, PageParameterForJson[] ps, PageRouteView pageRoute, FieldDefinition[] customFields)
+        public Task UpdatePageViewParamsJson(Page p, PageParameterForJson[] ps, PageRouteView pageRoute, FieldDefinition[] customFields)
         {
+            return Task.Run(() =>
+            {
 
-            var jsonParams = p.ViewParams == null ? new ViewParams() : p.ViewParams.FromJson<ViewParams>();
-            if (pageRoute != null)
-            {
-                jsonParams.AddUrl = pageRoute.AddUrlString != null ? "/" + pageRoute.AddUrlString : null;
-                jsonParams.DetailsUrl = pageRoute.DetailsUrlString != null ? "/" + pageRoute.DetailsUrlString : null;
-                jsonParams.EditUrl = pageRoute.EditUrlString != null ? "/" + pageRoute.EditUrlString : null;
-                jsonParams.ListUrl = pageRoute.ListUrlString != null ? "/" + pageRoute.ListUrlString : null;
-            }
-            foreach (var pp in ps)
-            {
-                jsonParams.Other[pp.Name] = pp.Value;
-            }
-            if (customFields != null)
-            {
-                jsonParams.Fields = customFields;
-            }
-            p.ViewParams = jsonParams.ToJson();
-            Update(p);
+                var jsonParams = p.ViewParams == null ? new ViewParams() : p.ViewParams.FromJson<ViewParams>();
+                if (pageRoute != null)
+                {
+                    jsonParams.AddUrl = pageRoute.AddUrlString != null ? "/" + pageRoute.AddUrlString : null;
+                    jsonParams.DetailsUrl = pageRoute.DetailsUrlString != null ? "/" + pageRoute.DetailsUrlString : null;
+                    jsonParams.EditUrl = pageRoute.EditUrlString != null ? "/" + pageRoute.EditUrlString : null;
+                    jsonParams.ListUrl = pageRoute.ListUrlString != null ? "/" + pageRoute.ListUrlString : null;
+                }
+                foreach (var pp in ps)
+                {
+                    jsonParams.Other[pp.Name] = pp.Value;
+                }
+                if (customFields != null)
+                {
+                    jsonParams.Fields = customFields;
+                }
+                p.ViewParams = jsonParams.ToJson();
+                Update(p);
+            });
         }
 
-        public IEnumerable<Page> GetReferencing(long pageId, long tenantId)
+        public async Task<IEnumerable<Page>> GetReferencing(long pageId, long tenantId)
         {
             var q = from p in Loader
                     where p.TenantId == tenantId &&
@@ -141,79 +145,86 @@ namespace CodeShellCore.Moldster.Pages
                     )
                     select p;
 
-            return q.ToList();
+            return await q.ToListAsync();
         }
 
-        public void FillReferences(IEnumerable<IPageReferenceCounter> listT)
+        public Task FillReferences(IEnumerable<IPageReferenceCounter> listT)
         {
-            var ids = listT.Select(d => d.Id).ToList();
-            var q = from p in DbContext.PageRoutes
-                    where ids.Contains(p.Page.Id)
-                    select new
-                    {
-                        p.Id,
-                        Edit = p.EditUrl != null ? 1 : 0,
-                        Add = p.AddUrl != null ? 1 : 0,
-                        Details = p.DetailsUrl != null ? 1 : 0,
-                        List = p.ListUrl != null ? 1 : 0
-                    };
-
-            var qq = from p in DbContext.PageParameters
-                     where ids.Contains(p.Page.Id) && p.LinkedPageId != null
-                     group p by p.PageId into PS
-                     select new { PS.Key, Count = PS.Count() };
-            var routs = q.ToList();
-            var par = qq.ToList();
-            foreach (var page in listT)
+            return Task.Run(() =>
             {
-                var pr = routs.Where(d => d.Id == page.Id).FirstOrDefault();
-                var pp = par.Where(d => d.Key == page.Id).FirstOrDefault();
-                if (pr != null)
-                    page.References = pr.Edit + pr.Add + pr.Details + pr.List;
-                if (pp != null)
-                    page.References += pp.Count;
-            }
-        }
+                var ids = listT.Select(d => d.Id).ToList();
+                var q = from p in DbContext.PageRoutes
+                        where ids.Contains(p.Page.Id)
+                        select new
+                        {
+                            p.Id,
+                            Edit = p.EditUrl != null ? 1 : 0,
+                            Add = p.AddUrl != null ? 1 : 0,
+                            Details = p.DetailsUrl != null ? 1 : 0,
+                            List = p.ListUrl != null ? 1 : 0
+                        };
 
-        public void FillReferencedBy(IEnumerable<IPageReferenceCounter> listT)
-        {
-            var ids = listT.Select(d => d.Id).ToList();
-            var q = from p in DbContext.Pages
-                    where ids.Contains(p.Id)
-                    select new
-                    {
-                        p.Id,
-                        RouteRef = DbContext.PageRoutes.Count(d => d.ListUrl == p.Id || d.AddUrl == p.Id || d.EditUrl == p.Id || d.DetailsUrl == p.Id),
-                        ParamRef = DbContext.PageParameters.Count(d => d.LinkedPageId == p.Id),
-                        NavRefs = DbContext.NavigationPages.Count(d => d.PageId == p.Id)
-                    };
-            var res = q.ToList();
-            foreach (var pp in listT)
-            {
-                var pr = res.Where(d => d.Id == pp.Id).FirstOrDefault();
-                if (pr != null)
+                var qq = from p in DbContext.PageParameters
+                         where ids.Contains(p.Page.Id) && p.LinkedPageId != null
+                         group p by p.PageId into PS
+                         select new { PS.Key, Count = PS.Count() };
+                var routs = q.ToList();
+                var par = qq.ToList();
+                foreach (var page in listT)
                 {
-                    pp.ReferencedBy = pr.RouteRef + pr.ParamRef + pr.NavRefs;
+                    var pr = routs.Where(d => d.Id == page.Id).FirstOrDefault();
+                    var pp = par.Where(d => d.Key == page.Id).FirstOrDefault();
+                    if (pr != null)
+                        page.References = pr.Edit + pr.Add + pr.Details + pr.List;
+                    if (pp != null)
+                        page.References += pp.Count;
                 }
-            }
+            });
         }
 
-        public List<PageIdentifierView> GetDistinctIdentifiers()
+        public Task FillReferencedBy(IEnumerable<IPageReferenceCounter> listT)
         {
-            return Loader
+            return Task.Run(() =>
+            {
+
+                var ids = listT.Select(d => d.Id).ToList();
+                var q = from p in DbContext.Pages
+                        where ids.Contains(p.Id)
+                        select new
+                        {
+                            p.Id,
+                            RouteRef = DbContext.PageRoutes.Count(d => d.ListUrl == p.Id || d.AddUrl == p.Id || d.EditUrl == p.Id || d.DetailsUrl == p.Id),
+                            ParamRef = DbContext.PageParameters.Count(d => d.LinkedPageId == p.Id),
+                            NavRefs = DbContext.NavigationPages.Count(d => d.PageId == p.Id)
+                        };
+                var res = q.ToList();
+                foreach (var pp in listT)
+                {
+                    var pr = res.Where(d => d.Id == pp.Id).FirstOrDefault();
+                    if (pr != null)
+                    {
+                        pp.ReferencedBy = pr.RouteRef + pr.ParamRef + pr.NavRefs;
+                    }
+                }
+            });
+        }
+
+        public async Task<List<PageIdentifierView>> GetDistinctIdentifiers()
+        {
+            return await Loader
                  .GroupBy(e => new { DomainName = e.Domain.Name, Page = e.Name })
                  .Select(e => new PageIdentifierView { Domain = e.Key.DomainName, Page = e.Key.Page })
-                 .ToList();
+                 .ToListAsync();
         }
 
-        public Page GetForCustomization(long id)
+        public async Task<Page> GetForCustomization(long id)
         {
             var q = Loader
                 .Include(e => e.PageControls)
                 .Include(e => e.PageParameters)
                 .Include(e => e.PageRoutes)
                 .Include(e => e.CustomFields);
-            return q.FirstOrDefault(e => e.Id == id);
+            return await q.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         private IQueryable<PageOptions> _queryPageOptions(IQueryable<Page> q = null)

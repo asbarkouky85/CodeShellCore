@@ -158,7 +158,6 @@ namespace CodeShellCore.Text
             result = result.Replace("_", "");
             Regex r = new Regex("[A-Z]");
             MatchCollection col = r.Matches(input);
-            int i = 0;
 
             foreach (Match d in col)
             {

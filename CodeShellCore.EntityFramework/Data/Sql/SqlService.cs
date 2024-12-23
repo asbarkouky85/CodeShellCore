@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Sql
 {
@@ -19,7 +20,7 @@ namespace CodeShellCore.Data.Sql
         {
         }
 
-        public string GetQueryOutput(string query, string connectionString)
+        public async Task<string> GetQueryOutput(string query, string connectionString)
         {
             string data = "";
             using (var conn = new SqlConnection(connectionString))
@@ -30,21 +31,21 @@ namespace CodeShellCore.Data.Sql
                 };
                 conn.Open();
                 var cmd = new SqlCommand(query, conn);
-                var res = cmd.ExecuteNonQuery();
+                var res = await cmd.ExecuteNonQueryAsync();
             }
             return data;
         }
 
-        protected IEnumerable<DatabaseFile> MakeNewDbFiles(string dbName, string backupPath)
+        protected async Task<IEnumerable<DatabaseFile>> MakeNewDbFiles(string dbName, string backupPath)
         {
             IEnumerable<DatabaseFile> files = new List<DatabaseFile>();
             try
             {
                 var q = $"RESTORE FILELISTONLY FROM DISK = '" + backupPath + "'";
 
-                var fs = GetDataAs<DatabaseFile>(q);
+                var fs = await GetDataAs<DatabaseFile>(q);
 
-                var paths = GetDataAs<SqlPaths>(@"SELECT SERVERPROPERTY('instancedefaultdatapath') AS [DefaultFile],SERVERPROPERTY('instancedefaultlogpath') AS [DefaultLog]").FirstOrDefault();
+                var paths = (await GetDataAs<SqlPaths>(@"SELECT SERVERPROPERTY('instancedefaultdatapath') AS [DefaultFile],SERVERPROPERTY('instancedefaultlogpath') AS [DefaultLog]")).FirstOrDefault();
                 foreach (var f in fs)
                 {
                     var lg = f.PhysicalName.Contains(".ldf") ? "_log.ldf" : ".mdf";
@@ -59,17 +60,17 @@ namespace CodeShellCore.Data.Sql
             return files;
         }
 
-        protected IEnumerable<DatabaseFile> GetDatabaseFiles(string dbName)
+        protected async Task<IEnumerable<DatabaseFile>> GetDatabaseFiles(string dbName)
         {
             IEnumerable<DatabaseFile> files = new List<DatabaseFile>();
             try
             {
                 var q = $"select Count(*) as Count from master.dbo.sysdatabases where name='{dbName}'";
-                var c = GetDataAs<CountModel>(q).FirstOrDefault();
+                var c = (await GetDataAs<CountModel>(q)).FirstOrDefault();
                 if (c.Count > 0)
                 {
                     q = @"select name LogicalName,physical_name PhysicalName from [" + dbName + "].sys.database_files";
-                    files = GetDataAs<DatabaseFile>(q, dbName);
+                    files = await GetDataAs<DatabaseFile>(q, dbName);
                 }
             }
             catch
@@ -79,7 +80,7 @@ namespace CodeShellCore.Data.Sql
             return files;
         }
 
-        protected IEnumerable<T> GetDataAs<T>(string sql, string database = null)
+        protected async Task<IEnumerable<T>> GetDataAs<T>(string sql, string database = null)
         {
             ConnectionParams.Database = database;
             using (SqlConnection conn = new SqlConnection(ConnectionParams.ConnectionString))
@@ -91,7 +92,7 @@ namespace CodeShellCore.Data.Sql
                     SqlCommand cmd = new SqlCommand(sql, conn);
                     if (CommandTimeout != 0)
                         cmd.CommandTimeout = CommandTimeout;
-                    var red = cmd.ExecuteReader();
+                    var red = await cmd.ExecuteReaderAsync();
                     var props = typeof(T).GetProperties().ToDictionary(d => d.Name);
                     while (red.Read())
                     {
@@ -124,7 +125,7 @@ namespace CodeShellCore.Data.Sql
             }
         }
 
-        protected SubmitResult ExecuteBatchNonQuery(string sql, string connectionString)
+        protected async Task<SubmitResult> ExecuteBatchNonQuery(string sql, string connectionString)
         {
             string sqlBatch = string.Empty;
             sql += "\nGO";   // make sure last batch is executed.
@@ -145,7 +146,7 @@ namespace CodeShellCore.Data.Sql
                             if (CommandTimeout != 0)
                                 cmd.CommandTimeout = CommandTimeout;
 
-                            res.AffectedRows = cmd.ExecuteNonQuery();
+                            res.AffectedRows = await cmd.ExecuteNonQueryAsync();
 
                             sqlBatch = string.Empty;
                             conn.Close();
@@ -171,19 +172,19 @@ namespace CodeShellCore.Data.Sql
             return res;
         }
 
-        public SubmitResult RunSql(string script, string db = null)
+        public async Task<SubmitResult> RunSql(string script, string db = null)
         {
             ConnectionParams.Database = db;
-            return ExecuteBatchNonQuery(script, ConnectionParams.ConnectionString);
+            return await ExecuteBatchNonQuery(script, ConnectionParams.ConnectionString);
         }
 
-        public SubmitResult RestoreDatabase(string dbName, string backupPath)
+        public async Task<SubmitResult> RestoreDatabase(string dbName, string backupPath)
         {
-            var files = GetDatabaseFiles(dbName);
+            var files = await GetDatabaseFiles(dbName);
             string ext = "";
             if (!files.Any())
             {
-                files = MakeNewDbFiles(dbName, backupPath);
+                files = await MakeNewDbFiles(dbName, backupPath);
                 ext = "FILE = 1, NOUNLOAD, STATS = 10";
             }
             else
@@ -200,11 +201,11 @@ namespace CodeShellCore.Data.Sql
 
             if (files.Any())
             {
-                var off = RunSql($"alter database [{dbName}] set offline with rollback immediate");
+                var off = await RunSql($"alter database [{dbName}] set offline with rollback immediate");
                 isOffline = off.IsSuccess;
             }
 
-            var res = RunSql(sql);
+            var res = await RunSql(sql);
 
             if (res.IsSuccess)
             {
@@ -216,7 +217,7 @@ namespace CodeShellCore.Data.Sql
             }
 
             if (isOffline)
-                RunSql($"alter database [{dbName}] set online");
+                await RunSql($"alter database [{dbName}] set online");
             Console.WriteLine();
             return res;
         }

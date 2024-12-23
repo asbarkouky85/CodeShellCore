@@ -51,7 +51,9 @@ namespace CodeShellCore.Security
 
                 if (UserId != null && _user == null)
                 {
-                    _user = provider.GetService<IUserDataService>().GetUserData(UserId);
+                    var tsk = provider.GetService<IUserDataService>().GetUserData(UserId);
+                    tsk.Wait();
+                    _user = tsk.Result;
                 }
                 dataIsObtained = true;
 

@@ -8,6 +8,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Types;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Controllers
 {
@@ -73,6 +74,11 @@ namespace CodeShellCore.Web.Controllers
                 Response.StatusCode = (int)HttpStatusCode.ExpectationFailed;
 
             return new JsonResult(res);
+        }
+
+        protected virtual Task<Result> RespondAsync(Result res = null)
+        {
+            return Task.FromResult(res ?? new Result());
         }
 
 

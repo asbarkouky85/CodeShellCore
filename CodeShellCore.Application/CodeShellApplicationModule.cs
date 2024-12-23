@@ -5,6 +5,8 @@ using CodeShellCore.Data.Services;
 using CodeShellCore.Files;
 using CodeShellCore.Files.Uploads;
 using CodeShellCore.Http;
+using CodeShellCore.Localization;
+using CodeShellCore.Locatization;
 using CodeShellCore.Modularity;
 using CodeShellCore.MultiTenant;
 using CodeShellCore.Proxy;
@@ -17,7 +19,10 @@ using System.Collections.Generic;
 
 namespace CodeShellCore
 {
-    [DependsOn(typeof(CodeShellCoreModule), typeof(CodeShellDomainModule))]
+    [DependsOn(typeof(CodeShellCoreModule),
+        typeof(CodeShellDomainModule),
+        typeof(CodeShellApplicationContractsModule)
+        )]
     public class CodeShellApplicationModule : CodeShellModule
     {
         public override void RegisterServices(CodeshellAppContext context)
@@ -31,17 +36,15 @@ namespace CodeShellCore
             context.Services.AddTransient<IAuthenticationService, DbAuthenticationWithPermissionService>();
             context.Services.AddTransient<IUserDataService, DbUserDataService>();
 
-            context.Services.AddTransient(typeof(IEntityService<>), typeof(EntityService<>));
             context.Services.AddTransient<IBlobContainerFactory, DefaultBlobContainerFactory>();
             context.Services.AddTransient<ICrudEventSender, CrudEventSender>();
             context.Services.AddTransient<IEmailService, EmailService>();
             context.Services.AddTransient<IHttpService, DefaultHttpService>();
             context.Services.AddTransient<ILookupsAppService, LookupsAppService>();
-            context.Services.AddTransient<ISchemasGenerationService, SchemasGenerationService>();
-            
-            context.Services.AddTransient<ITypeScriptGenerationService, TypeScriptGenerationService>();
+
             context.Services.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
             context.Services.AddTransient<IUploadedFilesHandler, UploadedFileHandler>();
+            context.Services.AddTransient<ILocalizationDictionariesService, LocalizationDictionariesService>();
 
             context.Services.AddOptions<CrudEventSenderOptions>();
             context.Services.AddOptions<FileUploadOptions>("Uploads");

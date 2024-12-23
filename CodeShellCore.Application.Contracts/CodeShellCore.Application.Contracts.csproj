@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -11,14 +11,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="DependecyInjection\**" />
+	  <EmbeddedResource Remove="DependecyInjection\**" />
+	  <None Remove="DependecyInjection\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\CodeShellCore.Domain.Shared\CodeShellCore.Domain.Shared.csproj" />
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="DependecyInjection\" />
-	  <Folder Include="Linq\Filtering\" />
-	  <Folder Include="Localization\" />
-	</ItemGroup>
 
 </Project>

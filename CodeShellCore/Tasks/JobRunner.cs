@@ -32,10 +32,10 @@ namespace CodeShellCore.Tasks
             }
             _firstRun = true;
             Timer = new Timer();
-            Timer.Elapsed += (s, e) =>
+            Timer.Elapsed += async (s, e) =>
             {
                 CheckFirstRun();
-                RunJob();
+                await RunJob();
             };
 
             if (_job.StartOn != null)

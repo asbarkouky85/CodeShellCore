@@ -2,44 +2,48 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Security
 {
     public class NullUserDataService : IUserDataService
     {
-        public void ClearUserData(string id)
+        public Task ClearUserData(string id)
         {
-            
+            return Task.CompletedTask;
         }
 
         public void Dispose()
         {
-            
+
         }
 
-        public Dictionary<string, DataAccessPermission> GetRolesPermissions(IEnumerable<string> lst)
+        public Task<Dictionary<string, DataAccessPermission>> GetRolesPermissions(IEnumerable<string> lst)
         {
-            return new Dictionary<string, DataAccessPermission>();
+            return Task.Run(() =>
+            {
+                return new Dictionary<string, DataAccessPermission>();
+            });
         }
 
-        public IUser GetUserData(string userId)
+        public Task<IUser> GetUserData(string userId)
         {
-            return null;
+            return Task.Run(() => { return (IUser)null; });
         }
 
-        public IUser GetUserDataForUI(string userId)
+        public Task<IUser> GetUserDataForUI(string userId)
         {
-            return null;
+            return Task.Run(() => { return (IUser)null; });
         }
 
-        public void Save(string userId, IUser user)
+        public Task Save(string userId, IUser user)
         {
-            
+            return Task.CompletedTask;
         }
 
-        public void SaveRoleInCache(RoleCacheItem item)
+        public Task SaveRoleInCache(RoleCacheItem item)
         {
-            
+            return Task.CompletedTask;
         }
     }
 }

@@ -10,11 +10,11 @@ namespace CodeShellCore.Data
     public interface IKeyRepository<T, TPrime> : IRepository<T> where T : class
     {
         Task<T> FindAsync(TPrime id);
-        DeleteResult CanDeleteById(TPrime id);
-        bool IdExistsById(TPrime id);
-        TR FindSingleAndMapById<TR>(TPrime id) where TR : class;
-        T FindSingleById(TPrime id);
-        TValue GetValueById<TValue>(TPrime id, Expression<Func<T, TValue>> ex);
+        Task<DeleteResult> CanDeleteById(TPrime id);
+        Task<bool> IdExistsById(TPrime id);
+        Task<TR> FindSingleAndMapById<TR>(TPrime id) where TR : class;
+        Task<T> FindSingleById(TPrime id);
+        Task<TValue> GetValueById<TValue>(TPrime id, Expression<Func<T, TValue>> ex);
         void DeleteByKey(TPrime id);
     }
 }

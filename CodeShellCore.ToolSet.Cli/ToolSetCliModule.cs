@@ -11,11 +11,6 @@ using CodeShellCore.ToolSet.Sql;
 using CodeShellCore.ToolSet.TsProxy;
 using CodeShellCore.ToolSet.Versions;
 using CodeShellCore.ToolSet.Zip;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet
 {

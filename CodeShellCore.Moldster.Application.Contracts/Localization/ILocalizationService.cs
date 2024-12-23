@@ -4,20 +4,21 @@ using CodeShellCore.Text.ResourceReader;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Localization
 {
     public interface ILocalizationService : IServiceBase
     {
-        void Import(string type, string lang, List<DataItem> strs, bool suspendOut = false);
-        void GenerateJsonFiles(string moduleCode);
-        void SyncLanguages(string lang1, string lang2);
-        void SyncAllLanguages();
-        void FixPages(string tenantCode);
-        void InitializeResxFiles();
-        void AddLocalizationFiles();
-        void UpdateFiles(LocalizationDataCollector localization);
+        Task Import(string type, string lang, List<DataItem> strs, bool suspendOut = false);
+        Task GenerateJsonFiles(string moduleCode);
+        Task SyncLanguages(string lang1, string lang2);
+        Task SyncAllLanguages();
+        Task FixPages(string tenantCode);
+        Task InitializeResxFiles();
+        Task AddLocalizationFiles();
+        Task UpdateFiles(LocalizationDataCollector localization);
 
-        PagedResult<CustomTextDto> LoadForTenant(CustomTextRequestDto req, PagedListRequestDto opts);
+        Task<PagedResult<CustomTextDto>> LoadForTenant(CustomTextRequestDto req, PagedListRequestDto opts);
     }
 }

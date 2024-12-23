@@ -2,29 +2,25 @@
 using CodeShellCore.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Moldster.CodeGeneration.Models;
-using CodeShellCore.Moldster.CodeGeneration.Services;
 using CodeShellCore.Moldster.Domains.DataObjects;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.Environments.Services;
-using CodeShellCore.Moldster.PageCategories;
 using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Resources;
 using CodeShellCore.Moldster.Sql;
 using CodeShellCore.Moldster.Tenants;
-using CodeShellCore.Services;
 using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Services
 {
     public class MigrationService : MoldsterFileHandlingService, IMigrationService
     {
-        IConfigUnit unit => GetService<IConfigUnit>();
+        IMoldsterUnit unit => GetService<IMoldsterUnit>();
         IResourceScriptGenerationService resTs => GetService<IResourceScriptGenerationService>();
 
         IInitializationService Init => GetService<IInitializationService>();
@@ -47,14 +43,14 @@ namespace CodeShellCore.Moldster.Services
             sql.AddMigrationTable();
         }
 
-        public Result MigrateBaseModule(string tenant)
+        public async Task<Result> MigrateBaseModule(string tenant)
         {
             AddMigrationsTable();
             var oldBasePath = Path.Combine(Paths.UIRoot, "Core", Paths.CoreAppName);
 
             if (Directory.Exists(oldBasePath))
             {
-                var bas = unit.PageCategoryRepository.FindAs(e => e.ViewPath);
+                var bas = await unit.PageCategoryRepository.FindAs(e => e.ViewPath);
 
                 foreach (var ba in bas)
                 {
@@ -74,7 +70,7 @@ namespace CodeShellCore.Moldster.Services
                     }
                 }
 
-                var srvs = unit.ResourceRepository.FindAs(e => new { e.Name, DomainName = e.Domain.Name });
+                var srvs = await unit.ResourceRepository.FindAs(e => new { e.Name, DomainName = e.Domain.Name });
                 foreach (var srv in srvs)
                 {
                     resTs.GenerateHttpService(srv.Name, srv.DomainName);
@@ -188,15 +184,15 @@ namespace CodeShellCore.Moldster.Services
             Utils.DeleteDirectory(Path.Combine(Paths.UIRoot, "Core/codeshell"));
             Init.AddCodeShell(true);
             Init.AddUiBasicFiles(true);
-            TenantTs.AddAngularJson(tenant);
-            TenantTs.UpdateAngularJsonFromDatabase();
+            await TenantTs.AddAngularJson(tenant);
+            await TenantTs.UpdateAngularJsonFromDatabase();
 
             string bootTemplate = Molds.GetResourceByNameAsString(MoldNames.Boot_ts);
             string boot = Writer.FillStringParameters(bootTemplate, new BootTsModel
             {
                 Code = Names.ApplyConvension(tenant, AppParts.Route),
                 ModulePath = Names.ApplyConvension(tenant + "/app", AppParts.Module),
-                OtherTenants = unit.TenantRepository.Exist(e => e.Code != tenant)
+                OtherTenants = await unit.TenantRepository.Exist(e => e.Code != tenant)
             });
             string bootPath = Names.GetSrcFolderPath("main-" + Names.ApplyConvension(tenant, AppParts.Project), ".ts", keepNameformat: true);
             File.WriteAllText(bootPath, boot);
@@ -210,7 +206,7 @@ namespace CodeShellCore.Moldster.Services
 
         public async Task<Result> RestructureApp(string tenantCode)
         {
-            var pageCategories = unit.PageCategoryRepository.GetList();
+            var pageCategories = await unit.PageCategoryRepository.GetList();
             var htmlService = GetService<IViewsService>();
             var domains = new Dictionary<string, PageCategoryDomainDataObject>();
             foreach (var category in pageCategories)
@@ -355,6 +351,158 @@ namespace CodeShellCore.Moldster.Services
             return new Result();
         }
 
+
+        public async Task<Result> CategoriesToComponents(string tenantCode)
+        {
+            var pageCategories = await unit.PageCategoryRepository.GetList();
+            var htmlService = GetService<IViewsService>();
+            var domains = new Dictionary<string, PageCategoryDomainDataObject>();
+            foreach (var category in pageCategories)
+            {
+                var oldPath = Names.GetBaseComponentFilePath(category.ViewPath);
+                var newPath = oldPath.Replace("-base", "").Replace("/base/", "/lib/");
+                Utils.CreateFolderForFile(newPath);
+                var newClassName = category.Name + "Component";
+                var jsonFilePath = newPath + ".config.ts";
+                var domainPath = newPath.GetBeforeLast("/");
+                var configVariableName = category.Name.LCFirst() + "Pages";
+                try
+                {
+
+                    var template = await htmlService.GetPageCategoryById(category.Id);
+                    var newHtmlPath = newPath + ".html";
+                    await File.WriteAllTextAsync(newHtmlPath, template.TemplateContent);
+
+                    var pagesJson = new Dictionary<string, PageConfigurationDto>();
+                    var pages = await htmlService.GetPagesByCategory(category.Id);
+                    foreach (var page in pages)
+                    {
+                        pagesJson[page.PageIdentifier] = page;
+                    }
+                    var pagesJsonString = pagesJson.ToJsonIndent();
+
+                    var pagesJsonContent = $"const {configVariableName} = {pagesJsonString};\r\n\r\n";
+                    pagesJsonContent += $"export {{ {configVariableName} }}";
+                    await File.WriteAllTextAsync(jsonFilePath, pagesJsonContent);
+
+                }
+                catch (CodeShellHttpException ex)
+                {
+                    Out.WriteLine(ex.GetFullMessage());
+                }
+
+                if (!domains.ContainsKey(domainPath))
+                {
+                    domains[domainPath] = new PageCategoryDomainDataObject
+                    {
+                        DomainName = category.ViewPath.GetBeforeLast("/").GetAfterLast("/")
+                    };
+                }
+
+                domains[domainPath].Components.Add(new PageCategoryDataObject
+                {
+                    Path = "./" + Names.ApplyConvension(newClassName, AppParts.Component),
+                    Name = newClassName
+                });
+
+                var oldTsPath = oldPath + ".ts";
+
+                Console.WriteLine(newPath);
+
+                var oldClassName = category.Name + "Base";
+                var content = new string[0];
+                if (File.Exists(oldTsPath))
+                {
+                    content = File.ReadAllLines(oldTsPath);
+                }
+                else if (File.Exists(newPath + ".ts"))
+                {
+                    content = File.ReadAllLines(newPath + ".ts");
+                }
+
+                var newContent = new List<string>();
+
+                var configImportation = $"import {{ {configVariableName} }} from \"./{newPath.GetAfterLast("/")}.config\";";
+                var configFn = new string[] {
+                    "\tprotected registerPageConfig(): void {",
+                    $"\t\tthis.PageConfig.addPages(\"{category.Name}\", {configVariableName});",
+                    "\t}"
+                };
+
+                var oldDeclaration = $"export abstract class {oldClassName}";
+                var newDeclaration = $"export class {newClassName}";
+                var componentData = $"@Component({{ templateUrl : './{Names.ApplyConvension(category.Name, AppParts.Component)}.html',selector : '{Names.GetComponentSelector(category.Name)}'}})";
+                var ignore = false;
+                var configIsAdded = false;
+                var addConfigFn = false;
+
+                foreach (var line in content)
+                {
+                    if (!configIsAdded)
+                    {
+                        if (CheckConfigImport(line, configVariableName))
+                        {
+                            configIsAdded = true;
+                            addConfigFn = false;
+                        }
+                    }
+
+                    if (line.Contains("@Component"))
+                    {
+                        ignore = true;
+                        if (!configIsAdded)
+                        {
+                            newContent.Add(configImportation);
+                            newContent.Add("");
+                            configIsAdded = true;
+                            addConfigFn = true;
+                        }
+                        continue;
+                    }
+
+                    if (line.Contains(oldDeclaration) || line.Contains(newDeclaration))
+                    {
+                        ignore = false;
+                        newContent.Add(componentData);
+                        if (line.Contains(oldDeclaration))
+                        {
+                            newContent.Add(line.Replace(oldDeclaration, newDeclaration));
+                        }
+                        else
+                        {
+                            newContent.Add(line);
+                        }
+
+                        if (addConfigFn)
+                        {
+                            newContent.Add("");
+                            foreach (var cLine in configFn)
+                                newContent.Add(cLine);
+                            newContent.Add("");
+                        }
+                    }
+                    else if (!ignore)
+                    {
+                        newContent.Add(line);
+                    }
+                }
+                if (!ignore)
+                {
+                    
+                    await File.WriteAllLinesAsync(newPath + ".ts", newContent);
+                }
+                //if (File.Exists(oldTsPath))
+                //    File.Delete(oldTsPath);
+                //}
+
+
+            }
+
+            await _generateDomains(domains);
+
+            return new Result();
+        }
+
         private async Task _generateDomains(Dictionary<string, PageCategoryDomainDataObject> domains)
         {
             var mold = Molds.GetResourceByNameAsString(MoldNames.SharedModule_ts);
@@ -383,13 +531,13 @@ namespace CodeShellCore.Moldster.Services
                         model.Components = string.Join(", ", domain.Value.Components.Select(e => e.Name));
 
                     var data = Writer.FillStringParameters(mold, model);
-                    var files = Directory.GetFiles(domain.Key, "*.module.ts");
-                    foreach (var file in files)
-                    {
-                        File.Delete(file);
-                    }
+                    //var files = Directory.GetFiles(domain.Key, "*.module.ts");
+                    //foreach (var file in files)
+                    //{
+                    //    File.Delete(file);
+                    //}
 
-
+                    Utils.CreateFolderForFile(path);
                     await File.WriteAllTextAsync(path, data);
                 }
 

@@ -1,5 +1,4 @@
-﻿using CodeShellCore.CliDispatch.Routing;
-using CodeShellCore.CliDispatch.Parsing;
+﻿using CodeShellCore.CliDispatch.Parsing;
 using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
 using CodeShellCore.Text.Localization;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Localization

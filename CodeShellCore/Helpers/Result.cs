@@ -30,9 +30,9 @@ namespace CodeShellCore.Helpers
             Data = new Dictionary<string, object>();
         }
 
-        public TOut MapToResult<TOut>() where TOut : Result
+        public TOut MapToResult<TOut>(TOut result = null) where TOut : Result
         {
-            var inst = Activator.CreateInstance<TOut>();
+            var inst = result ?? Activator.CreateInstance<TOut>();
 
             inst.Message = Message;
             inst.StackTrace = StackTrace;
@@ -79,7 +79,7 @@ namespace CodeShellCore.Helpers
                     return;
                 }
             }
-            
+
             if (_exception.InnerException != null && _exception.InnerException is CodeShellHttpException)
             {
                 try

@@ -1,17 +1,10 @@
-﻿using CodeShellCore.Data.Helpers;
-using CodeShellCore.Data.Lookups;
-using CodeShellCore.Data.Mapping;
-using CodeShellCore.Text;
-using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using System.Text;
-using System.Collections;
+﻿using CodeShellCore.Data.Events;
+using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Localization;
-using CodeShellCore.Data.Events;
-using CodeShellCore.MQ.Events;
-using System.Threading.Tasks;
 using CodeShellCore.Linq;
+using CodeShellCore.MQ.Events;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Services
 {
@@ -35,9 +28,9 @@ namespace CodeShellCore.Data.Services
 
         }
 
-        public virtual DeleteResult Delete(TPrime id)
+        public virtual async Task<DeleteResult> Delete(TPrime id)
         {
-            var can = Repository.CanDeleteById(id);
+            var can = await Repository.CanDeleteById(id);
             if (can.IsSuccess)
             {
                 Repository.DeleteByKey(id);
@@ -47,65 +40,65 @@ namespace CodeShellCore.Data.Services
                 return can;
             }
 
-            return DefaultUnit.SaveChanges().MapToResult<DeleteResult>();
+            return (await DefaultUnit.SaveChanges()).MapToResult<DeleteResult>();
         }
 
 
 
-        protected virtual void AfterUpdate(TUpdateDto dto, T entity)
+        protected virtual Task AfterUpdate(TUpdateDto dto, T entity)
         {
-
+            return Task.CompletedTask;
         }
 
-        protected virtual void AfterCreate(TCreateDto dto, T entity)
+        protected virtual Task AfterCreate(TCreateDto dto, T entity)
         {
-
+            return Task.CompletedTask;
         }
 
-        public virtual EntitySubmitResult<TSingleDto> Post(TCreateDto dto)
+        public virtual async Task<EntitySubmitResult<TSingleDto>> Post(TCreateDto dto)
         {
             var entity = Mapper.Map<TCreateDto, T>(dto);
             Repository.Add(entity);
-            var res = SaveAndGetSingle(entity);
+            var res = await SaveAndGetSingle(entity);
             if (res.IsSuccess)
             {
-                AfterCreate(dto, entity);
+                await AfterCreate(dto, entity);
             }
             return res;
         }
 
-        protected virtual EntitySubmitResult<TSingleDto> SaveAndGetSingle(T entity)
+        protected virtual async Task<EntitySubmitResult<TSingleDto>> SaveAndGetSingle(T entity)
         {
-            var res = DefaultUnit.SaveChanges().ToSubmitResult<TSingleDto>();
+            var res = (await DefaultUnit.SaveChangesAsync()).ToSubmitResult<TSingleDto>();
             if (res.IsSuccess)
             {
-                res.Result = GetSingle(entity.Id);
+                res.Result = await GetSingle(entity.Id);
             }
             return res;
         }
 
-        public virtual EntitySubmitResult<TSingleDto> Put(TUpdateDto dto)
+        public virtual async Task<EntitySubmitResult<TSingleDto>> Put(TUpdateDto dto)
         {
-            var entity = GetSingleById(dto.Id);
+            var entity = await GetSingleById(dto.Id);
             Mapper.Map(dto, entity);
             Repository.Update(entity);
-            var res = SaveAndGetSingle(entity);
+            var res = await SaveAndGetSingle(entity);
             if (res.IsSuccess)
             {
-                AfterUpdate(dto, entity);
-                res.Result = Repository.FindSingleAndMapById<TSingleDto>(entity.Id);
+                await AfterUpdate(dto, entity);
+                res.Result = await Repository.FindSingleAndMapById<TSingleDto>(entity.Id);
             }
 
             return res;
         }
 
-        public virtual Dictionary<string, LocalizablesDto> GetLocalizationData(long id)
+        public virtual async Task<Dictionary<string, LocalizablesDto>> GetLocalizationData(long id)
         {
-            var data = LocalizationDataService.GetDataFor<T>(id);
+            var data = await LocalizationDataService.GetDataFor<T>(id);
             return Mapper.Map(data, new Dictionary<string, LocalizablesDto>());
         }
 
-        public virtual SubmitResult SetLocalizationData(long id, Dictionary<string, LocalizablesDto> data)
+        public virtual Task<SubmitResult> SetLocalizationData(long id, Dictionary<string, LocalizablesDto> data)
         {
             var locData = Mapper.Map(data, new Dictionary<string, LocalizablesData>());
             return LocalizationDataService.SetDataFor<T>(id, locData);
@@ -124,7 +117,7 @@ namespace CodeShellCore.Data.Services
                     await Merge(command.Data);
                     break;
                 case ActionType.Delete:
-                    Delete(command.Data.Id);
+                    await Delete(command.Data.Id);
                     break;
             }
             return await DefaultUnit.SaveChangesAsync();
@@ -133,7 +126,7 @@ namespace CodeShellCore.Data.Services
         public virtual async Task<SubmitResult> Merge(T obj)
         {
             IEntity<long> ent = obj as IEntity<long>;
-            if (Repository.IdExists(ent.Id))
+            if (await Repository.IdExists(ent.Id))
             {
                 Repository.Update(obj);
             }

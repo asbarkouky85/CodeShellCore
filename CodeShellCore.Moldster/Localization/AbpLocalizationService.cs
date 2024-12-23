@@ -13,23 +13,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Localization
 {
     public class AbpLocalizationService : LocalizationService, ILocalizationService
     {
-        public AbpLocalizationService(IMoldProvider molds, IConfigUnit unit, IPathsService paths, INamingConventionService names, IOutputWriter output) : base(molds, unit, paths, names, output)
+        public AbpLocalizationService(IMoldProvider molds, IMoldsterUnit unit, IPathsService paths, INamingConventionService names, IOutputWriter output) : base(molds, unit, paths, names, output)
         {
         }
 
-        public override void GenerateJsonFiles(string moduleCode)
+        public override Task GenerateJsonFiles(string moduleCode)
         {
-
+            return Task.CompletedTask;
         }
 
-        public override void AddLocalizationFiles()
+        public override Task AddLocalizationFiles()
         {
-
+            return Task.CompletedTask;
         }
 
         Dictionary<string, string> GetItems(string type, string locale)
@@ -44,7 +45,7 @@ namespace CodeShellCore.Moldster.Localization
             return ret;
         }
 
-        public override void Import(string type, string lang, List<DataItem> strs, bool suspendOut = false)
+        public override async Task Import(string type, string lang, List<DataItem> strs, bool suspendOut = false)
         {
             var data = strs.OrderBy(e => e.Name).ToDictionary(e => e.Name, e => e.Value);
             var obj = new AbpResourceFile { Culture = lang, Texts = new Dictionary<string, string>() };
@@ -61,25 +62,25 @@ namespace CodeShellCore.Moldster.Localization
                     obj.Texts[item.Name] = item.Value ?? LangUtils.IdToPhrase(item.Name);
                 }
             }
-            SaveData(type, lang, obj.Texts);
+            await SaveData(type, lang, obj.Texts);
         }
 
-        public override void InitializeResxFiles()
+        public override Task InitializeResxFiles()
         {
-
+            return Task.CompletedTask;
         }
 
-        public override void SyncAllLanguages()
+        public override Task SyncAllLanguages()
         {
-
+            return Task.CompletedTask;
         }
 
-        public override void SyncLanguages(string lang1, string lang2)
+        public override Task SyncLanguages(string lang1, string lang2)
         {
-
+            return Task.CompletedTask;
         }
 
-        public override void UpdateFiles(LocalizationDataCollector localization)
+        public override async Task UpdateFiles(LocalizationDataCollector localization)
         {
             var items = new List<DataItem>();
             string loc = Shell.DefaultCulture.TwoLetterISOLanguageName;
@@ -99,10 +100,10 @@ namespace CodeShellCore.Moldster.Localization
             {
                 items.Add(new DataItem { Name = i, Value = "" });
             }
-            Import("Pages", loc, items, true);
+            await Import("Pages", loc, items, true);
         }
 
-        public override void FixPages(string tenantCode)
+        public override async Task FixPages(string tenantCode)
         {
             foreach (var loc in Shell.SupportedLanguages)
             {
@@ -111,7 +112,7 @@ namespace CodeShellCore.Moldster.Localization
                 Out.GotoColumn(SuccessCol);
                 var items = GetItems("Pages", loc);
                 Dictionary<string, string> newList = new Dictionary<string, string>();
-                List<PageIdentifierView> data = _unit.PageRepository.GetDistinctIdentifiers();
+                List<PageIdentifierView> data = await _unit.PageRepository.GetDistinctIdentifiers();
                 foreach (var item in items)
                 {
                     var pageName = item.Key.GetAfterFirst("__");
@@ -140,19 +141,19 @@ namespace CodeShellCore.Moldster.Localization
                         newList[key] = "";
                     }
                 }
-                SaveData("Pages", loc, newList);
+                await SaveData("Pages", loc, newList);
                 WriteColored("Success [Added : " + newItems + "]", ConsoleColor.Green);
                 Out.WriteLine();
             }
 
 
         }
-        void SaveData(string type, string lang, Dictionary<string, string> lst)
+        async Task SaveData(string type, string lang, Dictionary<string, string> lst)
         {
             string resLang1 = Path.Combine(_paths.LocalizationRoot, lang + ".json");
 
             var data = new AbpResourceFile { Culture = lang, Texts = lst.OrderBy(e => e.Key).ToDictionary(e => e.Key, e => e.Value) };
-            File.WriteAllText(resLang1, data.ToJsonIndent());
+            await File.WriteAllTextAsync(resLang1, data.ToJsonIndent());
         }
     }
 }

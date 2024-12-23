@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using CodeShellCore.Helpers;
 using CodeShellCore.Services;
 using CodeShellCore.Services.Email;
@@ -16,12 +17,12 @@ namespace CodeShellCore.Security.Authentication.Internal
             Writer = new WriterService();
         }
         public abstract string ResetPasswordHTMLTemplate { get; }
-        public virtual Result SendResetEmail(ResetPasswordDTO dto)
+        public virtual async Task<Result> SendResetEmail(ResetPasswordDTO dto)
         {
             var body = Writer.FillStringParameters(ResetPasswordHTMLTemplate, dto);
             var c = CreateClient();
             var mess = CreateMessage(dto.Email, "Your Password was Reset", body, true, Config.SenderName ?? "no-reply");
-            return SendEmail(c, mess);
+            return await SendEmail(c, mess);
         }
 
 

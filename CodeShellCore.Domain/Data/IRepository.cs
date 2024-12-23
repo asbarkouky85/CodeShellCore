@@ -1,19 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using CodeShellCore.Data.Helpers;
-using CodeShellCore.Data.Lookups;
+﻿using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data
 {
     public interface IRepository
     {
-        int Count();
-        IEnumerable<Named<object>> FindAsLookup(string collectionId = null);
-        PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null);
-        IEnumerable All();
+        Task<int> Count();
+        Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId = null);
+        Task<PagedResult<Named<object>>> FindAsLookupPaged(PagedListRequest request, string collectionId = null);
+        Task<IEnumerable> All();
         IQueryProjector Projector { get; set; }
 
     }

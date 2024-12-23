@@ -13,6 +13,10 @@ namespace CodeShellCore.Data.Recursion
         string NameChain { get; set; }
         //bool HasContents { get; set; }
         //int ContentCount { get; set; }
-        IEnumerable<IRecursiveModel> Children { get; set; }
+    }
+    public interface IRecursiveModel<T> : IRecursiveModel where T : class, IRecursiveModel<T>
+    {
+
+        IEnumerable<T> Children { get; set; }
     }
 }

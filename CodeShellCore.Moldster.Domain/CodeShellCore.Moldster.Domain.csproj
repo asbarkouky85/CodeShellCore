@@ -15,4 +15,8 @@
     <ProjectReference Include="..\CodeShellCore.Moldster.Domain.Shared\CodeShellCore.Moldster.Domain.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Environments\" />
+  </ItemGroup>
+
 </Project>

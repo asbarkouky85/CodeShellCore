@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Security
 {
     public class DefaultClientProvider : IClientProvider
     {
-        public IEnumerable<AppClient> Get()
+        public Task<IEnumerable<AppClient>> Get()
         {
-            return new AppClient[0];
+            return Task.Run(() => (IEnumerable<AppClient>)new AppClient[0]);
         }
     }
 }

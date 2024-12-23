@@ -4,14 +4,26 @@
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>CodeShellCore.ToolSet</RootNamespace>
 		<TargetFramework>net8.0</TargetFramework>
-		<Version>5.4.2.0</Version>
+		<Version>5.6.2.0</Version>
 		<AssemblyName>ToolSet</AssemblyName>
-		<AssemblyVersion>5.4.2.0</AssemblyVersion>
-		<FileVersion>5.4.2.0</FileVersion>
+		<AssemblyVersion>5.6.2.0</AssemblyVersion>
+		<FileVersion>5.6.2.0</FileVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>toolset</ToolCommandName>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Tests\Replace\settings_file.json" />
+	  <None Remove="Tests\Replace\values_file.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="Tests\Replace\settings_file.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Tests\Replace\values_file.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\CodeShellCore.ToolSet\CodeShellCore.ToolSet.csproj" />
 	</ItemGroup>

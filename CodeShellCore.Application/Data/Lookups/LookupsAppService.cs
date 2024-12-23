@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Lookups
 {
@@ -15,14 +16,14 @@ namespace CodeShellCore.Data.Lookups
         {
         }
 
-        public List<Named<object>> Get(string entity, string collectionId = null)
+        public async Task<List<Named<object>>> Get(string entity, string collectionId = null)
         {
-            return Lookups.GetListNamed(entity, collectionId).ToList();
+            return (await Lookups.GetListNamed(entity, collectionId)).ToList();
         }
 
-        public PagedResult<Named<object>> GetPaged(string entity, LookupsPagedResultRequestDto dto)
+        public async Task<PagedResult<Named<object>>> GetPaged(string entity, LookupsPagedResultRequestDto dto)
         {
-            return Lookups.GetListNamedPaged(entity, dto, dto.CollectionId);
+            return await Lookups.GetListNamedPaged(entity, dto, dto.CollectionId);
         }
     }
 }

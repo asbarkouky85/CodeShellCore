@@ -45,16 +45,16 @@ namespace CodeShellCore.CliDispatch.Routing
             return parser.Parse(args);
         }
 
-        public virtual Task<Result> HandleAsync(string[] args)
+        public virtual async Task<Result> HandleAsync(string[] args)
         {
 
             var req = GetRequestData(args);
             if (req == null)
             {
-                return Task.FromResult(new Result(1));
+                return new Result(1);
             }
             //Console.WriteLine(req.ToJsonIndent());
-            return HandleAsync(req);
+            return await HandleAsync(req);
         }
 
         public void Document()

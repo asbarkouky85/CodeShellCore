@@ -5,7 +5,8 @@ namespace CodeShellCore.Moldster.Services
 {
     public interface IMigrationService
     {
-        Result MigrateBaseModule(string tenant);
+        Task<Result> MigrateBaseModule(string tenant);
+        Task<Result> CategoriesToComponents(string tenantCode);
         Task<Result> RestructureApp(string tenantCode);
     }
 }

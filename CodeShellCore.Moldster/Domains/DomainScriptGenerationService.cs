@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Domains
 {
@@ -23,7 +24,7 @@ namespace CodeShellCore.Moldster.Domains
         protected IMoldProvider _molds => Store.GetRequiredService<IMoldProvider>();
         protected INamingConventionService Names => Store.GetRequiredService<INamingConventionService>();
         protected IPathsService _paths => Store.GetRequiredService<IPathsService>();
-        protected IConfigUnit _unit => Store.GetRequiredService<IConfigUnit>();
+        protected IMoldsterUnit _unit => Store.GetRequiredService<IMoldsterUnit>();
         protected ILocalizationService _localization => Store.GetRequiredService<ILocalizationService>();
         protected IObjectMapper Mapper;
         public DomainScriptGenerationService(
@@ -33,22 +34,22 @@ namespace CodeShellCore.Moldster.Domains
             Mapper = Store.GetRequiredService<IObjectMapper>();
         }
 
-        public virtual void GenerateModuleDefinitionByPage(PageRenderDTO dto)
+        public virtual async Task GenerateModuleDefinitionByPage(PageRenderDTO dto)
         {
-            var data = _unit.PageRepository.FindSingleAs(
+            var data = await _unit.PageRepository.FindSingleAs(
                 d => new { d.Domain.Chain, HasNav = d.NavigationPages.Any(), d.Tenant.Code },
                 d => d.Id == dto.Id
                 );
 
-            var dom = _unit.DomainRepository.GetSingleValue(d => d.Id, d => data.Chain.Contains("|" + d.Id + "|") && d.ParentId == null);
-            GenerateDomainModuleById(data.Code, dom);
+            var dom = await _unit.DomainRepository.GetSingleValue(d => d.Id, d => data.Chain.Contains("|" + d.Id + "|") && d.ParentId == null);
+            await GenerateDomainModuleById(data.Code, dom);
             if (data.HasNav)
             {
-                GenerateRoutes(data.Code);
+                await GenerateRoutes(data.Code);
             }
         }
 
-        public virtual void GenerateRoutes(string modCode)
+        public virtual async Task GenerateRoutes(string modCode)
         {
             string filePath = Names.GetModuleFilePath(modCode, "AppRouting", createFolder: false) + ".ts";
             Out.Write($"Generating Routes [{modCode}Routes.ts] : ");
@@ -61,10 +62,10 @@ namespace CodeShellCore.Moldster.Domains
                 return;
             }
 
-            long tenantId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            long tenantId = await _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
 
-            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(tenantId);
-            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs<NavigationGroupDTO>(tenantId);
+            IEnumerable<DomainModuleDto> domains = await _unit.DomainRepository.GetParentModules<DomainModuleDto>(tenantId);
+            IEnumerable<NavigationGroupLookupDto> navs = await _unit.NavigationGroupRepository.GetTenantNavs<NavigationGroupLookupDto>(tenantId);
 
             string routesTemplate = _molds.GetResourceByNameAsString(MoldNames.Routes_ts);//RoutesMold;
 
@@ -78,7 +79,7 @@ namespace CodeShellCore.Moldster.Domains
                 BaseName = _paths.CoreAppName
             };
 
-            string homePage = _unit.PageRepository.GetHomePagePath(modCode);
+            string homePage = await _unit.PageRepository.GetHomePagePath(modCode);
             if (homePage != null)
             {
                 var name = homePage.GetAfterLast("/");
@@ -95,7 +96,7 @@ namespace CodeShellCore.Moldster.Domains
             string sep = "";
             foreach (var nav in navs)
             {
-                var pages = _unit.NavigationPageRepository.FindAndMap<NavigationPageDTO>(e => e.Page.TenantId == tenantId && e.NavigationGroupId == nav.Id);
+                var pages = await _unit.NavigationPageRepository.FindAndMap<NavigationPageRouteDto>(e => e.Page.TenantId == tenantId && e.NavigationGroupId == nav.Id);
                 tempModel.DomainsData += sep + GetNavigationObject(nav.Name, pages);
                 sep = ",\n\t\t\t";
             }
@@ -111,16 +112,16 @@ namespace CodeShellCore.Moldster.Domains
             Out.WriteLine();
         }
 
-        public virtual void GenerateDomainModuleById(string moduleCode, long? domId)
+        public virtual async Task GenerateDomainModuleById(string moduleCode, long? domId)
         {
-            var doms = new List<DomainDto>();
+            var doms = new List<DomainModuleDto>();
             if (!_unit.DomainRepository.FindSingleOrAdd(e => e.Id == 1, new Domain { Id = 1, Name = "Shared" }, out Domain shared))
             {
-                _unit.SaveChanges();
+                await _unit.SaveChanges();
             }
-            doms = _unit.DomainRepository.GetByTenantCodeForRouting<DomainDto>(moduleCode, domId);
+            doms = await _unit.DomainRepository.GetByTenantCodeForRouting<DomainModuleDto>(moduleCode, domId);
 
-            var newList = new List<DomainDto>();
+            var newList = new List<DomainModuleDto>();
             if (domId == null)
                 newList = doms.Where(d => d.ParentId == null).ToList();
             else
@@ -129,7 +130,7 @@ namespace CodeShellCore.Moldster.Domains
             foreach (var item in newList)
                 item.AppendChildren(doms);
 
-            string parent = domId == null ? null : _unit.DomainRepository.GetValue(domId.Value, d => d.NameChain);
+            string parent = domId == null ? null : await _unit.DomainRepository.GetValue(domId.Value, d => d.NameChain);
             if (parent != null)
             {
                 parent = new Regex("^/").Replace(parent, "");
@@ -141,18 +142,18 @@ namespace CodeShellCore.Moldster.Domains
             }
 
             foreach (var item in newList)
-                _generateDomainRecursive(item, moduleCode, parent);
+                await _generateDomainRecursive(item, moduleCode, parent);
         }
 
-        public virtual void GenerateDomainModule(string moduleCode, string domId)
+        public virtual async Task GenerateDomainModule(string moduleCode, string domId)
         {
             long? id = null;
             if (domId != null)
-                id = _unit.DomainRepository.GetDomainByPath(domId).Id;
-            GenerateDomainModuleById(moduleCode, id);
+                id = (await _unit.DomainRepository.GetDomainByPath(domId)).Id;
+            await GenerateDomainModuleById(moduleCode, id);
         }
 
-        protected virtual void _generateDomainRecursive(DomainDto dom, string tenantCode, string parentDomain = null)
+        protected virtual async Task _generateDomainRecursive(DomainModuleDto dom, string tenantCode, string parentDomain = null)
         {
             string filePath = Names.GetModuleFilePath(tenantCode, dom.DomainName, parentDomain) + ".ts";
             Out.Write($"Generating {dom.DomainName}Module : ");
@@ -161,13 +162,13 @@ namespace CodeShellCore.Moldster.Domains
             if (!Options.ReplaceDomainRoutes && File.Exists(filePath))
             {
                 WriteColored("Exists", ConsoleColor.Cyan);
-                var domPages = _unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>(tenantCode, dom.Id, true);
+                var domPages = await _unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>(tenantCode, dom.Id, true);
 
                 if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
                 {
                     var pages = domPages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
                     if (domPages.Any())
-                        _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
+                        await _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
                 }
                 Out.WriteLine();
                 return;
@@ -176,13 +177,13 @@ namespace CodeShellCore.Moldster.Domains
             bool shared = dom.DomainName == "Shared";
             string template = shared ? _molds.GetResourceByNameAsString(MoldNames.SharedModule_ts) : _molds.GetDomainModuleMold();
 
-            var domainPages = _unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>(tenantCode, dom.Id);
+            var domainPages = await _unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>(tenantCode, dom.Id);
 
             if (domainPages.Any())
             {
                 var pages = domainPages.Select(e => new DataItem { Name = e.PageIdentifier }).ToList();
                 if (!string.IsNullOrEmpty(_paths.LocalizationRoot))
-                    _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
+                    await _localization.Import("Pages", Shell.DefaultCulture.TwoLetterISOLanguageName, pages, true);
             }
 
             int c = 0;
@@ -226,7 +227,7 @@ namespace CodeShellCore.Moldster.Domains
 
             if (dom.SubDomains != null)
             {
-                foreach (DomainDto dp in dom.SubDomains)
+                foreach (DomainModuleDto dp in dom.SubDomains)
                 {
                     model.Routes += Names.GetDomainLazyLoadingRoute(dp.DomainName) + ",";
                 }
@@ -242,7 +243,7 @@ namespace CodeShellCore.Moldster.Domains
             if (dom.SubDomains != null && dom.SubDomains.Any())
             {
                 foreach (var d in dom.SubDomains)
-                    _generateDomainRecursive(d, tenantCode, (parentDomain == null ? "" : parentDomain + "\\") + dom.DomainName);
+                    await _generateDomainRecursive(d, tenantCode, (parentDomain == null ? "" : parentDomain + "\\") + dom.DomainName);
             }
         }
 
@@ -258,7 +259,7 @@ namespace CodeShellCore.Moldster.Domains
             }
         }
 
-        protected string GetNavigationObject(string groupName, IEnumerable<NavigationPageDTO> pages)
+        protected string GetNavigationObject(string groupName, IEnumerable<NavigationPageRouteDto> pages)
         {
             string children = "";
             foreach (var p in pages)

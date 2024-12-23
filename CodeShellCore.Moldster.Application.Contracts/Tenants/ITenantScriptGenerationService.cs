@@ -1,14 +1,15 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.CodeGeneration;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Tenants
 {
     public interface ITenantScriptGenerationService
     {
-        AngularJsonFile ReadAngularJsonFile();
-        void UpdateAngularJsonFromDatabase();
-        Result AddAngularJson(string tenant);
-        void GenerateMainFile(string tenantCode, bool addStyle = false);
-        void GenerateAppModule(string tenantCode);
+        Task<AngularJsonFile> ReadAngularJsonFile();
+        Task<Result> AddAngularJson(string tenant);
+        Task UpdateAngularJsonFromDatabase();
+        Task GenerateMainFile(string tenantCode, bool addStyle = false);
+        Task GenerateAppModule(string tenantCode);
     }
 }

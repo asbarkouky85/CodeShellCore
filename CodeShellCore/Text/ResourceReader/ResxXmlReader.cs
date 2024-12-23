@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace CodeShellCore.Text.ResourceReader
@@ -26,14 +27,18 @@ namespace CodeShellCore.Text.ResourceReader
             }
         }
 
-        public void Save(string path, ResourceContainer cont)
+        public Task Save(string path, ResourceContainer cont)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(ResourceContainer));
-            File.WriteAllText(path, "");
-            using (var str = File.OpenWrite(path))
+            return Task.Run(() =>
             {
-                ser.Serialize(str, cont);
-            }
+
+                XmlSerializer ser = new XmlSerializer(typeof(ResourceContainer));
+                File.WriteAllText(path, "");
+                using (var str = File.OpenWrite(path))
+                {
+                    ser.Serialize(str, cont);
+                }
+            });
         }
     }
 }

@@ -10,13 +10,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Domains.Services
 {
     public class ModulesService : MoldsterFileHandlingService, IModulesService
     {
         static string tmpLocation;
-        private IConfigUnit unit => GetService<IConfigUnit>();
+        private IMoldsterUnit unit => GetService<IMoldsterUnit>();
 
         static ModulesService()
         {
@@ -45,7 +46,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             return (byte[])obj;
         }
 
-        public virtual Result InstallModule(string assemblyName, string toPath = null)
+        public virtual async Task<Result> InstallModule(string assemblyName, string toPath = null)
         {
             var mod = MoldsterModulesConfig.Modules.Where(d => d.AssemblyName == assemblyName).FirstOrDefault();
             if (mod == null)
@@ -74,7 +75,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                     resourceName = spl[0];
                 }
 
-                var rs = unit.ResourceRepository.GetResource(resourceName, domain, createdDomains);
+                var rs = await unit.ResourceRepository.GetResource(resourceName, domain, createdDomains);
                 res.Add(rs);
 
 
@@ -108,7 +109,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                     cat.ViewPath = Utils.CombineUrl(toPath, viewPath);
                     Out.Write($"Adding template '{cat.ViewPath}'");
 
-                    if (unit.PageCategoryRepository.Exist(d => d.ViewPath == cat.ViewPath))
+                    if (await unit.PageCategoryRepository.Exist(d => d.ViewPath == cat.ViewPath))
                     {
                         Out.Write("Already Exists");
 
@@ -119,7 +120,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                         Domain dom = null;
                         if (!dic.TryGetValue(domPath, out dom))
                         {
-                            dom = unit.DomainRepository.GetOrCreatePath(domPath, ref createdDomains);
+                            dom = await unit.DomainRepository.GetOrCreatePath(domPath, createdDomains);
                             dic[domPath] = dom;
                         }
                         unit.PageCategoryRepository.Add(cat, dom, rs);
@@ -139,7 +140,7 @@ namespace CodeShellCore.Moldster.Domains.Services
                 files.Add(new Tuple<string, string>(s, scriptPath));
             }
 
-            var resp = unit.SaveChanges();
+            var resp = await unit.SaveChanges();
 
             if (resp.IsSuccess)
             {
@@ -238,7 +239,7 @@ namespace CodeShellCore.Moldster.Domains.Services
             Out.WriteLine();
         }
 
-        public virtual Result UpdateModuleFiles(string assemblyName)
+        public virtual async Task<Result> UpdateModuleFiles(string assemblyName)
         {
             if (MoldsterModulesConfig.GetProjectPath(assemblyName, out string projectPath))
             {
@@ -251,7 +252,7 @@ namespace CodeShellCore.Moldster.Domains.Services
 
                     ArchiveScripts(mod, projectPath);
                     ArchiveViews(mod, projectPath);
-                    UpdateDefinitionJson(mod, projectPath);
+                    await UpdateDefinitionJson(mod, projectPath);
                     return new Result(0);
                 }
                 catch (Exception ex)
@@ -265,10 +266,10 @@ namespace CodeShellCore.Moldster.Domains.Services
             return new Result { Code = 1, Message = $"No project path registered for '{assemblyName}'" };
         }
 
-        protected virtual void UpdateDefinitionJson(MoldsterModule mod, string projectPath)
+        protected virtual async Task UpdateDefinitionJson(MoldsterModule mod, string projectPath)
         {
-            mod.Categories = unit.PageCategoryRepository.GetByMoldsterModule<ModuleCategoryDTO>(mod.InstallPath);
-            mod.Resources = unit.ResourceRepository.GetByMoldsterModule(mod.InstallPath);
+            mod.Categories = await unit.PageCategoryRepository.GetByMoldsterModule<ModuleCategoryDTO>(mod.InstallPath);
+            mod.Resources = await unit.ResourceRepository.GetByMoldsterModule(mod.InstallPath);
 
             foreach (var l in mod.Categories)
             {
@@ -285,9 +286,12 @@ namespace CodeShellCore.Moldster.Domains.Services
 
 
 
-        public IEnumerable<ModuleDTO> GetRegisteredModules()
+        public Task<IEnumerable<ModuleDTO>> GetRegisteredModules()
         {
-            return MoldsterModulesConfig.Modules.Select(d => new ModuleDTO { Name = d.Name, AssemblyName = d.AssemblyName }).ToList();
+            return Task.Run(() =>
+            {
+                return MoldsterModulesConfig.Modules.Select(d => new ModuleDTO { Name = d.Name, AssemblyName = d.AssemblyName });
+            });
         }
     }
 }

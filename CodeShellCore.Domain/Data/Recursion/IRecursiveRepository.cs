@@ -1,24 +1,22 @@
-﻿using CodeShellCore.Data;
-using CodeShellCore.Data.Lookups;
-using CodeShellCore.Linq;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Recursion
 {
-    public interface IRecursiveRepository<T> : IRepository<T> where T : class, IRecursiveModel
+    public interface IRecursiveRepository<T, TRec> : IRepository<T>
+        where T : class, IRecursiveModel<T>
+        where TRec : class, IRecursiveModel<TRec>
     {
-        IEnumerable<RecursionModel> GetRecursionModels();
-        IEnumerable<RecursionModel> GetRecursionModels(Expression<Func<T, bool>> filter);
-        
-        IEnumerable<T> GetChildren(object prime);
+        Task<IEnumerable<TRec>> GetRecursionModels();
+        Task<IEnumerable<TRec>> GetRecursionModels(Expression<Func<T, bool>> filter);
 
-        IEnumerable<T> GetChildren(object prime, Expression<Func<T, bool>> filter);
-        IEnumerable<T> GetRooted(Expression<Func<T, bool>> filter);
-        void DeleteAllSubs(object prime);
+        Task<IEnumerable<T>> GetChildren(object prime);
+
+        Task<IEnumerable<T>> GetChildren(object prime, Expression<Func<T, bool>> filter);
+        Task<IEnumerable<T>> GetRooted(Expression<Func<T, bool>> filter);
+        Task DeleteAllSubs(object prime);
 
     }
 }

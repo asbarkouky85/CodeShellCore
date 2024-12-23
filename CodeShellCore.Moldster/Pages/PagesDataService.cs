@@ -8,26 +8,27 @@ using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
-    public class PagesDataService : DataService<IConfigUnit>, IPagesDataService
+    public class PagesDataService : DataService<IMoldsterUnit>, IPagesDataService
     {
         private readonly IOutputWriter output;
 
         public PagesDataService(
-            IConfigUnit unit,
+            IMoldsterUnit unit,
             IOutputWriter output) : base(unit)
         {
             this.output = output;
         }
 
-        public IEnumerable<PageParameterEditDto> GetViewParameters(long id)
+        public async Task<IEnumerable<PageParameterEditDto>> GetViewParameters(long id)
         {
-            var catId = Unit.PageRepository.GetValue(id, e => e.PageCategoryId);
-            var categoryParameters = Unit.PageCategoryParameterRepository.FindAndMap<PageParameterEditDto>(e => e.PageCategoryId == catId);
-            var pageParameters = Unit.PageParameterRepository.FindAndMap<PageParameter>(e => e.PageId == id);
-            List<PageReference> references = Unit.PageParameterRepository.GetReferencesByPage(id);
+            var catId = await Unit.PageRepository.GetValue(id, e => e.PageCategoryId);
+            var categoryParameters = await Unit.PageCategoryParameterRepository.FindAndMap<PageParameterEditDto>(e => e.PageCategoryId == catId);
+            var pageParameters = await Unit.PageParameterRepository.FindAndMap<PageParameter>(e => e.PageId == id);
+            List<PageReference> references = await Unit.PageParameterRepository.GetReferencesByPage(id);
 
             foreach (var categoryParameter in categoryParameters)
             {
@@ -47,23 +48,23 @@ namespace CodeShellCore.Moldster.Pages
             return categoryParameters;
         }
 
-        public SubmitResult ViewParamsToData(long id)
+        public async Task<SubmitResult> ViewParamsToData(long id)
         {
             ViewParams jsonParams = new ViewParams();
             List<string> errors = new List<string>();
 
-            var data = Unit.PageRepository.FindSingleAs(d => new { d.ViewParams, d.PageCategoryId, d.TenantId, d.ViewPath }, id);
+            var data = await Unit.PageRepository.FindSingleAs(d => new { d.ViewParams, d.PageCategoryId, d.TenantId, d.ViewPath }, id);
             output.Write("ViewParams to data " + data.ViewPath);
 
             if (!string.IsNullOrEmpty(data.ViewParams))
             {
                 jsonParams = data.ViewParams.FromJson<ViewParams>();
-                UpdateRoutesFromJson(id, data.TenantId, jsonParams, ref errors);
-                UpdateParametersFromJson(id, data.TenantId, jsonParams, ref errors);
-                UpdateFieldsFromJson(id, jsonParams);
+                await UpdateRoutesFromJson(id, data.TenantId, jsonParams, errors);
+                await UpdateParametersFromJson(id, data.TenantId, jsonParams, errors);
+                await UpdateFieldsFromJson(id, jsonParams);
             }
 
-            var res = Unit.SaveChanges();
+            var res = await Unit.SaveChanges();
 
             if (res.IsSuccess)
             {
@@ -99,13 +100,13 @@ namespace CodeShellCore.Moldster.Pages
             return res;
         }
 
-        public void UpdateFieldsFromJson(long id, ViewParams jsonParams)
+        public async Task UpdateFieldsFromJson(long id, ViewParams jsonParams)
         {
 
             if (jsonParams.Fields == null || !jsonParams.Fields.Any())
                 return;
 
-            var fs = Unit.CustomFieldRepository.Find(d => d.PageId == id);
+            var fs = await Unit.CustomFieldRepository.Find(d => d.PageId == id);
             foreach (var f in jsonParams.Fields)
             {
                 var dbF = fs.Where(d => d.Name == f.Name).FirstOrDefault();
@@ -126,9 +127,9 @@ namespace CodeShellCore.Moldster.Pages
             }
         }
 
-        public void UpdateRoutesFromJson(long id, long tenantId, ViewParams jsonParams, ref List<string> errors)
+        public async Task UpdateRoutesFromJson(long id, long tenantId, ViewParams jsonParams, List<string> errors)
         {
-            var rout = Unit.PageRouteRepository.FindSingle(d => d.PageId == id);
+            var rout = await Unit.PageRouteRepository.FindSingle(d => d.PageId == id);
             if (rout == null)
             {
                 rout = new PageRoute
@@ -157,7 +158,7 @@ namespace CodeShellCore.Moldster.Pages
 
         }
 
-        PageParameterEditDto CreateParameter(string key, string value, long pageId, long tenantId, long catId)
+        async Task<PageParameterEditDto> CreateParameter(string key, string value, long pageId, long tenantId, long catId)
         {
 
             var param = new PageParameter
@@ -180,7 +181,7 @@ namespace CodeShellCore.Moldster.Pages
             };
 
             var err = new List<string>();
-            var pg = Unit.PageRepository.FindLinkedPage("Other." + key, value, tenantId, ref err);
+            var pg = await Unit.PageRepository.FindLinkedPage("Other." + key, value, tenantId, ref err);
             if (pg != null)
             {
                 param.LinkedPageId = pg.Id;
@@ -199,12 +200,12 @@ namespace CodeShellCore.Moldster.Pages
             };
         }
 
-        public void UpdateParametersFromJson(long id, long tenantId, ViewParams jsonParams, ref List<string> errors)
+        public async Task UpdateParametersFromJson(long id, long tenantId, ViewParams jsonParams, List<string> errors)
         {
             if (jsonParams.Other == null)
                 return;
-            long catId = Unit.PageRepository.GetValue(id, d => d.PageCategoryId ?? 0);
-            List<PageParameterEditDto> pars = GetViewParameters(id).ToList();
+            long catId = await Unit.PageRepository.GetValue(id, d => d.PageCategoryId ?? 0);
+            List<PageParameterEditDto> pars = (await GetViewParameters(id)).ToList();
             int[] isPageParam = new[] {
                     (int)PageParameterTypes.Embedded,
                     (int)PageParameterTypes.Modal,
@@ -218,7 +219,7 @@ namespace CodeShellCore.Moldster.Pages
                     var par = pars.Where(d => d.Name == fromJson.Key).FirstOrDefault();
 
                     if (par == null)
-                        par = CreateParameter(fromJson.Key, fromJson.Value, id, tenantId, catId);
+                        par = await CreateParameter(fromJson.Key, fromJson.Value, id, tenantId, catId);
 
                     var n = Mapper.Map(par.Entity, new PageParameter());
 
@@ -244,7 +245,7 @@ namespace CodeShellCore.Moldster.Pages
 
                     PageAndType p = null;
                     if (par.Type != (int)PageParameterTypes.Text)
-                        p = Unit.PageRepository.FindLinkedPage("Other." + par.Name, fromJson.Value, tenantId, ref errors);
+                        p = await Unit.PageRepository.FindLinkedPage("Other." + par.Name, fromJson.Value, tenantId, ref errors);
 
                     if (p != null)
                     {
@@ -254,7 +255,7 @@ namespace CodeShellCore.Moldster.Pages
             }
         }
 
-        public IEnumerable<long> GetPagesWithJsonParams(string modCode)
+        public Task<IEnumerable<long>> GetPagesWithJsonParams(string modCode)
         {
             return Unit.PageRepository.GetValues(d => d.Id, d => d.Tenant.Code == modCode && d.ViewParams != null);
         }

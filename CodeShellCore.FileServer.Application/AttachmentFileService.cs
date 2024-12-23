@@ -129,7 +129,7 @@ namespace CodeShellCore.FileServer
             }
             if (att.BinaryAttachmentId != null)
             {
-                var s = Repository.GetSingleValue(e => e.BinaryAttachment, e => e.Id == id);
+                var s = await Repository.GetSingleValue(e => e.BinaryAttachment, e => e.Id == id);
                 return new FileBytes(att.FileName, s.Bytes);
             }
             else
@@ -168,7 +168,7 @@ namespace CodeShellCore.FileServer
             var cat = await Unit.AttachmentCategoryRepository.FindAsync(req.AttachmentTypeId);
             var id = Utils.GenerateID();
             long.TryParse(req.Id, out id);
-            var tmpFile = Unit.TempFileRepository.FindSingle(e => e.Id == id);
+            var tmpFile = await Unit.TempFileRepository.FindSingle(e => e.Id == id);
             if (tmpFile == null)
             {
                 return new SubmitResult { Message = Strings.Message("MSG_file_is_not_in_tmp", req.FileName) };
@@ -180,7 +180,7 @@ namespace CodeShellCore.FileServer
             att.SetBlobName(tmpFile.FullPath);
             await Repository.InsertAsync(att);
             await Unit.TempFileRepository.DeleteAsync(tmpFile);
-            var res= await Unit.SaveChangesAsync();
+            var res = await Unit.SaveChangesAsync();
             return res;
         }
 
@@ -218,7 +218,7 @@ namespace CodeShellCore.FileServer
                     lst.Add(tmpDto);
                     await Unit.TempFileRepository.InsertAsync(tmp);
                 }
-                catch 
+                catch
                 {
 
                     throw;

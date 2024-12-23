@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
@@ -18,40 +19,40 @@ namespace CodeShellCore.Moldster.PageCategories
     {
         private readonly IFileHandler fileHandler;
         private readonly IPathsService conf;
-        private readonly IConfigUnit Unit;
+        private readonly IMoldsterUnit Unit;
         IMoldsterLookupService Lookups => Unit.ServiceProvider.GetService<IMoldsterLookupService>();
 
-        public PageCategoryService(IConfigUnit unit, IFileHandler fileHandler, IPathsService conf) : base(unit)
+        public PageCategoryService(IMoldsterUnit unit, IFileHandler fileHandler, IPathsService conf) : base(unit)
         {
             this.fileHandler = fileHandler;
             this.conf = conf;
             Unit = unit;
         }
 
-        protected override PageCategory GetSingleById(long id)
+        protected override Task<PageCategory> GetSingleById(long id)
         {
             return base.GetSingleById(id);
         }
 
-        public override PageCategoryDto GetSingle(long id)
+        public override async Task<PageCategoryDto> GetSingle(long id)
         {
-            var cat = base.GetSingle(id);
+            var cat = await base.GetSingle(id);
             if (cat != null)
             {
-                cat.PageCategoryParameters = Unit.PageCategoryParameterRepository.FindAndMap<PageCategoryParameterDto>(d => d.PageCategoryId.Equals(id));
-                cat.Controls = Unit.ControlRepository.FindAndMap<ControlDto>(d => d.PageCategoryId.Equals(id));
+                cat.PageCategoryParameters = await Unit.PageCategoryParameterRepository.FindAndMap<PageCategoryParameterDto>(d => d.PageCategoryId.Equals(id));
+                cat.Controls = await Unit.ControlRepository.FindAndMap<ControlDto>(d => d.PageCategoryId.Equals(id));
             }
             return cat;
         }
 
-        public override EntitySubmitResult<PageCategoryDto> Post(PageCategoryDto dto)
+        public override async Task<EntitySubmitResult<PageCategoryDto>> Post(PageCategoryDto dto)
         {
             EntitySubmitResult<PageCategoryDto> returned = new EntitySubmitResult<PageCategoryDto>();
 
             if (string.IsNullOrEmpty(dto.Name))
                 dto.Name = dto.ViewPath?.GetAfterLast("/");
 
-            var domain = Unit.DomainRepository.GetOrCreatePath(dto.ViewPath.GetBeforeLast("/"));
+            var domain = await Unit.DomainRepository.GetOrCreatePath(dto.ViewPath.GetBeforeLast("/"));
 
             string template = Path.Combine(Shell.AppRootPath, "Views", dto.ViewPath + ".cshtml");
             if (!fileHandler.Exists(template))
@@ -72,7 +73,7 @@ namespace CodeShellCore.Moldster.PageCategories
                     service = sp[0];
                 }
 
-                Resource r = Unit.ResourceRepository.GetResource(res, service);
+                Resource r = await Unit.ResourceRepository.GetResource(res, service);
 
                 string[] bases = new[] { "Edit", "List", "Tree" };
                 if (bases.Contains(dto.BaseComponent) && r == null)
@@ -81,78 +82,82 @@ namespace CodeShellCore.Moldster.PageCategories
                 }
                 r.PageCategories.Add(mapped);
 
-                returned = Unit.SaveChanges().ToSubmitResult<PageCategoryDto>();
-                returned.Result = GetSingle(mapped.Id);
+                returned = (await Unit.SaveChanges()).ToSubmitResult<PageCategoryDto>();
+                returned.Result = await GetSingle(mapped.Id);
             }
             else
             {
-                returned = base.Post(dto);
+                returned = await base.Post(dto);
             }
             return returned;
 
         }
 
-        public PagedResult<PageCategoryListDTO> GetAll(PagedListRequestDto opt)
+        public Task<PagedResult<PageCategoryListDTO>> GetAll(PagedListRequestDto opt)
         {
             var opts = opt.GetOptionsFor<PageCategoryListDTO>();
             return Unit.PageCategoryRepository.FindAndMap(opts);
         }
 
-        public PagedResult<PageCategoryListDTO> GetPagesCategoryByDomain(long domainId, PagedListRequestDto opt)
+        public async Task<PagedResult<PageCategoryListDTO>> GetPagesCategoryByDomain(long domainId, PagedListRequestDto opt)
         {
-            return Unit.PageCategoryRepository.GetUnderDomain<PageCategoryListDTO>(domainId, Mapper.Map(opt, new PagedListRequest()));
+            return await Unit.PageCategoryRepository.GetUnderDomain<PageCategoryListDTO>(domainId, Mapper.Map(opt, new PagedListRequest()));
         }
 
-        public List<TemplateDTO> GetTemplates()
+        public async Task<List<TemplateDTO>> GetTemplates()
         {
             string configPath = conf.ConfigRoot;
-            var DbTemplateList = Unit.PageCategoryRepository.GetValues(d => d.ViewPath);
-            return GetLocalTemplate(DbTemplateList);
+            var DbTemplateList = await Unit.PageCategoryRepository.GetValues(d => d.ViewPath);
+            return await GetLocalTemplate(DbTemplateList);
         }
 
-        public List<TemplateDTO> GetLocalTemplate(IEnumerable<string> files)
+        public Task<List<TemplateDTO>> GetLocalTemplate(IEnumerable<string> files)
         {
-            var configPath = Path.Combine(conf.ConfigRoot, "Views");
-            List<TemplateDTO> templateList = new List<TemplateDTO>();
-            var templates = Directory.GetFiles(configPath, "*.cshtml", SearchOption.AllDirectories);
-
-            foreach (var temp in templates)
+            return Task.Run(() =>
             {
-                var vPath = temp.Replace(configPath + "\\", "").Replace("\\", "/").Replace(".cshtml", "");
-                var name = vPath.GetAfterLast("/");
-                if (!files.Any(d => d == vPath) && name[0] != '_')
+
+                var configPath = Path.Combine(conf.ConfigRoot, "Views");
+                List<TemplateDTO> templateList = new List<TemplateDTO>();
+                var templates = Directory.GetFiles(configPath, "*.cshtml", SearchOption.AllDirectories);
+
+                foreach (var temp in templates)
                 {
-                    templateList.Add(new TemplateDTO
+                    var vPath = temp.Replace(configPath + "\\", "").Replace("\\", "/").Replace(".cshtml", "");
+                    var name = vPath.GetAfterLast("/");
+                    if (!files.Any(d => d == vPath) && name[0] != '_')
                     {
-                        Name = name,
-                        ViewPath = vPath,
-                        CreatedOn = File.GetCreationTime(temp),
-                        ResourceId = null,
-                        BaseComponent = null
-                    });
-                }
+                        templateList.Add(new TemplateDTO
+                        {
+                            Name = name,
+                            ViewPath = vPath,
+                            CreatedOn = File.GetCreationTime(temp),
+                            ResourceId = null,
+                            BaseComponent = null
+                        });
+                    }
 
-            };
+                };
 
-            return templateList.OrderByDescending(d => d.CreatedOn).ToList();
+                return templateList.OrderByDescending(d => d.CreatedOn).ToList();
+            });
         }
 
-        public SubmitResult Create(List<PageCategoryDto> list)
+        public async Task<SubmitResult> Create(List<PageCategoryDto> list)
         {
             List<Domain> doms = new List<Domain>();
             foreach (var item in list)
             {
 
-                var d = Unit.DomainRepository.GetOrCreatePath(item.ViewPath.GetBeforeLast("/"), ref doms);
+                var d = await Unit.DomainRepository.GetOrCreatePath(item.ViewPath.GetBeforeLast("/"), doms);
                 var cat = Mapper.Map<PageCategoryDto, PageCategory>(item);
                 Unit.PageCategoryRepository.Add(cat, d);
             }
-            return DefaultUnit.SaveChanges();
+            return await DefaultUnit.SaveChanges();
         }
 
-        public override Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> data)
+        public override async Task<Dictionary<string, IEnumerable<Named<object>>>> GetEditLookups(Dictionary<string, string> data)
         {
-            return Lookups.PageCategoryEdit(data);
+            return await Lookups.PageCategoryEdit(data);
         }
 
     }

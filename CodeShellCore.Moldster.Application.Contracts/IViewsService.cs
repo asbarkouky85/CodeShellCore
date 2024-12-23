@@ -11,12 +11,11 @@ namespace CodeShellCore.Moldster
 {
     public interface IViewsService
     {
-        TemplateDataCollector GetTemplateData(long id);
-        RenderedPageResultDto GetPage(PageAcquisitorDTO pageAcquisitorDTO);
-        RenderedPageResultDto GetPageById(long id);
+        Task<TemplateDataCollector> GetTemplateData(long id);
+        Task<RenderedPageResultDto> GetPage(PageAcquisitorDTO pageAcquisitorDTO);
+        Task<RenderedPageResultDto> GetPageById(long id);
         Task<RenderedPageResultDto> GetPageCategoryById(long id);
         Task<List<PageConfigurationDto>> GetPagesByCategory(long id);
-        string GetMainComponent(string baseComponent);
-        string GetGuide(string moduleCode);
+        Task<string> GetMainComponent(string baseComponent);
     }
 }

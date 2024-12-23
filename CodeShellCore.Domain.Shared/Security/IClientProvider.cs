@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Security
 {
     public interface IClientProvider
     {
-        IEnumerable<AppClient> Get();
+        Task<IEnumerable<AppClient>> Get();
     }
 }

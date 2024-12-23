@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 using CodeShellCore.Helpers;
 using CodeShellCore.Data.EntityFramework;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Localization
 {
@@ -18,26 +19,29 @@ namespace CodeShellCore.Data.Localization
         {
         }
 
-        public virtual void Apply(string type, object id, int langId, IEnumerable<T> data)
+        public virtual Task Apply(string type, object id, int langId, IEnumerable<T> data)
         {
-            var res = Loader.Where(d => d.EntityId.Equals(id) && d.EntityType == type && d.LocaleId == langId).ToList();
-            foreach (var item in res)
+            return Task.Run(() =>
             {
-                Delete(item);
-            }
-            foreach (var ob in data)
-            {
-                ob.EntityId = (long)id;
-                ob.LocaleId = langId;
-                ob.EntityType = type;
-                Add(ob);
-            }
+                var res = Loader.Where(d => d.EntityId.Equals(id) && d.EntityType == type && d.LocaleId == langId).ToList();
+                foreach (var item in res)
+                {
+                    Delete(item);
+                }
+                foreach (var ob in data)
+                {
+                    ob.EntityId = (long)id;
+                    ob.LocaleId = langId;
+                    ob.EntityType = type;
+                    Add(ob);
+                }
+            });
         }
 
-        public virtual IEnumerable<LocalizablesLoader> Get(string type, object id, IEnumerable<int> langs)
+        public virtual async Task<IEnumerable<LocalizablesLoader>> Get(string type, object id, IEnumerable<int> langs)
         {
 
-            var data = Loader.Where(d => langs.Contains(d.LocaleId) && d.EntityId.Equals(id) && d.EntityType == type).ToList();
+            var data = await Loader.Where(d => langs.Contains(d.LocaleId) && d.EntityId.Equals(id) && d.EntityType == type).ToListAsync();
 
             return data.GroupBy(s => s.LocaleId, (q, b) => new LocalizablesLoader
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.UnitTest
 {
@@ -35,7 +36,31 @@ namespace CodeShellCore.UnitTest
                     throw ex;
                 }
 
-                
+
+            }
+        }
+
+        public async Task RunScopedAsync(Func<IServiceProvider, Task> action)
+        {
+            using (var sc = Shell.GetScope())
+            {
+                UnitTestShell.CurrentScope = sc;
+                try
+                {
+                    await action.Invoke(sc.ServiceProvider);
+                    UnitTestShell.CurrentScope = null;
+                }
+                catch (Exception ex)
+                {
+                    UnitTestShell.CurrentScope = null;
+                    Console.WriteLine("TEST ERROR : ");
+                    Console.WriteLine(ex.GetMessageRecursive());
+                    if (ex.InnerException != null)
+                        throw ex.InnerException;
+                    throw ex;
+                }
+
+
             }
         }
     }

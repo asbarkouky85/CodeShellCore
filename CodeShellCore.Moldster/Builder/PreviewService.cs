@@ -55,18 +55,18 @@ module.exports = (env) => {
             Out.WriteLine();
         }
 
-        public virtual Result StartPreview(string tenantCode, string launchProfile = null)
+        public virtual async Task<Result> StartPreview(string tenantCode, string launchProfile = null)
         {
             var res = new Result();
             if (Current != null)
-                StopPreview();
+                await StopPreview();
             try
             {
                 var folder = Path.Combine(Paths.UIRoot, tenantCode);
                 if (!Directory.Exists(folder))
                     return new Result { Code = 1, Message = "render_tenant_first" };
 
-                var otherApps = Data.GetAppCodes().Where(d => d != tenantCode);
+                var otherApps = (await Data.GetAppCodes()).Where(d => d != tenantCode);
                 Out.WriteLine("Deleting other tenant files");
                 foreach (var app in otherApps)
                 {
@@ -121,68 +121,71 @@ module.exports = (env) => {
             });
         }
 
-        protected virtual void RunPreview(PreviewTask tsk, string launchProfile = null)
+        protected virtual Task RunPreview(PreviewTask tsk, string launchProfile = null)
         {
-            try
+            return Task.Run(() =>
             {
-                var arg = launchProfile == null ? "" : $"--launch-profile {launchProfile}";
-                var process = GetCommandProcess(Paths.UIRoot, "dotnet", $"-d run {arg} --no-build");
-
-                //process.EnableRaisingEvents = true;
-                process.StartInfo.RedirectStandardOutput = true;
-                // process.StartInfo.RedirectStandardError = true;
-
-                process.Start();
-
-
-                var outReader = process.StandardOutput;
-                //var errReader = process.StandardError;
-
-                while (!outReader.EndOfStream)//&& !errReader.EndOfStream)
+                try
                 {
-                    var outLine = outReader.ReadLine();
-                    //var errLine = errReader.ReadLine();
+                    var arg = launchProfile == null ? "" : $"--launch-profile {launchProfile}";
+                    var process = GetCommandProcess(Paths.UIRoot, "dotnet", $"-d run {arg} --no-build");
 
-                    if (outLine != null)
+                    //process.EnableRaisingEvents = true;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    // process.StartInfo.RedirectStandardError = true;
+
+                    process.Start();
+
+
+                    var outReader = process.StandardOutput;
+                    //var errReader = process.StandardError;
+
+                    while (!outReader.EndOfStream)//&& !errReader.EndOfStream)
                     {
-                        Out.WriteLine(outLine);
-                        if (outLine.GetPatternContents("Process ID: (.*)", out string[] data))
-                            tsk.Process = data[0];
+                        var outLine = outReader.ReadLine();
+                        //var errLine = errReader.ReadLine();
 
-                        if (outLine.Contains("Application started."))
-                            tsk.IsStarted = true;
+                        if (outLine != null)
+                        {
+                            Out.WriteLine(outLine);
+                            if (outLine.GetPatternContents("Process ID: (.*)", out string[] data))
+                                tsk.Process = data[0];
+
+                            if (outLine.Contains("Application started."))
+                                tsk.IsStarted = true;
+                        }
+
+                        //if (errLine != null)
+                        //{
+                        //    using (Out.Set(ConsoleColor.Red))
+                        //    {
+                        //        Out.WriteLine(errLine);
+                        //    }
+                        //}
+
+                        if (tsk.Process != null && tsk.IsStarted)
+                            break;
                     }
-
-                    //if (errLine != null)
-                    //{
-                    //    using (Out.Set(ConsoleColor.Red))
-                    //    {
-                    //        Out.WriteLine(errLine);
-                    //    }
-                    //}
-
-                    if (tsk.Process != null && tsk.IsStarted)
-                        break;
+                    process.WaitForExit();
+                    if (process.ExitCode != 0)
+                    {
+                        tsk.FailedToStart = true;
+                    }
+                    else
+                    {
+                        tsk.IsStarted = true;
+                    }
                 }
-                process.WaitForExit();
-                if (process.ExitCode != 0)
+                catch (Exception ex)
                 {
+                    using (Out.Set(ConsoleColor.Red))
+                    {
+                        Out.WriteLine(ex.GetMessageRecursive());
+                    }
                     tsk.FailedToStart = true;
+                    throw;
                 }
-                else
-                {
-                    tsk.IsStarted = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                using (Out.Set(ConsoleColor.Red))
-                {
-                    Out.WriteLine(ex.GetMessageRecursive());
-                }
-                tsk.FailedToStart = true;
-                throw;
-            }
+            });
         }
 
         protected virtual Task RunWebpackWatcher(PreviewTask tsk, string launchProfile = null)
@@ -240,22 +243,25 @@ module.exports = (env) => {
             });
         }
 
-        public virtual Result StopPreview()
+        public virtual Task<Result> StopPreview()
         {
-            if (Current != null)
+            return Task.Run(() =>
             {
-                if (int.TryParse(Current.Process, out int processId))
+                if (Current != null)
                 {
-                    WriteFileOperation("Stopping current preview with process", processId.ToString(), false);
-                    Process p = Process.GetProcessById(processId);
-                    p.Kill();
-                    p.WaitForExit();
-                    WriteSuccess();
-                    Out.WriteLine();
+                    if (int.TryParse(Current.Process, out int processId))
+                    {
+                        WriteFileOperation("Stopping current preview with process", processId.ToString(), false);
+                        Process p = Process.GetProcessById(processId);
+                        p.Kill();
+                        p.WaitForExit();
+                        WriteSuccess();
+                        Out.WriteLine();
+                    }
                 }
-            }
-            Current = null;
-            return new Result { Message = "preview_stop" };
+                Current = null;
+                return new Result { Message = "preview_stop" };
+            });
         }
     }
 }

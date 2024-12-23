@@ -6,6 +6,7 @@ using CodeShellCore.Moldster.Environments;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Sql
 {
@@ -14,7 +15,7 @@ namespace CodeShellCore.Moldster.Sql
     public class SqlCommandService : SqlService, ISqlCommandService
     {
         private readonly EnvironmentAccessor accessor;
-        private readonly IConfigUnit unit;
+        private readonly IMoldsterUnit unit;
 
         protected virtual string SyncSchemasScript { get; }
         protected virtual string UpdateBasicDataScript { get; }
@@ -22,7 +23,7 @@ namespace CodeShellCore.Moldster.Sql
 
         public SqlCommandService(
             EnvironmentAccessor accessor,
-            IConfigUnit unit,
+            IMoldsterUnit unit,
             IOutputWriter output) : base(output)
         {
             this.accessor = accessor;
@@ -31,8 +32,11 @@ namespace CodeShellCore.Moldster.Sql
 
         private MoldsterEnvironment Environment { get { return accessor.CurrentEnvironment; } }
         protected override DbConnectionParams ConnectionParams { get { return Environment.ConnectionParams; } }
-        public virtual long GetNewTenantId() { return unit.TenantRepository.GetMax(d => d.Id) + 1; }
-        public virtual SubmitResult RunUpdateScript(string db, string updateScript, bool showResult = true, string message = null, bool saveFile = true)
+        public virtual async Task<long> GetNewTenantId()
+        {
+            return (await unit.TenantRepository.GetMax(d => d.Id)) + 1;
+        }
+        public virtual async Task<SubmitResult> RunUpdateScript(string db, string updateScript, bool showResult = true, string message = null, bool saveFile = true)
         {
             message = message ?? $"Updating {db} Structure ... ";
             var res = new SubmitResult();
@@ -40,7 +44,7 @@ namespace CodeShellCore.Moldster.Sql
             {
                 Out.Write(WriteLogMessage(message));
                 Environment.ConnectionParams.Database = db;
-                res = ExecuteBatchNonQuery(updateScript, Environment.ConnectionParams.ConnectionString);
+                res = await ExecuteBatchNonQuery(updateScript, Environment.ConnectionParams.ConnectionString);
                 if (res.IsSuccess)
                 {
                     WriteSuccess(w.Elapsed);
@@ -56,26 +60,26 @@ namespace CodeShellCore.Moldster.Sql
             return res;
         }
 
-        public virtual void SyncBasicData(string db)
+        public virtual async Task SyncBasicData(string db)
         {
             var scr = UpdateBasicDataScript;
             if (!string.IsNullOrEmpty(scr))
-                RunUpdateScript(db, scr, false, $"Updating basic data for {db}", false);
+                await RunUpdateScript(db, scr, false, $"Updating basic data for {db}", false);
         }
 
-        public virtual void SyncSchemas(string db)
+        public virtual async Task SyncSchemas(string db)
         {
             var scr = SyncSchemasScript;
             if (!string.IsNullOrEmpty(scr))
-                RunUpdateScript(db, scr, false, $"Syncing schemas for {db}", false);
+                await RunUpdateScript(db, scr, false, $"Syncing schemas for {db}", false);
         }
 
-        public virtual void SaveComparisonFile(string db, string addition, bool tables = false)
+        public virtual async Task SaveComparisonFile(string db, string addition, bool tables = false)
         {
             string added = tables ? "_ADDED_TABLES" : "";
             string path = $"./Results/COMPARISON_{Environment.Name}_{Environment.SourceDatabase}_TO_{db}{added}.sql";
             Utils.CreateFolderForFile(path);
-            File.WriteAllText(path, addition);
+            await File.WriteAllTextAsync(path, addition);
 
             Out.Write(WriteLogMessage("Script saved ["));
             using (Out.Set(ConsoleColor.Yellow))
@@ -97,7 +101,9 @@ namespace CodeShellCore.Moldster.Sql
             {
                 Out.Write(WriteLogMessage($"Comparing {db} to source"));
 
-                script = GetQueryOutput($"exec master.dbo.CompareStructures '[{Environment?.SourceDatabase}]', '[{db}]', '{PrimaryKeyDefinition}'", Environment.ConnectionParams.ConnectionString);
+                var tsk = GetQueryOutput($"exec master.dbo.CompareStructures '[{Environment?.SourceDatabase}]', '[{db}]', '{PrimaryKeyDefinition}'", Environment.ConnectionParams.ConnectionString);
+                tsk.Wait();
+                script = tsk.Result;
                 var lines = script.Split('\n');
                 if (lines.Length > 0 && !lines[0].Contains("-- NO ADDED TABLES"))
                 {
@@ -107,7 +113,7 @@ namespace CodeShellCore.Moldster.Sql
             }
         }
 
-        protected virtual SubmitResult UpdateDbStructure(string db)
+        protected virtual async Task<SubmitResult> UpdateDbStructure(string db)
         {
             SubmitResult res = new SubmitResult();
             SubmitResult tableAdd = null;
@@ -116,8 +122,8 @@ namespace CodeShellCore.Moldster.Sql
             {
                 Out.WriteLine();
                 Out.WriteLine("Discovered tables needs to be added first");
-                SaveComparisonFile(db, updateScript, true);
-                tableAdd = RunUpdateScript(db, updateScript);
+                await SaveComparisonFile(db, updateScript, true);
+                tableAdd = await RunUpdateScript(db, updateScript);
                 if (CompareStructures(db, out updateScript))
                 {
                     Out.WriteLine("Tables still need to be added");
@@ -125,36 +131,36 @@ namespace CodeShellCore.Moldster.Sql
                     return res;
                 }
             }
-            SaveComparisonFile(db, updateScript);
-            res = RunUpdateScript(db, updateScript);
+            await SaveComparisonFile(db, updateScript);
+            res = await RunUpdateScript(db, updateScript);
             if (tableAdd != null)
                 res.Data["TableAddResult"] = tableAdd;
-            SyncSchemas(db);
-            SyncBasicData(db);
+            await SyncSchemas(db);
+            await SyncBasicData(db);
             Out.WriteLine();
 
             return res;
         }
 
-        public virtual void BeforeComparisonInitiation(string db) { }
-        public virtual void AfterComparisonInitiation(long id, string code, string db) { }
+        public virtual Task BeforeComparisonInitiation(string db) { return Task.CompletedTask; }
+        public virtual Task AfterComparisonInitiation(long id, string code, string db) { return Task.CompletedTask; }
 
-        public SubmitResult CreateTenantDatabase(long id, string code, string dbName)
+        public async Task<SubmitResult> CreateTenantDatabase(long id, string code, string dbName)
         {
             var env = Environment;
             WriteFileOperation("Creating database", dbName, false);
-            var res = RunSql("CREATE DATABASE [" + dbName + "]");
+            var res = await RunSql("CREATE DATABASE [" + dbName + "]");
 
 
             if (res.IsSuccess)
             {
                 WriteSuccess();
                 Out.WriteLine();
-                BeforeComparisonInitiation(dbName);
+                await BeforeComparisonInitiation(dbName);
 
                 if (!string.IsNullOrEmpty(env.SourceDatabase))
                 {
-                    var r2 = UpdateDbStructure(dbName);
+                    var r2 = await UpdateDbStructure(dbName);
                     if (!r2.IsSuccess)
                         return r2;
                     else
@@ -162,8 +168,8 @@ namespace CodeShellCore.Moldster.Sql
                 }
 
                 if (id == 0)
-                    id = GetNewTenantId();
-                AfterComparisonInitiation(id, code, dbName);
+                    id = await GetNewTenantId();
+                await AfterComparisonInitiation(id, code, dbName);
                 env.ConnectionParams.Database = dbName;
                 res.Data["ConnectionString"] = env.ConnectionParams.ConnectionString;
                 res.Data["TenantId"] = id;
@@ -177,7 +183,7 @@ namespace CodeShellCore.Moldster.Sql
             return res;
         }
 
-        //public SubmitResult RestoreSourceDatabase()
+        //public Task<SubmitResult> RestoreSourceDatabase()
         //{
         //    var env = Environment;
         //    SubmitResult res = new SubmitResult();
@@ -193,7 +199,7 @@ namespace CodeShellCore.Moldster.Sql
         //    return res;
         //}
 
-        //public SubmitResult RestoreConfigDatabase()
+        //public Task<SubmitResult> RestoreConfigDatabase()
         //{
         //    var env = Environment;
         //    SubmitResult res = new SubmitResult();
@@ -209,7 +215,7 @@ namespace CodeShellCore.Moldster.Sql
         //    return res;
         //}
 
-        public SubmitResult UpdateDatabase(string db)
+        public async Task<SubmitResult> UpdateDatabase(string db)
         {
             string updateScript = null;
             CommandTimeout = 90;
@@ -219,8 +225,8 @@ namespace CodeShellCore.Moldster.Sql
             {
                 Out.WriteLine();
                 Out.WriteLine("Discovered tables needs to be added first");
-                SaveComparisonFile(db, updateScript, true);
-                tableAdd = RunUpdateScript(db, updateScript);
+                await SaveComparisonFile(db, updateScript, true);
+                tableAdd = await RunUpdateScript(db, updateScript);
                 if (CompareStructures(db, out updateScript))
                 {
                     Out.WriteLine("Tables still need to be added");
@@ -229,27 +235,27 @@ namespace CodeShellCore.Moldster.Sql
                 }
             }
 
-            SaveComparisonFile(db, updateScript);
-            res = RunUpdateScript(db, updateScript);
+            await SaveComparisonFile(db, updateScript);
+            res = await RunUpdateScript(db, updateScript);
 
             if (res.IsSuccess)
             {
-                SyncSchemas(db);
-                SyncBasicData(db);
+                await SyncSchemas(db);
+                await SyncBasicData(db);
             }
 
             Out.WriteLine();
             return res;
         }
 
-        public string[] GetDatabaseList()
+        public async Task<string[]> GetDatabaseList()
         {
-            return GetDataAs<string>("select name from master.sys.databases where owner_sid !=0x01").ToArray();
+            return (await GetDataAs<string>("select name from master.sys.databases where owner_sid !=0x01")).ToArray();
         }
 
-        public void AddMigrationTable()
+        public async Task AddMigrationTable()
         {
-            RunSql(@"if not exists (select * from sysobjects where name='__EFMigrationsHistory' and xtype='U')
+            await RunSql(@"if not exists (select * from sysobjects where name='__EFMigrationsHistory' and xtype='U')
 	begin
     create table __EFMigrationsHistory (
         MigrationId nvarchar(150) not null primary key,

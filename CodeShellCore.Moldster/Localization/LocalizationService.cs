@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Localization
 {
@@ -26,11 +27,11 @@ namespace CodeShellCore.Moldster.Localization
         protected readonly IPathsService _paths;
         private readonly INamingConventionService names;
         protected readonly IMoldProvider _molds;
-        protected readonly IConfigUnit _unit;
+        protected readonly IMoldsterUnit _unit;
 
         public LocalizationService(
             IMoldProvider molds,
-            IConfigUnit unit,
+            IMoldsterUnit unit,
             IPathsService paths,
             INamingConventionService names,
             IOutputWriter output) : base(output)
@@ -78,7 +79,7 @@ namespace CodeShellCore.Moldster.Localization
             return dic.ToJson(Formatting.Indented);
         }
 
-        public virtual void GenerateJsonFiles(string moduleCode)
+        public virtual async Task GenerateJsonFiles(string moduleCode)
         {
             if (string.IsNullOrEmpty(_paths.LocalizationRoot))
                 return;
@@ -88,7 +89,7 @@ namespace CodeShellCore.Moldster.Localization
             string template = _molds.GetResourceByNameAsString(MoldNames.LocaleLoader_ts);
             string[] locales = Shell.SupportedLanguages.ToArray();
             string[] types = new string[] { "Columns", "Words", "Pages", "Messages" };
-            List<CustomText> ten = _unit.CustomTextRepository.GetForTenant(moduleCode);
+            List<CustomText> ten = await _unit.CustomTextRepository.GetForTenant(moduleCode);
 
             foreach (string loc in locales)
             {
@@ -149,12 +150,15 @@ namespace CodeShellCore.Moldster.Localization
             }
         }
 
-        public virtual void AddLocalizationFiles()
+        public virtual Task AddLocalizationFiles()
         {
-            UnZip(_molds.GetResourceByNameAsBytes(MoldNames.Localization_zip), _paths.LocalizationRoot, "Localization");
+            return Task.Run(() =>
+            {
+                UnZip(_molds.GetResourceByNameAsBytes(MoldNames.Localization_zip), _paths.LocalizationRoot, "Localization");
+            });
         }
 
-        public virtual void InitializeResxFiles()
+        public virtual async Task InitializeResxFiles()
         {
 
             using (var x = SW.Measure())
@@ -172,7 +176,7 @@ namespace CodeShellCore.Moldster.Localization
                             Utils.CreateFolderForFile(filePath);
                             ResxXmlReader reader = new ResxXmlReader();
                             var headers = ResHeaderItem.Default;
-                            reader.Save(filePath, new ResourceContainer { DataItems = new DataItem[0], Headers = headers });
+                            await reader.Save(filePath, new ResourceContainer { DataItems = new DataItem[0], Headers = headers });
                             Out.WriteLine($"Created file [{fileName}]");
                         }
                     }
@@ -181,7 +185,7 @@ namespace CodeShellCore.Moldster.Localization
             }
         }
 
-        public virtual void SyncAllLanguages()
+        public virtual async Task SyncAllLanguages()
         {
             var doneLangs = new List<string>();
             foreach (var s in Shell.SupportedLanguages)
@@ -189,223 +193,236 @@ namespace CodeShellCore.Moldster.Localization
                 foreach (var s2 in Shell.SupportedLanguages)
                 {
                     if (s != s2 && !doneLangs.Contains(s2))
-                        SyncLanguages(s, s2);
+                        await SyncLanguages(s, s2);
                 }
                 doneLangs.Add(s);
             }
         }
 
-        public virtual PagedResult<CustomTextDto> LoadForTenant(CustomTextRequestDto req, PagedListRequestDto opts)
+        public virtual Task<PagedResult<CustomTextDto>> LoadForTenant(CustomTextRequestDto req, PagedListRequestDto opts)
         {
-            string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", ((TextTypes)req.Type).ToString() + "." + req.Locale + ".resx");
-
-            ResxXmlReader reader = new ResxXmlReader();
-            var res = new PagedResult<CustomTextDto>();
-
-            if (reader.TryRead(resLang1, out ResourceContainer cont1))
+            return Task.Run(() =>
             {
-                var items = cont1.DataItems.ToList();
+                string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", ((TextTypes)req.Type).ToString() + "." + req.Locale + ".resx");
 
-                if (!string.IsNullOrEmpty(opts.SearchTerm))
+                ResxXmlReader reader = new ResxXmlReader();
+                var res = new PagedResult<CustomTextDto>();
+
+                if (reader.TryRead(resLang1, out ResourceContainer cont1))
                 {
-                    items = items.Where(e => e.Name.ToLower().Contains(opts.SearchTerm.ToLower()) || e.Value.ToLower().Contains(opts.SearchTerm.ToLower())).ToList();
+                    var items = cont1.DataItems.ToList();
+
+                    if (!string.IsNullOrEmpty(opts.SearchTerm))
+                    {
+                        items = items.Where(e => e.Name.ToLower().Contains(opts.SearchTerm.ToLower()) || e.Value.ToLower().Contains(opts.SearchTerm.ToLower())).ToList();
+                    }
+                    res.TotalCount = items.Count();
+
+                    IEnumerable<DataItem> q;
+                    if (opts.Showing > 0)
+                    {
+                        q = items.Skip(opts.Skip).Take(opts.Showing);
+                    }
+                    else
+                    {
+                        q = items;
+                    }
+
+                    res.List = q.Select(e => new CustomTextDto
+                    {
+                        Code = e.Name,
+                        Value = e.Value,
+                        TenantId = req.TenantId,
+                        State = "Detached",
+                        Locale = req.Locale,
+                        Type = req.Type
+                    }).ToList();
+
                 }
-                res.TotalCount = items.Count();
+                return res;
 
-                IEnumerable<DataItem> q;
-                if (opts.Showing > 0)
-                {
-                    q = items.Skip(opts.Skip).Take(opts.Showing);
-                }
-                else
-                {
-                    q = items;
-                }
-
-                res.List = q.Select(e => new CustomTextDto
-                {
-                    Code = e.Name,
-                    Value = e.Value,
-                    TenantId = req.TenantId,
-                    State = "Detached",
-                    Locale = req.Locale,
-                    Type = req.Type
-                }).ToList();
-
-            }
-            return res;
-
+            });
 
         }
 
-        public virtual void Import(string type, string lang, List<DataItem> strs, bool suspendOut = false)
+        public virtual Task Import(string type, string lang, List<DataItem> strs, bool suspendOut = false)
         {
-            string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang + ".resx");
-
-            ResxXmlReader reader = new ResxXmlReader();
-
-
-            var data1 = new List<DataItem>();
-            var headers1 = new ResHeaderItem[0];
-
-            if (reader.TryRead(resLang1, out ResourceContainer cont1))
+            return Task.Run(() =>
             {
-                cont1.DataItems = cont1.DataItems ?? new DataItem[0];
-                if (!suspendOut)
-                    Out.WriteLine("Found " + type + "." + lang + ".resx with " + cont1.DataItems.Length + " items");
-                headers1 = cont1.Headers;
-                data1 = new List<DataItem>();
-                data1.AddRange(cont1.DataItems);
-            }
+                string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang + ".resx");
 
-            foreach (var item in strs)
-            {
-                if (!string.IsNullOrEmpty(item.Name))
+                ResxXmlReader reader = new ResxXmlReader();
+
+
+                var data1 = new List<DataItem>();
+                var headers1 = new ResHeaderItem[0];
+
+                if (reader.TryRead(resLang1, out ResourceContainer cont1))
                 {
-                    var ex = data1.FirstOrDefault(d => d.Name == item.Name);
-                    if (ex == null)
-                    {
-                        data1.Add(new DataItem
-                        {
-                            Name = item.Name.Trim(),
-                            Value = string.IsNullOrEmpty(item.Value) ? "" : item.Value.Trim(),
-                            Space = "preserve"
-                        });
-                    }
-                    else if (!string.IsNullOrEmpty(item.Value))
-                    {
-                        ex.Value = item.Value;
-                    }
+                    cont1.DataItems = cont1.DataItems ?? new DataItem[0];
+                    if (!suspendOut)
+                        Out.WriteLine("Found " + type + "." + lang + ".resx with " + cont1.DataItems.Length + " items");
+                    headers1 = cont1.Headers;
+                    data1 = new List<DataItem>();
+                    data1.AddRange(cont1.DataItems);
                 }
-            }
-            reader.Save(resLang1, new ResourceContainer { DataItems = data1.ToArray(), Headers = headers1 });
-        }
 
-        protected void SaveFile(string type, string lang, DataItem[] lst)
-        {
-            string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang + ".resx");
-            ResxXmlReader reader = new ResxXmlReader();
-            var headers1 = new ResHeaderItem[0];
-            if (reader.TryRead(resLang1, out ResourceContainer cont1))
-            {
-                headers1 = cont1.Headers;
-            }
-            reader.Save(resLang1, new ResourceContainer { DataItems = lst, Headers = headers1 });
-        }
-
-        public virtual void SyncLanguages(string lang1, string lang2)
-        {
-            using (var x = SW.Measure())
-            {
-                string[] types = new string[] { "Columns", "Words", "Pages", "Messages" };
-
-                foreach (string type in types)
+                foreach (var item in strs)
                 {
-                    string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang1 + ".resx");
-                    string resLang2 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang2 + ".resx");
-
-                    ResxXmlReader reader = new ResxXmlReader();
-
-                    var data1 = new List<DataItem>();
-                    var data2 = new List<DataItem>();
-
-                    var headers1 = new ResHeaderItem[0];
-                    var headers2 = new ResHeaderItem[0];
-
-                    if (reader.TryRead(resLang1, out ResourceContainer cont1))
+                    if (!string.IsNullOrEmpty(item.Name))
                     {
-                        cont1.DataItems = cont1.DataItems ?? new DataItem[0];
-                        Out.WriteLine("Found " + type + "." + lang1 + ".resx with " + cont1.DataItems.Length + " items");
-                        headers1 = cont1.Headers;
-                        data1 = new List<DataItem>();
-                        data1.AddRange(cont1.DataItems);
-                    }
-
-                    if (reader.TryRead(resLang2, out ResourceContainer cont2))
-                    {
-                        cont2.DataItems = cont2.DataItems ?? new DataItem[0];
-                        Out.WriteLine("Found " + type + "." + lang2 + ".resx with " + cont2.DataItems.Length + " items");
-                        headers2 = cont2.Headers;
-                        data2 = new List<DataItem>();
-                        data2.AddRange(cont2.DataItems);
-                    }
-
-                    int i = 0;
-                    foreach (var item in data1)
-                    {
-                        if (!data2.Any(d => d.Name == item.Name))
-                        {
-                            data2.Add(new DataItem
-                            {
-                                Name = item.Name,
-                                Value = "",
-                                Space = item.Space
-                            });
-                            i++;
-                        }
-
-                    }
-                    Out.WriteLine($"{lang1} --> {lang2} : Added {i} Entries..");
-
-                    i = 0;
-                    foreach (var item in data2)
-                    {
-                        if (!data1.Any(d => d.Name == item.Name))
+                        var ex = data1.FirstOrDefault(d => d.Name == item.Name);
+                        if (ex == null)
                         {
                             data1.Add(new DataItem
                             {
-                                Name = item.Name,
-                                Value = type == "Messages" ? LangUtils.IdToPhrase(item.Name) : "",
-                                Space = item.Space
+                                Name = item.Name.Trim(),
+                                Value = string.IsNullOrEmpty(item.Value) ? "" : item.Value.Trim(),
+                                Space = "preserve"
                             });
-                            i++;
+                        }
+                        else if (!string.IsNullOrEmpty(item.Value))
+                        {
+                            ex.Value = item.Value;
+                        }
+                    }
+                }
+                reader.Save(resLang1, new ResourceContainer { DataItems = data1.ToArray(), Headers = headers1 });
+            });
+        }
+
+        protected Task SaveFile(string type, string lang, DataItem[] lst)
+        {
+            return Task.Run(() =>
+            {
+                string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang + ".resx");
+                ResxXmlReader reader = new ResxXmlReader();
+                var headers1 = new ResHeaderItem[0];
+                if (reader.TryRead(resLang1, out ResourceContainer cont1))
+                {
+                    headers1 = cont1.Headers;
+                }
+                reader.Save(resLang1, new ResourceContainer { DataItems = lst, Headers = headers1 });
+            });
+        }
+
+        public virtual Task SyncLanguages(string lang1, string lang2)
+        {
+            return Task.Run(() =>
+            {
+                using (var x = SW.Measure())
+                {
+                    string[] types = new string[] { "Columns", "Words", "Pages", "Messages" };
+
+                    foreach (string type in types)
+                    {
+                        string resLang1 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang1 + ".resx");
+                        string resLang2 = Path.Combine(_paths.LocalizationRoot, "Localization", type + "." + lang2 + ".resx");
+
+                        ResxXmlReader reader = new ResxXmlReader();
+
+                        var data1 = new List<DataItem>();
+                        var data2 = new List<DataItem>();
+
+                        var headers1 = new ResHeaderItem[0];
+                        var headers2 = new ResHeaderItem[0];
+
+                        if (reader.TryRead(resLang1, out ResourceContainer cont1))
+                        {
+                            cont1.DataItems = cont1.DataItems ?? new DataItem[0];
+                            Out.WriteLine("Found " + type + "." + lang1 + ".resx with " + cont1.DataItems.Length + " items");
+                            headers1 = cont1.Headers;
+                            data1 = new List<DataItem>();
+                            data1.AddRange(cont1.DataItems);
                         }
 
+                        if (reader.TryRead(resLang2, out ResourceContainer cont2))
+                        {
+                            cont2.DataItems = cont2.DataItems ?? new DataItem[0];
+                            Out.WriteLine("Found " + type + "." + lang2 + ".resx with " + cont2.DataItems.Length + " items");
+                            headers2 = cont2.Headers;
+                            data2 = new List<DataItem>();
+                            data2.AddRange(cont2.DataItems);
+                        }
+
+                        int i = 0;
+                        foreach (var item in data1)
+                        {
+                            if (!data2.Any(d => d.Name == item.Name))
+                            {
+                                data2.Add(new DataItem
+                                {
+                                    Name = item.Name,
+                                    Value = "",
+                                    Space = item.Space
+                                });
+                                i++;
+                            }
+
+                        }
+                        Out.WriteLine($"{lang1} --> {lang2} : Added {i} Entries..");
+
+                        i = 0;
+                        foreach (var item in data2)
+                        {
+                            if (!data1.Any(d => d.Name == item.Name))
+                            {
+                                data1.Add(new DataItem
+                                {
+                                    Name = item.Name,
+                                    Value = type == "Messages" ? LangUtils.IdToPhrase(item.Name) : "",
+                                    Space = item.Space
+                                });
+                                i++;
+                            }
+
+                        }
+                        Out.WriteLine($"{lang2} --> {lang1} : Added {i} Entries..");
+                        reader.Save(resLang1, new ResourceContainer { DataItems = data1.ToArray(), Headers = headers1 });
+                        reader.Save(resLang2, new ResourceContainer { DataItems = data2.ToArray(), Headers = headers2 });
                     }
-                    Out.WriteLine($"{lang2} --> {lang1} : Added {i} Entries..");
-                    reader.Save(resLang1, new ResourceContainer { DataItems = data1.ToArray(), Headers = headers1 });
-                    reader.Save(resLang2, new ResourceContainer { DataItems = data2.ToArray(), Headers = headers2 });
+
+                    WriteSuccess(x.Elapsed);
                 }
-
-
-
-                WriteSuccess(x.Elapsed);
-            }
+            });
         }
 
-        public virtual void UpdateFiles(LocalizationDataCollector localization)
+        public virtual Task UpdateFiles(LocalizationDataCollector localization)
         {
-            var items = new List<DataItem>();
-            string loc = Shell.DefaultCulture.TwoLetterISOLanguageName;
-            foreach (var i in localization.Words)
+            return Task.Run(() =>
             {
-                items.Add(new DataItem { Name = i, Value = "" });
-            }
-            Import("Words", loc, items, true);
+                var items = new List<DataItem>();
+                string loc = Shell.DefaultCulture.TwoLetterISOLanguageName;
+                foreach (var i in localization.Words)
+                {
+                    items.Add(new DataItem { Name = i, Value = "" });
+                }
+                Import("Words", loc, items, true);
 
-            items = new List<DataItem>();
-            foreach (var i in localization.Messages)
-            {
-                items.Add(new DataItem { Name = i, Value = "" });
-            }
-            Import("Messages", loc, items, true);
+                items = new List<DataItem>();
+                foreach (var i in localization.Messages)
+                {
+                    items.Add(new DataItem { Name = i, Value = "" });
+                }
+                Import("Messages", loc, items, true);
 
-            items = new List<DataItem>();
-            foreach (var i in localization.Columns)
-            {
-                items.Add(new DataItem { Name = i, Value = "" });
-            }
-            Import("Columns", loc, items, true);
+                items = new List<DataItem>();
+                foreach (var i in localization.Columns)
+                {
+                    items.Add(new DataItem { Name = i, Value = "" });
+                }
+                Import("Columns", loc, items, true);
 
-            items = new List<DataItem>();
-            foreach (var i in localization.Pages)
-            {
-                items.Add(new DataItem { Name = i, Value = "" });
-            }
-            Import("Pages", loc, items, true);
+                items = new List<DataItem>();
+                foreach (var i in localization.Pages)
+                {
+                    items.Add(new DataItem { Name = i, Value = "" });
+                }
+                Import("Pages", loc, items, true);
+            });
         }
 
-        public virtual void FixPages(string tenantCode)
+        public virtual async Task FixPages(string tenantCode)
         {
             foreach (var loc in Shell.SupportedLanguages)
             {
@@ -414,7 +431,7 @@ namespace CodeShellCore.Moldster.Localization
                 Out.GotoColumn(SuccessCol);
                 var items = GetItems("Pages", loc);
                 List<DataItem> newList = new List<DataItem>();
-                List<PageIdentifierView> data = _unit.PageRepository.GetDistinctIdentifiers();
+                List<PageIdentifierView> data = await _unit.PageRepository.GetDistinctIdentifiers();
                 foreach (var item in items)
                 {
                     var pageName = item.Name.GetAfterFirst("__");
@@ -458,7 +475,7 @@ namespace CodeShellCore.Moldster.Localization
                         newList.Add(new DataItem { Name = key, Value = "", Space = "preserve" });
                     }
                 }
-                SaveFile("Pages", loc, newList.ToArray());
+                await SaveFile("Pages", loc, newList.ToArray());
                 WriteColored("Success [Added : " + newItems + "]", ConsoleColor.Green);
                 Out.WriteLine();
             }

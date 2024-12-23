@@ -4,6 +4,7 @@ using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
 using System;
 using System.DirectoryServices.AccountManagement;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Security.Authentication
 {
@@ -19,29 +20,29 @@ namespace CodeShellCore.Security.Authentication
             Store = new InstanceStore(() => SecurityUnit.ServiceProvider);
         }
 
-        protected virtual void OnLoginAttempt(IUser user)
+        protected virtual Task OnLoginAttempt(IUser user)
         {
-
+            return Task.CompletedTask;
         }
 
-        public virtual bool Check(string name, string password)
+        public virtual async Task<bool> Check(string name, string password)
         {
-            IUser user = SecurityUnit.UserRepository.GetByCredentials(name, password);
-            OnLoginAttempt(user);
+            IUser user = await SecurityUnit.UserRepository.GetByCredentials(name, password);
+            await OnLoginAttempt(user);
             return user != null;
         }
 
-        public virtual LoginResult Login(string name, string password, bool remember = false)
+        public virtual async Task<LoginResult> Login(string name, string password, bool remember = false)
         {
             var checkUsername = name.Contains("\\");
 
             if (checkUsername)
             {
-                return LoginByActiveDirectory(name, password);
+                return await LoginByActiveDirectory(name, password);
             }
 
-            IUser iuser = SecurityUnit.UserRepository.GetByCredentials(name, password);
-            OnLoginAttempt(iuser);
+            IUser iuser = await SecurityUnit.UserRepository.GetByCredentials(name, password);
+            await OnLoginAttempt(iuser);
 
             string message = iuser == null ? SecurityUnit.Strings.Message("Invalid_Credentials") : SecurityUnit.Strings.Message("Welcome");
             var result = new LoginResult(iuser != null, message, iuser);
@@ -50,7 +51,7 @@ namespace CodeShellCore.Security.Authentication
             return result;
         }
 
-        private LoginResult LoginByActiveDirectory(string name, string password)
+        private async Task<LoginResult> LoginByActiveDirectory(string name, string password)
         {
             if (SecurityUnit == null)
                 throw new Exception("Unit must implement ISecurityUnit to be valid for this function");
@@ -66,7 +67,7 @@ namespace CodeShellCore.Security.Authentication
             string domain = unameArr[0];
             string userName = unameArr[1];
 
-            IUser CurrentUser = SecurityUnit.UserRepository.GetByName(userName);
+            IUser CurrentUser = await SecurityUnit.UserRepository.GetByName(userName);
 
             if (CurrentUser == null)
                 return new LoginResult(false, "المستخدم غير موجود أو غير مفعل");
@@ -75,7 +76,7 @@ namespace CodeShellCore.Security.Authentication
             {
                 if (pc.ValidateCredentials(userName, password))
                 {
-                    OnLoginAttempt(CurrentUser);
+                    await OnLoginAttempt(CurrentUser);
                     return new LoginResult(true, SecurityUnit.Strings.Message("Welcome"), CurrentUser);
                 }
                 else
@@ -83,10 +84,10 @@ namespace CodeShellCore.Security.Authentication
             }
         }
 
-        public virtual LoginResult LoginById(string id)
+        public virtual async Task<LoginResult> LoginById(string id)
         {
-            IUser user = SecurityUnit.UserRepository.GetByUserId(id);
-            OnLoginAttempt(user);
+            IUser user = await SecurityUnit.UserRepository.GetByUserId(id);
+            await OnLoginAttempt(user);
             string message = user == null ? "اسم المستخدم او كلمه المرور غير صحيحه" : "مرحبا";
             var result = new LoginResult(user != null, message, user);
             if (result.IsSuccess)
@@ -94,16 +95,16 @@ namespace CodeShellCore.Security.Authentication
             return result;
         }
 
-        public virtual SubmitResult RegisterUser(IRegisterModel model)
+        public virtual async Task<SubmitResult> RegisterUser(IRegisterModel model)
         {
-            if (SecurityUnit.UserRepository.NameExists(model.LogonName))
+            if (await SecurityUnit.UserRepository.NameExists(model.LogonName))
             {
                 return new SubmitResult(1, SecurityUnit.Strings.Message(MessageIds.user_name_exists));
             }
-            RegisterResult res = SecurityUnit.UserRepository.AddUser(model);
+            RegisterResult res = await SecurityUnit.UserRepository.AddUser(model);
             if (res.Success)
             {
-                var r = SecurityUnit.SaveChanges();
+                var r = await SecurityUnit.SaveChanges();
                 r.Data["Model"] = res.Entity;
                 return r;
             }
@@ -114,15 +115,20 @@ namespace CodeShellCore.Security.Authentication
 
         }
 
-        public virtual SubmitResult RequestPasswordReset(ResetPasswordDTO dto)
+        public virtual Task<SubmitResult> RequestPasswordReset(ResetPasswordDTO dto)
         {
-
-            return new SubmitResult();
+            return Task.Run(() =>
+            {
+                return new SubmitResult();
+            });
         }
 
-        public virtual SubmitResult ChangePassword(ChangePasswordDTO dto)
+        public virtual Task<SubmitResult> ChangePassword(ChangePasswordDTO dto)
         {
-            return new SubmitResult();
+            return Task.Run(() =>
+            {
+                return new SubmitResult();
+            });
         }
     }
 }

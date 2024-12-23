@@ -16,5 +16,10 @@ namespace CodeShellCore.Text.Localization
         string Message(string index, params string[] formatElements);
         string MessageWithCulture(string index, string cult, params string[] formatElements);
         CultureInfo Culture { get; }
+
+        Dictionary<string, string> GetAllWords(string locale);
+        Dictionary<string, string> GetAllMessages(string locale);
+        Dictionary<string, string> GetAllColumns(string locale);
+        Dictionary<string, string> GetAllPages(string locale);
     }
 }

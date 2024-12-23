@@ -235,6 +235,20 @@ namespace CodeShellCore.Http
             }
         }
 
+        public async Task<T> PostAsAsync<T>(string url, object data, object query = null) where T : class
+        {
+            var res = await PostAsync(url, data, query);
+
+            if (!res.IsSuccessStatusCode)
+                throw new CodeShellHttpException(res);
+            else
+            {
+                var tt = res.Content.ReadAsStringAsync();
+                Task.WaitAll(tt);
+                return tt.Result.FromJson<T>();
+            }
+        }
+
         public async Task<HttpResponseMessage> PostAsync<T>(string url, T data, object query = null) where T : class
         {
             Client = new HttpClient();
@@ -262,6 +276,19 @@ namespace CodeShellCore.Http
             if (!tsk.Result.IsSuccessStatusCode)
                 throw new CodeShellHttpException(tsk.Result);
             return tsk.Result;
+        }
+
+        public async Task<string> GetAsyncAsString(string url, object query = null)
+        {
+            var res = await GetAsync(url, query);
+            if (res.IsSuccessStatusCode)
+            {
+                return await res.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                throw new CodeShellHttpException(res);
+            }
         }
 
         public async Task<T> GetAsyncAs<T>(string url, object query = null) where T : class
@@ -351,7 +378,7 @@ namespace CodeShellCore.Http
                 Task.WaitAll(obj);
                 return obj.Result;
             }
-            catch 
+            catch
             {
                 throw;
             }

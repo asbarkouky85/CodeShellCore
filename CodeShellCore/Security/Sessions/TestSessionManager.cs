@@ -29,7 +29,7 @@ namespace CodeShellCore.Security.Sessions
             return true;
         }
 
-        public void AuthorizationRequest()
+        public Task AuthorizationRequest()
         {
             throw new NotImplementedException();
         }

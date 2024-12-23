@@ -1,8 +1,11 @@
-﻿using CodeShellCore.Linq;
+﻿using CodeShellCore.Extensions.DependencyInjection;
+using CodeShellCore.Linq;
 using CodeShellCore.Moldster.CodeGeneration;
 using CodeShellCore.Moldster.Pages.Views;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
@@ -53,11 +56,11 @@ namespace CodeShellCore.Moldster.Pages
                    };
         }
 
-        public IEnumerable<PageParameterForJson> FindForJsonByPage(long pageId)
+        public async Task<IEnumerable<PageParameterForJson>> FindForJsonByPage(long pageId)
         {
             var q = Loader.Where(d => d.PageId == pageId);
 
-            var data = QueryPageParameterForJson(q).ToList();
+            var data = await QueryPageParameterForJson(q).ToListAsync();
             foreach (var item in data)
             {
                 if (item.Value != null && item.Type != (int)PageParameterTypes.Text)
@@ -76,11 +79,11 @@ namespace CodeShellCore.Moldster.Pages
             return data;
         }
 
-        public IEnumerable<PageParameterForJson> FindForJson(long tenantId, long? pageCategoryId = null)
+        public async Task<IEnumerable<PageParameterForJson>> FindForJson(long tenantId, long? pageCategoryId = null)
         {
             var q = Loader.Where(d => (d.Page.PageCategoryId == pageCategoryId || pageCategoryId == null) && d.Page.TenantId == tenantId);
 
-            var data= QueryPageParameterForJson(q).ToList();
+            var data = await QueryPageParameterForJson(q).ToListAsync();
             foreach (var item in data)
             {
                 if (item.Value != null && item.Type != (int)PageParameterTypes.Text)
@@ -99,7 +102,7 @@ namespace CodeShellCore.Moldster.Pages
             return data;
         }
 
-        public PagedResult<PageReferenceView> FindReferences(ParameterRequest req, PagedListRequest<PageReferenceView> o)
+        public async Task<PagedResult<PageReferenceView>> FindReferences(ParameterRequest req, PagedListRequest<PageReferenceView> o)
         {
             var q = Loader.Where(d => d.Page.Tenant.Code == req.TenantCode);
 
@@ -132,18 +135,18 @@ namespace CodeShellCore.Moldster.Pages
             else if (req.ReferencedPageId != null)
                 q = q.Where(d => d.LinkedPageId == req.ReferencedPageId.Value);
 
-            return QueryPageReferenceDTO(q).ToPagedResult(o);
+            return await QueryPageReferenceDTO(q).ToPagedResultAsync(o);
         }
 
-        public List<PageReference> GetReferencesByPage(long id)
+        public async Task<List<PageReference>> GetReferencesByPage(long id)
         {
             var q = Loader.Where(e => e.PageId == id && e.LinkedPageId != null);
             var pagesQuery = DbContext.Pages;
-            return q.Select(e => new PageReference
+            return await q.Select(e => new PageReference
             {
                 PageParameterId = e.Id,
                 ViewPath = pagesQuery.Where(d => d.Id == e.LinkedPageId).Select(d => d.ViewPath).FirstOrDefault()
-            }).ToList();
+            }).ToListAsync();
 
 
         }

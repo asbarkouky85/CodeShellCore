@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
@@ -16,7 +17,7 @@ namespace CodeShellCore.Moldster.Pages
         protected IMoldProvider Molds => Store.GetRequiredService<IMoldProvider>();
         protected INamingConventionService Names => Store.GetRequiredService<INamingConventionService>();
         protected IPathsService Paths => Store.GetRequiredService<IPathsService>();
-        protected IConfigUnit Unit => Store.GetRequiredService<IConfigUnit>();
+        protected IMoldsterUnit Unit => Store.GetRequiredService<IMoldsterUnit>();
 
         public PageScriptGenerationService(
             IServiceProvider prov,
@@ -25,19 +26,22 @@ namespace CodeShellCore.Moldster.Pages
         {
         }
 
-        protected virtual string GetViewParamsJson(long pageId, ViewParams json)
+        protected virtual Task<string> GetViewParamsJson(long pageId, ViewParams json)
         {
-            var res= json.ToJson(new JsonSerializerSettings
+            return Task.Run(() =>
             {
-                StringEscapeHandling = StringEscapeHandling.EscapeHtml,
-                Formatting = Formatting.Indented
+                var res = json.ToJson(new JsonSerializerSettings
+                {
+                    StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                    Formatting = Formatting.Indented
+                });
+                return res;
             });
-            return res;
         }
 
-        public virtual void GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
+        public virtual async Task GenerateComponent(string module, PageRenderDTO viewPath, PageJsonData data)
         {
-            PageDetailsDto p = Unit.PageRepository.FindSingleAndMap<PageDetailsDto>(d => d.Id == viewPath.Id);
+            PageDetailsDto p = await Unit.PageRepository.FindSingleAndMap<PageDetailsDto>(d => d.Id == viewPath.Id);
             string scriptPath = Names.GetComponentFilePath(p.TenantCode, p.Page.ViewPath) + ".ts";
 
             using (Out.Set(ConsoleColor.DarkRed))
@@ -77,7 +81,7 @@ namespace CodeShellCore.Moldster.Pages
                 Domain = p.DomainName,
                 Resource = p.ResourceName,
                 Selector = Names.GetComponentSelector(p.Page.Name),
-                ViewParams = GetViewParamsJson(p.Page.Id, data.ViewParams),
+                ViewParams = await GetViewParamsJson(p.Page.Id, data.ViewParams),
                 Sources = data.Sources.ToJsonIndent(),
                 CollectionId = p.CollectionId == null ? "null" : "'" + p.CollectionId + "'"
             });
@@ -88,7 +92,7 @@ namespace CodeShellCore.Moldster.Pages
             WriteSuccess();
         }
 
-        public virtual void GenerateAppComponent(string mod)
+        public virtual async Task GenerateAppComponent(string mod)
         {
             string path = Names.GetComponentFilePath(mod, "app") + ".ts";
 
@@ -114,30 +118,38 @@ namespace CodeShellCore.Moldster.Pages
             string contents = Writer.FillStringParameters(temp, model);
 
             Utils.CreateFolderForFile(path);
-            File.WriteAllText(path, contents);
+            await File.WriteAllTextAsync(path, contents);
 
             WriteSuccess();
 
         }
 
-        public void MoveScript(MovePageRequest r)
+        public Task MoveScript(MovePageRequest r)
         {
-            string fromPath = Path.Combine(Paths.UIRoot, r.TenantCode, "app", r.FromPath + ".ts");
-            string toPath = Path.Combine(Paths.UIRoot, r.TenantCode, "app", r.ToPath + ".ts");
-            if (File.Exists(fromPath))
+            return Task.Run(() =>
             {
-                Utils.CreateFolderForFile(toPath);
-                File.Move(fromPath, toPath);
-            }
+
+                string fromPath = Path.Combine(Paths.UIRoot, r.TenantCode, "app", r.FromPath + ".ts");
+                string toPath = Path.Combine(Paths.UIRoot, r.TenantCode, "app", r.ToPath + ".ts");
+                if (File.Exists(fromPath))
+                {
+                    Utils.CreateFolderForFile(toPath);
+                    File.Move(fromPath, toPath);
+                }
+            });
         }
 
-        public void DeleteScript(string tenantCode, string fromPath)
+        public Task DeleteScript(string tenantCode, string fromPath)
         {
-            string path = Path.Combine(Paths.UIRoot, tenantCode, "app", fromPath + ".ts");
-            if (File.Exists(path))
+            return Task.Run(() =>
             {
-                File.Delete(path);
-            }
+
+                string path = Path.Combine(Paths.UIRoot, tenantCode, "app", fromPath + ".ts");
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            });
         }
     }
 }

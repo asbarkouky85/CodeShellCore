@@ -1,11 +1,6 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Data.Helpers;
-using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Sql;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Tenants
@@ -18,11 +13,11 @@ namespace CodeShellCore.Moldster.Tenants
             _out = output;
         }
 
-        public SyncResult SyncTenants(long src, long tar)
+        public async Task<SyncResult> SyncTenants(long src, long tar)
         {
             var con = DbContext;
 
-            var d = con.SyncTenants(src, tar);
+            var d = await con.SyncTenants(src, tar);
             if (d != null)
             {
                 _out.WriteLine();

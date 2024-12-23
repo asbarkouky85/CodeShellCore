@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Domains
 {
@@ -16,14 +17,14 @@ namespace CodeShellCore.Moldster.Domains
         {
         }
 
-        public override void GenerateRoutes(string modCode)
+        public override async Task GenerateRoutes(string modCode)
         {
-            long tenantId = _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
+            long tenantId = await _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == modCode);
             string fileName = modCode + "Routes";
             string filePath = Path.Combine(_paths.UIRoot, modCode, "app", fileName + ".ts");
 
-            IEnumerable<DomainDto> domains = _unit.DomainRepository.GetParentModules<DomainDto>(tenantId);
-            IEnumerable<NavigationGroupDTO> navs = _unit.NavigationGroupRepository.GetTenantNavs<NavigationGroupDTO>(tenantId);
+            IEnumerable<DomainModuleDto> domains = await _unit.DomainRepository.GetParentModules<DomainModuleDto>(tenantId);
+            IEnumerable<NavigationGroupLookupDto> navs = await _unit.NavigationGroupRepository.GetTenantNavs<NavigationGroupLookupDto>(tenantId);
 
             string routesTemplate = _molds.GetResourceByNameAsString(MoldNames.Routes_ts);
 
@@ -37,7 +38,7 @@ namespace CodeShellCore.Moldster.Domains
                 BaseName = _paths.CoreAppName
             };
 
-            string home = _unit.PageRepository.GetHomePagePath(modCode);
+            string home = await _unit.PageRepository.GetHomePagePath(modCode);
             if (home != null)
             {
                 var name = home.GetAfterLast("/");
@@ -53,7 +54,7 @@ namespace CodeShellCore.Moldster.Domains
             string sep = "";
             foreach (var nav in navs)
             {
-                var pages = _unit.NavigationPageRepository.FindAndMap<NavigationPageDTO>(e => e.Page.TenantId == tenantId && e.NavigationGroupId == nav.Id);
+                var pages = await _unit.NavigationPageRepository.FindAndMap<NavigationPageRouteDto>(e => e.Page.TenantId == tenantId && e.NavigationGroupId == nav.Id);
                 tempModel.DomainsData += sep + GetNavigationObject(nav.Name, pages);
                 sep = ",\n\t\t\t";
             }
@@ -66,6 +67,8 @@ namespace CodeShellCore.Moldster.Domains
 
         protected override void AppendLocaleLoaders(RoutesTsModel mod)
         {
+
+
             if (string.IsNullOrEmpty(_paths.LocalizationRoot))
                 return;
             string[] locales = Shell.SupportedLanguages.ToArray();
@@ -74,6 +77,7 @@ namespace CodeShellCore.Moldster.Domains
                 mod.LocalizationImports += "import { " + loc + "_Loader } from \"./../Localization/" + loc + "/loader\";\n";
                 mod.LocalizationLoaders += $"[\"{loc}\"]:new {loc}_Loader, ";
             }
+
         }
     }
 }

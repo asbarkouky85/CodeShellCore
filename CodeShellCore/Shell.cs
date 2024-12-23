@@ -24,8 +24,6 @@ namespace CodeShellCore
         private static Encryptor _encryptor;
         private static CodeShellAppOptions _appOptions;
         private static readonly object _locker = new object();
-
-        //protected static Shell App;
         public static string EnvironmentName { get; protected set; }
         public static string SolutionFolder { get; private set; }
         public static Assembly ProjectAssembly { get; private set; }
@@ -39,7 +37,6 @@ namespace CodeShellCore
         public static string AppRootPath { get; private set; } = ".";
         public static string PublicRoot => _getOptions().PublicRoot;
         public static string ReportsRoot => _getOptions().ReportsRoot;
-        public static string SharedPathRoot => _getOptions().SharedPathRoot;
         public static string AuthServiceProvider => GetConfigAs<string>("AuthServer", false);
 
         static Shell()
@@ -111,7 +108,6 @@ namespace CodeShellCore
 
         protected abstract bool useLocalization { get; }
         protected abstract string appRoot { get; }
-        protected abstract string sharedPathRoot { get; }
         protected abstract CultureInfo defaultCulture { get; }
         protected abstract IServiceProvider _scopedProvider { get; }
 

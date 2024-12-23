@@ -1,12 +1,10 @@
-﻿using CodeShellCore.Security.Authorization;
+﻿using CodeShellCore.Http;
+using CodeShellCore.Security.Authorization;
 using CodeShellCore.Security.Sessions;
-using CodeShellCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Filters
 {
@@ -14,8 +12,8 @@ namespace CodeShellCore.Web.Filters
     /// Uses query parameter "Token" to identify user, makes the call to <see cref="ISessionManager.UseToken(string)"/> then calls <see cref="IAuthorizationService.IsAuthorized(AuthorizationRequest)"/> where the <see cref="AuthorizationRequest"/> is filled from the route information and the <see cref="QueryAuthorizeFilter"/> instance itself
     /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
-    
-    public class QueryAuthorizeFilter : CodeShellAuthorizeAttribute, IAuthorizationFilter
+
+    public class QueryAuthorizeFilter : CodeShellAuthorizeAttribute, IAsyncAuthorizationFilter
     {
 
         public QueryAuthorizeFilter()
@@ -23,13 +21,12 @@ namespace CodeShellCore.Web.Filters
 
         }
 
-        public virtual void OnAuthorization(AuthorizationFilterContext context)
+        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             try
             {
-
                 var tok = context.HttpContext.Request.Query["Token"];
-                context.HttpContext.ProcessOnce(tok);
+                await context.HttpContext.ProcessOnce(tok);
                 Authorize(context);
             }
             catch (Exception ex)
@@ -43,8 +40,6 @@ namespace CodeShellCore.Web.Filters
                 res.SetException(ex);
                 context.Result = context.Respond(res);
             }
-
-
         }
     }
 }

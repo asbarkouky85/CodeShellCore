@@ -11,7 +11,7 @@ namespace CodeShellCore.EntityFramework
 
         public CodeShellDbContext(DbContextOptions<T> opts) : base(opts)
         {
-
+            
         }
 
         public void SetCurrentTenant(CurrentTenant tenant)

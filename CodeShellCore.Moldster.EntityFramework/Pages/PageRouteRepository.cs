@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using CodeShellCore.Moldster.Pages.Views;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
@@ -37,15 +39,15 @@ namespace CodeShellCore.Moldster.Pages
             return f;
         }
 
-        public IEnumerable<PageRouteView> FindForJson(long tenantId, long? categoryId = null)
+        public async Task<IEnumerable<PageRouteView>> FindForJson(long tenantId, long? categoryId = null)
         {
             var f = QueryPageRouteDTO(Loader.Where(p => (p.Page.PageCategoryId == categoryId || categoryId == null) && p.Page.TenantId == tenantId), tenantId);
-            return f.ToList();
+            return await f.ToListAsync();
         }
 
-        public PageRouteView FindByPage(long id)
+        public async Task<PageRouteView> FindByPage(long id)
         {
-            return QueryPageRouteDTO(Loader.Where(d => d.PageId == id)).FirstOrDefault();
+            return await QueryPageRouteDTO(Loader.Where(d => d.PageId == id)).FirstOrDefaultAsync();
         }
 
 

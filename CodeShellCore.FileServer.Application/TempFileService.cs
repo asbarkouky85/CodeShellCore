@@ -28,7 +28,7 @@ namespace CodeShellCore.FileServer
             var requestInterval = 5;
             Logger.WriteLine("Checking files older than " + createdBefore.ToString("hh:mm:ss t"));
 
-            if (repository.Exist(e => e.CreatedOn < createdBefore))
+            if (await repository.Exist(e => e.CreatedOn < createdBefore))
             {
                 var tmpContainer = containerFactory.GetContainer("Default");
                 var files = await repository.GetListAsync(e => e.CreatedOn < createdBefore);

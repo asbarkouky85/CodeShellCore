@@ -24,7 +24,7 @@ namespace CodeShellCore.Moldster.Builder
         public DateTime? CompletedOn { get; set; }
         public string Message { get; set; }
         [IgnoreDataMember]
-        public EventHandler<Result> OnComplete;
+        public Func<Result, Task> OnComplete;
 
         [IgnoreDataMember]
         public Task<Result> Task { get; set; }

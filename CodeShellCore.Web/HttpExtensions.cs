@@ -28,11 +28,11 @@ namespace Microsoft.AspNetCore.Mvc
         public static IWebHostBuilder UseKestrelHttps(this IWebHostBuilder builder)
         {
             var lSettings = "Properties/launchSettings.json";
-            int httpsPort = 5001;
-            int httpPort = 5000;
 
             if (File.Exists(lSettings))
             {
+                int httpsPort = 5001;
+                int httpPort = 5000;
                 var data = File.ReadAllText(lSettings);
                 var obj = (JObject)JsonConvert.DeserializeObject(data);
                 var httpUrl = obj.GetPathAsString("iisSettings:iisExpress:applicationUrl");
@@ -43,20 +43,20 @@ namespace Microsoft.AspNetCore.Mvc
                 if (!string.IsNullOrEmpty(httpsPortString))
                     int.TryParse(httpsPortString, out httpsPort);
                 httpsPort = httpsPort == 0 ? 5001 : httpsPort;
-            }
 
-            builder.ConfigureKestrel(op =>
-             {
-                 op.Listen(IPAddress.Any, httpsPort, lop =>
-                 {
-                     lop.Protocols = HttpProtocols.Http1AndHttp2;
-                     lop.UseHttps(StoreName.Root, "localhost", true);
-                 });
-                 if (httpPort != httpsPort)
-                 {
-                     op.Listen(IPAddress.Any, httpPort);
-                 }
-             });
+                builder.ConfigureKestrel(op =>
+                {
+                    op.Listen(IPAddress.Any, httpsPort, lop =>
+                    {
+                        lop.Protocols = HttpProtocols.Http1AndHttp2;
+                        lop.UseHttps(StoreName.Root, "localhost", true);
+                    });
+                    if (httpPort != httpsPort)
+                    {
+                        op.Listen(IPAddress.Any, httpPort);
+                    }
+                });
+            }
             return builder;
         }
 

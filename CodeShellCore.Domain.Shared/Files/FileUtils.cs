@@ -89,7 +89,7 @@ namespace CodeShellCore.Files
         public static FileBytes DownloadFileById(string id)
         {
             IHttpService ser = Shell.RootInjector.GetService<IHttpService>();
-            string url = Utils.CombineUrl(Shell.GetConfigAs<string>("Remote:FileServer"), "/apiAction/FileServer/Get", id);
+            string url = Utils.CombineUrl(Shell.GetConfigAs<string>("Remote:FileServer"), "/api/fileserver/FileServer/Get", id);
             return ser.DownloadFile(url);
 
         }

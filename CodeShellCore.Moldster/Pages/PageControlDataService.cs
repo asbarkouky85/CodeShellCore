@@ -2,72 +2,70 @@
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.PageCategories;
-using CodeShellCore.Moldster.Razor;
 using CodeShellCore.Services;
-using CodeShellCore.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
     public class PageControlDataService : ServiceBase, IPageControlDataService
     {
-        private readonly IConfigUnit Unit;
+        private readonly IMoldsterUnit Unit;
 
-        public PageControlDataService(IConfigUnit unit)
+        public PageControlDataService(IMoldsterUnit unit)
         {
             Unit = unit;
         }
 
-        public IEnumerable<DomainWithPagesDTO> GetDomainWithPages(long tenantId, string domainName = null)
+        public async Task<IEnumerable<DomainWithPagesDTO>> GetDomainWithPages(long tenantId, string domainName = null)
         {
             if (domainName != null)
-                return Unit.DomainRepository.FindAndMap<DomainWithPagesDTO>(n => n.Pages.Any(p => p.TenantId == tenantId) && n.Name == domainName);
-            return Unit.DomainRepository.FindAndMap<DomainWithPagesDTO>(n => n.Pages.Any(p => p.TenantId == tenantId));
+                return await Unit.DomainRepository.FindAndMap<DomainWithPagesDTO>(n => n.Pages.Any(p => p.TenantId == tenantId) && n.Name == domainName);
+            return await Unit.DomainRepository.FindAndMap<DomainWithPagesDTO>(n => n.Pages.Any(p => p.TenantId == tenantId));
         }
 
-        public SubmitResult UpdateTemplatePages(long template, long? tenant = null)
+        public async Task<SubmitResult> UpdateTemplatePages(long template, long? tenant = null)
         {
-            IEnumerable<Page> pages = Unit.PageRepository.Find(d => d.PageCategoryId == template && (d.TenantId == tenant || tenant == null));
-            var controls = Unit.ControlRepository.Find(d => d.PageCategoryId == template);
+            IEnumerable<Page> pages = await Unit.PageRepository.Find(d => d.PageCategoryId == template && (d.TenantId == tenant || tenant == null));
+            var controls = await Unit.ControlRepository.Find(d => d.PageCategoryId == template);
             foreach (Page p in pages)
             {
                 Unit.PageControlRepository.UpdateControls(p.Id, controls, (byte)p.DefaultAccessibility);
             }
-            var s = Unit.SaveChanges();
+            var s = await Unit.SaveChanges();
             return s;
         }
 
-        public SubmitResult UpdateTemplateControls(PageCategory cat, List<ControlRenderDto> cont)
+        public async Task<SubmitResult> UpdateTemplateControls(PageCategory cat, List<ControlRenderDto> cont)
         {
-            IEnumerable<Control> current = Unit.ControlRepository.Find(d => d.PageCategoryId == cat.Id);
+            IEnumerable<Control> current = await Unit.ControlRepository.Find(d => d.PageCategoryId == cat.Id);
 
             foreach (ControlRenderDto c in cont)
             {
-                Control con = GetControl(c, cat, current);
+                Control con = await GetControl(c, cat, current);
                 if (!current.Contains(con))
                     Unit.ControlRepository.Add(con);
                 con.ControlType = c.ControlType;
             }
-            return Unit.SaveChanges();
+            return await Unit.SaveChanges();
         }
 
-        public SubmitResult DeleteUnusedControls(PageCategory category, List<ControlRenderDto> controls)
+        public async Task<SubmitResult> DeleteUnusedControls(PageCategory category, List<ControlRenderDto> controls)
         {
             List<string> sts = new List<string>();
             foreach (var c in controls)
                 sts.AddRange(GetIdentifiers(c));
 
-            var cons = Unit.ControlRepository.Find(d => d.PageCategoryId == category.Id && !sts.Contains(d.Identifier));
+            var cons = await Unit.ControlRepository.Find(d => d.PageCategoryId == category.Id && !sts.Contains(d.Identifier));
             foreach (var c in cons)
                 Unit.ControlRepository.Delete(c);
-            return Unit.SaveChanges(throwException:true);
+            return await Unit.SaveChanges(throwException: true);
         }
 
 
-        public Control GetControl(ControlRenderDto src, PageCategory cat, IEnumerable<Control> current)
+        public async Task<Control> GetControl(ControlRenderDto src, PageCategory cat, IEnumerable<Control> current)
         {
             Control con = current.Where(d => d.Identifier == src.Identifier).FirstOrDefault();
 
@@ -84,7 +82,7 @@ namespace CodeShellCore.Moldster.Pages
 
             foreach (ControlRenderDto cc in src.Children)
             {
-                Control d = GetControl(cc, cat, current);
+                Control d = await GetControl(cc, cat, current);
                 if (!current.Contains(d))
                     con.InverseParentControlNavigation.Add(d);
                 d.ControlType = cc.ControlType;

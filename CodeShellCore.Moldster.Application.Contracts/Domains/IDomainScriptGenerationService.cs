@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Domains
 {
     public interface IDomainScriptGenerationService
     {
-        void GenerateDomainModule(string mod, string domain);
-        void GenerateDomainModuleById(string moduleCode, long? domId);
-        void GenerateRoutes(string module);
-        void GenerateModuleDefinitionByPage(PageRenderDTO dto);
+        Task GenerateDomainModule(string mod, string domain);
+        Task GenerateDomainModuleById(string moduleCode, long? domId);
+        Task GenerateRoutes(string module);
+        Task GenerateModuleDefinitionByPage(PageRenderDTO dto);
     }
 }

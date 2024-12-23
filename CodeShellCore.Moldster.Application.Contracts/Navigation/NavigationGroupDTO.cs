@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CodeShellCore.Data;
 
 namespace CodeShellCore.Moldster.Navigation
 {
-    public class NavigationGroupDTO
+    public class NavigationGroupDto : EntityDto<long>
     {
-        public long Id { get; set; }
         public string Name { get; set; }
-        //public IEnumerable<NavigationPageDTO> Pages { get; set; }
+        public long? ParentId { get; set; }
+        public string Chain { get; set; }
     }
 }

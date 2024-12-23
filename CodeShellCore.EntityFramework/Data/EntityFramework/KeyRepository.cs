@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.Data.Helpers;
 using CodeShellCore.Data.Lookups;
+using CodeShellCore.Extensions.DependencyInjection;
 using CodeShellCore.Linq;
 using CodeShellCore.Types;
 using Microsoft.EntityFrameworkCore;
@@ -47,30 +48,30 @@ namespace CodeShellCore.Data.EntityFramework
             }
         }
 
-        public override TValue GetValue<TValue>(object id, Expression<Func<T, TValue>> ex)
+        public override async Task<TValue> GetValue<TValue>(object id, Expression<Func<T, TValue>> ex)
         {
-            return Loader.Where(d => d.Id.Equals(id)).Select(ex).FirstOrDefault();
+            return await Loader.Where(d => d.Id.Equals(id)).Select(ex).FirstOrDefaultAsync();
         }
 
-        public override T FindSingle(object id)
+        public override async Task<T> FindSingle(object id)
         {
-            return Loader.Where(d => d.Id.Equals(id)).FirstOrDefault();
+            return await Loader.Where(d => d.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public virtual Task<T> FindSingleAsync(object id)
+        public virtual async Task<T> FindSingleAsync(object id)
         {
-            return Loader.Where(d => d.Id.Equals(id)).FirstOrDefaultAsync();
+            return await Loader.Where(d => d.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public override TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id)
+        public override async Task<TR> FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id)
         {
-            return Loader.Where(d => d.Id.Equals(id)).Select(exp).FirstOrDefault();
+            return await Loader.Where(d => d.Id.Equals(id)).Select(exp).FirstOrDefaultAsync();
         }
 
-        public override TR FindSingleAndMap<TR>(object id)
+        public override async Task<TR> FindSingleAndMap<TR>(object id)
         {
             var q = Loader.Where(d => d.Id.Equals(id));
-            return QueryDto<TR>(q).FirstOrDefault();
+            return await QueryDto<TR>(q).FirstOrDefaultAsync();
         }
 
         public virtual void DeleteByKey(TPrime id)
@@ -95,53 +96,53 @@ namespace CodeShellCore.Data.EntityFramework
                 Add(obj);
         }
 
-        public override bool IdExists(object ob)
+        public override async Task<bool> IdExists(object ob)
         {
-            return Loader.Any(d => d.Id.Equals(ob));
+            return await Loader.AllAsync(d => d.Id.Equals(ob));
         }
 
-        public bool IdExistsById(TPrime id)
+        public async Task<bool> IdExistsById(TPrime id)
         {
-            return Loader.Any(d => d.Id.Equals(id));
+            return await Loader.AnyAsync(d => d.Id.Equals(id));
         }
 
-        public override void Delete(Expression<Func<T, bool>> ex)
+        public override async Task Delete(Expression<Func<T, bool>> ex)
         {
-            var ids = GetValues(d => d.Id, ex);
+            var ids = await Saver.Where(ex).Select(d => d.Id).ToListAsync();
             foreach (var id in ids)
                 DeleteById(id);
         }
 
-        public override IEnumerable<Named<object>> FindAsLookup(string collectionId = null)
+        public override async Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId = null)
         {
-            return QueryNamed().OrderBy(d => d.Name).ToList();
+            return await QueryNamed().OrderBy(d => d.Name).ToListAsync();
         }
 
-        public override IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
+        public override async Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
         {
-            return QueryNamed(Loader.Where(ex)).OrderBy(d => d.Name).ToList();
+            return await QueryNamed(Loader.Where(ex)).OrderBy(d => d.Name).ToListAsync();
         }
 
-        public DeleteResult CanDeleteById(TPrime id)
+        public Task<DeleteResult> CanDeleteById(TPrime id)
         {
             return CanDelete(id);
         }
 
 
 
-        public TR FindSingleAndMapById<TR>(TPrime id) where TR : class
+        public async Task<TR> FindSingleAndMapById<TR>(TPrime id) where TR : class
         {
-            return FindSingleAndMap<TR>(id);
+            return await FindSingleAndMap<TR>(id);
         }
 
-        public T FindSingleById(TPrime id)
+        public async Task<T> FindSingleById(TPrime id)
         {
-            return FindSingle(id);
+            return await FindSingle(id);
         }
 
-        public TValue GetValueById<TValue>(TPrime id, Expression<Func<T, TValue>> ex)
+        public async Task<TValue> GetValueById<TValue>(TPrime id, Expression<Func<T, TValue>> ex)
         {
-            return GetValue(id, ex);
+            return await GetValue(id, ex);
         }
 
 
@@ -173,10 +174,10 @@ namespace CodeShellCore.Data.EntityFramework
             return FindSingleAsync(id);
         }
 
-        public override PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
+        public override async Task<PagedResult<Named<object>>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
         {
             var req = request.GetOptionsFor<Named<object>>();
-            return QueryNamed().ToPagedResult(req);
+            return await QueryNamed().ToPagedResultAsync(req);
         }
     }
 }

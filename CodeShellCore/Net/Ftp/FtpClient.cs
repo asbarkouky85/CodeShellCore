@@ -7,6 +7,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Text;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Net.Ftp
 {
@@ -32,14 +33,14 @@ namespace CodeShellCore.Net.Ftp
             return res.StatusCode == FtpStatusCode.OpeningData;
         }
 
-        public string[] GetDirectoryList()
+        public async Task<string[]> GetDirectoryList()
         {
             DateTime t = DateTime.Now;
 
             FtpWebRequest request = CreateRequest(HomeFolder);
             request.KeepAlive = false;
             request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            FtpWebResponse response = (FtpWebResponse)await request.GetResponseAsync();
 
             Stream stream = response.GetResponseStream();
             string line = "";
@@ -67,14 +68,14 @@ namespace CodeShellCore.Net.Ftp
 
         }
 
-        public string[] GetDirectoryList(string directory = null)
+        public async Task<string[]> GetDirectoryList(string directory = null)
         {
             string dir = HomeFolder;
             if (directory != null)
                 dir = Utils.CombineUrl(HomeFolder, directory);
 
             FtpWebRequest request = CreateRequest(dir, WebRequestMethods.Ftp.ListDirectoryDetails);
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            FtpWebResponse response = (FtpWebResponse)await request.GetResponseAsync();
             var arr = ReadAsArray(response);
 
             List<string> dirs = new List<string>();
@@ -94,11 +95,11 @@ namespace CodeShellCore.Net.Ftp
             return dirs.ToArray();
         }
 
-        public bool Exists(string url)
+        public async Task<bool> Exists(string url)
         {
-            var directory = url.GetBeforeLast("/")+"/";
+            var directory = url.GetBeforeLast("/") + "/";
             var file = url.GetAfterLast("/");
-            var files = GetFilesList(directory);
+            var files = await GetFilesList(directory);
             return files.Contains(file);
         }
 
@@ -127,7 +128,7 @@ namespace CodeShellCore.Net.Ftp
             return filesList.ToArray();
         }
 
-        public string[] GetFilesList(string directory = null)
+        public async Task<string[]> GetFilesList(string directory = null)
         {
 
             string dir = HomeFolder;
@@ -141,29 +142,29 @@ namespace CodeShellCore.Net.Ftp
             request.KeepAlive = false;
             request.Method = WebRequestMethods.Ftp.ListDirectory;
 
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            FtpWebResponse response = (FtpWebResponse)await request.GetResponseAsync();
             return ReadAsArray(response);
 
         }
 
-        public void DeleteDirectory(string fil)
+        public async Task DeleteDirectory(string fil)
         {
             string url = Utils.CombineUrl(HomeFolder, fil);
             FtpWebRequest request = CreateRequest(url);
             request.Method = WebRequestMethods.Ftp.RemoveDirectory;
 
-            WebResponse resp = request.GetResponse();
+            WebResponse resp = await request.GetResponseAsync();
             Stream res = resp.GetResponseStream();
             res.Close();
         }
 
-        public void DeleteFile(string fil)
+        public async Task DeleteFile(string fil)
         {
             string url = Utils.CombineUrl(HomeFolder, fil);
             FtpWebRequest request = CreateRequest(url);
             request.Method = WebRequestMethods.Ftp.DeleteFile;
 
-            WebResponse resp = request.GetResponse();
+            WebResponse resp = await request.GetResponseAsync();
             Stream res = resp.GetResponseStream();
             res.Close();
         }
@@ -176,7 +177,7 @@ namespace CodeShellCore.Net.Ftp
             return fileSt.Substring((fileSt.Length - 4), 4);
         }
 
-        public Result UploadFile(byte[] file, string path)
+        public async Task<Result> UploadFile(byte[] file, string path)
         {
             var url = Utils.CombineUrl(HomeFolder, path);
             FtpWebRequest req = CreateRequest(url);
@@ -187,13 +188,13 @@ namespace CodeShellCore.Net.Ftp
             Stream str = req.GetRequestStream();
             str.Write(file, 0, file.Length);
             str.Close();
-            GetResponse(req);
+            await GetResponse(req);
             req.Abort();
 
             return new Result();
         }
 
-        public FtpResult DownloadFile(string fileLocation)
+        public Task<FtpResult> DownloadFile(string fileLocation)
         {
             FtpWebRequest req = CreateRequest(Utils.CombineUrl(HomeFolder, fileLocation));
             req.Method = WebRequestMethods.Ftp.DownloadFile;
@@ -201,12 +202,12 @@ namespace CodeShellCore.Net.Ftp
 
         }
 
-        public FtpResult GetResponse(FtpWebRequest req)
+        public async Task<FtpResult> GetResponse(FtpWebRequest req)
         {
             var res = new FtpResult();
             try
             {
-                FtpWebResponse response = (FtpWebResponse)req.GetResponse();
+                FtpWebResponse response = (FtpWebResponse)await req.GetResponseAsync();
 
                 Stream stream = response.GetResponseStream();
                 byte[] bytes = new byte[0];
@@ -255,7 +256,7 @@ namespace CodeShellCore.Net.Ftp
             if (method != null)
             {
                 request.Method = method;
-                if(method== WebRequestMethods.Ftp.ListDirectory || method==WebRequestMethods.Ftp.ListDirectoryDetails)
+                if (method == WebRequestMethods.Ftp.ListDirectory || method == WebRequestMethods.Ftp.ListDirectoryDetails)
                 {
                     request.KeepAlive = false;
                 }

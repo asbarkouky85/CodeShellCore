@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Lookups
 {
     public interface ILookupsAppService
     {
-        List<Named<object>> Get(string entity, string collectionId = null);
-        PagedResult<Named<object>> GetPaged(string entity, LookupsPagedResultRequestDto dto);
+        Task<List<Named<object>>> Get(string entity, string collectionId = null);
+        Task<PagedResult<Named<object>>> GetPaged(string entity, LookupsPagedResultRequestDto dto);
     }
 }

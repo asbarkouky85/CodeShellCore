@@ -1,4 +1,5 @@
-﻿using CodeShellCore.Helpers;
+﻿using CodeShellCore.Files.Logging;
+using CodeShellCore.Helpers;
 using CodeShellCore.Security;
 using CodeShellCore.Security.Authentication;
 using CodeShellCore.Security.Authorization;
@@ -8,17 +9,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Web.Security
 {
     public class TokenSessionManager : WebSessionManagerBase, ISessionManager
     {
-        protected static AppClient[] Clients { get; set; } = new AppClient[0];
+        protected static AppClient[] Clients { get; set; } 
         public TokenSessionManager(IServiceProvider prov) : base(prov)
         {
-            Clients = prov.GetRequiredService<IClientProvider>().Get().ToArray();
+
         }
 
+        private async Task _initClients()
+        {
+            if (Clients == null)
+            {
+                Clients = (await ServiceProvider.GetRequiredService<IClientProvider>().Get()).ToArray();
+            }
+        }
         public override TimeSpan DefaultSessionTime { get { return new TimeSpan(24, 0, 0); } }
 
 
@@ -50,26 +59,75 @@ namespace CodeShellCore.Web.Security
         {
             if (jwt != null && jwt.TryRead(out ClientJwt obj))
             {
+
+                var headerTenant = ReadTenantId();
+                long userTenantId;
+                long.TryParse(obj.TenantId, out userTenantId);
                 var currentProvider = Shell.AuthServiceProvider;
                 clientId = obj;
-                return obj.ExpireTime > DateTime.Now &&
-                    (!Clients.Any() || Clients.Any(e => e.ClientId == obj.ClientId)) &&
-                    (string.IsNullOrEmpty(obj.Provider) || string.IsNullOrEmpty(currentProvider) || obj.Provider.ToLower() == currentProvider.ToLower());
+                var isValid = true;
+
+                if (Clients.Any() && !Clients.Any(e => e.ClientId == obj.ClientId))
+                {
+                    Logger.WriteLine($"Invalid Client Token : Invalid Client {obj.ClientId}");
+                    isValid = false;
+                }
+
+                if (obj.ExpireTime < DateTime.Now)
+                {
+                    Logger.WriteLine($"Invalid Client Token : Expire time {obj.ExpireTime.ToString("yyyy-MM-dd HH:mm")}");
+                    isValid = false;
+                }
+
+                if (!string.IsNullOrEmpty(obj.Provider) && !string.IsNullOrEmpty(currentProvider) && obj.Provider.ToLower() != currentProvider.ToLower())
+                {
+                    Logger.WriteLine($"Invalid Client Token : Invalid Provider {obj.Provider}!={currentProvider}");
+                    isValid = false;
+                }
+
+                if (headerTenant != null && headerTenant != 0 && headerTenant != userTenantId)
+                {
+                    Logger.WriteLine($"Invalid Client Token : Tenant unmatch {headerTenant}!={userTenantId}");
+                    isValid = false;
+                }
+                return isValid;
             }
             clientId = null;
             return false;
         }
 
-        protected virtual bool ValidateUserJWT(string jwt, out JWTData userId)
+        protected virtual bool ValidateUserJWT(string jwt, out JWTData jwtResult)
         {
+
             if (jwt != null && jwt.TryRead(out JWTData obj))
             {
-                var provider = Shell.AuthServiceProvider;
-                userId = obj;
-                return obj.ExpireTime > DateTime.Now
-                    && (string.IsNullOrEmpty(obj.Provider) || string.IsNullOrEmpty(provider) || obj.Provider.ToLower() == provider.ToLower());
+                var headerTenant = ReadTenantId();
+                long userTenantId;
+                long.TryParse(obj.TenantId, out userTenantId);
+                var currentProvider = Shell.AuthServiceProvider;
+                jwtResult = obj;
+                var isValid = true;
+                if (obj.ExpireTime < DateTime.Now)
+                {
+                    Logger.WriteLine($"Invalid Token : Expire time {obj.ExpireTime.ToString("yyyy-MM-dd HH:mm")}");
+                    isValid = false;
+                }
+
+                if (!string.IsNullOrEmpty(obj.Provider) && !string.IsNullOrEmpty(currentProvider) && obj.Provider.ToLower() != currentProvider.ToLower())
+                {
+                    Logger.WriteLine($"Invalid Token : Invalid Provider {obj.Provider}!={currentProvider}");
+                    isValid = false;
+                }
+
+                if (headerTenant != null && headerTenant != 0 && headerTenant != userTenantId)
+                {
+                    Logger.WriteLine($"Invalid Token : Tenant unmatch {headerTenant}!={userTenantId}");
+                    isValid = false;
+                }
+                return isValid;
             }
-            userId = null;
+            Logger.WriteLine($"Invalid Token : Unable to read JWT '{jwt}'");
+            jwtResult = null;
             return false;
         }
 
@@ -81,13 +139,13 @@ namespace CodeShellCore.Web.Security
         }
 
 
-        public override void AuthorizationRequest()
+        public override async Task AuthorizationRequest()
         {
+            await _initClients();
             ReadAppVersion();
+            ReadTenantId();
             string head = GetTokenFromHeader();
             string cl = GetClientTokenFromHeader();
-
-            ReadTenantId();
 
             if (!string.IsNullOrEmpty(cl))
             {

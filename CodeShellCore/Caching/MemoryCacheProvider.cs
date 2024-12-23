@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Caching
 {
@@ -11,6 +12,7 @@ namespace CodeShellCore.Caching
 
         private SortedList<string, object> getList<T>()
         {
+
             if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
             {
                 return lst;
@@ -21,44 +23,60 @@ namespace CodeShellCore.Caching
             }
         }
 
-        public T Get<T>(string key) where T : class
+        public Task<T> Get<T>(string key) where T : class
         {
-            if (key != null && getList<T>().TryGetValue(key, out object ob))
-                return (T)ob;
-
-            return null;
-        }
-        public void Store<T>(string key, T entity) where T : class
-        {
-            if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
+            return Task.Run(() =>
             {
-                lst[key.ToString()] = entity;
-            }
-            else
+                if (key != null && getList<T>().TryGetValue(key, out object ob))
+                    return (T)ob;
+
+                return null;
+            });
+        }
+        public Task Store<T>(string key, T entity) where T : class
+        {
+            return Task.Run(() =>
             {
-                Data[typeof(T)] = new SortedList<string, object>();
-                Data[typeof(T)][key.ToString()] = entity;
-            }
+                if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
+                {
+                    lst[key.ToString()] = entity;
+                }
+                else
+                {
+                    Data[typeof(T)] = new SortedList<string, object>();
+                    Data[typeof(T)][key.ToString()] = entity;
+                }
+            });
         }
 
-        public bool Remove<T>(string key) where T : class
+        public Task<bool> Remove<T>(string key) where T : class
         {
-            if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
+            return Task.Run(() =>
             {
-                lst.Remove(key.ToString());
-                return true;
-            }
-            return false;
+                if (Data.TryGetValue(typeof(T), out SortedList<string, object> lst))
+                {
+                    lst.Remove(key.ToString());
+                    return true;
+                }
+                return false;
+            });
         }
 
-        public List<T> GetAll<T>() where T : class
+        public Task<List<T>> GetAll<T>() where T : class
         {
-            return getList<T>().Select(d => (T)d.Value).ToList();
+            return Task.Run(() =>
+            {
+
+                return getList<T>().Select(d => (T)d.Value).ToList();
+            });
         }
 
-        public void RemoveAll<T>() where T : class
+        public Task RemoveAll<T>() where T : class
         {
-            Data.Remove(typeof(T));
+            return Task.Run(() =>
+            {
+                Data.Remove(typeof(T));
+            });
         }
     }
 }

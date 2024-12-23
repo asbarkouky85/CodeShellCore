@@ -6,29 +6,30 @@ using CodeShellCore.Moldster.Pages;
 using CodeShellCore.Moldster.Tenants;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Navigation
 {
-    public class NavigationGroupService : EntityService<NavigationGroup>
+    public class NavigationGroupService : DtoEntityService<NavigationGroup, long, NavigationGroupDto, PagedListRequestDto>, INavigationGroupService
     {
-        IConfigUnit _unit;
+        IMoldsterUnit _unit;
 
-        public NavigationGroupService(IConfigUnit unit) : base(unit)
+        public NavigationGroupService(IMoldsterUnit unit) : base(unit)
         {
             _unit = unit;
         }
 
-        public PagedResult<NavigationGroupDTO> GetAll(PagedListRequestDto opt)
+        public Task<PagedResult<NavigationGroupLookupDto>> GetAll(PagedListRequestDto opt)
         {
-            var opts = opt.GetOptionsFor<NavigationGroupDTO>();
-            return _unit.NavigationGroupRepository.FindAs(a => new NavigationGroupDTO { Id = a.Id, Name = a.Name }, opts);
+            var opts = opt.GetOptionsFor<NavigationGroupLookupDto>();
+            return _unit.NavigationGroupRepository.FindAs(a => new NavigationGroupLookupDto { Id = a.Id, Name = a.Name }, opts);
         }
 
-        public SubmitResult CheckForUnorderedNavigationPages(long navigationGroupId)
+        public async Task<SubmitResult> CheckForUnorderedNavigationPages(long navigationGroupId)
         {
-            if (_unit.NavigationPageRepository.Exist(d => d.NavigationGroupId == navigationGroupId && d.DisplayOrder == 0))
+            if (await _unit.NavigationPageRepository.Exist(d => d.NavigationGroupId == navigationGroupId && d.DisplayOrder == 0))
             {
-                var ps = _unit.NavigationPageRepository.Find(d => d.NavigationGroupId == navigationGroupId);
+                var ps = await _unit.NavigationPageRepository.Find(d => d.NavigationGroupId == navigationGroupId);
                 ps = ps.OrderBy(d => d.DisplayOrder).ToList();
                 int i = 1;
                 foreach (var p in ps)
@@ -37,19 +38,19 @@ namespace CodeShellCore.Moldster.Navigation
                     _unit.NavigationPageRepository.Update(p);
                 }
             }
-            return _unit.SaveChanges();
+            return await _unit.SaveChanges();
         }
 
-        public PagedResult<NavigationPageListDTO> GetPagesByNav(long naveId, PagedListRequestDto opts)
+        public async Task<PagedResult<NavigationPageListDTO>> GetPagesByNav(long naveId, PagedListRequestDto opts)
         {
-            CheckForUnorderedNavigationPages(naveId);
+            await CheckForUnorderedNavigationPages(naveId);
             var op = opts.GetOptionsFor<NavigationPageListDTO>();
             op.AddFilter(d => d.NavigationGroupId == naveId);
             op.OrderProperty = "DisplayOrder";
-            return _unit.NavigationPageRepository.FindAndMap(op);
+            return await _unit.NavigationPageRepository.FindAndMap(op);
         }
 
-        public PagedResult<PageListDTO> GetPageToAdd(PagedListRequestDto opt)
+        public Task<PagedResult<PageListDTO>> GetPageToAdd(PagedListRequestDto opt)
         {
             var opts = opt.GetOptionsFor<PageListDTO>();
             opts.AddFilter(a => a.HasRoute == true);
@@ -57,30 +58,31 @@ namespace CodeShellCore.Moldster.Navigation
             return _unit.PageRepository.FindAndMap(opt.GetOptionsFor<PageListDTO>());
         }
 
-        public SubmitResult DeleteNavPage(long id)
+        public async Task<SubmitResult> DeleteNavPage(long id)
         {
             _unit.NavigationPageRepository.DeleteById(id);
-            return _unit.SaveChanges();
+            return await _unit.SaveChanges();
         }
 
-        public List<Tenant> GetTenant()
+        public async Task<List<TenantDto>> GetTenant()
         {
-            return _unit.TenantRepository.FindAs(s => new Tenant { Id = s.Id, Name = s.Name, Code = s.Code }).ToList();
+            return await _unit.TenantRepository.FindAs(s => new TenantDto { Id = s.Id, Name = s.Name, Code = s.Code });
         }
 
-        public SubmitResult Create(List<NavigationPage> navigationPageListDTOs)
+        public async Task<SubmitResult> Create(List<NavigationPageDto> navigationPageListDTOs)
         {
-            _unit.NavigationPageRepository.ApplyChanges(navigationPageListDTOs);
-            return _unit.SaveChanges();
+            await _unit.NavigationPageRepository.ApplyChanges(navigationPageListDTOs, Mapper);
+            return await _unit.SaveChanges();
         }
 
-        public SubmitResult CreateNave(NavigationGroup navigationGroup)
+        public async Task<SubmitResult> CreateNave(NavigationGroupDto navigationGroup)
         {
-            var item = _unit.NavigationGroupRepository.FindAs(a => a.Name, x => x.Name == navigationGroup.Name);
+            var item = await _unit.NavigationGroupRepository.FindAs(a => a.Name, x => x.Name == navigationGroup.Name);
             if (item.Count == 0)
             {
-                _unit.NavigationGroupRepository.Add(navigationGroup);
-                return _unit.SaveChanges();
+                var entity = Mapper.Map(navigationGroup, new NavigationGroup());
+                _unit.NavigationGroupRepository.Add(entity);
+                return await _unit.SaveChanges();
             }
             else
             {
@@ -88,10 +90,10 @@ namespace CodeShellCore.Moldster.Navigation
             }
         }
 
-        public SubmitResult SetApplyOrder(ApplyOrderDTO dto)
+        public async Task<SubmitResult> SetApplyOrder(ApplyOrderDTO dto)
         {
-            NavigationPage s = _unit.NavigationPageRepository.FindSingle(a => a.Id == dto.SourceId);
-            NavigationPage t = _unit.NavigationPageRepository.FindSingle(a => a.Id == dto.TargetId);
+            NavigationPage s = await _unit.NavigationPageRepository.FindSingle(a => a.Id == dto.SourceId);
+            NavigationPage t = await _unit.NavigationPageRepository.FindSingle(a => a.Id == dto.TargetId);
             if (s != null && t != null)
             {
                 int temp = s.DisplayOrder;
@@ -100,14 +102,14 @@ namespace CodeShellCore.Moldster.Navigation
                 _unit.NavigationPageRepository.Update(s);
                 _unit.NavigationPageRepository.Update(t);
 
-                var page = _unit.PageRepository.FindAs(a => new PageDetailsDto
+                var page = (await _unit.PageRepository.FindAs(a => new PageDetailsDto
                 {
                     TenantCode = a.Tenant.Code,
                     DomainName = a.Domain.NameChain
-                }, x => x.Id == s.PageId).First();
+                }, x => x.Id == s.PageId)).First();
             }
 
-            return _unit.SaveChanges();
+            return await _unit.SaveChanges();
         }
     }
 }

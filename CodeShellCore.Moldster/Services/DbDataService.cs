@@ -15,14 +15,14 @@ namespace CodeShellCore.Moldster.Services
 {
     public class DbDataService : ApplicationService, IDataService
     {
-        private readonly IConfigUnit _unit;
+        private readonly IMoldsterUnit _unit;
 
-        public DbDataService(IServiceProvider provider, IConfigUnit unit) : base(provider)
+        public DbDataService(IServiceProvider provider, IMoldsterUnit unit) : base(provider)
         {
             _unit = unit;
         }
 
-        public PageRenderDTO[] GetDomainPagesForRendering(string mod, string domain, bool recursive = true)
+        public async Task<PageRenderDTO[]> GetDomainPagesForRendering(string mod, string domain, bool recursive = true)
         {
             if (string.IsNullOrEmpty(domain))
                 return new PageRenderDTO[0];
@@ -32,31 +32,31 @@ namespace CodeShellCore.Moldster.Services
 
             if (recursive)
             {
-                return _unit.PageRepository.GetValues(
+                return (await _unit.PageRepository.GetValues(
                 d => new PageRenderDTO { ViewPath = d.ViewPath, Id = d.Id },
                 d =>
                     d.Domain.NameChain.Contains(query) &&
                     d.Tenant.Code == mod
-                ).ToArray();
+                )).ToArray();
             }
             else
             {
-                return _unit.PageRepository.GetValues(
+                return (await _unit.PageRepository.GetValues(
                 d => new PageRenderDTO { ViewPath = d.ViewPath, Id = d.Id },
                 d =>
                     d.Domain.NameChain == query &&
                     d.Tenant.Code == mod
-                ).ToArray();
+                )).ToArray();
             }
 
         }
 
-        public IEnumerable<DomainRecursive> GetModuleDomains(string modCode)
+        public async Task<IEnumerable<DomainRecursive>> GetModuleDomains(string modCode)
         {
             Expression<Func<Domain, bool>> ex = null;
             if (modCode != null)
                 ex = d => d.Pages.Any(e => e.Tenant.Code == modCode);
-            var doms = _unit.DomainRepository.GetRooted(ex).Recurse();
+            var doms = (await _unit.DomainRepository.GetRooted(ex)).Recurse();
             List<DomainRecursive> lst = new List<DomainRecursive>();
             foreach (var d in doms)
             {
@@ -65,30 +65,30 @@ namespace CodeShellCore.Moldster.Services
             return lst;
         }
 
-        public string[] GetAppCodes(bool? active = null)
+        public async Task<string[]> GetAppCodes(bool? active = null)
         {
-            return _unit.TenantRepository.GetValues(d => d.Code, d => d.IsActive == active || active == null).ToArray();
+            return (await _unit.TenantRepository.GetValues(d => d.Code, d => d.IsActive == active || active == null)).ToArray();
         }
 
-        public PageOptionsDto GetPageOptions(string moduleCode, string viewPath)
+        public async Task<PageOptionsDto> GetPageOptions(string moduleCode, string viewPath)
         {
-            long pageId = _unit.PageRepository.GetSingleValue(
+            long pageId = await _unit.PageRepository.GetSingleValue(
                 d => d.Id,
                 d => d.Tenant.Code == moduleCode && d.ViewPath == viewPath);
-            return GetPageOptionsById(pageId);
+            return await GetPageOptionsById(pageId);
         }
 
-        public string[] GetTemplatePaths(string modCode, string domain = null)
+        public async Task<string[]> GetTemplatePaths(string modCode, string domain = null)
         {
-            return _unit.PageCategoryRepository.GetValues(
+            return (await _unit.PageCategoryRepository.GetValues(
                 d => d.ViewPath,
                 d => d.Pages.Any(e =>
                     e.Tenant.Code == modCode &&
                     (e.Domain.Name == domain || domain == null)
-                )).ToArray();
+                ))).ToArray();
         }
 
-        public TenantPageGuideDTO GetAppGuide(long id)
+        public Task<TenantPageGuideDTO> GetAppGuide(long id)
         {
             return _unit.TenantRepository.FindSingleAndMap<TenantPageGuideDTO>(id);
         }
@@ -99,9 +99,9 @@ namespace CodeShellCore.Moldster.Services
             return Mapper.Map(pages, new List<PageOptionsDto>());
         }
 
-        public PageOptionsDto GetPageOptionsById(long pageId)
+        public async Task<PageOptionsDto> GetPageOptionsById(long pageId)
         {
-            PageOptionsDto opts = _unit.PageRepository.FindSingleAs(d => new PageOptionsDto
+            PageOptionsDto opts = await _unit.PageRepository.FindSingleAs(d => new PageOptionsDto
             {
                 PageId = pageId,
                 PageIdentifier = d.Domain.Name + "__" + d.Name,
@@ -131,7 +131,7 @@ namespace CodeShellCore.Moldster.Services
         {
             return Task.Run(async () =>
             {
-                PageOptionsDto opts = _unit.PageCategoryRepository.FindSingleAs(d => new PageOptionsDto
+                PageOptionsDto opts = await _unit.PageCategoryRepository.FindSingleAs(d => new PageOptionsDto
                 {
                     PageId = 0,
                     PageIdentifier = d.Domain.Name + "__" + d.Name,
@@ -141,7 +141,7 @@ namespace CodeShellCore.Moldster.Services
                     DefaultAccessibility = 2,
                 }, e => e.Id == pageCategoryId);
 
-                var lst = _unit.ControlRepository.FindAndMap<ControlRenderDto>(e => e.PageCategoryId == pageCategoryId);
+                var lst = await _unit.ControlRepository.FindAndMap<ControlRenderDto>(e => e.PageCategoryId == pageCategoryId);
                 var defaultEmbedded = await _unit.PageCategoryParameterRepository.GetListAsync(e => e.PageCategoryId == pageCategoryId && e.Type == 2);
 
                 var prms = new ViewParams();
@@ -166,27 +166,37 @@ namespace CodeShellCore.Moldster.Services
 
         }
 
-        public string GetAppStyle(string modCode)
+        public async Task<string> GetAppStyle(string modCode)
         {
-            return _unit.TenantRepository.GetSingleValue(d => d.BaseStyle, d => d.Code == modCode);
+            return await _unit.TenantRepository.GetSingleValue(d => d.BaseStyle, d => d.Code == modCode);
         }
 
-        public string GetAppVersion(string code)
+        public async Task<string> GetAppVersion(string code)
         {
-            return _unit.TenantRepository.GetSingleValue(d => d.Version, d => d.Code == code);
+            return await _unit.TenantRepository.GetSingleValue(d => d.Version, d => d.Code == code);
         }
 
-        public SubmitResult SetAppVersion(string code, string version)
+        public async Task<SubmitResult> SetAppVersion(string code, string version)
         {
-            var ten = _unit.TenantRepository.FindSingle(d => d.Code == code);
+            var ten = await _unit.TenantRepository.FindSingle(d => d.Code == code);
             if (ten != null)
                 ten.Version = version;
-            return _unit.SaveChanges();
+            return await _unit.SaveChanges();
         }
 
-        public override void Dispose()
+        public async Task<long> GetTenantIdByCode(string moduleCode)
         {
-            base.Dispose();
+            return await _unit.TenantRepository.GetSingleValue(d => d.Id, d => d.Code == moduleCode);
+        }
+
+        public async Task<PageCategoryBasicDataDto> GetPageCategoryBasicData(long pageCategoryId)
+        {
+            return await _unit.PageCategoryRepository.GetValue(pageCategoryId, d => new PageCategoryBasicDataDto
+            {
+                ViewPath = d.ViewPath,
+                BaseComponent = d.BaseComponent,
+                Layout = d.Layout
+            });
         }
     }
 }

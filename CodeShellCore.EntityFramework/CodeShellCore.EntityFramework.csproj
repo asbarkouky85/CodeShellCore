@@ -21,6 +21,7 @@
 
 	<ItemGroup>
 	  <Folder Include="ConfiguredCollections\" />
+	  <Folder Include="Data\Attachments\" />
 	</ItemGroup>
 
 </Project>

@@ -1,8 +1,10 @@
 ﻿using CodeShellCore.Helpers;
 using CodeShellCore.Linq;
 using CodeShellCore.Moldster.Pages.Views;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
@@ -12,7 +14,7 @@ namespace CodeShellCore.Moldster.PageCategories
         {
         }
 
-        public IEnumerable<PageCategoryParameterWithPageId> FindForPageParameterUpdate(long id, long tenantId)
+        public async Task<IEnumerable<PageCategoryParameterWithPageId>> FindForPageParameterUpdate(long id, long tenantId)
         {
             var text = (int)PageParameterTypes.Text;
             var empType = (int)PageParameterTypes.Embedded;
@@ -33,12 +35,12 @@ namespace CodeShellCore.Moldster.PageCategories
                         Type = d.Type,
                         PageCategoryParameterId = d.Id
                     };
-            return q.ToList();
+            return await q.ToListAsync();
         }
 
-        public void UpdateParameters(long id, List<PageCategoryParameter> parameters)
+        public async Task UpdateParameters(long id, List<PageCategoryParameter> parameters)
         {
-            var existing = Find(d => d.PageCategoryId == id);
+            var existing = await Find(d => d.PageCategoryId == id);
             foreach (var p in parameters)
             {
                 var ex = existing.FirstOrDefault(d => d.Name == p.Name);

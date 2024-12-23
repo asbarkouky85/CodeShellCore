@@ -179,11 +179,14 @@ namespace CodeShellCore.Data
         }
 
 
-        public virtual SubmitResult SaveChanges(string successMessage = null, string faileMessage = null, bool throwException = false)
+        public virtual Task<SubmitResult> SaveChanges(string successMessage = null, string faileMessage = null, bool throwException = false)
         {
-            Saving?.Invoke(this, new ChangeLists());
+            return Task.Run(() =>
+            {
+                Saving?.Invoke(this, new ChangeLists());
 
-            return new SubmitResult();
+                return new SubmitResult();
+            });
         }
 
         protected async Task SendDistributedEvents()
@@ -210,7 +213,7 @@ namespace CodeShellCore.Data
         public virtual async Task<SubmitResult> SaveChangesAsync(string successMessage = null, string failMessage = null, bool throwException = true)
         {
             await SendDistributedEvents();
-            return SaveChanges();
+            return await SaveChanges();
         }
 
         public virtual void AddDistributedEvent(object eventData, Type type = null)

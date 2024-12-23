@@ -4,34 +4,35 @@ using CodeShellCore.MQ.Events;
 using CodeShellCore.Services;
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Services
 {
     public interface IEntityService : IServiceBase
     {
         //LoadResult LoadObjects(LoadOptions opts);
-        DeleteResult DeleteById(object prime);
-        object GetSingleObject(object id);
-        SubmitResult Create(string obj);
-        SubmitResult Update(string obj);
+        Task<DeleteResult> DeleteById(object prime);
+        Task<object> GetSingleObject(object id);
+        Task<SubmitResult> Create(string obj);
+        Task<SubmitResult> Update(string obj);
 
     }
 
     public interface IEntityService<T> : IEntityService where T : class
     {
-        T GetSingle(object id);
-        SubmitResult Create(T obj);
-        SubmitResult Update(T obj);
-        DeleteResult Delete(T prime);
-        DeleteResult CanDelete(object Id);
+        Task<T> GetSingle(object id);
+        Task<SubmitResult> Create(T obj);
+        Task<SubmitResult> Update(T obj);
+        Task<DeleteResult> Delete(T prime);
+        Task<DeleteResult> CanDelete(object Id);
         //IRepository<T> Repository { get; }
 
-        PagedResult<T> Load(PagedListRequestDto opts);
-        PagedResult<TDTO> LoadDTO<TDTO>(Expression<Func<T, TDTO>> ex, PagedListRequestDto opts) where TDTO : class;
-        PagedResult<T> LoadCollection(string collectionId, PagedListRequestDto opts);
-        PagedResult<TDto> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, PagedListRequestDto opts) where TDto : class;
-        bool IsUnique(PropertyUniqueDTO dto);
+        Task<PagedResult<T>> Load(PagedListRequestDto opts);
+        Task<PagedResult<TDTO>> LoadDTO<TDTO>(Expression<Func<T, TDTO>> ex, PagedListRequestDto opts) where TDTO : class;
+        Task<PagedResult<T>> LoadCollection(string collectionId, PagedListRequestDto opts);
+        Task<PagedResult<TDto>> LoadCollectionAs<TDto>(string collectionId, Expression<Func<T, TDto>> ex, PagedListRequestDto opts) where TDto : class;
+        Task<bool> IsUnique(PropertyUniqueDTO dto);
     }
 
-    
+
 }

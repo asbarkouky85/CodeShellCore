@@ -49,6 +49,6 @@ namespace CodeShellCore.Data
         T GetRepository<T>() where T : class, IRepository;
 
         Task<SubmitResult> SaveChangesAsync(string successMessage = null, string failMessage = null, bool throwException = true);
-        SubmitResult SaveChanges(string successMessage = null, string faileMessage = null, bool throwException = false);
+        Task<SubmitResult> SaveChanges(string successMessage = null, string faileMessage = null, bool throwException = false);
     }
 }

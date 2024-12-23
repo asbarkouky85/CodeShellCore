@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Builder
 {
@@ -20,7 +21,7 @@ namespace CodeShellCore.Moldster.Builder
         protected readonly IPathsService paths;
         protected readonly IPublisherHttpService http;
         protected readonly EnvironmentAccessor envAccessor;
-        protected readonly IConfigUnit unit;
+        protected readonly IMoldsterUnit unit;
         protected readonly IOutputWriter output;
         UploadConfig Config
         {
@@ -39,7 +40,7 @@ namespace CodeShellCore.Moldster.Builder
             IPathsService paths,
             IPublisherHttpService http,
             EnvironmentAccessor envAccessor,
-            IConfigUnit unit,
+            IMoldsterUnit unit,
             IOutputWriter output) : base(prov)
         {
             this.paths = paths;
@@ -54,53 +55,58 @@ namespace CodeShellCore.Moldster.Builder
 
         public IOutputWriter OutputWriter { get { return Out; } set { Out = value; } }
 
-        public virtual PublisherResult DecompressFiles(string zipFile, string distFolder)
+        public virtual Task<PublisherResult> DecompressFiles(string zipFile, string distFolder)
         {
-            try
+            return Task.Run(() =>
             {
-                if (!Directory.Exists(distFolder))
-                    Directory.CreateDirectory(distFolder);
-
-                FileUtils.DecompressDirectory(zipFile, distFolder);
-                return new PublisherResult
+                try
                 {
-                    Code = 0,
-                    Message = "Success"
-                };
-            }
-            catch (Exception ex)
-            {
-                var res = new PublisherResult();
-                res.Code = 1;
-                res.SetException(ex);
-                return res;
-            }
+                    if (!Directory.Exists(distFolder))
+                        Directory.CreateDirectory(distFolder);
+
+                    FileUtils.DecompressDirectory(zipFile, distFolder);
+                    return new PublisherResult
+                    {
+                        Code = 0,
+                        Message = "Success"
+                    };
+                }
+                catch (Exception ex)
+                {
+                    var res = new PublisherResult();
+                    res.Code = 1;
+                    res.SetException(ex);
+                    return res;
+                }
+            });
 
         }
 
 
 
-        public virtual PublisherResult UploadTenantBundle(string tenant, string version)
+        public virtual Task<PublisherResult> UploadTenantBundle(string tenant, string version)
         {
-
-            switch (Config.Type)
+            return Task.Run(() =>
             {
-                case "FTP":
-                    return UploadFtp(Config, tenant, version);
-                case "FS":
-                    return UploadFileSystem(Config, tenant, version);
-                case "DEV":
-                    return UploadDev(Config, tenant, version);
-            }
-            throw new Exception("Unsupported upload type " + Config.Type);
+                switch (Config.Type)
+                {
+                    case "FTP":
+                        return UploadFtp(Config, tenant, version);
+                    case "FS":
+                        return UploadFileSystem(Config, tenant, version);
+                    case "DEV":
+                        return UploadDev(Config, tenant, version);
+                }
+                throw new Exception("Unsupported upload type " + Config.Type);
+            });
         }
 
-        protected virtual PublisherResult UploadDev(UploadConfig config, string tenant, string version)
+        protected virtual Task<PublisherResult> UploadDev(UploadConfig config, string tenant, string version)
         {
-            return new PublisherResult { Code = 0 };
+            return Task.FromResult(new PublisherResult { Code = 0 });
         }
 
-        protected virtual PublisherResult UploadFtp(UploadConfig env, string tenant, string version)
+        protected virtual async Task<PublisherResult> UploadFtp(UploadConfig env, string tenant, string version)
         {
             using (var m = SW.Measure())
             {
@@ -109,11 +115,11 @@ namespace CodeShellCore.Moldster.Builder
                 string zipFile = Names.GetOutputBundlePath(tenant, version, true);
                 string zipFileTarget = Utils.CombineUrl(path, BundleFolder, Path.GetFileName(zipFile));
 
-                if (!http.FileExists(zipFileTarget))
+                if (!(await http.FileExists(zipFileTarget)))
                 {
                     WriteFileOperation("Uploading with FTP", $"{env.Server}/{zipFileTarget}", false);
 
-                    var upl = http.UploadFile(zipFile, zipFileTarget);
+                    var upl = await http.UploadFile(zipFile, zipFileTarget);
 
                     if (!upl.IsSuccess)
                     {
@@ -136,7 +142,7 @@ namespace CodeShellCore.Moldster.Builder
                     Type = ServerRequestTypes.DeleteDirectory,
                     DestinationFolder = Path.Combine(BundleFolder, Names.ApplyConvension(tenant, AppParts.Project))
                 };
-                var handleResult = http.HandleRequest(deleteRequest);
+                var handleResult = await http.HandleRequest(deleteRequest);
 
                 if (!handleResult.IsSuccess)
                 {
@@ -149,7 +155,7 @@ namespace CodeShellCore.Moldster.Builder
                 Out.WriteLine();
                 WriteFileOperation("Sending extract command", env.ServerUrl, false);
 
-                handleResult = http.HandleRequest(new PublisherRequest
+                handleResult = await http.HandleRequest(new PublisherRequest
                 {
                     Type = ServerRequestTypes.Decompress,
                     DestinationFolder = BundleFolder,
@@ -171,12 +177,12 @@ namespace CodeShellCore.Moldster.Builder
             }
         }
 
-        private bool IsOnlyTenant(string tenantCode)
+        private async Task<bool> IsOnlyTenant(string tenantCode)
         {
-            return !unit.TenantRepository.Exist(e => e.Code != tenantCode);
+            return !(await unit.TenantRepository.Exist(e => e.Code != tenantCode));
         }
 
-        protected virtual PublisherResult UploadFileSystem(UploadConfig env, string tenant, string version)
+        protected virtual async Task<PublisherResult> UploadFileSystem(UploadConfig env, string tenant, string version)
         {
             var res = new PublisherResult();
             try
@@ -191,7 +197,7 @@ namespace CodeShellCore.Moldster.Builder
                 {
                     WriteFileOperation("Copying File", $"{zipFileTarget}", false);
                     File.Copy(zipFile, zipFileTarget);
-                    if (IsOnlyTenant(tenant))
+                    if (await IsOnlyTenant(tenant))
                     {
                         FileUtils.DecompressDirectory(zipFileTarget, BundleFolder);
                     }
@@ -232,13 +238,13 @@ namespace CodeShellCore.Moldster.Builder
             };
         }
 
-        protected virtual Result DeleteOtherVersionsFTP(string tenant, string version)
+        protected virtual async Task<Result> DeleteOtherVersionsFTP(string tenant, string version)
         {
             var upload = Config;
             var cl = GetFTPClient();
             var url = Utils.CombineUrl(upload.PathOnServer, BundleFolder);
-            var files = cl.GetFilesList(url);
-            var dir = cl.GetDirectoryList(url);
+            var files = await cl.GetFilesList(url);
+            var dir = await cl.GetDirectoryList(url);
 
             Func<string, bool> ex = d => d.Contains(tenant + "-") && d.Contains(".js") && !d.Contains(version) && !d.Contains("-dev");
 
@@ -246,7 +252,7 @@ namespace CodeShellCore.Moldster.Builder
             foreach (var d in dir)
             {
                 var dirUrl = Utils.CombineUrl(url, d);
-                var dirFiles = cl.GetFilesList(dirUrl);
+                var dirFiles = await cl.GetFilesList(dirUrl);
                 var dirTenFiles = dirFiles.Where(ex).ToList();
                 foreach (var f in dirTenFiles)
                 {
@@ -254,18 +260,18 @@ namespace CodeShellCore.Moldster.Builder
                 }
             }
 
-            DeleteOtherFiles(tenFiles, version, true);
-            DeleteEmptyDirectories(dir, true);
+            await DeleteOtherFiles(tenFiles, version, true);
+            await DeleteEmptyDirectories(dir, true);
 
             return new Result();
         }
 
-        public virtual Result DeleteOtherBundlesForTenant(string tenant)
+        public virtual async Task<Result> DeleteOtherBundlesForTenant(string tenant)
         {
             string uiRoot = null;
             var env = Config;
 
-            var inf = GetAllTenantsInfo();
+            var inf = await GetAllTenantsInfo();
             var failMessage = "No version found on server for " + tenant;
             string version = null;
             if (inf.TryGetValue(tenant, out TenantInfoItem ten))
@@ -286,7 +292,7 @@ namespace CodeShellCore.Moldster.Builder
             }
 
             if (env.Type == "FTP")
-                return DeleteOtherVersionsFTP(tenant, version);
+                return await DeleteOtherVersionsFTP(tenant, version);
             else if (env.Type == "DEV")
                 uiRoot = paths.UIRoot;
             else if (env.Type == "FS")
@@ -304,13 +310,13 @@ namespace CodeShellCore.Moldster.Builder
             var files = Directory.GetFiles(folder, tenant + "-*.js", SearchOption.AllDirectories);
             var dir = Directory.GetDirectories(folder);
 
-            DeleteOtherFiles(files, version);
-            DeleteEmptyDirectories(dir);
+            await DeleteOtherFiles(files, version);
+            await DeleteEmptyDirectories(dir);
 
             return new Result();
         }
 
-        protected virtual void DeleteOtherFiles(IEnumerable<string> files, string version, bool ftp = false)
+        protected virtual async Task DeleteOtherFiles(IEnumerable<string> files, string version, bool ftp = false)
         {
             List<string> lst = new List<string>();
             FTPClient cl = null;
@@ -332,7 +338,7 @@ namespace CodeShellCore.Moldster.Builder
                         if (ftp)
                         {
                             var url = Utils.CombineUrl(pathOnServer, BundleFolder, f);
-                            cl.DeleteFile(url);
+                            await cl.DeleteFile(url);
                         }
                         else
                         {
@@ -352,7 +358,7 @@ namespace CodeShellCore.Moldster.Builder
 
         }
 
-        protected virtual void DeleteEmptyDirectories(IEnumerable<string> dir, bool ftp = false)
+        protected virtual async Task DeleteEmptyDirectories(IEnumerable<string> dir, bool ftp = false)
         {
             FTPClient cl = null;
             string pathOnServer = null;
@@ -366,11 +372,11 @@ namespace CodeShellCore.Moldster.Builder
                 if (ftp)
                 {
                     string url = Utils.CombineUrl(pathOnServer, BundleFolder, d);
-                    var hasFiles = cl.GetFilesList(url).Any();
+                    var hasFiles = (await cl.GetFilesList(url)).Any();
                     if (!hasFiles)
                     {
                         Out.WriteLine("Deleting folder " + d);
-                        cl.DeleteDirectory(url);
+                        await cl.DeleteDirectory(url);
                     }
                 }
                 else
@@ -386,9 +392,9 @@ namespace CodeShellCore.Moldster.Builder
             }
         }
 
-        public virtual Result SetTenantInfo(string tenant, string version = null)
+        public virtual async Task<Result> SetTenantInfo(string tenant, string version = null)
         {
-            var info = GetAllTenantsInfo();
+            var info = await GetAllTenantsInfo();
             string fromVer = "";
             if (info.TryGetValue(tenant, out TenantInfoItem item))
             {
@@ -407,7 +413,7 @@ namespace CodeShellCore.Moldster.Builder
             }
 
             WriteFileOperation("Uploading", "tenantInfo.json", false);
-            var res = SetAllTenantsInfo(info);
+            var res = await SetAllTenantsInfo(info);
             if (res.IsSuccess)
             {
                 WriteSuccess();
@@ -421,7 +427,7 @@ namespace CodeShellCore.Moldster.Builder
             return new PublisherResult();
         }
 
-        public virtual Result SetAllTenantsInfo(Dictionary<string, TenantInfoItem> dic)
+        public virtual async Task<Result> SetAllTenantsInfo(Dictionary<string, TenantInfoItem> dic)
         {
             var env = Config;
             string file = dic.ToJsonIndent();
@@ -429,27 +435,27 @@ namespace CodeShellCore.Moldster.Builder
             {
                 case "FTP":
                     string path = Utils.CombineUrl(env.PathOnServer, "tenantInfo.json");
-                    return http.UploadFile(Encoding.UTF8.GetBytes(file), path);
+                    return await http.UploadFile(Encoding.UTF8.GetBytes(file), path);
                 case "FS":
                     string filePath = Path.Combine(env.PathOnServer, "tenantInfo.json");
-                    File.WriteAllText(filePath, file);
+                    await File.WriteAllTextAsync(filePath, file);
                     break;
                 case "DEV":
                     string devPath = Path.Combine(paths.UIRoot, "tenantInfo.json");
-                    File.WriteAllText(devPath, file);
+                    await File.WriteAllTextAsync(devPath, file);
                     break;
             }
             return new Result();
         }
 
-        public virtual Dictionary<string, TenantInfoItem> GetAllTenantsInfo()
+        public virtual async Task<Dictionary<string, TenantInfoItem>> GetAllTenantsInfo()
         {
             var env = Config;
             string file = null;
             switch (env.Type)
             {
                 case "DEV":
-                    var s = unit.TenantRepository.FindAs(d => new TenantInfoItem
+                    var s = await unit.TenantRepository.FindAs(d => new TenantInfoItem
                     {
                         Code = d.Code,
                         Name = d.Name,
@@ -462,7 +468,7 @@ namespace CodeShellCore.Moldster.Builder
                     var cl = GetFTPClient();
 
                     string path = Utils.CombineUrl(env.PathOnServer, "tenantInfo.json");
-                    var res = cl.DownloadFile(path);
+                    var res = await cl.DownloadFile(path);
                     if (res.IsSuccess)
                     {
                         WriteFileOperation("Reading", "tenantInfo.json", true);

@@ -23,37 +23,40 @@ namespace CodeShellCore.Data
             _storedData.Add(obj);
         }
 
-        public IEnumerable All()
+        public Task<IEnumerable> All()
         {
-            return _storedData;
+            return Task.Run(() => (IEnumerable)_storedData);
         }
 
-        public DeleteResult CanDelete(object id)
+        public Task<DeleteResult> CanDelete(object id)
         {
-            return new DeleteResult { CanDelete = true };
+            return Task.Run(() => new DeleteResult { CanDelete = true });
         }
 
-        public int Count(Expression<Func<T, bool>> exp)
+        public Task<int> Count(Expression<Func<T, bool>> exp)
         {
-            return _storedData.Count(exp.Compile());
+            return Task.Run(() => _storedData.Count(exp.Compile()));
         }
 
-        public int Count()
+        public Task<int> Count()
         {
-            return _storedData.Count();
+            return Task.Run(() => _storedData.Count());
         }
 
-        public void Delete(Expression<Func<T, bool>> ex)
+        public Task Delete(Expression<Func<T, bool>> ex)
         {
-            var ifCond = ex.Compile();
-            var newData = new List<T>();
-            foreach(var i in _storedData)
+            return Task.Run(() =>
             {
-                var x = ifCond.Invoke(i);
-                if (!x)
-                    newData.Add(i);
-            }
-            _storedData = newData;
+                var ifCond = ex.Compile();
+                var newData = new List<T>();
+                foreach (var i in _storedData)
+                {
+                    var x = ifCond.Invoke(i);
+                    if (!x)
+                        newData.Add(i);
+                }
+                _storedData = newData;
+            });
         }
 
         public void Delete(T obj)
@@ -68,35 +71,35 @@ namespace CodeShellCore.Data
 
         public void DeleteById(object id)
         {
-           
+
         }
 
-        public bool Exist(Expression<Func<T, bool>> exp)
+        public Task<bool> Exist(Expression<Func<T, bool>> exp)
         {
             throw new NotImplementedException();
         }
 
-        public List<T> Find(Expression<Func<T, bool>> exp)
+        public Task<List<T>> Find(Expression<Func<T, bool>> exp)
         {
             throw new NotImplementedException();
         }
 
-        public PagedResult<T> Find(PagedListRequest<T> opts)
+        public Task<PagedResult<T>> Find(PagedListRequest<T> opts)
         {
             throw new NotImplementedException();
         }
 
-        public List<TR> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
+        public Task<List<TR>> FindAndMap<TR>(Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public List<TR> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
+        public Task<List<TR>> FindAndMap<TR>(IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public PagedResult<TR> FindAndMap<TR>(PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        public Task<PagedResult<TR>> FindAndMap<TR>(PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
         {
             throw new NotImplementedException();
         }
@@ -106,67 +109,67 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
+        public Task<List<TR>> FindAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> cond = null, PagedListRequest<TR> opts = null) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public PagedResult<TR> FindAs<TR>(Expression<Func<T, TR>> exp, PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
+        public Task<PagedResult<TR>> FindAs<TR>(Expression<Func<T, TR>> exp, PagedListRequest<TR> opts, Expression<Func<T, bool>> cond = null) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public List<TR> FindAs<TR>(Expression<Func<T, TR>> exp, IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
+        public Task<List<TR>> FindAs<TR>(Expression<Func<T, TR>> exp, IEnumerable<Expression<Func<T, bool>>> filtes) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Named<object>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
+        public Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId, Expression<Func<T, bool>> ex)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Named<object>> FindAsLookup(string collectionId = null)
+        public Task<IEnumerable<Named<object>>> FindAsLookup(string collectionId = null)
         {
             throw new NotImplementedException();
         }
 
-        public PagedResult<Named<object>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
+        public Task<PagedResult<Named<object>>> FindAsLookupPaged(PagedListRequest request, string collectionId = null)
         {
             throw new NotImplementedException();
         }
 
-        public PagedResult<TR> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, PagedListRequest<TR> opts) where TR : class
+        public Task<PagedResult<TR>> FindAsSorted<TR, TV>(Expression<Func<T, TR>> exp, Expression<Func<T, TV>> sort, SortDir dir, PagedListRequest<TR> opts) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public T FindSingle(object id)
+        public Task<T> FindSingle(object id)
         {
             throw new NotImplementedException();
         }
 
-        public T FindSingle(Expression<Func<T, bool>> expression)
+        public Task<T> FindSingle(Expression<Func<T, bool>> expression)
         {
             throw new NotImplementedException();
         }
 
-        public TR FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class
+        public Task<TR> FindSingleAndMap<TR>(Expression<Func<T, bool>> expression) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public TR FindSingleAndMap<TR>(object id) where TR : class
+        public Task<TR> FindSingleAndMap<TR>(object id) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class
+        public Task<TR> FindSingleAs<TR>(Expression<Func<T, TR>> exp, object id) where TR : class
         {
             throw new NotImplementedException();
         }
 
-        public TR FindSingleAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> expression) where TR : class
+        public Task<TR> FindSingleAs<TR>(Expression<Func<T, TR>> exp, Expression<Func<T, bool>> expression) where TR : class
         {
             throw new NotImplementedException();
         }
@@ -186,7 +189,7 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public List<T> GetList()
+        public Task<List<T>> GetList()
         {
             throw new NotImplementedException();
         }
@@ -196,32 +199,32 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public TVal GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null)
+        public Task<TVal> GetMax<TVal>(Expression<Func<T, TVal>> exp, Expression<Func<T, bool>> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public TValue GetSingleValue<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter)
+        public Task<TValue> GetSingleValue<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        public TValue GetValue<TValue>(object id, Expression<Func<T, TValue>> ex)
+        public Task<TValue> GetValue<TValue>(object id, Expression<Func<T, TValue>> ex)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TValue> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter = null)
+        public Task<IEnumerable<TValue>> GetValues<TValue>(Expression<Func<T, TValue>> ex, Expression<Func<T, bool>> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TValue> GetValues<TValue, TOrder>(Expression<Func<T, TValue>> ex, Expression<Func<T, TOrder>> order, Expression<Func<T, bool>> filter = null)
+        public Task<IEnumerable<TValue>> GetValues<TValue, TOrder>(Expression<Func<T, TValue>> ex, Expression<Func<T, TOrder>> order, Expression<Func<T, bool>> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public bool IdExists(object id)
+        public Task<bool> IdExists(object id)
         {
             throw new NotImplementedException();
         }
@@ -236,7 +239,7 @@ namespace CodeShellCore.Data
             throw new NotImplementedException();
         }
 
-        public T Merge(Expression<Func<T, bool>> ex, T obj)
+        public Task<T> Merge(Expression<Func<T, bool>> ex, T obj)
         {
             throw new NotImplementedException();
         }

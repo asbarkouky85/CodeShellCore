@@ -5,6 +5,9 @@ using CodeShellCore.Linq;
 using CodeShellCore.Text;
 using CodeShellCore.Moldster.Domains;
 using CodeShellCore.Moldster.Resources;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using CodeShellCore.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Moldster.PageCategories
 {
@@ -32,29 +35,29 @@ namespace CodeShellCore.Moldster.PageCategories
             Add(item);
         }
 
-        public IEnumerable<T> GetByMoldsterModule<T>(string installPath)
+        public async Task<IEnumerable<T>> GetByMoldsterModule<T>(string installPath)
         {
             installPath = installPath.Replace("\\", "/");
             var q = from c in Loader
                     where c.Domain.NameChain.StartsWith("/" + installPath)
                     select c;
 
-            return QueryDto<T>(q).ToList();
+            return await QueryDto<T>(q).ToListAsync();
         }
 
-        public IEnumerable<long> GetDomainTemplates(string domain, long tenantId)
+        public async Task<IEnumerable<long>> GetDomainTemplates(string domain, long tenantId)
         {
             if (string.IsNullOrEmpty(domain))
                 return new long[0];
             var query = domain;
             query = query[0] != '/' ? "/" + query : query;
             query = query[query.Length - 1] != '/' ? query + "/" : query;
-            return Loader
+            return await Loader
                 .Where(d => d.Domain.NameChain.Contains(query))
-                .Select(d => d.Id).ToList();
+                .Select(d => d.Id).ToListAsync();
         }
 
-        public PagedResult<T> GetUnderDomain<T>(long domainId, PagedListRequest opt) where T : class
+        public async Task<PagedResult<T>> GetUnderDomain<T>(long domainId, PagedListRequest opt) where T : class
         {
             var opts = opt.GetOptionsFor<T>();
 
@@ -62,7 +65,7 @@ namespace CodeShellCore.Moldster.PageCategories
                     where pc.Domain.Chain.Contains("|" + domainId.ToString() + "|")
                     select pc;
 
-            return QueryDto<T>(q).ToPagedResult(opts);
+            return await QueryDto<T>(q).ToPagedResultAsync(opts);
         }
     }
 }

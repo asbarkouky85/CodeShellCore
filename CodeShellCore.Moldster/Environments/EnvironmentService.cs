@@ -5,6 +5,7 @@ using CodeShellCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Environments
 {
@@ -17,29 +18,35 @@ namespace CodeShellCore.Moldster.Environments
             this.paths = paths;
         }
 
-        public MoldsterEnvironment Post(MoldsterEnvironment dto)
+        public Task<MoldsterEnvironment> Post(MoldsterEnvironment dto)
         {
             return Put(dto);
         }
 
-        public void Delete(string name)
+        public async Task Delete(string name)
         {
+
             var envs = paths.GetEnvironments();
             var env = envs.Where(e => e.Name == name).FirstOrDefault();
             if (env != null)
             {
                 envs.Remove(env);
-                paths.UpdateEnvironments(envs);
+                await paths.UpdateEnvironments(envs);
             }
+
         }
 
-        public PagedResult<MoldsterEnvironment> Get()
+        public Task<PagedResult<MoldsterEnvironment>> Get()
         {
-            var envs = paths.GetEnvironments();
-            return new PagedResult<MoldsterEnvironment> { List = envs, TotalCount = envs.Count };
+            return Task.Run(() =>
+            {
+
+                var envs = paths.GetEnvironments();
+                return new PagedResult<MoldsterEnvironment> { List = envs, TotalCount = envs.Count };
+            });
         }
 
-        public IEnumerable<string> GetDatabaseList(string name)
+        public async Task<IEnumerable<string>> GetDatabaseList(string name)
         {
             var envs = paths.GetEnvironments();
             var env = envs.Where(e => e.Name == name).FirstOrDefault();
@@ -52,7 +59,7 @@ namespace CodeShellCore.Moldster.Environments
             var s = GetService<ISqlCommandService>();
             try
             {
-                var dbs = s.GetDatabaseList();
+                var dbs = await s.GetDatabaseList();
                 return dbs;
             }
             catch
@@ -62,8 +69,9 @@ namespace CodeShellCore.Moldster.Environments
 
         }
 
-        public MoldsterEnvironment Put(MoldsterEnvironment dto)
+        public async Task<MoldsterEnvironment> Put(MoldsterEnvironment dto)
         {
+
             if (string.IsNullOrEmpty(dto.Name))
                 return dto;
             var envs = paths.GetEnvironments();
@@ -82,7 +90,7 @@ namespace CodeShellCore.Moldster.Environments
                     }
                 }
             }
-            paths.UpdateEnvironments(envs);
+            await paths.UpdateEnvironments(envs);
             return dto;
         }
 

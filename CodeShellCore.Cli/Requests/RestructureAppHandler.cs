@@ -23,7 +23,7 @@ namespace CodeShellCore.Cli.Requests
         protected override async Task<Result> HandleAsync(MoldsterAppRequest request)
         {
             var s = GetService<IMigrationService>();
-            return await s.RestructureApp(request.TenantCode);
+            return await s.CategoriesToComponents(request.TenantCode);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Codeshell.Abp.EntityFrameworkCore.Devices
         public virtual async Task<UserDevice> GetByDeviceId(string deviceId)
         {
             var q = Loader;
-            UserDevice? userDevice = await q.FirstOrDefaultAsync(e => e.DeviceId == deviceId);
+            UserDevice userDevice = await q.FirstOrDefaultAsync(e => e.DeviceId == deviceId);
             return userDevice;
         }
 

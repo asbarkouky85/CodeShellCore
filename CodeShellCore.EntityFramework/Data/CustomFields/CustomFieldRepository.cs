@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CodeShellCore.Data.EntityFramework;
 using CodeShellCore.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +18,11 @@ namespace CodeShellCore.Data.CustomFields
         {
 
         }
-        public virtual Dictionary<string, string> LoadFor<T1>(long id)
+        public virtual async Task<Dictionary<string, string>> LoadFor<TEntity>(long id)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
-            string type = typeof(T1).Name;
-            var list = Loader.Where(c => c.EntityId == id && c.EntityType == type).ToList();
+            string type = typeof(TEntity).Name;
+            var list = await Loader.Where(c => c.EntityId == id && c.EntityType == type).ToListAsync();
             foreach (var item in list)
             {
                 result.Add(item.Name, item.Value);
@@ -29,14 +30,16 @@ namespace CodeShellCore.Data.CustomFields
             return result;
         }
 
-        public virtual void ReplaceFor<T1>(long id, Dictionary<string, string> data)
+        public virtual async Task ReplaceFor<T1>(long id, Dictionary<string, string> data)
         {
+
             string t = typeof(T1).Name;
-            Delete(d => d.EntityId == id && d.EntityType == t);
-            SaveFor<T1>(id, data);
+            await Delete(d => d.EntityId == id && d.EntityType == t);
+            await SaveFor<T1>(id, data);
+
         }
 
-        public virtual void SaveFor<T1>(long id, Dictionary<string, string> dic)
+        public virtual Task SaveFor<T1>(long id, Dictionary<string, string> dic)
         {
             string type = typeof(T1).Name;
             foreach (KeyValuePair<string, string> entry in dic)
@@ -51,6 +54,7 @@ namespace CodeShellCore.Data.CustomFields
                 obj.Id = Utils.GenerateID();
                 Add(obj);
             }
+            return Task.CompletedTask;
         }
     }
 }

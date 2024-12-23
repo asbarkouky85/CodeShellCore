@@ -22,7 +22,7 @@ namespace CodeShellCore.Moldster
         {
             context.Services.AddCodeshellDbContext<MoldsterContext>();
 
-            context.Services.AddUnitOfWork<ConfigUnit, IConfigUnit>();
+            context.Services.AddUnitOfWork<MoldsterUnit, IMoldsterUnit>();
             context.Services.AddGenericRepository(typeof(MoldsterRepository<,>));
 
             context.Services.AddRepositoryFor<CustomText, CustomTextRepository, ICustomTextRepository>();

@@ -1,16 +1,15 @@
-﻿using CodeShellCore.Data.Lookups;
+﻿using CodeShellCore.Data.Localization;
+using CodeShellCore.Data.Lookups;
 using CodeShellCore.Data.Mapping;
 using CodeShellCore.Linq;
-using CodeShellCore.Text;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using CodeShellCore.Data.Localization;
-using CodeShellCore.Security;
 using CodeShellCore.MultiTenant;
-using CodeShellCore.Types;
-using CodeShellCore.Files.Uploads;
-using CodeShellCore.Extensions.Data;
+using CodeShellCore.Security;
+using CodeShellCore.Text;
 using CodeShellCore.Text.Localization;
+using CodeShellCore.Types;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Services
 {
@@ -56,44 +55,44 @@ namespace CodeShellCore.Data.Services
             Store = new InstanceStore(() => unit.ServiceProvider);
         }
 
-        public virtual PagedResult<TListDto> Get(TOptionsDto options)
+        public virtual async Task<PagedResult<TListDto>> Get(TOptionsDto options)
         {
             var mapped = options.GetOptionsFor<TListDto>();
-            return Repository.FindAndMap(mapped);
+            return await Repository.FindAndMap(mapped);
         }
 
-        public virtual PagedResult<TListDto> GetCollection(string id, TOptionsDto options)
+        public virtual async Task<PagedResult<TListDto>> GetCollection(string id, TOptionsDto options)
         {
             var mapped = options.GetOptionsFor<TListDto>();
-            return DefaultUnit.GetCollectionRepositoryFor<T>().LoadCollectionAndMap(id, mapped);
+            return await DefaultUnit.GetCollectionRepositoryFor<T>().LoadCollectionAndMap(id, mapped);
         }
 
-        public virtual Dictionary<string, IEnumerable<Named<object>>> GetEditLookups(Dictionary<string, string> dto)
+        public virtual async Task<Dictionary<string, IEnumerable<Named<object>>>> GetEditLookups(Dictionary<string, string> dto)
         {
-            return LookupsService.GetRequestedLookups(dto);
+            return await LookupsService.GetRequestedLookups(dto);
         }
 
-        public virtual Dictionary<string, IEnumerable<Named<object>>> GetListLookups(Dictionary<string, string> dto)
+        public virtual async Task<Dictionary<string, IEnumerable<Named<object>>>> GetListLookups(Dictionary<string, string> dto)
         {
-            return LookupsService.GetRequestedLookups(dto);
+            return await LookupsService.GetRequestedLookups(dto);
         }
 
-        public virtual TSingleDto GetSingle(TPrime id)
+        public virtual async Task<TSingleDto> GetSingle(TPrime id)
         {
-            var item = GetSingleById(id);
+            var item = await GetSingleById(id);
             return Mapper.Map<T, TSingleDto>(item);
         }
 
-        public virtual bool IsUnique(IsUniqueDto dto)
+        public virtual async Task<bool> IsUnique(IsUniqueDto dto)
         {
             var id = dto.Id.ConvertTo<TPrime>();
             var exp = Expressions.Unique<T, TPrime>(id, dto.Property, dto.Value);
-            return !Repository.Exist(exp);
+            return !(await Repository.Exist(exp));
         }
 
-        protected virtual T GetSingleById(TPrime id)
+        protected virtual async Task<T> GetSingleById(TPrime id)
         {
-            return Repository.FindSingleById(id);
+            return await Repository.FindSingleById(id);
         }
     }
 }

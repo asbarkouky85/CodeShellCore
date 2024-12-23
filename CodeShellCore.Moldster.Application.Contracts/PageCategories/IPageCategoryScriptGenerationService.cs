@@ -1,8 +1,10 @@
-﻿namespace CodeShellCore.Moldster.PageCategories
+﻿using System.Threading.Tasks;
+
+namespace CodeShellCore.Moldster.PageCategories
 {
     public interface IPageCategoryScriptGenerationService
     {
-        void GenerateBaseComponent(string templatePath);
-        void GeneratePageCategory(long id);
+        Task GenerateBaseComponent(string templatePath);
+        Task GeneratePageCategory(long id);
     }
 }

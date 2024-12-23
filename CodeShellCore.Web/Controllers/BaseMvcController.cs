@@ -8,7 +8,7 @@ namespace CodeShellCore.Web.Controllers
 {
     [HtmlExceptionFilter]
     [QueryAuthorizeFilter]
-    public class BaseMvcController : BaseController
+    public abstract class BaseMvcController : BaseController
     {
     }
 }

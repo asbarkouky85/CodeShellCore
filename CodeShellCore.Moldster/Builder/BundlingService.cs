@@ -21,23 +21,23 @@ namespace CodeShellCore.Moldster.Builder
 
         public IOutputWriter OutputWriter { get { return Out; } set { Out = value; } }
 
-        public virtual string GetAppVersion(string code, bool uiIfLager = false)
+        public virtual async Task<string> GetAppVersion(string code, bool uiIfLager = false)
         {
-            string ver = Data.GetAppVersion(code);
+            string ver = await Data.GetAppVersion(code);
             if (string.IsNullOrEmpty(ver))
             {
-                return GetUIVersion();
+                return await GetUIVersion();
             }
             else if (uiIfLager)
             {
-                return GetNextVersionNumber(ver);
+                return await GetNextVersionNumber(ver);
             }
             return ver;
         }
 
-        public virtual string GetNextVersionNumber(string ver)
+        public virtual async Task<string> GetNextVersionNumber(string ver)
         {
-            string ui = GetUIVersion();
+            string ui = await GetUIVersion();
             if (Utils.CompareVersions(ui, ver) == 1)
             {
                 return ui;
@@ -50,9 +50,13 @@ namespace CodeShellCore.Moldster.Builder
 
         public virtual bool StartProductionPackIfNeeded(string tenantCode, out BundlingTask tt, string version = null)
         {
-            var v = version ?? GetAppVersion(tenantCode, true);
+            var t = GetAppVersion(tenantCode, true);
+            t.Wait();
+            var v = version ?? t.Result;
 
-            if (IsBundled(tenantCode, v))
+            var t2 = IsBundled(tenantCode, v);
+            t2.Wait();
+            if (t2.Result)
             {
                 tt = null;
                 return false;
@@ -65,7 +69,7 @@ namespace CodeShellCore.Moldster.Builder
                 Status = "Active"
             };
 
-            tsk.Task = new Task<Result>(() =>
+            tsk.Task = Task.Run(() =>
             {
                 using (var sc = Shell.GetScope())
                 {
@@ -81,7 +85,8 @@ namespace CodeShellCore.Moldster.Builder
                 tsk.Status = res.IsSuccess ? "Successfull" : "Failed";
                 tsk.CompletedOn = DateTime.Now;
                 tsk.Message = res.Message;
-                tsk.OnComplete?.Invoke(tsk, res);
+                var t = tsk.OnComplete?.Invoke(res);
+                t.Wait();
             });
             tsk.Task.Start();
             tt = tsk;
@@ -90,22 +95,22 @@ namespace CodeShellCore.Moldster.Builder
 
 
 
-        public virtual bool IsBundled(string moduleName, string version)
+        public virtual async Task<bool> IsBundled(string moduleName, string version)
         {
             string bundleFolder = Names.GetOutputBundlePath(moduleName, version, true);
             if (File.Exists(bundleFolder))
             {
                 Out.WriteLine($"Version {version} is already bundled for {moduleName}");
-                UpdateTenantVersionInDataSource(moduleName, version);
+                await UpdateTenantVersionInDataSource(moduleName, version);
                 return true;
             }
             return false;
         }
 
-        public virtual Result ProductionPack(string moduleName, string version = null, bool trace = false)
+        public virtual async Task<Result> ProductionPack(string moduleName, string version = null, bool trace = false)
         {
-            version = version ?? GetAppVersion(moduleName, true);
-            if (IsBundled(moduleName, version))
+            version = version ?? await GetAppVersion(moduleName, true);
+            if (await IsBundled(moduleName, version))
             {
                 return new Result { Code = 0, Message = "No Changes" };
             }
@@ -123,7 +128,7 @@ namespace CodeShellCore.Moldster.Builder
                 }
             }
             p.WaitForExit();
-            CompressModuleBundle(moduleName, version);
+            await CompressModuleBundle(moduleName, version);
             var code = p.ExitCode;
             var res = new Result { Code = code, Message = code == 0 ? "bundling_successful" : "bundling_failed" };
             if (res.IsSuccess)
@@ -139,37 +144,41 @@ namespace CodeShellCore.Moldster.Builder
 
         }
 
-        public virtual string CompressModuleBundle(string tenant, string version)
+        public virtual Task<string> CompressModuleBundle(string tenant, string version)
         {
-            string bundleFolder = Names.GetOutputPath(tenant, version, true);
-            string bundleFile = Names.GetOutputBundlePath(tenant, version, true);
-
-            Out.Write("Compressing scripts [");
-            WriteColored(tenant, ConsoleColor.Yellow);
-            Out.Write("] for version [");
-            WriteColored(version, ConsoleColor.Cyan);
-            Out.Write("]...");
-
-            if (!File.Exists(bundleFile))
+            return Task.Run(() =>
             {
-                FileUtils.CompressDirectory(bundleFolder, bundleFile, true);
-                WriteSuccess();
-            }
-            else
-            {
-                GotoColumn(SuccessCol);
-                WriteColored("EXISTS", ConsoleColor.DarkCyan);
-            }
 
-            Out.WriteLine();
-            return bundleFolder + ".zip";
+                string bundleFolder = Names.GetOutputPath(tenant, version, true);
+                string bundleFile = Names.GetOutputBundlePath(tenant, version, true);
+
+                Out.Write("Compressing scripts [");
+                WriteColored(tenant, ConsoleColor.Yellow);
+                Out.Write("] for version [");
+                WriteColored(version, ConsoleColor.Cyan);
+                Out.Write("]...");
+
+                if (!File.Exists(bundleFile))
+                {
+                    FileUtils.CompressDirectory(bundleFolder, bundleFile, true);
+                    WriteSuccess();
+                }
+                else
+                {
+                    GotoColumn(SuccessCol);
+                    WriteColored("EXISTS", ConsoleColor.DarkCyan);
+                }
+
+                Out.WriteLine();
+                return bundleFolder + ".zip";
+            });
         }
 
-        public virtual SubmitResult UpdateTenantVersionInDataSource(string code, string version)
+        public virtual async Task<SubmitResult> UpdateTenantVersionInDataSource(string code, string version)
         {
 
             Out.Write("Updating [" + code + "] to version [" + version + "]");
-            var res = Data.SetAppVersion(code, version);
+            var res = await Data.SetAppVersion(code, version);
             WriteSuccess();
             Out.WriteLine();
             return res;
@@ -177,28 +186,31 @@ namespace CodeShellCore.Moldster.Builder
 
 
 
-        public virtual string GetUIVersion()
+        public virtual Task<string> GetUIVersion()
         {
-            var files = Directory.GetFiles(Paths.UIRoot, "*.csproj");
-            if (files.Length > 0)
+            return Task.Run(() =>
             {
-                string contents = File.ReadAllText(files[0]);
-                var ver = contents.FindXmlValue("AssemblyVersion");
-                if (ver != null)
-                    return ver;
-            }
-            return "1.0.0.0";
+                var files = Directory.GetFiles(Paths.UIRoot, "*.csproj");
+                if (files.Length > 0)
+                {
+                    string contents = File.ReadAllText(files[0]);
+                    var ver = contents.FindXmlValue("AssemblyVersion");
+                    if (ver != null)
+                        return ver;
+                }
+                return "1.0.0.0";
+            });
         }
 
-        public virtual void PrepEnvironment(bool prod = false)
+        public virtual async Task PrepEnvironment(bool prod = false)
         {
             string args = "install --force";
-            RunCommand(Paths.UIRoot, "npm", args, true);
+            await RunCommand(Paths.UIRoot, "npm", args, true);
         }
 
-        public virtual void WriteWebpackConfigFiles()
+        public virtual Task WriteWebpackConfigFiles()
         {
-
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,20 +1,22 @@
 ﻿using CodeShellCore.Helpers;
+using CodeShellCore.MultiTenant;
 using CodeShellCore.Security.Sessions;
 using CodeShellCore.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CodeShellCore.Security.Authentication
 {
     public class TokenGenerator : ITokenGenerator
     {
+        private readonly CurrentTenant tenant;
+
         protected CodeShellSecurityOptions Options { get; private set; }
-        public TokenGenerator(IOptions<CodeShellSecurityOptions> options)
+        public TokenGenerator(IOptions<CodeShellSecurityOptions> options, CurrentTenant tenant)
         {
             Options = options.Value;
+            this.tenant = tenant;
         }
 
         public static string MakeTestToken(string userId, string provider)
@@ -63,11 +65,12 @@ namespace CodeShellCore.Security.Authentication
             var jwt = new JWTData
             {
                 UserId = res.UserData.UserId,
-                Provider = Options.TokenProvider,
+                Provider = Shell.AuthServiceProvider,
                 StartTime = DateTime.Now,
                 ExpireTime = Options.TokenLifeTime == null ? DateTime.MaxValue : DateTime.Now + Options.TokenLifeTime.Value,
                 DeviceId = deviceId,
-                TokenId = Utils.RandomAlphabet(6, CharType.Small)
+                TokenId = Utils.RandomAlphabet(6, CharType.Small),
+                TenantId = tenant.TenantId.ToString()
             };
             if (res.UserData is IAuthorizableUser)
                 jwt.Roles = ((IAuthorizableUser)res.UserData).Roles;

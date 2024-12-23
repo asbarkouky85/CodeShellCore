@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
     public interface IPageScriptGenerationService
     {
-        void GenerateAppComponent(string mod);
-        void GenerateComponent(string moduleName, PageRenderDTO dto, PageJsonData data);
-        void MoveScript(MovePageRequest r);
-        void DeleteScript(string tenantCode, string fromPath);
+        Task GenerateAppComponent(string mod);
+        Task GenerateComponent(string moduleName, PageRenderDTO dto, PageJsonData data);
+        Task MoveScript(MovePageRequest r);
+        Task DeleteScript(string tenantCode, string fromPath);
     }
 }

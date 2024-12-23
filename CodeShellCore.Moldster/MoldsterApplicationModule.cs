@@ -37,7 +37,7 @@ namespace CodeShellCore.Moldster
     {
         public override void RegisterServices(CodeshellAppContext context)
         {
-            
+
             context.Services.Configure<MoldsterModuleOptions>(e =>
             {
                 e.ReplaceComponentHtml = true;
@@ -85,41 +85,36 @@ namespace CodeShellCore.Moldster
             context.Services.AddTransient<ILocalizationService, LocalizationService>();
             context.Services.AddTransient<IMigrationService, MigrationService>();
             context.Services.AddTransient<IModulesService, ModulesService>();
-            context.Services.AddTransient<IMoldsterLookupService, MoldsterLookupService>();
             context.Services.AddTransient<IMoldsterService, MoldsterService>();
-            context.Services.AddTransient<IMoldsterService, MoldsterService>();
+
             context.Services.AddTransient<IPageCategoryHtmlService, PageCategoryHtmlService>();
-            context.Services.AddTransient<IPageCategoryParameterDomainService, PageCategoryParameterDomainService>();
-            context.Services.AddTransient<IPageCategoryScriptGenerationService, PageCategoryScriptGenerationService>();
-            context.Services.AddTransient<IPageCategoryService, PageCategoryService>();
-            context.Services.AddTransient<IPageControlDataService, PageControlDataService>();
-            context.Services.AddTransient<IPageEntityService, PageEntityService>();
             context.Services.AddTransient<IPageHtmlGenerationService, PageHtmlGenerationService>();
-            context.Services.AddTransient<IPageParameterDataService, PageParameterDataService>();
-            context.Services.AddTransient<IPageScriptGenerationService, PageScriptGenerationService>();
-            context.Services.AddTransient<IPagesDataService, PagesDataService>();
-            context.Services.AddTransient<IPreviewService, PreviewService>();
-            context.Services.AddTransient<IPublisherHttpService, PublisherHttpService>();
-            context.Services.AddTransient<IResourceScriptGenerationService, ResourceScriptGenerationService>();
-            context.Services.AddTransient<IScriptModelMappingService, ScriptModelMappingService>();
-            context.Services.AddTransient<ITenantService, TenantsService>();
             context.Services.AddTransient<IViewsService, DefaultViewsService>();
 
-            context.Services.AddAutoMapper(typeof(MoldsterApplicationModule).Assembly);
+            context.Services.AddTransient<IPageScriptGenerationService, PageScriptGenerationService>();
+            context.Services.AddTransient<IResourceScriptGenerationService, ResourceScriptGenerationService>();
+            context.Services.AddTransient<IPageCategoryScriptGenerationService, PageCategoryScriptGenerationService>();
 
-            
-            context.Services.AddServiceFor<Domain, DomainService>();
-            context.Services.AddServiceFor<NavigationGroup, NavigationGroupService>();
-            context.Services.AddServiceFor<NavigationGroup, NavigationGroupService>();
-            context.Services.AddServiceFor<PageControl, PageControlService>();
-            context.Services.AddTransient<IAuthorizationService, UIAuthorizationService>();
-            context.Services.AddTransient<ICacheProvider, MemoryCacheProvider>();
+            context.Services.AddTransient<IPreviewService, PreviewService>();
+            context.Services.AddTransient<IPublisherHttpService, PublisherHttpService>();
+
+            context.Services.AddTransient<IDomainService, DomainService>();
+            context.Services.AddTransient<INavigationGroupService, NavigationGroupService>();
+            context.Services.AddTransient<IPageCategoryParameterDomainService, PageCategoryParameterDomainService>();
+            context.Services.AddTransient<IPageCategoryService, PageCategoryService>();
+            context.Services.AddTransient<IPageControlDataService, PageControlDataService>();
+            context.Services.AddTransient<IPageControlService, PageControlService>();
+            context.Services.AddTransient<IPageEntityService, PageEntityService>();
+            context.Services.AddTransient<IPageParameterDataService, PageParameterDataService>();
             context.Services.AddTransient<IPagesDataService, PagesDataService>();
             context.Services.AddTransient<ITenantService, TenantsService>();
-            context.Services.AddTransient<IUserDataService, UIUserDataService>();
-            context.Services.AddTransient<IUserDataService, UserDataService>();
-            context.Services.AddTransient<MoldsterLookupService>();
 
+            context.Services.AddTransient<ICacheProvider, MemoryCacheProvider>();
+            context.Services.AddTransient<IAuthorizationService, UIAuthorizationService>();
+            context.Services.AddTransient<IUserDataService, UIUserDataService>();
+
+            context.Services.AddLookupsService<MoldsterLookupService, IMoldsterLookupService>();
+            context.Services.AddAutoMapper(typeof(MoldsterApplicationModule).Assembly);
         }
 
 

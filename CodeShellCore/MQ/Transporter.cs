@@ -10,37 +10,37 @@ namespace CodeShellCore.MQ
 
         static Transporter()
         {
-            Bus = Shell.RootInjector.GetRequiredService<IServiceBus>();
+            Bus = Shell.RootInjector?.GetRequiredService<IServiceBus>();
         }
 
         public static void Publish(object ob, Type t = null)
         {
-            Bus.Publish(ob, t ?? ob.GetType());
+            Bus?.Publish(ob, t ?? ob.GetType());
         }
 
         public static void Publish<T>(T ob, Type t = null)
         {
-            Bus.Publish(ob, t ?? typeof(T));
+            Bus?.Publish(ob, t ?? typeof(T));
         }
 
         public static Task PublishAsync(object ob, Type t = null)
         {
-            return Bus.PublisAsync(ob, t ?? ob.GetType());
+            return Bus?.PublisAsync(ob, t ?? ob.GetType());
         }
 
         public static Task PublishAsync<T>(T ob, Type t = null)
         {
-            return Bus.PublisAsync(ob, t ?? typeof(T));
+            return Bus?.PublisAsync(ob, t ?? typeof(T));
         }
 
         public static void Start()
         {
-            Bus.Start();
+            Bus?.Start();
         }
 
         public static void Exit()
         {
-            Bus.Exit();
+            Bus?.Exit();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using CodeShellCore.Data.Helpers;
 using CodeShellCore.Helpers;
 using CodeShellCore.Services;
@@ -31,9 +32,9 @@ namespace CodeShellCore.Data.Localization
             this.unit = unit;
             _lang = lang;
         }
-        public Dictionary<string, LocalizablesData> GetDataFor<TEntity>(object Id) where TEntity : class
+        public async Task<Dictionary<string, LocalizablesData>> GetDataFor<TEntity>(object Id) where TEntity : class
         {
-            return GetDataFor(typeof(TEntity), Id);
+            return await GetDataFor(typeof(TEntity), Id);
         }
 
         string ConvertLangintToStr(int lang)
@@ -47,15 +48,15 @@ namespace CodeShellCore.Data.Localization
         {
             return AllCulturelanguage.Where(s => s.Value.Equals(lang)).Select(s => s.Key).FirstOrDefault();
         }
-        public SubmitResult SetDataFor<TEntity>(object id, Dictionary<string, LocalizablesData> dto) where TEntity : class
+        public async Task<SubmitResult> SetDataFor<TEntity>(object id, Dictionary<string, LocalizablesData> dto) where TEntity : class
         {
-            return SetDataFor(typeof(TEntity), id, dto);
+            return await SetDataFor(typeof(TEntity), id, dto);
         }
 
-        public Dictionary<string, LocalizablesData> GetDataFor(Type t, object Id)
+        public async Task<Dictionary<string, LocalizablesData>> GetDataFor(Type t, object Id)
         {
             Dictionary<string, LocalizablesData> res = new Dictionary<string, LocalizablesData>();
-            var dat = _Loc.Get(t.Name, Id, AllCulturelanguage.Keys);
+            var dat = await _Loc.Get(t.Name, Id, AllCulturelanguage.Keys);
 
             res = dat.ToDictionary(
                 group => ConvertLangintToStr(group.LocaleId),
@@ -73,12 +74,12 @@ namespace CodeShellCore.Data.Localization
             return res;
         }
 
-        public virtual SubmitResult SetDataFor(Type type, object id, Dictionary<string, LocalizablesData> dto)
+        public virtual async Task<SubmitResult> SetDataFor(Type type, object id, Dictionary<string, LocalizablesData> dto)
         {
-            return SetDataFor(type.Name, id, dto);
+            return await SetDataFor(type.Name, id, dto);
         }
 
-        public virtual SubmitResult SetDataFor(string type, object id, Dictionary<string, LocalizablesData> dto)
+        public virtual async Task<SubmitResult> SetDataFor(string type, object id, Dictionary<string, LocalizablesData> dto)
         {
             foreach (var item in dto)
             {
@@ -96,9 +97,9 @@ namespace CodeShellCore.Data.Localization
                     sj.Add(s);
                 }
 
-                _Loc.Apply(type, id, ConvertLangStrToInt(item.Key), sj);
+                await _Loc.Apply(type, id, ConvertLangStrToInt(item.Key), sj);
             }
-            return unit.SaveChanges();
+            return await unit.SaveChangesAsync();
         }
     }
 }

@@ -6,10 +6,11 @@ using System.Text;
 using System.Linq;
 using CodeShellCore.Moldster.Environments;
 using CodeShellCore.Moldster.PageCategories;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster
 {
-    public class DefaultPathsService : IPathsService,ILayoutsService
+    public class DefaultPathsService : IPathsService, ILayoutsService
     {
         private string _filePath;
         public virtual string CoreAppName { get; private set; }
@@ -39,10 +40,10 @@ namespace CodeShellCore.Moldster
 
         }
 
-        public List<MoldsterEnvironment> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs)
+        public async Task<List<MoldsterEnvironment>> UpdateEnvironments(IEnumerable<MoldsterEnvironment> envs)
         {
             var json = envs.ToJsonIndent();
-            File.WriteAllText(_filePath, json);
+            await File.WriteAllTextAsync(_filePath, json);
             return envs.ToList();
         }
 

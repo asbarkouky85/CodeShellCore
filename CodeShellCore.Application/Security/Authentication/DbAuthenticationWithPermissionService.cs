@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Security.Authorization;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Security.Authentication
 {
@@ -11,17 +12,17 @@ namespace CodeShellCore.Security.Authentication
             UserData = data;
         }
 
-        protected override void OnLoginAttempt(IUser user)
+        protected override async Task OnLoginAttempt(IUser user)
         {
             if (user != null)
             {
                 if (user is IAuthorizableUser)
                 {
                     var authUser = (IAuthorizableUser)user;
-                    authUser.Permissions = UserData.GetRolesPermissions(authUser.Roles);
+                    authUser.Permissions = await UserData.GetRolesPermissions(authUser.Roles);
                 }
                 if (user is IEntityLinkedUser)
-                    ((IEntityLinkedUser)user).EntityLinks = SecurityUnit.UsersEntityLinkRepository.GetUserLinks(user.UserId);
+                    ((IEntityLinkedUser)user).EntityLinks = await SecurityUnit.UsersEntityLinkRepository.GetUserLinks(user.UserId);
             }
         }
     }

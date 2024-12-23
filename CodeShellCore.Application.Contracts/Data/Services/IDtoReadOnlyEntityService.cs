@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Services
 {
@@ -7,8 +8,8 @@ namespace CodeShellCore.Data.Services
         where TListDto : class
         where TOptionsDto : PagedListRequestDto
     {
-        PagedResult<TListDto> Get(TOptionsDto options);
-        TGetDto GetSingle(TPrime id);
-        bool IsUnique(IsUniqueDto dto);
+        Task<PagedResult<TListDto>> Get(TOptionsDto options);
+        Task<TGetDto> GetSingle(TPrime id);
+        Task<bool> IsUnique(IsUniqueDto dto);
     }
 }

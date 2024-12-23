@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Tenants
 {
@@ -18,14 +19,14 @@ namespace CodeShellCore.Moldster.Tenants
         protected IMoldProvider Molds => Store.GetRequiredService<IMoldProvider>();
         protected IPathsService Paths => Store.GetRequiredService<IPathsService>();
         protected INamingConventionService Names => Store.GetRequiredService<INamingConventionService>();
-        protected IConfigUnit _unit => Store.GetRequiredService<IConfigUnit>();
+        protected IMoldsterUnit _unit => Store.GetRequiredService<IMoldsterUnit>();
 
         public TenantScriptGenerationService(IServiceProvider provider, IOptions<MoldsterModuleOptions> opts) : base(provider, opts)
         {
 
         }
 
-        public virtual Result AddAngularJson(string tenant)
+        public virtual async Task<Result> AddAngularJson(string tenant)
         {
             var angularJsonPath = Path.Combine(Paths.UIRoot, "angular.json");
 
@@ -36,12 +37,12 @@ namespace CodeShellCore.Moldster.Tenants
                 var angularJsonConent = Writer.FillStringParameters(Molds.GetResourceByNameAsString(MoldNames.Angular_json), new AngularJsonModel { Projects = $"\"{ten}\":" + tenantConfig.Trim(), DefaultProject = ten });
                 Utils.CreateFolderForFile(angularJsonPath);
                 var str = Encoding.UTF8.GetBytes(angularJsonConent);
-                File.WriteAllBytes(angularJsonPath, str);
+                await File.WriteAllBytesAsync(angularJsonPath, str);
             }
             return new Result();
         }
 
-        public virtual void GenerateMainFile(string tenantCode, bool addStyle = false)
+        public virtual async Task GenerateMainFile(string tenantCode, bool addStyle = false)
         {
             string bootPath = Names.GetSrcFolderPath("main-" + Names.ApplyConvension(tenantCode, AppParts.Project), ".ts", keepNameformat: true);
             string pollyPath = Names.GetSrcFolderPath("polyfills");
@@ -56,7 +57,7 @@ namespace CodeShellCore.Moldster.Tenants
                 {
                     Code = Names.ApplyConvension(tenantCode, AppParts.Route),
                     ModulePath = Names.ApplyConvension(tenantCode + "/app", AppParts.Route),
-                    OtherTenants = _unit.TenantRepository.Exist(e => e.Code != tenantCode)
+                    OtherTenants = await _unit.TenantRepository.Exist(e => e.Code != tenantCode)
                 });
                 File.WriteAllText(bootPath, boot);
                 WriteSuccess();
@@ -67,7 +68,7 @@ namespace CodeShellCore.Moldster.Tenants
             {
                 Out.Write("Generating polyfills.ts...  \t\t\t");
                 string pollyTemplate = Molds.GetResourceByNameAsString(MoldNames.Pollyfills_ts);
-                File.WriteAllText(pollyPath, pollyTemplate);
+                await File.WriteAllTextAsync(pollyPath, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
             }
@@ -76,7 +77,7 @@ namespace CodeShellCore.Moldster.Tenants
             {
                 Out.Write("Generating index.html...  \t\t\t");
                 string pollyTemplate = Molds.GetResourceByNameAsString(MoldNames.Index_html);
-                File.WriteAllText(indexPath, pollyTemplate);
+                await File.WriteAllTextAsync(indexPath, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
             }
@@ -85,13 +86,13 @@ namespace CodeShellCore.Moldster.Tenants
             {
                 Out.Write("Generating declarations.d.ts...  \t\t\t");
                 string pollyTemplate = Molds.GetResourceByNameAsString(MoldNames.Declarations_d);
-                File.WriteAllText(dec, pollyTemplate);
+                await File.WriteAllTextAsync(dec, pollyTemplate);
                 WriteSuccess();
                 Out.WriteLine();
             }
         }
 
-        public virtual void GenerateAppModule(string tenantCode)
+        public virtual async Task GenerateAppModule(string tenantCode)
         {
             string moduleName = tenantCode + "Module";
             string modulePath = Names.GetModuleFilePath(tenantCode, "app", createFolder: false) + ".ts";
@@ -107,8 +108,8 @@ namespace CodeShellCore.Moldster.Tenants
             }
 
 
-            var version = _unit.TenantRepository.GetSingleValue(d => d.Version, d => d.Code == tenantCode);
-            var otherTen = _unit.TenantRepository.Exist(e => e.Code != tenantCode);
+            var version = await _unit.TenantRepository.GetSingleValue(d => d.Version, d => d.Code == tenantCode);
+            var otherTen = await _unit.TenantRepository.Exist(e => e.Code != tenantCode);
             var tempModel = new ModuleTsModel
             {
                 Code = "App",
@@ -124,7 +125,7 @@ namespace CodeShellCore.Moldster.Tenants
                 BaseHref = otherTen ? "{ provide: APP_BASE_HREF, useValue: '/" + Names.ApplyConvension(tenantCode, AppParts.Route) + "'}" : ""
             };
 
-            var homePage = _unit.PageRepository.GetHomePagePath(tenantCode);
+            var homePage = await _unit.PageRepository.GetHomePagePath(tenantCode);
             if (homePage != null)
             {
                 var name = homePage.GetAfterLast("/");
@@ -141,19 +142,19 @@ namespace CodeShellCore.Moldster.Tenants
             Out.WriteLine();
         }
 
-        public virtual AngularJsonFile ReadAngularJsonFile()
+        public virtual async Task<AngularJsonFile> ReadAngularJsonFile()
         {
             var angularJsonPath = Path.Combine(Paths.UIRoot, "angular.json");
-            var txt = File.ReadAllText(angularJsonPath);
+            var txt = await File.ReadAllTextAsync(angularJsonPath);
             var ob = JObject.Parse(txt);
             return new AngularJsonFile(ob);
         }
 
-        public virtual void UpdateAngularJsonFromDatabase()
+        public virtual async Task UpdateAngularJsonFromDatabase()
         {
-            var dbTenants = _unit.TenantRepository.FindAs(e => new { e.Code, e.IsActive });
+            var dbTenants = await _unit.TenantRepository.FindAs(e => new { e.Code, e.IsActive });
 
-            var angularTenants = ReadAngularJsonFile();
+            var angularTenants = await ReadAngularJsonFile();
 
             foreach (var t in dbTenants)
             {

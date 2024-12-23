@@ -3,12 +3,13 @@ using CodeShellCore.Moldster.Pages.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Moldster.Pages
 {
     public interface IPageRouteRepository : IRepository<PageRoute>
     {
-        IEnumerable<PageRouteView> FindForJson(long tenantId, long? categoryId = null);
-        PageRouteView FindByPage(long id);
+        Task<IEnumerable<PageRouteView>> FindForJson(long tenantId, long? categoryId = null);
+        Task<PageRouteView> FindByPage(long id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Linq;
+using System.Threading.Tasks;
 
 namespace CodeShellCore.Data.Services
 {
@@ -6,6 +7,6 @@ namespace CodeShellCore.Data.Services
         where TListDto : class
         where TOptionsDto : PagedListRequestDto
     {
-        PagedResult<TListDto> GetCollection(string id, TOptionsDto options);
+        Task<PagedResult<TListDto>> GetCollection(string id, TOptionsDto options);
     }
 }
