@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.Notifications.Devices
@@ -15,7 +16,7 @@ namespace CodeShellCore.Notifications.Devices
             Context = con;
         }
 
-        public virtual void Emit(Func<TContract, Task> action, string[] only = null, string[] exclude = null)
+        public virtual void Emit(Expression<Func<TContract, Task>> action, string[] only = null, string[] exclude = null)
         {
             var cl = Context.Clients.All;
 
@@ -24,8 +25,20 @@ namespace CodeShellCore.Notifications.Devices
             else if (exclude != null)
                 cl = Context.Clients.AllExcept(exclude);
 
-            var t = action(cl);
+            var t = action.Compile().Invoke(cl);
             t.Wait();
+        }
+
+        public virtual async Task EmitAsync(Expression<Func<TContract, Task>> action, string[] only = null, string[] exclude = null)
+        {
+            var cl = Context.Clients.All;
+
+            if (only != null)
+                cl = Context.Clients.Clients(only);
+            else if (exclude != null)
+                cl = Context.Clients.AllExcept(exclude);
+
+            await action.Compile().Invoke(cl);
         }
     }
 }

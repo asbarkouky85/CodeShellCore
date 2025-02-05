@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Files;
+using CodeShellCore.Files.Logging;
 using CodeShellCore.Helpers;
 using System;
 using System.Collections.Generic;
@@ -70,6 +71,8 @@ namespace CodeShellCore.Services.Email
             {
                 var res = new Result(1);
                 res.SetException(ex);
+                Logger.WriteLine($"Sending email failed [mail:{mail.To}] [subject:{mail.Subject}]");
+                Logger.WriteException(ex);
                 return res;
             }
         }

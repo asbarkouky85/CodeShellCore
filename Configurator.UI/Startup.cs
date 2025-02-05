@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Configurator.UI
 {
-    public class Startup : ShellStartup<UIShell>
+    public class Startup : WebModuleStartup<ConfiguratorUiModule>
     {
         public Startup(IConfiguration configuration) : base(configuration)
         {

@@ -45,7 +45,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Web.Razor\CodeShellCore.Web.Razor.csproj" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <Content Update="ShellComponents\Angular\Containers\Cell.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

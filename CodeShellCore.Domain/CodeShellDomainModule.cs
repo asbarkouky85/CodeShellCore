@@ -2,6 +2,7 @@
 using CodeShellCore.Data;
 using CodeShellCore.Data.ConfiguredCollections;
 using CodeShellCore.Modularity;
+using CodeShellCore.Notifications;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore
@@ -14,6 +15,7 @@ namespace CodeShellCore
             context.Services.AddTransient<IOutputWriter, ConsoleOutputWriter>();
             context.Services.AddSingleton<ICollectionConfigService, CollectionConfigService>();
             context.Services.AddTransient<IUnitOfWork, DefaultUnitOfWork>();
+            context.Services.AddTransient<INotificationAttachmentStorage, DefaultNotificationAttachmentStorage>();
         }
     }
 }

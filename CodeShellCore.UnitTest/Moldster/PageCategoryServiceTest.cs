@@ -1,0 +1,59 @@
+﻿using CodeShellCore.Files;
+using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.PageCategories;
+using CodeShellCore.UnitTest.Data;
+using CodeShellCore.Web.Razor;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using NUnit.Framework;
+using System.Threading.Tasks;
+
+namespace CodeShellCore.UnitTest.Moldster
+{
+    [TestFixture]
+    public class PageCategoryServiceTest : UnitTestClass
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            Shell.Start(new UnitTestShell(coll =>
+            {
+                coll.Services.AddScoped<MoldsterDataInit>();
+            }));
+            RunOnce(sc => sc.GetService<MoldsterDataInit>().InitilizeDomains());
+        }
+
+
+
+        [Test]
+        [TestCase("Auth/Users/UserList", 1)]
+        [TestCase("Auth/Roles/RoleList", 2)]
+        public async Task Create_Cases(string viewPath, int rows)
+        {
+            await RunScopedAsync(async sc =>
+            {
+                PageCategoryDto cat = new PageCategoryDto
+                {
+                    Name = "",
+                    ViewPath = viewPath,
+                    ResourceName = "Users",
+                    BaseComponent = "Edit"
+                };
+
+                var fileMock = new Mock<IFileHandler>();
+                fileMock.Setup(d => d.Exists(".\\Views\\" + viewPath + ".cshtml")).Returns(true);
+                var unit = sc.GetService<IMoldsterUnit>();
+                var service = new PageCategoryService(unit, fileMock.Object, new DefaultPathsService());
+                var res = await service.Post(cat);
+                var pageCatId = res.Result.Id;
+                var pageCategory = unit.PageCategoryRepository.FindSingle(pageCatId);
+
+                Assert.AreEqual(rows, res.AffectedRows);
+                Assert.AreNotEqual(cat.DomainId, null);
+                //Assert.That(viewPath.Contains(cat.Domain.Name), "view path doesn't contain domain name");
+            });
+
+        }
+    }
+}

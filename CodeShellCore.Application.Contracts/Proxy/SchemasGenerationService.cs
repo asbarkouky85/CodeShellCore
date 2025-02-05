@@ -29,6 +29,7 @@ namespace CodeShellCore.Proxy
                         data = new ProxyServiceFile { Namespace = pair.Value.Namespace };
                         proxyFiles[path] = data;
                     }
+                    data.Name = pair.Key;
                     data.Content = _service.GenerateService(pair.Key, pair.Value);
                     data.Importations = _service.ExtractDependencies(pair.Value, new Dictionary<string, PropertyDto>());
                 }
@@ -109,6 +110,7 @@ import { Observable } from ""rxjs"";
                     var fullPath = Utils.CombineUrl(targetFolder, pair.Key);
                     Utils.CreateFolderForFile(fullPath);
                     File.WriteAllText(fullPath, content);
+                    Console.WriteLine($"Models [{pair.Key}]");
                 }
             });
         }
@@ -117,12 +119,14 @@ import { Observable } from ""rxjs"";
         {
             return Task.Run(() =>
             {
+                var index = new List<string>();
                 foreach (var pair in files)
                 {
                     var content = _generateServiceFile(pair.Value);
                     var fullPath = Utils.CombineUrl(targetFolder, pair.Key);
                     Utils.CreateFolderForFile(fullPath);
                     File.WriteAllText(fullPath, content);
+                    Console.WriteLine($"Service [{pair.Key}]");
                 }
             });
         }

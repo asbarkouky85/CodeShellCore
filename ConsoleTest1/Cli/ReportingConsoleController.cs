@@ -1,9 +1,7 @@
 ﻿using CodeShellCore.Cli;
-using CodeShellCore.Files.Reporting;
+using CodeShellCore.Reporting;
 using ExampleProject.Commander.Services;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleTest1
 {

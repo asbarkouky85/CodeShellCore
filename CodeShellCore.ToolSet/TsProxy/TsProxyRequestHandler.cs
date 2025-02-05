@@ -31,6 +31,7 @@ namespace CodeShellCore.ToolSet.TsProxy
             var service = GetService<ISchemasGenerationService>();
 
             service.ClearProxyFolder(request.TargetFolder);
+            Console.WriteLine($"Generating Proxy from {request.ApiUrl} into {request.TargetFolder}");
             await service.GenerateSchemas(data.Schemas, request.TargetFolder);
             await service.GenerateProxyServices(data.Modules, request.TargetFolder);
             return new Result();

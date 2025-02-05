@@ -7,6 +7,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\CodeShellCore.Notifications.Domain.Shared\CodeShellCore.Notifications.Domain.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

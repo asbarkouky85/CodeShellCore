@@ -1,0 +1,6 @@
+﻿using CodeShellCore.EntityFramework;using CodeShellCore.Notifications.Devices;using CodeShellCore.Notifications.Providers;using CodeShellCore.Notifications.Types;using CodeShellCore.Notifications.Users;using Microsoft.EntityFrameworkCore;namespace CodeShellCore.Notifications{    public partial class NotificationsContext : CodeShellDbContext<NotificationsContext>, IDevicesDbContext    {        public NotificationsContext(DbContextOptions<NotificationsContext> options)            : base(options)        {        }        public virtual DbSet<Notification> Notifications { get; set; }        public virtual DbSet<User> Users { get; set; }
+        public DbSet<UserDevice> UserDevices { get; set; }
+
+        //public virtual DbSet<UserDevice> UserDevices { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)        {            modelBuilder.ConfigureCodeShellDevices(null, "Note");            modelBuilder.ConfigureCodeShellNotifications(null, "Note");            modelBuilder.ConfigureCodeShellNotificationTypes(null, "Note");            modelBuilder.ConfigureCodeShellNotificationProviders(null, "Note");        }    }}

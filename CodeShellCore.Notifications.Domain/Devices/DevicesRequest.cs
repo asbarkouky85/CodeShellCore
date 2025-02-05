@@ -8,6 +8,7 @@ namespace CodeShellCore.Notifications.Devices
     {
         public IEnumerable<long> UserIds { get; set; }
         public long? UserId { get; set; }
-        public DeviceTypes? DeviceType { get; set; }
+        public NotificationProviders? DeviceType { get; set; }
+        public bool LoggedInDevicesOnly { get; set; } = true;
     }
 }

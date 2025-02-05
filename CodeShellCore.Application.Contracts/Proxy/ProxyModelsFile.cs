@@ -11,6 +11,7 @@ namespace CodeShellCore.Proxy
 
     public class ProxyServiceFile
     {
+        public string Name { get; set; }
         public string Namespace { get; set; }
         public Dictionary<string, PropertyDto> Importations { get; set; } = new Dictionary<string, PropertyDto>();
         public string Content { get; set; }

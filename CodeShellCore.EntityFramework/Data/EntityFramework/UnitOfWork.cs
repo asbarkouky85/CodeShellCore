@@ -192,7 +192,7 @@ namespace CodeShellCore.Data.EntityFramework
                 return;
             long? userId = _provider.GetCurrentUser()?.GetUserIdAsLong();
 
-            foreach (IChangeColumns mod in lst.Added)
+            foreach (IAudited mod in lst.Added)
             {
                 if (userId != null)
                 {
@@ -204,7 +204,7 @@ namespace CodeShellCore.Data.EntityFramework
                 mod.UpdatedOn = DateTime.Now;
             }
 
-            foreach (IChangeColumns mod in lst.Updated)
+            foreach (IAudited mod in lst.Updated)
             {
                 if (userId != null)
                     mod.UpdatedBy = userId;

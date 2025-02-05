@@ -14,7 +14,7 @@ namespace CodeShellCore.Data.Services
     {
         protected T Unit { get; private set; }
         protected IObjectMapper Mapper { get; private set; }
-        protected InstanceStore Store;
+        protected InstanceStore Store { get; private set; }
         protected ILocaleTextProvider Strings => Store.GetRequiredService<ILocaleTextProvider>();
         public DataService(T unit)
         {

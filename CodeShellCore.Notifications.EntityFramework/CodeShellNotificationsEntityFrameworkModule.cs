@@ -1,12 +1,7 @@
-﻿using Codeshell.Abp.EntityFrameworkCore.Devices;
+﻿using CodeShellCore.Extensions.DependencyInjection;
 using CodeShellCore.Modularity;
-using CodeShellCore.Notifications.Devices;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CodeShellCore.Notifications.Types;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeShellCore.Notifications
 {
@@ -14,6 +9,15 @@ namespace CodeShellCore.Notifications
         typeof(CodeShellNotificationsDomainModule))]
     public class CodeShellNotificationsEntityFrameworkModule : CodeShellModule
     {
+        public override void RegisterServices(CodeshellAppContext context)
+        {
+            context.Services.AddScoped<NotificationsUnit>();
+            context.Services.AddScoped<INotificationsUnit, NotificationsUnit>();
 
+            context.Services.AddRepositoryFor<Notification, NotificationRepository, INotificationRepository>();
+            context.Services.AddRepositoryFor<NotificationType, NotificationTypeRepository, INotificationTypeRepository>();
+            context.Services.AddMultiTenantDbMigrationsService<NotificationsDbMigrationService>();
+            context.Services.AddCodeShellNotificationsEntityFramework<NotificationsContext>();
+        }
     }
 }

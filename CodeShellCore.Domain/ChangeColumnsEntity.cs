@@ -8,7 +8,7 @@ using System.Text;
 namespace CodeShellCore
 {
 
-    public class ChangeColumnsEntity<TPrime> : Entity<TPrime>, IChangeColumns
+    public class ChangeColumnsEntity<TPrime> : Entity<TPrime>, IAudited
     {
         [Column(TypeName = "datetime")]
         public DateTime? CreatedOn { get; set; }

@@ -1,5 +1,7 @@
 ﻿
 using CodeShellCore.Data.Mapping;
+using CodeShellCore.Security;
+using CodeShellCore.Text.Localization;
 using CodeShellCore.Types;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,7 +12,8 @@ namespace CodeShellCore.Services
     {
         protected IObjectMapper Mapper { get; private set; }
         protected InstanceStore Store { get; private set; }
-
+        protected IUserAccessor UserAccessor => Store.GetRequiredService<IUserAccessor>();
+        protected Language Language => Store.GetRequiredService<Language>();
         public ApplicationService(IServiceProvider provider)
         {
             Store = new InstanceStore(provider);

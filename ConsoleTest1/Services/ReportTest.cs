@@ -1,7 +1,5 @@
-﻿using CodeShellCore.Files.Reporting;
-using System;
+﻿using CodeShellCore.Reporting;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ExampleProject.Commander.Services
 {

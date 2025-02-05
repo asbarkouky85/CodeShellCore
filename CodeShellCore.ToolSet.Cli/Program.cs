@@ -1,7 +1,9 @@
 ﻿using CodeShellCore.Extensions.Hosting;
+using CodeShellCore.Files.Logging;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace CodeShellCore.ToolSet
 {
@@ -11,7 +13,7 @@ namespace CodeShellCore.ToolSet
         {
             if (Debugger.IsAttached)
             {
-                var testing = FunctionTypes.ReplaceParameters;
+                var testing = FunctionTypes.Proxy;
 
                 switch (testing)
                 {
@@ -69,9 +71,16 @@ namespace CodeShellCore.ToolSet
                         break;
                 }
             }
-            
-            BuildConsoleHost(args).Run();
 
+            Logger.Set(Assembly.GetEntryAssembly().GetName().Name, "Application");
+            try
+            {
+                BuildHost(args).Run();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteException(ex);
+            }
             if (Debugger.IsAttached)
             {
                 Console.WriteLine(args[0] + " Complete");
@@ -79,7 +88,7 @@ namespace CodeShellCore.ToolSet
             }
         }
 
-        public static IHost BuildConsoleHost(string[] args) =>
+        public static IHost BuildHost(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseModule<ToolSetCliModule>(args)
                 .Build();

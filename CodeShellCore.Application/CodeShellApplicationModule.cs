@@ -6,7 +6,6 @@ using CodeShellCore.Files;
 using CodeShellCore.Files.Uploads;
 using CodeShellCore.Http;
 using CodeShellCore.Localization;
-using CodeShellCore.Locatization;
 using CodeShellCore.Modularity;
 using CodeShellCore.MultiTenant;
 using CodeShellCore.Proxy;

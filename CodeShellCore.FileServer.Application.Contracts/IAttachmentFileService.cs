@@ -6,17 +6,10 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.FileServer
 {
-    public interface IInternalAttachmentFileService
-    {
-        Task<FileBytes> GetBytes(string id);
-        Task<FileBytes> GetTempBytes(string path);
-        Task<UploadResult> Upload(UploadRequestDto dto);
-        Task<UploadResult> UploadAndSave(UploadRequestDto req);
-    }
 
-    public interface IAttachmentFileService 
+    public interface IAttachmentFileService
     {
-        
+        Task<UploadResult> UploadBase64(UploadBase64RequestDto dto);
         Task<TempFileDto> ChunkUpload(ChunkUploadRequestDto dto);
         Task<SubmitResult> ValidateFile(FileValidationRequest req);
         Task<SubmitResult> SaveAttachment(SaveAttachmentRequestDto req);

@@ -13,7 +13,7 @@ namespace CodeShellCore.CliDispatch.Routing
     public abstract class CliRequestHandler<T> : ConsoleService, ICliRequestHandler where T : class
     {
         public abstract string FunctionDescription { get; }
-        private InstanceStore<object> _store;
+        protected InstanceStore<object> Store { get; private set; }
         protected IServiceProvider ServiceProvider { get; private set; }
         protected Dictionary<string, string> ExtraArgs { get; set; } = new Dictionary<string, string>();
 
@@ -22,17 +22,17 @@ namespace CodeShellCore.CliDispatch.Routing
         {
             ServiceProvider = provider;
             Out = provider.GetRequiredService<IOutputWriter>();
-            _store = new InstanceStore<object>(provider);
+            Store = new InstanceStore<object>(provider);
         }
 
         protected TService GetService<TService>() where TService : class
         {
-            return _store.GetInstance<TService>();
+            return Store.GetInstance<TService>();
         }
 
         protected object GetService(Type t)
         {
-            return _store.GetInstance(t);
+            return Store.GetInstance(t);
         }
 
         protected abstract void Build(ICliRequestBuilder<T> builder);

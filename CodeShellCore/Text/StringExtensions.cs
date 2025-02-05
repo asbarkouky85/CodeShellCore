@@ -1,8 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using CodeShellCore.Types;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,6 +46,26 @@ namespace CodeShellCore.Text
             return sBuilder.ToString();
 
         }
+        public static Dictionary<string, string> ToDictionaryOfProperties(this object data)
+        {
+            PropertyInfo[] props = data.GetType().GetProperties();
+            var res = new Dictionary<string, string>();
+            foreach (PropertyInfo inf in props)
+            {
+                var val = inf.GetValue(data);
+                if (val != null && val.GetType().Implements(typeof(IDictionary)))
+                {
+                    res[inf.Name] = val.ToJson();
+                }
+                else
+                {
+                    res[inf.Name] = inf.GetValue(data)?.ToString();
+
+                }
+            }
+            return res;
+        }
+
 
         /// <summary>
         /// Serializes object to json string

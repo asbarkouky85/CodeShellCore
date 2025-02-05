@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
 using CodeShellCore.Data;
+using System.Text.Json.Serialization;
 
 namespace CodeShellCore.Web.Proxy
 {
@@ -68,13 +69,18 @@ namespace CodeShellCore.Web.Proxy
             if (type.Implements(typeof(IEditable)))
                 dto.IsDetail = true;
 
+
+
             foreach (var prop in props)
             {
-                var schemaProp = new PropertyDto();
-                _fillType(schemaProp, prop.PropertyType, false);
-                if (prop.Name == "Id")
-                    schemaProp.Nullable = false;
-                dto.Properties[prop.Name] = schemaProp;
+                if (!prop.CustomAttributes.Any(e => e.AttributeType == typeof(JsonIgnoreAttribute)))
+                {
+                    var schemaProp = new PropertyDto();
+                    _fillType(schemaProp, prop.PropertyType, false);
+                    if (prop.Name == "Id")
+                        schemaProp.Nullable = false;
+                    dto.Properties[prop.Name] = schemaProp;
+                }
             }
         }
 

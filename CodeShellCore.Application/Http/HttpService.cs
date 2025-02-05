@@ -21,8 +21,6 @@ namespace CodeShellCore.Http
 {
     public abstract class HttpService : ServiceBase, IHttpService
     {
-        HttpClient Client;
-
         protected abstract string BaseUrl { get; }
         protected virtual object AppendToQuery { get; set; }
 
@@ -203,13 +201,15 @@ namespace CodeShellCore.Http
             if (AppendToQuery != null)
                 uri = AppendQuery(uri, AppendToQuery);
 
-            if (Headers.Count > 0)
-            {
-                foreach (var h in Headers)
-                    Client.DefaultRequestHeaders.TryAddWithoutValidation(h.Key, h.Value);
-            }
             SetSecurityProtocol();
             return uri;
+        }
+
+        protected async Task<HttpClient> GetClient()
+        {
+            var client = new HttpClient();
+            await ConfigureClient(client);
+            return client;
         }
 
         public HttpResponseMessage Post<T>(string url, T data, object query = null) where T : class
@@ -243,20 +243,65 @@ namespace CodeShellCore.Http
                 throw new CodeShellHttpException(res);
             else
             {
-                var tt = res.Content.ReadAsStringAsync();
-                Task.WaitAll(tt);
-                return tt.Result.FromJson<T>();
+                var content = await res.Content.ReadAsStringAsync();
+                return content.FromJson<T>();
             }
+        }
+
+        public async Task<T> PostUrlEncoded<T>(string url, object data, object query = null) where T : class
+        {
+            var res = await PostUrlEncodedAsync(url, data, query);
+
+            if (!res.IsSuccessStatusCode)
+                throw new CodeShellHttpException(res);
+            else
+            {
+                var content = await res.Content.ReadAsStringAsync();
+                return content.FromJson<T>();
+            }
+        }
+
+        protected virtual Task ConfigureClient(HttpClient client)
+        {
+            if (Headers.Count > 0)
+            {
+                foreach (var h in Headers)
+                    client.DefaultRequestHeaders.TryAddWithoutValidation(h.Key, h.Value);
+            }
+            return Task.CompletedTask;
         }
 
         public async Task<HttpResponseMessage> PostAsync<T>(string url, T data, object query = null) where T : class
         {
-            Client = new HttpClient();
-
+            var Client = new HttpClient();
+            await ConfigureClient(Client);
             Uri uri = GetUri(url, query);
 
             var st = data.ToJson();
             HttpResponseMessage res = await Client.PostAsync(uri, new StringContent(st, Encoding.UTF8, "application/json"));
+
+            if (res.IsSuccessStatusCode)
+            {
+                return res;
+            }
+            else
+            {
+                throw new CodeShellHttpException(res);
+            }
+
+        }
+
+
+        public async Task<HttpResponseMessage> PostUrlEncodedAsync(string url, object data, object query = null)
+        {
+            var Client = new HttpClient();
+            await ConfigureClient(Client);
+            Uri uri = GetUri(url, query);
+
+            var c = data.ToDictionaryOfProperties();
+            var content = new FormUrlEncodedContent(c);
+
+            HttpResponseMessage res = await Client.PostAsync(uri, content);
 
             if (res.IsSuccessStatusCode)
             {
@@ -310,8 +355,8 @@ namespace CodeShellCore.Http
 
         public async Task<HttpResponseMessage> GetAsync(string url, object query = null)
         {
-            Client = new HttpClient();
-
+            var Client = new HttpClient();
+            await ConfigureClient(Client);
             Uri uri = GetUri(url, query);
 
             try
@@ -387,7 +432,8 @@ namespace CodeShellCore.Http
 
         public async Task<HttpResponseMessage> UploadFiles(string url, IEnumerable<FileData> files, object query = null)
         {
-            Client = new HttpClient();
+            var Client = new HttpClient();
+            await ConfigureClient(Client);
             Uri uri = GetUri(url, query);
 
             try

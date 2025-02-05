@@ -11,7 +11,7 @@ namespace CodeShellCore
         public bool UseMultiTenancy { get; set; } = false;
         public bool UseJobs { get; set; } = false;
         public bool UseTransporter { get; set; } = false;
-        public string DefaultCulture { get; set; } = "en-US";
+        public string DefaultCulture { get; set; } = "ar-EG";
         public IEnumerable<string> SupportedLanguages { get; set; } = new List<string> { "ar", "en" };
         public string LocalizationAssembly { get; set; }
         public string PublicRoot { get; set; } = "wwwroot";

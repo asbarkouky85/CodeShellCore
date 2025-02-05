@@ -22,10 +22,14 @@ namespace CodeShellCore.MQ.RabbitMQ
 
         }
 
-        public override Task PublisAsync(object ob, Type t = null, CancellationToken? token = null)
+        public override async Task PublisAsync(object ob, Type t = null, CancellationToken? token = null)
         {
             t = t ?? ob.GetType();
-            return Control?.Publish(ob, t, token ?? CancellationToken.None);
+            var c = Control.CheckHealth();
+            if (c.Status == BusHealthStatus.Healthy)
+            {
+                await Control?.Publish(ob, t, token ?? CancellationToken.None);
+            }
         }
 
         public override void Start()

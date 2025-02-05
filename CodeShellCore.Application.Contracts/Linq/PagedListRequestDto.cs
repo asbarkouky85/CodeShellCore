@@ -2,6 +2,7 @@
 using CodeShellCore.Text;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace CodeShellCore.Linq
 {
@@ -42,6 +43,8 @@ namespace CodeShellCore.Linq
         /// </example>
         public string Filters { get; set; }
         private IEnumerable<PropertyFilterDto> _propertyFilters;
+
+        [JsonIgnore]
         public IEnumerable<PropertyFilterDto> PropertyFilters
         {
             get

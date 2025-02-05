@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Localization
 {
-    public class AbpSyncLanguagesRequestHandler : CliRequestHandler<AbpSyncLanguagesRequest>
+    public class AbpSyncLanguagesRequestHandler : CliRequestHandler<SyncLanguagesRequest>
     {
         public override string FunctionDescription => "Sycnronizes abp localization .json files";
 
@@ -19,7 +19,7 @@ namespace CodeShellCore.ToolSet.Localization
         {
         }
 
-        protected override void Build(ICliRequestBuilder<AbpSyncLanguagesRequest> builder)
+        protected override void Build(ICliRequestBuilder<SyncLanguagesRequest> builder)
         {
             builder.Property(e => e.MainDirectory, "folder", "d", 2, isRequired: true);
             builder.Property(e => e.LocalizationRoot, "project", "p", 1, isRequired: true);
@@ -27,7 +27,7 @@ namespace CodeShellCore.ToolSet.Localization
             builder.Property(e => e.Lang2, "lang2", "t");
         }
 
-        protected override Task<Result> HandleAsync(AbpSyncLanguagesRequest request)
+        protected override Task<Result> HandleAsync(SyncLanguagesRequest request)
         {
             var lang1 = request.Lang1 ?? "ar";
             var lang2 = request.Lang2 ?? "en";

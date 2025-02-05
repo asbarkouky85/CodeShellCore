@@ -98,5 +98,10 @@ namespace CodeShellCore.FileServer.Web.Controllers
             }
             return internalService.Upload(req);
         }
+
+        public async Task<UploadResult> UploadBase64(UploadBase64RequestDto dto)
+        {
+            return await service.UploadBase64(dto);
+        }
     }
 }

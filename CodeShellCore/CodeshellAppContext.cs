@@ -18,7 +18,5 @@ namespace CodeShellCore
             Configuration = conf;
             Arguments = args ?? new string[0];
         }
-
-
     }
 }

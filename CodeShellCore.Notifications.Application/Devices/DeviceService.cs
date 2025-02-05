@@ -26,7 +26,7 @@ namespace CodeShellCore.Notifications.Devices
             var dev = await Unit.UserDeviceRepository.GetByDeviceId(data.DeviceId);
             if (dev == null)
             {
-                dev = new UserDevice(data.DeviceId, data.UserId, data.TenantId, DeviceTypes.Browser);
+                dev = new UserDevice(data.DeviceId, data.UserId, data.TenantId, NotificationProviders.Browser);
                 await Unit.UserDeviceRepository.InsertAsync(dev);
             }
             dev.SetConnectionId(data.ConnectionId);

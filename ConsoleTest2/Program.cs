@@ -1,6 +1,5 @@
-﻿using CodeShellCore.Cli;
-using ConsoleTest2.Controllers;
-using System;
+﻿using CodeShellCore.Extensions.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace ConsoleTest2
 {
@@ -8,11 +7,12 @@ namespace ConsoleTest2
     {
         static void Main(string[] args)
         {
-            using (var s = new ConsoleTest2Shell())
-            {
-                ConsoleShell.Start<MainController>(s);
-            }
-
+            BuildHost(args).Run();
         }
+
+        public static IHost BuildHost(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseModule<ConsoleTest2Module>(args)
+                .Build();
     }
 }

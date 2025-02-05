@@ -14,6 +14,7 @@ namespace CodeShellCore.Data
         protected T Unit { get; private set; }
         protected InstanceStore Store;
         protected ILocaleTextProvider Strings => Store.GetRequiredService<ILocaleTextProvider>();
+        protected Language Language => Store.GetRequiredService<Language>();
         public DomainService(T unit)
         {
             Unit = unit;

@@ -18,6 +18,8 @@ namespace CodeShellCore.Notifications.Devices
 
         public virtual string UpdateConnectionData(SignalRDeviceDataDto data)
         {
+            var context = Context;
+            
             using (var sc = Shell.GetScope())
             {
                 if (data.TenantId != null)

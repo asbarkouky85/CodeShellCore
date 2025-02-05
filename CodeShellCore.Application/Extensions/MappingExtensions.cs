@@ -35,7 +35,7 @@ namespace AutoMapper
 
         public static IMappingExpression<TSource, TDestination> IgnoreAuditing<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression)
             where TSource : class
-            where TDestination : class, IChangeColumns
+            where TDestination : class, IAudited
         {
             return expression.ForMember(e => e.CreatedBy, e => e.Ignore())
                 .ForMember(e => e.CreatedOn, e => e.Ignore());

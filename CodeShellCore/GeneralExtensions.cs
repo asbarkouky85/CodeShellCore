@@ -56,9 +56,17 @@ namespace CodeShellCore
 
         }
 
+        public static string GetMessageAndStack(this Exception ex, bool ignorInvocationException = true)
+        {
+
+            var result = ex.GetMessageRecursive(ignorInvocationException);
+            result += ex.StackTrace;
+            return result;
+        }
+
         public static T GetSingletonInstanceOrNull<T>(this IServiceCollection services)
         {
-            
+
             var ins = services.FirstOrDefault(d => d.ServiceType == typeof(T));
             return (T)services
                 .FirstOrDefault(d => d.ServiceType == typeof(T))

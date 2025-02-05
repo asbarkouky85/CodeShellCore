@@ -1,14 +1,19 @@
-﻿using CodeShellCore.Cli;
+﻿using CodeShellCore.Extensions.Hosting;
 using ConsoleTest1;
-using System;
+using Microsoft.Extensions.Hosting;
 
-namespace ExampleProject.Commander
+namespace ConsoleTest1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            ConsoleShell.Start<MainController>(new ConsoleTest1Shell());
+            BuildHost(args).Run();
         }
+
+        public static IHost BuildHost(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseModule<ConsoleTest1Module>(args)
+                .Build();
     }
 }

@@ -2,6 +2,7 @@
 using CodeShellCore.Web.Controllers;
 using CodeShellCore.Web.Moldster.Configurator;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,8 +12,7 @@ namespace Configurator.UI.Controllers
     {
         public List<AppInfo> GetApps()
         {
-            var c = new ConfiguratorServerConfig();
-            return c.Apps.ToList();
+            throw new NotImplementedException();
         }
     }
 }

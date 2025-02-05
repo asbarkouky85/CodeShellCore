@@ -4,6 +4,7 @@ using CodeShellCore.Moldster.Pages;
 using CodeShellCore.MQ;
 using CodeShellCore.MQ.Events;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ConsoleTest1
 {
@@ -17,15 +18,15 @@ namespace ConsoleTest1
             { 4,"SendEvent" }
         };
 
-        public void Reporting()
+        public async Task Reporting()
         {
             var con = new ReportingConsoleController();
-            con.Run();
+            await con.Run();
         }
 
         public void Active()
         {
-            var unit = GetService<IConfigUnit>();
+            var unit = GetService<IMoldsterUnit>();
             var data = unit.PageRepository.GetDomainPagesForRouting<PageDetailsDto>("tenant_1", 2116407100007);
         }
 

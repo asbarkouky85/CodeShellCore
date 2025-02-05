@@ -1,4 +1,5 @@
 ﻿using CodeShellCore.Data.EntityFramework;
+using CodeShellCore.Notifications;
 using CodeShellCore.Notifications.Devices;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,8 +26,19 @@ namespace Codeshell.Abp.EntityFrameworkCore.Devices
         public virtual async Task<List<UserDevice>> GetDevices(DevicesRequest req)
         {
             var q = Loader;
+
+            if (req.LoggedInDevicesOnly)
+            {
+                q = q.Where(e => e.IsLoggedIn);
+            }
+
             if (req.DeviceType != null)
-                q = q.Where(w => w.DeviceTypeId == req.DeviceType && (w.IsLoggedIn || req.DeviceType != DeviceTypes.Mobile));
+            {
+                if (req.DeviceType == NotificationProviders.List)
+                    req.DeviceType = NotificationProviders.Browser;
+
+                q = q.Where(w => w.DeviceTypeId == req.DeviceType);
+            }
             if (req.UserId != null)
                 q = q.Where(e => e.UserId == req.UserId);
             if (req.UserIds != null)

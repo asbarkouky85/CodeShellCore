@@ -375,6 +375,54 @@ namespace CodeShellCore.FileServer
             };
         }
 
+        public async Task<UploadResult> UploadBase64(UploadBase64RequestDto dto)
+        {
+            var cat = await Unit.AttachmentCategoryRepository.FindAsync(dto.AttachmentTypeId);
+            var list = dto.Files.Select(e => e.GetFileInfo());
 
+            ValidateFiles(dto.AttachmentTypeId, cat, list);
+
+            List<TempFileDto> lst = new List<TempFileDto>();
+            var tmContainer = _containerFactory.GetContainer(cat.ContainerName);
+
+            foreach (var file in dto.Files)
+            {
+                try
+                {
+                    //if (!MagicNumbersData.ValidateMagic(file.Extension, file.Bytes))
+                    //{
+                    //    throw new Exception(Strings.Message("MSG__Content_does_not_match_a_{0}_file", file.Extension));
+                    //}
+                    var id = Utils.GenerateID();
+                    var tmp = new TempFile(id, dto.AttachmentTypeId, file.FileName);
+                    var blobName = cat.GenerateBlobName(tmp);
+                    var bytes = file.GetBytesOnce();
+                    tmp.SetFullPath(blobName);
+                    tmp.SetFileSize(bytes.Length);
+                    await tmContainer.SaveAsync(blobName, bytes);
+                    var tmpDto = new TempFileDto
+                    {
+                        FileTempPath = tmp.FullPath,
+                        FileName = file.FileName,
+                        AttachmentTypeId = dto.AttachmentTypeId,
+                        Id = id.ToString(),
+                        Size = bytes.Length
+                    };
+
+                    lst.Add(tmpDto);
+                    await Unit.TempFileRepository.InsertAsync(tmp);
+                }
+                catch
+                {
+
+                    throw;
+                }
+            }
+            await Unit.SaveChangesAsync();
+            return new UploadResult
+            {
+                Data = lst.ToArray()
+            };
+        }
     }
 }

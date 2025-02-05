@@ -1,24 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Version>5.2.0.0</Version>
-    <AssemblyName>CodeShellCore.Application</AssemblyName>
-    <AssemblyVersion>5.2.0.0</AssemblyVersion>
-    <FileVersion>5.2.0.0</FileVersion>
-    <RootNamespace>CodeShellCore</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<Import Project="..\common.props" />
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<AssemblyName>CodeShellCore.Application</AssemblyName>
+		<RootNamespace>CodeShellCore</RootNamespace>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
 
-  <ItemGroup>
-    <ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
-    <ProjectReference Include="..\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
-    <ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CodeShellCore.Application.Contracts\CodeShellCore.Application.Contracts.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Domain\CodeShellCore.Domain.csproj" />
+		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Http\Pushing\" />
+	</ItemGroup>
 
 </Project>

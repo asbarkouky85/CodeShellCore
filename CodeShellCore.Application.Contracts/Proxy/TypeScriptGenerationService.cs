@@ -306,7 +306,7 @@ namespace CodeShellCore.Proxy
                     }
 
                 }
-                paramLines.Add($"\t\tvar params = {{ {string.Join(", ", objectParams)} }};");
+                paramLines.Add($"\t\tvar params = this.cleanParams({{ {string.Join(", ", objectParams)} }});");
                 foreach (var dicLine in dictionaryParams)
                     paramLines.Add(dicLine);
             }

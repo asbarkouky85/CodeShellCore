@@ -21,15 +21,15 @@ namespace CodeShellCore
         private List<Type> _startedModules = new List<Type>();
         private List<Type> _closedModule = new List<Type>();
         private string[] _arguments;
+
         public CodeShellContainerBuilder(IConfiguration configuration, string[] args)
         {
+            Logger.Set(Shell.ProjectAssembly.GetName().Name, "Application");
             AppDomain.CurrentDomain.ProcessExit += (e, s) =>
             {
                 StopModule(typeof(TModule));
             };
 
-            Logger.Set(Shell.ProjectAssembly.GetName().Name, "Application");
-            Logger.WriteLine("Initializing");
             string envName = Shell.EnvironmentName == null ? "" : "-" + Shell.EnvironmentName;
             try
             {

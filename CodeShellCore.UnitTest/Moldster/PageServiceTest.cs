@@ -1,0 +1,81 @@
+﻿using CodeShellCore.Moldster;
+using CodeShellCore.Moldster.Pages;
+using CodeShellCore.UnitTest.Data;
+using CodeShellCore.Web.Razor;
+using CodeShellCore.Web.UnitTest;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CodeShellCore.UnitTest.Moldster
+{
+    public class PageServiceTest : UnitTestClass
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            Shell.Start(new UnitTestShell(coll =>
+            {
+                coll.Services.AddScoped<MoldsterDataInit>();
+                coll.Services.AddScoped<IHttpContextAccessor, TestHttpContextAccessor>();
+            }));
+            RunOnce(sc =>
+            {
+                var service = sc.GetService<MoldsterDataInit>();
+                service.InitilizeDomains();
+                service.InitializeTemplates();
+            });
+        }
+
+
+        [Test]
+        [TestCase("Main", "Auth/Users/UserCreate1", "Auth/Users/UserEdit", "Users", "insert", null, 1)]
+        [TestCase("Main", "Auth/Users/UserCreate2", "Auth/Users/UserEdit", "Users", "Kill", null, 2)]
+        [TestCase("Main", "Auth/Users/Modals/UserEditModal", "Auth/Users/UserEdit", "Users", "insert", null, 2)]
+        [TestCase("Main", "Auth/Users/UserDetails", "Auth/Users/UserEdit", "Users", "insert", "TopBar", 2)]
+        [TestCase("Main", "Auth/Users/UserInfo", "Auth/Users/UserEdit", "Users", "insert", "SideBar", 3)]
+        [TestCase("Main", "Auth/Users/UserInfo2", "Auth/Users/UserEdit", "Auth/Users", "insert", "SideBar", 3)]
+        [TestCase("Main", "Auth/Users/UserInfo3", "Auth/Users/UserEdit", "Admin/Users", "insert", "SideBar", 5)]
+        public async Task Create_Using(string tenant, string viewPath, string template, string resource, string actionType, string navGroup, int rows)
+        {
+            await RunScopedAsync(async p =>
+            {
+                CreatePageDTO dto = new CreatePageDTO
+                {
+                    TenantCode = tenant,
+                    ComponentPath = viewPath,
+                    TemplatePath = template,
+                    Resource = resource,
+                    ActionType = actionType,
+                    Usage = "R",
+                    NavigationGroup = navGroup,
+                    Apps = new[] { "Admin" }
+                };
+                var service = p.GetService<IPageEntityService>();
+                var unit = p.GetService<IMoldsterUnit>();
+                Page page = null;
+                unit.Saving += (u, lst) =>
+                {
+                    page = (Page)lst.Added.Where(d => d is Page).FirstOrDefault();
+                };
+                var res = await service.Post(dto);
+
+                var existingDomains = await unit.DomainRepository.GetValues(d => d.Id);
+                TestContext.WriteLine(res.Message);
+
+                Assert.AreEqual(rows, res.AffectedRows, "Affected rows is incorrect");
+                if (rows > 0)
+                {
+                    Assert.IsNotNull(page);
+                    Assert.AreEqual("\"Admin\"", page.Apps);
+                }
+
+
+            });
+
+        }
+    }
+}

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CodeShellCore
 {
-    public class AuditedEntity<TPrime> : Entity<TPrime>, IChangeColumns
+    public class AuditedEntity<TPrime> : Entity<TPrime>, IAudited
     {
         [Column(TypeName = "datetime")]
         public DateTime? CreatedOn { get; set; }
@@ -15,4 +15,6 @@ namespace CodeShellCore
         public long? CreatedBy { get; set; }
         public long? UpdatedBy { get; set; }
     }
+
+    
 }
