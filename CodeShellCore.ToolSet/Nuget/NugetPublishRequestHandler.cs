@@ -4,6 +4,7 @@ using CodeShellCore.Files.CsProject;
 using CodeShellCore.Helpers;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Nuget
@@ -40,7 +41,7 @@ namespace CodeShellCore.ToolSet.Nuget
                 return new DefaultFileHandler(nugetPath, isFile);
         }
 
-        protected override Task<Result> HandleAsync(NugetPublishRequest request)
+        protected override Task<Result> HandleAsync(NugetPublishRequest request, CancellationToken token)
         {
             string[] files = Directory.GetFiles(request.MainDirectory, "*.csproj", SearchOption.AllDirectories);
 

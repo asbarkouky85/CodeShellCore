@@ -1,6 +1,7 @@
 ﻿using CodeShellCore.Extensions.Hosting;
 using CodeShellCore.Files.Logging;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -13,7 +14,7 @@ namespace CodeShellCore.ToolSet
         {
             if (Debugger.IsAttached)
             {
-                var testing = FunctionTypes.Proxy;
+                var testing = FunctionTypes.GenerateModuleClasses;
 
                 switch (testing)
                 {
@@ -69,6 +70,9 @@ namespace CodeShellCore.ToolSet
                     case FunctionTypes.GenerateModuleClasses:
                         args = new[] { "gen-modules", "C:\\_git\\Asga\\WebAndBackEnd" };
                         break;
+                    case FunctionTypes.Analyzer:
+                        args = new[] { "analyzer", "C:\\_git\\Asga\\WebAndBackEnd\\","-cv" };
+                        break;
                 }
             }
 
@@ -81,15 +85,17 @@ namespace CodeShellCore.ToolSet
             {
                 Logger.WriteException(ex);
             }
+
             if (Debugger.IsAttached)
             {
-                Console.WriteLine(args[0] + " Complete");
+                Console.WriteLine("Operation Finished press any key to continue");
                 Console.ReadLine();
             }
         }
 
         public static IHost BuildHost(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(e => e.ClearProviders())
                 .UseModule<ToolSetCliModule>(args)
                 .Build();
     }

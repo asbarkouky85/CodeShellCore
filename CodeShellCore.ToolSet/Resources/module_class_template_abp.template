@@ -1,0 +1,12 @@
+﻿using Abp.Modularity;
+%Usings%
+
+namespace %Namespace%
+{
+    [DependsOn(
+        %Dependencies%
+        )]
+    public class %ClassName% : AbpModule
+    {
+    }
+}

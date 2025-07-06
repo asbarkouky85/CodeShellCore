@@ -6,16 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Modularity\Templates\module_class_template.template" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Modularity\Templates\module_class_template.template" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
     <ProjectReference Include="..\CodeShellCore.CliDispatch\CodeShellCore.CliDispatch.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\**" />
   </ItemGroup>
 
 </Project>

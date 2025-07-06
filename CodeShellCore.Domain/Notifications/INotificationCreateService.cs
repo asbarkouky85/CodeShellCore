@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.Notifications
 {
-    public interface ICodeShellNotificationDomainService
+    public interface INotificationCreateService
     {
         Task CreateNotifications(NotificationCreateRequestData request);
     }

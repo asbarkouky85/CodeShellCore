@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Zip
@@ -25,7 +26,7 @@ namespace CodeShellCore.ToolSet.Zip
             builder.Property(e => e.DeleteExisting, "overwrite", "d").SetDefault(true);
         }
 
-        protected override async Task<CodeShellCore.Helpers.Result> HandleAsync(ZipRequest request)
+        protected override async Task<CodeShellCore.Helpers.Result> HandleAsync(ZipRequest request, CancellationToken token)
         {
             if (ExtraArgs.TryGetValue("Extract", out string val))
             {

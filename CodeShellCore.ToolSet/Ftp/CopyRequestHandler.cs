@@ -2,6 +2,7 @@
 using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Ftp
@@ -29,7 +30,7 @@ namespace CodeShellCore.ToolSet.Ftp
                 return new DefaultFileHandler(nugetPath, isFile);
         }
 
-        protected override Task<Result> HandleAsync(CopyRequest request)
+        protected override Task<Result> HandleAsync(CopyRequest request, CancellationToken token)
         {
             IToolSetFileHandler fromHandler = GetHandler(request.FromPath, true);
             IToolSetFileHandler toHandler = GetHandler(request.ToPath, request.DestinationIsAFile);

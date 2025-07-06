@@ -3,7 +3,10 @@ using CodeShellCore.CliDispatch.Parsing;
 using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
+using CodeShellCore.Types;
+using System.Threading;
 
 namespace CodeShellCore.ToolSet.Help
 {
@@ -19,9 +22,12 @@ namespace CodeShellCore.ToolSet.Help
 
         }
 
-        protected override Task<Result> HandleAsync(HelpRequest request)
+        protected override Task<Result> HandleAsync(HelpRequest request, CancellationToken t)
         {
             var build = GetService<ICliRouteBuilder>();
+            Console.WriteLine();
+            Console.WriteLine($"Toolset v{Assembly.GetEntryAssembly().GetVersionString()}");
+            Console.WriteLine();
             foreach (var item in build.HandlerDictionary)
             {
                 if (item.Value == GetType())

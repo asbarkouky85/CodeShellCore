@@ -4,6 +4,7 @@ using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Sql
@@ -22,7 +23,7 @@ namespace CodeShellCore.ToolSet.Sql
             builder.Property(e => e.SqlQuery, "query-string", "q", 2, isRequired: true);
         }
 
-        protected override Task<Result> HandleAsync(SqlQueryRequest request)
+        protected override Task<Result> HandleAsync(SqlQueryRequest request, CancellationToken token)
         {
             var sql = new ToolSetSqlService();
             sql.ConnectionParams = new DbConnectionParams

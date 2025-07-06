@@ -22,6 +22,7 @@ namespace CodeShellCore.ToolSet
         ReplaceParameters,
         Download,
         Proxy,
-        GenerateModuleClasses
+        GenerateModuleClasses,
+        Analyzer
     }
 }

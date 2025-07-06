@@ -13,15 +13,15 @@ namespace CodeShellCore.Tasks
             return tsk.Result;
         }
 
-        public static Task Then(this Task task, Action ac)
+        public static void Then(this Task task, Action ac)
         {
-            var s = task.GetAwaiter();
-            s.OnCompleted(ac);
+            var awiter = task.GetAwaiter();
             
-            if (task.Status < TaskStatus.Running)
-                task.Start();
-
-            return task;
+            awiter.OnCompleted(ac);
+            
+            //if (task.Status < TaskStatus.Running)
+            //    task.Start();
+            
         }
 
         public static Task<T> Then<T>(this Task<T> task, Action<T> func)

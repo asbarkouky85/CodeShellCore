@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Replace
@@ -28,7 +29,7 @@ namespace CodeShellCore.ToolSet.Replace
             builder.Property(e => e.UseRegex, "regex", "r");
         }
 
-        protected override Task<Result> HandleAsync(ReplaceParametersRequest request)
+        protected override Task<Result> HandleAsync(ReplaceParametersRequest request, CancellationToken token)
         {
             string jsonParams = request.Parameters;
             if (request.ParameterFile != null)

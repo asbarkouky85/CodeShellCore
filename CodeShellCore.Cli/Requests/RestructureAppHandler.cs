@@ -3,6 +3,7 @@ using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Helpers;
 using CodeShellCore.Moldster.Services;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.Cli.Requests
@@ -20,7 +21,7 @@ namespace CodeShellCore.Cli.Requests
             builder.Property(e => e.TenantCode, "tenant", "t", isRequired: true);
         }
 
-        protected override async Task<Result> HandleAsync(MoldsterAppRequest request)
+        protected override async Task<Result> HandleAsync(MoldsterAppRequest request, CancellationToken cancellationToken)
         {
             var s = GetService<IMigrationService>();
             return await s.CategoriesToComponents(request.TenantCode);

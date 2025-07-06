@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.CliDispatch
@@ -23,7 +24,7 @@ namespace CodeShellCore.CliDispatch
 
         }
 
-        protected override async Task<Result> HandleAsync(object request)
+        protected override async Task<Result> HandleAsync(object request,CancellationToken token)
         {
             var cont = Activator.CreateInstance<TController>();
             cont.IsMain = true;

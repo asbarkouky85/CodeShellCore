@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Localization
@@ -25,7 +26,7 @@ namespace CodeShellCore.ToolSet.Localization
             builder.Property(e => e.Lang2, "lang2", "t",3);
         }
 
-        protected override async Task<Result> HandleAsync(SyncLanguagesRequest request)
+        protected override async Task<Result> HandleAsync(SyncLanguagesRequest request, CancellationToken token)
         {
             await service.SyncLanguages(request.MainDirectory, request.Lang1, request.Lang2);
             return new Result(0);

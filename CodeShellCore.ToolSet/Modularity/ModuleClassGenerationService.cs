@@ -33,42 +33,58 @@ namespace CodeShellCore.Modularity
         public Task<Result> Generate(GenerateModuleClassesRequest request)
         {
             var writer = new WriterService();
-            var template = Assembly.GetCallingAssembly().GetEmbeddedResourceAsString("module_class_template");
+            var template = Assembly.GetCallingAssembly().GetEmbeddedResourceAsString($"module_class_template_{request.Type.ToString().ToLower()}");
             var files = Directory.GetFiles(request.SolutionFolder, "*.csproj", SearchOption.AllDirectories);
             foreach (var file in files)
             {
                 var proj = new CsProjectFile(file, new CsProjectFileReader());
                 var fileInfo = new FileInfo(file);
                 var model = new GenerateModuleClassesReplaceModel();
-                model.ClassName = _toClassName(proj.ProjectName);
+                if (request.Type == Frameworks.None)
+                {
+                    model.ModuleName = _toClassName(proj.ProjectName);
+                    model.ClassName = model.ModuleName + "Definition";
+                }
+                else
+                {
+                    model.ClassName = _toClassName(proj.ProjectName);
+                }
                 model.Namespace = proj.DefaultNamespace;
+
                 var generatedFilePath = Path.Combine(fileInfo.Directory.FullName, model.ClassName + ".cs");
                 WriteFileOperation("Generating", model.ClassName, false);
-                if (Directory.GetFiles(fileInfo.Directory.FullName, "*Module.cs", SearchOption.TopDirectoryOnly).Any())
+                var searchPattern = request.Type == Frameworks.None ? "*ModuleDefinition.cs" : "*Module.cs";
+
+                if (Directory.GetFiles(fileInfo.Directory.FullName, searchPattern, SearchOption.TopDirectoryOnly).Any())
                 {
                     GotoColumn(10);
                     WriteColored("Exists", ConsoleColor.DarkGray);
                     Out.WriteLine();
                     continue;
                 }
-                List<string> usings = new List<string>();
-                List<string> dependencies = new List<string>();
-                foreach (var reference in proj.ProjectReferences)
+
+                if (request.Type != Frameworks.None)
                 {
-                    var refereceProjectPath = Path.Combine(fileInfo.Directory.FullName, reference);
-                    if (File.Exists(refereceProjectPath))
+                    List<string> usings = new List<string>();
+                    List<string> dependencies = new List<string>();
+                    foreach (var reference in proj.ProjectReferences)
                     {
-                        var refereceProject = new CsProjectFile(refereceProjectPath, new CsProjectFileReader());
-                        if (!usings.Any(e => e.Contains(refereceProject.DefaultNamespace + ";")) &&
-                            refereceProject.DefaultNamespace != proj.DefaultNamespace)
+                        var refereceProjectPath = Path.Combine(fileInfo.Directory.FullName, reference);
+                        if (File.Exists(refereceProjectPath))
                         {
-                            usings.Add($"using {refereceProject.DefaultNamespace};");
+                            var refereceProject = new CsProjectFile(refereceProjectPath, new CsProjectFileReader());
+                            if (!usings.Any(e => e.Contains(refereceProject.DefaultNamespace + ";")) &&
+                                refereceProject.DefaultNamespace != proj.DefaultNamespace)
+                            {
+                                usings.Add($"using {refereceProject.DefaultNamespace};");
+                            }
+                            dependencies.Add($"typeof({_toClassName(refereceProject.ProjectName)})");
                         }
-                        dependencies.Add($"typeof({_toClassName(refereceProject.ProjectName)})");
                     }
+                    model.Usings = string.Join("\n", usings);
+                    model.Dependencies = string.Join(",\n\t\t", dependencies);
                 }
-                model.Usings = string.Join("\n", usings);
-                model.Dependencies = string.Join(",\n\t\t", dependencies);
+
                 var generatedFile = writer.FillStringParameters(template, model);
                 File.WriteAllText(generatedFilePath, generatedFile);
                 WriteSuccess(column: 10);

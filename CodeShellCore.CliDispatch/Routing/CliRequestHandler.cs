@@ -6,6 +6,7 @@ using CodeShellCore.Types;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.CliDispatch.Routing
@@ -13,6 +14,7 @@ namespace CodeShellCore.CliDispatch.Routing
     public abstract class CliRequestHandler<T> : ConsoleService, ICliRequestHandler where T : class
     {
         public abstract string FunctionDescription { get; }
+        public virtual bool RunInBackground => false;
         protected InstanceStore<object> Store { get; private set; }
         protected IServiceProvider ServiceProvider { get; private set; }
         protected Dictionary<string, string> ExtraArgs { get; set; } = new Dictionary<string, string>();
@@ -36,7 +38,7 @@ namespace CodeShellCore.CliDispatch.Routing
         }
 
         protected abstract void Build(ICliRequestBuilder<T> builder);
-        protected abstract Task<Result> HandleAsync(T request);
+        protected abstract Task<Result> HandleAsync(T request, CancellationToken token);
 
         public virtual T GetRequestData(string[] args)
         {
@@ -45,7 +47,7 @@ namespace CodeShellCore.CliDispatch.Routing
             return parser.Parse(args);
         }
 
-        public virtual async Task<Result> HandleAsync(string[] args)
+        public virtual async Task<Result> HandleAsync(string[] args, CancellationToken token)
         {
 
             var req = GetRequestData(args);
@@ -53,8 +55,7 @@ namespace CodeShellCore.CliDispatch.Routing
             {
                 return new Result(1);
             }
-            //Console.WriteLine(req.ToJsonIndent());
-            return await HandleAsync(req);
+            return await HandleAsync(req, token);
         }
 
         public void Document()

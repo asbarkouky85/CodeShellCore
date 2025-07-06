@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Modularity
@@ -21,9 +22,10 @@ namespace CodeShellCore.ToolSet.Modularity
         protected override void Build(ICliRequestBuilder<GenerateModuleClassesRequest> builder)
         {
             builder.Property(e => e.SolutionFolder, "folder", "d", 1, true);
+            builder.Property(e => e.Type, "type", "t").SetDefault(Frameworks.None);
         }
 
-        protected override async Task<Result> HandleAsync(GenerateModuleClassesRequest request)
+        protected override async Task<Result> HandleAsync(GenerateModuleClassesRequest request, CancellationToken token)
         {
             return await GetService<IModuleClassGenerationService>().Generate(request);
         }

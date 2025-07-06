@@ -4,6 +4,7 @@ using CodeShellCore.Helpers;
 using CodeShellCore.Http;
 using CodeShellCore.Proxy;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.TsProxy
@@ -24,7 +25,7 @@ namespace CodeShellCore.ToolSet.TsProxy
             builder.Property(e => e.TargetFolder, "target", "t", 2, true);
         }
 
-        protected override async Task<Result> HandleAsync(TsProxyRequestDto request)
+        protected override async Task<Result> HandleAsync(TsProxyRequestDto request, CancellationToken token)
         {
             var serv = new DefaultHttpService(request.ApiUrl);
             var data = await serv.GetAsyncAs<DocumentDto>("api/codeshell/apiDefinition");

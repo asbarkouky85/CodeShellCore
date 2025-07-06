@@ -11,6 +11,7 @@ using System.IO.Compression;
 using CodeShellCore.Files.Uploads;
 using Microsoft.Extensions.DependencyInjection;
 using CodeShellCore.Files.Images;
+using System.Linq;
 
 namespace CodeShellCore.Files
 {
@@ -115,8 +116,9 @@ namespace CodeShellCore.Files
             ZipFile.CreateFromDirectory(folderPath, targetPath, CompressionLevel.Optimal, includeBaseDirectory);
         }
 
-        public static void DecompressDirectory(string file, string folder)
+        public static void DecompressDirectory(string file, string folder, DecompressOptions options = null)
         {
+            options = options ?? new DecompressOptions();
             if (!Directory.Exists(folder))
             {
                 Directory.CreateDirectory(folder);
@@ -132,10 +134,18 @@ namespace CodeShellCore.Files
                 var relative = f.Replace(newDir + "\\", "");
                 string newFile = Path.Combine(folder, relative);
                 if (File.Exists(newFile))
-                    File.Delete(newFile);
+                {
+                    if (options.Replace && !options.KeepFiles.Any(e => newFile.Contains(e)))
+                    {
+                        File.Delete(newFile);
+                        File.Move(f, newFile);
+                    }
+                }
                 else
+                {
                     Utils.CreateFolderForFile(newFile);
-                File.Move(f, newFile);
+                    File.Move(f, newFile);
+                }
             }
             Utils.DeleteDirectory(newDir);
         }

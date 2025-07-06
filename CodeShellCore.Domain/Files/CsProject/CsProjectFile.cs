@@ -45,10 +45,10 @@ namespace CodeShellCore.Files.CsProject
             ProjectName = reader.GetFileName(path).Replace(".csproj", "");
             Folder = reader.GetFolderFullName(path);
 
+            this.reader = reader;
             allLines = reader.GetAllLines(path);
             _processLines(path);
 
-            this.reader = reader;
         }
 
         private void _processLines(string path)
@@ -63,13 +63,7 @@ namespace CodeShellCore.Files.CsProject
             {
                 _filePath = path;
             }
-            else
-            {
-                _filePath = Path.Combine(Folder, @"Properties\AssemblyInfo.cs");
-                if (!reader.FileExists(_filePath))
-                    throw new FileNotFoundException(_filePath);
-                allLines = reader.GetAllLines(_filePath);
-            }
+
             ReadVersionParameters();
         }
 
@@ -164,7 +158,10 @@ namespace CodeShellCore.Files.CsProject
 
         public string GetAssemblyName()
         {
-            _assemblyName = replacableParameters["AssemblyName"].Value;
+            if (replacableParameters.ContainsKey("AssemblyName"))
+            {
+                _assemblyName = replacableParameters["AssemblyName"].Value;
+            }
             _assemblyName = string.IsNullOrEmpty(_assemblyName) ? ProjectName : _assemblyName;
             return _assemblyName;
         }

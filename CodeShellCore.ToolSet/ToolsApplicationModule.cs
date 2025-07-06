@@ -1,5 +1,6 @@
 ﻿using CodeShellCore.CliDispatch;
 using CodeShellCore.Modularity;
+using CodeShellCore.ToolSet.Analyzer;
 using CodeShellCore.ToolSet.Download;
 using CodeShellCore.ToolSet.Ftp;
 using CodeShellCore.ToolSet.Help;
@@ -23,6 +24,7 @@ namespace CodeShellCore.ToolSet
         public override void RegisterServices(CodeshellAppContext context)
         {
             context.Services.AddTransient<IModuleClassGenerationService, ModuleClassGenerationService>();
+            context.Services.AddTransient<ICsProjectCreateService, CsProjectCreateService>();
 
             var builder = context.Services.GetCliRouteBuilder();
             builder.AddHandler<AbpSyncLanguagesRequestHandler>("sync-loc-abp");
@@ -39,6 +41,7 @@ namespace CodeShellCore.ToolSet
             builder.AddHandler<TsProxyRequestHandler>("gen-proxy");
             builder.AddHandler<ZipRequestHandler>("extract", new { Extract = "true" });
             builder.AddHandler<ZipRequestHandler>("zip");
+            builder.AddHandler<AnalyzerRequestHandler>("analyzer");
         }
     }
 }

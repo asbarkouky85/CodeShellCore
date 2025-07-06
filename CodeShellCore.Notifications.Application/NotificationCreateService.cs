@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace CodeShellCore.Notifications
 {
-    public class CodeShellNotificationDomainService : ApplicationService, ICodeShellNotificationDomainService
+    public class NotificationCreateService : ApplicationService, INotificationCreateService
     {
         INotificationsUnit Unit => Store.GetService<INotificationsUnit>();
         INotificationAttachmentStorage AttachmentStorage => Store.GetService<INotificationAttachmentStorage>();
         INotificationDeliveryService Delivery => Store.GetService<INotificationDeliveryService>();
-        public CodeShellNotificationDomainService(IServiceProvider provider) : base(provider)
+        public NotificationCreateService(IServiceProvider provider) : base(provider)
         {
         }
 

@@ -12,5 +12,7 @@ namespace CodeShellCore.ToolSet.Modularity
         public string Usings { get; set; }
         public string Dependencies { get; set; }
         public string Namespace { get; set; }
+        public string ModuleName { get; set; }
+        public string Registrations { get; set; }
     }
 }

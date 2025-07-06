@@ -1,0 +1,17 @@
+using Microsoft.Extensions.DependencyInjection;
+%Usings%
+
+namespace %Namespace%;
+
+public static class %ClassName% 
+{
+    private static void _addServices(IServiceCollection services)
+    {
+%Registrations%
+    }
+
+    public static void Add%ModuleName%(this IServiceCollection services)
+    {
+        _addServices(services);
+    }
+}

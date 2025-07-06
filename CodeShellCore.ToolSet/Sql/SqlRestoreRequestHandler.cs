@@ -3,6 +3,7 @@ using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Data.Sql;
 using CodeShellCore.Helpers;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Sql
@@ -22,7 +23,7 @@ namespace CodeShellCore.ToolSet.Sql
             builder.Property(e => e.DbName, "database", "d", isRequired: true);
         }
 
-        protected override Task<Result> HandleAsync(SqlRestoreRequest request)
+        protected override Task<Result> HandleAsync(SqlRestoreRequest request, CancellationToken token)
         {
             var sql = new ToolSetSqlService();
             sql.ConnectionParams = new DbConnectionParams(request.ConnectionString);

@@ -4,6 +4,7 @@ using CodeShellCore.CliDispatch.Routing;
 using CodeShellCore.Files.CsProject;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.ToolSet.Versions
@@ -25,7 +26,7 @@ namespace CodeShellCore.ToolSet.Versions
             builder.Property(e => e.PublishProfile, "publish-profile", "u");
         }
 
-        protected override Task<CodeShellCore.Helpers.Result> HandleAsync(ProjectVersionRequest request)
+        protected override Task<CodeShellCore.Helpers.Result> HandleAsync(ProjectVersionRequest request, CancellationToken token)
         {
             Console.Write("Altering version for Project " + request.Project);
 

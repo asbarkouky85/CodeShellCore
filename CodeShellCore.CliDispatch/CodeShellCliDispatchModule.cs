@@ -6,6 +6,8 @@ using CodeShellCore.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CodeShellCore.CliDispatch
@@ -25,6 +27,7 @@ namespace CodeShellCore.CliDispatch
         {
             var hostApplicationLifeTime = context.ServiceProvider.GetRequiredService<IHostApplicationLifetime>();
 
+            
             AsyncHelper.RunSync(() => _runAsync(context));
 
             hostApplicationLifeTime.StopApplication();
@@ -35,6 +38,7 @@ namespace CodeShellCore.CliDispatch
         {
             using (var sc = context.ServiceProvider.CreateScope())
             {
+                bool isSuccess = false;
                 try
                 {
                     var functionName = context.Arguments.Length > 0 ? context.Arguments[0] : null;
@@ -45,7 +49,36 @@ namespace CodeShellCore.CliDispatch
                         Console.WriteLine("Unknow function : " + functionName);
                         return;
                     }
-                    await cliRequestHandler.HandleAsync(context.Arguments);
+                    var cts = new CancellationTokenSource();
+
+                    if (cliRequestHandler.RunInBackground)
+                    {
+                        var t = cliRequestHandler.HandleAsync(context.Arguments, cts.Token);
+
+                        t.GetAwaiter().OnCompleted(() =>
+                        {
+                            isSuccess = true;
+                            cts.Cancel();
+                        });
+
+                        WaitForKey(cts.Token);
+
+                        cts.Cancel();
+                        cts.Token.ThrowIfCancellationRequested();
+                    }
+                    else
+                    {
+                        await cliRequestHandler.HandleAsync(context.Arguments, cts.Token);
+                    }
+
+                }
+                catch (OperationCanceledException)
+                {
+                    if (!isSuccess)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Task Cancelled");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -57,5 +90,20 @@ namespace CodeShellCore.CliDispatch
             }
         }
 
+
+        private ConsoleKeyInfo WaitForKey(CancellationToken token)
+        {
+            int delay = 0;
+            while (true)
+            {
+                if (Console.KeyAvailable)
+                {
+                    return Console.ReadKey();
+                }
+                token.ThrowIfCancellationRequested();
+                Thread.Sleep(50);
+                delay += 50;
+            }
+        }
     }
 }

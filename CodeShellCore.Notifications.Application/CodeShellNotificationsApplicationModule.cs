@@ -18,12 +18,15 @@ namespace CodeShellCore.Notifications
         public override void RegisterServices(CodeshellAppContext context)
         {
             context.Services.AddTransient<IDeviceService, DeviceService>();
+
             context.Services.AddTransient<INotificationsListService, NotificationListService>();
-            context.Services.AddTransient<ICodeShellNotificationDomainService, CodeShellNotificationDomainService>();
+            context.Services.AddTransient<INotificationCreateService, NotificationCreateService>();
             context.Services.AddTransient<INotificationDeliveryService, NotificationDeliveryService>();
-            context.Services.AddTransient<IListNotificationSender, ListNotificationSender>();
             context.Services.AddTransient<INotificationSender, ListNotificationSender>();
+            context.Services.AddTransient<INotificationSender, EmailNotificationSender>();
             context.Services.AddTransient<INotificationSenderFactory, NotificationSenderFactory>();
+
+            context.Services.AddTransient<IListNotificationSender, ListNotificationSender>();
             context.Services.AddAutoMapper(typeof(CodeShellNotificationsApplicationModule).Assembly);
 
             var jobs = context.Services.GetJobConfig();
