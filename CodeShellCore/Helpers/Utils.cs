@@ -19,7 +19,6 @@ using System.Threading;
 
 namespace CodeShellCore.Helpers
 {
-    public enum CharType { Capital, Small, Both }
     public static class Utils
     {
         static Random r = new Random();
