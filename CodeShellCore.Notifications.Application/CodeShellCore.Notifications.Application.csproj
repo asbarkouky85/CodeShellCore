@@ -6,9 +6,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
-	  <ProjectReference Include="..\CodeShellCore.Notifications.Application.Contracts\CodeShellCore.Notifications.Application.Contracts.csproj" />
-	  <ProjectReference Include="..\CodeShellCore.Notifications.Domain\CodeShellCore.Notifications.Domain.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Application\CodeShellCore.Application.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Notifications.Application.Contracts\CodeShellCore.Notifications.Application.Contracts.csproj" />
+		<ProjectReference Include="..\CodeShellCore.Notifications.Domain\CodeShellCore.Notifications.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

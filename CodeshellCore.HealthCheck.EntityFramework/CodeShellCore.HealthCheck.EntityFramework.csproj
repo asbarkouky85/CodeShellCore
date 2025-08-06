@@ -9,8 +9,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\CodeShellCore.EntityFramework\CodeShellCore.EntityFramework.csproj" />
 		<ProjectReference Include="..\CodeshellCore.HealthCheck.Domain\CodeShellCore.HealthCheck.Domain.csproj" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4" />
 	</ItemGroup>
 
 </Project>

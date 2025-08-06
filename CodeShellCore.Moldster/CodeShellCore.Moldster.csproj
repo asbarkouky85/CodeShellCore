@@ -1,7 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\common.props" />
-	
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Version>5.2.1.0</Version>
@@ -18,10 +16,6 @@
 		<ProjectReference Include="..\CodeShellCore.Moldster.Domain\CodeShellCore.Moldster.Domain.csproj" />
 		<ProjectReference Include="..\CodeShellCore.Notifications.Application.Contracts\CodeShellCore.Notifications.Application.Contracts.csproj" />
 		<ProjectReference Include="..\CodeShellCore\CodeShellCore.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 
 </Project>

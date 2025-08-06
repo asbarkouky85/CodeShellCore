@@ -14,10 +14,19 @@ namespace Dependency.Analyzer
             {
                 %Assemblies%
             };
-            var items_tsk = DependencyAnalyzer.Read(list);
-            items_tsk.Wait();
 
-            DependencyAnalyzer.Generate("%Directory%", items_tsk.Result).Wait();
+            List<DependencyItem> dependencies = new List<DependencyItem>();
+            if (DependencyAnalyzerOptions.Read)
+            {
+                var items_tsk = DependencyAnalyzer.Read(list);
+                items_tsk.Wait();
+                dependencies = items_tsk.Result;
+            }
+
+            if (DependencyAnalyzerOptions.GenerateModuleClasses)
+            {
+                DependencyAnalyzer.Generate("%Directory%", dependencies).Wait();
+            }
         }
     }
 }

@@ -10,8 +10,4 @@
 	  <ProjectReference Include="..\CodeShellCore.Notifications.Domain.Shared\CodeShellCore.Notifications.Domain.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Attachments\" />
-	</ItemGroup>
-
 </Project>

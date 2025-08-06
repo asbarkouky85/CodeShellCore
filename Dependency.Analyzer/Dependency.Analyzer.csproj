@@ -1,20 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <ProjectGuid>98F2A005-A191-4C8A-B410-5FAF7822D710</ProjectGuid>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\**" />
-  </ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<ProjectGuid>98F2A005-A191-4C8A-B410-5FAF7822D710</ProjectGuid>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.66" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" />
+		<PackageReference Include="System.Data.SqlClient" />
+	</ItemGroup>
 
 </Project>
