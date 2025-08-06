@@ -19,6 +19,18 @@ public static class AnalyzerUtils
         return method.GetCustomAttribute<System.Runtime.CompilerServices.CompilerGeneratedAttribute>() != null;
     }
 
+    public static bool Implements(this Type type, Type target)
+    {
+        if (target.IsGenericType)
+        {
+            return type.GetInterfaces().Any(e => e.GetGenericTypeDefinition() == target);
+        }
+        else
+        {
+            return type.GetInterfaces().Contains(target);
+        }
+    }
+
     public static string WordsToCamelCase(string id, string separtor, string separatorPattern = null)
     {
         id = new Regex("([a-z])([A-Z])").Replace(id, $"$1{separtor}$2");
