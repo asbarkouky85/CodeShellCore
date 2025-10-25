@@ -117,7 +117,14 @@ namespace CodeShellCore.Proxy
                     }
                     return typeName;
                 case "dictionary":
-                    return $"{{ [key:{property.GenericArguments[0].Type}]: {_getTsTypeString(property.GenericArguments[1])} }}";
+                    if (property.GenericArguments != null && property.GenericArguments.Count > 1)
+                    {
+                        return $"{{ [key:{property.GenericArguments[0].Type}]: {_getTsTypeString(property.GenericArguments[1])} }}";
+                    }
+                    else
+                    {
+                        return "any";
+                    }
                 case "array":
                     if (property.GenericArguments != null && property.GenericArguments.Any())
                     {

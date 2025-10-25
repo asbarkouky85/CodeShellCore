@@ -14,7 +14,7 @@ namespace CodeShellCore.ToolSet
         {
             if (Debugger.IsAttached)
             {
-                var testing = FunctionTypes.GenerateModuleClasses;
+                var testing = FunctionTypes.Proxy;
 
                 switch (testing)
                 {
@@ -65,7 +65,7 @@ namespace CodeShellCore.ToolSet
                         args = new[] { "download", "https://nodejs.org/dist/v16.16.0/node-v16.16.0-x64.msi", "./Downloads" };
                         break;
                     case FunctionTypes.Proxy:
-                        args = new[] { "gen-proxy", "https://localhost:44300", "C:\\_git\\Asga\\craft_frontend\\src\\core" };
+                        args = new[] { "gen-proxy", "https://localhost:44338", "D:\\_git\\Home\\agile_careers\\agile_careers_frontend\\projects\\careers\\src" };
                         break;
                     case FunctionTypes.GenerateModuleClasses:
                         args = new[] { "gen-modules", "C:\\_git\\Asga\\WebAndBackEnd" };
