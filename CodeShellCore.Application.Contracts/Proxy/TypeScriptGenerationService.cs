@@ -150,6 +150,9 @@ namespace CodeShellCore.Proxy
             if (t == typeof(string))
                 return "string";
 
+            if (t == typeof(Guid))
+                return "string";
+
             if (t.RealType() == typeof(bool))
                 return "boolean";
 
@@ -168,6 +171,7 @@ namespace CodeShellCore.Proxy
             if (typeof(IEnumerable).IsAssignableFrom(t))
                 return "array";
 
+            
             return "reference";
         }
 

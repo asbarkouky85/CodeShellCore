@@ -42,6 +42,7 @@ namespace CodeShellCore.ToolSet
             builder.AddHandler<ZipRequestHandler>("extract", new { Extract = "true" });
             builder.AddHandler<ZipRequestHandler>("zip");
             builder.AddHandler<AnalyzerRequestHandler>("analyzer");
+            builder.AddHandler<AbpExtractLocalizationKeysHandler>("abp-extract-keys");
         }
     }
 }

@@ -1,54 +1,55 @@
 <Project>
-	<PropertyGroup>
-		<LangVersion>latest</LangVersion>
-		<Version>6.0.0.0</Version>
-		<AssemblyVersion>6.0.0.0</AssemblyVersion>
-		<FileVersion>6.0.0.0</FileVersion>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-		<NoWarn>CS1591;CS0436;CS8618;CS8032;CS8600;CS8601;CS8625;AD00001;NETSDK1138;NU1608;CA1416;CS8981;EF1002</NoWarn>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-		<PackageVersion Include="Dapper" Version="2.1.66" />
-		<PackageVersion Include="Inflector.NetStandard" Version="1.2.2" />
-		<PackageVersion Include="MassTransit.RabbitMQ" Version="8.2.1" />
-		<PackageVersion Include="MediatR" Version="12.2.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="8.0.4" />
-		<PackageVersion Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.4" />
-		<PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4" />
-		<PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.4" />
-		<PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-		<PackageVersion Include="Moq" Version="4.20.70" />
-		<PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageVersion Include="nunit" Version="3.13.1" />
-		<PackageVersion Include="NUnit3TestAdapter" Version="3.17.0" />
-		<PackageVersion Include="ReportViewerCore.NETCore" Version="15.1.25" />
-		<PackageVersion Include="ServiceStack.Redis" Version="8.2.2" />
-		<PackageVersion Include="Swashbuckle.AspNetCore" Version="6.2.2" />
-		<PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
-		<PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
-		<PackageVersion Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
-		<PackageVersion Include="System.Drawing.Common" Version="8.0.4" />
-		<PackageVersion Include="System.Resources.Writer" Version="4.3.0" />
-	</ItemGroup>
-	<Target Name="NoWarnOnRazorViewImportedTypeConflicts" BeforeTargets="RazorCoreCompile">
-		<PropertyGroup>
-			<NoWarn>$(NoWarn);0436</NoWarn>
-		</PropertyGroup>
-	</Target>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Version>6.0.0.0</Version>
+    <AssemblyVersion>6.0.0.0</AssemblyVersion>
+    <FileVersion>6.0.0.0</FileVersion>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <NoWarn>CS1591;CS0436;CS8618;CS8032;CS8600;CS8601;CS8625;AD00001;NETSDK1138;NU1608;CA1416;CS8981;EF1002</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageVersion Include="Dapper" Version="2.1.66" />
+    <PackageVersion Include="Inflector.NetStandard" Version="1.2.2" />
+    <PackageVersion Include="MassTransit.RabbitMQ" Version="8.2.1" />
+    <PackageVersion Include="MediatR" Version="12.2.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components" Version="8.0.4" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.4" />
+    <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageVersion Include="ModelContextProtocol" Version="0.4.0-preview.3" />
+    <PackageVersion Include="Moq" Version="4.20.70" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="nunit" Version="3.13.1" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageVersion Include="ReportViewerCore.NETCore" Version="15.1.25" />
+    <PackageVersion Include="ServiceStack.Redis" Version="8.2.2" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.2.2" />
+    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageVersion Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
+    <PackageVersion Include="System.Drawing.Common" Version="8.0.4" />
+    <PackageVersion Include="System.Resources.Writer" Version="4.3.0" />
+  </ItemGroup>
+  <Target Name="NoWarnOnRazorViewImportedTypeConflicts" BeforeTargets="RazorCoreCompile">
+    <PropertyGroup>
+      <NoWarn>$(NoWarn);0436</NoWarn>
+    </PropertyGroup>
+  </Target>
 </Project>

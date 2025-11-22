@@ -23,6 +23,7 @@ namespace CodeShellCore.ToolSet
         Download,
         Proxy,
         GenerateModuleClasses,
-        Analyzer
+        Analyzer,
+        AbpExtractKeys,
     }
 }
