@@ -90,6 +90,12 @@ namespace CodeShellCore.CliDispatch.Parsing
             return this;
         }
 
+        public ArgumentItem<T, TVal> SetDescription(string description)
+        {
+            this.Description = description;
+            return this;
+        }
+
         public override string? GetDefault()
         {
             if (_defaultIsSet)

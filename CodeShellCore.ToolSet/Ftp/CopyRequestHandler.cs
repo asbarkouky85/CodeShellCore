@@ -17,8 +17,9 @@ namespace CodeShellCore.ToolSet.Ftp
 
         protected override void Build(ICliRequestBuilder<CopyRequest> builder)
         {
-            builder.Property(e => e.FromPath, "source", "s", order: 1, isRequired: true);
-            builder.Property(e => e.ToPath, "target", "t", order: 2, isRequired: true);
+            var desc = "For ftp use format : ftp:[User]/[Password]@[Server]::[A,P]::[PathOnServer]";
+            builder.Property(e => e.FromPath, "source", "s", order: 1, isRequired: true).SetDescription(desc);
+            builder.Property(e => e.ToPath, "target", "t", order: 2, isRequired: true).SetDescription(desc);
             builder.Property(e => e.DestinationIsAFile, "dest-is-file", "f");
         }
 
