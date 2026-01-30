@@ -14,7 +14,7 @@ namespace CodeShellCore.ToolSet
         {
             if (Debugger.IsAttached)
             {
-                var testing = FunctionTypes.AbpExtractKeys;
+                var testing = FunctionTypes.Http;
 
                 switch (testing)
                 {
@@ -74,12 +74,15 @@ namespace CodeShellCore.ToolSet
                         args = new[] { "analyzer", "C:\\_git\\Asga\\WebAndBackEnd\\", "-cv" };
                         break;
                     case FunctionTypes.AbpExtractKeys:
-                        args = new[] { 
+                        args = new[] {
                             "abp-extract-keys",
                             "D:\\_git\\Home\\agile_careers\\agile_careers_frontend",
                             "D:\\_git\\Home\\agile_careers\\agile_careers_backend",
                             "Careers"
                         };
+                        break;
+                    case FunctionTypes.Http:
+                        args = new[] { "http", "GET", "https://reqres.in/app/collections/notes/records" };
                         break;
                 }
             }

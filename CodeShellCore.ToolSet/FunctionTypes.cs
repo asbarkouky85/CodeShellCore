@@ -25,5 +25,6 @@ namespace CodeShellCore.ToolSet
         GenerateModuleClasses,
         Analyzer,
         AbpExtractKeys,
+        Http,
     }
 }

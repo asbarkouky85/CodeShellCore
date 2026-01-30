@@ -4,6 +4,7 @@ using CodeShellCore.ToolSet.Analyzer;
 using CodeShellCore.ToolSet.Download;
 using CodeShellCore.ToolSet.Ftp;
 using CodeShellCore.ToolSet.Help;
+using CodeShellCore.ToolSet.Http;
 using CodeShellCore.ToolSet.Localization;
 using CodeShellCore.ToolSet.Modularity;
 using CodeShellCore.ToolSet.Nuget;
@@ -43,6 +44,7 @@ namespace CodeShellCore.ToolSet
             builder.AddHandler<ZipRequestHandler>("zip");
             builder.AddHandler<AnalyzerRequestHandler>("analyzer");
             builder.AddHandler<AbpExtractLocalizationKeysHandler>("abp-extract-keys");
+            builder.AddHandler<HttpHandler>("http");
         }
     }
 }

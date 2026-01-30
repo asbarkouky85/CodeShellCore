@@ -271,6 +271,26 @@ namespace CodeShellCore.Http
             return Task.CompletedTask;
         }
 
+        public async Task<HttpResponseMessage> PostStringAsync(string url, string data, object query = null) 
+        {
+            var Client = new HttpClient();
+            await ConfigureClient(Client);
+            Uri uri = GetUri(url, query);
+
+            var st = data;
+            HttpResponseMessage res = await Client.PostAsync(uri, new StringContent(st, Encoding.UTF8, "application/json"));
+
+            if (res.IsSuccessStatusCode)
+            {
+                return res;
+            }
+            else
+            {
+                throw new CodeShellHttpException(res);
+            }
+
+        }
+
         public async Task<HttpResponseMessage> PostAsync<T>(string url, T data, object query = null) where T : class
         {
             var Client = new HttpClient();
